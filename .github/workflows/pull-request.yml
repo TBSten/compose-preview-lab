@@ -17,8 +17,9 @@ jobs:
       - name: Setup Java for Gradle
         uses: actions/setup-java@v4
         with:
-          distribution: 'jetbrains'
+          distribution: 'temurin'
           java-version: '17'
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
       - name: Build
