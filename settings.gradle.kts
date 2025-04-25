@@ -35,3 +35,4 @@ plugins {
 
 include(":composePreviewLab")
 include(":sample")
+include(":sampleLib")
