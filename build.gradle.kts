@@ -6,3 +6,9 @@ plugins {
     alias(libs.plugins.android.library).apply(false)
     alias(libs.plugins.hotReload).apply(false)
 }
+
+subprojects {
+    group = "me.tbsten.compose.preview.lab"
+//    version = libs.versions.composePreviewLab
+    version = "0.1.0"
+}
