@@ -22,6 +22,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
-      - name: Build
+      - name: Build Library
         shell: bash
         run: ./gradlew assemble
+      - name: Build Sample
+        shell: bash
+        run: cd ./sample && ./gradlew assemble
