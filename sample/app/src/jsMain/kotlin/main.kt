@@ -12,5 +12,5 @@ fun main() {
             App()
         }
     }
-    Previews(previews = samplePreviews)
+//    Previews(previews = samplePreviews)
 }
