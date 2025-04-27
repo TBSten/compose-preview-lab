@@ -1,6 +1,6 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-rootProject.name = "composePreviewLablProject"
+rootProject.name = "composePreviewLabProject"
 
 pluginManagement {
     repositories {
