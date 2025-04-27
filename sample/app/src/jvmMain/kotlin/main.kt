@@ -2,8 +2,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import me.tbsten.compose.preview.lab.me.PreviewLabRoot
 import java.awt.Dimension
-import me.tbsten.compose.preview.lab.sample.App
 
 fun main() = application {
     Window(
@@ -12,7 +12,9 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
     ) {
         window.minimumSize = Dimension(350, 600)
-        App()
+        PreviewLabRoot(
+            previews = app.previews(),
+        )
     }
 }
 

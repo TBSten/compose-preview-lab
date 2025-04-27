@@ -1,12 +1,14 @@
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
-import me.tbsten.compose.preview.lab.sample.App
 import kotlinx.browser.document
+import me.tbsten.compose.preview.lab.me.PreviewLabRoot
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     val body = document.body ?: return
     ComposeViewport(body) {
-        App()
+        PreviewLabRoot(
+            previews = app.previews(),
+        )
     }
 }
