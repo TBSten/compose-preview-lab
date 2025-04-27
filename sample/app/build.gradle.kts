@@ -10,6 +10,8 @@ plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.android.application)
     alias(libs.plugins.hotReload)
+
+    id("me.tbsten.compose.preview.lab")
 }
 
 kotlin {
@@ -124,6 +126,10 @@ compose.desktop {
 composeCompiler {
     featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
 }
-tasks.withType<ComposeHotRun>().configureEach {
+tasks.register<ComposeHotRun>("runHot") {
     mainClass.set("MainKt")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    dependsOn("generatePreviewSources")
 }
