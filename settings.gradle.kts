@@ -36,3 +36,4 @@ plugins {
 }
 
 include(":composePreviewLab")
+include(":composePreviewLabGradlePlugin")
