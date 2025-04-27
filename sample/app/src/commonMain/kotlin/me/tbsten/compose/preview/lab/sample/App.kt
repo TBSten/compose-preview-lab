@@ -37,6 +37,7 @@ import compose_preview_lab_sample.app.generated.resources.Res
 import compose_preview_lab_sample.app.generated.resources.cyclone
 import compose_preview_lab_sample.app.generated.resources.ic_cyclone
 import kotlinx.coroutines.isActive
+import me.tbsten.compose.preview.lab.me.PreviewLab
 import me.tbsten.compose.preview.lab.sample.theme.AppTheme
 import me.tbsten.compose.preview.lab.sample.theme.LocalThemeIsDark
 import org.jetbrains.compose.resources.Font
@@ -44,7 +45,6 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@Preview
 @Composable
 internal fun App() = AppTheme {
     Column(
@@ -125,4 +125,10 @@ internal fun App() = AppTheme {
             Text(stringResource(Res.string.open_github))
         }
     }
+}
+
+@Preview
+@Composable
+private fun AppPreview() = PreviewLab {
+    App()
 }
