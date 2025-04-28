@@ -23,7 +23,7 @@ fun MyButton(
 @Composable
 private fun MyButtonPreview() = PreviewLab {
     MyButton(
-        text = fieldValue { StringField("Click Me") },
+        text = fieldValue { StringField("MyButton.text", "Click Me") },
         onClick = { TODO("onEvent()") }
     )
 }
@@ -32,7 +32,7 @@ private fun MyButtonPreview() = PreviewLab {
 @Composable
 private fun MyButtonPreview2() = PreviewLab {
     MyButton(
-        text = fieldValue { StringField("Print test") },
+        text = fieldValue { StringField("MyButton.text", "Print test") },
         onClick = { println("😃 test !") }
     )
 }

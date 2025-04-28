@@ -16,6 +16,6 @@ fun MyButton(
 
 @Preview
 @Composable
-fun MyButtonPreview() {
+private fun MyButtonPreview() {
     MyButton(text = "Hello MyButton")
 }
