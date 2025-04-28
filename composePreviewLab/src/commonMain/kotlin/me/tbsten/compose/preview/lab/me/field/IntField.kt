@@ -2,19 +2,25 @@ package me.tbsten.compose.preview.lab.me.field
 
 import androidx.compose.runtime.Composable
 
-class StringField(
+class IntField(
     label: String,
-    initialValue: String,
+    initialValue: Int,
     private val prefix: (@Composable () -> Unit)? = null,
     private val suffix: (@Composable () -> Unit)? = null,
-) : PreviewLabField<String>(
+) : PreviewLabField<Int>(
     label = label,
-    initialValue = initialValue,
+    initialValue = initialValue
 ) {
     @Composable
-    override fun View() = TextFieldView<String>(
-        toValue = { Result.success(it) },
-        toString = { it },
+    override fun View() = TextFieldView(
+        toString = {
+            it.toString()
+        },
+        toValue = {
+            runCatching {
+                it.toInt()
+            }
+        },
         prefix = prefix,
         suffix = suffix,
     )
