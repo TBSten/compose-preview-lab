@@ -17,13 +17,13 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.toIntSize
 import me.tbsten.compose.preview.lab.me.field.PreviewLabField
-import me.tbsten.compose.preview.lab.me.layout.TestLayoutNode
+import me.tbsten.compose.preview.lab.me.layout.PreviewLabLayoutNode
 
 class PreviewLabScope internal constructor() {
     internal val fields = mutableStateListOf<PreviewLabField<*>>()
-    internal val layoutNodes = mutableStateListOf<TestLayoutNode>()
+    internal val layoutNodes = mutableStateListOf<PreviewLabLayoutNode>()
 
-    internal val selectedLayoutNode = mutableStateListOf<TestLayoutNode>()
+    internal val selectedLayoutNode = mutableStateListOf<PreviewLabLayoutNode>()
 
     @Composable
     fun <Value> field(builder: () -> PreviewLabField<Value>): MutableState<Value> {
@@ -41,22 +41,22 @@ class PreviewLabScope internal constructor() {
         field(builder).value
 
     // layoutNode methods
-    internal fun addLayoutNode(node: TestLayoutNode) {
+    internal fun addLayoutNode(node: PreviewLabLayoutNode) {
         layoutNodes.add(node)
     }
 
-    internal fun removeLayoutNode(node: TestLayoutNode) {
+    internal fun removeLayoutNode(node: PreviewLabLayoutNode) {
         layoutNodes.remove(node)
     }
 
     internal fun updateLayoutNode(
-        node: TestLayoutNode,
+        node: PreviewLabLayoutNode,
         offsetInAppRoot: DpOffset? = null,
         size: DpSize? = null,
     ) {
         val nodeIndex = layoutNodes.indexOf(node)
         if (nodeIndex != -1) {
-            layoutNodes[nodeIndex] = TestLayoutNode(
+            layoutNodes[nodeIndex] = PreviewLabLayoutNode(
                 label = node.label,
                 offsetInAppRoot = offsetInAppRoot ?: node.offsetInAppRoot,
                 size = size ?: node.size,
@@ -75,7 +75,7 @@ fun Modifier.testLayout(
 
     val density = LocalDensity.current
     val layoutNode = remember(label) {
-        TestLayoutNode(
+        PreviewLabLayoutNode(
             label = label,
             offsetInAppRoot = null,
             size = null,
