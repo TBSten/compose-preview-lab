@@ -1,5 +1,7 @@
 package me.tbsten.compose.preview.lab.me.field
 
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -19,5 +21,16 @@ abstract class PreviewLabField<Value>(
     val initialValue: Value,
 ) : MutableState<Value> by mutableStateOf(initialValue) {
     @Composable
-    abstract fun View()
+    open fun View() = DefaultFieldView()
+
+    @Composable
+    abstract fun Content()
+}
+
+@Composable
+fun PreviewLabField<*>.FieldLabelHeader() {
+    Text(
+        text = this.label,
+        style = MaterialTheme.typography.labelMedium,
+    )
 }

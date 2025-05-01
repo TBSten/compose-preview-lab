@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.VerticalDivider
@@ -137,9 +138,8 @@ fun PreviewLab(
                     Column(
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.background)
-                            .widthIn(min = 150.dp, max = 300.dp)
+                            .width(300.dp)
                             .fillMaxHeight()
-                            .padding(8.dp)
                     ) {
                         // TODO events, layouts
                         FieldListSection(

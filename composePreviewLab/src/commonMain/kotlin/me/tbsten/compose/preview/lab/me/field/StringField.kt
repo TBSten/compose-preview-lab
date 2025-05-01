@@ -12,10 +12,12 @@ class StringField(
     initialValue = initialValue,
 ) {
     @Composable
-    override fun View() = TextFieldView<String>(
-        toValue = { Result.success(it) },
-        toString = { it },
-        prefix = prefix,
-        suffix = suffix,
-    )
+    override fun Content() {
+        TextFieldContent<String>(
+            toValue = { Result.success(it) },
+            toString = { it },
+            prefix = prefix,
+            suffix = suffix,
+        )
+    }
 }

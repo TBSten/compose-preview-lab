@@ -12,12 +12,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun <Value> PreviewLabField<Value>.TextFieldView(
+fun <Value> PreviewLabField<Value>.TextFieldContent(
     toString: (Value) -> String,
     toValue: (String) -> Result<Value>,
     prefix: (@Composable () -> Unit)? = null,
     suffix: (@Composable () -> Unit)? = null,
-) = DefaultFieldView {
+) {
     var textFieldText by remember(value) { mutableStateOf(toString(value)) }
     var isValid by remember {
         mutableStateOf(true)

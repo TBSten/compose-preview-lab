@@ -21,7 +21,7 @@ open class SelectableField<Value>(
     initialValue = initialValue,
 ) {
     @Composable
-    override fun View() = DefaultFieldView {
+    override fun Content() {
         var showChoices by remember { mutableStateOf(false) }
 
         OutlinedButton(
