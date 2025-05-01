@@ -18,7 +18,7 @@ fun <Value> PreviewLabField<Value>.TextFieldView(
     prefix: (@Composable () -> Unit)? = null,
     suffix: (@Composable () -> Unit)? = null,
 ) = DefaultFieldView {
-    var textFieldText by remember { mutableStateOf(toString(initialValue)) }
+    var textFieldText by remember(value) { mutableStateOf(toString(value)) }
     var isValid by remember {
         mutableStateOf(true)
     }
@@ -34,8 +34,8 @@ fun <Value> PreviewLabField<Value>.TextFieldView(
                     .also { isValid = it.isSuccess }
                     .onSuccess { value = it }
             },
-            label = {
-                Text(text = label)
+            placeholder = {
+                Text(label)
             },
             prefix = prefix,
             suffix = suffix,

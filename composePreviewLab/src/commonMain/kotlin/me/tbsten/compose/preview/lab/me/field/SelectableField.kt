@@ -15,7 +15,7 @@ open class SelectableField<Value>(
     label: String,
     val choices: List<Value>,
     private val choiceLabel: (Value) -> String = { it.toString() },
-    initialValue: Value,
+    initialValue: Value = choices[0],
 ) : PreviewLabField<Value>(
     label = label,
     initialValue = initialValue,
@@ -51,9 +51,9 @@ open class SelectableField<Value>(
 inline fun <reified E : Enum<E>> EnumField(
     label: String,
     initialValue: E,
-) = object : SelectableField<E>(
+) = SelectableField<E>(
     label = label,
     choices = enumValues<E>().toList(),
     choiceLabel = { it.name },
     initialValue = initialValue,
-) {}
+)
