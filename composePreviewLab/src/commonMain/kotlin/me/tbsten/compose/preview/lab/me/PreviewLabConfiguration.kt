@@ -13,7 +13,8 @@ class PreviewLabConfiguration(
     companion object {
         val Default = PreviewLabConfiguration(
             name = "<default>",
+            maxWidth = null,
+            maxHeight = null,
         )
     }
 }
-

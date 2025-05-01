@@ -7,6 +7,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.singleWindowApplication
@@ -16,18 +17,22 @@ import me.tbsten.compose.preview.lab.me.PreviewLabRoot
 import me.tbsten.compose.preview.lab.me.field.IntField
 import me.tbsten.compose.preview.lab.me.field.SelectableField
 import me.tbsten.compose.preview.lab.me.field.StringField
+import me.tbsten.compose.preview.lab.me.field.nullable
 import me.tbsten.compose.preview.lab.me.testLayout
 
-fun threeColorField(): SelectableField<Color> {
+fun threeColorField(
+    label: String,
+    initial: Color = Color.Red,
+): SelectableField<Color> {
     val colors = listOf(
         Color.Red,
         Color.Blue,
         Color.Green,
     )
     return SelectableField(
-        label = "coloredBox.color",
+        label = label,
         choices = colors,
-        initialValue = colors[0]
+        initialValue = initial
     )
 }
 
@@ -62,9 +67,9 @@ private val previewsForUiDebug = sequence<Pair<String, @Composable (() -> Unit)>
 
     yield("com.example.app.Field" to {
         PreviewLab {
-            this.field { StringField("", "") }
-            this.fields
             Column {
+                Text(fieldValue { IntField("Test", 123).nullable() }?.toString() ?: "(null)")
+
                 Button(
                     onClick = { /* TODO("onEvent") */ }
                 ) {
@@ -74,7 +79,7 @@ private val previewsForUiDebug = sequence<Pair<String, @Composable (() -> Unit)>
                 Box(
                     Modifier
                         .background(fieldValue {
-                            threeColorField()
+                            threeColorField("coloredBox.color")
                         }).size(fieldValue {
                             IntField(
                                 "coloredBox.size",
@@ -93,18 +98,32 @@ private val previewsForUiDebug = sequence<Pair<String, @Composable (() -> Unit)>
                 PreviewLabConfiguration(
                     name = "small device",
                     maxWidth = 300.dp,
+                    maxHeight = 500.dp,
                 ),
                 PreviewLabConfiguration(
                     name = "middle device",
                     maxWidth = 420.dp,
+                    maxHeight = 600.dp,
                 ),
                 PreviewLabConfiguration(
                     name = "large device",
                     maxWidth = 680.dp,
+                    maxHeight = 800.dp,
+                ),
+                PreviewLabConfiguration(
+                    name = "fit component size",
+                    maxWidth = null,
+                    maxHeight = null,
                 ),
             )
         ) {
-            Box(Modifier.background(fieldValue { threeColorField() }).fillMaxSize())
+            Box(
+                Modifier.background(
+                    Brush.linearGradient(
+                        0f to fieldValue { threeColorField("color.start", initial = Color.Red) },
+                        1f to fieldValue { threeColorField("color.end", initial = Color.Blue) })
+                ).fillMaxSize()
+            )
         }
     })
 }
