@@ -11,6 +11,11 @@ class PreviewLabConfiguration(
         "PreviewLabConfiguration(name=$name, maxWidth=$maxWidth, maxHeight=$maxHeight)"
 
     companion object {
+        val FitContent = PreviewLabConfiguration(
+            name = "fit-content-size",
+            maxWidth = null,
+            maxHeight = null,
+        )
         val Default = PreviewLabConfiguration(
             name = "<default>",
             maxWidth = null,
