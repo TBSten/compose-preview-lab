@@ -15,12 +15,15 @@ import org.jetbrains.kotlin.gradle.plugin.getKotlinPluginVersion
  */
 class ComposePreviewLabPlugin : Plugin<Project> {
     override fun apply(target: Project): Unit = with(target) {
+        extensions.create("composePreviewLab", ComposePreviewLabExtension::class.java)
+
         val kotlinMultiplatformExtension = extensions.findByType<KotlinMultiplatformExtension>()
             ?: error("Kotlin Multiplatform plugin must be applied before Compose Preview Lab plugin")
 
         afterEvaluate {
+            val generateDir = layout.buildDirectory.dir("generated/compose-preview-lab/commonMain")
             kotlinMultiplatformExtension.sourceSets.named("commonMain").get()
-                .kotlin.srcDir(composePreviewLabGenerateSourceDir)
+                .kotlin.srcDir(generateDir)
 
             val kotlinVersion = getKotlinPluginVersion()
 
@@ -34,21 +37,21 @@ class ComposePreviewLabPlugin : Plugin<Project> {
             }
 
             val prepareGeneratePreviewSources = tasks.register("prepareGeneratePreviewSources") {
-                val generateSourceDir = composePreviewLabGenerateSourceDir
-                doLast { generateSourceDir.get().asFile.mkdirs() }
+                doLast { generateDir.get().asFile.mkdirs() }
             }
             tasks.register("generatePreviewSources", TaskUsingKotlinCompiler::class.java) {
                 dependsOn(prepareGeneratePreviewSources)
                 kotlinCompiler.from(myResolvableConfiguration)
                 srcDirs.set(
                     kotlinMultiplatformExtension.sourceSets.named("commonMain").get().kotlin.srcDirs
-                        .filter { it != composePreviewLabGenerateSourceDir.get().asFile }
+                        .filter { it != generateDir.get().asFile }
                 )
-                modulePackage.set(project.name.replace(Regex("[./:]"), "_"))
-                generateDestinationDir.set(composePreviewLabGenerateSourceDir)
+                modulePackage.set(project.name.replace(Regex("[-./:]"), "_"))
+                generateDestinationDir.set(generateDir)
+            }
+            tasks.findByName("clean")?.doLast {
+                generateDir.get().asFile.deleteRecursively()
             }
         }
     }
 }
-
-private val Project.composePreviewLabGenerateSourceDir get() = layout.buildDirectory.dir("generated/compose-preview-lab/")

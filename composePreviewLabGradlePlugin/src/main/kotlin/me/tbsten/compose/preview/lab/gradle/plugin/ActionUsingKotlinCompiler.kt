@@ -55,7 +55,7 @@ abstract class ActionUsingKotlinCompiler : WorkAction<PreviewWorkParameters> {
                     val environment = KotlinCoreEnvironment.createForProduction(
                         Disposer.newDisposable(),
                         CompilerConfiguration(),
-                        EnvironmentConfigFiles.JVM_CONFIG_FILES,
+                        EnvironmentConfigFiles.METADATA_CONFIG_FILES,
                     )
                     val virtualFile = requireNotNull(environment.findLocalFile(file.path))
                     val psiFile = PsiUtilCore.getPsiFile(environment.project, virtualFile)
