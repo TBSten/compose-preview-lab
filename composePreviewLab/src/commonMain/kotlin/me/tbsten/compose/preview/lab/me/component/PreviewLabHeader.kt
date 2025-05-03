@@ -16,15 +16,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.ZoomIn
 import androidx.compose.material.icons.filled.ZoomOut
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,7 +28,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.me.PreviewLabConfiguration
@@ -142,44 +136,19 @@ private fun SelectConfiguration(
     onSelect: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var showMenu by remember { mutableStateOf(false) }
 
     Column(modifier = modifier) {
         Text("Configurations", style = MaterialTheme.typography.labelMedium)
-        OutlinedButton(onClick = { showMenu = true }) {
-            Text(configurations[selectedConfigurationIndex].name)
-        }
 
-        DropdownMenu(
-            expanded = showMenu,
-            onDismissRequest = { showMenu = false },
-        ) {
-            configurations.forEachIndexed { index, conf ->
-                DropdownMenuItem(
-                    text = {
-                        Column(modifier = Modifier.padding(4.dp)) {
-                            Text(
-                                text = conf.name,
-                                fontWeight = FontWeight.Bold,
-                                style = MaterialTheme.typography.bodyLarge,
-                            )
-                            Text(
-                                text = "maxSize = ${conf.maxWidth}x${conf.maxHeight}",
-                                style = MaterialTheme.typography.bodySmall,
-                            )
-                        }
-                    },
-                    onClick = {
-                        onSelect(index)
-                        showMenu = false
-                    },
-                    enabled = selectedConfigurationIndex != index,
-                    leadingIcon = if (selectedConfigurationIndex == index) {
-                        @Composable { Icon(Icons.Default.Check, contentDescription = null) }
-                    } else null,
-                )
-            }
-        }
+        SelectButton(
+            choices = configurations,
+            currentIndex = selectedConfigurationIndex,
+            onSelect = onSelect,
+            title = { it.name },
+            itemDetail = { conf ->
+                "maxSize = ${conf.maxWidth ?: "fit-content"} × ${conf.maxHeight ?: "fit-content"}"
+            },
+        )
     }
 
 }

@@ -170,9 +170,9 @@ private fun Modifier.resizable(
             state.contentWidth = widthDp
             state.contentHeight = heightDp
         }
-    }.thenIfNotNull(state.controlledWidth ?: state.contentWidth) {
+    }.thenIfNotNull(state.controlledWidth) {
         width(it)
-    }.thenIfNotNull(state.controlledHeight ?: state.contentHeight) {
+    }.thenIfNotNull(state.controlledHeight) {
         height(it)
     }
 }

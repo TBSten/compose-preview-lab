@@ -1,15 +1,7 @@
 package me.tbsten.compose.preview.lab.me.field
 
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import me.tbsten.compose.preview.lab.me.component.SelectButton
 
 open class SelectableField<Value>(
     label: String,
@@ -22,28 +14,34 @@ open class SelectableField<Value>(
 ) {
     @Composable
     override fun Content() {
-        var showChoices by remember { mutableStateOf(false) }
+//        var showChoices by remember { mutableStateOf(false) }
 
-        OutlinedButton(
-            onClick = { showChoices = true },
-            shape = OutlinedTextFieldDefaults.shape,
-        ) {
-            Text(choiceLabel(value))
-        }
-        DropdownMenu(
-            expanded = showChoices,
-            onDismissRequest = { showChoices = false },
-        ) {
-            choices.forEach {
-                DropdownMenuItem(
-                    text = { Text(choiceLabel(it)) },
-                    onClick = {
-                        value = it
-                        showChoices = false
-                    },
-                )
-            }
-        }
+        SelectButton(
+            choices = choices,
+            currentIndex = choices.indexOf(value),
+            onSelect = { value = choices[it] },
+            title = choiceLabel,
+        )
+//        OutlinedButton(
+//            onClick = { showChoices = true },
+//            shape = OutlinedTextFieldDefaults.shape,
+//        ) {
+//            Text(choiceLabel(value))
+//        }
+//        DropdownMenu(
+//            expanded = showChoices,
+//            onDismissRequest = { showChoices = false },
+//        ) {
+//            choices.forEach {
+//                DropdownMenuItem(
+//                    text = { Text(choiceLabel(it)) },
+//                    onClick = {
+//                        value = it
+//                        showChoices = false
+//                    },
+//                )
+//            }
+//        }
     }
 }
 
