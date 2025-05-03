@@ -16,11 +16,15 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.toIntSize
+import me.tbsten.compose.preview.lab.me.event.PreviewLabEvent
 import me.tbsten.compose.preview.lab.me.field.PreviewLabField
 import me.tbsten.compose.preview.lab.me.layout.PreviewLabLayoutNode
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 class PreviewLabScope internal constructor() {
     internal val fields = mutableStateListOf<PreviewLabField<*>>()
+    internal val events = mutableStateListOf<PreviewLabEvent>()
     internal val layoutNodes = mutableStateListOf<PreviewLabLayoutNode>()
 
     internal val selectedLayoutNode = mutableStateListOf<PreviewLabLayoutNode>()
@@ -39,6 +43,10 @@ class PreviewLabScope internal constructor() {
     @Composable
     fun <Value> fieldValue(builder: () -> PreviewLabField<Value>) =
         field(builder).value
+
+    fun onEvent(title: String, description: String? = null) {
+        events.add(PreviewLabEvent(title = title, description = description))
+    }
 
     // layoutNode methods
     internal fun addLayoutNode(node: PreviewLabLayoutNode) {

@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.me.component.Divider
+import me.tbsten.compose.preview.lab.me.component.EventListSection
 import me.tbsten.compose.preview.lab.me.component.FieldListSection
 import me.tbsten.compose.preview.lab.me.component.PreviewLabHeader
 import me.tbsten.compose.preview.lab.me.component.ResizableBox
@@ -151,13 +152,23 @@ fun PreviewLab(
                                     )
                                 },
                                 "Events" to {
+                                    EventListSection(
+                                        events = scope.events,
+                                        onClear = { scope.events.clear() },
+                                    )
                                 },
                                 "Layouts" to {
                                 },
                             )
                         }
                         val pagerState = rememberPagerState { tabContents.size }
-                            .also { LaunchedEffect(selectedTab) { it.animateScrollToPage(selectedTab) } }
+                            .also {
+                                LaunchedEffect(selectedTab) {
+                                    it.animateScrollToPage(
+                                        selectedTab
+                                    )
+                                }
+                            }
 
                         ScrollableTabRow(
                             selectedTabIndex = selectedTab,
@@ -183,6 +194,7 @@ fun PreviewLab(
                             content()
                         }
                     }
+
                 }
             }
         }
