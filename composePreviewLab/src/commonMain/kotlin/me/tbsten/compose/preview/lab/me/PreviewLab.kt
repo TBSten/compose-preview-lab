@@ -11,12 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.ZoomIn
-import androidx.compose.material.icons.filled.ZoomOut
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
@@ -36,9 +31,8 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import me.tbsten.compose.preview.lab.me.component.CommonIconButton
-import me.tbsten.compose.preview.lab.me.component.ConfigurationSelector
 import me.tbsten.compose.preview.lab.me.component.FieldListSection
+import me.tbsten.compose.preview.lab.me.component.PreviewLabHeader
 import me.tbsten.compose.preview.lab.me.component.ResizableBox
 import me.tbsten.compose.preview.lab.me.component.rememberResizeState
 
@@ -67,9 +61,15 @@ fun PreviewLab(
 ) {
     check(configurations.isNotEmpty())
 
+    var offset by remember { mutableStateOf(Offset.Zero) }
+    val draggableState = rememberDraggable2DState { offset += it }
+    var scale by remember { mutableStateOf(1f) }
+
     Column {
-        ConfigurationSelector(
+        PreviewLabHeader(
             configurations = configurations,
+            scale = scale,
+            onScaleChange = { scale = it },
         ) { conf ->
             val scope = remember { PreviewLabScope() }
 
@@ -81,9 +81,6 @@ fun PreviewLab(
                         .fillMaxWidth()
                         .fillMaxHeight()
                 ) {
-                    var scale by remember { mutableStateOf(1f) }
-                    var offset by remember { mutableStateOf(Offset.Zero) }
-                    val draggableState = rememberDraggable2DState { offset += it }
                     val resizeState = rememberResizeState(conf.maxWidth, conf.maxHeight)
 
                     Column(modifier = Modifier.weight(1f)) {
@@ -125,46 +122,9 @@ fun PreviewLab(
                                 maxHeight = conf.maxHeight,
                                 resizeState = resizeState,
                                 contentScale = scale,
-                                modifier = Modifier
                             ) {
                                 content(scope)
                             }
-                        }
-
-                        HorizontalDivider()
-
-                        // TODO move to header
-                        Row(
-                            Modifier
-                                .background(MaterialTheme.colorScheme.background)
-                                .fillMaxWidth()
-                                .padding(8.dp)
-                        ) {
-                            CommonIconButton(
-                                imageVector = Icons.Default.ZoomIn,
-                                contentDescription = "Zoom In",
-                                enabled = scale < MaxZoomScale,
-                                onClick = {
-                                    scale = scale.nextZoomInScale()
-                                },
-                            )
-
-                            CommonIconButton(
-                                imageVector = Icons.Default.ZoomOut,
-                                contentDescription = "Zoom Out",
-                                enabled = MinZoomScale < scale,
-                                onClick = {
-                                    scale = scale.nextZoomOutScale()
-                                },
-                            )
-
-                            CommonIconButton(
-                                imageVector = Icons.Default.Refresh,
-                                contentDescription = "Zoom Reset",
-                                onClick = {
-                                    scale = 1.00f
-                                },
-                            )
                         }
                     }
 
@@ -184,22 +144,6 @@ fun PreviewLab(
             }
         }
     }
-}
-
-private const val MinZoomScale = 0.10f
-private const val MaxZoomScale = 10.00f
-private fun Float.nextZoomInScale(): Float = when (this) {
-    in Float.MIN_VALUE..<1.0f -> this + 0.10f
-    in 1.0f..<2.0f -> this + 0.25f
-    in 1.0f..<Float.MAX_VALUE -> this + 1.00f
-    else -> TODO("Zoom value is out of range: $this")
-}
-
-private fun Float.nextZoomOutScale(): Float = when (this) {
-    in Float.MIN_VALUE..<1.0f -> this - 0.10f
-    in 1.0f..<2.0f -> this - 0.25f
-    in 1.0f..<Float.MAX_VALUE -> this - 1.00f
-    else -> TODO("Zoom value is out of range: $this")
 }
 
 internal val LocalPreviewLabScope = compositionLocalOf<PreviewLabScope?> { null }
