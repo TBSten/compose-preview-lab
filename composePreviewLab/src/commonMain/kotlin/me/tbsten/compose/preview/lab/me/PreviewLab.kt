@@ -20,6 +20,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -141,10 +142,46 @@ fun PreviewLab(
                             .width(300.dp)
                             .fillMaxHeight()
                     ) {
-                        // TODO events, layouts
-                        FieldListSection(
-                            fields = scope.fields,
-                        )
+                        var selectedTab by remember { mutableStateOf(0) }
+                        val tabContents = remember {
+                            mapOf<String, @Composable () -> Unit>(
+                                "Fields" to {
+                                    FieldListSection(
+                                        fields = scope.fields,
+                                    )
+                                },
+                                "Events" to {
+                                },
+                                "Layouts" to {
+                                },
+                            )
+                        }
+                        val pagerState = rememberPagerState { tabContents.size }
+                            .also { LaunchedEffect(selectedTab) { it.animateScrollToPage(selectedTab) } }
+
+                        ScrollableTabRow(
+                            selectedTabIndex = selectedTab,
+                            edgePadding = 0.dp,
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            tabContents.keys.forEachIndexed { index, title ->
+                                Tab(
+                                    selected = selectedTab == index,
+                                    onClick = { selectedTab = index },
+                                    text = { Text(title) },
+                                )
+                            }
+                        }
+
+                        HorizontalPager(
+                            state = pagerState,
+                            userScrollEnabled = false,
+                            modifier = Modifier.weight(1f),
+                            verticalAlignment = Alignment.Top,
+                        ) { pageIndex ->
+                            val (_, content) = tabContents.entries.toList()[pageIndex]
+                            content()
+                        }
                     }
                 }
             }
