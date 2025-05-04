@@ -2,20 +2,49 @@ package me.tbsten.compose.preview.lab.me.layout
 
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.DpSize
-import kotlin.random.Random
 
-internal class PreviewLabLayoutNode(
-    private val id: Long = Random.nextLong(),
-    val label: String,
-    val offsetInAppRoot: DpOffset?,
-    val size: DpSize?,
-    val resizable: Boolean,
-) {
+internal typealias LayoutNodeId = Long
+
+internal sealed interface PreviewLabLayoutNode {
+    val id: LayoutNodeId
+    val label: String
+    val offsetInAppRoot: DpOffset?
+    val size: DpSize?
+
     fun offsetInContentRoot(contentRootOffset: DpOffset): DpOffset? = TODO("offsetInContentRoot")
 
-    override operator fun equals(other: Any?) =
-        other is PreviewLabLayoutNode &&
-                other.id == this.id
+    data class Unresolved(
+        override val id: LayoutNodeId,
+        override val label: String,
+        override val offsetInAppRoot: DpOffset?,
+        override val size: DpSize?,
+    ) : PreviewLabLayoutNode
 
-    override fun hashCode(): Int = this.id.hashCode()
+    data class Resolved(
+        override val id: LayoutNodeId,
+        override val label: String,
+        override val offsetInAppRoot: DpOffset,
+        override val size: DpSize,
+    ) : PreviewLabLayoutNode
+}
+
+internal fun PreviewLabLayoutNode(
+    id: LayoutNodeId,
+    label: String,
+    offsetInAppRoot: DpOffset?,
+    size: DpSize?,
+) = if (offsetInAppRoot != null && size != null) {
+    PreviewLabLayoutNode.Resolved(
+        id = id,
+        label = label,
+        offsetInAppRoot = offsetInAppRoot,
+        size = size,
+    )
+} else {
+    PreviewLabLayoutNode.Unresolved(
+        id = id,
+        label = label,
+        offsetInAppRoot = offsetInAppRoot,
+        size = size,
+    )
 }

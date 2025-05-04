@@ -39,6 +39,7 @@ import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.me.component.Divider
 import me.tbsten.compose.preview.lab.me.component.EventListSection
 import me.tbsten.compose.preview.lab.me.component.FieldListSection
+import me.tbsten.compose.preview.lab.me.component.LayoutSection
 import me.tbsten.compose.preview.lab.me.component.PreviewLabHeader
 import me.tbsten.compose.preview.lab.me.component.ResizableBox
 import me.tbsten.compose.preview.lab.me.component.rememberResizeState
@@ -140,7 +141,7 @@ fun PreviewLab(
                     Column(
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.background)
-                            .width(300.dp)
+                            .width(250.dp)
                             .fillMaxHeight()
                     ) {
                         var selectedTab by remember { mutableStateOf(0) }
@@ -158,6 +159,12 @@ fun PreviewLab(
                                     )
                                 },
                                 "Layouts" to {
+                                    LayoutSection(
+                                        layoutNodes = scope.layoutNodes,
+                                        selectedLayoutNodeIds = scope.selectedLayoutNodeIds,
+                                        hoveredLayoutNodeIds = scope.hoveredLayoutNodeIds,
+                                        onNodeClick = scope::toggleLayoutNodeSelect,
+                                    )
                                 },
                             )
                         }

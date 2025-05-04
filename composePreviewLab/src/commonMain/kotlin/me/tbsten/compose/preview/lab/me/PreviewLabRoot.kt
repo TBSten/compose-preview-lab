@@ -24,8 +24,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import me.tbsten.compose.preview.lab.me.component.CommonListItem
 import me.tbsten.compose.preview.lab.me.component.NoPreview
-import me.tbsten.compose.preview.lab.me.component.PreviewListItem
 import me.tbsten.compose.preview.lab.me.theme.AppTheme
 
 @Composable
@@ -54,7 +54,7 @@ fun PreviewLabRoot(
                         .verticalScroll(rememberScrollState())
                 ) {
                     previewList.forEachIndexed { index, (title, _) ->
-                        PreviewListItem(
+                        CommonListItem(
                             title = title,
                             isSelected = index == selectedIndex,
                             onSelect = {
