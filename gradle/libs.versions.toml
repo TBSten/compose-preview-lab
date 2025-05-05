@@ -6,6 +6,7 @@ agp = "8.6.1"
 androidx-activityCompose = "1.10.1"
 androidx-uiTest = "1.7.8"
 hotReload = "1.0.0-alpha08"
+ksp = "2.1.20-2.0.1"
 
 [libraries]
 
@@ -16,6 +17,7 @@ androidx-uitest-junit4 = { module = "androidx.compose.ui:ui-test-junit4", versio
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlinGradlePluginApi = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api", version.ref = "kotlin" }
 kotlinCompilerEmbeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
+kspApi = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 
 [plugins]
 
@@ -26,3 +28,4 @@ compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 hotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "hotReload" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

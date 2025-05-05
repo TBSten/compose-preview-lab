@@ -30,7 +30,7 @@ import me.tbsten.compose.preview.lab.me.theme.AppTheme
 
 @Composable
 fun PreviewLabRoot(
-    previews: Sequence<Pair<String, @Composable () -> Unit>>,
+    previews: List<CollectedPreview>,
     openFileHandler: OpenFileHandler? = null,
 ) = AppTheme {
     CompositionLocalProvider(
@@ -53,9 +53,10 @@ fun PreviewLabRoot(
                         .zIndex(2f)
                         .verticalScroll(rememberScrollState())
                 ) {
-                    previewList.forEachIndexed { index, (title, _) ->
+                    previewList.forEachIndexed { index, preview ->
+                        val displayName = preview.displayName
                         CommonListItem(
-                            title = title,
+                            title = displayName,
                             isSelected = index == selectedIndex,
                             onSelect = {
                                 selectedIndex = index
@@ -76,7 +77,7 @@ fun PreviewLabRoot(
                     modifier = Modifier
                         .zIndex(0f)
                 ) { selectedIndex ->
-                    val preview = previewList.getOrNull(selectedIndex)?.second
+                    val preview = previewList.getOrNull(selectedIndex)?.content
 
                     Box(
                         modifier = Modifier.fillMaxSize(),
