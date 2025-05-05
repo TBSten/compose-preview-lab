@@ -37,5 +37,4 @@ plugins {
 
 include(":composePreviewLab")
 include(":composePreviewLabAnnotation")
-include(":composePreviewLabGradlePlugin")
 include(":composePreviewLabKspPlugin")
