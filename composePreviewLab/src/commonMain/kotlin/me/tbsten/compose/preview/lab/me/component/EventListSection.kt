@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,7 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
+import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.Res
+import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_delete
 import me.tbsten.compose.preview.lab.me.event.PreviewLabEvent
+import org.jetbrains.compose.resources.painterResource
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
@@ -42,7 +43,7 @@ internal fun EventListSection(
                     actions = {
                         // TODO add export button
                         CommonIconButton(
-                            imageVector = Icons.Default.Delete,
+                            painter = painterResource(Res.drawable.icon_delete),
                             contentDescription = "Clear Events",
                             enabled = events.isNotEmpty(),
                             onClick = onClear,

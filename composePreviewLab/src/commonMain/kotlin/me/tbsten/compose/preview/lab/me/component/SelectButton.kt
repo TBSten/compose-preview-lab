@@ -2,8 +2,6 @@ package me.tbsten.compose.preview.lab.me.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -18,6 +16,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.Res
+import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_check
+import org.jetbrains.compose.resources.imageResource
 
 @Composable
 internal fun <V> SelectButton(
@@ -61,7 +62,12 @@ internal fun <V> SelectButton(
                 },
                 enabled = currentIndex != index,
                 leadingIcon = if (currentIndex == index) {
-                    @Composable { Icon(Icons.Default.Check, contentDescription = null) }
+                    @Composable {
+                        Icon(
+                            imageResource(Res.drawable.icon_check),
+                            contentDescription = null
+                        )
+                    }
                 } else null,
             )
         }

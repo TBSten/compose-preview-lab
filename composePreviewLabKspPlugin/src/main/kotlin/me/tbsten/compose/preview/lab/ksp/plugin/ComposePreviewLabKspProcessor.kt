@@ -17,6 +17,7 @@ internal class ComposePreviewLabKspProcessor(
     override fun process(resolver: Resolver): List<KSAnnotated> {
         if (isExecuted) return emptyList()
         isExecuted = true
+
         val previewsListPackage = options["composePreviewLab.previewsListPackage"]
             ?: throw IllegalStateException("ksp arg `composePreviewLab.previewsListPackage` is not set.")
         val previews = resolver.getSymbolsWithAnnotation(PreviewAnnotation)

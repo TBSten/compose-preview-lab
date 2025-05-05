@@ -15,10 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.ZoomIn
-import androidx.compose.material.icons.filled.ZoomOut
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,7 +26,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.Res
+import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_refresh
+import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_zoom_in
+import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_zoom_out
 import me.tbsten.compose.preview.lab.me.PreviewLabConfiguration
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 internal fun PreviewLabHeader(
@@ -100,7 +101,7 @@ private fun Zoom(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             CommonIconButton(
-                imageVector = Icons.Default.ZoomIn,
+                painter = painterResource(Res.drawable.icon_zoom_in),
                 contentDescription = "Zoom In",
                 enabled = scale < MaxZoomScale,
                 onClick = {
@@ -109,7 +110,7 @@ private fun Zoom(
             )
 
             CommonIconButton(
-                imageVector = Icons.Default.ZoomOut,
+                painter = painterResource(Res.drawable.icon_zoom_out),
                 contentDescription = "Zoom Out",
                 enabled = MinZoomScale < scale,
                 onClick = {
@@ -119,7 +120,7 @@ private fun Zoom(
             )
 
             CommonIconButton(
-                imageVector = Icons.Default.Refresh,
+                painter = painterResource(Res.drawable.icon_refresh),
                 contentDescription = "Zoom Reset",
                 onClick = {
                     onScaleChange(1.00f)

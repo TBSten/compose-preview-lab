@@ -48,8 +48,8 @@ import me.tbsten.compose.preview.lab.me.PreviewLab
 import me.tbsten.compose.preview.lab.sample.theme.AppTheme
 import me.tbsten.compose.preview.lab.sample.theme.LocalThemeIsDark
 import org.jetbrains.compose.resources.Font
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -85,13 +85,13 @@ internal fun App() = AppTheme {
         }
 
         Image(
+            painter = painterResource(Res.drawable.ic_cyclone),
+            contentDescription = null,
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
             modifier = Modifier
                 .size(250.dp)
                 .padding(16.dp)
                 .run { rotate(rotate.value) },
-            imageVector = vectorResource(Res.drawable.ic_cyclone),
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
-            contentDescription = null
         )
 
         ElevatedButton(
@@ -100,7 +100,10 @@ internal fun App() = AppTheme {
                 .widthIn(min = 200.dp),
             onClick = { isRotating = !isRotating },
             content = {
-                Icon(vectorResource(Res.drawable.ic_rotate_right), contentDescription = null)
+                Icon(
+                    painter = painterResource(Res.drawable.ic_rotate_right),
+                    contentDescription = null,
+                )
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                 Text(
                     stringResource(if (isRotating) Res.string.stop else Res.string.run)
@@ -118,7 +121,7 @@ internal fun App() = AppTheme {
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp).widthIn(min = 200.dp),
             onClick = { isDark = !isDark },
             content = {
-                Icon(vectorResource(icon), contentDescription = null)
+                Icon(painterResource(icon), contentDescription = null)
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                 Text(stringResource(Res.string.theme))
             }
