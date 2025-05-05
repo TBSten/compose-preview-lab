@@ -5,11 +5,12 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true
     strategy:
       fail-fast: false
       matrix:
@@ -24,10 +25,10 @@ jobs:
             test_task: wasmJsBrowserTest
             os: ubuntu-latest
           - name: Android Debug
-            test_task: assembleDebugAndroidTest # compose ui test on local android is not supported yet
+            test_task: testDebugUnitTest # compose ui test on local android is not supported yet
             os: ubuntu-latest
           - name: Android Release
-            test_task: assembleReleaseAndroidTest
+            test_task: testReleaseUnitTest
             os: ubuntu-latest
           - name: iOS
             test_task: iosSimulatorArm64Test
@@ -46,7 +47,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
       - name: Build Library
         shell: bash
-        run: ./gradlew assemble
+        run: ./gradlew ${{ matrix.test_task }}
       - name: Build Sample
         shell: bash
         run: cd ./sample && ./gradlew ${{ matrix.test_task }}
