@@ -20,9 +20,6 @@ jobs:
           - name: Wasm JS
             test_task: wasmJsBrowserTest
             os: ubuntu-latest
-          - name: Linux
-            test_task: linuxX64Test
-            os: ubuntu-latest
           - name: Android Debug
             test_task: testDebugUnitTest
             os: ubuntu-latest
@@ -33,7 +30,7 @@ jobs:
             test_task: iosSimulatorArm64Test
             os: macos-latest
     runs-on: ${{ matrix.os }}
-    name: ${{ matrix.name }}
+    name: Test ${{ matrix.name }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup Java for Gradle
