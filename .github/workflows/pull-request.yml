@@ -6,12 +6,34 @@ on:
       - main
 
 jobs:
-  build:
+  test:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        include:
+          - name: Jvm
+            test_task: jvmTest
+            os: ubuntu-latest
+          - name: JS
+            test_task: jsBrowserTest
+            os: ubuntu-latest
+          - name: Wasm JS
+            test_task: wasmJsBrowserTest
+            os: ubuntu-latest
+          - name: Linux
+            test_task: linuxX64Test
+            os: ubuntu-latest
+          - name: Android Debug
+            test_task: testDebugUnitTest
+            os: ubuntu-latest
+          - name: Android Release
+            test_task: testReleaseUnitTest
+            os: ubuntu-latest
+          - name: iOS
+            test_task: iosSimulatorArm64Test
+            os: macos-latest
     runs-on: ${{ matrix.os }}
+    name: ${{ matrix.name }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup Java for Gradle
@@ -27,4 +49,4 @@ jobs:
         run: ./gradlew assemble
       - name: Build Sample
         shell: bash
-        run: cd ./sample && ./gradlew assemble
+        run: cd ./sample && ./gradlew ${{ matrix.test_task }}
