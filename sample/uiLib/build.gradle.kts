@@ -1,3 +1,4 @@
+import org.jetbrains.compose.reload.ComposeHotRun
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
@@ -7,6 +8,7 @@ plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.android.library)
     alias(libs.plugins.hotReload)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -57,7 +59,22 @@ android {
 dependencies {
     androidTestImplementation(libs.androidx.uitest.junit4)
     debugImplementation(libs.androidx.uitest.testManifest)
+
+    val composePreviewLabKspPlugin =
+        "me.tbsten.compose.preview.lab:composePreviewLabKspPlugin:${libs.versions.composePreviewLab.get()}"
+    add("kspCommonMainMetadata", composePreviewLabKspPlugin)
+    add("kspJvm", composePreviewLabKspPlugin)
+    add("kspJs", composePreviewLabKspPlugin)
+    add("kspWasmJs", composePreviewLabKspPlugin)
 }
 
 // https://github.com/JetBrains/compose-hot-reload
 composeCompiler { featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups) }
+
+ksp {
+    arg("composePreviewLab.previewsListPackage", "uiLib")
+}
+
+tasks.register<ComposeHotRun>("runHot") {
+    mainClass.set("MainKt")
+}

@@ -44,6 +44,7 @@ import compose_preview_lab_sample.app.generated.resources.run
 import compose_preview_lab_sample.app.generated.resources.stop
 import compose_preview_lab_sample.app.generated.resources.theme
 import kotlinx.coroutines.isActive
+import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.me.PreviewLab
 import me.tbsten.compose.preview.lab.sample.theme.AppTheme
 import me.tbsten.compose.preview.lab.sample.theme.LocalThemeIsDark
@@ -52,8 +53,9 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+// ref: https://terrakok.github.io/Compose-Multiplatform-Wizard/
 @Composable
-internal fun App() = AppTheme {
+internal fun ComposeMultiplatformWizardDefaultUI() = AppTheme {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -137,8 +139,9 @@ internal fun App() = AppTheme {
     }
 }
 
+@ComposePreviewLabOption(displayName = "Compose Multiplatform Wizard Default UI")
 @Preview
 @Composable
-private fun AppPreview() = PreviewLab {
-    App()
+private fun ComposeMultiplatformWizardDefaultUIPreview() = PreviewLab {
+    ComposeMultiplatformWizardDefaultUI()
 }
