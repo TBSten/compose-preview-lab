@@ -7,8 +7,6 @@ plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.android.library)
     alias(libs.plugins.hotReload)
-
-    id("me.tbsten.compose.preview.lab")
 }
 
 kotlin {
@@ -63,7 +61,3 @@ dependencies {
 
 // https://github.com/JetBrains/compose-hot-reload
 composeCompiler { featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups) }
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    dependsOn("generatePreviewSources")
-}
