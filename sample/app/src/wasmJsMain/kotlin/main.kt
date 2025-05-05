@@ -8,7 +8,7 @@ fun main() {
     val body = document.body ?: return
     ComposeViewport(body) {
         PreviewLabRoot(
-            previews = app.previews(),
+            previews = app.previews,
         )
     }
 }

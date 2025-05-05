@@ -10,7 +10,7 @@ fun main() {
         val body = document.body ?: return@onWasmReady
         ComposeViewport(body) {
             PreviewLabRoot(
-                previews = app.previews(),
+                previews = app.previews,
             )
         }
     }

@@ -13,7 +13,7 @@ fun main() = application {
     ) {
         window.minimumSize = Dimension(350, 600)
         PreviewLabRoot(
-            previews = app.previews(),
+            previews = app.previews,
         )
     }
 }

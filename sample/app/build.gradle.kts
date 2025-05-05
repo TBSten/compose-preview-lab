@@ -10,8 +10,7 @@ plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.android.application)
     alias(libs.plugins.hotReload)
-
-    id("me.tbsten.compose.preview.lab")
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -97,6 +96,13 @@ android {
 dependencies {
     androidTestImplementation(libs.androidx.uitest.junit4)
     debugImplementation(libs.androidx.uitest.testManifest)
+
+    val composePreviewLabKspPlugin =
+        "me.tbsten.compose.preview.lab:composePreviewLabKspPlugin:${libs.versions.composePreviewLab.get()}"
+    add("kspCommonMainMetadata", composePreviewLabKspPlugin)
+    add("kspJvm", composePreviewLabKspPlugin)
+    add("kspJs", composePreviewLabKspPlugin)
+    add("kspWasmJs", composePreviewLabKspPlugin)
 }
 
 compose.desktop {
@@ -130,6 +136,6 @@ tasks.register<ComposeHotRun>("runHot") {
     mainClass.set("MainKt")
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    dependsOn("generatePreviewSources")
+ksp {
+    arg("composePreviewLab.previewsListPackage", "app")
 }
