@@ -21,10 +21,10 @@ jobs:
             test_task: wasmJsBrowserTest
             os: ubuntu-latest
           - name: Android Debug
-            test_task: testDebugUnitTest
+            test_task: assembleDebugAndroidTest # compose ui test on local android is not supported yet
             os: ubuntu-latest
           - name: Android Release
-            test_task: testReleaseUnitTest
+            test_task: assembleReleaseAndroidTest
             os: ubuntu-latest
           - name: iOS
             test_task: iosSimulatorArm64Test
