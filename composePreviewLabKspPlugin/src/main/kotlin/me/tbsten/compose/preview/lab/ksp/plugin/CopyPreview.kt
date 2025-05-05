@@ -19,7 +19,8 @@ internal fun checkPreview(
     annotated: KSAnnotated,
 ): ValidPreview? {
     if (annotated !is KSFunctionDeclaration) return null
-    val optionAnnotation = annotated.findAnnotation("ComposePreviewLabOption")
+    val optionAnnotation =
+        annotated.findAnnotation("me.tbsten.compose.preview.lab.ComposePreviewLabOption")
     val displayName = optionAnnotation?.findArg<String>("displayName")
     val ignore = optionAnnotation?.findArg<Boolean>("ignore")
     if (ignore == true) return null
