@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toOffset
 import kotlinx.coroutines.coroutineScope
 import me.tbsten.compose.preview.lab.me.event.PreviewLabEvent
+import me.tbsten.compose.preview.lab.me.field.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.me.field.PreviewLabField
 import me.tbsten.compose.preview.lab.me.layout.LayoutNodeId
 import me.tbsten.compose.preview.lab.me.layout.PreviewLabLayoutNode
@@ -40,8 +41,9 @@ class PreviewLabScope internal constructor() {
     internal val selectedLayoutNodeIds = mutableStateSetOf<LayoutNodeId>()
     internal val hoveredLayoutNodeIds = mutableStateSetOf<LayoutNodeId>()
 
+    // field methods
     @Composable
-    fun <Value> field(builder: () -> PreviewLabField<Value>): MutableState<Value> {
+    fun <Value> field(builder: () -> MutablePreviewLabField<Value>): MutableState<Value> {
         val field = remember { builder() }
         DisposableEffect(field) {
             fields.add(field)
@@ -50,10 +52,15 @@ class PreviewLabScope internal constructor() {
         return field
     }
 
-    // field methods
     @Composable
-    fun <Value> fieldValue(builder: () -> PreviewLabField<Value>) =
-        field(builder).value
+    fun <Value> fieldValue(builder: () -> PreviewLabField<Value>): Value {
+        val field = remember { builder() }
+        DisposableEffect(field) {
+            fields.add(field)
+            onDispose { fields.remove(field) }
+        }
+        return field.value
+    }
 
     fun onEvent(title: String, description: String? = null) {
         events.add(PreviewLabEvent(title = title, description = description))

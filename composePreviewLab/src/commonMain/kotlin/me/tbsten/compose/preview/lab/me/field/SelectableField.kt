@@ -8,41 +8,45 @@ open class SelectableField<Value>(
     val choices: List<Value>,
     private val choiceLabel: (Value) -> String = { it.toString() },
     initialValue: Value = choices[0],
-) : PreviewLabField<Value>(
+) : MutablePreviewLabField<Value>(
     label = label,
     initialValue = initialValue,
 ) {
+    class Builder<Value> internal constructor() {
+        internal val choices = mutableListOf<Value>()
+        internal var defaultValue: Value? = null
+        internal var isDefaultValueSet = false
+        fun choice(value: Value, isDefault: Boolean = false) {
+            choices.add(value)
+            if (isDefault) {
+                defaultValue = value
+                isDefaultValueSet = true
+            }
+        }
+    }
+
     @Composable
     override fun Content() {
-//        var showChoices by remember { mutableStateOf(false) }
-
         SelectButton(
             choices = choices,
             currentIndex = choices.indexOf(value),
             onSelect = { value = choices[it] },
             title = choiceLabel,
         )
-//        OutlinedButton(
-//            onClick = { showChoices = true },
-//            shape = OutlinedTextFieldDefaults.shape,
-//        ) {
-//            Text(choiceLabel(value))
-//        }
-//        DropdownMenu(
-//            expanded = showChoices,
-//            onDismissRequest = { showChoices = false },
-//        ) {
-//            choices.forEach {
-//                DropdownMenuItem(
-//                    text = { Text(choiceLabel(it)) },
-//                    onClick = {
-//                        value = it
-//                        showChoices = false
-//                    },
-//                )
-//            }
-//        }
     }
+}
+
+@Suppress("UNCHECKED_CAST")
+fun <Value> SelectableField(
+    label: String,
+    builder: SelectableField.Builder<Value>.() -> Unit,
+): SelectableField<Value> {
+    val builder = SelectableField.Builder<Value>().apply(builder)
+    return SelectableField<Value>(
+        label = label,
+        choices = builder.choices,
+        initialValue = if (builder.isDefaultValueSet) builder.defaultValue as Value else builder.choices[0],
+    )
 }
 
 @Suppress("FunctionName")

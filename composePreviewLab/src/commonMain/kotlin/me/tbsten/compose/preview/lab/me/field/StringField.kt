@@ -7,7 +7,7 @@ class StringField(
     initialValue: String,
     private val prefix: (@Composable () -> Unit)? = null,
     private val suffix: (@Composable () -> Unit)? = null,
-) : PreviewLabField<String>(
+) : MutablePreviewLabField<String>(
     label = label,
     initialValue = initialValue,
 ) {

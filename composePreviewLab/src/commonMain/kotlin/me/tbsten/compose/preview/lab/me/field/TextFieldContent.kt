@@ -9,14 +9,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun <Value> PreviewLabField<Value>.TextFieldContent(
+fun <Value> MutablePreviewLabField<Value>.TextFieldContent(
     toString: (Value) -> String,
     toValue: (String) -> Result<Value>,
+    modifier: Modifier = Modifier,
     prefix: (@Composable () -> Unit)? = null,
     suffix: (@Composable () -> Unit)? = null,
+    placeholder: (@Composable () -> Unit)? = null,
 ) {
     var textFieldText by remember(value) { mutableStateOf(toString(value)) }
     var isValid by remember {
@@ -25,6 +28,7 @@ fun <Value> PreviewLabField<Value>.TextFieldContent(
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = modifier,
     ) {
         OutlinedTextField(
             value = textFieldText,
@@ -35,7 +39,7 @@ fun <Value> PreviewLabField<Value>.TextFieldContent(
                     .onSuccess { value = it }
             },
             placeholder = {
-                Text(label)
+                placeholder?.invoke() ?: Text(label)
             },
             prefix = prefix,
             suffix = suffix,

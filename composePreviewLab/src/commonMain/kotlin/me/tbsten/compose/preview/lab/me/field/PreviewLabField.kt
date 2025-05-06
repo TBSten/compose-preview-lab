@@ -1,9 +1,8 @@
 package me.tbsten.compose.preview.lab.me.field
 
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 
 /**
@@ -14,23 +13,46 @@ import androidx.compose.runtime.mutableStateOf
  * You would use this Composable if you want to create a Field of a custom type (set the value type parameter to your custom type) or if you want to create a UI for a custom Field (override the View method).
  *
  * @property label The label for this field. This is not used in any of the program logic, but only for display purposes, so it is best to set it in a language that is easy for your team members to read.
- * @property initialValue このフィールドの初期値
+ * @property initialValue Default value for this field.
  */
-abstract class PreviewLabField<Value>(
-    val label: String,
-    val initialValue: Value,
-) : MutableState<Value> by mutableStateOf(initialValue) {
-    @Composable
-    open fun View() = DefaultFieldView()
+interface PreviewLabField<Value> {
+    val label: String
+    val initialValue: Value
+    val value: Value
 
     @Composable
-    abstract fun Content()
+    fun View() = DefaultFieldView()
+
+    @Composable
+    fun Content()
 }
 
-@Composable
-fun PreviewLabField<*>.FieldLabelHeader() {
-    Text(
-        text = this.label,
-        style = MaterialTheme.typography.labelMedium,
+abstract class ImmutablePreviewLabField<Value> private constructor(
+    override val label: String,
+    override val initialValue: Value,
+    state: State<Value> = mutableStateOf(initialValue),
+) : PreviewLabField<Value>, State<Value> by state {
+    constructor(
+        label: String,
+        initialValue: Value,
+    ) : this(
+        label = label,
+        initialValue = initialValue,
+        state = mutableStateOf(initialValue),
+    )
+}
+
+abstract class MutablePreviewLabField<Value> private constructor(
+    override val label: String,
+    override val initialValue: Value,
+    state: MutableState<Value>,
+) : PreviewLabField<Value>, MutableState<Value> by state {
+    constructor(
+        label: String,
+        initialValue: Value,
+    ) : this(
+        label = label,
+        initialValue = initialValue,
+        state = mutableStateOf(initialValue),
     )
 }

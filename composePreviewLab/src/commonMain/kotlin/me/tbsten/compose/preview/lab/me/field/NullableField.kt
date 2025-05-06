@@ -18,7 +18,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
-fun <Value : Any> PreviewLabField<Value>.nullable() = NullableField(
+fun <Value : Any> PreviewLabField<Value>.nullable(
+    initialValue: Value? = this.initialValue,
+) = NullableField(
     baseField = this,
     initialValue = initialValue,
 )
@@ -26,7 +28,7 @@ fun <Value : Any> PreviewLabField<Value>.nullable() = NullableField(
 class NullableField<Value : Any> internal constructor(
     private val baseField: PreviewLabField<Value>,
     initialValue: Value?,
-) : PreviewLabField<Value?>(
+) : MutablePreviewLabField<Value?>(
     label = baseField.label,
     initialValue = initialValue,
 ) {
