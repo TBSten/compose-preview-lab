@@ -43,6 +43,7 @@ import me.tbsten.compose.preview.lab.me.component.LayoutSection
 import me.tbsten.compose.preview.lab.me.component.PreviewLabHeader
 import me.tbsten.compose.preview.lab.me.component.ResizableBox
 import me.tbsten.compose.preview.lab.me.component.rememberResizeState
+import me.tbsten.compose.preview.lab.me.theme.AppTheme
 
 @Composable
 fun PreviewLab(
@@ -66,14 +67,14 @@ fun PreviewLab(
 fun PreviewLab(
     configurations: List<PreviewLabConfiguration> = listOf(PreviewLabConfiguration.Default),
     content: @Composable PreviewLabScope.() -> Unit,
-) {
+) = AppTheme {
     check(configurations.isNotEmpty())
 
     var offset by remember { mutableStateOf(Offset.Zero) }
     val draggableState = rememberDraggable2DState { offset += it }
     var scale by remember { mutableStateOf(1f) }
 
-    Column {
+    Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
         PreviewLabHeader(
             configurations = configurations,
             scale = scale,
