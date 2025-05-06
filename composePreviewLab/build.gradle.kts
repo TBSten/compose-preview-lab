@@ -67,7 +67,6 @@ android {
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 35
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -79,11 +78,28 @@ dependencies {
     debugImplementation(libs.androidx.uitest.testManifest)
 }
 
-//https://github.com/JetBrains/compose-hot-reload
-composeCompiler {
-    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
+// for library development configuration
+
+kotlin {
+    applyDefaultHierarchyTemplate()
+    sourceSets {
+        val commonDev by creating {
+            dependsOn(commonMain.get())
+        }
+
+        val jvmDev by getting {
+            dependsOn(commonDev)
+            dependsOn(jvmMain.get())
+        }
+    }
 }
 
 tasks.register<ComposeHotRun>("runHot") {
-    mainClass.set("HotRunKt")
+    compilation.set(kotlin.targets.named("jvm").get().compilations.named("dev").get())
+    mainClass.set("MainKt")
+}
+
+//https://github.com/JetBrains/compose-hot-reload
+composeCompiler {
+    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
 }
