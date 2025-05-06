@@ -38,3 +38,4 @@ plugins {
 include(":composePreviewLab")
 include(":composePreviewLabAnnotation")
 include(":composePreviewLabKspPlugin")
+include("composePreviewLabIntellijPlugin")

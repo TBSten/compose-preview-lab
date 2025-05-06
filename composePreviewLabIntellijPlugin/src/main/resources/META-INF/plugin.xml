@@ -1,0 +1,11 @@
+<idea-plugin>
+    <id>me.tbsten.compose.preview.lab</id>
+    <name>Compose Preview Lab</name>
+    <vendor>TBSten</vendor>
+    <depends>com.intellij.modules.platform</depends>
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow anchor="right"
+            factoryClass="me.tbsten.compose.preview.lab.intellij.plugin.ComposePreviewLabToolWindowFactory"
+            icon="/META-INF/pluginIcon.svg" id="Compose Preview Lab" />
+    </extensions>
+</idea-plugin>
