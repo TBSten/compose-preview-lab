@@ -30,7 +30,8 @@ internal fun generateList(
         previews.forEach { preview ->
             it.appendLine("    // ${preview.fullBaseName}")
             it.appendLine("    CollectedPreview(")
-            it.appendLine("        displayName = \"\"\"${preview.displayName}\"\"\"")
+            it.appendLine("        displayName = \"\"\"${preview.displayName}\"\"\",")
+            it.appendLine("        filePath = \"\"\"${preview.baseFile.filePath}\"\"\",")
             it.appendLine("    ) { ${preview.fullCopyName}() },")
         }
         it.appendLine(")")
