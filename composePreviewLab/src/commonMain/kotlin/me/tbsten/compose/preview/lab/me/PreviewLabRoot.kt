@@ -17,10 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -31,13 +28,13 @@ import me.tbsten.compose.preview.lab.me.theme.AppTheme
 @Composable
 fun PreviewLabRoot(
     previews: List<CollectedPreview>,
+    state: PreviewLabRootState = remember { PreviewLabRootState() },
     openFileHandler: OpenFileHandler? = null,
 ) = AppTheme {
     CompositionLocalProvider(
         LocalOpenFileHandler provides openFileHandler,
     ) {
         val previewList = remember { previews.toList() }
-        var selectedIndex by remember { mutableStateOf(0) }
 
         Box(
             modifier = Modifier
@@ -57,9 +54,9 @@ fun PreviewLabRoot(
                         val displayName = preview.displayName
                         CommonListItem(
                             title = displayName,
-                            isSelected = index == selectedIndex,
+                            isSelected = index == state.selectedPreviewIndex,
                             onSelect = {
-                                selectedIndex = index
+                                state.selectedPreviewIndex = index
                             },
                         )
                     }
@@ -70,7 +67,7 @@ fun PreviewLabRoot(
                 )
 
                 AnimatedContent(
-                    targetState = selectedIndex,
+                    targetState = state.selectedPreviewIndex,
                     transitionSpec = {
                         fadeIn() togetherWith fadeOut()
                     },

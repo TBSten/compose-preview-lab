@@ -58,7 +58,7 @@ internal fun EventListSection(
                 }
             }
 
-            items(events.reversed(), key = { it.createAt }) { event ->
+            items(events, key = { it.createAt }) { event ->
                 Column(modifier = Modifier.animateItem()) {
                     var showDetail by remember { mutableStateOf(false) }
                     var now by remember { mutableStateOf(Clock.System.now().epochSeconds) }

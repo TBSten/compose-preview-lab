@@ -1,8 +1,6 @@
 package me.tbsten.compose.preview.lab.me
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.draggable2D
-import androidx.compose.foundation.gestures.rememberDraggable2DState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,15 +20,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.TransformOrigin
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
@@ -50,6 +42,7 @@ fun PreviewLab(
     name: String = PreviewLabConfiguration.Default.name,
     maxWidth: Dp? = PreviewLabConfiguration.Default.maxWidth,
     maxHeight: Dp? = PreviewLabConfiguration.Default.maxHeight,
+    state: PreviewLabState = remember { PreviewLabState() },
     content: @Composable PreviewLabScope.() -> Unit,
 ) = PreviewLab(
     configurations = listOf(
@@ -59,6 +52,7 @@ fun PreviewLab(
             maxHeight = maxHeight
         )
     ),
+    state = state,
     content = content,
 )
 
@@ -66,143 +60,39 @@ fun PreviewLab(
 @Composable
 fun PreviewLab(
     configurations: List<PreviewLabConfiguration> = listOf(PreviewLabConfiguration.Default),
+    state: PreviewLabState = remember { PreviewLabState() },
     content: @Composable PreviewLabScope.() -> Unit,
 ) = AppTheme {
     check(configurations.isNotEmpty())
 
-    var offset by remember { mutableStateOf(Offset.Zero) }
-    val draggableState = rememberDraggable2DState { offset += it }
-    var scale by remember { mutableStateOf(1f) }
-
     Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
         PreviewLabHeader(
             configurations = configurations,
-            scale = scale,
-            onScaleChange = { scale = it },
+            scale = state.contentScale,
+            onScaleChange = { state.contentScale = it },
         ) { conf ->
-            val scope = remember { PreviewLabScope() }
-
             CompositionLocalProvider(
-                LocalPreviewLabScope provides scope,
+                LocalPreviewLabScope provides state.scope,
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .fillMaxHeight()
+                        .weight(1f)
                 ) {
-                    val resizeState = rememberResizeState(conf.maxWidth, conf.maxHeight)
-
-                    Column(modifier = Modifier.weight(1f)) {
-                        Box(
-                            contentAlignment = Alignment.TopStart,
-                            modifier = Modifier
-                                .draggable2D(draggableState)
-                                .graphicsLayer {
-                                    translationX = offset.x
-                                    translationY = offset.y
-                                    transformOrigin = TransformOrigin(0f, 0f)
-                                }
-                                .zIndex(-1f)
-                                .weight(1f)
-                                .fillMaxSize()
-                                .padding(32.dp)
-                                .layout { m, c ->
-                                    val p = m.measure(
-                                        c.copy(
-                                            maxWidth = Constraints.Infinity,
-                                            maxHeight = Constraints.Infinity,
-                                        )
-                                    )
-                                    layout(p.width, p.height) {
-                                        val x =
-                                            if (c.maxWidth <= p.width)
-                                                -((c.maxWidth - p.width) / 2)
-                                            else 0
-                                        val y =
-                                            if (c.maxHeight <= p.height)
-                                                -((c.maxHeight - p.height) / 2)
-                                            else 0
-                                        p.place(x, y)
-                                    }
-                                }
-                        ) {
-                            ResizableBox(
-                                maxWidth = conf.maxWidth,
-                                maxHeight = conf.maxHeight,
-                                resizeState = resizeState,
-                                contentScale = scale,
-                            ) {
-                                content(scope)
-                            }
-                        }
-                    }
+                    ContentSection(
+                        conf = conf,
+                        state = state,
+                        content = content,
+                        modifier = Modifier
+                            .weight(1f)
+                            .zIndex(-1f)
+                    )
 
                     Divider()
 
-                    Column(
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.background)
-                            .width(250.dp)
-                            .fillMaxHeight()
-                    ) {
-                        var selectedTab by remember { mutableStateOf(0) }
-                        val tabContents = remember {
-                            mapOf<String, @Composable () -> Unit>(
-                                "Fields" to {
-                                    FieldListSection(
-                                        fields = scope.fields,
-                                    )
-                                },
-                                "Events" to {
-                                    EventListSection(
-                                        events = scope.events,
-                                        onClear = { scope.events.clear() },
-                                    )
-                                },
-                                "Layouts" to {
-                                    LayoutSection(
-                                        layoutNodes = scope.layoutNodes,
-                                        selectedLayoutNodeIds = scope.selectedLayoutNodeIds,
-                                        hoveredLayoutNodeIds = scope.hoveredLayoutNodeIds,
-                                        onNodeClick = scope::toggleLayoutNodeSelect,
-                                    )
-                                },
-                            )
-                        }
-                        val pagerState = rememberPagerState { tabContents.size }
-                            .also {
-                                LaunchedEffect(selectedTab) {
-                                    it.animateScrollToPage(
-                                        selectedTab
-                                    )
-                                }
-                            }
-
-                        ScrollableTabRow(
-                            selectedTabIndex = selectedTab,
-                            edgePadding = 0.dp,
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            tabContents.keys.forEachIndexed { index, title ->
-                                Tab(
-                                    selected = selectedTab == index,
-                                    onClick = { selectedTab = index },
-                                    text = { Text(title) },
-                                )
-                            }
-                        }
-
-                        HorizontalPager(
-                            state = pagerState,
-                            userScrollEnabled = false,
-                            modifier = Modifier.weight(1f),
-                            verticalAlignment = Alignment.Top,
-                        ) { pageIndex ->
-                            val (_, content) = tabContents.entries.toList()[pageIndex]
-                            content()
-                        }
-                    }
-
+                    SideTabsSection(
+                        state = state,
+                    )
                 }
             }
         }
@@ -210,3 +100,120 @@ fun PreviewLab(
 }
 
 internal val LocalPreviewLabScope = compositionLocalOf<PreviewLabScope?> { null }
+
+@Composable
+private fun ContentSection(
+    conf: PreviewLabConfiguration,
+    state: PreviewLabState,
+    modifier: Modifier = Modifier,
+    content: @Composable PreviewLabScope.() -> Unit,
+) {
+    val resizeState = rememberResizeState(conf.maxWidth, conf.maxHeight)
+
+    Column(modifier = modifier) {
+        Box(
+            contentAlignment = Alignment.TopStart,
+            modifier = Modifier
+                .previewLabContent(state)
+                .weight(1f)
+                .fillMaxSize()
+                .padding(32.dp)
+                .layout { m, c ->
+                    val p = m.measure(
+                        c.copy(
+                            maxWidth = Constraints.Infinity,
+                            maxHeight = Constraints.Infinity,
+                        )
+                    )
+                    layout(p.width, p.height) {
+                        val x =
+                            if (c.maxWidth <= p.width)
+                                -((c.maxWidth - p.width) / 2)
+                            else 0
+                        val y =
+                            if (c.maxHeight <= p.height)
+                                -((c.maxHeight - p.height) / 2)
+                            else 0
+                        p.place(x, y)
+                    }
+                }
+        ) {
+            ResizableBox(
+                maxWidth = conf.maxWidth,
+                maxHeight = conf.maxHeight,
+                resizeState = resizeState,
+                contentScale = state.contentScale,
+            ) {
+                content(state.scope)
+            }
+        }
+    }
+}
+
+@Composable
+private fun SideTabsSection(
+    state: PreviewLabState,
+) {
+    Column(
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .width(250.dp)
+            .fillMaxHeight()
+    ) {
+        val tabContents = remember {
+            mapOf<String, @Composable () -> Unit>(
+                "Fields" to {
+                    FieldListSection(
+                        fields = state.scope.fields,
+                    )
+                },
+                "Events" to {
+                    EventListSection(
+                        events = state.scope.events,
+                        onClear = { state.scope.events.clear() },
+                    )
+                },
+                "Layouts" to {
+                    LayoutSection(
+                        layoutNodes = state.scope.layoutNodes,
+                        selectedLayoutNodeIds = state.scope.selectedLayoutNodeIds,
+                        hoveredLayoutNodeIds = state.scope.hoveredLayoutNodeIds,
+                        onNodeClick = state.scope::toggleLayoutNodeSelect,
+                    )
+                },
+            )
+        }
+        val pagerState = rememberPagerState { tabContents.size }
+            .also {
+                LaunchedEffect(state.selectedTabIndex) {
+                    it.animateScrollToPage(
+                        state.selectedTabIndex,
+                    )
+                }
+            }
+
+        ScrollableTabRow(
+            selectedTabIndex = state.selectedTabIndex,
+            edgePadding = 0.dp,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            tabContents.keys.forEachIndexed { index, title ->
+                Tab(
+                    selected = state.selectedTabIndex == index,
+                    onClick = { state.selectedTabIndex = index },
+                    text = { Text(title) },
+                )
+            }
+        }
+
+        HorizontalPager(
+            state = pagerState,
+            userScrollEnabled = false,
+            modifier = Modifier.weight(1f),
+            verticalAlignment = Alignment.Top,
+        ) { pageIndex ->
+            val (_, content) = tabContents.entries.toList()[pageIndex]
+            content()
+        }
+    }
+}
