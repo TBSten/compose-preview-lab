@@ -72,7 +72,7 @@ fun PreviewLab(
             onScaleChange = { state.contentScale = it },
         ) { conf ->
             CompositionLocalProvider(
-                LocalPreviewLabScope provides state.scope,
+                LocalPreviewLabState provides state,
             ) {
                 Row(
                     modifier = Modifier
@@ -99,7 +99,7 @@ fun PreviewLab(
     }
 }
 
-internal val LocalPreviewLabScope = compositionLocalOf<PreviewLabScope?> { null }
+internal val LocalPreviewLabState = compositionLocalOf<PreviewLabState?> { null }
 
 @Composable
 private fun ContentSection(

@@ -139,7 +139,8 @@ fun Modifier.layoutLab(
         properties["label"] = label
     }
 ) {
-    val scope = LocalPreviewLabScope.current ?: return@composed this
+    val state = LocalPreviewLabState.current ?: return@composed this
+    val scope = state.scope
 
     val density = LocalDensity.current
     val id = remember(label) {
@@ -182,7 +183,7 @@ fun Modifier.layoutLab(
                 size = it.size.toDpSize(density),
             )
         }
-    }.thenIf(isSelected || isHovered) {
+    }.thenIf(state.selectedTabIndex == 2 && (isSelected || isHovered)) {
         border(
             2.dp,
             Color.Red.copy(alpha = if (isSelected) 1.0f else 0.5f),
