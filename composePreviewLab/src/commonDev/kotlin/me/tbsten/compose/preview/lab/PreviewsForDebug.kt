@@ -46,7 +46,7 @@ import me.tbsten.compose.preview.lab.me.field.nullable
 import me.tbsten.compose.preview.lab.me.layoutLab
 
 val previewsForUiDebug = listOf<CollectedPreview>(
-    CollectedPreview("Fields") {
+    CollectedPreview("Fields", "") {
         PreviewLab(maxWidth = 320.dp, maxHeight = 640.dp) {
             SampleScreen(
                 title = "Fields",
@@ -145,7 +145,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
             }
         }
     },
-    CollectedPreview("Events") {
+    CollectedPreview("Events", "") {
         PreviewLab(maxWidth = 320.dp, maxHeight = 640.dp) {
             SampleScreen(
                 title = "Events",
@@ -153,7 +153,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
             )
         }
     },
-    CollectedPreview("Layouts") {
+    CollectedPreview("Layouts", "") {
         PreviewLab(maxWidth = 320.dp, maxHeight = 640.dp) {
             SampleScreen(
                 title = "Layouts",
@@ -161,7 +161,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
             )
         }
     },
-    CollectedPreview("Without PreviewLab") {
+    CollectedPreview("Without PreviewLab", "") {
         Text("Without PreviewLab { }")
     },
 )
