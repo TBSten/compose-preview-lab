@@ -9,12 +9,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.me.layout.LayoutNodeId
 import me.tbsten.compose.preview.lab.me.layout.PreviewLabLayoutNode
 
 @Composable
 internal fun LayoutSection(
+    contentRootOffset: DpOffset?,
     layoutNodes: List<PreviewLabLayoutNode>,
     selectedLayoutNodeIds: Set<LayoutNodeId>,
     hoveredLayoutNodeIds: Set<LayoutNodeId>,
@@ -51,10 +53,14 @@ internal fun LayoutSection(
                             start = 16.dp,
                         )
                     ) {
-                        Text(
-                            text = layoutNode.offsetInAppRoot.let { "offset: ${it.x}, ${it.y}" },
-                            style = MaterialTheme.typography.bodySmall,
-                        )
+                        if (contentRootOffset != null) {
+                            Text(
+                                text = layoutNode.offsetInAppRoot
+                                    .let { it.x - contentRootOffset.x to it.y - contentRootOffset.y }
+                                    .let { (x, y) -> "offset: $x, $y" },
+                                style = MaterialTheme.typography.bodySmall,
+                            )
+                        }
                         Text(
                             text = layoutNode.size.let { "size: ${it.width} × ${it.height}" },
                             style = MaterialTheme.typography.bodySmall,
