@@ -1,15 +1,15 @@
 [versions]
 composePreviewLab = "0.1.0"
-kotlin = "2.1.20"
-compose = "1.8.0-rc01"
+kotlin = "2.1.21"
+compose = "1.8.0"
 agp = "8.6.1"
 androidx-activityCompose = "1.10.1"
-androidx-uiTest = "1.7.8"
-hotReload = "1.0.0-alpha08"
+androidx-uiTest = "1.8.1"
+hotReload = "1.0.0-alpha10"
 ksp = "2.1.20-2.0.1"
-intellijPlatform = "2.5.0"
+intellijPlatform = "2.6.0"
 jewelIdeLafBridge = "0.27.0"
-kotlinxSerializationJson = "1.8.0"
+kotlinxSerializationJson = "1.8.1"
 
 [libraries]
 
