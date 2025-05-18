@@ -214,6 +214,7 @@ private fun DefaultSampleScreenContent(
         contentPadding = paddingValues.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
+            .layoutLab("LazyColumn")
             .background(
                 Brush.linearGradient(
                     0f to Color.Green,
@@ -222,8 +223,7 @@ private fun DefaultSampleScreenContent(
                     end = Offset.Infinite,
                 )
             )
-            .fillMaxSize()
-            .layoutLab("LazyColumn"),
+            .fillMaxSize(),
     ) {
         items(20) { count ->
             Button(

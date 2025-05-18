@@ -10,8 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.unit.DpOffset
 
 class PreviewLabState {
+    var contentRootOffsetInAppRoot by mutableStateOf<DpOffset?>(null)
     var contentOffset by mutableStateOf(Offset.Zero)
     val contentDraggableState = Draggable2DState { contentOffset += it }
     var contentScale by mutableStateOf(1f)

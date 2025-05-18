@@ -10,16 +10,13 @@ import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onLayoutRectChanged
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toOffset
 import kotlinx.coroutines.coroutineScope
@@ -29,6 +26,8 @@ import me.tbsten.compose.preview.lab.me.field.PreviewLabField
 import me.tbsten.compose.preview.lab.me.layout.LayoutNodeId
 import me.tbsten.compose.preview.lab.me.layout.PreviewLabLayoutNode
 import me.tbsten.compose.preview.lab.me.util.thenIf
+import me.tbsten.compose.preview.lab.me.util.toDpOffset
+import me.tbsten.compose.preview.lab.me.util.toDpSize
 import kotlin.random.Random
 import kotlin.time.ExperimentalTime
 
@@ -189,18 +188,4 @@ fun Modifier.layoutLab(
             Color.Red.copy(alpha = if (isSelected) 1.0f else 0.5f),
         )
     }
-}
-
-private fun Offset.toDpOffset(density: Density): DpOffset = with(density) {
-    DpOffset(
-        x = x.toDp(),
-        y = y.toDp(),
-    )
-}
-
-private fun IntSize.toDpSize(density: Density): DpSize = with(density) {
-    DpSize(
-        width = width.toDp(),
-        height = height.toDp(),
-    )
 }

@@ -24,6 +24,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -36,6 +39,7 @@ import me.tbsten.compose.preview.lab.me.component.PreviewLabHeader
 import me.tbsten.compose.preview.lab.me.component.ResizableBox
 import me.tbsten.compose.preview.lab.me.component.rememberResizeState
 import me.tbsten.compose.preview.lab.me.theme.AppTheme
+import me.tbsten.compose.preview.lab.me.util.toDpOffset
 
 @Composable
 fun PreviewLab(
@@ -109,6 +113,7 @@ private fun ContentSection(
     content: @Composable PreviewLabScope.() -> Unit,
 ) {
     val resizeState = rememberResizeState(conf.maxWidth, conf.maxHeight)
+    val density = LocalDensity.current
 
     Column(modifier = modifier) {
         Box(
@@ -144,7 +149,16 @@ private fun ContentSection(
                 resizeState = resizeState,
                 contentScale = state.contentScale,
             ) {
-                content(state.scope)
+                Box(
+                    modifier = Modifier
+                        .onPlaced {
+                            println("contentRoot ${it.positionInRoot().toDpOffset(density)}")
+                            state.contentRootOffsetInAppRoot =
+                                it.positionInRoot().toDpOffset(density)
+                        },
+                ) {
+                    content(state.scope)
+                }
             }
         }
     }
@@ -175,6 +189,7 @@ private fun SideTabsSection(
                 },
                 "Layouts" to {
                     LayoutSection(
+                        contentRootOffset = state.contentRootOffsetInAppRoot,
                         layoutNodes = state.scope.layoutNodes,
                         selectedLayoutNodeIds = state.scope.selectedLayoutNodeIds,
                         hoveredLayoutNodeIds = state.scope.hoveredLayoutNodeIds,
