@@ -154,26 +154,7 @@ fun Modifier.layoutLab(
     val isSelected = scope.selectedLayoutNodeIds.any { it == id }
     val isHovered = scope.hoveredLayoutNodeIds.any { it == id }
 
-    pointerInput(Unit) {
-        coroutineScope {
-            detectTapGestures(
-                onTap = {
-                    scope.toggleLayoutNodeSelect(id = id)
-                },
-            )
-        }
-    }.pointerInput(Unit) {
-        awaitPointerEventScope {
-            while (true) {
-                val event = awaitPointerEvent()
-                if (event.type == PointerEventType.Enter) {
-                    scope.onHoverMouseLayoutNode(id = id)
-                } else if (event.type == PointerEventType.Exit) {
-                    scope.onLeaveMouseLayoutNode(id = id)
-                }
-            }
-        }
-    }.onLayoutRectChanged {
+    onLayoutRectChanged {
         it.boundsInRoot.also {
             scope.putLayoutNode(
                 id = id,
@@ -182,10 +163,33 @@ fun Modifier.layoutLab(
                 size = it.size.toDpSize(density),
             )
         }
-    }.thenIf(state.selectedTabIndex == 2 && (isSelected || isHovered)) {
-        border(
-            2.dp,
-            Color.Red.copy(alpha = if (isSelected) 1.0f else 0.5f),
-        )
+    }.thenIf(
+        state.selectedTabIndex == 2
+    ) {
+        pointerInput(Unit) {
+            coroutineScope {
+                detectTapGestures(
+                    onTap = {
+                        scope.toggleLayoutNodeSelect(id = id)
+                    },
+                )
+            }
+        }.pointerInput(Unit) {
+            awaitPointerEventScope {
+                while (true) {
+                    val event = awaitPointerEvent()
+                    if (event.type == PointerEventType.Enter) {
+                        scope.onHoverMouseLayoutNode(id = id)
+                    } else if (event.type == PointerEventType.Exit) {
+                        scope.onLeaveMouseLayoutNode(id = id)
+                    }
+                }
+            }
+        }.thenIf(isSelected || isHovered) {
+            border(
+                2.dp,
+                Color.Red.copy(alpha = if (isSelected) 1.0f else 0.5f),
+            )
+        }
     }
 }
