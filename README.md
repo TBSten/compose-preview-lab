@@ -1,35 +1,49 @@
-# Compose Multiplatform Application
+# Compose Preview Lab
 
-## Before running!
- - check your system with [KDoctor](https://github.com/Kotlin/kdoctor)
- - install JDK 17 or higher on your machine
- - add `local.properties` file to the project root and set a path to Android SDK there
+<img src="./cover.png" width="1024" />
 
-### Android
-To run the application on android device/emulator:  
- - open project in Android Studio and run imported android run configuration
+## Accelerating preview interactive mode
 
-To build the application bundle:
- - run `./gradlew :composeApp:assembleDebug`
- - find `.apk` file in `composeApp/build/outputs/apk/debug/composeApp-debug.apk`
-Run android UI tests on the connected device: `./gradlew :composeApp:connectedDebugAndroidTest`
+Use `PreviewLab` Composable and functions such as `***Field()` `onEvent()` to enhance Preview's
+Interactive mode.
 
-### Desktop
-Run the desktop application: `./gradlew :composeApp:run`
-Run the desktop **hot reload** application: `./gradlew :composeApp:jvmRunHot`)
-Run desktop UI tests: `./gradlew :composeApp:jvmTest`
+<table>
+<tbody>
 
-### iOS
-To run the application on iPhone device/simulator:
- - Open `iosApp/iosApp.xcproject` in Xcode and run standard configuration
- - Or use [Kotlin Multiplatform Mobile plugin](https://plugins.jetbrains.com/plugin/14936-kotlin-multiplatform-mobile) for Android Studio
-Run iOS simulator UI tests: `./gradlew :composeApp:iosSimulatorArm64Test`
+<tr>
 
-### JS Browser (Experimental)
-Run the browser application: `./gradlew :composeApp:jsBrowserDevelopmentRun --continue`
-Run browser UI tests: `./gradlew :composeApp:jsBrowserTest`
+<td>
 
-### Wasm Browser (Alpha)
-Run the browser application: `./gradlew :composeApp:wasmJsBrowserDevelopmentRun --continue`
-Run browser UI tests: `./gradlew :composeApp:wasmJsBrowserTest`
+```kt
+@Preview
+@Composable
+private fun MyButtonPreview() = PreviewLab {
+    MyButton(
+        text = fieldValue { StringField("Click Me") },
+        onClick = { onEvent("MyButton.onClick") },
+    )
+}
+```
 
+</td>
+
+<td>
+
+<img src="./demo.gif" width="350" />
+
+</td>
+
+</tr>
+
+<tr>
+
+
+
+</tr>
+
+</tbody>
+</table>
+
+## More information
+
+- [WIP] [Official Documentation Site](https://example.com)
