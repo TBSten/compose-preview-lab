@@ -1,4 +1,4 @@
-import me.tbsten.compose.preview.lab.me.component.previewLabApplication
+import me.tbsten.compose.preview.lab.component.previewLabApplication
 
 fun main(): Unit = previewLabApplication(
     previews = app.previews,

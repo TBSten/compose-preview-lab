@@ -1,5 +1,5 @@
 import androidx.compose.ui.ExperimentalComposeUiApi
-import me.tbsten.compose.preview.lab.me.component.previewLabApplication
+import me.tbsten.compose.preview.lab.component.previewLabApplication
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() = previewLabApplication(

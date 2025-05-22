@@ -24,7 +24,7 @@ internal fun generateList(
     ).bufferedWriter().use {
         it.appendLine("package $previewsListPackage")
         it.appendLine()
-        it.appendLine("import me.tbsten.compose.preview.lab.me.CollectedPreview")
+        it.appendLine("import me.tbsten.compose.preview.lab.CollectedPreview")
         it.appendLine()
         it.appendLine("val previews = listOf<CollectedPreview>(")
         previews.forEach { preview ->

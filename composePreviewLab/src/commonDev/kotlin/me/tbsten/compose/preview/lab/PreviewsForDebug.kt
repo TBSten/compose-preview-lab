@@ -31,19 +31,16 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.tbsten.compose.preview.lab.me.CollectedPreview
-import me.tbsten.compose.preview.lab.me.PreviewLab
-import me.tbsten.compose.preview.lab.me.field.BooleanField
-import me.tbsten.compose.preview.lab.me.field.DpOffsetField
-import me.tbsten.compose.preview.lab.me.field.DpSizeField
-import me.tbsten.compose.preview.lab.me.field.EnumField
-import me.tbsten.compose.preview.lab.me.field.FloatField
-import me.tbsten.compose.preview.lab.me.field.IntField
-import me.tbsten.compose.preview.lab.me.field.SelectableField
-import me.tbsten.compose.preview.lab.me.field.SpField
-import me.tbsten.compose.preview.lab.me.field.StringField
-import me.tbsten.compose.preview.lab.me.field.nullable
-import me.tbsten.compose.preview.lab.me.layoutLab
+import me.tbsten.compose.preview.lab.field.BooleanField
+import me.tbsten.compose.preview.lab.field.DpOffsetField
+import me.tbsten.compose.preview.lab.field.DpSizeField
+import me.tbsten.compose.preview.lab.field.EnumField
+import me.tbsten.compose.preview.lab.field.FloatField
+import me.tbsten.compose.preview.lab.field.IntField
+import me.tbsten.compose.preview.lab.field.SelectableField
+import me.tbsten.compose.preview.lab.field.SpField
+import me.tbsten.compose.preview.lab.field.StringField
+import me.tbsten.compose.preview.lab.field.nullable
 
 val previewsForUiDebug = listOf<CollectedPreview>(
     CollectedPreview("Fields", "") {

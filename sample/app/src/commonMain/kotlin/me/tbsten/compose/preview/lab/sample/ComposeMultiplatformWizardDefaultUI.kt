@@ -45,7 +45,7 @@ import compose_preview_lab_sample.app.generated.resources.stop
 import compose_preview_lab_sample.app.generated.resources.theme
 import kotlinx.coroutines.isActive
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.me.PreviewLab
+import me.tbsten.compose.preview.lab.PreviewLab
 import me.tbsten.compose.preview.lab.sample.theme.AppTheme
 import me.tbsten.compose.preview.lab.sample.theme.LocalThemeIsDark
 import org.jetbrains.compose.resources.Font

@@ -14,10 +14,10 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import kotlinx.coroutines.flow.MutableSharedFlow
-import me.tbsten.compose.preview.lab.me.CollectedPreview
-import me.tbsten.compose.preview.lab.me.PreviewLab
-import me.tbsten.compose.preview.lab.me.PreviewLabRoot
-import me.tbsten.compose.preview.lab.me.field.StringField
+import me.tbsten.compose.preview.lab.CollectedPreview
+import me.tbsten.compose.preview.lab.PreviewLab
+import me.tbsten.compose.preview.lab.PreviewLabRoot
+import me.tbsten.compose.preview.lab.field.StringField
 import org.jetbrains.jewel.bridge.addComposeTab
 import org.jetbrains.jewel.ui.component.Text
 

@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.me.PreviewLab
-import me.tbsten.compose.preview.lab.me.field.StringField
+import me.tbsten.compose.preview.lab.PreviewLab
+import me.tbsten.compose.preview.lab.field.StringField
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable

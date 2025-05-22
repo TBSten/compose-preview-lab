@@ -5,9 +5,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.me.PreviewLab
-import me.tbsten.compose.preview.lab.me.component.LabPreview
-import me.tbsten.compose.preview.lab.me.field.StringField
+import me.tbsten.compose.preview.lab.PreviewLab
+import me.tbsten.compose.preview.lab.component.LabPreview
+import me.tbsten.compose.preview.lab.field.StringField
 
 @LabPreview
 @Composable
