@@ -20,6 +20,7 @@ import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.Res
 import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_check
 import org.jetbrains.compose.resources.imageResource
 
+
 @Composable
 internal fun <V> SelectButton(
     choices: List<V>,
@@ -28,11 +29,28 @@ internal fun <V> SelectButton(
     title: (V) -> String,
     modifier: Modifier = Modifier,
     itemDetail: (V) -> String? = { null },
+) = SelectButton(
+    value = choices[currentIndex],
+    choices = choices,
+    onSelect = { onSelect(choices.indexOf(it)) },
+    title = title,
+    modifier = modifier,
+    itemDetail = itemDetail,
+)
+
+@Composable
+internal fun <V> SelectButton(
+    value: V,
+    choices: List<V>,
+    onSelect: (V) -> Unit,
+    title: (V) -> String,
+    modifier: Modifier = Modifier,
+    itemDetail: (V) -> String? = { null },
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
     OutlinedButton(onClick = { showMenu = true }, modifier = modifier) {
-        Text(title(choices[currentIndex]))
+        Text(title(value))
     }
 
     DropdownMenu(
@@ -57,11 +75,11 @@ internal fun <V> SelectButton(
                     }
                 },
                 onClick = {
-                    onSelect(index)
+                    onSelect(item)
                     showMenu = false
                 },
-                enabled = currentIndex != index,
-                leadingIcon = if (currentIndex == index) {
+                enabled = item != value,
+                leadingIcon = if (item == value) {
                     @Composable {
                         Icon(
                             imageResource(Res.drawable.icon_check),

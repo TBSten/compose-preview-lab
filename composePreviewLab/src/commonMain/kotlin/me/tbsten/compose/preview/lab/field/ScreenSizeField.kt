@@ -1,23 +1,78 @@
 package me.tbsten.compose.preview.lab.field
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.field.ScreenSize.Companion.FitContent
+import me.tbsten.compose.preview.lab.component.SelectButton
+import me.tbsten.compose.preview.lab.field.ScreenSize.Companion.MediumSmartPhone
 
 open class ScreenSizeField(
     label: String = "ScreenSize",
-    sizes: List<ScreenSize?> = listOf(FitContent),
-    initialValue: ScreenSize? = sizes[0],
-) : SelectableField<ScreenSize?>(
+    private val sizes: List<ScreenSize> = listOf(MediumSmartPhone),
+    initialValue: ScreenSize = sizes[0],
+) : SelectableField<ScreenSize>(
     label = label,
     choices = sizes,
-    choiceLabel = { it?.label ?: "Fit Content" },
+    choiceLabel = { it.label },
     initialValue = initialValue,
-)
+) {
+    @Composable
+    override fun Content() {
+        Column {
+            SelectButton(
+                value = value,
+                choices = choices,
+                onSelect = { value = it },
+                title = {
+                    if (it in choices) it.label
+                    else "Custom"
+                },
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                TextFieldContent(
+                    toString = { it.width.value.toString() },
+                    toValue = {
+                        runCatching {
+                            ScreenSize(
+                                width = it.toFloat().dp,
+                                height = value.height,
+                            )
+                        }
+                    },
+                    placeholder = { Text("width") },
+                    modifier = Modifier.weight(1f),
+                )
+
+                TextFieldContent(
+                    toString = { it.height.value.toString() },
+                    toValue = {
+                        runCatching {
+                            ScreenSize(
+                                width = value.width,
+                                height = it.toFloat().dp,
+                            )
+                        }
+                    },
+                    placeholder = { Text("height") },
+                    modifier = Modifier.weight(1f),
+                )
+            }
+        }
+    }
+}
 
 class ScreenSize(
-    val width: Dp?,
-    val height: Dp?,
+    val width: Dp,
+    val height: Dp,
     val label: String = "${width}x${height}",
 ) {
     fun reversed() = ScreenSize(
@@ -27,8 +82,6 @@ class ScreenSize(
     )
 
     companion object {
-        val FitContent: ScreenSize? = null
-
         // Smartphones
         val SmallSmartPhone = ScreenSize(
             label = "Small Smartphone (320x568)",

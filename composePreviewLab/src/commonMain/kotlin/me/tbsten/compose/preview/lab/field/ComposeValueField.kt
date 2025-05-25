@@ -168,7 +168,7 @@ class DpSizeField(
             TextFieldContent(
                 toString = { it.height.value.toString() },
                 toValue = { runCatching { DpSize(width = value.width, height = it.toFloat().dp) } },
-                placeholder = { Text("width") },
+                placeholder = { Text("height") },
                 modifier = Modifier.weight(1f),
             )
         }

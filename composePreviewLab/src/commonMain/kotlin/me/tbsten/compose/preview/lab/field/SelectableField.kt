@@ -28,9 +28,9 @@ open class SelectableField<Value>(
     @Composable
     override fun Content() {
         SelectButton(
+            value = value,
             choices = choices,
-            currentIndex = choices.indexOf(value),
-            onSelect = { value = choices[it] },
+            onSelect = { value = it },
             title = choiceLabel,
         )
     }
