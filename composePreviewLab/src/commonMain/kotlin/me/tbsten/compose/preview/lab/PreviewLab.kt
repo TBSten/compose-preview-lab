@@ -31,6 +31,7 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.component.Divider
@@ -42,6 +43,18 @@ import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.field.ScreenSizeField
 import me.tbsten.compose.preview.lab.theme.AppTheme
 import me.tbsten.compose.preview.lab.util.toDpOffset
+
+@Composable
+fun PreviewLab(
+    state: PreviewLabState = rememberSaveable(saver = PreviewLabState.Saver) { PreviewLabState() },
+    maxWidth: Dp,
+    maxHeight: Dp,
+    content: @Composable PreviewLabScope.() -> Unit,
+) = PreviewLab(
+    state = state,
+    screenSizes = listOf(ScreenSize(maxWidth, maxHeight)),
+    content = content,
+)
 
 
 @OptIn(ExperimentalMaterial3Api::class)
