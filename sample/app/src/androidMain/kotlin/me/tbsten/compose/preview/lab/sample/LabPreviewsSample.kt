@@ -11,7 +11,7 @@ import me.tbsten.compose.preview.lab.field.StringField
 
 @LabPreview
 @Composable
-fun Test() = PreviewLab(maxWidth = 800.dp) {
+fun Test() = PreviewLab(width = 800.dp, height = 800.dp) {
     Text(fieldValue { StringField("text", "hoge") }, modifier = Modifier.fillMaxSize())
 }
 
