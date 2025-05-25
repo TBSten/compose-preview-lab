@@ -1,9 +1,5 @@
 package me.tbsten.compose.preview.lab.component
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -18,36 +14,24 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
-import me.tbsten.compose.preview.lab.PreviewLabConfiguration
 import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.Res
 import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_refresh
 import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_zoom_in
 import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_zoom_out
 import org.jetbrains.compose.resources.painterResource
 
+
 @Composable
 internal fun PreviewLabHeader(
-    configurations: List<PreviewLabConfiguration>,
     scale: Float,
     onScaleChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
     initialConfigurationIndex: Int = 0,
-    content: @Composable (PreviewLabConfiguration) -> Unit
+    content: @Composable () -> Unit
 ) {
-    var selectedConfigurationIndex by remember(initialConfigurationIndex) {
-        mutableStateOf(
-            initialConfigurationIndex
-        )
-    }
-
     Column(modifier = modifier) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -63,27 +47,11 @@ internal fun PreviewLabHeader(
                 onScaleChange = onScaleChange,
                 modifier = Modifier.fillMaxHeight()
             )
-
-            if (2 <= configurations.size) {
-                Divider()
-
-                SelectConfiguration(
-                    configurations = configurations,
-                    selectedConfigurationIndex = selectedConfigurationIndex,
-                    onSelect = { selectedConfigurationIndex = it },
-                )
-            }
         }
 
         Divider()
 
-        AnimatedContent(
-            targetState = selectedConfigurationIndex,
-            transitionSpec = { fadeIn() togetherWith fadeOut() },
-            modifier = Modifier.zIndex(-1f).weight(1f).fillMaxWidth(),
-        ) { selectedConfigurationIndex ->
-            content(configurations[selectedConfigurationIndex])
-        }
+        content()
     }
 }
 
@@ -128,30 +96,6 @@ private fun Zoom(
             )
         }
     }
-}
-
-@Composable
-private fun SelectConfiguration(
-    configurations: List<PreviewLabConfiguration>,
-    selectedConfigurationIndex: Int,
-    onSelect: (Int) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-
-    Column(modifier = modifier) {
-        Text("Configurations", style = MaterialTheme.typography.labelMedium)
-
-        SelectButton(
-            choices = configurations,
-            currentIndex = selectedConfigurationIndex,
-            onSelect = onSelect,
-            title = { it.name },
-            itemDetail = { conf ->
-                "maxSize = ${conf.maxWidth ?: "fit-content"} × ${conf.maxHeight ?: "fit-content"}"
-            },
-        )
-    }
-
 }
 
 private const val MinZoomScale = 0.10f

@@ -1,11 +1,12 @@
 package me.tbsten.compose.preview.lab
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.draggable2D
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -21,14 +22,15 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Constraints
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.component.Divider
@@ -36,45 +38,24 @@ import me.tbsten.compose.preview.lab.component.EventListSection
 import me.tbsten.compose.preview.lab.component.FieldListSection
 import me.tbsten.compose.preview.lab.component.LayoutSection
 import me.tbsten.compose.preview.lab.component.PreviewLabHeader
-import me.tbsten.compose.preview.lab.component.ResizableBox
-import me.tbsten.compose.preview.lab.component.rememberResizeState
+import me.tbsten.compose.preview.lab.field.ScreenSize
+import me.tbsten.compose.preview.lab.field.ScreenSizeField
 import me.tbsten.compose.preview.lab.theme.AppTheme
 import me.tbsten.compose.preview.lab.util.toDpOffset
 
-@Composable
-fun PreviewLab(
-    name: String = PreviewLabConfiguration.Default.name,
-    maxWidth: Dp? = PreviewLabConfiguration.Default.maxWidth,
-    maxHeight: Dp? = PreviewLabConfiguration.Default.maxHeight,
-    state: PreviewLabState = remember { PreviewLabState() },
-    content: @Composable PreviewLabScope.() -> Unit,
-) = PreviewLab(
-    configurations = listOf(
-        PreviewLabConfiguration(
-            name = name,
-            maxWidth = maxWidth,
-            maxHeight = maxHeight
-        )
-    ),
-    state = state,
-    content = content,
-)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PreviewLab(
-    configurations: List<PreviewLabConfiguration> = listOf(PreviewLabConfiguration.Default),
-    state: PreviewLabState = remember { PreviewLabState() },
+    state: PreviewLabState = rememberSaveable(saver = PreviewLabState.Saver) { PreviewLabState() },
+    screenSizes: List<ScreenSize> = ScreenSize.SmartphoneAndDesktops,
     content: @Composable PreviewLabScope.() -> Unit,
 ) = AppTheme {
-    check(configurations.isNotEmpty())
-
     Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
         PreviewLabHeader(
-            configurations = configurations,
             scale = state.contentScale,
             onScaleChange = { state.contentScale = it },
-        ) { conf ->
+        ) {
             CompositionLocalProvider(
                 LocalPreviewLabState provides state,
             ) {
@@ -84,8 +65,8 @@ fun PreviewLab(
                         .weight(1f)
                 ) {
                     ContentSection(
-                        conf = conf,
                         state = state,
+                        screenSizes = screenSizes,
                         content = content,
                         modifier = Modifier
                             .weight(1f)
@@ -107,27 +88,39 @@ internal val LocalPreviewLabState = compositionLocalOf<PreviewLabState?> { null 
 
 @Composable
 private fun ContentSection(
-    conf: PreviewLabConfiguration,
     state: PreviewLabState,
+    screenSizes: List<ScreenSize>,
     modifier: Modifier = Modifier,
     content: @Composable PreviewLabScope.() -> Unit,
 ) {
-    val resizeState = rememberResizeState(conf.maxWidth, conf.maxHeight)
     val density = LocalDensity.current
+    val screenSize = state.scope
+        .fieldValue {
+            ScreenSizeField(
+                sizes = screenSizes
+            )
+        }
 
-    Column(modifier = modifier) {
+    Box(
+        modifier = modifier
+            .zIndex(-1f)
+            .draggable2D(state.contentDraggableState)
+            .graphicsLayer {
+                translationX = state.contentOffset.x
+                translationY = state.contentOffset.y
+                scaleX = state.contentScale
+                scaleY = state.contentScale
+                transformOrigin = TransformOrigin(0f, 0f)
+            },
+    ) {
         Box(
-            contentAlignment = Alignment.TopStart,
             modifier = Modifier
-                .previewLabContent(state)
-                .weight(1f)
-                .fillMaxSize()
                 .padding(32.dp)
                 .layout { m, c ->
                     val p = m.measure(
                         c.copy(
-                            maxWidth = Constraints.Infinity,
-                            maxHeight = Constraints.Infinity,
+                            maxWidth = screenSize?.width?.roundToPx() ?: c.maxWidth,
+                            maxHeight = screenSize?.height?.roundToPx() ?: c.maxHeight,
                         )
                     )
                     layout(p.width, p.height) {
@@ -143,22 +136,16 @@ private fun ContentSection(
                     }
                 }
         ) {
-            ResizableBox(
-                maxWidth = conf.maxWidth,
-                maxHeight = conf.maxHeight,
-                resizeState = resizeState,
-                contentScale = state.contentScale,
+            Box(
+                modifier = Modifier
+                    .border(8.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.15f))
+                    .padding(8.dp)
+                    .onPlaced {
+                        state.contentRootOffsetInAppRoot =
+                            it.positionInRoot().toDpOffset(density)
+                    }
             ) {
-                Box(
-                    modifier = Modifier
-                        .onPlaced {
-                            println("contentRoot ${it.positionInRoot().toDpOffset(density)}")
-                            state.contentRootOffsetInAppRoot =
-                                it.positionInRoot().toDpOffset(density)
-                        },
-                ) {
-                    content(state.scope)
-                }
+                content(state.scope)
             }
         }
     }

@@ -37,6 +37,7 @@ import me.tbsten.compose.preview.lab.field.DpSizeField
 import me.tbsten.compose.preview.lab.field.EnumField
 import me.tbsten.compose.preview.lab.field.FloatField
 import me.tbsten.compose.preview.lab.field.IntField
+import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.field.SelectableField
 import me.tbsten.compose.preview.lab.field.SpField
 import me.tbsten.compose.preview.lab.field.StringField
@@ -44,7 +45,7 @@ import me.tbsten.compose.preview.lab.field.nullable
 
 val previewsForUiDebug = listOf<CollectedPreview>(
     CollectedPreview("Fields", "") {
-        PreviewLab(maxWidth = 320.dp, maxHeight = 640.dp) {
+        PreviewLab {
             SampleScreen(
                 title = "Fields",
                 onListItemClick = {},
@@ -143,7 +144,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
         }
     },
     CollectedPreview("Events", "") {
-        PreviewLab(maxWidth = 320.dp, maxHeight = 640.dp) {
+        PreviewLab {
             SampleScreen(
                 title = "Events",
                 onListItemClick = { onEvent("Click item $it") },
@@ -151,10 +152,28 @@ val previewsForUiDebug = listOf<CollectedPreview>(
         }
     },
     CollectedPreview("Layouts", "") {
-        PreviewLab(maxWidth = 320.dp, maxHeight = 640.dp) {
+        PreviewLab {
             SampleScreen(
                 title = "Layouts",
                 onListItemClick = { },
+            )
+        }
+    },
+    CollectedPreview("ScreenSize", "") {
+        PreviewLab(
+            screenSizes = ScreenSize.AllPresets,
+        ) {
+            Box(
+                modifier = Modifier
+                    .background(
+                        Brush.linearGradient(
+                            0f to Color.Green,
+                            1f to Color.Blue,
+                            start = Offset.Zero,
+                            end = Offset.Infinite,
+                        )
+                    )
+                    .fillMaxSize()
             )
         }
     },

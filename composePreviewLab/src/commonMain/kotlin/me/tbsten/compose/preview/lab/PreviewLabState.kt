@@ -5,6 +5,7 @@ import androidx.compose.foundation.gestures.draggable2D
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -21,6 +22,25 @@ class PreviewLabState {
     var selectedTabIndex by mutableIntStateOf(0)
 
     val scope: PreviewLabScope = PreviewLabScope()
+
+    companion object {
+        val Saver = mapSaver(
+            save = {
+                mapOf(
+                    "contentOffset" to it.contentOffset,
+                    "contentScale" to it.contentScale,
+                    "selectedTabIndex" to it.selectedTabIndex,
+                )
+            },
+            restore = {
+                PreviewLabState().apply {
+                    contentOffset = it["contentOffset"] as Offset
+                    contentScale = it["contentScale"] as Float
+                    selectedTabIndex = it["selectedTabIndex"] as Int
+                }
+            }
+        )
+    }
 }
 
 internal fun Modifier.previewLabContent(state: PreviewLabState) =
