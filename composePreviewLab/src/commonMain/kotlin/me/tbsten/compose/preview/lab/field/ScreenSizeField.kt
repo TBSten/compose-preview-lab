@@ -24,7 +24,7 @@ open class ScreenSizeField(
 ) {
     @Composable
     override fun Content() {
-        Column {
+        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             SelectButton(
                 value = value,
                 choices = choices,
