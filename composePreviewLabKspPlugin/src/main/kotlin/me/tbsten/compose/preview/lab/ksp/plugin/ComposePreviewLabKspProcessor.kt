@@ -20,6 +20,10 @@ internal class ComposePreviewLabKspProcessor(
 
         val previewsListPackage = options["composePreviewLab.previewsListPackage"]
             ?: throw IllegalStateException("ksp arg `composePreviewLab.previewsListPackage` is not set.")
+
+        val publicPreviewList =
+            options["composePreviewLab.publicPreviewList"]?.lowercase() == "true"
+
         val previews = resolver.getSymbolsWithAnnotation(PreviewAnnotation)
 
         val copiedPreviews = mutableListOf<CopiedPreview>()
@@ -37,6 +41,7 @@ internal class ComposePreviewLabKspProcessor(
             previews = copiedPreviews.toList(),
             codeGenerator = codeGenerator,
             previewsListPackage = previewsListPackage,
+            publicPreviewList = publicPreviewList,
         )
         return emptyList()
     }
