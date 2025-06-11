@@ -18,7 +18,12 @@ package me.tbsten.compose.preview.lab
  * }
  * ```
  *
- * @property displayName {{package}}, {{simpleName}}, {{qualifiedName}} or a custom string. It does not have to match other Previews as it does not function like an ID.
+ * Options such as displayName allow placeholders in the form `{{placeholderName}}`.
+ * Supported placeholder meanings are as follows
+ * - TODO // {{package}}, {{simpleName}}, {{className}}, {{qualifiedName}} をサポート予定。
+ *
+ *
+ * @property displayName {{package}}, {{simpleName}}, {{className}}, {{qualifiedName}} or a custom string. It does not have to match other Previews as it does not function like an ID. `. Each segment separated by ` is considered a group.
  * @property ignore if true, Compose Preview Lab Gradle Plugin don't collect this Preview.
  */
 @Retention(AnnotationRetention.BINARY)
