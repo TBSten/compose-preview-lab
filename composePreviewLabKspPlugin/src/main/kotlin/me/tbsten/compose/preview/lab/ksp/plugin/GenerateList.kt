@@ -27,7 +27,10 @@ internal fun generateList(
         it.appendLine()
         it.appendLine("import me.tbsten.compose.preview.lab.CollectedPreview")
         it.appendLine()
-        it.appendLine("${if (publicPreviewList) "public" else "internal"} val previews = listOf<CollectedPreview>(")
+        it.appendLine(
+            "${if (publicPreviewList) "public" else "internal"} " +
+                    "val previews = listOf<CollectedPreview>("
+        )
         previews.forEach { preview ->
             it.appendLine("    // ${preview.fullBaseName}")
             it.appendLine("    CollectedPreview(")
