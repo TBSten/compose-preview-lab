@@ -44,7 +44,7 @@ import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.nullable
 
 val previewsForUiDebug = listOf<CollectedPreview>(
-    CollectedPreview("Fields", "") {
+    CollectedPreview("Fields", "src/commonMain/kotlin/me/tbsten/example/Fields.kt") {
         PreviewLab {
             SampleScreen(
                 title = "Fields",
@@ -143,7 +143,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
             }
         }
     },
-    CollectedPreview("Events", "") {
+    CollectedPreview("Events", "src/commonMain/kotlin/me/tbsten/example/Events.kt") {
         PreviewLab {
             SampleScreen(
                 title = "Events",
@@ -151,7 +151,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
             )
         }
     },
-    CollectedPreview("Layouts", "") {
+    CollectedPreview("Layouts", "src/commonMain/kotlin/me/tbsten/example/Layouts.kt") {
         PreviewLab {
             SampleScreen(
                 title = "Layouts",
@@ -159,7 +159,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
             )
         }
     },
-    CollectedPreview("ScreenSize", "") {
+    CollectedPreview("ScreenSize", "src/commonMain/kotlin/me/tbsten/example/ScreenSize.kt") {
         PreviewLab(
             screenSizes = ScreenSize.AllPresets,
         ) {
@@ -177,7 +177,10 @@ val previewsForUiDebug = listOf<CollectedPreview>(
             )
         }
     },
-    CollectedPreview("Without PreviewLab", "") {
+    CollectedPreview(
+        "Without PreviewLab",
+        "src/commonMain/kotlin/me/tbsten/example/WithoutPreviewLab.kt",
+    ) {
         Text("Without PreviewLab { }")
     },
 )
