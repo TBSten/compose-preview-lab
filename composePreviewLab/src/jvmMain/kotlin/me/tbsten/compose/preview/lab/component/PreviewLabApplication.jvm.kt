@@ -37,7 +37,7 @@ fun previewLabApplication(
     placement: WindowPlacement = WindowPlacement.Floating,
     isMinimized: Boolean = false,
     position: WindowPosition = WindowPosition.PlatformDefault,
-    width: Dp = 800.dp,
+    width: Dp = 840.dp,
     height: Dp = 600.dp,
 ) = application {
     Window(
