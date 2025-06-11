@@ -58,12 +58,13 @@ internal fun <V> SelectButton(
         onDismissRequest = { showMenu = false },
     ) {
         choices.forEachIndexed { index, item ->
+            val isSelected = item == value
             DropdownMenuItem(
                 text = {
                     Column(modifier = Modifier.padding(4.dp)) {
                         Text(
                             text = title(item),
-                            fontWeight = FontWeight.Bold,
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
                             style = MaterialTheme.typography.bodyLarge,
                         )
                         itemDetail(item)?.let {
@@ -78,8 +79,8 @@ internal fun <V> SelectButton(
                     onSelect(item)
                     showMenu = false
                 },
-                enabled = item != value,
-                leadingIcon = if (item == value) {
+                enabled = !isSelected,
+                leadingIcon = if (isSelected) {
                     @Composable {
                         Icon(
                             imageResource(Res.drawable.icon_check),
