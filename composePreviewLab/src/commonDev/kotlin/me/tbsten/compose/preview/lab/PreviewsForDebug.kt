@@ -44,98 +44,6 @@ import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.nullable
 
 val previewsForUiDebug = listOf<CollectedPreview>(
-    CollectedPreview("UI.Components.Button.Primary", "src/commonMain/kotlin/me/tbsten/example/UI/Components/Button.kt") {
-        PreviewLab {
-            SampleScreen(
-                title = "Primary Button",
-                onListItemClick = {},
-            ) {
-                LazyColumn(
-                    contentPadding = it.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    item {
-                        Button(onClick = {}) {
-                            Text("Primary Button")
-                        }
-                    }
-                }
-            }
-        }
-    },
-    CollectedPreview("UI.Components.Button.Secondary", "src/commonMain/kotlin/me/tbsten/example/UI/Components/Button.kt") {
-        PreviewLab {
-            SampleScreen(
-                title = "Secondary Button",
-                onListItemClick = {},
-            ) {
-                LazyColumn(
-                    contentPadding = it.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    item {
-                        Button(onClick = {}) {
-                            Text("Secondary Button")
-                        }
-                    }
-                }
-            }
-        }
-    },
-    CollectedPreview("UI.Components.Text.Heading", "src/commonMain/kotlin/me/tbsten/example/UI/Components/Text.kt") {
-        PreviewLab {
-            SampleScreen(
-                title = "Text Heading",
-                onListItemClick = {},
-            ) {
-                LazyColumn(
-                    contentPadding = it.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    item {
-                        Text(
-                            "Heading Text",
-                            style = MaterialTheme.typography.headlineMedium
-                        )
-                    }
-                }
-            }
-        }
-    },
-    CollectedPreview("Screens.Login.Form", "src/commonMain/kotlin/me/tbsten/example/Screens/Login.kt") {
-        PreviewLab {
-            SampleScreen(
-                title = "Login Form",
-                onListItemClick = {},
-            ) {
-                LazyColumn(
-                    contentPadding = it.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    item {
-                        Text("Login Form Preview")
-                    }
-                }
-            }
-        }
-    },
-    CollectedPreview("Screens.Profile.Settings", "src/commonMain/kotlin/me/tbsten/example/Screens/Profile.kt") {
-        PreviewLab {
-            SampleScreen(
-                title = "Profile Settings",
-                onListItemClick = {},
-            ) {
-                LazyColumn(
-                    contentPadding = it.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    item {
-                        Text("Profile Settings Preview")
-                    }
-                }
-            }
-        }
-    },
     CollectedPreview("Fields", "src/commonMain/kotlin/me/tbsten/example/Fields.kt") {
         PreviewLab {
             SampleScreen(
@@ -274,6 +182,98 @@ val previewsForUiDebug = listOf<CollectedPreview>(
         "src/commonMain/kotlin/me/tbsten/example/WithoutPreviewLab.kt",
     ) {
         Text("Without PreviewLab { }")
+    },
+    CollectedPreview("com.example.ui.components.ButtonPrimary", "src/commonMain/kotlin/com/example/ui/components/ButtonPrimary.kt") {
+        PreviewLab {
+            SampleScreen(
+                title = "Primary Button",
+                onListItemClick = {},
+            ) {
+                LazyColumn(
+                    contentPadding = it.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    item {
+                        Button(onClick = {}) {
+                            Text("Primary Button")
+                        }
+                    }
+                }
+            }
+        }
+    },
+    CollectedPreview("com.example.ui.components.ButtonSecondary", "src/commonMain/kotlin/com/example/ui/components/ButtonSecondary.kt") {
+        PreviewLab {
+            SampleScreen(
+                title = "Secondary Button",
+                onListItemClick = {},
+            ) {
+                LazyColumn(
+                    contentPadding = it.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    item {
+                        Button(onClick = {}) {
+                            Text("Secondary Button")
+                        }
+                    }
+                }
+            }
+        }
+    },
+    CollectedPreview("com.example.ui.components.text.HeadingText", "src/commonMain/kotlin/com/example/ui/components/text/HeadingText.kt") {
+        PreviewLab {
+            SampleScreen(
+                title = "Text Heading",
+                onListItemClick = {},
+            ) {
+                LazyColumn(
+                    contentPadding = it.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    item {
+                        Text(
+                            "Heading Text",
+                            style = MaterialTheme.typography.headlineMedium
+                        )
+                    }
+                }
+            }
+        }
+    },
+    CollectedPreview("com.example.screens.login.LoginForm", "src/commonMain/kotlin/com/example/screens/login/LoginForm.kt") {
+        PreviewLab {
+            SampleScreen(
+                title = "Login Form",
+                onListItemClick = {},
+            ) {
+                LazyColumn(
+                    contentPadding = it.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    item {
+                        Text("Login Form Preview")
+                    }
+                }
+            }
+        }
+    },
+    CollectedPreview("com.example.screens.profile.ProfileSettings", "src/commonMain/kotlin/com/example/screens/profile/ProfileSettings.kt") {
+        PreviewLab {
+            SampleScreen(
+                title = "Profile Settings",
+                onListItemClick = {},
+            ) {
+                LazyColumn(
+                    contentPadding = it.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    item {
+                        Text("Profile Settings Preview")
+                    }
+                }
+            }
+        }
     },
 )
 

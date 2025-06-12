@@ -60,6 +60,10 @@ kotlin {
         jsMain.dependencies {
             implementation(compose.html.core)
         }
+        
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+        }
     }
 }
 

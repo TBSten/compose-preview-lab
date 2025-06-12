@@ -13,26 +13,22 @@ sealed class PreviewGroupItem {
 
 fun List<CollectedPreview>.groupByDisplayName(): List<PreviewGroupItem> {
     val rootGroups = mutableMapOf<String, MutableList<PreviewGroupItem>>()
+    val topLevelPreviews = mutableListOf<PreviewGroupItem>()
     
     this.forEachIndexed { index, preview ->
         val segments = preview.displayName.split(".")
         
         if (segments.size == 1) {
-            val groupName = "Root"
-            rootGroups.getOrPut(groupName) { mutableListOf() }
-                .add(PreviewGroupItem.Preview(preview, index))
+            topLevelPreviews.add(PreviewGroupItem.Preview(preview, index))
         } else {
             buildHierarchy(segments, preview, index, rootGroups)
         }
     }
     
     val result = mutableListOf<PreviewGroupItem>()
+    result.addAll(topLevelPreviews)
     rootGroups.forEach { (groupName, items) ->
-        if (groupName == "Root" && rootGroups.size == 1) {
-            result.addAll(items)
-        } else {
-            result.add(PreviewGroupItem.Group(PreviewGroup(groupName, collapseSingleChildGroups(items))))
-        }
+        result.add(PreviewGroupItem.Group(PreviewGroup(groupName, collapseSingleChildGroups(items))))
     }
     return result
 }

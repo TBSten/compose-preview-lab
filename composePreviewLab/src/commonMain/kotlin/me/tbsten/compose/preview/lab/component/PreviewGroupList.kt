@@ -1,5 +1,8 @@
 package me.tbsten.compose.preview.lab.component
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -109,7 +112,11 @@ private fun PreviewGroupHeader(
             }
         )
         
-        if (isExpanded) {
+        AnimatedVisibility(
+            visible = isExpanded,
+            enter = expandVertically(),
+            exit = shrinkVertically()
+        ) {
             PreviewGroupList(
                 items = group.children,
                 selectedPreviewIndex = selectedPreviewIndex,
