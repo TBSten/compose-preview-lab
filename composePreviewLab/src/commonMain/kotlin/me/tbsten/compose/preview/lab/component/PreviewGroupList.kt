@@ -1,6 +1,9 @@
 package me.tbsten.compose.preview.lab.component
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.EaseOutExpo
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Column
@@ -15,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -41,6 +45,7 @@ fun PreviewGroupList(
                             selectedPreviewIndex = selectedPreviewIndex
                         )
                     }
+
                     is PreviewGroupItem.Preview -> {
                         CommonListItem(
                             title = item.preview.displayName.substringAfterLast('.'),
@@ -64,6 +69,7 @@ fun PreviewGroupList(
                             selectedPreviewIndex = selectedPreviewIndex
                         )
                     }
+
                     is PreviewGroupItem.Preview -> {
                         CommonListItem(
                             title = item.preview.displayName.substringAfterLast('.'),
@@ -87,7 +93,7 @@ private fun PreviewGroupHeader(
     modifier: Modifier = Modifier
 ) {
     var isExpanded by remember { mutableStateOf(group.isExpanded) }
-    
+
     Column(modifier = modifier) {
         CommonListItem(
             title = group.name,
@@ -96,26 +102,28 @@ private fun PreviewGroupHeader(
             modifier = Modifier
                 .padding(start = (level * 16).dp)
                 .semantics {
-                    contentDescription = if (isExpanded) "Expanded: ${group.name}" else "Collapsed: ${group.name}"
+                    contentDescription =
+                        if (isExpanded) "Expanded: ${group.name}" else "Collapsed: ${group.name}"
                 },
             leadingContent = {
                 Text(
-                    text = if (isExpanded) "▼" else "▶",
+                    text = "▼",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                     modifier = Modifier
                         .padding(end = 8.dp)
+                        .rotate(animateFloatAsState(if (isExpanded) 0f else -90f).value)
                         .semantics {
                             contentDescription = if (isExpanded) "Expanded" else "Collapsed"
                         }
                 )
             }
         )
-        
+
         AnimatedVisibility(
             visible = isExpanded,
-            enter = expandVertically(),
-            exit = shrinkVertically()
+            enter = expandVertically(tween(200, easing = EaseOutExpo)),
+            exit = shrinkVertically(tween(200, easing = EaseOutExpo))
         ) {
             PreviewGroupList(
                 items = group.children,
