@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.component.CommonListItem
 import me.tbsten.compose.preview.lab.component.NoPreview
+import me.tbsten.compose.preview.lab.component.PreviewGroupList
+import me.tbsten.compose.preview.lab.groupByDisplayName
 import me.tbsten.compose.preview.lab.theme.AppTheme
 
 @Composable
@@ -35,6 +37,7 @@ fun PreviewLabRoot(
         LocalOpenFileHandler provides openFileHandler,
     ) {
         val previewList = remember { previews.toList() }
+        val groupedPreviews = remember { previewList.groupByDisplayName() }
 
         Box(
             modifier = Modifier
@@ -50,16 +53,13 @@ fun PreviewLabRoot(
                         .zIndex(2f)
                         .verticalScroll(rememberScrollState())
                 ) {
-                    previewList.forEachIndexed { index, preview ->
-                        val displayName = preview.displayName
-                        CommonListItem(
-                            title = displayName,
-                            isSelected = index == state.selectedPreviewIndex,
-                            onSelect = {
-                                state.selectedPreviewIndex = index
-                            },
-                        )
-                    }
+                    PreviewGroupList(
+                        items = groupedPreviews,
+                        selectedPreviewIndex = state.selectedPreviewIndex,
+                        onPreviewSelect = { index ->
+                            state.selectedPreviewIndex = index
+                        }
+                    )
                 }
                 VerticalDivider(
                     modifier = Modifier
