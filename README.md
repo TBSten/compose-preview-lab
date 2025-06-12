@@ -2,7 +2,7 @@
 
 # Compose Preview Lab
 
-<img src="./cover.png" width="1024" />
+<img src="./docs/cover.png" width="1024" />
 
 > [!IMPORTANT]
 > This project is still a work in progress, and its API is unstable and may change without any
@@ -95,7 +95,7 @@ private fun MyButtonPreview() = PreviewLab {
 }
 ```
 
-<img src="./demo.gif" width="350" />
+<img src="./docs/demo.gif" width="350" />
 
 ## Three core concepts
 
