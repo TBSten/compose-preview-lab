@@ -1,0 +1,100 @@
+package me.tbsten.compose.preview.lab
+
+data class PreviewGroup(
+    val name: String,
+    val children: List<PreviewGroupItem> = emptyList(),
+    val isExpanded: Boolean = true
+)
+
+sealed class PreviewGroupItem {
+    data class Group(val group: PreviewGroup) : PreviewGroupItem()
+    data class Preview(val preview: CollectedPreview, val index: Int) : PreviewGroupItem()
+}
+
+fun List<CollectedPreview>.groupByDisplayName(): List<PreviewGroupItem> {
+    val rootGroups = mutableMapOf<String, MutableList<PreviewGroupItem>>()
+    val topLevelPreviews = mutableListOf<PreviewGroupItem>()
+    
+    this.forEachIndexed { index, preview ->
+        val segments = preview.displayName.split(".")
+        
+        if (segments.size == 1) {
+            topLevelPreviews.add(PreviewGroupItem.Preview(preview, index))
+        } else {
+            buildHierarchy(segments, preview, index, rootGroups)
+        }
+    }
+    
+    val result = mutableListOf<PreviewGroupItem>()
+    result.addAll(topLevelPreviews)
+    rootGroups.forEach { (groupName, items) ->
+        result.add(PreviewGroupItem.Group(PreviewGroup(groupName, collapseSingleChildGroups(items))))
+    }
+    return result
+}
+
+private fun buildHierarchy(
+    segments: List<String>,
+    preview: CollectedPreview,
+    index: Int,
+    rootGroups: MutableMap<String, MutableList<PreviewGroupItem>>
+) {
+    if (segments.isEmpty()) return
+    
+    val currentSegment = segments.first()
+    val remainingSegments = segments.drop(1)
+    
+    val currentGroup = rootGroups.getOrPut(currentSegment) { mutableListOf() }
+    
+    if (remainingSegments.isEmpty()) {
+        currentGroup.add(PreviewGroupItem.Preview(preview, index))
+    } else {
+        val existingSubGroup = currentGroup.find { item ->
+            item is PreviewGroupItem.Group && item.group.name == remainingSegments.first()
+        } as? PreviewGroupItem.Group
+        
+        if (existingSubGroup == null) {
+            val subGroups = mutableMapOf<String, MutableList<PreviewGroupItem>>()
+            buildHierarchy(remainingSegments, preview, index, subGroups)
+            
+            subGroups.forEach { (subGroupName, subItems) ->
+                currentGroup.add(PreviewGroupItem.Group(PreviewGroup(subGroupName, subItems)))
+            }
+        } else {
+            val updatedSubGroup = existingSubGroup.group
+            val subGroups = mutableMapOf<String, MutableList<PreviewGroupItem>>()
+            subGroups[updatedSubGroup.name] = updatedSubGroup.children.toMutableList()
+            buildHierarchy(remainingSegments, preview, index, subGroups)
+            
+            val updatedIndex = currentGroup.indexOf(existingSubGroup)
+            currentGroup[updatedIndex] = PreviewGroupItem.Group(
+                updatedSubGroup.copy(children = subGroups[updatedSubGroup.name] ?: emptyList())
+            )
+        }
+    }
+}
+
+private fun collapseSingleChildGroups(items: List<PreviewGroupItem>): List<PreviewGroupItem> {
+    return items.map { item ->
+        when (item) {
+            is PreviewGroupItem.Group -> {
+                val group = item.group
+                val collapsedChildren = collapseSingleChildGroups(group.children)
+                
+                if (collapsedChildren.size == 1 && collapsedChildren.first() is PreviewGroupItem.Group) {
+                    val childGroup = (collapsedChildren.first() as PreviewGroupItem.Group).group
+                    PreviewGroupItem.Group(
+                        PreviewGroup(
+                            name = "${group.name}.${childGroup.name}",
+                            children = childGroup.children,
+                            isExpanded = group.isExpanded
+                        )
+                    )
+                } else {
+                    PreviewGroupItem.Group(group.copy(children = collapsedChildren))
+                }
+            }
+            is PreviewGroupItem.Preview -> item
+        }
+    }
+}
