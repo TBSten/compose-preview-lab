@@ -43,7 +43,7 @@ fun PreviewGroupList(
                     }
                     is PreviewGroupItem.Preview -> {
                         CommonListItem(
-                            title = item.preview.displayName,
+                            title = item.preview.displayName.substringAfterLast('.'),
                             isSelected = item.index == selectedPreviewIndex,
                             onSelect = { onPreviewSelect(item.index) },
                             modifier = Modifier.padding(start = (level * 16).dp)
@@ -66,7 +66,7 @@ fun PreviewGroupList(
                     }
                     is PreviewGroupItem.Preview -> {
                         CommonListItem(
-                            title = item.preview.displayName,
+                            title = item.preview.displayName.substringAfterLast('.'),
                             isSelected = item.index == selectedPreviewIndex,
                             onSelect = { onPreviewSelect(item.index) },
                             modifier = Modifier.padding(start = (level * 16).dp)
