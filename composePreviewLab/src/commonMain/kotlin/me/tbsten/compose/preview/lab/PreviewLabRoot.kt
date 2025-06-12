@@ -37,7 +37,7 @@ fun PreviewLabRoot(
         LocalOpenFileHandler provides openFileHandler,
     ) {
         val previewList = remember { previews.toList() }
-        val groupedPreviews = remember { previewList.groupByDisplayName() }
+        val groupedPreviews = remember(previewList) { previewList.groupByDisplayName() }
 
         Box(
             modifier = Modifier

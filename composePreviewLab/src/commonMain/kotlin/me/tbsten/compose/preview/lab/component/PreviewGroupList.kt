@@ -2,6 +2,8 @@ package me.tbsten.compose.preview.lab.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,6 +12,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.PreviewGroup
 import me.tbsten.compose.preview.lab.PreviewGroupItem
@@ -22,24 +26,49 @@ fun PreviewGroupList(
     modifier: Modifier = Modifier,
     level: Int = 0
 ) {
-    Column(modifier = modifier) {
-        items.forEach { item ->
-            when (item) {
-                is PreviewGroupItem.Group -> {
-                    PreviewGroupHeader(
-                        group = item.group,
-                        level = level,
-                        onPreviewSelect = onPreviewSelect,
-                        selectedPreviewIndex = selectedPreviewIndex
-                    )
+    if (level == 0 && items.size > 10) {
+        LazyColumn(modifier = modifier) {
+            items(items) { item ->
+                when (item) {
+                    is PreviewGroupItem.Group -> {
+                        PreviewGroupHeader(
+                            group = item.group,
+                            level = level,
+                            onPreviewSelect = onPreviewSelect,
+                            selectedPreviewIndex = selectedPreviewIndex
+                        )
+                    }
+                    is PreviewGroupItem.Preview -> {
+                        CommonListItem(
+                            title = item.preview.displayName,
+                            isSelected = item.index == selectedPreviewIndex,
+                            onSelect = { onPreviewSelect(item.index) },
+                            modifier = Modifier.padding(start = (level * 16).dp)
+                        )
+                    }
                 }
-                is PreviewGroupItem.Preview -> {
-                    CommonListItem(
-                        title = item.preview.displayName,
-                        isSelected = item.index == selectedPreviewIndex,
-                        onSelect = { onPreviewSelect(item.index) },
-                        modifier = Modifier.padding(start = (level * 16).dp)
-                    )
+            }
+        }
+    } else {
+        Column(modifier = modifier) {
+            items.forEach { item ->
+                when (item) {
+                    is PreviewGroupItem.Group -> {
+                        PreviewGroupHeader(
+                            group = item.group,
+                            level = level,
+                            onPreviewSelect = onPreviewSelect,
+                            selectedPreviewIndex = selectedPreviewIndex
+                        )
+                    }
+                    is PreviewGroupItem.Preview -> {
+                        CommonListItem(
+                            title = item.preview.displayName,
+                            isSelected = item.index == selectedPreviewIndex,
+                            onSelect = { onPreviewSelect(item.index) },
+                            modifier = Modifier.padding(start = (level * 16).dp)
+                        )
+                    }
                 }
             }
         }
@@ -61,13 +90,21 @@ private fun PreviewGroupHeader(
             title = group.name,
             isSelected = false,
             onSelect = { isExpanded = !isExpanded },
-            modifier = Modifier.padding(start = (level * 16).dp),
+            modifier = Modifier
+                .padding(start = (level * 16).dp)
+                .semantics {
+                    contentDescription = if (isExpanded) "Expanded: ${group.name}" else "Collapsed: ${group.name}"
+                },
             leadingContent = {
                 Text(
                     text = if (isExpanded) "▼" else "▶",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                    modifier = Modifier.padding(end = 8.dp)
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                        .semantics {
+                            contentDescription = if (isExpanded) "Expanded" else "Collapsed"
+                        }
                 )
             }
         )
