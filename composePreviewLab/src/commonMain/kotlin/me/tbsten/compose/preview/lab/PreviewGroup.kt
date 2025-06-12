@@ -31,7 +31,7 @@ fun List<CollectedPreview>.groupByDisplayName(): List<PreviewGroupItem> {
         if (groupName == "Root" && rootGroups.size == 1) {
             result.addAll(items)
         } else {
-            result.add(PreviewGroupItem.Group(PreviewGroup(groupName, items)))
+            result.add(PreviewGroupItem.Group(PreviewGroup(groupName, collapseSingleChildGroups(items))))
         }
     }
     return result
@@ -74,6 +74,31 @@ private fun buildHierarchy(
             currentGroup[updatedIndex] = PreviewGroupItem.Group(
                 updatedSubGroup.copy(children = subGroups[updatedSubGroup.name] ?: emptyList())
             )
+        }
+    }
+}
+
+private fun collapseSingleChildGroups(items: List<PreviewGroupItem>): List<PreviewGroupItem> {
+    return items.map { item ->
+        when (item) {
+            is PreviewGroupItem.Group -> {
+                val group = item.group
+                val collapsedChildren = collapseSingleChildGroups(group.children)
+                
+                if (collapsedChildren.size == 1 && collapsedChildren.first() is PreviewGroupItem.Group) {
+                    val childGroup = (collapsedChildren.first() as PreviewGroupItem.Group).group
+                    PreviewGroupItem.Group(
+                        PreviewGroup(
+                            name = "${group.name}.${childGroup.name}",
+                            children = childGroup.children,
+                            isExpanded = group.isExpanded
+                        )
+                    )
+                } else {
+                    PreviewGroupItem.Group(group.copy(children = collapsedChildren))
+                }
+            }
+            is PreviewGroupItem.Preview -> item
         }
     }
 }
