@@ -27,7 +27,7 @@ internal fun CommonListItem(
     isSelected = isSelected,
     onSelect = onSelect,
     modifier = modifier,
-    content = { Text(title, style = MaterialTheme.typography.bodyMedium) },
+    content = { Text(title, style = MaterialTheme.typography.bodySmall) },
 )
 
 @Composable
@@ -43,7 +43,7 @@ internal fun CommonListItem(
     modifier = modifier,
     content = {
         leadingContent?.invoke()
-        Text(title, style = MaterialTheme.typography.bodyMedium)
+        Text(title, style = MaterialTheme.typography.bodySmall)
     },
 )
 
