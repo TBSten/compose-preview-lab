@@ -15,6 +15,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -182,6 +183,113 @@ val previewsForUiDebug = listOf<CollectedPreview>(
         "src/commonMain/kotlin/me/tbsten/example/WithoutPreviewLab.kt",
     ) {
         Text("Without PreviewLab { }")
+    },
+    CollectedPreview(
+        "com.example.ui.components.ButtonPrimary",
+        "src/commonMain/kotlin/com/example/ui/components/ButtonPrimary.kt"
+    ) {
+        PreviewLab {
+            SampleScreen(
+                title = "Primary Button",
+                onListItemClick = {},
+            ) {
+                LazyColumn(
+                    contentPadding = it.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    item {
+                        Button(onClick = {}) {
+                            Text("Primary Button")
+                        }
+                    }
+                }
+            }
+        }
+    },
+    CollectedPreview(
+        "com.example.ui.components.ButtonSecondary",
+        "src/commonMain/kotlin/com/example/ui/components/ButtonSecondary.kt"
+    ) {
+        PreviewLab {
+            SampleScreen(
+                title = "Secondary Button",
+                onListItemClick = {},
+            ) {
+                LazyColumn(
+                    contentPadding = it.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    item {
+                        OutlinedButton(onClick = { onEvent("SecondaryButton.onClick") }) {
+                            Text("Secondary Button")
+                        }
+                    }
+                }
+            }
+        }
+    },
+    CollectedPreview(
+        "com.example.ui.components.text.HeadingText",
+        "src/commonMain/kotlin/com/example/ui/components/text/HeadingText.kt"
+    ) {
+        PreviewLab {
+            SampleScreen(
+                title = "Text Heading",
+                onListItemClick = {},
+            ) {
+                LazyColumn(
+                    contentPadding = it.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    item {
+                        Text(
+                            "Heading Text",
+                            style = MaterialTheme.typography.headlineMedium
+                        )
+                    }
+                }
+            }
+        }
+    },
+    CollectedPreview(
+        "com.example.screens.login.LoginForm",
+        "src/commonMain/kotlin/com/example/screens/login/LoginForm.kt"
+    ) {
+        PreviewLab {
+            SampleScreen(
+                title = "Login Form",
+                onListItemClick = {},
+            ) {
+                LazyColumn(
+                    contentPadding = it.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    item {
+                        Text("Login Form Preview")
+                    }
+                }
+            }
+        }
+    },
+    CollectedPreview(
+        "com.example.screens.profile.ProfileSettings",
+        "src/commonMain/kotlin/com/example/screens/profile/ProfileSettings.kt"
+    ) {
+        PreviewLab {
+            SampleScreen(
+                title = "Profile Settings",
+                onListItemClick = {},
+            ) {
+                LazyColumn(
+                    contentPadding = it.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    item {
+                        Text("Profile Settings Preview")
+                    }
+                }
+            }
+        }
     },
 )
 
