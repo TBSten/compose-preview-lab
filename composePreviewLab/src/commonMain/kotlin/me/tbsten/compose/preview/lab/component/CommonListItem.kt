@@ -32,6 +32,23 @@ internal fun CommonListItem(
 
 @Composable
 internal fun CommonListItem(
+    title: String,
+    isSelected: Boolean,
+    onSelect: (() -> Unit)? = null,
+    modifier: Modifier = Modifier,
+    leadingContent: @Composable (() -> Unit)? = null,
+) = CommonListItem(
+    isSelected = isSelected,
+    onSelect = onSelect,
+    modifier = modifier,
+    content = {
+        leadingContent?.invoke()
+        Text(title, style = MaterialTheme.typography.bodyMedium)
+    },
+)
+
+@Composable
+internal fun CommonListItem(
     isSelected: Boolean,
     onSelect: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
@@ -52,7 +69,7 @@ internal fun CommonListItem(
                     )
                 }.padding(start = selectedBorderWidth.dp)
             }
-            .padding(vertical = 16.dp, horizontal = 8.dp)
+            .padding(vertical = 8.dp, horizontal = 12.dp)
             .fillMaxWidth()
     ) {
         content()

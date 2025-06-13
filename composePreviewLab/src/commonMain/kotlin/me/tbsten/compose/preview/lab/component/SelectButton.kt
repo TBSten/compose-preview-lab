@@ -65,7 +65,7 @@ internal fun <V> SelectButton(
                         Text(
                             text = title(item),
                             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                            style = MaterialTheme.typography.bodyLarge,
+                            style = MaterialTheme.typography.bodySmall,
                         )
                         itemDetail(item)?.let {
                             Text(
