@@ -44,17 +44,61 @@ import me.tbsten.compose.preview.lab.field.ScreenSizeField
 import me.tbsten.compose.preview.lab.theme.AppTheme
 import me.tbsten.compose.preview.lab.util.toDpOffset
 
-@Composable
-fun PreviewLab(
-    state: PreviewLabState = rememberSaveable(saver = PreviewLabState.Saver) { PreviewLabState() },
-    maxWidth: Dp,
-    maxHeight: Dp,
-    content: @Composable PreviewLabScope.() -> Unit,
-) = PreviewLab(
-    state = state,
-    screenSizes = listOf(ScreenSize(maxWidth, maxHeight)),
-    content = content,
-)
+class PreviewLab {
+    @Composable
+    operator fun invoke(
+        state: PreviewLabState = rememberSaveable(saver = PreviewLabState.Saver) { PreviewLabState() },
+        maxWidth: Dp,
+        maxHeight: Dp,
+        content: @Composable PreviewLabScope.() -> Unit,
+    ) = invoke(
+        state = state,
+        screenSizes = listOf(ScreenSize(maxWidth, maxHeight)),
+        content = content,
+    )
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    operator fun invoke(
+        state: PreviewLabState = rememberSaveable(saver = PreviewLabState.Saver) { PreviewLabState() },
+        screenSizes: List<ScreenSize> = ScreenSize.SmartphoneAndDesktops,
+        content: @Composable PreviewLabScope.() -> Unit,
+    ) = AppTheme {
+        Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
+            PreviewLabHeader(
+                scale = state.contentScale,
+                onScaleChange = { state.contentScale = it },
+            ) {
+                CompositionLocalProvider(
+                    LocalPreviewLabState provides state,
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                    ) {
+                        ContentSection(
+                            state = state,
+                            screenSizes = screenSizes,
+                            content = content,
+                            modifier = Modifier
+                                .weight(1f)
+                                .zIndex(-1f)
+                        )
+
+                        Divider()
+
+                        SideTabsSection(
+                            state = state,
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+fun createPreviewLab(): PreviewLab = PreviewLab()
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,39 +107,26 @@ fun PreviewLab(
     state: PreviewLabState = rememberSaveable(saver = PreviewLabState.Saver) { PreviewLabState() },
     screenSizes: List<ScreenSize> = ScreenSize.SmartphoneAndDesktops,
     content: @Composable PreviewLabScope.() -> Unit,
-) = AppTheme {
-    Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
-        PreviewLabHeader(
-            scale = state.contentScale,
-            onScaleChange = { state.contentScale = it },
-        ) {
-            CompositionLocalProvider(
-                LocalPreviewLabState provides state,
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                ) {
-                    ContentSection(
-                        state = state,
-                        screenSizes = screenSizes,
-                        content = content,
-                        modifier = Modifier
-                            .weight(1f)
-                            .zIndex(-1f)
-                    )
+) = defaultPreviewLab(
+    state = state,
+    screenSizes = screenSizes,
+    content = content,
+)
 
-                    Divider()
+@Composable
+fun PreviewLab(
+    state: PreviewLabState = rememberSaveable(saver = PreviewLabState.Saver) { PreviewLabState() },
+    maxWidth: Dp,
+    maxHeight: Dp,
+    content: @Composable PreviewLabScope.() -> Unit,
+) = defaultPreviewLab(
+    state = state,
+    maxWidth = maxWidth,
+    maxHeight = maxHeight,
+    content = content,
+)
 
-                    SideTabsSection(
-                        state = state,
-                    )
-                }
-            }
-        }
-    }
-}
+private val defaultPreviewLab = PreviewLab()
 
 internal val LocalPreviewLabState = compositionLocalOf<PreviewLabState?> { null }
 
