@@ -28,6 +28,7 @@ internal sealed interface PreviewLabLayoutNode {
     ) : PreviewLabLayoutNode
 }
 
+@Suppress("ktlint:standard:function-naming")
 internal fun PreviewLabLayoutNode(id: LayoutNodeId, label: String, offsetInAppRoot: DpOffset?, size: DpSize?,) =
     if (offsetInAppRoot != null && size != null) {
         PreviewLabLayoutNode.Resolved(

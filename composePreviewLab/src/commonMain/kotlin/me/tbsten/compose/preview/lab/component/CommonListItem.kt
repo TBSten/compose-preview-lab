@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.util.thenIf
 import me.tbsten.compose.preview.lab.util.thenIfNotNull
 
-private const val selectedBorderWidth = 12
+private const val SelectedBorderWidth = 12
 
 @Composable
 internal fun CommonListItem(
@@ -63,14 +63,14 @@ internal fun CommonListItem(
                     drawContent()
                     drawLine(
                         color = Color.Gray,
-                        strokeWidth = selectedBorderWidth.dp.toPx(),
+                        strokeWidth = SelectedBorderWidth.dp.toPx(),
                         start = Offset(0f, 0f),
                         end = Offset(0f, size.height),
                     )
-                }.padding(start = selectedBorderWidth.dp)
+                }.padding(start = SelectedBorderWidth.dp)
             }
             .padding(vertical = 8.dp, horizontal = 12.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         content()
     }
