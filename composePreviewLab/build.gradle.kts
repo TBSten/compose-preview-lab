@@ -51,6 +51,9 @@ kotlin {
             // TODO migrate retain { } (compose runtime api)
             implementation("io.github.takahirom.rin:rin:0.3.0")
         }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+        }
         androidMain.dependencies {
             implementation(compose.uiTooling)
         }
