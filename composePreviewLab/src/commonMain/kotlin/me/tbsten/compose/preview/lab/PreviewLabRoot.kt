@@ -58,21 +58,24 @@ fun PreviewLabRoot(
                 )
 
                 AnimatedContent(
-                    targetState = state.selectedPreviewIndex,
+                    targetState = state.selectedPreview,
                     transitionSpec = {
                         fadeIn() togetherWith fadeOut()
                     },
                     modifier = Modifier
                         .zIndex(0f)
-                ) { selectedIndex ->
-                    val preview = previewList.getOrNull(selectedIndex)?.content
+                ) { selectedPreview ->
+                    val preview = selectedPreview?.content
 
                     Box(
                         modifier = Modifier.fillMaxSize(),
                     ) {
-                        preview
-                            ?.invoke()
-                            ?: NoPreview()
+                        if (previewList.isEmpty()) {
+                            NoPreview()
+                        } else {
+                            preview?.invoke()
+                                ?: NoSelectedPreview()
+                        }
                     }
                 }
             }
