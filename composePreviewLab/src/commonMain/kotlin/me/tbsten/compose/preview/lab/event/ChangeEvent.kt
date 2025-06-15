@@ -5,11 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import me.tbsten.compose.preview.lab.PreviewLabScope
 
 @Composable
-fun <Value> PreviewLabScope.ChangeEvent(
-    value: Value,
-    title: String,
-    description: String? = null,
-) {
+fun <Value> PreviewLabScope.ChangeEvent(value: Value, title: String, description: String? = null,) {
     LaunchedEffect(value) {
         onEvent(
             title = title,
@@ -19,11 +15,7 @@ fun <Value> PreviewLabScope.ChangeEvent(
 }
 
 @Composable
-fun <Value> PreviewLabScope.ChangeEvent(
-    value: Value,
-    title: (Value) -> String,
-    description: (Value) -> String? = { null },
-) {
+fun <Value> PreviewLabScope.ChangeEvent(value: Value, title: (Value) -> String, description: (Value) -> String? = { null },) {
     LaunchedEffect(value) {
         onEvent(
             title = title(value),

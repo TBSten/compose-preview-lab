@@ -13,11 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-internal fun CommonListHeader(
-    title: String,
-    actions: @Composable () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+internal fun CommonListHeader(title: String, actions: @Composable () -> Unit, modifier: Modifier = Modifier,) {
     Column(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

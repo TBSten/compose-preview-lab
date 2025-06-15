@@ -5,15 +5,12 @@ import org.jetbrains.kotlin.psi.KtDeclaration
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 
-internal class FunctionCollector(
-    private val funName: String,
-) : KtTreeVisitorVoid() {
+internal class FunctionCollector(private val funName: String,) : KtTreeVisitorVoid() {
     val requiredDeclarations = mutableListOf<KtNamedFunction>()
 
     override fun visitDeclaration(dcl: KtDeclaration) {
         val shouldBeCopied = when (dcl) {
             is KtNamedFunction -> dcl.isTopLevel && dcl.name == funName
-
             else -> false
         }
 

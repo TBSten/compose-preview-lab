@@ -75,12 +75,7 @@ class PreviewLabScope internal constructor() {
             .also { if (it != -1) layoutNodes.removeAt(it) }
     }
 
-    internal fun putLayoutNode(
-        id: Long,
-        label: String,
-        offsetInAppRoot: DpOffset?,
-        size: DpSize?,
-    ) {
+    internal fun putLayoutNode(id: Long, label: String, offsetInAppRoot: DpOffset?, size: DpSize?,) {
         val nodeIndex = layoutNodes.indexOfFirst { it.id == id }
         if (nodeIndex == -1) {
             addLayoutNode(
@@ -102,9 +97,7 @@ class PreviewLabScope internal constructor() {
         }
     }
 
-    internal fun toggleLayoutNodeSelect(
-        id: LayoutNodeId,
-    ) {
+    internal fun toggleLayoutNodeSelect(id: LayoutNodeId,) {
         if (selectedLayoutNodeIds.contains(id)) {
             selectedLayoutNodeIds.remove(id)
         } else {
@@ -130,9 +123,7 @@ class PreviewLabScope internal constructor() {
 }
 
 @Composable
-fun Modifier.layoutLab(
-    label: String,
-): Modifier = composed(
+fun Modifier.layoutLab(label: String,): Modifier = composed(
     inspectorInfo = {
         name = "layoutLab"
         properties["label"] = label

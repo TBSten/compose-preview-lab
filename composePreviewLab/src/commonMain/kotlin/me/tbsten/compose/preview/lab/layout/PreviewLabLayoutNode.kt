@@ -28,23 +28,19 @@ internal sealed interface PreviewLabLayoutNode {
     ) : PreviewLabLayoutNode
 }
 
-internal fun PreviewLabLayoutNode(
-    id: LayoutNodeId,
-    label: String,
-    offsetInAppRoot: DpOffset?,
-    size: DpSize?,
-) = if (offsetInAppRoot != null && size != null) {
-    PreviewLabLayoutNode.Resolved(
-        id = id,
-        label = label,
-        offsetInAppRoot = offsetInAppRoot,
-        size = size,
-    )
-} else {
-    PreviewLabLayoutNode.Unresolved(
-        id = id,
-        label = label,
-        offsetInAppRoot = offsetInAppRoot,
-        size = size,
-    )
-}
+internal fun PreviewLabLayoutNode(id: LayoutNodeId, label: String, offsetInAppRoot: DpOffset?, size: DpSize?,) =
+    if (offsetInAppRoot != null && size != null) {
+        PreviewLabLayoutNode.Resolved(
+            id = id,
+            label = label,
+            offsetInAppRoot = offsetInAppRoot,
+            size = size,
+        )
+    } else {
+        PreviewLabLayoutNode.Unresolved(
+            id = id,
+            label = label,
+            offsetInAppRoot = offsetInAppRoot,
+            size = size,
+        )
+    }

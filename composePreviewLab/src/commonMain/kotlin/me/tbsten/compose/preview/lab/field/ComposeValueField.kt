@@ -16,43 +16,37 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.tbsten.compose.preview.lab.field.NumberField.InputType
 
-class DpField(
-    label: String,
-    initialValue: Dp,
-) : TransformField<Float, Dp>(
-    baseField = FloatField(
-        label = label,
-        initialValue = initialValue.value,
-        inputType = InputType.TextField(
-            suffix = { Text("dp") },
-        )
-    ),
-    transform = { it.dp },
-    reverse = { it.value },
-)
+class DpField(label: String, initialValue: Dp,) :
+    TransformField<Float, Dp>(
+        baseField = FloatField(
+            label = label,
+            initialValue = initialValue.value,
+            inputType = InputType.TextField(
+                suffix = { Text("dp") },
+            )
+        ),
+        transform = { it.dp },
+        reverse = { it.value },
+    )
 
-class SpField(
-    label: String,
-    initialValue: TextUnit,
-) : TransformField<Float, TextUnit>(
-    baseField = FloatField(
-        label = label,
-        initialValue = initialValue.value,
-        inputType = InputType.TextField(
-            suffix = { Text("sp") },
-        )
-    ),
-    transform = { it.sp },
-    reverse = { it.value },
-)
+class SpField(label: String, initialValue: TextUnit,) :
+    TransformField<Float, TextUnit>(
+        baseField = FloatField(
+            label = label,
+            initialValue = initialValue.value,
+            inputType = InputType.TextField(
+                suffix = { Text("sp") },
+            )
+        ),
+        transform = { it.sp },
+        reverse = { it.value },
+    )
 
-class OffsetField(
-    label: String,
-    initialValue: Offset,
-) : MutablePreviewLabField<Offset>(
-    label = label,
-    initialValue = initialValue,
-) {
+class OffsetField(label: String, initialValue: Offset,) :
+    MutablePreviewLabField<Offset>(
+        label = label,
+        initialValue = initialValue,
+    ) {
     @Composable
     override fun Content() {
         Row(
@@ -76,14 +70,11 @@ class OffsetField(
     }
 }
 
-
-class DpOffsetField(
-    label: String,
-    initialValue: DpOffset,
-) : MutablePreviewLabField<DpOffset>(
-    label = label,
-    initialValue = initialValue,
-) {
+class DpOffsetField(label: String, initialValue: DpOffset,) :
+    MutablePreviewLabField<DpOffset>(
+        label = label,
+        initialValue = initialValue,
+    ) {
     @Composable
     override fun Content() {
         Row(
@@ -107,14 +98,11 @@ class DpOffsetField(
     }
 }
 
-
-class SizeField(
-    label: String,
-    initialValue: Size,
-) : MutablePreviewLabField<Size>(
-    label = label,
-    initialValue = initialValue,
-) {
+class SizeField(label: String, initialValue: Size,) :
+    MutablePreviewLabField<Size>(
+        label = label,
+        initialValue = initialValue,
+    ) {
     @Composable
     override fun Content() {
         Row(
@@ -138,13 +126,11 @@ class SizeField(
     }
 }
 
-class DpSizeField(
-    label: String,
-    initialValue: DpSize,
-) : MutablePreviewLabField<DpSize>(
-    label = label,
-    initialValue = initialValue,
-) {
+class DpSizeField(label: String, initialValue: DpSize,) :
+    MutablePreviewLabField<DpSize>(
+        label = label,
+        initialValue = initialValue,
+    ) {
     @Composable
     override fun Content() {
         Row(

@@ -29,4 +29,3 @@ fun PreviewLabField<*>.FieldLabelHeader() {
         style = MaterialTheme.typography.labelMedium,
     )
 }
-

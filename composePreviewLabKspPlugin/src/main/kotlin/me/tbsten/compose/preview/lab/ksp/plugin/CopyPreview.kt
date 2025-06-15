@@ -14,10 +14,7 @@ import org.jetbrains.kotlin.com.intellij.psi.util.PsiUtilCore
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.psi.KtFile
 
-
-internal fun checkPreview(
-    annotated: KSAnnotated,
-): ValidPreview? {
+internal fun checkPreview(annotated: KSAnnotated,): ValidPreview? {
     if (annotated !is KSFunctionDeclaration) return null
     val optionAnnotation =
         annotated.findAnnotation("me.tbsten.compose.preview.lab.ComposePreviewLabOption")
@@ -30,15 +27,9 @@ internal fun checkPreview(
     )
 }
 
-internal data class ValidPreview(
-    val previewFun: KSFunctionDeclaration,
-    val placeholderedDisplayName: String,
-)
+internal data class ValidPreview(val previewFun: KSFunctionDeclaration, val placeholderedDisplayName: String,)
 
-internal fun copyPreview(
-    preview: ValidPreview,
-    codeGenerator: CodeGenerator,
-): CopiedPreview {
+internal fun copyPreview(preview: ValidPreview, codeGenerator: CodeGenerator,): CopiedPreview {
     val copied = CopiedPreview(
         packageName = preview.previewFun.packageName.asString(),
         baseName = preview.previewFun.simpleName.asString(),
@@ -47,8 +38,10 @@ internal fun copyPreview(
         placeholderedDisplayName = preview.placeholderedDisplayName,
     )
 
-    val filePath = (preview.previewFun.containingFile?.filePath
-        ?: throw IllegalStateException("Can not copy Preview for Compose Preview Lab, because file path is null."))
+    val filePath = (
+        preview.previewFun.containingFile?.filePath
+            ?: throw IllegalStateException("Can not copy Preview for Compose Preview Lab, because file path is null.")
+        )
     val (psiFile, previewBody) =
         run {
             val environment = KotlinCoreEnvironment.createForProduction(
@@ -62,8 +55,10 @@ internal fun copyPreview(
             val functionElement =
                 FunctionCollector.visitPsiFile(file = psiFile, funName = copied.baseName)
                     .single()
-            val body = (functionElement.bodyExpression
-                ?: throw IllegalStateException("Preview body is null."))
+            val body = (
+                functionElement.bodyExpression
+                    ?: throw IllegalStateException("Preview body is null.")
+                )
             psiFile to body
         }
 

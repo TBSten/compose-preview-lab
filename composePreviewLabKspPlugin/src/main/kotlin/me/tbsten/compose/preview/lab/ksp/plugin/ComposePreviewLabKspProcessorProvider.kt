@@ -5,10 +5,9 @@ import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
 
 class ComposePreviewLabKspProcessorProvider : SymbolProcessorProvider {
-    override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor =
-        ComposePreviewLabKspProcessor(
-            codeGenerator = environment.codeGenerator,
-            logger = environment.logger,
-            options = environment.options,
-        )
+    override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor = ComposePreviewLabKspProcessor(
+        codeGenerator = environment.codeGenerator,
+        logger = environment.logger,
+        options = environment.options,
+    )
 }

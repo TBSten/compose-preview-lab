@@ -316,9 +316,15 @@ private fun LazyListScope.header(title: String) {
 }
 
 private enum class MyEnum {
-    A, B, C,
-    D, E, F,
-    G, H, I,
+    A,
+    B,
+    C,
+    D,
+    E,
+    F,
+    G,
+    H,
+    I,
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -346,10 +352,7 @@ private fun SampleScreen(
 )
 
 @Composable
-private fun DefaultSampleScreenContent(
-    paddingValues: PaddingValues,
-    onListItemClick: (Int) -> Unit
-) {
+private fun DefaultSampleScreenContent(paddingValues: PaddingValues, onListItemClick: (Int) -> Unit) {
     LazyColumn(
         contentPadding = paddingValues.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -381,21 +384,14 @@ private fun DefaultSampleScreenContent(
     }
 }
 
-private fun PaddingValues.plus(
-    top: Dp,
-    bottom: Dp,
-    start: Dp = 0.dp,
-    end: Dp = 0.dp,
-) = object : PaddingValues {
+private fun PaddingValues.plus(top: Dp, bottom: Dp, start: Dp = 0.dp, end: Dp = 0.dp,) = object : PaddingValues {
     override fun calculateLeftPadding(layoutDirection: LayoutDirection): Dp =
         this@plus.calculateLeftPadding(layoutDirection) + if (layoutDirection == LayoutDirection.Ltr) start else end
 
-    override fun calculateTopPadding(): Dp =
-        this@plus.calculateTopPadding() + top
+    override fun calculateTopPadding(): Dp = this@plus.calculateTopPadding() + top
 
     override fun calculateRightPadding(layoutDirection: LayoutDirection): Dp =
         this@plus.calculateRightPadding(layoutDirection) + if (layoutDirection == LayoutDirection.Ltr) end else start
 
-    override fun calculateBottomPadding(): Dp =
-        this@plus.calculateBottomPadding() + bottom
+    override fun calculateBottomPadding(): Dp = this@plus.calculateBottomPadding() + bottom
 }

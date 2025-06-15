@@ -29,7 +29,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
-
 @Composable
 internal fun NodeView(
     previewTreeNode: PreviewTreeNode,
@@ -52,7 +51,6 @@ internal fun NodeView(
             modifier = modifier,
         )
     }
-
     is PreviewTreeNode.Preview -> {
         PreviewView(
             preview = previewTreeNode,
@@ -63,13 +61,8 @@ internal fun NodeView(
     }
 }
 
-
 @Composable
-private fun GroupView(
-    group: PreviewTreeNode.Group,
-    children: @Composable () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun GroupView(group: PreviewTreeNode.Group, children: @Composable () -> Unit, modifier: Modifier = Modifier,) {
     var isOpen by remember { mutableStateOf(false) }
 
     Column {

@@ -12,10 +12,7 @@ import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.field.PreviewLabField
 
 @Composable
-internal fun FieldListSection(
-    fields: List<PreviewLabField<*>>,
-    modifier: Modifier = Modifier,
-) {
+internal fun FieldListSection(fields: List<PreviewLabField<*>>, modifier: Modifier = Modifier,) {
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())

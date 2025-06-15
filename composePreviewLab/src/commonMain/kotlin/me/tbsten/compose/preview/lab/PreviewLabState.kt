@@ -43,13 +43,12 @@ class PreviewLabState {
     }
 }
 
-internal fun Modifier.previewLabContent(state: PreviewLabState) =
-    then(
-        Modifier
-            .draggable2D(state.contentDraggableState)
-            .graphicsLayer {
-                translationX = state.contentOffset.x
-                translationY = state.contentOffset.y
-                transformOrigin = TransformOrigin(0f, 0f)
-            }
-    )
+internal fun Modifier.previewLabContent(state: PreviewLabState) = then(
+    Modifier
+        .draggable2D(state.contentDraggableState)
+        .graphicsLayer {
+            translationX = state.contentOffset.x
+            translationY = state.contentOffset.y
+            transformOrigin = TransformOrigin(0f, 0f)
+        }
+)
