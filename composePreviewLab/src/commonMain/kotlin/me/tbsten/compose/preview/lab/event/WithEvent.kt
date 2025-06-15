@@ -2,11 +2,7 @@ package me.tbsten.compose.preview.lab.event
 
 import me.tbsten.compose.preview.lab.PreviewLabScope
 
-fun PreviewLabScope.withEvent(
-    title: String,
-    description: String? = null,
-    block: () -> Unit
-): () -> Unit = {
+fun PreviewLabScope.withEvent(title: String, description: String? = null, block: () -> Unit): () -> Unit = {
     block()
     onEvent(
         title = title,
@@ -14,17 +10,14 @@ fun PreviewLabScope.withEvent(
     )
 }
 
-fun <Arg1> PreviewLabScope.withEvent(
-    title: String,
-    description: String? = null,
-    block: (Arg1) -> Unit
-): (Arg1) -> Unit = { arg1 ->
-    block(arg1)
-    onEvent(
-        title = title,
-        description = description,
-    )
-}
+fun <Arg1> PreviewLabScope.withEvent(title: String, description: String? = null, block: (Arg1) -> Unit): (Arg1) -> Unit =
+    { arg1 ->
+        block(arg1)
+        onEvent(
+            title = title,
+            description = description,
+        )
+    }
 
 fun <Arg1, Arg2> PreviewLabScope.withEvent(
     title: String,

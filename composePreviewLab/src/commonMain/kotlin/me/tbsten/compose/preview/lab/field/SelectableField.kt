@@ -13,7 +13,6 @@ import me.tbsten.compose.preview.lab.field.SelectableField.Type
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.CHIPS
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.DROPDOWN
 
-
 open class SelectableField<Value>(
     label: String,
     val choices: List<Value>,
@@ -51,7 +50,6 @@ open class SelectableField<Value>(
                 onSelect = { value = it },
                 title = choiceLabel,
             )
-
             CHIPS -> ChipsContent()
         }
     }
@@ -90,11 +88,7 @@ fun <Value> SelectableField(
 }
 
 @Suppress("FunctionName")
-inline fun <reified E : Enum<E>> EnumField(
-    label: String,
-    initialValue: E,
-    type: Type = DROPDOWN,
-) = SelectableField<E>(
+inline fun <reified E : Enum<E>> EnumField(label: String, initialValue: E, type: Type = DROPDOWN,) = SelectableField<E>(
     label = label,
     choices = enumValues<E>().toList(),
     choiceLabel = { it.name },

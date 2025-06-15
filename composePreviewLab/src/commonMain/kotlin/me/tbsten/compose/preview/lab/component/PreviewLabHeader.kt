@@ -23,7 +23,6 @@ import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_
 import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_zoom_out
 import org.jetbrains.compose.resources.painterResource
 
-
 @Composable
 internal fun PreviewLabHeader(
     scale: Float,
@@ -56,11 +55,7 @@ internal fun PreviewLabHeader(
 }
 
 @Composable
-private fun Zoom(
-    scale: Float,
-    onScaleChange: (Float) -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, modifier: Modifier = Modifier,) {
     Column(modifier = modifier) {
         Text("Zoom", style = MaterialTheme.typography.labelMedium)
 

@@ -7,7 +7,6 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToStream
 
-
 @OptIn(ExperimentalSerializationApi::class)
 internal fun generateList(
     previews: List<CopiedPreview>,
@@ -29,7 +28,7 @@ internal fun generateList(
         it.appendLine()
         it.appendLine(
             "${if (publicPreviewList) "public" else "internal"} " +
-                    "val previews = listOf<CollectedPreview>("
+                "val previews = listOf<CollectedPreview>("
         )
         previews.forEach { preview ->
             it.appendLine("    // ${preview.fullBaseName}")
@@ -61,6 +60,4 @@ internal fun generateList(
 }
 
 @Serializable
-data class CollectedPreviewJsonData(
-    val previewsListPackage: String,
-)
+data class CollectedPreviewJsonData(val previewsListPackage: String,)

@@ -100,7 +100,6 @@ class PreviewLab {
 
 fun createPreviewLab(): PreviewLab = PreviewLab()
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PreviewLab(
@@ -169,13 +168,17 @@ private fun ContentSection(
                     )
                     layout(p.width, p.height) {
                         val x =
-                            if (c.maxWidth <= p.width)
+                            if (c.maxWidth <= p.width) {
                                 -((c.maxWidth - p.width) / 2)
-                            else 0
+                            } else {
+                                0
+                            }
                         val y =
-                            if (c.maxHeight <= p.height)
+                            if (c.maxHeight <= p.height) {
                                 -((c.maxHeight - p.height) / 2)
-                            else 0
+                            } else {
+                                0
+                            }
                         p.place(x, y)
                     }
                 }
@@ -196,9 +199,7 @@ private fun ContentSection(
 }
 
 @Composable
-private fun SideTabsSection(
-    state: PreviewLabState,
-) {
+private fun SideTabsSection(state: PreviewLabState,) {
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)

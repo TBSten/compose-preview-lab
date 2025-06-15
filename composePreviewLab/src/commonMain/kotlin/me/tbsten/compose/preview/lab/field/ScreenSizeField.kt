@@ -32,8 +32,11 @@ open class ScreenSizeField(
                 choices = choices,
                 onSelect = { value = it },
                 title = {
-                    if (it in choices) it.label
-                    else "Custom"
+                    if (it in choices) {
+                        it.label
+                    } else {
+                        "Custom"
+                    }
                 },
             )
             Row(
@@ -72,11 +75,7 @@ open class ScreenSizeField(
     }
 }
 
-class ScreenSize(
-    val width: Dp,
-    val height: Dp,
-    val label: String = "${width}x${height}",
-) {
+class ScreenSize(val width: Dp, val height: Dp, val label: String = "${width}x$height",) {
     fun reversed() = ScreenSize(
         label = label,
         width = height,

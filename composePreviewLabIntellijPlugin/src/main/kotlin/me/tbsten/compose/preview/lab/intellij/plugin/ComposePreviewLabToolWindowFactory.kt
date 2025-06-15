@@ -22,10 +22,7 @@ import org.jetbrains.jewel.bridge.addComposeTab
 import org.jetbrains.jewel.ui.component.Text
 
 class ComposePreviewLabToolWindowFactory : ToolWindowFactory {
-    override fun createToolWindowContent(
-        project: Project,
-        toolWindow: ToolWindow
-    ) {
+    override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val selectedFileFlow = run {
             val flow = MutableSharedFlow<VirtualFile>()
             project.messageBus.connect().subscribe(

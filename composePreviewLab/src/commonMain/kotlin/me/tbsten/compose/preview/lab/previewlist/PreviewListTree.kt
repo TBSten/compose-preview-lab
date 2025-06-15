@@ -43,14 +43,9 @@ internal fun PreviewListTree(
 internal sealed interface PreviewTreeNode {
     val children: MutableList<PreviewTreeNode>
 
-    data class Group(
-        var groupName: String,
-        override var children: MutableList<PreviewTreeNode>,
-    ) : PreviewTreeNode
+    data class Group(var groupName: String, override var children: MutableList<PreviewTreeNode>,) : PreviewTreeNode
 
-    data class Preview(
-        val collectedPreview: CollectedPreview,
-    ) : PreviewTreeNode {
+    data class Preview(val collectedPreview: CollectedPreview,) : PreviewTreeNode {
         override val children: MutableList<PreviewTreeNode> = mutableListOf()
     }
 }

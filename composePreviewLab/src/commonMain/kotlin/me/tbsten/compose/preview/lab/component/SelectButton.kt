@@ -20,7 +20,6 @@ import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.Res
 import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_check
 import org.jetbrains.compose.resources.imageResource
 
-
 @Composable
 internal fun <V> SelectButton(
     choices: List<V>,
@@ -87,7 +86,9 @@ internal fun <V> SelectButton(
                             contentDescription = null
                         )
                     }
-                } else null,
+                } else {
+                    null
+                },
             )
         }
     }

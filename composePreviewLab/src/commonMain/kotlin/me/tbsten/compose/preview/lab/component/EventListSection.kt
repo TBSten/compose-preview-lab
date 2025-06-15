@@ -31,10 +31,7 @@ import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
 @Composable
-internal fun EventListSection(
-    events: List<PreviewLabEvent>,
-    onClear: () -> Unit,
-) {
+internal fun EventListSection(events: List<PreviewLabEvent>, onClear: () -> Unit,) {
     SelectionContainer {
         LazyColumn {
             stickyHeader {

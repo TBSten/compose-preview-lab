@@ -28,7 +28,4 @@ package me.tbsten.compose.preview.lab
  */
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.FUNCTION)
-annotation class ComposePreviewLabOption(
-    val displayName: String = "{{qualifiedName}}",
-    val ignore: Boolean = false,
-)
+annotation class ComposePreviewLabOption(val displayName: String = "{{qualifiedName}}", val ignore: Boolean = false,)
