@@ -139,6 +139,17 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                                 fieldValue { EnumField<MyEnum>("myEnumValue", MyEnum.A) }
                             }"
                         )
+                        Text(
+                            "myEnumValue (chip UI): ${
+                                fieldValue {
+                                    EnumField<MyEnum>(
+                                        "myEnumValue",
+                                        MyEnum.A,
+                                        type = SelectableField.Type.CHIPS
+                                    )
+                                }
+                            }"
+                        )
                     }
                 }
             }
@@ -306,6 +317,8 @@ private fun LazyListScope.header(title: String) {
 
 private enum class MyEnum {
     A, B, C,
+    D, E, F,
+    G, H, I,
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

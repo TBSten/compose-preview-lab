@@ -15,11 +15,13 @@ import me.tbsten.compose.preview.lab.field.ScreenSize.Companion.MediumSmartPhone
 open class ScreenSizeField(
     label: String = "ScreenSize",
     private val sizes: List<ScreenSize> = listOf(MediumSmartPhone),
+    type: Type = Type.DROPDOWN,
     initialValue: ScreenSize = sizes[0],
 ) : SelectableField<ScreenSize>(
     label = label,
     choices = sizes,
     choiceLabel = { it.label },
+    type = type,
     initialValue = initialValue,
 ) {
     @Composable
