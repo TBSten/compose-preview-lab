@@ -15,6 +15,12 @@ class FormatConventionPlugin : Plugin<Project> {
 
         ktlint {
             version.set(libs.version("ktlint"))
+            filter {
+                exclude { element ->
+                    element.file.path.contains("generated/") || element.file.path.contains("resources/")
+                }
+                exclude("kotlin/me/tbsten/compose/preview/lab/theme/AppTheme.kt")
+            }
         }
     }
 }

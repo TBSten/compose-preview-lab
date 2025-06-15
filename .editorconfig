@@ -53,3 +53,8 @@ ktlint_standard_property-naming = enabled
 ktlint_standard_function-expression-body = enabled
 
 ktlint_property_naming_constant_naming = pascal_case
+
+[**/generated/**/*.kt]
+ktlint_standard_class-naming = disabled
+ktlint_standard_function-naming = disabled
+ktlint_standard_property-naming = disabled
