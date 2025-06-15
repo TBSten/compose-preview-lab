@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.android.library)
     alias(libs.plugins.hotReload)
+    alias(libs.plugins.conventionFormat)
 }
 
 kotlin {

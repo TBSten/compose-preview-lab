@@ -5,9 +5,9 @@ plugins {
 
 gradlePlugin {
     plugins {
-        create("jvm") {
-            id = "convention-jvm"
-            implementationClass = "ConventionJvmPlugin"
+        create("format") {
+            id = "convention-format"
+            implementationClass = "FormatConventionPlugin"
         }
     }
 }
@@ -15,4 +15,5 @@ gradlePlugin {
 dependencies {
     compileOnly(gradleApi())
     implementation(libs.kotlinGradlePlugin)
+    implementation(libs.ktlintGradlePlugin)
 }

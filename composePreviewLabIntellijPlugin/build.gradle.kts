@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.intellijPlatform)
     alias(libs.plugins.compose)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.conventionFormat)
 }
 
 repositories {
