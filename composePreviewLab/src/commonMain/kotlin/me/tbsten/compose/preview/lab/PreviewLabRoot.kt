@@ -42,25 +42,16 @@ fun PreviewLabRoot(
                 .fillMaxSize(),
         ) {
             Row {
-                Column(
+                PreviewListTree(
+                    previews = previewList,
+                    isSelected = { it == state.selectedPreview },
+                    onSelect = { state.selectedPreview = it },
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.background)
                         .width(200.dp)
                         .fillMaxHeight()
                         .zIndex(2f)
-                        .verticalScroll(rememberScrollState())
-                ) {
-                    previewList.forEachIndexed { index, preview ->
-                        val displayName = preview.displayName
-                        CommonListItem(
-                            title = displayName,
-                            isSelected = index == state.selectedPreviewIndex,
-                            onSelect = {
-                                state.selectedPreviewIndex = index
-                            },
-                        )
-                    }
-                }
+                )
                 VerticalDivider(
                     modifier = Modifier
                         .zIndex(2f)
