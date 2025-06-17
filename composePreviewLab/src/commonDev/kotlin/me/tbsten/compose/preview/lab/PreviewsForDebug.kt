@@ -1,8 +1,11 @@
 package me.tbsten.compose.preview.lab
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -32,6 +37,9 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.tbsten.compose.preview.lab.component.AdaptiveContainer
+import me.tbsten.compose.preview.lab.component.Divider
+import me.tbsten.compose.preview.lab.component.adaptive
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.DpOffsetField
 import me.tbsten.compose.preview.lab.field.DpSizeField
@@ -299,6 +307,41 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                         Text("Profile Settings Preview")
                     }
                 }
+            }
+        }
+    },
+    CollectedPreview(
+        "Adaptive UI",
+        "src/commonMain/kotlin/me/tbsten/example/AdaptiveUI.kt",
+    ) {
+        Column {
+            Text(adaptive(small = "S", medium = "M", large = "L"))
+            Text(adaptive("S or M", large = "L"))
+            Text(adaptive("S", medium = "M or L"))
+            Text(adaptive("ALL"))
+            Divider(Modifier.padding(vertical = 16.dp))
+
+            val scrollState = rememberScrollState()
+            val arrangement = Arrangement.spacedBy(8.dp)
+            AdaptiveContainer(
+                small = {
+                    Column(
+                        verticalArrangement = arrangement,
+                        modifier = Modifier.verticalScroll(scrollState),
+                    ) { it() }
+                },
+                medium = {
+                    FlowRow(
+                        horizontalArrangement = arrangement,
+                        modifier = Modifier.horizontalScroll(scrollState),
+                    ) { it() }
+                },
+            ) {
+                "This text is displayed in FlowColumn when ScreenWidth is S, and in FlowRow when ScreenWidth is M or more."
+                    .split(" ")
+                    .forEach {
+                        Text(it)
+                    }
             }
         }
     },
