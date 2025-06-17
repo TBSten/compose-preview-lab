@@ -41,7 +41,7 @@ open class ScreenSizeField(
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 TextFieldContent(
                     toString = { it.width.value.toString() },
@@ -75,7 +75,7 @@ open class ScreenSizeField(
     }
 }
 
-class ScreenSize(val width: Dp, val height: Dp, val label: String = "${width}x$height",) {
+class ScreenSize(val width: Dp, val height: Dp, val label: String = "${width}x$height") {
     fun reversed() = ScreenSize(
         label = label,
         width = height,
