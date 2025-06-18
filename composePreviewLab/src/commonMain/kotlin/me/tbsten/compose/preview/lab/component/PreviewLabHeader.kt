@@ -25,7 +25,6 @@ import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_
 import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_zoom_in
 import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_zoom_out
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun PreviewLabHeader(
