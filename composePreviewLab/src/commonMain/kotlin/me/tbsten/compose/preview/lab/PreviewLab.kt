@@ -44,7 +44,7 @@ import me.tbsten.compose.preview.lab.field.ScreenSizeField
 import me.tbsten.compose.preview.lab.theme.AppTheme
 import me.tbsten.compose.preview.lab.util.toDpOffset
 
-class PreviewLab {
+open class PreviewLab {
     @Composable
     operator fun invoke(
         state: PreviewLabState = rememberSaveable(saver = PreviewLabState.Saver) { PreviewLabState() },
@@ -75,7 +75,7 @@ class PreviewLab {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(1f)
+                            .weight(1f),
                     ) {
                         ContentSection(
                             state = state,
@@ -83,7 +83,7 @@ class PreviewLab {
                             content = content,
                             modifier = Modifier
                                 .weight(1f)
-                                .zIndex(-1f)
+                                .zIndex(-1f),
                         )
 
                         Divider()
@@ -96,36 +96,9 @@ class PreviewLab {
             }
         }
     }
+
+    companion object : PreviewLab()
 }
-
-fun createPreviewLab(): PreviewLab = PreviewLab()
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun PreviewLab(
-    state: PreviewLabState = rememberSaveable(saver = PreviewLabState.Saver) { PreviewLabState() },
-    screenSizes: List<ScreenSize> = ScreenSize.SmartphoneAndDesktops,
-    content: @Composable PreviewLabScope.() -> Unit,
-) = defaultPreviewLab(
-    state = state,
-    screenSizes = screenSizes,
-    content = content,
-)
-
-@Composable
-fun PreviewLab(
-    state: PreviewLabState = rememberSaveable(saver = PreviewLabState.Saver) { PreviewLabState() },
-    maxWidth: Dp,
-    maxHeight: Dp,
-    content: @Composable PreviewLabScope.() -> Unit,
-) = defaultPreviewLab(
-    state = state,
-    maxWidth = maxWidth,
-    maxHeight = maxHeight,
-    content = content,
-)
-
-private val defaultPreviewLab = PreviewLab()
 
 internal val LocalPreviewLabState = compositionLocalOf<PreviewLabState?> { null }
 
@@ -140,7 +113,7 @@ private fun ContentSection(
     val screenSize = state.scope
         .fieldValue {
             ScreenSizeField(
-                sizes = screenSizes
+                sizes = screenSizes,
             )
         }
 
@@ -164,7 +137,7 @@ private fun ContentSection(
                         c.copy(
                             maxWidth = screenSize?.width?.roundToPx() ?: c.maxWidth,
                             maxHeight = screenSize?.height?.roundToPx() ?: c.maxHeight,
-                        )
+                        ),
                     )
                     layout(p.width, p.height) {
                         val x =
@@ -181,7 +154,7 @@ private fun ContentSection(
                             }
                         p.place(x, y)
                     }
-                }
+                },
         ) {
             Box(
                 modifier = Modifier
@@ -190,7 +163,7 @@ private fun ContentSection(
                     .onPlaced {
                         state.contentRootOffsetInAppRoot =
                             it.positionInRoot().toDpOffset(density)
-                    }
+                    },
             ) {
                 content(state.scope)
             }
@@ -199,12 +172,12 @@ private fun ContentSection(
 }
 
 @Composable
-private fun SideTabsSection(state: PreviewLabState,) {
+private fun SideTabsSection(state: PreviewLabState) {
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
             .width(250.dp)
-            .fillMaxHeight()
+            .fillMaxHeight(),
     ) {
         val tabContents = remember {
             mapOf<String, @Composable () -> Unit>(

@@ -16,22 +16,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.Res
 import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_refresh
 import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_zoom_in
 import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_zoom_out
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun PreviewLabHeader(
     scale: Float,
     onScaleChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
-    initialConfigurationIndex: Int = 0,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.clip(RectangleShape)) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
@@ -40,22 +43,27 @@ internal fun PreviewLabHeader(
                 .horizontalScroll(rememberScrollState())
                 .height(IntrinsicSize.Min)
                 .padding(8.dp)
+                .zIndex(2f),
         ) {
             Zoom(
                 scale = scale,
                 onScaleChange = onScaleChange,
-                modifier = Modifier.fillMaxHeight()
+                modifier = Modifier
+                    .fillMaxHeight(),
             )
         }
 
-        Divider()
+        Divider(
+            Modifier
+                .zIndex(2f),
+        )
 
         content()
     }
 }
 
 @Composable
-private fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, modifier: Modifier = Modifier,) {
+private fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Text("Zoom", style = MaterialTheme.typography.labelMedium)
 
@@ -79,7 +87,7 @@ private fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, modifier: Modifie
                 onClick = {
                     onScaleChange(scale.nextZoomOutScale())
                 },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
 
             CommonIconButton(
