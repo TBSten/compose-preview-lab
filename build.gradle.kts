@@ -6,10 +6,10 @@ plugins {
     alias(libs.plugins.android.application).apply(false)
     alias(libs.plugins.android.library).apply(false)
     alias(libs.plugins.hotReload).apply(false)
+    alias(libs.plugins.vanniktechMavenPublish).apply(false)
 }
 
-subprojects {
+allprojects {
     group = "me.tbsten.compose.preview.lab"
-//    version = libs.versions.composePreviewLab
-    version = "0.1.0"
+    version = rootProject.libs.versions.composePreviewLab.get()
 }
