@@ -1,8 +1,11 @@
 package me.tbsten.compose.preview.lab
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -32,6 +37,9 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.tbsten.compose.preview.lab.component.AdaptiveContainer
+import me.tbsten.compose.preview.lab.component.Divider
+import me.tbsten.compose.preview.lab.component.adaptive
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.DpOffsetField
 import me.tbsten.compose.preview.lab.field.DpSizeField
@@ -83,13 +91,13 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                         val dpOffsetValue = fieldValue {
                             DpOffsetField(
                                 "dpOffsetValue",
-                                DpOffset(0.dp, 0.dp)
+                                DpOffset(0.dp, 0.dp),
                             )
                         }
                         val dpSizeValue = fieldValue {
                             DpSizeField(
                                 "dpSizeValue",
-                                DpSize(20.dp, 20.dp)
+                                DpSize(20.dp, 20.dp),
                             )
                         }
                         val spValue = fieldValue {
@@ -99,7 +107,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                             Modifier
                                 .offset(x = dpOffsetValue.x, y = dpOffsetValue.y)
                                 .background(Color.Yellow)
-                                .size(dpSizeValue)
+                                .size(dpSizeValue),
                         ) {
                             Text("spValue", fontSize = spValue)
                         }
@@ -110,7 +118,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                         val nullableStringField =
                             fieldValue {
                                 StringField("nullableStringField", "").nullable(
-                                    initialValue = null
+                                    initialValue = null,
                                 )
                             }
                         Text("nullableStringField: ${nullableStringField ?: "🚨🚨🚨 is null 🚨🚨🚨"}")
@@ -130,14 +138,14 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                                 .background(
                                     color = backgroundColor,
                                 )
-                                .size(50.dp)
+                                .size(50.dp),
                         )
                     }
                     item {
                         Text(
                             "myEnumValue: ${
                                 fieldValue { EnumField<MyEnum>("myEnumValue", MyEnum.A) }
-                            }"
+                            }",
                         )
                         Text(
                             "myEnumValue (chip UI): ${
@@ -145,10 +153,10 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                                     EnumField<MyEnum>(
                                         "myEnumValue",
                                         MyEnum.A,
-                                        type = SelectableField.Type.CHIPS
+                                        type = SelectableField.Type.CHIPS,
                                     )
                                 }
-                            }"
+                            }",
                         )
                     }
                 }
@@ -183,9 +191,9 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                             1f to Color.Blue,
                             start = Offset.Zero,
                             end = Offset.Infinite,
-                        )
+                        ),
                     )
-                    .fillMaxSize()
+                    .fillMaxSize(),
             )
         }
     },
@@ -197,7 +205,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
     },
     CollectedPreview(
         "com.example.ui.components.ButtonPrimary",
-        "src/commonMain/kotlin/com/example/ui/components/ButtonPrimary.kt"
+        "src/commonMain/kotlin/com/example/ui/components/ButtonPrimary.kt",
     ) {
         PreviewLab {
             SampleScreen(
@@ -219,7 +227,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
     },
     CollectedPreview(
         "com.example.ui.components.ButtonSecondary",
-        "src/commonMain/kotlin/com/example/ui/components/ButtonSecondary.kt"
+        "src/commonMain/kotlin/com/example/ui/components/ButtonSecondary.kt",
     ) {
         PreviewLab {
             SampleScreen(
@@ -241,7 +249,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
     },
     CollectedPreview(
         "com.example.ui.components.text.HeadingText",
-        "src/commonMain/kotlin/com/example/ui/components/text/HeadingText.kt"
+        "src/commonMain/kotlin/com/example/ui/components/text/HeadingText.kt",
     ) {
         PreviewLab {
             SampleScreen(
@@ -255,7 +263,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                     item {
                         Text(
                             "Heading Text",
-                            style = MaterialTheme.typography.headlineMedium
+                            style = MaterialTheme.typography.headlineMedium,
                         )
                     }
                 }
@@ -264,7 +272,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
     },
     CollectedPreview(
         "com.example.screens.login.LoginForm",
-        "src/commonMain/kotlin/com/example/screens/login/LoginForm.kt"
+        "src/commonMain/kotlin/com/example/screens/login/LoginForm.kt",
     ) {
         PreviewLab {
             SampleScreen(
@@ -284,7 +292,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
     },
     CollectedPreview(
         "com.example.screens.profile.ProfileSettings",
-        "src/commonMain/kotlin/com/example/screens/profile/ProfileSettings.kt"
+        "src/commonMain/kotlin/com/example/screens/profile/ProfileSettings.kt",
     ) {
         PreviewLab {
             SampleScreen(
@@ -302,6 +310,41 @@ val previewsForUiDebug = listOf<CollectedPreview>(
             }
         }
     },
+    CollectedPreview(
+        "Adaptive UI",
+        "src/commonMain/kotlin/me/tbsten/example/AdaptiveUI.kt",
+    ) {
+        Column {
+            Text(adaptive(small = "S", medium = "M", large = "L"))
+            Text(adaptive("S or M", large = "L"))
+            Text(adaptive("S", medium = "M or L"))
+            Text(adaptive("ALL"))
+            Divider(Modifier.padding(vertical = 16.dp))
+
+            val scrollState = rememberScrollState()
+            val arrangement = Arrangement.spacedBy(8.dp)
+            AdaptiveContainer(
+                small = {
+                    Column(
+                        verticalArrangement = arrangement,
+                        modifier = Modifier.verticalScroll(scrollState),
+                    ) { it() }
+                },
+                medium = {
+                    FlowRow(
+                        horizontalArrangement = arrangement,
+                        modifier = Modifier.horizontalScroll(scrollState),
+                    ) { it() }
+                },
+            ) {
+                "This text is displayed in FlowColumn when ScreenWidth is S, and in FlowRow when ScreenWidth is M or more."
+                    .split(" ")
+                    .forEach {
+                        Text(it)
+                    }
+            }
+        }
+    },
 )
 
 private fun LazyListScope.header(title: String) {
@@ -309,7 +352,7 @@ private fun LazyListScope.header(title: String) {
         Text(
             text = title,
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
         HorizontalDivider()
     }
@@ -336,7 +379,7 @@ private fun SampleScreen(
     content: @Composable (PaddingValues) -> Unit = {
         DefaultSampleScreenContent(
             it,
-            onListItemClick
+            onListItemClick,
         )
     },
 ) = Scaffold(
@@ -364,7 +407,7 @@ private fun DefaultSampleScreenContent(paddingValues: PaddingValues, onListItemC
                     1f to Color.Blue,
                     start = Offset.Zero,
                     end = Offset.Infinite,
-                )
+                ),
             )
             .fillMaxSize(),
     ) {
@@ -384,7 +427,7 @@ private fun DefaultSampleScreenContent(paddingValues: PaddingValues, onListItemC
     }
 }
 
-private fun PaddingValues.plus(top: Dp, bottom: Dp, start: Dp = 0.dp, end: Dp = 0.dp,) = object : PaddingValues {
+private fun PaddingValues.plus(top: Dp, bottom: Dp, start: Dp = 0.dp, end: Dp = 0.dp) = object : PaddingValues {
     override fun calculateLeftPadding(layoutDirection: LayoutDirection): Dp =
         this@plus.calculateLeftPadding(layoutDirection) + if (layoutDirection == LayoutDirection.Ltr) start else end
 
