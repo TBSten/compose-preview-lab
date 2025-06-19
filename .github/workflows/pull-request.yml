@@ -64,6 +64,6 @@ jobs:
       - name: Build Library
         shell: bash
         run: ./gradlew ${{ matrix.test_task }}
-      - name: Build Sample
+      - name: Build Integration Test
         shell: bash
-        run: cd ./sample && ./gradlew ${{ matrix.test_task }}
+        run: cd ./integrationTest && ./gradlew ${{ matrix.test_task }}

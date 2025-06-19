@@ -1,6 +1,6 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-rootProject.name = "Compose-Preview-Lab-Sample"
+rootProject.name = "Compose-Preview-Lab-Build-Logic"
 
 pluginManagement {
     repositories {
@@ -37,6 +37,6 @@ dependencyResolutionManagement {
     }
 }
 plugins {
-    //https://github.com/JetBrains/compose-hot-reload?tab=readme-ov-file#set-up-automatic-provisioning-of-the-jetbrains-runtime-jbr-via-gradle
+    // https://github.com/JetBrains/compose-hot-reload?tab=readme-ov-file#set-up-automatic-provisioning-of-the-jetbrains-runtime-jbr-via-gradle
     id("org.gradle.toolchains.foojay-resolver-convention").version("0.10.0")
 }
