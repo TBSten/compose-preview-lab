@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.multiplatform)
     alias(libs.plugins.android.library)
     alias(libs.plugins.conventionFormat)
+    alias(libs.plugins.conventionPublish)
 }
 
 kotlin {
@@ -26,7 +27,7 @@ kotlin {
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach {
         it.binaries.framework {
             baseName = "ComposePreviewLabAnnotation"
@@ -47,4 +48,11 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+}
+
+publishConvention {
+    artifactId = "annotation"
+    description =
+        "A component catalog library that collects and lists @Preview. \n" +
+        "By providing APIs such as Field, Event, etc., it provides not only display but also interactive preview."
 }
