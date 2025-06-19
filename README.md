@@ -113,7 +113,7 @@ The table below shows the differences between the two.
 | | Compose Preview Lab | Storytale |
 |---|---|---|
 | Cataloging UI Component | ✅ | ✅ |
-| View source code | ❌ | ✅ |
+| View source code | ❌ <br> Future support is planned. | ✅ |
 | Ease of preparing the Composable catalog | ✅ <br> Just enclose @Preview in `PreviewLab { }`. | ⚠️ <br> You must have the code in the `***Stories` source set. Existing code with @Preview must be migrated. |
 
 ## More information
