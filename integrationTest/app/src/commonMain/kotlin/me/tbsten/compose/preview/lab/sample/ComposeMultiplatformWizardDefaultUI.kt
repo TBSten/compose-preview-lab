@@ -32,17 +32,17 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
-import compose_preview_lab_sample.app.generated.resources.IndieFlower_Regular
-import compose_preview_lab_sample.app.generated.resources.Res
-import compose_preview_lab_sample.app.generated.resources.cyclone
-import compose_preview_lab_sample.app.generated.resources.ic_cyclone
-import compose_preview_lab_sample.app.generated.resources.ic_dark_mode
-import compose_preview_lab_sample.app.generated.resources.ic_light_mode
-import compose_preview_lab_sample.app.generated.resources.ic_rotate_right
-import compose_preview_lab_sample.app.generated.resources.open_github
-import compose_preview_lab_sample.app.generated.resources.run
-import compose_preview_lab_sample.app.generated.resources.stop
-import compose_preview_lab_sample.app.generated.resources.theme
+import compose_preview_lab_integration_test.app.generated.resources.IndieFlower_Regular
+import compose_preview_lab_integration_test.app.generated.resources.Res
+import compose_preview_lab_integration_test.app.generated.resources.cyclone
+import compose_preview_lab_integration_test.app.generated.resources.ic_cyclone
+import compose_preview_lab_integration_test.app.generated.resources.ic_dark_mode
+import compose_preview_lab_integration_test.app.generated.resources.ic_light_mode
+import compose_preview_lab_integration_test.app.generated.resources.ic_rotate_right
+import compose_preview_lab_integration_test.app.generated.resources.open_github
+import compose_preview_lab_integration_test.app.generated.resources.run
+import compose_preview_lab_integration_test.app.generated.resources.stop
+import compose_preview_lab_integration_test.app.generated.resources.theme
 import kotlinx.coroutines.isActive
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.PreviewLab
@@ -61,12 +61,12 @@ internal fun ComposeMultiplatformWizardDefaultUI() = AppTheme {
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.safeDrawing)
             .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = stringResource(Res.string.cyclone),
             fontFamily = FontFamily(Font(Res.font.IndieFlower_Regular)),
-            style = MaterialTheme.typography.displayLarge
+            style = MaterialTheme.typography.displayLarge,
         )
 
         var isRotating by remember { mutableStateOf(false) }
@@ -79,7 +79,7 @@ internal fun ComposeMultiplatformWizardDefaultUI() = AppTheme {
                     val remaining = (target - rotate.value) / target
                     rotate.animateTo(
                         target,
-                        animationSpec = tween((1_000 * remaining).toInt(), easing = LinearEasing)
+                        animationSpec = tween((1_000 * remaining).toInt(), easing = LinearEasing),
                     )
                     rotate.snapTo(0f)
                 }
@@ -108,15 +108,18 @@ internal fun ComposeMultiplatformWizardDefaultUI() = AppTheme {
                 )
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                 Text(
-                    stringResource(if (isRotating) Res.string.stop else Res.string.run)
+                    stringResource(if (isRotating) Res.string.stop else Res.string.run),
                 )
-            }
+            },
         )
 
         var isDark by LocalThemeIsDark.current
         val icon = remember(isDark) {
-            if (isDark) Res.drawable.ic_light_mode
-            else Res.drawable.ic_dark_mode
+            if (isDark) {
+                Res.drawable.ic_light_mode
+            } else {
+                Res.drawable.ic_dark_mode
+            }
         }
 
         ElevatedButton(
@@ -126,7 +129,7 @@ internal fun ComposeMultiplatformWizardDefaultUI() = AppTheme {
                 Icon(painterResource(icon), contentDescription = null)
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                 Text(stringResource(Res.string.theme))
-            }
+            },
         )
 
         val uriHandler = LocalUriHandler.current
