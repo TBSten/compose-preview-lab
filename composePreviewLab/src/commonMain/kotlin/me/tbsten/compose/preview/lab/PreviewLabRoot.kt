@@ -37,6 +37,7 @@ import me.tbsten.compose.preview.lab.theme.AppTheme
 @Composable
 fun PreviewLabRoot(
     previews: List<CollectedPreview>,
+    modifier: Modifier = Modifier,
     state: PreviewLabRootState = remember { PreviewLabRootState() },
     openFileHandler: OpenFileHandler? = null,
 ) = AppTheme {
@@ -46,7 +47,7 @@ fun PreviewLabRoot(
         val previewList = remember { previews.toList() }
 
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .background(MaterialTheme.colorScheme.background)
                 .fillMaxSize(),
         ) {
