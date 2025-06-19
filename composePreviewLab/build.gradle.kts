@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.hotReload)
     alias(libs.plugins.conventionFormat)
+    alias(libs.plugins.conventionPublish)
 }
 
 kotlin {
@@ -33,7 +34,7 @@ kotlin {
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach {
         it.binaries.framework {
             baseName = "ComposeApp"
@@ -108,4 +109,8 @@ tasks.register<ComposeHotRun>("runHot") {
 // https://github.com/JetBrains/compose-hot-reload
 composeCompiler {
     featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
+}
+
+publishConvention {
+    artifactId = "core"
 }
