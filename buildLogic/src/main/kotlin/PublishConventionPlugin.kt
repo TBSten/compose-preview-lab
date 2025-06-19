@@ -62,7 +62,7 @@ open class PublishConventionExtension {
     var groupId: String? = null
     lateinit var artifactId: String
     var version: String? = null
-    var description: String = ""
+    lateinit var description: String
     var url: String = "https://github.com/$GithubUserName/$GithubRepoName"
 }
 

@@ -113,4 +113,8 @@ composeCompiler {
 
 publishConvention {
     artifactId = "core"
+    description =
+        "A component catalog library that collects and lists @Preview. \n" +
+        "By providing APIs such as Field, Event, etc., it provides not only display but also interactive preview.\n" +
+        "core provides runtime APIs such as annotations and gallery UI needed to collect Previews."
 }
