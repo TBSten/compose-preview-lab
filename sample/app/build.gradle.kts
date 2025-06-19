@@ -15,7 +15,7 @@ plugins {
 kotlin {
     jvmToolchain(11)
     androidTarget {
-        //https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
+        // https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
         instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
     }
 
@@ -34,7 +34,7 @@ kotlin {
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach {
         it.binaries.framework {
             baseName = "ComposeApp"
@@ -51,6 +51,9 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation("me.tbsten.compose.preview.lab:composePreviewLab:${libs.versions.composePreviewLab.get()}")
             implementation(project(":uiLib"))
+
+            // TODO migrate retain { } (compose runtime api)
+            implementation("io.github.takahirom.rin:rin:0.3.0")
         }
 
         commonTest.dependencies {
@@ -69,7 +72,6 @@ kotlin {
         jsMain.dependencies {
             implementation(compose.html.core)
         }
-
     }
 }
 
@@ -89,7 +91,7 @@ android {
     }
 }
 
-//https://developer.android.com/develop/ui/compose/testing#setup
+// https://developer.android.com/develop/ui/compose/testing#setup
 dependencies {
     androidTestImplementation(libs.androidx.uitest.junit4)
     debugImplementation(libs.androidx.uitest.testManifest)
@@ -97,6 +99,7 @@ dependencies {
     val composePreviewLabKspPlugin =
         "me.tbsten.compose.preview.lab:composePreviewLabKspPlugin:${libs.versions.composePreviewLab.get()}"
     add("kspCommonMainMetadata", composePreviewLabKspPlugin)
+    add("kspAndroid", composePreviewLabKspPlugin)
     add("kspJvm", composePreviewLabKspPlugin)
     add("kspJs", composePreviewLabKspPlugin)
     add("kspWasmJs", composePreviewLabKspPlugin)
@@ -125,7 +128,7 @@ compose.desktop {
     }
 }
 
-//https://github.com/JetBrains/compose-hot-reload
+// https://github.com/JetBrains/compose-hot-reload
 composeCompiler {
     featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
 }
