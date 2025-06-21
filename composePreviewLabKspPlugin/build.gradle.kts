@@ -13,6 +13,7 @@ dependencies {
 }
 
 publishConvention {
+    artifactName = "KSP Plugin"
     artifactId = "ksp-plugin"
     description =
         "A component catalog library that collects and lists @Preview. \n" +

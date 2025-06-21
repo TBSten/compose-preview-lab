@@ -51,6 +51,7 @@ android {
 }
 
 publishConvention {
+    artifactName = "Annotation"
     artifactId = "annotation"
     description =
         "A component catalog library that collects and lists @Preview. \n" +

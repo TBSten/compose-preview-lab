@@ -112,6 +112,7 @@ composeCompiler {
 }
 
 publishConvention {
+    artifactName = "Core"
     artifactId = "core"
     description =
         "A component catalog library that collects and lists @Preview. \n" +

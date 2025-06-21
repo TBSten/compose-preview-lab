@@ -11,6 +11,7 @@ intellijPlatform = "2.6.0"
 jewelIdeLafBridge = "0.27.0"
 kotlinxSerializationJson = "1.8.1"
 vanniktechMavenPublish = "0.32.0"
+dokka = "2.0.0"
 ktlint = "1.6.0"
 ktlintGradle = "12.3.0"
 
@@ -28,6 +29,7 @@ jewelIdeLafBridge = { module = "org.jetbrains.jewel:jewel-ide-laf-bridge-243", v
 kotlinxSerializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 ktlintGradlePlugin = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlintGradle" }
 vanniktechMavenPublishGradlePlugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "vanniktechMavenPublish" }
+dokkaGradlePlugin = { module = "org.jetbrains.dokka:org.jetbrains.dokka.gradle.plugin", version.ref = "dokka" }
 
 [plugins]
 
@@ -42,6 +44,7 @@ kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 intellijPlatform = { id = "org.jetbrains.intellij.platform", version.ref = "intellijPlatform" }
 vanniktechMavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktechMavenPublish" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 
 ktlintGradle = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
 conventionFormat = { id = "convention-format", version = "unspecified" }
