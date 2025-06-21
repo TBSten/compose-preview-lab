@@ -53,11 +53,11 @@ import me.tbsten.compose.preview.lab.component.PreviewLabHeader
 import me.tbsten.compose.preview.lab.component.SimpleBottomSheet
 import me.tbsten.compose.preview.lab.component.TabPager
 import me.tbsten.compose.preview.lab.component.adaptive
-import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.Res
-import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_code
-import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_dashboard
-import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_edit
-import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_history
+import me.tbsten.compose.preview.lab.core.generated.resources.Res
+import me.tbsten.compose.preview.lab.core.generated.resources.icon_code
+import me.tbsten.compose.preview.lab.core.generated.resources.icon_dashboard
+import me.tbsten.compose.preview.lab.core.generated.resources.icon_edit
+import me.tbsten.compose.preview.lab.core.generated.resources.icon_history
 import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.field.ScreenSizeField
 import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler

@@ -19,8 +19,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.Res
-import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_check
+import me.tbsten.compose.preview.lab.core.generated.resources.Res
+import me.tbsten.compose.preview.lab.core.generated.resources.icon_check
 import org.jetbrains.compose.resources.imageResource
 
 @Composable

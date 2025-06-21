@@ -52,7 +52,7 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation("me.tbsten.compose.preview.lab:composePreviewLab:${libs.versions.composePreviewLab.get()}")
+            implementation("me.tbsten.compose.preview.lab:core:${libs.versions.composePreviewLab.get()}")
             implementation(project(":uiLib"))
 
             // TODO migrate retain { } (compose runtime api)
@@ -100,7 +100,7 @@ dependencies {
     debugImplementation(libs.androidx.uitest.testManifest)
 
     val composePreviewLabKspPlugin =
-        "me.tbsten.compose.preview.lab:composePreviewLabKspPlugin:${libs.versions.composePreviewLab.get()}"
+        "me.tbsten.compose.preview.lab:ksp-plugin:${libs.versions.composePreviewLab.get()}"
     add("kspCommonMainMetadata", composePreviewLabKspPlugin)
     add("kspAndroid", composePreviewLabKspPlugin)
     add("kspJvm", composePreviewLabKspPlugin)

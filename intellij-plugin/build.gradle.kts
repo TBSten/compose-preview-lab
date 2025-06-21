@@ -20,7 +20,7 @@ dependencies {
         intellijIdeaCommunity("2024.3")
     }
     api(libs.jewelIdeLafBridge)
-    api(projects.composePreviewLab) {
+    api(projects.core) {
         exclude(group = "org.jetbrains.kotlinx")
     }
     api(compose.foundation) {

@@ -20,18 +20,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
-import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.Res
-import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_delete
-import me.tbsten.compose.preview.lab.event.PreviewLabEvent
-import org.jetbrains.compose.resources.painterResource
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
+import kotlinx.coroutines.delay
+import me.tbsten.compose.preview.lab.core.generated.resources.Res
+import me.tbsten.compose.preview.lab.core.generated.resources.icon_delete
+import me.tbsten.compose.preview.lab.event.PreviewLabEvent
+import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalTime::class)
 @Composable
-internal fun EventListSection(events: List<PreviewLabEvent>, onClear: () -> Unit,) {
+internal fun EventListSection(events: List<PreviewLabEvent>, onClear: () -> Unit) {
     SelectionContainer {
         LazyColumn {
             stickyHeader {
