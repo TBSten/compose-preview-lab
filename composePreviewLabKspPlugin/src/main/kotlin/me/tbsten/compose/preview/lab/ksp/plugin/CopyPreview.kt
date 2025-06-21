@@ -2,6 +2,7 @@ package me.tbsten.compose.preview.lab.ksp.plugin
 
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
+import com.google.devtools.ksp.symbol.FileLocation
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSFile
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
@@ -14,7 +15,7 @@ import org.jetbrains.kotlin.com.intellij.psi.util.PsiUtilCore
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.psi.KtFile
 
-internal fun checkPreview(annotated: KSAnnotated,): ValidPreview? {
+internal fun checkPreview(annotated: KSAnnotated): ValidPreview? {
     if (annotated !is KSFunctionDeclaration) return null
     val optionAnnotation =
         annotated.findAnnotation("me.tbsten.compose.preview.lab.ComposePreviewLabOption")
@@ -27,14 +28,17 @@ internal fun checkPreview(annotated: KSAnnotated,): ValidPreview? {
     )
 }
 
-internal data class ValidPreview(val previewFun: KSFunctionDeclaration, val placeholderedDisplayName: String,)
+internal data class ValidPreview(val previewFun: KSFunctionDeclaration, val placeholderedDisplayName: String)
 
-internal fun copyPreview(preview: ValidPreview, codeGenerator: CodeGenerator,): CopiedPreview {
+internal fun copyPreview(preview: ValidPreview, codeGenerator: CodeGenerator): CopiedPreview {
+    val startLineNumber = (preview.previewFun.location as? FileLocation)?.lineNumber
+    preview.previewFun
     val copied = CopiedPreview(
         packageName = preview.previewFun.packageName.asString(),
         baseName = preview.previewFun.simpleName.asString(),
         baseFile = preview.previewFun.containingFile
             ?: throw IllegalStateException("Preview containing file is null"),
+        startLineNumber = startLineNumber,
         placeholderedDisplayName = preview.placeholderedDisplayName,
     )
 
@@ -47,7 +51,7 @@ internal fun copyPreview(preview: ValidPreview, codeGenerator: CodeGenerator,): 
             val environment = KotlinCoreEnvironment.createForProduction(
                 Disposer.newDisposable(),
                 CompilerConfiguration(),
-                EnvironmentConfigFiles.JVM_CONFIG_FILES
+                EnvironmentConfigFiles.JVM_CONFIG_FILES,
             )
             val virtualFile = requireNotNull(environment.findLocalFile(filePath))
             val psiFile = PsiUtilCore.getPsiFile(environment.project, virtualFile) as? KtFile
@@ -65,10 +69,10 @@ internal fun copyPreview(preview: ValidPreview, codeGenerator: CodeGenerator,): 
     codeGenerator.createNewFile(
         dependencies = Dependencies(
             aggregating = false,
-            sources = buildList { preview.previewFun.containingFile?.let { add(it) } }.toTypedArray()
+            sources = buildList { preview.previewFun.containingFile?.let { add(it) } }.toTypedArray(),
         ),
         packageName = copied.packageName,
-        fileName = "Copied${copied.baseName}"
+        fileName = "Copied${copied.baseName}",
     ).bufferedWriter().use { writer ->
         writer.appendLine("package ${copied.packageName}")
         writer.appendLine()
@@ -94,6 +98,7 @@ internal data class CopiedPreview(
     val packageName: String,
     val baseName: String,
     val baseFile: KSFile,
+    val startLineNumber: Int?,
     val placeholderedDisplayName: String,
 ) {
     val fullBaseName = "$packageName.$baseName"

@@ -247,11 +247,20 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                         state = rememberTooltipState(),
                     ) {
                         val filePath = LocalCollectedPreview.current?.filePath
+                        val startLineNumber = LocalCollectedPreview.current?.startLineNumber
                         val openHandler = LocalOpenFileHandler.current
                         if (filePath != null && openHandler != null) {
                             val configuredValue = openHandler.configure()
                             SmallFloatingActionButton(
-                                onClick = { (openHandler as OpenFileHandler<in Any?>).openFile(configuredValue, filePath) },
+                                onClick = {
+                                    (openHandler as OpenFileHandler<in Any?>).openFile(
+                                        OpenFileHandler.Params(
+                                            configuredValue = configuredValue,
+                                            filePathInProject = filePath,
+                                            startLineNumber = startLineNumber,
+                                        ),
+                                    )
+                                },
                             ) {
                                 Icon(
                                     painter = painterResource(Res.drawable.icon_code),
@@ -293,6 +302,7 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                         it.content(state)
                     }
 
+                    val startLineNumber = LocalCollectedPreview.current?.startLineNumber
                     val filePath = LocalCollectedPreview.current?.filePath
                     val openHandler = LocalOpenFileHandler.current
                     if (filePath != null && openHandler != null) {
@@ -300,7 +310,15 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
 
                         val configuredValue = openHandler.configure()
                         OutlinedButton(
-                            onClick = { (openHandler as OpenFileHandler<in Any?>).openFile(configuredValue, filePath) },
+                            onClick = {
+                                (openHandler as OpenFileHandler<in Any?>).openFile(
+                                    OpenFileHandler.Params(
+                                        configuredValue = configuredValue,
+                                        filePathInProject = filePath,
+                                        startLineNumber = startLineNumber,
+                                    ),
+                                )
+                            },
                             modifier = Modifier.padding(vertical = 4.dp, horizontal = 12.dp).fillMaxWidth(),
                         ) {
                             Icon(

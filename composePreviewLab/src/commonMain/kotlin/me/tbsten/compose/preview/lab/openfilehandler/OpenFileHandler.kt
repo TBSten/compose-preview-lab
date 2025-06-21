@@ -8,24 +8,31 @@ import androidx.compose.ui.platform.UriHandler
 interface OpenFileHandler<T> {
     @Composable
     fun configure(): T
-    fun openFile(configuredValue: T, filePathInProject: String)
+    fun openFile(params: Params<T>)
+    class Params<T> internal constructor(val configuredValue: T, val filePathInProject: String, val startLineNumber: Int?,)
 }
 
 @Suppress("ktlint:standard:function-naming")
-fun OpenFileHandler(openFile: (filePathInProject: String) -> Unit) = object : OpenFileHandler<Unit> {
+fun OpenFileHandler(openFile: (OpenFileHandler.Params<Unit>) -> Unit) = object : OpenFileHandler<Unit> {
     @Composable
     override fun configure() {
     }
 
-    override fun openFile(configuredValue: Unit, filePathInProject: String) = openFile(filePathInProject)
+    override fun openFile(params: OpenFileHandler.Params<Unit>) = openFile(
+        OpenFileHandler.Params(
+            configuredValue = Unit,
+            filePathInProject = params.filePathInProject,
+            startLineNumber = params.startLineNumber,
+        ),
+    )
 }
 
 class UrlOpenFileHandler(private val baseUrl: String = "") : OpenFileHandler<UriHandler> {
     @Composable
     override fun configure(): UriHandler = LocalUriHandler.current
 
-    override fun openFile(configuredValue: UriHandler, filePathInProject: String) {
-        configuredValue.openUri("$baseUrl$filePathInProject")
+    override fun openFile(params: OpenFileHandler.Params<UriHandler>) {
+        params.configuredValue.openUri("$baseUrl${params.filePathInProject}${if (params.startLineNumber != null) "#L${params.startLineNumber}" else ""}")
     }
 }
 
