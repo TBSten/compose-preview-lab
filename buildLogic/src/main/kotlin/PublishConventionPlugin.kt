@@ -20,6 +20,7 @@ class PublishConventionPlugin : Plugin<Project> {
             target.extensions.create("publishConvention", PublishConventionExtension::class.java)
                 .apply {
                     groupId = rootProject.group.toString()
+                    artifactId = rootProject.name
                     version = rootProject.version.toString()
                 }
 
