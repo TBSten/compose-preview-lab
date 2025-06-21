@@ -1,3 +1,4 @@
+import me.tbsten.compose.preview.lab.composePreviewLab
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
@@ -6,6 +7,7 @@ plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.android.library)
     alias(libs.plugins.ksp)
+    id("me.tbsten.compose.preview.lab")
 }
 
 kotlin {
@@ -66,7 +68,5 @@ dependencies {
 }
 
 ksp {
-    arg("composePreviewLab.previewsListPackage", "uiLib")
-    arg("composePreviewLab.publicPreviewList", "true")
-    arg("composePreviewLab.projectRootPath", project.rootProject.projectDir.absolutePath)
+    composePreviewLab.publicPreviewList = true
 }

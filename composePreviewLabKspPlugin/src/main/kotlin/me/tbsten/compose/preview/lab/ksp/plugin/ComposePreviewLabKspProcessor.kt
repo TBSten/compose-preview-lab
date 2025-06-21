@@ -20,7 +20,11 @@ internal class ComposePreviewLabKspProcessor(
         isExecuted = true
 
         val previewsListPackage = options["composePreviewLab.previewsListPackage"]
-            ?: throw IllegalStateException("ksp arg `composePreviewLab.previewsListPackage` is not set.")
+        if (previewsListPackage == null) {
+            throw NotConfiguredPreviewsListPackageException()
+        } else if (previewsListPackage.isBlank()) {
+            throw InvalidPreviewsListPackageException(previewsListPackage)
+        }
 
         val publicPreviewList =
             options["composePreviewLab.publicPreviewList"]?.lowercase() == "true"
