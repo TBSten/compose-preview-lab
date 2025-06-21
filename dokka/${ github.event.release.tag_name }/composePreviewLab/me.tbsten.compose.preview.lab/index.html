@@ -1,0 +1,310 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>me.tbsten.compose.preview.lab</title>
+<link href="../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer></script>
+<script type="text/javascript" src="../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+<a class="library-name--link" href="../../index.html">
+                    composePreviewLabProject
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">0.1.0-dev04
+        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector common-like" data-active="" data-filter=":composePreviewLab:dokkaHtmlPartial/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":composePreviewLab:dokkaHtmlPartial/commonMain" data-filter=":composePreviewLab:dokkaHtmlPartial/commonMain">
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    composePreviewLabProject
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="package" id="content" pageids="composePreviewLab::me.tbsten.compose.preview.lab////PointingToDeclaration//311858862">
+  <div class="breadcrumbs"><a href="../index.html">composePreviewLab</a><span class="delimiter">/</span><span class="current">me.tbsten.compose.preview.lab</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button><button class="section-tab" data-togglable="PROPERTY,EXTENSION_PROPERTY">Properties</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-1826889970%2FClasslikes%2F311858862" anchor-label="CollectedPreview" id="-1826889970%2FClasslikes%2F311858862" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composePreviewLab:dokkaHtmlPartial/commonMain" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-collected-preview/index.html"><span>Collected</span><wbr><span><span>Preview</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1826889970%2FClasslikes%2F311858862"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composePreviewLab:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-collected-preview/index.html">CollectedPreview</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-663700222%2FClasslikes%2F311858862" anchor-label="ExperimentalComposePreviewLabApi" id="-663700222%2FClasslikes%2F311858862" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composePreviewLab:dokkaHtmlPartial/commonMain" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-experimental-compose-preview-lab-api/index.html"><span>Experimental</span><wbr><span>Compose</span><wbr><span>Preview</span><wbr><span>Lab</span><wbr><span><span>Api</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-663700222%2FClasslikes%2F311858862"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composePreviewLab:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.annotation/-target/index.html"><span class="token annotation builtin">Target</span></a><span class="token punctuation">(</span><span>allowedTargets<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.annotation/-annotation-target/-c-l-a-s-s/index.html">AnnotationTarget.CLASS</a><span class="token punctuation">, </span></span><wbr><span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.annotation/-annotation-target/-f-u-n-c-t-i-o-n/index.html">AnnotationTarget.FUNCTION</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">annotation class </span><a href="-experimental-compose-preview-lab-api/index.html">ExperimentalComposePreviewLabApi</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-764360883%2FClasslikes%2F311858862" anchor-label="InternalComposePreviewLabApi" id="-764360883%2FClasslikes%2F311858862" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composePreviewLab:dokkaHtmlPartial/commonMain" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-internal-compose-preview-lab-api/index.html"><span>Internal</span><wbr><span>Compose</span><wbr><span>Preview</span><wbr><span>Lab</span><wbr><span><span>Api</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-764360883%2FClasslikes%2F311858862"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composePreviewLab:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.annotation/-target/index.html"><span class="token annotation builtin">Target</span></a><span class="token punctuation">(</span><span>allowedTargets<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.annotation/-annotation-target/-c-l-a-s-s/index.html">AnnotationTarget.CLASS</a><span class="token punctuation">, </span></span><wbr><span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.annotation/-annotation-target/-f-u-n-c-t-i-o-n/index.html">AnnotationTarget.FUNCTION</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">annotation class </span><a href="-internal-compose-preview-lab-api/index.html">InternalComposePreviewLabApi</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="190612849%2FClasslikes%2F311858862" anchor-label="OpenFileHandler" id="190612849%2FClasslikes%2F311858862" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composePreviewLab:dokkaHtmlPartial/commonMain" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-open-file-handler/index.html"><span>Open</span><wbr><span>File</span><wbr><span><span>Handler</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="190612849%2FClasslikes%2F311858862"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composePreviewLab:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token keyword">interface </span><a href="-open-file-handler/index.html">OpenFileHandler</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1518478952%2FClasslikes%2F311858862" anchor-label="PreviewLab" id="1518478952%2FClasslikes%2F311858862" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composePreviewLab:dokkaHtmlPartial/commonMain" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-preview-lab/index.html"><span>Preview</span><wbr><span><span>Lab</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1518478952%2FClasslikes%2F311858862"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composePreviewLab:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-preview-lab/index.html">PreviewLab</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2027812363%2FClasslikes%2F311858862" anchor-label="PreviewLabRootState" id="2027812363%2FClasslikes%2F311858862" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composePreviewLab:dokkaHtmlPartial/commonMain" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-preview-lab-root-state/index.html"><span>Preview</span><wbr><span>Lab</span><wbr><span>Root</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2027812363%2FClasslikes%2F311858862"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composePreviewLab:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-preview-lab-root-state/index.html">PreviewLabRootState</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">selectedPreview<span class="token operator">: </span><a href="-collected-preview/index.html">CollectedPreview</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2008587098%2FClasslikes%2F311858862" anchor-label="PreviewLabScope" id="-2008587098%2FClasslikes%2F311858862" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composePreviewLab:dokkaHtmlPartial/commonMain" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-preview-lab-scope/index.html"><span>Preview</span><wbr><span>Lab</span><wbr><span><span>Scope</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2008587098%2FClasslikes%2F311858862"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composePreviewLab:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-preview-lab-scope/index.html">PreviewLabScope</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="7040265%2FClasslikes%2F311858862" anchor-label="PreviewLabState" id="7040265%2FClasslikes%2F311858862" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composePreviewLab:dokkaHtmlPartial/commonMain" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-preview-lab-state/index.html"><span>Preview</span><wbr><span>Lab</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="7040265%2FClasslikes%2F311858862"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composePreviewLab:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-preview-lab-state/index.html">PreviewLabState</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="1277866105%2FProperties%2F311858862" anchor-label="LocalOpenFileHandler" id="1277866105%2FProperties%2F311858862" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composePreviewLab:dokkaHtmlPartial/commonMain" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-local-open-file-handler.html"><span>Local</span><wbr><span>Open</span><wbr><span>File</span><wbr><span><span>Handler</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1277866105%2FProperties%2F311858862"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composePreviewLab:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="-local-open-file-handler.html">LocalOpenFileHandler</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/ProvidableCompositionLocal.html">ProvidableCompositionLocal</a><span class="token operator">&lt;</span><a href="-open-file-handler/index.html">OpenFileHandler</a><span class="token operator">?</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1446486897%2FFunctions%2F311858862" anchor-label="CollectedPreview" id="-1446486897%2FFunctions%2F311858862" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composePreviewLab:dokkaHtmlPartial/commonMain" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-collected-preview.html"><span>Collected</span><wbr><span><span>Preview</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1446486897%2FFunctions%2F311858862"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composePreviewLab:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="-collected-preview.html"><span class="token function">CollectedPreview</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">displayName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">filePath<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">code<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">content<span class="token operator">: </span><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a>&nbsp;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-collected-preview/index.html">CollectedPreview</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-780212849%2FFunctions%2F311858862" anchor-label="layoutLab" id="-780212849%2FFunctions%2F311858862" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":composePreviewLab:dokkaHtmlPartial/commonMain" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="layout-lab.html"><span>layout</span><wbr><span><span>Lab</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-780212849%2FFunctions%2F311858862"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composePreviewLab:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/Modifier.html">Modifier</a><span class="token punctuation">.</span><a href="layout-lab.html"><span class="token function">layoutLab</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/Modifier.html">Modifier</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-736258967%2FFunctions%2F311858862" anchor-label="PreviewLabRoot" id="-736258967%2FFunctions%2F311858862" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composePreviewLab:dokkaHtmlPartial/commonMain" data-filterable-set=":composePreviewLab:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-preview-lab-root.html"><span>Preview</span><wbr><span>Lab</span><wbr><span><span>Root</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-736258967%2FFunctions%2F311858862"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composePreviewLab:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="-preview-lab-root.html"><span class="token function">PreviewLabRoot</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">previews<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="-collected-preview/index.html">CollectedPreview</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">modifier<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/Modifier.html">Modifier</a><span class="token operator"> = </span>Modifier<span class="token punctuation">, </span></span><span class="parameter ">state<span class="token operator">: </span><a href="-preview-lab-root-state/index.html">PreviewLabRootState</a><span class="token operator"> = </span>remember { PreviewLabRootState() }<span class="token punctuation">, </span></span><span class="parameter ">openFileHandler<span class="token operator">: </span><a href="-open-file-handler/index.html">OpenFileHandler</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
