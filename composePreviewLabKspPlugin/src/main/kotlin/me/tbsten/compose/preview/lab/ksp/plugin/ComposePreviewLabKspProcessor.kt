@@ -25,6 +25,8 @@ internal class ComposePreviewLabKspProcessor(
         val publicPreviewList =
             options["composePreviewLab.publicPreviewList"]?.lowercase() == "true"
 
+        val projectRootPath = options["composePreviewLab.projectRootPath"]
+
         val previews = resolver.getSymbolsWithAnnotation(PreviewAnnotation)
         if (previews.any { !it.validate() }) return previews.toList()
 
@@ -44,6 +46,7 @@ internal class ComposePreviewLabKspProcessor(
             codeGenerator = codeGenerator,
             previewsListPackage = previewsListPackage,
             publicPreviewList = publicPreviewList,
+            projectRootPath = projectRootPath,
         )
         return emptyList()
     }

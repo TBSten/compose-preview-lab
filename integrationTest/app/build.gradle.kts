@@ -140,4 +140,5 @@ tasks.register<ComposeHotRun>("runHot") {
 
 ksp {
     arg("composePreviewLab.previewsListPackage", "app")
+    arg("composePreviewLab.projectRootPath", project.rootProject.projectDir.absolutePath)
 }

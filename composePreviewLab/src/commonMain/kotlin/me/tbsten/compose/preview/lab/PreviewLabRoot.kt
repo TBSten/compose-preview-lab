@@ -19,6 +19,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +32,8 @@ import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.component.NoPreview
 import me.tbsten.compose.preview.lab.component.NoSelectedPreview
 import me.tbsten.compose.preview.lab.component.adaptive
+import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
+import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 import me.tbsten.compose.preview.lab.previewlist.PreviewListTree
 import me.tbsten.compose.preview.lab.theme.AppTheme
 
@@ -39,7 +42,7 @@ fun PreviewLabRoot(
     previews: List<CollectedPreview>,
     modifier: Modifier = Modifier,
     state: PreviewLabRootState = remember { PreviewLabRootState() },
-    openFileHandler: OpenFileHandler? = null,
+    openFileHandler: OpenFileHandler<out Any?>? = null,
 ) = AppTheme {
     CompositionLocalProvider(
         LocalOpenFileHandler provides openFileHandler,
@@ -68,23 +71,27 @@ fun PreviewLabRoot(
                 },
                 selectedItem = state.selectedPreview,
                 detail = { selectedPreview ->
-                    AnimatedContent(
-                        targetState = selectedPreview,
-                        transitionSpec = {
-                            fadeIn() togetherWith fadeOut()
-                        },
-                        modifier = Modifier
-                            .zIndex(0f),
-                    ) { selectedPreview ->
-                        val preview = selectedPreview.content
+                    CompositionLocalProvider(
+                        LocalCollectedPreview provides selectedPreview,
+                    ) {
+                        AnimatedContent(
+                            targetState = selectedPreview,
+                            transitionSpec = {
+                                fadeIn() togetherWith fadeOut()
+                            },
+                            modifier = Modifier
+                                .zIndex(0f),
+                        ) { selectedPreview ->
+                            val preview = selectedPreview.content
 
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                        ) {
-                            if (previewList.isEmpty()) {
-                                NoPreview()
-                            } else {
-                                preview.invoke()
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                            ) {
+                                if (previewList.isEmpty()) {
+                                    NoPreview()
+                                } else {
+                                    preview.invoke()
+                                }
                             }
                         }
                     }
@@ -96,6 +103,8 @@ fun PreviewLabRoot(
         }
     }
 }
+
+internal val LocalCollectedPreview = compositionLocalOf<CollectedPreview?> { null }
 
 @OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
 @Composable

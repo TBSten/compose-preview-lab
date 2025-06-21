@@ -13,12 +13,12 @@ import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import me.tbsten.compose.preview.lab.CollectedPreview
-import me.tbsten.compose.preview.lab.OpenFileHandler
 import me.tbsten.compose.preview.lab.PreviewLabRoot
+import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 
 fun previewLabApplication(
     previews: List<CollectedPreview>,
-    openFileHandler: OpenFileHandler? = null,
+    openFileHandler: OpenFileHandler<out Any?>? = null,
     // Window arguments
     onCloseRequest: ApplicationScope.() -> Unit = { exitApplication() },
     visible: Boolean = true,

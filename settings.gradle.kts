@@ -27,6 +27,7 @@ dependencyResolutionManagement {
                 includeGroupByRegex("android.*")
             }
         }
+        gradlePluginPortal()
         mavenCentral()
     }
 }
