@@ -67,7 +67,5 @@ dependencies {
 }
 
 ksp {
-    arg("composePreviewLab.previewsListPackage", "uiLib")
-    arg("composePreviewLab.publicPreviewList", "true")
-    arg("composePreviewLab.projectRootPath", project.rootProject.projectDir.absolutePath)
+    composePreviewLab.publicPreviewList = true
 }
