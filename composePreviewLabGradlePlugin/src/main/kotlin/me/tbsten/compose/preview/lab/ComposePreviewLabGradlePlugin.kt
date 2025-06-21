@@ -21,23 +21,6 @@ internal fun Project.setDefaultValues() {
                 .mapIndexed { index, word -> if (index == 0) word else word.replaceFirstChar { it.uppercase() } }
                 .joinToString(""),
         )
-        println("configure composePreviewLab.previewsListPackage:")
-        println(
-            "  ${
-                project.name
-                    .split(Regex(".|_|-"))
-            }",
-        )
-        println("  - project.name: ${project.name}")
-        println(
-            "  - computed value: ${
-                project.name
-                    .split(Regex(".|_|-"))
-                    .mapIndexed { index, word -> if (index == 0) word else word.replaceFirstChar { it.uppercase() } }
-                    .joinToString("")
-            }",
-        )
-        println("  - ksp.arguments: ${arguments["composePreviewLab.previewsListPackage"]}")
         arg(
             "composePreviewLab.projectRootPath",
             project.rootProject.projectDir.absolutePath,
