@@ -37,8 +37,7 @@ plugins {
 }
 
 includeBuild("./buildLogic")
-include(":composePreviewLab")
-include(":composePreviewLabAnnotation")
-include(":composePreviewLabKspPlugin")
-include(":composePreviewLabGradlePlugin")
-include(":composePreviewLabIntellijPlugin")
+include(":core")
+include(":ksp-plugin")
+include(":gradle-plugin")
+include(":intellij-plugin")

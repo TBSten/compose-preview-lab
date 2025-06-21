@@ -20,10 +20,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.Res
-import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_refresh
-import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_zoom_in
-import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_zoom_out
+import me.tbsten.compose.preview.lab.core.generated.resources.Res
+import me.tbsten.compose.preview.lab.core.generated.resources.icon_refresh
+import me.tbsten.compose.preview.lab.core.generated.resources.icon_zoom_in
+import me.tbsten.compose.preview.lab.core.generated.resources.icon_zoom_out
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
