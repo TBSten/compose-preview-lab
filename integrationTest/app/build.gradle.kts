@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.hotReload)
     alias(libs.plugins.ksp)
+    id("me.tbsten.compose.preview.lab")
 }
 
 kotlin {
@@ -136,9 +137,4 @@ composeCompiler {
 }
 tasks.register<ComposeHotRun>("runHot") {
     mainClass.set("MainKt")
-}
-
-ksp {
-    arg("composePreviewLab.previewsListPackage", "app")
-    arg("composePreviewLab.projectRootPath", project.rootProject.projectDir.absolutePath)
 }
