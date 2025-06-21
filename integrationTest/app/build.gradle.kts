@@ -16,6 +16,7 @@ kotlin {
     jvmToolchain(11)
     androidTarget {
         // https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
+        @Suppress("OPT_IN_USAGE")
         instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
     }
 
@@ -26,6 +27,7 @@ kotlin {
         binaries.executable()
     }
 
+    @Suppress("OPT_IN_USAGE")
     wasmJs {
         browser()
         binaries.executable()
@@ -77,11 +79,11 @@ kotlin {
 
 android {
     namespace = "me.tbsten.compose.preview.lab.sample"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 35
+        targetSdk = 36
 
         applicationId = "me.tbsten.compose.preview.lab.sample.androidApp"
         versionCode = 1
