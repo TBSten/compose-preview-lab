@@ -5,7 +5,30 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish:
+  publish-dokka:
+    name: Release dokka documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Setup Java for Gradle
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Build Dokka Documentation
+        run: ./gradlew dokkaHtmlMultiModule
+      - name: Publish to Github Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/dokka/htmlMultiModule
+          destination_dir: dokka/${ github.event.release.tag_name }/
+          keep_files: true
+
+  publish-libraries:
     name: Release build and publish
     runs-on: macOS-latest
     steps:
