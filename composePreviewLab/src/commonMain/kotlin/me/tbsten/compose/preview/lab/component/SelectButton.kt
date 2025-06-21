@@ -1,14 +1,17 @@
 package me.tbsten.compose.preview.lab.component
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,8 +51,16 @@ internal fun <V> SelectButton(
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
-    OutlinedButton(onClick = { showMenu = true }, modifier = modifier) {
-        Text(title(value))
+    OutlinedButton(
+        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 2.dp),
+        onClick = { showMenu = true },
+        modifier = modifier,
+    ) {
+        CompositionLocalProvider(
+            LocalTextStyle provides MaterialTheme.typography.labelSmall,
+        ) {
+            Text(title(value))
+        }
     }
 
     DropdownMenu(
@@ -83,7 +94,7 @@ internal fun <V> SelectButton(
                     @Composable {
                         Icon(
                             imageResource(Res.drawable.icon_check),
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     }
                 } else {
