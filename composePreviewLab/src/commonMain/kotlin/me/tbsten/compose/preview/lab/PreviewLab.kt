@@ -246,10 +246,12 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                         tooltip = { PlainTooltip { Text("Show Source Code") } },
                         state = rememberTooltipState(),
                     ) {
-                        LocalOpenFileHandler.current?.let { handler ->
-                            val configuredValue = handler.configure()
+                        val filePath = LocalCollectedPreview.current?.filePath
+                        val openHandler = LocalOpenFileHandler.current
+                        if (filePath != null && openHandler != null) {
+                            val configuredValue = openHandler.configure()
                             SmallFloatingActionButton(
-                                onClick = { (handler as OpenFileHandler<in Any?>).openFile(configuredValue, "TODO") },
+                                onClick = { (openHandler as OpenFileHandler<in Any?>).openFile(configuredValue, filePath) },
                             ) {
                                 Icon(
                                     painter = painterResource(Res.drawable.icon_code),
@@ -291,12 +293,14 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                         it.content(state)
                     }
 
-                    LocalOpenFileHandler.current?.let { handler ->
+                    val filePath = LocalCollectedPreview.current?.filePath
+                    val openHandler = LocalOpenFileHandler.current
+                    if (filePath != null && openHandler != null) {
                         Divider()
 
-                        val configuredValue = handler.configure()
+                        val configuredValue = openHandler.configure()
                         OutlinedButton(
-                            onClick = { (handler as OpenFileHandler<in Any?>).openFile(configuredValue, "TODO") },
+                            onClick = { (openHandler as OpenFileHandler<in Any?>).openFile(configuredValue, filePath) },
                             modifier = Modifier.padding(vertical = 4.dp, horizontal = 12.dp).fillMaxWidth(),
                         ) {
                             Icon(
