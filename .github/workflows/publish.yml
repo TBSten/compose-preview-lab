@@ -8,6 +8,8 @@ jobs:
   publish-dokka:
     name: Release dokka documentation
     runs-on: ubuntu-latest
+    concurrency:
+      group: "pages"
     steps:
       - name: Check out code
         uses: actions/checkout@v4
