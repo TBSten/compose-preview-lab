@@ -32,7 +32,9 @@ class UrlOpenFileHandler(private val baseUrl: String = "") : OpenFileHandler<Uri
     override fun configure(): UriHandler = LocalUriHandler.current
 
     override fun openFile(params: OpenFileHandler.Params<UriHandler>) {
-        params.configuredValue.openUri("$baseUrl${params.filePathInProject}${if (params.startLineNumber != null) "#L${params.startLineNumber}" else ""}")
+        params.configuredValue.openUri(
+            "$baseUrl${params.filePathInProject}${if (params.startLineNumber != null) "#L${params.startLineNumber}" else ""}"
+        )
     }
 }
 
