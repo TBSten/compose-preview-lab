@@ -31,6 +31,8 @@ import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.component.NoPreview
 import me.tbsten.compose.preview.lab.component.NoSelectedPreview
 import me.tbsten.compose.preview.lab.component.adaptive
+import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
+import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 import me.tbsten.compose.preview.lab.previewlist.PreviewListTree
 import me.tbsten.compose.preview.lab.theme.AppTheme
 
@@ -39,7 +41,7 @@ fun PreviewLabRoot(
     previews: List<CollectedPreview>,
     modifier: Modifier = Modifier,
     state: PreviewLabRootState = remember { PreviewLabRootState() },
-    openFileHandler: OpenFileHandler? = null,
+    openFileHandler: OpenFileHandler<out Any?>? = null,
 ) = AppTheme {
     CompositionLocalProvider(
         LocalOpenFileHandler provides openFileHandler,

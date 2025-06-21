@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,6 +20,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
@@ -52,11 +54,14 @@ import me.tbsten.compose.preview.lab.component.SimpleBottomSheet
 import me.tbsten.compose.preview.lab.component.TabPager
 import me.tbsten.compose.preview.lab.component.adaptive
 import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.Res
+import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_code
 import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_dashboard
 import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_edit
 import me.tbsten.compose.preview.lab.composepreviewlab.generated.resources.icon_history
 import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.field.ScreenSizeField
+import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
+import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 import me.tbsten.compose.preview.lab.theme.AppTheme
 import me.tbsten.compose.preview.lab.util.toDpOffset
 import org.jetbrains.compose.resources.DrawableResource
@@ -235,6 +240,24 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                             }
                         }
                     }
+
+                    TooltipBox(
+                        positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                        tooltip = { PlainTooltip { Text("Show Source Code") } },
+                        state = rememberTooltipState(),
+                    ) {
+                        LocalOpenFileHandler.current?.let { handler ->
+                            val configuredValue = handler.configure()
+                            SmallFloatingActionButton(
+                                onClick = { (handler as OpenFileHandler<in Any?>).openFile(configuredValue, "TODO") },
+                            ) {
+                                Icon(
+                                    painter = painterResource(Res.drawable.icon_code),
+                                    contentDescription = "Show source code",
+                                )
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -263,8 +286,28 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                                     }
                                 }
                             },
+                        modifier = Modifier.weight(1f),
                     ) {
                         it.content(state)
+                    }
+
+                    LocalOpenFileHandler.current?.let { handler ->
+                        Divider()
+
+                        val configuredValue = handler.configure()
+                        OutlinedButton(
+                            onClick = { (handler as OpenFileHandler<in Any?>).openFile(configuredValue, "TODO") },
+                            modifier = Modifier.padding(vertical = 4.dp, horizontal = 12.dp).fillMaxWidth(),
+                        ) {
+                            Icon(
+                                painter = painterResource(Res.drawable.icon_code),
+                                contentDescription = null,
+                            )
+                            Spacer(Modifier.width(8.dp))
+                            Text(
+                                text = "Source Code",
+                            )
+                        }
                     }
                 }
             }
