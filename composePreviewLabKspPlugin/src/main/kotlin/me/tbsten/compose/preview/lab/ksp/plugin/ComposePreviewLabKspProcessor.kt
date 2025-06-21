@@ -5,13 +5,14 @@ import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
+import com.google.devtools.ksp.validate
 
 private const val PreviewAnnotation = "org.jetbrains.compose.ui.tooling.preview.Preview"
 
 internal class ComposePreviewLabKspProcessor(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger,
-    private val options: Map<String, String>
+    private val options: Map<String, String>,
 ) : SymbolProcessor {
     private var isExecuted = false
     override fun process(resolver: Resolver): List<KSAnnotated> {
@@ -25,6 +26,7 @@ internal class ComposePreviewLabKspProcessor(
             options["composePreviewLab.publicPreviewList"]?.lowercase() == "true"
 
         val previews = resolver.getSymbolsWithAnnotation(PreviewAnnotation)
+        if (previews.any { !it.validate() }) return previews.toList()
 
         val copiedPreviews = mutableListOf<CopiedPreview>()
         previews.forEach { preview ->

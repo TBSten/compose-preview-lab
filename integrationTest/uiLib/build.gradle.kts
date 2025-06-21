@@ -68,13 +68,7 @@ dependencies {
     add("kspWasmJs", composePreviewLabKspPlugin)
 }
 
-// https://github.com/JetBrains/compose-hot-reload
-composeCompiler { featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups) }
-
 ksp {
     arg("composePreviewLab.previewsListPackage", "uiLib")
-}
-
-tasks.register<ComposeHotRun>("runHot") {
-    mainClass.set("MainKt")
+    arg("composePreviewLab.publicPreviewList", "true")
 }
