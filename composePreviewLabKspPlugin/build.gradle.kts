@@ -13,7 +13,9 @@ dependencies {
 }
 
 publishConvention {
+    artifactName = "KSP Plugin"
     artifactId = "ksp-plugin"
+    artifactName = "Compose Preview Lab KSP Plugin"
     description =
         "A component catalog library that collects and lists @Preview. \n" +
         "By providing APIs such as Field, Event, etc., it provides not only display but also interactive preview.\n" +

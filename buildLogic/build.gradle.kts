@@ -21,4 +21,5 @@ dependencies {
     implementation(libs.kotlinGradlePlugin)
     implementation(libs.ktlintGradlePlugin)
     implementation(libs.vanniktechMavenPublishGradlePlugin)
+    implementation(libs.dokkaGradlePlugin)
 }

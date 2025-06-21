@@ -23,36 +23,41 @@ class PublishConventionPlugin : Plugin<Project> {
                     version = rootProject.version.toString()
                 }
 
-        afterEvaluate {
-            mavenPublishing {
-                publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+        configurePublish(publishConvention)
+        configureDokka(publishConvention)
+    }
+}
 
-                if (!(gradle.startParameter.taskNames.contains("publishToMavenLocal"))) {
-                    signAllPublications()
+private fun Project.configurePublish(publishConvention: PublishConventionExtension) {
+    afterEvaluate {
+        mavenPublishing {
+            publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+
+            if (!(gradle.startParameter.taskNames.contains("publishToMavenLocal"))) {
+                signAllPublications()
+            }
+
+            coordinates(
+                groupId = publishConvention.groupId ?: group.toString(),
+                artifactId = publishConvention.artifactId,
+                version = publishConvention.version ?: version.toString(),
+            )
+
+            pom {
+                name.set(publishConvention.artifactId)
+                description.set(publishConvention.description)
+                inceptionYear.set("2025")
+                url.set(publishConvention.url)
+
+                licenses {
+                    apacheLicense20()
                 }
 
-                coordinates(
-                    groupId = publishConvention.groupId ?: target.group.toString(),
-                    artifactId = publishConvention.artifactId,
-                    version = publishConvention.version ?: target.version.toString(),
-                )
-
-                pom {
-                    name.set(publishConvention.artifactId)
-                    description.set(publishConvention.description)
-                    inceptionYear.set("2025")
-                    url.set(publishConvention.url)
-
-                    licenses {
-                        apacheLicense20()
-                    }
-
-                    developers {
-                        developerTbsten()
-                    }
-
-                    scmGithub()
+                developers {
+                    developerTbsten()
                 }
+
+                scmGithub()
             }
         }
     }
@@ -60,7 +65,10 @@ class PublishConventionPlugin : Plugin<Project> {
 
 open class PublishConventionExtension {
     var groupId: String? = null
-    lateinit var artifactId: String
+    var artifactId: String? = null
+    var artifactName: String? = artifactId
+        get() = field ?: artifactId
+
     var version: String? = null
     lateinit var description: String
     var url: String = "https://github.com/$GithubUserName/$GithubRepoName"
