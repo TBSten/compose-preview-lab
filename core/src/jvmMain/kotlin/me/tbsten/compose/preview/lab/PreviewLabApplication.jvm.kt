@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.component
+package me.tbsten.compose.preview.lab
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
@@ -12,8 +12,6 @@ import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import me.tbsten.compose.preview.lab.CollectedPreview
-import me.tbsten.compose.preview.lab.PreviewLabRoot
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 
 /**

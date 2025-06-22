@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.component
+package me.tbsten.compose.preview.lab
 
 import androidx.compose.ui.tooling.preview.Preview
 
