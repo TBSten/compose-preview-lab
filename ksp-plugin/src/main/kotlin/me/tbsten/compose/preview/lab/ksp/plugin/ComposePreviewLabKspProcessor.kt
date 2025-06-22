@@ -7,7 +7,8 @@ import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.validate
 
-private const val PreviewAnnotation = "org.jetbrains.compose.ui.tooling.preview.Preview"
+private const val AndroidPreviewAnnotation = "androidx.compose.ui.tooling.preview.Preview"
+private const val CMPPreviewAnnotation = "org.jetbrains.compose.ui.tooling.preview.Preview"
 
 internal class ComposePreviewLabKspProcessor(
     private val codeGenerator: CodeGenerator,
@@ -31,7 +32,10 @@ internal class ComposePreviewLabKspProcessor(
 
         val projectRootPath = options["composePreviewLab.projectRootPath"]
 
-        val previews = resolver.getSymbolsWithAnnotation(PreviewAnnotation)
+        val previews =
+            resolver.getSymbolsWithAnnotation(CMPPreviewAnnotation) +
+                resolver.getSymbolsWithAnnotation(AndroidPreviewAnnotation)
+
         if (previews.any { !it.validate() }) return previews.toList()
 
         val copiedPreviews = mutableListOf<CopiedPreview>()
