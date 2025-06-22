@@ -1,6 +1,6 @@
 package me.tbsten.compose.preview.lab.ksp.plugin
 
-class InvalidPreviewsListPackageException(previewsListPackage: String) :
+internal class InvalidPreviewsListPackageException(previewsListPackage: String) :
     IllegalStateException(
         "ksp arg `composePreviewLab.previewsListPackage` (\"${previewsListPackage}\") is invalid. " +
             "Please set not empty value.\n" +
@@ -12,7 +12,7 @@ class InvalidPreviewsListPackageException(previewsListPackage: String) :
             "",
     )
 
-class NotConfiguredPreviewsListPackageException :
+internal class NotConfiguredPreviewsListPackageException :
     IllegalStateException(
         "ksp arg `composePreviewLab.previewsListPackage` is not set. Please set it.\n" +
             "\n" +
