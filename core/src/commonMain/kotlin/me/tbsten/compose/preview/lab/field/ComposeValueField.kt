@@ -16,33 +16,76 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.tbsten.compose.preview.lab.field.NumberField.InputType
 
-class DpField(label: String, initialValue: Dp,) :
+/**
+ * Field that holds a compose's Dp value.
+ * In reality, it is almost a FloatField.
+ *
+ * ```kt
+ * PreviewLab {
+ *   MyButton(
+ *     modifier = Modifier.size(fieldValue { DpField("size", 100.dp) })
+ *   )
+ * }
+ * ```
+ *
+ * @param label label of the field.
+ * @param initialValue initial value of the field.
+ *
+ * @see FloatField
+ */
+class DpField(label: String, initialValue: Dp) :
     TransformField<Float, Dp>(
         baseField = FloatField(
             label = label,
             initialValue = initialValue.value,
             inputType = InputType.TextField(
                 suffix = { Text("dp") },
-            )
+            ),
         ),
         transform = { it.dp },
         reverse = { it.value },
     )
 
-class SpField(label: String, initialValue: TextUnit,) :
+/**
+ * Field that holds a compose's Sp value.
+ * In reality, it is almost a FloatField.
+ *
+ * ```kt
+ * PreviewLab {
+ *   Text(
+ *     ...,
+ *     fontSize = fieldValue { SpField("size", 20.sp) },
+ *   )
+ * }
+ * ```
+ *
+ * @param label label of the field.
+ * @param initialValue initial value of the field.
+ *
+ * @see FloatField
+ */
+class SpField(label: String, initialValue: TextUnit) :
     TransformField<Float, TextUnit>(
         baseField = FloatField(
             label = label,
             initialValue = initialValue.value,
             inputType = InputType.TextField(
                 suffix = { Text("sp") },
-            )
+            ),
         ),
         transform = { it.sp },
         reverse = { it.value },
     )
 
-class OffsetField(label: String, initialValue: Offset,) :
+/**
+ * Field that holds a compose's Offset value.
+ *
+ * @param label label of the field.
+ * @param initialValue initial value of the field.
+ *
+ * @see MutablePreviewLabField
+ */
+class OffsetField(label: String, initialValue: Offset) :
     MutablePreviewLabField<Offset>(
         label = label,
         initialValue = initialValue,
@@ -51,7 +94,7 @@ class OffsetField(label: String, initialValue: Offset,) :
     override fun Content() {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             TextFieldContent(
                 toString = { it.x.toString() },
@@ -70,7 +113,15 @@ class OffsetField(label: String, initialValue: Offset,) :
     }
 }
 
-class DpOffsetField(label: String, initialValue: DpOffset,) :
+/**
+ * Field that holds a compose's DpOffset value.
+ *
+ * @param label label of the field.
+ * @param initialValue initial value of the field.
+ *
+ * @see MutablePreviewLabField
+ */
+class DpOffsetField(label: String, initialValue: DpOffset) :
     MutablePreviewLabField<DpOffset>(
         label = label,
         initialValue = initialValue,
@@ -79,7 +130,7 @@ class DpOffsetField(label: String, initialValue: DpOffset,) :
     override fun Content() {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             TextFieldContent(
                 toString = { it.x.value.toString() },
@@ -98,7 +149,15 @@ class DpOffsetField(label: String, initialValue: DpOffset,) :
     }
 }
 
-class SizeField(label: String, initialValue: Size,) :
+/**
+ * Field that holds a compose's Size value.
+ *
+ * @param label label of the field.
+ * @param initialValue initial value of the field.
+ *
+ * @see MutablePreviewLabField
+ */
+class SizeField(label: String, initialValue: Size) :
     MutablePreviewLabField<Size>(
         label = label,
         initialValue = initialValue,
@@ -107,7 +166,7 @@ class SizeField(label: String, initialValue: Size,) :
     override fun Content() {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             TextFieldContent(
                 toString = { it.width.toString() },
@@ -126,7 +185,15 @@ class SizeField(label: String, initialValue: Size,) :
     }
 }
 
-class DpSizeField(label: String, initialValue: DpSize,) :
+/**
+ * Field that holds a compose's DpSize value.
+ *
+ * @param label label of the field.
+ * @param initialValue initial value of the field.
+ *
+ * @see MutablePreviewLabField
+ */
+class DpSizeField(label: String, initialValue: DpSize) :
     MutablePreviewLabField<DpSize>(
         label = label,
         initialValue = initialValue,
@@ -135,7 +202,7 @@ class DpSizeField(label: String, initialValue: DpSize,) :
     override fun Content() {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             TextFieldContent(
                 toString = { it.width.value.toString() },
@@ -143,7 +210,7 @@ class DpSizeField(label: String, initialValue: DpSize,) :
                     runCatching {
                         DpSize(
                             width = it.toFloat().dp,
-                            height = value.height
+                            height = value.height,
                         )
                     }
                 },

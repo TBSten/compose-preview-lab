@@ -16,6 +16,17 @@ import me.tbsten.compose.preview.lab.CollectedPreview
 import me.tbsten.compose.preview.lab.PreviewLabRoot
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 
+/**
+ * Preview the [PreviewLabRoot] component in a desktop environment.
+ *
+ * ```kt
+ * fun main() = previewLabApplication(
+ *     previews = myModule.previews,
+ * )
+ * ```
+ *
+ * @see PreviewLabRoot
+ */
 fun previewLabApplication(
     previews: List<CollectedPreview>,
     openFileHandler: OpenFileHandler<out Any?>? = null,

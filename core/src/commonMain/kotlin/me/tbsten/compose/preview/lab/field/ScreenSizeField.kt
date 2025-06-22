@@ -12,6 +12,14 @@ import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.component.SelectButton
 import me.tbsten.compose.preview.lab.field.ScreenSize.Companion.MediumSmartPhone
 
+/**
+ * Field to specify the screen size.
+ * Preview を表示する画面のサイズを指定します。
+ *
+ * @param label Field Label.
+ * @param sizes Instantiate ScreenSize or specify a convenient preset in ScreenSize.Companion.
+ * @param type Select UI type, default is [Type.DROPDOWN]. See also [SelectableField.Type].
+ */
 open class ScreenSizeField(
     label: String = "ScreenSize",
     private val sizes: List<ScreenSize> = listOf(MediumSmartPhone),
@@ -75,13 +83,28 @@ open class ScreenSizeField(
     }
 }
 
+/**
+ * ScreenSize class to represent the size of a screen in Dp.
+ *
+ * @param width Width of the screen in Dp.
+ * @param height Height of the screen in Dp.
+ * @param label A string that is displayed as a choice in the selection UI. If there is a special name (e.g., SmallSmartPhone, LargeDesktop), it may be specified for clarity.
+ *
+ * @see me.tbsten.compose.preview.lab.field.ScreenSize.Companion
+ */
 class ScreenSize(val width: Dp, val height: Dp, val label: String = "${width}x$height") {
+    /**
+     * Returns the ScreenSize with width and height replaced.
+     */
     fun reversed() = ScreenSize(
         label = label,
         width = height,
         height = width,
     )
 
+    /**
+     * 一般的なデバイスのサイズの Preset が定義されています。
+     */
     companion object {
         // Smartphones
         val SmallSmartPhone = ScreenSize(

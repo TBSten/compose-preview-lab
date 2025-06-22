@@ -8,6 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+/**
+ * Default UI implementation of [PreviewLabField.View]. Display a label and draw the content below it.
+ *
+ * Use [PreviewLabField.Content] to customize the UI of the field.
+ * [PreviewLabField.View] only if you want to customize the UI, including the part that displays the label, using this Composable.
+ *
+ * @see PreviewLabField
+ */
 @Composable
 fun <Value> PreviewLabField<Value>.DefaultFieldView(
     modifier: Modifier = Modifier,
@@ -22,6 +30,12 @@ fun <Value> PreviewLabField<Value>.DefaultFieldView(
     }
 }
 
+/**
+ * Display the label of [PreviewLabField].
+ *
+ * @see DefaultFieldView
+ * @see PreviewLabField
+ */
 @Composable
 fun PreviewLabField<*>.FieldLabelHeader() {
     Text(

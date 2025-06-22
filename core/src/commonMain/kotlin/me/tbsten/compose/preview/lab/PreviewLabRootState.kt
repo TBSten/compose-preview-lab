@@ -4,14 +4,28 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
-class PreviewLabRootState(selectedPreview: CollectedPreview? = null,) {
+/**
+ * State holder for [PreviewLabRoot].
+ *
+ * @param selectedPreview 初期状態で選択されている Preview。
+ * @property selectedPreview 選択されている Preview の情報を保持します。
+ *
+ * @see PreviewLabRoot
+ */
+class PreviewLabRootState(selectedPreview: CollectedPreview? = null) {
     var selectedPreview: CollectedPreview? by mutableStateOf(selectedPreview)
         private set
 
+    /**
+     * Select Preview.
+     */
     fun select(preview: CollectedPreview) {
         selectedPreview = preview
     }
 
+    /**
+     * Deselects the selected Preview and returns it to the "nothing selected" state.
+     */
     fun unselect() {
         selectedPreview = null
     }

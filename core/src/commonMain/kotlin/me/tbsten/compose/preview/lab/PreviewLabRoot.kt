@@ -37,6 +37,16 @@ import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 import me.tbsten.compose.preview.lab.previewlist.PreviewListTree
 import me.tbsten.compose.preview.lab.theme.AppTheme
 
+/**
+ * A Composable function that catalogs and displays a list of Previews. The left sidebar actually displays the list of Previews, and the selected Preview is displayed in the center of the screen.
+ *
+ * @param previews CollectedPreviews collected from gradle plugins, etc. Note that CollectedPreviews not specified here will not be displayed.
+ * @param state [PreviewLabRootState] to manage the state of the PreviewLabRoot. Preserves the state of the selected Preview, etc. By default, remember is used (i.e., the composition of the call to Composable is the scope of the state), but the scope (storage period) of the state can be adjusted by moving it to a state holder, such as ViewModel, if necessary.
+ * @param openFileHandler By specifying OpenFileHandler, you can display a "Source Code" button that displays the source code corresponding to the Preview.
+ *
+ * @see CollectedPreview
+ * @see OpenFileHandler
+ */
 @Composable
 fun PreviewLabRoot(
     previews: List<CollectedPreview>,

@@ -13,6 +13,12 @@ import me.tbsten.compose.preview.lab.field.SelectableField.Type
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.CHIPS
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.DROPDOWN
 
+/**
+ * List で指定する選択肢から1つを選択する Field.
+ *
+ * @param choiceLabel Text to be displayed in the UI to select a choice.
+ * @param type Select UI type, default is [Type.DROPDOWN]. See also [SelectableField.Type].
+ */
 open class SelectableField<Value>(
     label: String,
     val choices: List<Value>,
@@ -36,8 +42,18 @@ open class SelectableField<Value>(
         }
     }
 
+    /**
+     * The type of UI to select.
+     */
     enum class Type {
+        /**
+         * Dropdown menu.
+         */
         DROPDOWN,
+
+        /**
+         * Chips that can be selected.
+         */
         CHIPS,
     }
 
@@ -59,7 +75,7 @@ open class SelectableField<Value>(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .horizontalScroll(rememberScrollState())
+                .horizontalScroll(rememberScrollState()),
         ) {
             choices.forEach { choice ->
                 InputChip(
@@ -72,6 +88,11 @@ open class SelectableField<Value>(
     }
 }
 
+/**
+ * Create a [SelectableField] with the given label and choices.
+ *
+ * @see SelectableField
+ */
 @Suppress("UNCHECKED_CAST")
 fun <Value> SelectableField(
     label: String,
@@ -87,8 +108,13 @@ fun <Value> SelectableField(
     )
 }
 
+/**
+ * Create a [SelectableField] from enum class values.
+ *
+ * @see SelectableField
+ */
 @Suppress("FunctionName")
-inline fun <reified E : Enum<E>> EnumField(label: String, initialValue: E, type: Type = DROPDOWN,) = SelectableField<E>(
+inline fun <reified E : Enum<E>> EnumField(label: String, initialValue: E, type: Type = DROPDOWN) = SelectableField<E>(
     label = label,
     choices = enumValues<E>().toList(),
     choiceLabel = { it.name },

@@ -9,22 +9,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 
-fun <T> defaultAnimationSpec() = tween<T>(durationMillis = 100, easing = EaseOutExpo)
+internal fun <T> defaultAnimationSpec() = tween<T>(durationMillis = 100, easing = EaseOutExpo)
 
 @Composable
-fun Color.animated() = animateColorAsState(
+internal fun Color.animated() = animateColorAsState(
     targetValue = this,
     animationSpec = defaultAnimationSpec(),
 ).value
 
 @Composable
-fun Float.animated() = animateFloatAsState(
+internal fun Float.animated() = animateFloatAsState(
     targetValue = this,
     animationSpec = defaultAnimationSpec(),
 ).value
 
 @Composable
-fun Dp.animated() = animateDpAsState(
+internal fun Dp.animated() = animateDpAsState(
     targetValue = this,
     animationSpec = defaultAnimationSpec(),
 ).value

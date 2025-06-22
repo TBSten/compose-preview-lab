@@ -7,14 +7,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun <T> adaptive(small: T, medium: T = small, large: T = medium): T = adaptive(
+internal fun <T> adaptive(small: T, medium: T = small, large: T = medium): T = adaptive(
     small = { small },
     medium = { medium },
     large = { large },
 )
 
 @Composable
-fun <T> adaptive(
+internal fun <T> adaptive(
     small: @Composable () -> T,
     medium: @Composable () -> T = small,
     large: @Composable () -> T = medium,
@@ -29,7 +29,7 @@ fun <T> adaptive(
 }
 
 @Composable
-fun currentBreakpoint(): Breakpoint {
+internal fun currentBreakpoint(): Breakpoint {
     val screenWidth =
         with(LocalDensity.current) {
             LocalWindowInfo.current.containerSize.width.toDp()
@@ -37,7 +37,7 @@ fun currentBreakpoint(): Breakpoint {
     return Breakpoint.fromWidth(screenWidth)
 }
 
-enum class Breakpoint(val maxWidth: Dp) {
+internal enum class Breakpoint(val maxWidth: Dp) {
     Small(600.dp),
     Medium(1200.dp),
     Large(Dp.Infinity),
@@ -54,7 +54,7 @@ enum class Breakpoint(val maxWidth: Dp) {
 }
 
 @Composable
-fun AdaptiveContainer(
+internal fun AdaptiveContainer(
     small: @Composable (content: @Composable () -> Unit) -> Unit,
     medium: @Composable (content: @Composable () -> Unit) -> Unit = small,
     large: @Composable (content: @Composable () -> Unit) -> Unit = medium,
@@ -68,7 +68,7 @@ fun AdaptiveContainer(
 }
 
 @Composable
-fun <S> AdaptiveContainer(
+internal fun <S> AdaptiveContainer(
     small: @Composable (content: @Composable S.() -> Unit) -> Unit,
     medium: @Composable (content: @Composable S.() -> Unit) -> Unit = small,
     large: @Composable (content: @Composable S.() -> Unit) -> Unit = medium,
@@ -82,22 +82,27 @@ fun <S> AdaptiveContainer(
 }
 
 @Composable
-fun <A, R> adaptive(arg: A, small: (A) -> R, medium: (A) -> R = small, large: (A) -> R = medium): R = adaptive(
+internal fun <A, R> adaptive(arg: A, small: (A) -> R, medium: (A) -> R = small, large: (A) -> R = medium): R = adaptive(
     small = { small(arg) },
     medium = { medium(arg) },
     large = { large(arg) },
 )
 
 @Composable
-fun <A, B, R> adaptive(arg1: A, arg2: B, small: (A, B) -> R, medium: (A, B) -> R = small, large: (A, B) -> R = medium): R =
-    adaptive(
-        small = { small(arg1, arg2) },
-        medium = { medium(arg1, arg2) },
-        large = { large(arg1, arg2) },
-    )
+internal fun <A, B, R> adaptive(
+    arg1: A,
+    arg2: B,
+    small: (A, B) -> R,
+    medium: (A, B) -> R = small,
+    large: (A, B) -> R = medium,
+): R = adaptive(
+    small = { small(arg1, arg2) },
+    medium = { medium(arg1, arg2) },
+    large = { large(arg1, arg2) },
+)
 
 @Composable
-fun <A, B, C, R> adaptive(
+internal fun <A, B, C, R> adaptive(
     arg1: A,
     arg2: B,
     arg3: C,
@@ -110,10 +115,15 @@ fun <A, B, C, R> adaptive(
     large = { large(arg1, arg2, arg3) },
 )
 
-object AdaptiveWithReceiver
+internal object AdaptiveWithReceiver
 
 @Composable
-fun <T, R> T.adaptive(small: T.() -> R, medium: T.() -> R = small, large: T.() -> R = medium, marker: AdaptiveWithReceiver): R {
+internal fun <T, R> T.adaptive(
+    small: T.() -> R,
+    medium: T.() -> R = small,
+    large: T.() -> R = medium,
+    marker: AdaptiveWithReceiver,
+): R {
     val receiver = this
     return adaptive(
         small = { receiver.small() },

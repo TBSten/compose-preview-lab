@@ -8,6 +8,17 @@ import me.tbsten.compose.preview.lab.PreviewLabRoot
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 import org.w3c.dom.HTMLElement
 
+/**
+ * Preview the [PreviewLabRoot] component in a web environment.
+ *
+ * ```kt
+ * fun main() = previewLabApplication(
+ *     previews = myModule.previews,
+ * )
+ * ```
+ *
+ * @see PreviewLabRoot
+ */
 @OptIn(ExperimentalComposeUiApi::class)
 fun previewLabApplication(
     previews: List<CollectedPreview>,
