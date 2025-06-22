@@ -1,5 +1,5 @@
-import me.tbsten.compose.preview.lab.component.previewLabApplication
 import me.tbsten.compose.preview.lab.openfilehandler.UrlOpenFileHandler
+import me.tbsten.compose.preview.lab.previewLabApplication
 
 fun main(): Unit = previewLabApplication(
     previews = app.previews + uiLib.previews,

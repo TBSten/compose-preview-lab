@@ -2,6 +2,20 @@ package me.tbsten.compose.preview.lab.field
 
 import androidx.compose.runtime.Composable
 
+/**
+ * A field that allows users to input a string value.
+ *
+ * ```kt
+ * PreviewLab {
+ *   Text(
+ *     text = fieldValue { StringField("Text.text", "Hello World!!") }
+ *   )
+ * }
+ * ```
+ *
+ * @param prefix The slot that will be displayed as the prefix of the TextField.
+ * @param suffix The slot that will be displayed as the suffix of TextField.
+ */
 class StringField(
     label: String,
     initialValue: String,

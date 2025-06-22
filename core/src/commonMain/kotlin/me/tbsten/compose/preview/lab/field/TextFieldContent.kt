@@ -12,6 +12,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+/**
+ * Helper for UI of Fields that can be input with TextField.
+ *
+ * @param toString Converts the state value to a string.
+ * @param toValue Converts the string to a state value.
+ * @param prefix Composable to be displayed as a prefix; if null, it is not displayed.
+ * @param suffix Composable to be displayed as a suffix; if null, it is not displayed.
+ * @param placeholder Composable to be displayed as a placeholder; if null, the label is displayed with [Text].
+ */
 @Composable
 fun <Value> MutablePreviewLabField<Value>.TextFieldContent(
     toString: (Value) -> String,

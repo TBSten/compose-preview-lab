@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toOffset
+import kotlin.random.Random
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.coroutineScope
 import me.tbsten.compose.preview.lab.event.PreviewLabEvent
 import me.tbsten.compose.preview.lab.field.MutablePreviewLabField
@@ -28,9 +30,14 @@ import me.tbsten.compose.preview.lab.layout.PreviewLabLayoutNode
 import me.tbsten.compose.preview.lab.util.thenIf
 import me.tbsten.compose.preview.lab.util.toDpOffset
 import me.tbsten.compose.preview.lab.util.toDpSize
-import kotlin.random.Random
-import kotlin.time.ExperimentalTime
 
+/**
+ * The scope of the [PreviewLab], which provides methods to create fields, handle events, and manage layout nodes.
+ *
+ * @see PreviewLabField
+ * @see PreviewLabEvent
+ * @see PreviewLabLayoutNode
+ */
 @OptIn(ExperimentalTime::class)
 class PreviewLabScope internal constructor() {
     internal val fields = mutableStateListOf<PreviewLabField<*>>()
@@ -41,6 +48,23 @@ class PreviewLabScope internal constructor() {
     internal val hoveredLayoutNodeIds = mutableStateSetOf<LayoutNodeId>()
 
     // field methods
+
+    /**
+     * Creates a mutable field that can be used to store and observe state in the Preview Lab.
+     * Use [fieldValue] if you do not need to update the status.
+     * This is useful, for example, for a `TextField`, where you want to use both the state value and its updates. For example, use the following.
+     *
+     * ```kt
+     * PreviewLab {
+     *   var myText by field { StringField("myText", "initialValue") }
+     *
+     *   TextField(
+     *     value = myText,
+     *     onValueChange = { myText = it },
+     *   )
+     * }
+     * ```
+     */
     @Composable
     fun <Value> field(builder: () -> MutablePreviewLabField<Value>): MutableState<Value> {
         val field = remember { builder() }
@@ -51,6 +75,20 @@ class PreviewLabScope internal constructor() {
         return field
     }
 
+    /**
+     * Creates a field that can be used to store and observe state in the Preview Lab.
+     * Use this if you do not need to update the status.
+     * Use when the change process does not need to be included in the Preview, for example, in the button text below.
+     *
+     * ```kt
+     * PreviewLab {
+     *   TextField(
+     *     value = fieldValue { StringField("myText", "Click Me!") },
+     *     onValueChange = {},
+     *   )
+     * }
+     * ```
+     */
     @Composable
     fun <Value> fieldValue(builder: () -> PreviewLabField<Value>): Value {
         val field = remember { builder() }
@@ -61,6 +99,23 @@ class PreviewLabScope internal constructor() {
         return field.value
     }
 
+    /**
+     * Records an event in the Preview Lab.
+     * When onEvent is called, Toast is displayed and the event is recorded on the Event tab in the right sidebar.
+     * This is useful for manual testing of events that may occur in components.
+     *
+     * ```kt
+     * PreviewLab {
+     *   MyButton(
+     *     ...,
+     *     onClick = { onEvent(title = "MyButton.onClick") },
+     *   )
+     * }
+     * ```
+     *
+     * @param title The title of the event. This is used for the toast display and also appears in the event list on the Events tab.
+     * @param description It will not appear on the toast, but it will appear on the event tab. If you have a lot of information, use description instead of title to make the debug UI easier to read.
+     */
     fun onEvent(title: String, description: String? = null) {
         events.add(PreviewLabEvent(title = title, description = description))
     }
@@ -75,7 +130,7 @@ class PreviewLabScope internal constructor() {
             .also { if (it != -1) layoutNodes.removeAt(it) }
     }
 
-    internal fun putLayoutNode(id: Long, label: String, offsetInAppRoot: DpOffset?, size: DpSize?,) {
+    internal fun putLayoutNode(id: Long, label: String, offsetInAppRoot: DpOffset?, size: DpSize?) {
         val nodeIndex = layoutNodes.indexOfFirst { it.id == id }
         if (nodeIndex == -1) {
             addLayoutNode(
@@ -84,7 +139,7 @@ class PreviewLabScope internal constructor() {
                     label = label,
                     offsetInAppRoot = offsetInAppRoot,
                     size = size,
-                )
+                ),
             )
         } else {
             val new = PreviewLabLayoutNode(
@@ -97,7 +152,7 @@ class PreviewLabScope internal constructor() {
         }
     }
 
-    internal fun toggleLayoutNodeSelect(id: LayoutNodeId,) {
+    internal fun toggleLayoutNodeSelect(id: LayoutNodeId) {
         if (selectedLayoutNodeIds.contains(id)) {
             selectedLayoutNodeIds.remove(id)
         } else {
@@ -122,12 +177,27 @@ class PreviewLabScope internal constructor() {
     }
 }
 
+/**
+ * Composable with this modifier can display various information in the sidebar when a layout tab is selected.
+ *
+ * ```kt
+ * @Composable
+ * fun MyButton(text: String) {
+ *   Surface(
+ *     modifier = Modifier.layoutLab("MyButton.Root").padding(16.dp),
+ *   ) {
+ *     Text(text, modifier = Modifier.layoutLab("MyButton.Text"))
+ *   }
+ * }
+ * ```
+ */
+@ExperimentalComposePreviewLabApi
 @Composable
-fun Modifier.layoutLab(label: String,): Modifier = composed(
+fun Modifier.layoutLab(label: String): Modifier = composed(
     inspectorInfo = {
         name = "layoutLab"
         properties["label"] = label
-    }
+    },
 ) {
     val state = LocalPreviewLabState.current ?: return@composed this
     val scope = state.scope
@@ -155,7 +225,7 @@ fun Modifier.layoutLab(label: String,): Modifier = composed(
             )
         }
     }.thenIf(
-        state.selectedTabIndex == 2
+        state.selectedTabIndex == 2,
     ) {
         pointerInput(Unit) {
             coroutineScope {

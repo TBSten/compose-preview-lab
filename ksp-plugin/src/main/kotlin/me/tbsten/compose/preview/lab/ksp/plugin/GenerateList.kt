@@ -69,4 +69,4 @@ internal fun generateList(
 }
 
 @Serializable
-data class CollectedPreviewJsonData(val previewsListPackage: String)
+internal data class CollectedPreviewJsonData(val previewsListPackage: String)

@@ -18,12 +18,40 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
-fun <Value : Any> PreviewLabField<Value>.nullable(initialValue: Value? = this.initialValue,) = NullableField(
+/**
+ * Create a PreviewLabField that makes the receiver's PreviewLabField nullable.
+ *
+ * ```kt
+ * PreviewLab {
+ *   val nullableStringField = fieldValue {
+ *     StringField("nullableStringField", "hello")
+ *       .nullable()
+ *   }
+ * }
+ * ```
+ *
+ * @see NullableField
+ */
+fun <Value : Any> PreviewLabField<Value>.nullable(initialValue: Value? = this.initialValue) = NullableField(
     baseField = this,
     initialValue = initialValue,
 )
 
-class NullableField<Value : Any> internal constructor(private val baseField: PreviewLabField<Value>, initialValue: Value?,) :
+/**
+ * Create a PreviewLabField that makes the receiver's PreviewLabField nullable.
+ *
+ * ```kt
+ * PreviewLab {
+ *   val nullableStringField = fieldValue {
+ *     StringField("nullableStringField", "hello")
+ *       .nullable()
+ *   }
+ * }
+ * ```
+ *
+ * @see nullable
+ */
+class NullableField<Value : Any> internal constructor(private val baseField: PreviewLabField<Value>, initialValue: Value?) :
     MutablePreviewLabField<Value?>(
         label = baseField.label,
         initialValue = initialValue,
