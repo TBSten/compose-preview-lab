@@ -98,6 +98,13 @@ kotlin {
             dependsOn(jvmMain.get())
         }
     }
+
+    compilerOptions {
+        optIn.addAll(
+            "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
+            "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
+        )
+    }
 }
 
 tasks.register<ComposeHotRun>("runHot") {
