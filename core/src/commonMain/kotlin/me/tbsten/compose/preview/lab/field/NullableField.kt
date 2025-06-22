@@ -24,7 +24,7 @@ import androidx.compose.ui.Modifier
  * ```kt
  * PreviewLab {
  *   val nullableStringField = fieldValue {
- *     String("nullableStringField", "hello")
+ *     StringField("nullableStringField", "hello")
  *       .nullable()
  *   }
  * }
@@ -43,7 +43,7 @@ fun <Value : Any> PreviewLabField<Value>.nullable(initialValue: Value? = this.in
  * ```kt
  * PreviewLab {
  *   val nullableStringField = fieldValue {
- *     String("nullableStringField", "hello")
+ *     StringField("nullableStringField", "hello")
  *       .nullable()
  *   }
  * }
