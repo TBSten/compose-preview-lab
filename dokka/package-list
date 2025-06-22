@@ -1,0 +1,12 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:me.tbsten.compose.preview.lab//previewLabApplication/#kotlin.collections.List[me.tbsten.compose.preview.lab.CollectedPreview]#me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler[kotlin.Any?]?#org.w3c.dom.HTMLElement/PointingToDeclaration/core/me.tbsten.compose.preview.lab/[wasm-js]preview-lab-application.html
+module:core
+me.tbsten.compose.preview.lab
+me.tbsten.compose.preview.lab.event
+me.tbsten.compose.preview.lab.field
+me.tbsten.compose.preview.lab.openfilehandler
+module:gradle-plugin
+me.tbsten.compose.preview.lab
+module:ksp-plugin
+me.tbsten.compose.preview.lab.ksp.plugin
