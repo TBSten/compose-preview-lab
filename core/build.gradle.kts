@@ -96,6 +96,10 @@ kotlin {
             dependsOn(commonDev)
             dependsOn(jvmMain.get())
         }
+
+        commonDev.dependencies {
+            implementation(compose.material3)
+        }
     }
 
     compilerOptions {
