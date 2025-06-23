@@ -116,6 +116,16 @@ The table below shows the differences between the two.
 | View source code | ❌ <br> Future support is planned. | ✅ |
 | Ease of preparing the Composable catalog | ✅ <br> Just enclose @Preview in `PreviewLab { }`. | ⚠️ <br> You must have the code in the `***Stories` source set. Existing code with @Preview must be migrated. |
 
+## Roadmap
+
+- [ ] Minimum preparation for Field and Event API
+- [ ] Library stabilization (release of v1.0.0)
+- [ ] Fields that manipulate Compose classes
+- [ ] Features that improve the UI review experience
+- [ ] Display Source code
+- [ ] Visual Regression Test by Compose Preview Lab
+- [ ] Annotation function
+
 ## More information
 
 - [WIP] [Documentation Site]()
