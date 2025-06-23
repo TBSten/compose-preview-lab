@@ -51,7 +51,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.roundToInt
 
 @Composable
-fun Switch(
+internal fun Switch(
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)?,
     modifier: Modifier = Modifier,
@@ -177,7 +177,7 @@ private fun SwitchComponent(
     }
 }
 
-object SwitchDefaults {
+internal object SwitchDefaults {
     val ThumbSize = 16.dp
     val UncheckedThumbSize = 12.dp
     val ThumbSizeStateOffset = ThumbSize - UncheckedThumbSize
@@ -226,7 +226,7 @@ object SwitchDefaults {
 }
 
 @Stable
-class SwitchColors(
+internal class SwitchColors(
     private val checkedThumbColor: Color,
     private val checkedTrackColor: Color,
     private val checkedBorderColor: Color,

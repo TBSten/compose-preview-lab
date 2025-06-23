@@ -10,9 +10,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun fontFamily() = FontFamily.Default
+internal fun fontFamily() = FontFamily.Default
 
-data class Typography(
+internal data class Typography(
     val h1: TextStyle,
     val h2: TextStyle,
     val h3: TextStyle,
@@ -116,7 +116,7 @@ private val defaultTypography =
     )
 
 @Composable
-fun provideTypography(): Typography {
+internal fun provideTypography(): Typography {
     val fontFamily = fontFamily()
 
     return defaultTypography.copy(
@@ -135,5 +135,5 @@ fun provideTypography(): Typography {
     )
 }
 
-val LocalTypography = staticCompositionLocalOf { defaultTypography }
-val LocalTextStyle = compositionLocalOf(structuralEqualityPolicy()) { TextStyle.Default }
+internal val LocalTypography = staticCompositionLocalOf { defaultTypography }
+internal val LocalTextStyle = compositionLocalOf(structuralEqualityPolicy()) { TextStyle.Default }

@@ -21,7 +21,7 @@ import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ModalBottomSheet(
+internal fun ModalBottomSheet(
     modifier: Modifier = Modifier,
     sheetState: SheetState = rememberModalBottomSheetState(),
     isVisible: Boolean,
@@ -75,7 +75,7 @@ internal object BottomSheetDefaults {
 
 @Preview
 @Composable
-fun ModalBottomSheetPreview() {
+private fun ModalBottomSheetPreview() {
     ModalBottomSheet(isVisible = true, onDismissRequest = { }) {
         Column {
             for (i in 0..10) {

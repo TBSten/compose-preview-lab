@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 
 @Composable
-fun HorizontalDivider(
+internal fun HorizontalDivider(
     modifier: Modifier = Modifier,
     thickness: Dp = DividerDefaults.Thickness,
     color: Color = DividerDefaults.color,
@@ -32,7 +32,7 @@ fun HorizontalDivider(
 }
 
 @Composable
-fun VerticalDivider(
+internal fun VerticalDivider(
     modifier: Modifier = Modifier,
     thickness: Dp = DividerDefaults.Thickness,
     color: Color = DividerDefaults.color,
@@ -49,7 +49,7 @@ fun VerticalDivider(
     )
 }
 
-object DividerDefaults {
+internal object DividerDefaults {
     val Thickness: Dp = 1.dp
     val color: Color @Composable get() = PreviewLabTheme.colors.surface
 }

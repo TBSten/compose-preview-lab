@@ -39,7 +39,7 @@ import me.tbsten.compose.preview.lab.ui.foundation.ButtonElevation
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun IconButton(
+internal fun IconButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     loading: Boolean = false,
@@ -107,7 +107,7 @@ private fun IconButtonComponent(
     }
 }
 
-enum class IconButtonVariant {
+internal enum class IconButtonVariant {
     Primary,
     PrimaryOutlined,
     PrimaryElevated,
@@ -339,7 +339,7 @@ internal object IconButtonDefaults {
 }
 
 @Immutable
-data class IconButtonColors(
+internal data class IconButtonColors(
     val containerColor: Color,
     val contentColor: Color,
     val borderColor: Color? = null,
@@ -358,11 +358,11 @@ data class IconButtonColors(
 }
 
 @Immutable
-data class IconButtonStyle(val colors: IconButtonColors, val shape: Shape, val elevation: ButtonElevation? = null,)
+internal data class IconButtonStyle(val colors: IconButtonColors, val shape: Shape, val elevation: ButtonElevation? = null,)
 
 @Composable
 @Preview
-fun PrimaryIconButtonPreview() {
+private fun PrimaryIconButtonPreview() {
     PreviewLabTheme {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -390,7 +390,7 @@ fun PrimaryIconButtonPreview() {
 
 @Composable
 @Preview
-fun SecondaryIconButtonPreview() {
+private fun SecondaryIconButtonPreview() {
     PreviewLabTheme {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -418,7 +418,7 @@ fun SecondaryIconButtonPreview() {
 
 @Composable
 @Preview
-fun DestructiveIconButtonPreview() {
+private fun DestructiveIconButtonPreview() {
     PreviewLabTheme {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -447,7 +447,7 @@ fun DestructiveIconButtonPreview() {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 @Preview
-fun GhostIconButtonPreview() {
+private fun GhostIconButtonPreview() {
     PreviewLabTheme {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -538,7 +538,7 @@ fun GhostIconButtonPreview() {
 
 @Composable
 @Preview
-fun IconButtonShapesPreview() {
+private fun IconButtonShapesPreview() {
     PreviewLabTheme {
         Column(
             modifier = Modifier.padding(16.dp),

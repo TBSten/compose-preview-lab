@@ -59,7 +59,7 @@ import kotlin.math.floor
 import kotlin.math.max
 
 @Composable
-fun Checkbox(
+internal fun Checkbox(
     modifier: Modifier = Modifier,
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)? = null,
@@ -83,7 +83,7 @@ fun Checkbox(
 }
 
 @Composable
-fun TriStateCheckbox(
+internal fun TriStateCheckbox(
     state: ToggleableState,
     onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
@@ -256,7 +256,7 @@ private class CheckDrawingCache(
     val pathToDraw: Path = Path(),
 )
 
-object CheckboxDefaults {
+internal object CheckboxDefaults {
     internal const val BoxInDuration = 50
     internal const val BoxOutDuration = 100
     internal const val CheckAnimationDuration = 100
@@ -285,7 +285,7 @@ object CheckboxDefaults {
 }
 
 @Immutable
-data class CheckboxColors(
+internal data class CheckboxColors(
     val checkedCheckmarkColor: Color,
     val uncheckedCheckmarkColor: Color,
     val checkedBoxColor: Color,
@@ -357,7 +357,7 @@ data class CheckboxColors(
 
 @Preview
 @Composable
-fun CheckboxPreview() {
+private fun CheckboxPreview() {
     PreviewLabTheme {
         Column(
             modifier =

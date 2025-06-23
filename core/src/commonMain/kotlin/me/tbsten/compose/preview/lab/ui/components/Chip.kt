@@ -35,7 +35,7 @@ import me.tbsten.compose.preview.lab.ui.foundation.ButtonElevation
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun Chip(
+internal fun Chip(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     selected: Boolean = false,
@@ -62,7 +62,7 @@ fun Chip(
 }
 
 @Composable
-fun ElevatedChip(
+internal fun ElevatedChip(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     selected: Boolean = false,
@@ -89,7 +89,7 @@ fun ElevatedChip(
 }
 
 @Composable
-fun OutlinedChip(
+internal fun OutlinedChip(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     selected: Boolean = false,
@@ -330,7 +330,7 @@ internal data class ChipStyle(
 
 @Composable
 @Preview
-fun PrimaryChipPreview() {
+private fun PrimaryChipPreview() {
     PreviewLabTheme {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

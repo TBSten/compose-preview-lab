@@ -11,7 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import me.tbsten.compose.preview.lab.ui.foundation.ripple
 
-object PreviewLabTheme {
+internal object PreviewLabTheme {
     val colors: Colors
         @ReadOnlyComposable @Composable
         get() = LocalColors.current
@@ -22,7 +22,7 @@ object PreviewLabTheme {
 }
 
 @Composable
-fun PreviewLabTheme(isDarkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit,) {
+internal fun PreviewLabTheme(isDarkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit,) {
     val rippleIndication = ripple()
     val selectionColors = rememberTextSelectionColors(LightColors)
     val typography = provideTypography()
@@ -40,7 +40,7 @@ fun PreviewLabTheme(isDarkTheme: Boolean = isSystemInDarkTheme(), content: @Comp
 }
 
 @Composable
-fun contentColorFor(color: Color): Color = PreviewLabTheme.colors.contentColorFor(color)
+internal fun contentColorFor(color: Color): Color = PreviewLabTheme.colors.contentColorFor(color)
 
 @Composable
 internal fun rememberTextSelectionColors(colorScheme: Colors): TextSelectionColors {

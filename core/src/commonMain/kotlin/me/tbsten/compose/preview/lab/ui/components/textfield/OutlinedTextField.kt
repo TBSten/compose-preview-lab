@@ -43,7 +43,7 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.base.UnfocusedOutli
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.containerOutline
 
 @Composable
-fun OutlinedTextField(
+internal fun OutlinedTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -120,7 +120,7 @@ fun OutlinedTextField(
 }
 
 @Composable
-fun OutlinedTextField(
+internal fun OutlinedTextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier,
@@ -199,7 +199,7 @@ fun OutlinedTextField(
 }
 
 @Immutable
-object OutlinedTextFieldDefaults {
+internal object OutlinedTextFieldDefaults {
     val MinHeight = TextFieldMinHeight
     val Shape: Shape = RoundedCornerShape(8.dp)
 

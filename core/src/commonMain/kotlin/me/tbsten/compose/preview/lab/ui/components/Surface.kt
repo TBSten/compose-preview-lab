@@ -30,7 +30,7 @@ import me.tbsten.compose.preview.lab.ui.foundation.ripple
 
 @Composable
 @NonRestartableComposable
-fun Surface(
+internal fun Surface(
     modifier: Modifier = Modifier,
     shape: Shape = RectangleShape,
     color: Color = PreviewLabTheme.colors.surface,
@@ -64,7 +64,7 @@ fun Surface(
 
 @Composable
 @NonRestartableComposable
-fun Surface(
+internal fun Surface(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -103,7 +103,7 @@ fun Surface(
 
 @Composable
 @NonRestartableComposable
-fun Surface(
+internal fun Surface(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -144,7 +144,7 @@ fun Surface(
 
 @Composable
 @NonRestartableComposable
-fun Surface(
+internal fun Surface(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,

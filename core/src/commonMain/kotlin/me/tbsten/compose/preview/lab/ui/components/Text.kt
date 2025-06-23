@@ -28,7 +28,7 @@ import me.tbsten.compose.preview.lab.ui.LocalTypography
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun Text(
+internal fun Text(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = LocalContentColor.current,
@@ -118,7 +118,7 @@ internal fun Text(
 
 @Preview
 @Composable
-fun TypographySample() {
+private fun TypographySample() {
     val typography = LocalTypography.current
 
     Column(

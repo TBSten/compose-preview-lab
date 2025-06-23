@@ -40,7 +40,7 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.base.UnfocusedOutli
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.containerUnderline
 
 @Composable
-fun UnderlinedTextField(
+internal fun UnderlinedTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -117,7 +117,7 @@ fun UnderlinedTextField(
 }
 
 @Composable
-fun UnderlinedTextField(
+internal fun UnderlinedTextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier,
@@ -194,7 +194,7 @@ fun UnderlinedTextField(
 }
 
 @Immutable
-object UnderlinedTextFieldDefaults {
+internal object UnderlinedTextFieldDefaults {
     val MinHeight = TextFieldMinHeight
 
     private fun contentPadding(

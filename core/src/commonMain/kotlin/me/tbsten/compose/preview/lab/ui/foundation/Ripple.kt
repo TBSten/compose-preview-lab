@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.Dp
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
 
 @Stable
-fun ripple(bounded: Boolean = true, radius: Dp = Dp.Unspecified, color: Color = Color.Unspecified,): IndicationNodeFactory {
+internal fun ripple(bounded: Boolean = true, radius: Dp = Dp.Unspecified, color: Color = Color.Unspecified,): IndicationNodeFactory {
     return if (radius == Dp.Unspecified && color == Color.Unspecified) {
         if (bounded) return DefaultBoundedRipple else DefaultUnboundedRipple
     } else {
@@ -30,11 +30,11 @@ fun ripple(bounded: Boolean = true, radius: Dp = Dp.Unspecified, color: Color = 
 }
 
 @Stable
-fun ripple(color: ColorProducer, bounded: Boolean = true, radius: Dp = Dp.Unspecified,): IndicationNodeFactory =
+internal fun ripple(color: ColorProducer, bounded: Boolean = true, radius: Dp = Dp.Unspecified,): IndicationNodeFactory =
     RippleNodeFactory(bounded, radius, color)
 
 /** Default values used by [ripple]. */
-object RippleDefaults {
+internal object RippleDefaults {
     /**
      * Represents the default [RippleAlpha] that will be used for a ripple to indicate different
      * states.
@@ -48,13 +48,13 @@ object RippleDefaults {
         )
 }
 
-val LocalRippleConfiguration: ProvidableCompositionLocal<RippleConfiguration?> =
+internal val LocalRippleConfiguration: ProvidableCompositionLocal<RippleConfiguration?> =
     compositionLocalOf {
         RippleConfiguration()
     }
 
 @Immutable
-class RippleConfiguration(val color: Color = Color.Unspecified, val rippleAlpha: RippleAlpha? = null,) {
+internal class RippleConfiguration(val color: Color = Color.Unspecified, val rippleAlpha: RippleAlpha? = null,) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is RippleConfiguration) return false

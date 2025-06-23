@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
 
 @Composable
-fun Icon(
+internal fun Icon(
     imageVector: ImageVector,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
@@ -39,7 +39,7 @@ fun Icon(
 }
 
 @Composable
-fun Icon(
+internal fun Icon(
     bitmap: ImageBitmap,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
@@ -55,7 +55,7 @@ fun Icon(
 }
 
 @Composable
-fun Icon(
+internal fun Icon(
     painter: Painter,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,

@@ -31,7 +31,7 @@ import me.tbsten.compose.preview.lab.ui.foundation.ButtonElevation
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun Button(
+internal fun Button(
     modifier: Modifier = Modifier,
     text: String? = null,
     isEnabled: Boolean = true,
@@ -149,7 +149,7 @@ private fun DefaultButtonContent(
     }
 }
 
-enum class ButtonVariant {
+internal enum class ButtonVariant {
     Primary,
     PrimaryOutlined,
     PrimaryElevated,
@@ -464,7 +464,7 @@ internal data class ButtonStyle(
 
 @Composable
 @Preview
-fun ButtonPreview() {
+internal fun ButtonPreview() {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         PrimaryButtonPreview()
         SecondaryButtonPreview()
@@ -474,7 +474,7 @@ fun ButtonPreview() {
 
 @Composable
 @Preview
-fun PrimaryButtonPreview() {
+internal fun PrimaryButtonPreview() {
     PreviewLabTheme {
         Column(
             modifier =
@@ -530,7 +530,7 @@ fun PrimaryButtonPreview() {
 
 @Composable
 @Preview
-fun SecondaryButtonPreview() {
+private fun SecondaryButtonPreview() {
     PreviewLabTheme {
         Column(
             modifier =
@@ -586,7 +586,7 @@ fun SecondaryButtonPreview() {
 
 @Composable
 @Preview
-fun DestructiveButtonPreview() {
+private fun DestructiveButtonPreview() {
     PreviewLabTheme {
         Column(
             modifier =

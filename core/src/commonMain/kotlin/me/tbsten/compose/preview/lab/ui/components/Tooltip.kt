@@ -54,16 +54,16 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.isSpecified
 import androidx.compose.ui.window.PopupPositionProvider
-import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.TooltipDefaults.SpacingBetweenTooltipAndAnchor
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeout
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.TooltipDefaults.SpacingBetweenTooltipAndAnchor
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TooltipBox(
+internal fun TooltipBox(
     modifier: Modifier = Modifier,
     positionProvider: PopupPositionProvider = rememberTooltipPositionProvider(),
     tooltip: @Composable TooltipScope.() -> Unit,
@@ -98,7 +98,7 @@ fun TooltipBox(
 }
 
 @Composable
-fun TooltipBox(
+internal fun TooltipBox(
     tooltip: String,
     modifier: Modifier = Modifier,
     positionProvider: PopupPositionProvider = rememberTooltipPositionProvider(),
@@ -117,7 +117,7 @@ fun TooltipBox(
 )
 
 @Composable
-fun TooltipScope.Tooltip(
+internal fun TooltipScope.Tooltip(
     modifier: Modifier = Modifier,
     caretSize: DpSize = TooltipDefaults.CaretSize,
     maxWidth: Dp = TooltipDefaults.MaxWidth,
@@ -166,17 +166,17 @@ fun TooltipScope.Tooltip(
     }
 }
 
-sealed interface TooltipScope {
+internal sealed interface TooltipScope {
     fun Modifier.drawCaret(draw: CacheDrawScope.(LayoutCoordinates?) -> DrawResult): Modifier
 }
 
 internal class DefaultTooltipScope(val getAnchorBounds: () -> LayoutCoordinates?) : TooltipScope {
-    override fun Modifier.drawCaret(draw: CacheDrawScope.(LayoutCoordinates?) -> DrawResult,): Modifier =
+    override fun Modifier.drawCaret(draw: CacheDrawScope.(LayoutCoordinates?) -> DrawResult): Modifier =
         this.drawWithCache { draw(getAnchorBounds()) }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-interface TooltipState : BasicTooltipState {
+internal interface TooltipState : BasicTooltipState {
     val transition: MutableTransitionState<Boolean>
 }
 
@@ -225,7 +225,7 @@ private class TooltipStateImpl(
     }
 }
 
-object TooltipDefaults {
+internal object TooltipDefaults {
     val CaretSize = DpSize(12.dp, 6.dp)
     val MaxWidth = 300.dp
     val ShadowElevation = 4.dp
@@ -240,7 +240,7 @@ object TooltipDefaults {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun rememberTooltipState(
+internal fun rememberTooltipState(
     initialIsVisible: Boolean = false,
     isPersistent: Boolean = false,
     mutatorMutex: MutatorMutex = BasicTooltipDefaults.GlobalMutatorMutex,
@@ -253,7 +253,7 @@ fun rememberTooltipState(
 }
 
 @Composable
-fun rememberTooltipPositionProvider(
+internal fun rememberTooltipPositionProvider(
     spacingBetweenTooltipAndAnchor: Dp = TooltipDefaults.SpacingBetweenTooltipAndAnchor,
 ): PopupPositionProvider {
     val tooltipAnchorSpacing =
@@ -402,7 +402,7 @@ internal expect fun windowContainerWidthInPx(): Int
 
 @Preview
 @Composable
-fun PlainTooltipWithCaret() {
+private fun PlainTooltipWithCaret() {
     val tooltipState = rememberTooltipState(isPersistent = true)
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         TooltipBox(
