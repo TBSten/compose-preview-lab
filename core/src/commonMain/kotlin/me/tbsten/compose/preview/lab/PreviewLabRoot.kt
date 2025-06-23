@@ -1,7 +1,6 @@
 package me.tbsten.compose.preview.lab
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
@@ -11,11 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.VerticalDivider
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -29,13 +23,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.nomanr.composables.bottomsheet.rememberModalBottomSheetState
+import me.tbsten.compose.preview.lab.component.Divider
 import me.tbsten.compose.preview.lab.component.NoPreview
 import me.tbsten.compose.preview.lab.component.NoSelectedPreview
 import me.tbsten.compose.preview.lab.component.adaptive
 import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 import me.tbsten.compose.preview.lab.previewlist.PreviewListTree
-import me.tbsten.compose.preview.lab.theme.AppTheme
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.ModalBottomSheet
 
 /**
  * A Composable function that catalogs and displays a list of Previews. The left sidebar actually displays the list of Previews, and the selected Preview is displayed in the center of the screen.
@@ -53,7 +50,7 @@ fun PreviewLabRoot(
     modifier: Modifier = Modifier,
     state: PreviewLabRootState = remember { PreviewLabRootState() },
     openFileHandler: OpenFileHandler<out Any?>? = null,
-) = AppTheme {
+) = PreviewLabTheme {
     CompositionLocalProvider(
         LocalOpenFileHandler provides openFileHandler,
     ) {
@@ -61,14 +58,14 @@ fun PreviewLabRoot(
 
         Box(
             modifier = modifier
-                .background(MaterialTheme.colorScheme.background)
+                .background(PreviewLabTheme.colors.background)
                 .fillMaxSize(),
         ) {
             ListDetailScaffold(
                 list = {
                     Row(
                         modifier = Modifier
-                            .background(MaterialTheme.colorScheme.background)
+                            .background(PreviewLabTheme.colors.background)
                             .zIndex(2f),
                     ) {
                         PreviewListTree(
@@ -76,7 +73,7 @@ fun PreviewLabRoot(
                             isSelected = { it == state.selectedPreview },
                             onSelect = { state.select(it) },
                         )
-                        VerticalDivider()
+                        Divider()
                     }
                 },
                 selectedItem = state.selectedPreview,
@@ -116,7 +113,6 @@ fun PreviewLabRoot(
 
 internal val LocalCollectedPreview = compositionLocalOf<CollectedPreview?> { null }
 
-@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
 @Composable
 internal fun <Item : Any> ListDetailScaffold(
     list: @Composable () -> Unit,
@@ -143,17 +139,15 @@ internal fun <Item : Any> ListDetailScaffold(
             Box {
                 listContent()
 
-                if (openBottomSheet) {
-                    ModalBottomSheet(
-                        onDismissRequest = { onUnselect() },
-                        sheetState = bottomSheetState,
-                        sheetMaxWidth = Dp.Infinity,
-                    ) {
-                        if (selectedItem != null) {
-                            detailContent(selectedItem)
-                        } else {
-                            detailPlaceholder()
-                        }
+                ModalBottomSheet(
+                    isVisible = openBottomSheet,
+                    onDismissRequest = { onUnselect() },
+                    sheetState = bottomSheetState,
+                ) {
+                    if (selectedItem != null) {
+                        detailContent(selectedItem)
+                    } else {
+                        detailPlaceholder()
                     }
                 }
             }

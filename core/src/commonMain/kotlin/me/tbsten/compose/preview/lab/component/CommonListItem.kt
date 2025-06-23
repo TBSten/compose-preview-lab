@@ -4,14 +4,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.Text
 import me.tbsten.compose.preview.lab.util.thenIf
 import me.tbsten.compose.preview.lab.util.thenIfNotNull
 
@@ -27,7 +27,7 @@ internal fun CommonListItem(
     isSelected = isSelected,
     onSelect = onSelect,
     modifier = modifier,
-    content = { Text(title, style = MaterialTheme.typography.bodySmall) },
+    content = { Text(title, style = PreviewLabTheme.typography.body3) },
 )
 
 @Composable
@@ -43,7 +43,7 @@ internal fun CommonListItem(
     modifier = modifier,
     content = {
         leadingContent?.invoke()
-        Text(title, style = MaterialTheme.typography.bodySmall)
+        Text(title, style = PreviewLabTheme.typography.body3)
     },
 )
 

@@ -2,11 +2,11 @@ package me.tbsten.compose.preview.lab.field
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.Text
 
 /**
  * Default UI implementation of [PreviewLabField.View]. Display a label and draw the content below it.
@@ -40,6 +40,6 @@ fun <Value> PreviewLabField<Value>.DefaultFieldView(
 fun PreviewLabField<*>.FieldLabelHeader() {
     Text(
         text = this.label,
-        style = MaterialTheme.typography.labelMedium,
+        style = PreviewLabTheme.typography.label2,
     )
 }

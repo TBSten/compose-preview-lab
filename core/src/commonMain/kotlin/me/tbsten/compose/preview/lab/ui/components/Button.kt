@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -26,8 +25,8 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.foundation.ButtonElevation
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -35,8 +34,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun Button(
     modifier: Modifier = Modifier,
     text: String? = null,
-    enabled: Boolean = true,
-    loading: Boolean = false,
+    isEnabled: Boolean = true,
+    isSelected: Boolean = false,
+    isLoading: Boolean = false,
     variant: ButtonVariant = ButtonVariant.Primary,
     onClick: () -> Unit = {},
     contentPadding: PaddingValues = ButtonDefaults.contentPadding,
@@ -46,9 +46,9 @@ fun Button(
     ButtonComponent(
         text = text,
         modifier = modifier,
-        enabled = enabled,
-        loading = loading,
-        style = buttonStyleFor(variant),
+        enabled = isEnabled,
+        loading = isLoading,
+        style = buttonStyleFor(variant, isSelected = isSelected),
         onClick = onClick,
         contentPadding = contentPadding,
         interactionSource = interactionSource,
@@ -89,9 +89,8 @@ internal fun ButtonComponent(
     Surface(
         onClick = onClick,
         modifier =
-            modifier
-                .defaultMinSize(minHeight = ButtonDefaults.MinHeight)
-                .semantics { role = Role.Button },
+        modifier
+            .semantics { role = Role.Button },
         enabled = enabled,
         shape = style.shape,
         color = containerColor,
@@ -167,22 +166,20 @@ enum class ButtonVariant {
 }
 
 @Composable
-internal fun buttonStyleFor(variant: ButtonVariant): ButtonStyle {
-    return when (variant) {
-        ButtonVariant.Primary -> ButtonDefaults.primaryFilled()
-        ButtonVariant.PrimaryOutlined -> ButtonDefaults.primaryOutlined()
-        ButtonVariant.PrimaryElevated -> ButtonDefaults.primaryElevated()
-        ButtonVariant.PrimaryGhost -> ButtonDefaults.primaryGhost()
-        ButtonVariant.Secondary -> ButtonDefaults.secondaryFilled()
-        ButtonVariant.SecondaryOutlined -> ButtonDefaults.secondaryOutlined()
-        ButtonVariant.SecondaryElevated -> ButtonDefaults.secondaryElevated()
-        ButtonVariant.SecondaryGhost -> ButtonDefaults.secondaryGhost()
-        ButtonVariant.Destructive -> ButtonDefaults.destructiveFilled()
-        ButtonVariant.DestructiveOutlined -> ButtonDefaults.destructiveOutlined()
-        ButtonVariant.DestructiveElevated -> ButtonDefaults.destructiveElevated()
-        ButtonVariant.DestructiveGhost -> ButtonDefaults.destructiveGhost()
-        ButtonVariant.Ghost -> ButtonDefaults.ghost()
-    }
+internal fun buttonStyleFor(variant: ButtonVariant, isSelected: Boolean): ButtonStyle = when (variant) {
+    ButtonVariant.Primary -> ButtonDefaults.primaryFilled(isSelected = isSelected)
+    ButtonVariant.PrimaryOutlined -> ButtonDefaults.primaryOutlined(isSelected = isSelected)
+    ButtonVariant.PrimaryElevated -> ButtonDefaults.primaryElevated(isSelected = isSelected)
+    ButtonVariant.PrimaryGhost -> ButtonDefaults.primaryGhost(isSelected = isSelected)
+    ButtonVariant.Secondary -> ButtonDefaults.secondaryFilled(isSelected = isSelected)
+    ButtonVariant.SecondaryOutlined -> ButtonDefaults.secondaryOutlined(isSelected = isSelected)
+    ButtonVariant.SecondaryElevated -> ButtonDefaults.secondaryElevated(isSelected = isSelected)
+    ButtonVariant.SecondaryGhost -> ButtonDefaults.secondaryGhost(isSelected = isSelected)
+    ButtonVariant.Destructive -> ButtonDefaults.destructiveFilled(isSelected = isSelected)
+    ButtonVariant.DestructiveOutlined -> ButtonDefaults.destructiveOutlined(isSelected = isSelected)
+    ButtonVariant.DestructiveElevated -> ButtonDefaults.destructiveElevated(isSelected = isSelected)
+    ButtonVariant.DestructiveGhost -> ButtonDefaults.destructiveGhost(isSelected = isSelected)
+    ButtonVariant.Ghost -> ButtonDefaults.ghost(isSelected = isSelected)
 }
 
 internal object ButtonDefaults {
@@ -205,223 +202,235 @@ internal object ButtonDefaults {
     private val outlinedShape = ButtonShape
 
     @Composable
-    fun buttonElevation() =
-        ButtonElevation(
-            defaultElevation = 2.dp,
-            pressedElevation = 2.dp,
-            focusedElevation = 2.dp,
-            hoveredElevation = 2.dp,
-            disabledElevation = 0.dp,
-        )
+    fun buttonElevation() = ButtonElevation(
+        defaultElevation = 2.dp,
+        pressedElevation = 2.dp,
+        focusedElevation = 2.dp,
+        hoveredElevation = 2.dp,
+        disabledElevation = 0.dp,
+    )
 
     @Composable
-    fun primaryFilled() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = PreviewLabTheme.colors.primary,
-                    contentColor = PreviewLabTheme.colors.onPrimary,
-                    disabledContainerColor = PreviewLabTheme.colors.disabled,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                ),
-            shape = filledShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun primaryFilled(isSelected: Boolean) = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = PreviewLabTheme.colors.primary,
+            contentColor = PreviewLabTheme.colors.onPrimary,
+            disabledContainerColor = PreviewLabTheme.colors.disabled,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            borderColor = if (isSelected) PreviewLabTheme.colors.primary else Color.Transparent,
+        ),
+        shape = filledShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun primaryElevated() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = PreviewLabTheme.colors.primary,
-                    contentColor = PreviewLabTheme.colors.onPrimary,
-                    disabledContainerColor = PreviewLabTheme.colors.disabled,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                ),
-            shape = elevatedShape,
-            elevation = buttonElevation(),
-            contentPadding = contentPadding,
-        )
+    fun primaryElevated(isSelected: Boolean) = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = PreviewLabTheme.colors.primary,
+            contentColor = PreviewLabTheme.colors.onPrimary,
+            disabledContainerColor = PreviewLabTheme.colors.disabled,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            borderColor = if (isSelected) PreviewLabTheme.colors.primary else Color.Transparent,
+        ),
+        shape = elevatedShape,
+        elevation = buttonElevation(),
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun primaryOutlined() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = PreviewLabTheme.colors.transparent,
-                    contentColor = PreviewLabTheme.colors.primary,
-                    borderColor = PreviewLabTheme.colors.primary,
-                    disabledContainerColor = PreviewLabTheme.colors.transparent,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                    disabledBorderColor = PreviewLabTheme.colors.disabled,
-                ),
-            shape = outlinedShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun primaryOutlined(isSelected: Boolean) = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = if (isSelected) PreviewLabTheme.colors.primary else PreviewLabTheme.colors.transparent,
+            contentColor = PreviewLabTheme.colors.primary,
+            borderColor = PreviewLabTheme.colors.primary,
+            disabledContainerColor = PreviewLabTheme.colors.transparent,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            disabledBorderColor = PreviewLabTheme.colors.disabled,
+        ),
+        shape = outlinedShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun primaryGhost() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = PreviewLabTheme.colors.transparent,
-                    contentColor = PreviewLabTheme.colors.primary,
-                    borderColor = PreviewLabTheme.colors.transparent,
-                    disabledContainerColor = PreviewLabTheme.colors.transparent,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                    disabledBorderColor = PreviewLabTheme.colors.transparent,
-                ),
-            shape = filledShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun primaryGhost(isSelected: Boolean) = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = if (isSelected) {
+                PreviewLabTheme.colors.primary
+                    .copy(alpha = 0.25f)
+            } else {
+                PreviewLabTheme.colors.transparent
+            },
+            contentColor = PreviewLabTheme.colors.primary,
+            borderColor = PreviewLabTheme.colors.transparent,
+            disabledContainerColor = PreviewLabTheme.colors.transparent,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            disabledBorderColor = PreviewLabTheme.colors.transparent,
+        ),
+        shape = filledShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun secondaryFilled() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = PreviewLabTheme.colors.secondary,
-                    contentColor = PreviewLabTheme.colors.onSecondary,
-                    disabledContainerColor = PreviewLabTheme.colors.disabled,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                ),
-            shape = filledShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun secondaryFilled(isSelected: Boolean) = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = PreviewLabTheme.colors.secondary,
+            contentColor = PreviewLabTheme.colors.onSecondary,
+            disabledContainerColor = PreviewLabTheme.colors.disabled,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            borderColor = if (isSelected) PreviewLabTheme.colors.primary else Color.Transparent,
+        ),
+        shape = filledShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun secondaryElevated() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = PreviewLabTheme.colors.secondary,
-                    contentColor = PreviewLabTheme.colors.onSecondary,
-                    disabledContainerColor = PreviewLabTheme.colors.disabled,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                ),
-            shape = elevatedShape,
-            elevation = buttonElevation(),
-            contentPadding = contentPadding,
-        )
+    fun secondaryElevated(isSelected: Boolean) = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = PreviewLabTheme.colors.secondary,
+            contentColor = PreviewLabTheme.colors.onSecondary,
+            disabledContainerColor = PreviewLabTheme.colors.disabled,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            borderColor = if (isSelected) PreviewLabTheme.colors.primary else Color.Transparent,
+        ),
+        shape = elevatedShape,
+        elevation = buttonElevation(),
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun secondaryOutlined() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = PreviewLabTheme.colors.transparent,
-                    contentColor = PreviewLabTheme.colors.secondary,
-                    borderColor = PreviewLabTheme.colors.secondary,
-                    disabledContainerColor = PreviewLabTheme.colors.transparent,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                    disabledBorderColor = PreviewLabTheme.colors.disabled,
-                ),
-            shape = outlinedShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun secondaryOutlined(isSelected: Boolean) = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = if (isSelected) PreviewLabTheme.colors.primary else PreviewLabTheme.colors.transparent,
+            contentColor = PreviewLabTheme.colors.secondary,
+            borderColor = PreviewLabTheme.colors.secondary,
+            disabledContainerColor = PreviewLabTheme.colors.transparent,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            disabledBorderColor = PreviewLabTheme.colors.disabled,
+        ),
+        shape = outlinedShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun secondaryGhost() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = PreviewLabTheme.colors.transparent,
-                    contentColor = PreviewLabTheme.colors.secondary,
-                    borderColor = PreviewLabTheme.colors.transparent,
-                    disabledContainerColor = PreviewLabTheme.colors.transparent,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                    disabledBorderColor = PreviewLabTheme.colors.transparent,
-                ),
-            shape = filledShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun secondaryGhost(isSelected: Boolean) = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = if (isSelected) {
+                PreviewLabTheme.colors.secondary
+                    .copy(alpha = 0.25f)
+            } else {
+                PreviewLabTheme.colors.transparent
+            },
+            contentColor = PreviewLabTheme.colors.secondary,
+            borderColor = PreviewLabTheme.colors.transparent,
+            disabledContainerColor = PreviewLabTheme.colors.transparent,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            disabledBorderColor = PreviewLabTheme.colors.transparent,
+        ),
+        shape = filledShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun destructiveFilled() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = PreviewLabTheme.colors.error,
-                    contentColor = PreviewLabTheme.colors.onError,
-                    disabledContainerColor = PreviewLabTheme.colors.disabled,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                ),
-            shape = filledShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun destructiveFilled(isSelected: Boolean) = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = PreviewLabTheme.colors.error,
+            contentColor = PreviewLabTheme.colors.onError,
+            disabledContainerColor = PreviewLabTheme.colors.disabled,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            borderColor = if (isSelected) PreviewLabTheme.colors.error.copy(alpha = 0.5f) else Color.Transparent,
+        ),
+        shape = filledShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun destructiveElevated() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = PreviewLabTheme.colors.error,
-                    contentColor = PreviewLabTheme.colors.onError,
-                    disabledContainerColor = PreviewLabTheme.colors.disabled,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                ),
-            shape = elevatedShape,
-            elevation = buttonElevation(),
-            contentPadding = contentPadding,
-        )
+    fun destructiveElevated(isSelected: Boolean) = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = PreviewLabTheme.colors.error,
+            contentColor = PreviewLabTheme.colors.onError,
+            disabledContainerColor = PreviewLabTheme.colors.disabled,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            borderColor = if (isSelected) PreviewLabTheme.colors.error else Color.Transparent,
+        ),
+        shape = elevatedShape,
+        elevation = buttonElevation(),
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun destructiveOutlined() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = PreviewLabTheme.colors.transparent,
-                    contentColor = PreviewLabTheme.colors.error,
-                    borderColor = PreviewLabTheme.colors.error,
-                    disabledContainerColor = PreviewLabTheme.colors.transparent,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                    disabledBorderColor = PreviewLabTheme.colors.disabled,
-                ),
-            shape = outlinedShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun destructiveOutlined(isSelected: Boolean) = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = if (isSelected) PreviewLabTheme.colors.error else PreviewLabTheme.colors.transparent,
+            contentColor = PreviewLabTheme.colors.error,
+            borderColor = PreviewLabTheme.colors.error,
+            disabledContainerColor = PreviewLabTheme.colors.transparent,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            disabledBorderColor = PreviewLabTheme.colors.disabled,
+        ),
+        shape = outlinedShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun destructiveGhost() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = PreviewLabTheme.colors.transparent,
-                    contentColor = PreviewLabTheme.colors.error,
-                    borderColor = PreviewLabTheme.colors.transparent,
-                    disabledContainerColor = PreviewLabTheme.colors.transparent,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                    disabledBorderColor = PreviewLabTheme.colors.transparent,
-                ),
-            shape = filledShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun destructiveGhost(isSelected: Boolean) = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = if (isSelected) {
+                PreviewLabTheme.colors.error
+                    .copy(alpha = 0.25f)
+            } else {
+                PreviewLabTheme.colors.transparent
+            },
+            contentColor = PreviewLabTheme.colors.error,
+            borderColor = PreviewLabTheme.colors.transparent,
+            disabledContainerColor = PreviewLabTheme.colors.transparent,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            disabledBorderColor = PreviewLabTheme.colors.transparent,
+        ),
+        shape = filledShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun ghost() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = PreviewLabTheme.colors.transparent,
-                    contentColor = LocalContentColor.current,
-                    borderColor = PreviewLabTheme.colors.transparent,
-                    disabledContainerColor = PreviewLabTheme.colors.transparent,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                    disabledBorderColor = PreviewLabTheme.colors.transparent,
-                ),
-            shape = filledShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun ghost(isSelected: Boolean) = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = if (isSelected) {
+                PreviewLabTheme.colors.black
+                    .copy(alpha = 0.5f)
+            } else {
+                PreviewLabTheme.colors.transparent
+            },
+            contentColor = LocalContentColor.current,
+            borderColor = PreviewLabTheme.colors.transparent,
+            disabledContainerColor = PreviewLabTheme.colors.transparent,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            disabledBorderColor = PreviewLabTheme.colors.transparent,
+        ),
+        shape = filledShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 }
 
 @Immutable
@@ -469,9 +478,9 @@ fun PrimaryButtonPreview() {
     PreviewLabTheme {
         Column(
             modifier =
-                Modifier
-                    .background(PreviewLabTheme.colors.background)
-                    .padding(16.dp),
+            Modifier
+                .background(PreviewLabTheme.colors.background)
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(text = "Primary Buttons", style = PreviewLabTheme.typography.h2)
@@ -482,7 +491,7 @@ fun PrimaryButtonPreview() {
                 Button(
                     text = "Disabled",
                     variant = ButtonVariant.Primary,
-                    enabled = false,
+                    isEnabled = false,
                 )
             }
 
@@ -492,7 +501,7 @@ fun PrimaryButtonPreview() {
                 Button(
                     text = "Disabled",
                     variant = ButtonVariant.PrimaryOutlined,
-                    enabled = false,
+                    isEnabled = false,
                 )
             }
 
@@ -502,7 +511,7 @@ fun PrimaryButtonPreview() {
                 Button(
                     text = "Disabled",
                     variant = ButtonVariant.PrimaryElevated,
-                    enabled = false,
+                    isEnabled = false,
                 )
             }
 
@@ -512,7 +521,7 @@ fun PrimaryButtonPreview() {
                 Button(
                     text = "Disabled",
                     variant = ButtonVariant.PrimaryGhost,
-                    enabled = false,
+                    isEnabled = false,
                 )
             }
         }
@@ -525,9 +534,9 @@ fun SecondaryButtonPreview() {
     PreviewLabTheme {
         Column(
             modifier =
-                Modifier
-                    .background(PreviewLabTheme.colors.background)
-                    .padding(16.dp),
+            Modifier
+                .background(PreviewLabTheme.colors.background)
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(text = "Secondary Buttons", style = PreviewLabTheme.typography.h2)
@@ -538,7 +547,7 @@ fun SecondaryButtonPreview() {
                 Button(
                     text = "Disabled",
                     variant = ButtonVariant.Secondary,
-                    enabled = false,
+                    isEnabled = false,
                 )
             }
 
@@ -548,7 +557,7 @@ fun SecondaryButtonPreview() {
                 Button(
                     text = "Disabled",
                     variant = ButtonVariant.SecondaryOutlined,
-                    enabled = false,
+                    isEnabled = false,
                 )
             }
 
@@ -558,7 +567,7 @@ fun SecondaryButtonPreview() {
                 Button(
                     text = "Disabled",
                     variant = ButtonVariant.SecondaryElevated,
-                    enabled = false,
+                    isEnabled = false,
                 )
             }
 
@@ -568,7 +577,7 @@ fun SecondaryButtonPreview() {
                 Button(
                     text = "Disabled",
                     variant = ButtonVariant.SecondaryGhost,
-                    enabled = false,
+                    isEnabled = false,
                 )
             }
         }
@@ -581,9 +590,9 @@ fun DestructiveButtonPreview() {
     PreviewLabTheme {
         Column(
             modifier =
-                Modifier
-                    .background(PreviewLabTheme.colors.background)
-                    .padding(16.dp),
+            Modifier
+                .background(PreviewLabTheme.colors.background)
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(text = "Destructive Buttons", style = PreviewLabTheme.typography.h2)
@@ -594,7 +603,7 @@ fun DestructiveButtonPreview() {
                 Button(
                     text = "Disabled",
                     variant = ButtonVariant.Destructive,
-                    enabled = false,
+                    isEnabled = false,
                 )
             }
 
@@ -604,7 +613,7 @@ fun DestructiveButtonPreview() {
                 Button(
                     text = "Disabled",
                     variant = ButtonVariant.DestructiveOutlined,
-                    enabled = false,
+                    isEnabled = false,
                 )
             }
 
@@ -614,7 +623,7 @@ fun DestructiveButtonPreview() {
                 Button(
                     text = "Disabled",
                     variant = ButtonVariant.DestructiveElevated,
-                    enabled = false,
+                    isEnabled = false,
                 )
             }
 
@@ -624,7 +633,7 @@ fun DestructiveButtonPreview() {
                 Button(
                     text = "Disabled",
                     variant = ButtonVariant.DestructiveGhost,
-                    enabled = false,
+                    isEnabled = false,
                 )
             }
         }

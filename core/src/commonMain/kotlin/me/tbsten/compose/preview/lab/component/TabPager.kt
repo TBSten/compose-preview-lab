@@ -1,18 +1,12 @@
 package me.tbsten.compose.preview.lab.component
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.Tab
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
 
 @Composable
 internal fun <T> TabPager(
@@ -26,19 +20,20 @@ internal fun <T> TabPager(
 
     Column(modifier = modifier) {
         pagerState.currentPage
-        ScrollableTabRow(
-            selectedTabIndex = pagerState.currentPage,
-            edgePadding = 0.dp,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            tabs.forEachIndexed { index, tab ->
-                Tab(
-                    selected = pagerState.currentPage == index,
-                    onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
-                    text = { Text(title(tab)) },
-                )
-            }
-        }
+        // TODO
+//        ScrollableTabRow(
+//            selectedTabIndex = pagerState.currentPage,
+//            edgePadding = 0.dp,
+//            modifier = Modifier.fillMaxWidth(),
+//        ) {
+//            tabs.forEachIndexed { index, tab ->
+//                Tab(
+//                    selected = pagerState.currentPage == index,
+//                    onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
+//                    text = { Text(title(tab)) },
+//                )
+//            }
+//        }
 
         HorizontalPager(
             state = pagerState,

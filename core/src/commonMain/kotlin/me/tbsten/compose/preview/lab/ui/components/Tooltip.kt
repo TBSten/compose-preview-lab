@@ -98,6 +98,25 @@ fun TooltipBox(
 }
 
 @Composable
+fun TooltipBox(
+    tooltip: String,
+    modifier: Modifier = Modifier,
+    positionProvider: PopupPositionProvider = rememberTooltipPositionProvider(),
+    state: TooltipState = rememberTooltipState(),
+    focusable: Boolean = true,
+    enableUserInput: Boolean = true,
+    content: @Composable () -> Unit,
+) = TooltipBox(
+    tooltip = { Tooltip { Text(tooltip) }},
+    modifier = modifier,
+    positionProvider = positionProvider,
+    state = state,
+    focusable = focusable,
+    enableUserInput = enableUserInput,
+    content = content,
+)
+
+@Composable
 fun TooltipScope.Tooltip(
     modifier: Modifier = Modifier,
     caretSize: DpSize = TooltipDefaults.CaretSize,

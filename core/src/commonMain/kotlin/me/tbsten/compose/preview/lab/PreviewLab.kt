@@ -17,16 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.PlainTooltip
-import androidx.compose.material3.SmallFloatingActionButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.TooltipBox
-import androidx.compose.material3.TooltipDefaults
-import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -62,7 +52,13 @@ import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.field.ScreenSizeField
 import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
-import me.tbsten.compose.preview.lab.theme.AppTheme
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.Button
+import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.Icon
+import me.tbsten.compose.preview.lab.ui.components.IconButton
+import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.TooltipBox
 import me.tbsten.compose.preview.lab.util.toDpOffset
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
@@ -136,14 +132,13 @@ open class PreviewLab {
      * @see PreviewLabState
      * @see ScreenSize
      */
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     operator fun invoke(
         state: PreviewLabState = rememberSaveable(saver = PreviewLabState.Saver) { PreviewLabState() },
         screenSizes: List<ScreenSize> = ScreenSize.SmartphoneAndDesktops,
         content: @Composable PreviewLabScope.() -> Unit,
-    ) = AppTheme {
-        Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
+    ) = PreviewLabTheme {
+        Column(modifier = Modifier.background(PreviewLabTheme.colors.background)) {
             PreviewLabHeader(
                 scale = state.contentScale,
                 onScaleChange = { state.contentScale = it },
@@ -236,7 +231,7 @@ private fun ContentSection(
         ) {
             Box(
                 modifier = Modifier
-                    .border(8.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.15f))
+                    .border(8.dp, PreviewLabTheme.colors.outline.copy(alpha = 0.25f))
                     .padding(8.dp)
                     .onPlaced {
                         state.contentRootOffsetInAppRoot =
@@ -249,7 +244,6 @@ private fun ContentSection(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Unit) {
     val tabContent = remember {
@@ -276,56 +270,53 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                         .sizeIn(maxWidth = maxWidth / 3, maxHeight = maxHeight * 2 / 3),
                 ) {
                     InspectorTab.entries.forEachIndexed { index, tab ->
-                        TooltipBox(
-                            positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
-                            tooltip = { PlainTooltip { Text(tab.title) } },
-                            state = rememberTooltipState(),
-                        ) {
-                            SmallFloatingActionButton(
-                                onClick = { state.selectedTabIndex = index },
-                            ) {
-                                Icon(
-                                    painter = painterResource(tab.iconRes),
-                                    contentDescription = tab.title,
-                                )
-                            }
+                        TooltipBox(tooltip = tab.title) {
+                            IconButton { }
+
+                            // TODO
+//                            SmallFloatingActionButton(
+//                                onClick = { state.selectedTabIndex = index },
+//                            ) {
+//                                Icon(
+//                                    painter = painterResource(tab.iconRes),
+//                                    contentDescription = tab.title,
+//                                )
+//                            }
                         }
 
-                        if (state.selectedTabIndex == index) {
-                            SimpleBottomSheet(onDismissRequest = { state.deselectTab() }) {
-                                Box(Modifier.heightIn(min = 200.dp)) {
-                                    tab.content(state)
-                                }
+                        SimpleBottomSheet(
+                            isVisible = state.selectedTabIndex == index,
+                            onDismissRequest = { state.deselectTab() },
+                        ) {
+                            Box(Modifier.heightIn(min = 200.dp)) {
+                                tab.content(state)
                             }
                         }
                     }
 
-                    TooltipBox(
-                        positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
-                        tooltip = { PlainTooltip { Text("Show Source Code") } },
-                        state = rememberTooltipState(),
-                    ) {
+                    TooltipBox(tooltip = "Show Source Code") {
                         val filePath = LocalCollectedPreview.current?.filePath
                         val startLineNumber = LocalCollectedPreview.current?.startLineNumber
                         val openHandler = LocalOpenFileHandler.current
                         if (filePath != null && openHandler != null) {
                             val configuredValue = openHandler.configure()
-                            SmallFloatingActionButton(
-                                onClick = {
-                                    (openHandler as OpenFileHandler<in Any?>).openFile(
-                                        OpenFileHandler.Params(
-                                            configuredValue = configuredValue,
-                                            filePathInProject = filePath,
-                                            startLineNumber = startLineNumber,
-                                        ),
-                                    )
-                                },
-                            ) {
-                                Icon(
-                                    painter = painterResource(Res.drawable.icon_code),
-                                    contentDescription = "Show source code",
-                                )
-                            }
+                            // TODO
+//                            SmallFloatingActionButton(
+//                                onClick = {
+//                                    (openHandler as OpenFileHandler<in Any?>).openFile(
+//                                        OpenFileHandler.Params(
+//                                            configuredValue = configuredValue,
+//                                            filePathInProject = filePath,
+//                                            startLineNumber = startLineNumber,
+//                                        ),
+//                                    )
+//                                },
+//                            ) {
+//                                Icon(
+//                                    painter = painterResource(Res.drawable.icon_code),
+//                                    contentDescription = "Show source code",
+//                                )
+//                            }
                         }
                     }
                 }
@@ -341,7 +332,7 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                 Divider()
                 Column(
                     modifier = Modifier
-                        .background(MaterialTheme.colorScheme.background)
+                        .background(PreviewLabTheme.colors.background)
                         .width(250.dp)
                         .fillMaxHeight(),
                 ) {
@@ -368,7 +359,8 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                         Divider()
 
                         val configuredValue = openHandler.configure()
-                        OutlinedButton(
+                        Button(
+                            variant = ButtonVariant.PrimaryOutlined,
                             onClick = {
                                 (openHandler as OpenFileHandler<in Any?>).openFile(
                                     OpenFileHandler.Params(

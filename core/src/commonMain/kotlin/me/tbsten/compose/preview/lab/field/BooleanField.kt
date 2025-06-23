@@ -1,7 +1,9 @@
 package me.tbsten.compose.preview.lab.field
 
-import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.Switch
+import me.tbsten.compose.preview.lab.ui.components.Text
 
 /**
  * Field that holds a Boolean value.
@@ -31,6 +33,9 @@ open class BooleanField(label: String, initialValue: Boolean) :
         Switch(
             checked = value,
             onCheckedChange = { value = it },
+            thumbContent = {
+                Text(text = value.toString(), style = PreviewLabTheme.typography.label3)
+            },
         )
     }
 }

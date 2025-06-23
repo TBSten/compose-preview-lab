@@ -1,20 +1,17 @@
 package me.tbsten.compose.preview.lab.component
 
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.unit.Dp
+import com.nomanr.composables.bottomsheet.rememberModalBottomSheetState
+import me.tbsten.compose.preview.lab.ui.components.ModalBottomSheet
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun SimpleBottomSheet(onDismissRequest: () -> Unit, content: @Composable () -> Unit) {
+internal fun SimpleBottomSheet(isVisible: Boolean, onDismissRequest: () -> Unit, content: @Composable () -> Unit,) {
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     ModalBottomSheet(
+        isVisible = isVisible,
         onDismissRequest = { onDismissRequest() },
         sheetState = bottomSheetState,
-        sheetMaxWidth = Dp.Infinity,
     ) {
         content()
     }

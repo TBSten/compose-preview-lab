@@ -1,15 +1,6 @@
 package me.tbsten.compose.preview.lab.component
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -17,11 +8,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.core.generated.resources.Res
-import me.tbsten.compose.preview.lab.core.generated.resources.icon_check
-import org.jetbrains.compose.resources.imageResource
+import me.tbsten.compose.preview.lab.ui.LocalTextStyle
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.Button
+import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.Text
 
 @Composable
 internal fun <V> SelectButton(
@@ -51,56 +43,58 @@ internal fun <V> SelectButton(
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
-    OutlinedButton(
-        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 2.dp),
+    Button(
+        variant = ButtonVariant.PrimaryOutlined,
+        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
         onClick = { showMenu = true },
         modifier = modifier,
     ) {
         CompositionLocalProvider(
-            LocalTextStyle provides MaterialTheme.typography.labelSmall,
+            LocalTextStyle provides PreviewLabTheme.typography.label3,
         ) {
             Text(title(value))
         }
     }
 
-    DropdownMenu(
-        expanded = showMenu,
-        onDismissRequest = { showMenu = false },
-    ) {
-        choices.forEachIndexed { index, item ->
-            val isSelected = item == value
-            DropdownMenuItem(
-                text = {
-                    Column(modifier = Modifier.padding(4.dp)) {
-                        Text(
-                            text = title(item),
-                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                            style = MaterialTheme.typography.bodySmall,
-                        )
-                        itemDetail(item)?.let {
-                            Text(
-                                text = it,
-                                style = MaterialTheme.typography.bodySmall,
-                            )
-                        }
-                    }
-                },
-                onClick = {
-                    onSelect(item)
-                    showMenu = false
-                },
-                enabled = !isSelected,
-                leadingIcon = if (isSelected) {
-                    @Composable {
-                        Icon(
-                            imageResource(Res.drawable.icon_check),
-                            contentDescription = null,
-                        )
-                    }
-                } else {
-                    null
-                },
-            )
-        }
-    }
+    // TODO
+//    DropdownMenu(
+//        expanded = showMenu,
+//        onDismissRequest = { showMenu = false },
+//    ) {
+//        choices.forEachIndexed { index, item ->
+//            val isSelected = item == value
+//            DropdownMenuItem(
+//                text = {
+//                    Column(modifier = Modifier.padding(4.dp)) {
+//                        Text(
+//                            text = title(item),
+//                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+//                            style = PreviewLabTheme.typography.bodySmall,
+//                        )
+//                        itemDetail(item)?.let {
+//                            Text(
+//                                text = it,
+//                                style = PreviewLabTheme.typography.bodySmall,
+//                            )
+//                        }
+//                    }
+//                },
+//                onClick = {
+//                    onSelect(item)
+//                    showMenu = false
+//                },
+//                enabled = !isSelected,
+//                leadingIcon = if (isSelected) {
+//                    @Composable {
+//                        Icon(
+//                            imageResource(Res.drawable.icon_check),
+//                            contentDescription = null,
+//                        )
+//                    }
+//                } else {
+//                    null
+//                },
+//            )
+//        }
+//    }
 }

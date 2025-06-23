@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -135,7 +136,7 @@ private fun SwitchComponent(
             modifier =
                 Modifier
                     .align(Alignment.CenterStart)
-                    .size(thumbSize)
+                    .sizeIn(minWidth = thumbSize, minHeight = thumbSize)
                     .offset {
                         val trackWidth = SwitchWidth.toPx()
                         val currentThumbSize = thumbSize.toPx()
