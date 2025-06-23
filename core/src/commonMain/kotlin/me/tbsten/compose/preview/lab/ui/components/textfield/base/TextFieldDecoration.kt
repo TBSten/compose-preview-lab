@@ -187,11 +187,7 @@ internal fun CommonDecorationBox(
 }
 
 @Composable
-internal fun Decoration(
-    contentColor: Color,
-    typography: TextStyle? = null,
-    content: @Composable () -> Unit,
-) {
+internal fun Decoration(contentColor: Color, typography: TextStyle? = null, content: @Composable () -> Unit,) {
     val contentWithColor: @Composable () -> Unit = @Composable {
         CompositionLocalProvider(
             LocalContentColor provides contentColor,
@@ -275,14 +271,14 @@ internal fun Modifier.containerOutline(
     shape: Shape,
 ) = composed(
     inspectorInfo =
-        debugInspectorInfo {
-            name = "indicatorLine"
-            properties["enabled"] = enabled
-            properties["isError"] = isError
-            properties["interactionSource"] = interactionSource
-            properties["colors"] = colors
-            properties["borderThickness"] = borderThickness
-        },
+    debugInspectorInfo {
+        name = "indicatorLine"
+        properties["enabled"] = enabled
+        properties["isError"] = isError
+        properties["interactionSource"] = interactionSource
+        properties["colors"] = colors
+        properties["borderThickness"] = borderThickness
+    },
 ) {
     val indicatorColor = colors.containerOutlineColor(enabled, isError, interactionSource)
 

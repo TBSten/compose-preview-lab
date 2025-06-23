@@ -22,10 +22,7 @@ object PreviewLabTheme {
 }
 
 @Composable
-fun PreviewLabTheme(
-    isDarkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit,
-) {
+fun PreviewLabTheme(isDarkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit,) {
     val rippleIndication = ripple()
     val selectionColors = rememberTextSelectionColors(LightColors)
     val typography = provideTypography()
@@ -43,9 +40,7 @@ fun PreviewLabTheme(
 }
 
 @Composable
-fun contentColorFor(color: Color): Color {
-    return PreviewLabTheme.colors.contentColorFor(color)
-}
+fun contentColorFor(color: Color): Color = PreviewLabTheme.colors.contentColorFor(color)
 
 @Composable
 internal fun rememberTextSelectionColors(colorScheme: Colors): TextSelectionColors {

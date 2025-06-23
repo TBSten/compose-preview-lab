@@ -60,9 +60,9 @@ internal object BottomSheetDefaults {
     fun DragHandle() {
         Box(
             modifier =
-                Modifier
-                    .padding(DragHandlePadding)
-                    .background(color = Color.Companion.Unspecified, shape = RoundedCornerShape(12.dp)),
+            Modifier
+                .padding(DragHandlePadding)
+                .background(color = Color.Companion.Unspecified, shape = RoundedCornerShape(12.dp)),
         ) {
             Spacer(
                 Modifier
@@ -81,10 +81,10 @@ fun ModalBottomSheetPreview() {
             for (i in 0..10) {
                 Box(
                     modifier =
-                        Modifier
-                            .height(40.dp)
-                            .fillMaxWidth()
-                            .background(color = if (i % 2 == 0) Color.Red else Color.Blue),
+                    Modifier
+                        .height(40.dp)
+                        .fillMaxWidth()
+                        .background(color = if (i % 2 == 0) Color.Red else Color.Blue),
                 )
             }
         }

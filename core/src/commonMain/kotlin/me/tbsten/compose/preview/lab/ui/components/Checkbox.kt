@@ -70,11 +70,11 @@ fun Checkbox(
     TriStateCheckbox(
         state = ToggleableState(checked),
         onClick =
-            if (onCheckedChange != null) {
-                { onCheckedChange(!checked) }
-            } else {
-                null
-            },
+        if (onCheckedChange != null) {
+            { onCheckedChange(!checked) }
+        } else {
+            null
+        },
         modifier = modifier,
         enabled = enabled,
         colors = colors,
@@ -102,10 +102,10 @@ fun TriStateCheckbox(
                     role = Role.Checkbox,
                     interactionSource = interactionSource,
                     indication =
-                        ripple(
-                            bounded = false,
-                            radius = MinimumInteractiveSize / 2,
-                        ),
+                    ripple(
+                        bounded = false,
+                        radius = MinimumInteractiveSize / 2,
+                    ),
                 )
         } else {
             Modifier
@@ -114,20 +114,15 @@ fun TriStateCheckbox(
         enabled = enabled,
         value = state,
         modifier =
-            modifier
-                .then(toggleableModifier)
-                .padding(CheckboxDefaultPadding),
+        modifier
+            .then(toggleableModifier)
+            .padding(CheckboxDefaultPadding),
         colors = colors,
     )
 }
 
 @Composable
-private fun CheckboxComponent(
-    enabled: Boolean,
-    value: ToggleableState,
-    modifier: Modifier,
-    colors: CheckboxColors,
-) {
+private fun CheckboxComponent(enabled: Boolean, value: ToggleableState, modifier: Modifier, colors: CheckboxColors,) {
     val transition = updateTransition(value, label = "checkbox")
     val checkDrawFraction =
         transition.animateFloat(
@@ -187,12 +182,7 @@ private fun CheckboxComponent(
     }
 }
 
-private fun DrawScope.drawBox(
-    boxColor: Color,
-    borderColor: Color,
-    radius: Float,
-    strokeWidth: Float,
-) {
+private fun DrawScope.drawBox(boxColor: Color, borderColor: Color, radius: Float, strokeWidth: Float,) {
     val halfStrokeWidth = strokeWidth / 2.0f
     val stroke = Stroke(strokeWidth)
     val checkboxSize = size.width
@@ -278,21 +268,20 @@ object CheckboxDefaults {
     internal val MinimumInteractiveSize = 44.dp
 
     @Composable
-    fun colors() =
-        CheckboxColors(
-            checkedCheckmarkColor = PreviewLabTheme.colors.onPrimary,
-            uncheckedCheckmarkColor = PreviewLabTheme.colors.transparent,
-            checkedBoxColor = PreviewLabTheme.colors.primary,
-            uncheckedBoxColor = PreviewLabTheme.colors.transparent,
-            disabledCheckedBoxColor = PreviewLabTheme.colors.disabled,
-            disabledUncheckedBoxColor = PreviewLabTheme.colors.transparent,
-            disabledIndeterminateBoxColor = PreviewLabTheme.colors.disabled,
-            checkedBorderColor = PreviewLabTheme.colors.primary,
-            uncheckedBorderColor = PreviewLabTheme.colors.primary,
-            disabledBorderColor = PreviewLabTheme.colors.disabled,
-            disabledUncheckedBorderColor = PreviewLabTheme.colors.disabled,
-            disabledIndeterminateBorderColor = PreviewLabTheme.colors.disabled,
-        )
+    fun colors() = CheckboxColors(
+        checkedCheckmarkColor = PreviewLabTheme.colors.onPrimary,
+        uncheckedCheckmarkColor = PreviewLabTheme.colors.transparent,
+        checkedBoxColor = PreviewLabTheme.colors.primary,
+        uncheckedBoxColor = PreviewLabTheme.colors.transparent,
+        disabledCheckedBoxColor = PreviewLabTheme.colors.disabled,
+        disabledUncheckedBoxColor = PreviewLabTheme.colors.transparent,
+        disabledIndeterminateBoxColor = PreviewLabTheme.colors.disabled,
+        checkedBorderColor = PreviewLabTheme.colors.primary,
+        uncheckedBorderColor = PreviewLabTheme.colors.primary,
+        disabledBorderColor = PreviewLabTheme.colors.disabled,
+        disabledUncheckedBorderColor = PreviewLabTheme.colors.disabled,
+        disabledIndeterminateBorderColor = PreviewLabTheme.colors.disabled,
+    )
 }
 
 @Immutable
@@ -311,12 +300,10 @@ data class CheckboxColors(
     val disabledIndeterminateBorderColor: Color,
 ) {
     @Composable
-    internal fun checkmarkColor(state: ToggleableState): Color {
-        return if (state == ToggleableState.Off) {
-            uncheckedCheckmarkColor
-        } else {
-            checkedCheckmarkColor
-        }
+    internal fun checkmarkColor(state: ToggleableState): Color = if (state == ToggleableState.Off) {
+        uncheckedCheckmarkColor
+    } else {
+        checkedCheckmarkColor
     }
 
     @Composable
@@ -374,10 +361,10 @@ fun CheckboxPreview() {
     PreviewLabTheme {
         Column(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(Color.White)
-                    .padding(16.dp),
+            Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             var isChecked by remember { mutableStateOf(false) }
@@ -474,9 +461,9 @@ fun CheckboxPreview() {
                 items.forEach { item ->
                     Row(
                         modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 4.dp),
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {

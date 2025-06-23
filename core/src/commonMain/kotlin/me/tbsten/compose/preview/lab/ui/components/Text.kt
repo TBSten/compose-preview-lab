@@ -123,9 +123,9 @@ fun TypographySample() {
 
     Column(
         modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(16.dp),
+        Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(

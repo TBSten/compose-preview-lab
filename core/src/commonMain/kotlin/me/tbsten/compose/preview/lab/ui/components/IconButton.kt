@@ -85,10 +85,10 @@ private fun IconButtonComponent(
     Surface(
         onClick = onClick,
         modifier =
-            modifier.defaultMinSize(
-                minWidth = IconButtonDefaults.ButtonSize,
-                minHeight = IconButtonDefaults.ButtonSize,
-            ).semantics { role = Role.Button },
+        modifier.defaultMinSize(
+            minWidth = IconButtonDefaults.ButtonSize,
+            minHeight = IconButtonDefaults.ButtonSize,
+        ).semantics { role = Role.Button },
         enabled = enabled,
         shape = style.shape,
         color = containerColor,
@@ -131,227 +131,211 @@ internal object IconButtonDefaults {
     val OutlineHeight = 1.dp
 
     @Composable
-    fun buttonElevation() =
-        ButtonElevation(
-            defaultElevation = 2.dp,
-            pressedElevation = 2.dp,
-            focusedElevation = 2.dp,
-            hoveredElevation = 2.dp,
-            disabledElevation = 0.dp,
-        )
+    fun buttonElevation() = ButtonElevation(
+        defaultElevation = 2.dp,
+        pressedElevation = 2.dp,
+        focusedElevation = 2.dp,
+        hoveredElevation = 2.dp,
+        disabledElevation = 0.dp,
+    )
 
     @Composable
-    fun styleFor(variant: IconButtonVariant, shape: Shape): IconButtonStyle {
-        return when (variant) {
-            IconButtonVariant.Primary -> primaryFilled(shape)
-            IconButtonVariant.PrimaryOutlined -> primaryOutlined(shape)
-            IconButtonVariant.PrimaryElevated -> primaryElevated(shape)
-            IconButtonVariant.PrimaryGhost -> primaryGhost(shape)
-            IconButtonVariant.Secondary -> secondaryFilled(shape)
-            IconButtonVariant.SecondaryOutlined -> secondaryOutlined(shape)
-            IconButtonVariant.SecondaryElevated -> secondaryElevated(shape)
-            IconButtonVariant.SecondaryGhost -> secondaryGhost(shape)
-            IconButtonVariant.Destructive -> destructiveFilled(shape)
-            IconButtonVariant.DestructiveOutlined -> destructiveOutlined(shape)
-            IconButtonVariant.DestructiveElevated -> destructiveElevated(shape)
-            IconButtonVariant.DestructiveGhost -> destructiveGhost(shape)
-            IconButtonVariant.Ghost -> ghost(shape)
-        }
+    fun styleFor(variant: IconButtonVariant, shape: Shape): IconButtonStyle = when (variant) {
+        IconButtonVariant.Primary -> primaryFilled(shape)
+        IconButtonVariant.PrimaryOutlined -> primaryOutlined(shape)
+        IconButtonVariant.PrimaryElevated -> primaryElevated(shape)
+        IconButtonVariant.PrimaryGhost -> primaryGhost(shape)
+        IconButtonVariant.Secondary -> secondaryFilled(shape)
+        IconButtonVariant.SecondaryOutlined -> secondaryOutlined(shape)
+        IconButtonVariant.SecondaryElevated -> secondaryElevated(shape)
+        IconButtonVariant.SecondaryGhost -> secondaryGhost(shape)
+        IconButtonVariant.Destructive -> destructiveFilled(shape)
+        IconButtonVariant.DestructiveOutlined -> destructiveOutlined(shape)
+        IconButtonVariant.DestructiveElevated -> destructiveElevated(shape)
+        IconButtonVariant.DestructiveGhost -> destructiveGhost(shape)
+        IconButtonVariant.Ghost -> ghost(shape)
     }
 
     @Composable
-    fun primaryFilled(shape: Shape) =
-        IconButtonStyle(
-            colors =
-                IconButtonColors(
-                    containerColor = PreviewLabTheme.colors.primary,
-                    contentColor = PreviewLabTheme.colors.onPrimary,
-                    disabledContainerColor = PreviewLabTheme.colors.disabled,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                ),
-            shape = shape,
-            elevation = null,
-        )
+    fun primaryFilled(shape: Shape) = IconButtonStyle(
+        colors =
+        IconButtonColors(
+            containerColor = PreviewLabTheme.colors.primary,
+            contentColor = PreviewLabTheme.colors.onPrimary,
+            disabledContainerColor = PreviewLabTheme.colors.disabled,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+        ),
+        shape = shape,
+        elevation = null,
+    )
 
     @Composable
-    fun primaryOutlined(shape: Shape) =
-        IconButtonStyle(
-            colors =
-                IconButtonColors(
-                    containerColor = PreviewLabTheme.colors.transparent,
-                    contentColor = PreviewLabTheme.colors.primary,
-                    borderColor = PreviewLabTheme.colors.primary,
-                    disabledContainerColor = PreviewLabTheme.colors.transparent,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                    disabledBorderColor = PreviewLabTheme.colors.disabled,
-                ),
-            shape = shape,
-            elevation = null,
-        )
+    fun primaryOutlined(shape: Shape) = IconButtonStyle(
+        colors =
+        IconButtonColors(
+            containerColor = PreviewLabTheme.colors.transparent,
+            contentColor = PreviewLabTheme.colors.primary,
+            borderColor = PreviewLabTheme.colors.primary,
+            disabledContainerColor = PreviewLabTheme.colors.transparent,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            disabledBorderColor = PreviewLabTheme.colors.disabled,
+        ),
+        shape = shape,
+        elevation = null,
+    )
 
     @Composable
-    fun primaryElevated(shape: Shape) =
-        IconButtonStyle(
-            colors =
-                IconButtonColors(
-                    containerColor = PreviewLabTheme.colors.primary,
-                    contentColor = PreviewLabTheme.colors.onPrimary,
-                    disabledContainerColor = PreviewLabTheme.colors.disabled,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                ),
-            shape = shape,
-            elevation = buttonElevation(),
-        )
+    fun primaryElevated(shape: Shape) = IconButtonStyle(
+        colors =
+        IconButtonColors(
+            containerColor = PreviewLabTheme.colors.primary,
+            contentColor = PreviewLabTheme.colors.onPrimary,
+            disabledContainerColor = PreviewLabTheme.colors.disabled,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+        ),
+        shape = shape,
+        elevation = buttonElevation(),
+    )
 
     @Composable
-    fun primaryGhost(shape: Shape) =
-        IconButtonStyle(
-            colors =
-                IconButtonColors(
-                    containerColor = PreviewLabTheme.colors.transparent,
-                    contentColor = PreviewLabTheme.colors.primary,
-                    borderColor = PreviewLabTheme.colors.transparent,
-                    disabledContainerColor = PreviewLabTheme.colors.transparent,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                    disabledBorderColor = PreviewLabTheme.colors.transparent,
-                ),
-            shape = shape,
-            elevation = null,
-        )
+    fun primaryGhost(shape: Shape) = IconButtonStyle(
+        colors =
+        IconButtonColors(
+            containerColor = PreviewLabTheme.colors.transparent,
+            contentColor = PreviewLabTheme.colors.primary,
+            borderColor = PreviewLabTheme.colors.transparent,
+            disabledContainerColor = PreviewLabTheme.colors.transparent,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            disabledBorderColor = PreviewLabTheme.colors.transparent,
+        ),
+        shape = shape,
+        elevation = null,
+    )
 
     @Composable
-    fun secondaryFilled(shape: Shape) =
-        IconButtonStyle(
-            colors =
-                IconButtonColors(
-                    containerColor = PreviewLabTheme.colors.secondary,
-                    contentColor = PreviewLabTheme.colors.onSecondary,
-                    disabledContainerColor = PreviewLabTheme.colors.disabled,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                ),
-            shape = shape,
-            elevation = null,
-        )
+    fun secondaryFilled(shape: Shape) = IconButtonStyle(
+        colors =
+        IconButtonColors(
+            containerColor = PreviewLabTheme.colors.secondary,
+            contentColor = PreviewLabTheme.colors.onSecondary,
+            disabledContainerColor = PreviewLabTheme.colors.disabled,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+        ),
+        shape = shape,
+        elevation = null,
+    )
 
     @Composable
-    fun secondaryOutlined(shape: Shape) =
-        IconButtonStyle(
-            colors =
-                IconButtonColors(
-                    containerColor = PreviewLabTheme.colors.transparent,
-                    contentColor = PreviewLabTheme.colors.secondary,
-                    borderColor = PreviewLabTheme.colors.secondary,
-                    disabledContainerColor = PreviewLabTheme.colors.transparent,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                    disabledBorderColor = PreviewLabTheme.colors.disabled,
-                ),
-            shape = shape,
-            elevation = null,
-        )
+    fun secondaryOutlined(shape: Shape) = IconButtonStyle(
+        colors =
+        IconButtonColors(
+            containerColor = PreviewLabTheme.colors.transparent,
+            contentColor = PreviewLabTheme.colors.secondary,
+            borderColor = PreviewLabTheme.colors.secondary,
+            disabledContainerColor = PreviewLabTheme.colors.transparent,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            disabledBorderColor = PreviewLabTheme.colors.disabled,
+        ),
+        shape = shape,
+        elevation = null,
+    )
 
     @Composable
-    fun secondaryElevated(shape: Shape) =
-        IconButtonStyle(
-            colors =
-                IconButtonColors(
-                    containerColor = PreviewLabTheme.colors.secondary,
-                    contentColor = PreviewLabTheme.colors.onSecondary,
-                    disabledContainerColor = PreviewLabTheme.colors.disabled,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                ),
-            shape = shape,
-            elevation = buttonElevation(),
-        )
+    fun secondaryElevated(shape: Shape) = IconButtonStyle(
+        colors =
+        IconButtonColors(
+            containerColor = PreviewLabTheme.colors.secondary,
+            contentColor = PreviewLabTheme.colors.onSecondary,
+            disabledContainerColor = PreviewLabTheme.colors.disabled,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+        ),
+        shape = shape,
+        elevation = buttonElevation(),
+    )
 
     @Composable
-    fun secondaryGhost(shape: Shape) =
-        IconButtonStyle(
-            colors =
-                IconButtonColors(
-                    containerColor = PreviewLabTheme.colors.transparent,
-                    contentColor = PreviewLabTheme.colors.secondary,
-                    borderColor = PreviewLabTheme.colors.transparent,
-                    disabledContainerColor = PreviewLabTheme.colors.transparent,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                    disabledBorderColor = PreviewLabTheme.colors.transparent,
-                ),
-            shape = shape,
-            elevation = null,
-        )
+    fun secondaryGhost(shape: Shape) = IconButtonStyle(
+        colors =
+        IconButtonColors(
+            containerColor = PreviewLabTheme.colors.transparent,
+            contentColor = PreviewLabTheme.colors.secondary,
+            borderColor = PreviewLabTheme.colors.transparent,
+            disabledContainerColor = PreviewLabTheme.colors.transparent,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            disabledBorderColor = PreviewLabTheme.colors.transparent,
+        ),
+        shape = shape,
+        elevation = null,
+    )
 
     @Composable
-    fun destructiveFilled(shape: Shape) =
-        IconButtonStyle(
-            colors =
-                IconButtonColors(
-                    containerColor = PreviewLabTheme.colors.error,
-                    contentColor = PreviewLabTheme.colors.onError,
-                    disabledContainerColor = PreviewLabTheme.colors.disabled,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                ),
-            shape = shape,
-            elevation = null,
-        )
+    fun destructiveFilled(shape: Shape) = IconButtonStyle(
+        colors =
+        IconButtonColors(
+            containerColor = PreviewLabTheme.colors.error,
+            contentColor = PreviewLabTheme.colors.onError,
+            disabledContainerColor = PreviewLabTheme.colors.disabled,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+        ),
+        shape = shape,
+        elevation = null,
+    )
 
     @Composable
-    fun destructiveOutlined(shape: Shape) =
-        IconButtonStyle(
-            colors =
-                IconButtonColors(
-                    containerColor = PreviewLabTheme.colors.transparent,
-                    contentColor = PreviewLabTheme.colors.error,
-                    borderColor = PreviewLabTheme.colors.error,
-                    disabledContainerColor = PreviewLabTheme.colors.transparent,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                    disabledBorderColor = PreviewLabTheme.colors.disabled,
-                ),
-            shape = shape,
-            elevation = null,
-        )
+    fun destructiveOutlined(shape: Shape) = IconButtonStyle(
+        colors =
+        IconButtonColors(
+            containerColor = PreviewLabTheme.colors.transparent,
+            contentColor = PreviewLabTheme.colors.error,
+            borderColor = PreviewLabTheme.colors.error,
+            disabledContainerColor = PreviewLabTheme.colors.transparent,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            disabledBorderColor = PreviewLabTheme.colors.disabled,
+        ),
+        shape = shape,
+        elevation = null,
+    )
 
     @Composable
-    fun destructiveElevated(shape: Shape) =
-        IconButtonStyle(
-            colors =
-                IconButtonColors(
-                    containerColor = PreviewLabTheme.colors.error,
-                    contentColor = PreviewLabTheme.colors.onError,
-                    disabledContainerColor = PreviewLabTheme.colors.disabled,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                ),
-            shape = shape,
-            elevation = buttonElevation(),
-        )
+    fun destructiveElevated(shape: Shape) = IconButtonStyle(
+        colors =
+        IconButtonColors(
+            containerColor = PreviewLabTheme.colors.error,
+            contentColor = PreviewLabTheme.colors.onError,
+            disabledContainerColor = PreviewLabTheme.colors.disabled,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+        ),
+        shape = shape,
+        elevation = buttonElevation(),
+    )
 
     @Composable
-    fun destructiveGhost(shape: Shape) =
-        IconButtonStyle(
-            colors =
-                IconButtonColors(
-                    containerColor = PreviewLabTheme.colors.transparent,
-                    contentColor = PreviewLabTheme.colors.error,
-                    borderColor = PreviewLabTheme.colors.transparent,
-                    disabledContainerColor = PreviewLabTheme.colors.transparent,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                    disabledBorderColor = PreviewLabTheme.colors.transparent,
-                ),
-            shape = shape,
-            elevation = null,
-        )
+    fun destructiveGhost(shape: Shape) = IconButtonStyle(
+        colors =
+        IconButtonColors(
+            containerColor = PreviewLabTheme.colors.transparent,
+            contentColor = PreviewLabTheme.colors.error,
+            borderColor = PreviewLabTheme.colors.transparent,
+            disabledContainerColor = PreviewLabTheme.colors.transparent,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            disabledBorderColor = PreviewLabTheme.colors.transparent,
+        ),
+        shape = shape,
+        elevation = null,
+    )
 
     @Composable
-    fun ghost(shape: Shape) =
-        IconButtonStyle(
-            colors =
-                IconButtonColors(
-                    containerColor = PreviewLabTheme.colors.transparent,
-                    contentColor = LocalContentColor.current,
-                    disabledContainerColor = PreviewLabTheme.colors.transparent,
-                    disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                ),
-            shape = shape,
-            elevation = null,
-        )
+    fun ghost(shape: Shape) = IconButtonStyle(
+        colors =
+        IconButtonColors(
+            containerColor = PreviewLabTheme.colors.transparent,
+            contentColor = LocalContentColor.current,
+            disabledContainerColor = PreviewLabTheme.colors.transparent,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+        ),
+        shape = shape,
+        elevation = null,
+    )
 }
 
 @Immutable
@@ -374,11 +358,7 @@ data class IconButtonColors(
 }
 
 @Immutable
-data class IconButtonStyle(
-    val colors: IconButtonColors,
-    val shape: Shape,
-    val elevation: ButtonElevation? = null,
-)
+data class IconButtonStyle(val colors: IconButtonColors, val shape: Shape, val elevation: ButtonElevation? = null,)
 
 @Composable
 @Preview
@@ -480,7 +460,9 @@ fun GhostIconButtonPreview() {
                     modifier = Modifier.size(56.dp).clip(RoundedCornerShape(8)).background(PreviewLabTheme.colors.background),
                     contentAlignment = Alignment.Center,
                 ) {
-                    CompositionLocalProvider(LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.background)) {
+                    CompositionLocalProvider(
+                        LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.background)
+                    ) {
                         IconButton(variant = IconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
                         }
@@ -491,7 +473,9 @@ fun GhostIconButtonPreview() {
                     modifier = Modifier.size(56.dp).clip(RoundedCornerShape(8)).background(PreviewLabTheme.colors.primary),
                     contentAlignment = Alignment.Center,
                 ) {
-                    CompositionLocalProvider(LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.primary)) {
+                    CompositionLocalProvider(
+                        LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.primary)
+                    ) {
                         IconButton(variant = IconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
                         }
@@ -502,7 +486,9 @@ fun GhostIconButtonPreview() {
                     modifier = Modifier.size(56.dp).clip(RoundedCornerShape(8)).background(PreviewLabTheme.colors.secondary),
                     contentAlignment = Alignment.Center,
                 ) {
-                    CompositionLocalProvider(LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.secondary)) {
+                    CompositionLocalProvider(
+                        LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.secondary)
+                    ) {
                         IconButton(variant = IconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
                         }
@@ -513,7 +499,9 @@ fun GhostIconButtonPreview() {
                     modifier = Modifier.size(56.dp).clip(RoundedCornerShape(8)).background(PreviewLabTheme.colors.tertiary),
                     contentAlignment = Alignment.Center,
                 ) {
-                    CompositionLocalProvider(LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.tertiary)) {
+                    CompositionLocalProvider(
+                        LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.tertiary)
+                    ) {
                         IconButton(variant = IconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
                         }
@@ -524,7 +512,9 @@ fun GhostIconButtonPreview() {
                     modifier = Modifier.size(56.dp).clip(RoundedCornerShape(8)).background(PreviewLabTheme.colors.surface),
                     contentAlignment = Alignment.Center,
                 ) {
-                    CompositionLocalProvider(LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.surface)) {
+                    CompositionLocalProvider(
+                        LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.surface)
+                    ) {
                         IconButton(variant = IconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
                         }
@@ -620,15 +610,15 @@ private fun DummyIconForIconButtonPreview() {
         drawLine(
             color = Color.Black,
             start =
-                Offset(
-                    center.width - diagonalRadius,
-                    center.height - diagonalRadius,
-                ),
+            Offset(
+                center.width - diagonalRadius,
+                center.height - diagonalRadius,
+            ),
             end =
-                Offset(
-                    center.width + diagonalRadius,
-                    center.height + diagonalRadius,
-                ),
+            Offset(
+                center.width + diagonalRadius,
+                center.height + diagonalRadius,
+            ),
             strokeWidth = strokeWidth,
             cap = cap,
         )
@@ -636,15 +626,15 @@ private fun DummyIconForIconButtonPreview() {
         drawLine(
             color = Color.Black,
             start =
-                Offset(
-                    center.width - diagonalRadius,
-                    center.height + diagonalRadius,
-                ),
+            Offset(
+                center.width - diagonalRadius,
+                center.height + diagonalRadius,
+            ),
             end =
-                Offset(
-                    center.width + diagonalRadius,
-                    center.height - diagonalRadius,
-                ),
+            Offset(
+                center.width + diagonalRadius,
+                center.height - diagonalRadius,
+            ),
             strokeWidth = strokeWidth,
             cap = cap,
         )

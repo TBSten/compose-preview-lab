@@ -75,11 +75,11 @@ fun UnderlinedTextField(
     CompositionLocalProvider(LocalTextSelectionColors provides colors.selectionColors) {
         BasicTextField(
             modifier =
-                modifier
-                    .defaultMinSize(
-                        minHeight = UnderlinedTextFieldDefaults.MinHeight,
-                    )
-                    .fillMaxWidth(),
+            modifier
+                .defaultMinSize(
+                    minHeight = UnderlinedTextFieldDefaults.MinHeight,
+                )
+                .fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
             enabled = enabled,
@@ -152,11 +152,11 @@ fun UnderlinedTextField(
     CompositionLocalProvider(LocalTextSelectionColors provides colors.selectionColors) {
         BasicTextField(
             modifier =
-                modifier
-                    .defaultMinSize(
-                        minHeight = UnderlinedTextFieldDefaults.MinHeight,
-                    )
-                    .fillMaxWidth(),
+            modifier
+                .defaultMinSize(
+                    minHeight = UnderlinedTextFieldDefaults.MinHeight,
+                )
+                .fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
             enabled = enabled,
@@ -204,12 +204,8 @@ object UnderlinedTextFieldDefaults {
         bottom: Dp = TextFieldVerticalPadding,
     ): PaddingValues = PaddingValues(start, top, end, bottom)
 
-    private fun labelPadding(
-        start: Dp = 0.dp,
-        top: Dp = 0.dp,
-        end: Dp = 0.dp,
-        bottom: Dp = 0.dp,
-    ): PaddingValues = PaddingValues(start, top, end, bottom)
+    private fun labelPadding(start: Dp = 0.dp, top: Dp = 0.dp, end: Dp = 0.dp, bottom: Dp = 0.dp,): PaddingValues =
+        PaddingValues(start, top, end, bottom)
 
     private fun supportingTextPadding(
         start: Dp = 0.dp,
@@ -235,9 +231,7 @@ object UnderlinedTextFieldDefaults {
     ): PaddingValues = PaddingValues(start, top, end, bottom)
 
     @Composable
-    fun containerBorderThickness(
-        interactionSource: InteractionSource,
-    ): Dp {
+    fun containerBorderThickness(interactionSource: InteractionSource,): Dp {
         val focused by interactionSource.collectIsFocusedAsState()
 
         return if (focused) FocusedOutlineThickness else UnfocusedOutlineThickness
@@ -303,51 +297,49 @@ object UnderlinedTextFieldDefaults {
     }
 
     @Composable
-    fun colors(): TextFieldColors {
-        return TextFieldColors(
-            focusedTextColor = PreviewLabTheme.colors.text,
-            unfocusedTextColor = PreviewLabTheme.colors.text,
-            disabledTextColor = PreviewLabTheme.colors.onDisabled,
-            errorTextColor = PreviewLabTheme.colors.text,
-            focusedContainerColor = PreviewLabTheme.colors.transparent,
-            unfocusedContainerColor = PreviewLabTheme.colors.transparent,
-            disabledContainerColor = PreviewLabTheme.colors.transparent,
-            errorContainerColor = PreviewLabTheme.colors.transparent,
-            cursorColor = PreviewLabTheme.colors.primary,
-            errorCursorColor = PreviewLabTheme.colors.error,
-            textSelectionColors = LocalTextSelectionColors.current,
-            focusedOutlineColor = PreviewLabTheme.colors.primary,
-            unfocusedOutlineColor = PreviewLabTheme.colors.secondary,
-            disabledOutlineColor = PreviewLabTheme.colors.disabled,
-            errorOutlineColor = PreviewLabTheme.colors.error,
-            focusedLeadingIconColor = PreviewLabTheme.colors.primary,
-            unfocusedLeadingIconColor = PreviewLabTheme.colors.primary,
-            disabledLeadingIconColor = PreviewLabTheme.colors.onDisabled,
-            errorLeadingIconColor = PreviewLabTheme.colors.primary,
-            focusedTrailingIconColor = PreviewLabTheme.colors.primary,
-            unfocusedTrailingIconColor = PreviewLabTheme.colors.primary,
-            disabledTrailingIconColor = PreviewLabTheme.colors.onDisabled,
-            errorTrailingIconColor = PreviewLabTheme.colors.primary,
-            focusedLabelColor = PreviewLabTheme.colors.primary,
-            unfocusedLabelColor = PreviewLabTheme.colors.primary,
-            disabledLabelColor = PreviewLabTheme.colors.textDisabled,
-            errorLabelColor = PreviewLabTheme.colors.error,
-            focusedPlaceholderColor = PreviewLabTheme.colors.textSecondary,
-            unfocusedPlaceholderColor = PreviewLabTheme.colors.textSecondary,
-            disabledPlaceholderColor = PreviewLabTheme.colors.textDisabled,
-            errorPlaceholderColor = PreviewLabTheme.colors.textSecondary,
-            focusedSupportingTextColor = PreviewLabTheme.colors.primary,
-            unfocusedSupportingTextColor = PreviewLabTheme.colors.primary,
-            disabledSupportingTextColor = PreviewLabTheme.colors.textDisabled,
-            errorSupportingTextColor = PreviewLabTheme.colors.error,
-            focusedPrefixColor = PreviewLabTheme.colors.primary,
-            unfocusedPrefixColor = PreviewLabTheme.colors.primary,
-            disabledPrefixColor = PreviewLabTheme.colors.onDisabled,
-            errorPrefixColor = PreviewLabTheme.colors.primary,
-            focusedSuffixColor = PreviewLabTheme.colors.primary,
-            unfocusedSuffixColor = PreviewLabTheme.colors.primary,
-            disabledSuffixColor = PreviewLabTheme.colors.onDisabled,
-            errorSuffixColor = PreviewLabTheme.colors.primary,
-        )
-    }
+    fun colors(): TextFieldColors = TextFieldColors(
+        focusedTextColor = PreviewLabTheme.colors.text,
+        unfocusedTextColor = PreviewLabTheme.colors.text,
+        disabledTextColor = PreviewLabTheme.colors.onDisabled,
+        errorTextColor = PreviewLabTheme.colors.text,
+        focusedContainerColor = PreviewLabTheme.colors.transparent,
+        unfocusedContainerColor = PreviewLabTheme.colors.transparent,
+        disabledContainerColor = PreviewLabTheme.colors.transparent,
+        errorContainerColor = PreviewLabTheme.colors.transparent,
+        cursorColor = PreviewLabTheme.colors.primary,
+        errorCursorColor = PreviewLabTheme.colors.error,
+        textSelectionColors = LocalTextSelectionColors.current,
+        focusedOutlineColor = PreviewLabTheme.colors.primary,
+        unfocusedOutlineColor = PreviewLabTheme.colors.secondary,
+        disabledOutlineColor = PreviewLabTheme.colors.disabled,
+        errorOutlineColor = PreviewLabTheme.colors.error,
+        focusedLeadingIconColor = PreviewLabTheme.colors.primary,
+        unfocusedLeadingIconColor = PreviewLabTheme.colors.primary,
+        disabledLeadingIconColor = PreviewLabTheme.colors.onDisabled,
+        errorLeadingIconColor = PreviewLabTheme.colors.primary,
+        focusedTrailingIconColor = PreviewLabTheme.colors.primary,
+        unfocusedTrailingIconColor = PreviewLabTheme.colors.primary,
+        disabledTrailingIconColor = PreviewLabTheme.colors.onDisabled,
+        errorTrailingIconColor = PreviewLabTheme.colors.primary,
+        focusedLabelColor = PreviewLabTheme.colors.primary,
+        unfocusedLabelColor = PreviewLabTheme.colors.primary,
+        disabledLabelColor = PreviewLabTheme.colors.textDisabled,
+        errorLabelColor = PreviewLabTheme.colors.error,
+        focusedPlaceholderColor = PreviewLabTheme.colors.textSecondary,
+        unfocusedPlaceholderColor = PreviewLabTheme.colors.textSecondary,
+        disabledPlaceholderColor = PreviewLabTheme.colors.textDisabled,
+        errorPlaceholderColor = PreviewLabTheme.colors.textSecondary,
+        focusedSupportingTextColor = PreviewLabTheme.colors.primary,
+        unfocusedSupportingTextColor = PreviewLabTheme.colors.primary,
+        disabledSupportingTextColor = PreviewLabTheme.colors.textDisabled,
+        errorSupportingTextColor = PreviewLabTheme.colors.error,
+        focusedPrefixColor = PreviewLabTheme.colors.primary,
+        unfocusedPrefixColor = PreviewLabTheme.colors.primary,
+        disabledPrefixColor = PreviewLabTheme.colors.onDisabled,
+        errorPrefixColor = PreviewLabTheme.colors.primary,
+        focusedSuffixColor = PreviewLabTheme.colors.primary,
+        unfocusedSuffixColor = PreviewLabTheme.colors.primary,
+        disabledSuffixColor = PreviewLabTheme.colors.onDisabled,
+        errorSuffixColor = PreviewLabTheme.colors.primary,
+    )
 }

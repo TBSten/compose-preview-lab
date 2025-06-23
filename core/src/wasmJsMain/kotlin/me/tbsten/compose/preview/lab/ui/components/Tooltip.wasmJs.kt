@@ -6,6 +6,4 @@ import androidx.compose.ui.platform.LocalWindowInfo
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-internal actual fun windowContainerWidthInPx(): Int {
-    return LocalWindowInfo.current.containerSize.width
-}
+internal actual fun windowContainerWidthInPx(): Int = LocalWindowInfo.current.containerSize.width

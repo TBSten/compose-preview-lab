@@ -13,11 +13,7 @@ import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.ui.unit.Dp
 
-internal suspend fun Animatable<Dp, *>.animateElevation(
-    target: Dp,
-    from: Interaction? = null,
-    to: Interaction? = null,
-) {
+internal suspend fun Animatable<Dp, *>.animateElevation(target: Dp, from: Interaction? = null, to: Interaction? = null,) {
     val spec =
         when {
             // Moving to a new state
@@ -32,24 +28,20 @@ internal suspend fun Animatable<Dp, *>.animateElevation(
 }
 
 private object ElevationDefaults {
-    fun incomingAnimationSpecForInteraction(interaction: Interaction): AnimationSpec<Dp>? {
-        return when (interaction) {
-            is PressInteraction.Press -> DefaultIncomingSpec
-            is DragInteraction.Start -> DefaultIncomingSpec
-            is HoverInteraction.Enter -> DefaultIncomingSpec
-            is FocusInteraction.Focus -> DefaultIncomingSpec
-            else -> null
-        }
+    fun incomingAnimationSpecForInteraction(interaction: Interaction): AnimationSpec<Dp>? = when (interaction) {
+        is PressInteraction.Press -> DefaultIncomingSpec
+        is DragInteraction.Start -> DefaultIncomingSpec
+        is HoverInteraction.Enter -> DefaultIncomingSpec
+        is FocusInteraction.Focus -> DefaultIncomingSpec
+        else -> null
     }
 
-    fun outgoingAnimationSpecForInteraction(interaction: Interaction): AnimationSpec<Dp>? {
-        return when (interaction) {
-            is PressInteraction.Press -> DefaultOutgoingSpec
-            is DragInteraction.Start -> DefaultOutgoingSpec
-            is HoverInteraction.Enter -> HoveredOutgoingSpec
-            is FocusInteraction.Focus -> DefaultOutgoingSpec
-            else -> null
-        }
+    fun outgoingAnimationSpecForInteraction(interaction: Interaction): AnimationSpec<Dp>? = when (interaction) {
+        is PressInteraction.Press -> DefaultOutgoingSpec
+        is DragInteraction.Start -> DefaultOutgoingSpec
+        is HoverInteraction.Enter -> HoveredOutgoingSpec
+        is FocusInteraction.Focus -> DefaultOutgoingSpec
+        else -> null
     }
 }
 

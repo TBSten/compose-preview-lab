@@ -143,16 +143,14 @@ val LocalColors = staticCompositionLocalOf { LightColors }
 val LocalContentColor = compositionLocalOf { Color.Black }
 val LocalContentAlpha = compositionLocalOf { 1f }
 
-fun Colors.contentColorFor(backgroundColor: Color): Color {
-    return when (backgroundColor) {
-        primary -> onPrimary
-        secondary -> onSecondary
-        tertiary -> onTertiary
-        surface -> onSurface
-        error -> onError
-        success -> onSuccess
-        disabled -> onDisabled
-        background -> onBackground
-        else -> Color.Unspecified
-    }
+fun Colors.contentColorFor(backgroundColor: Color): Color = when (backgroundColor) {
+    primary -> onPrimary
+    secondary -> onSecondary
+    tertiary -> onTertiary
+    surface -> onSurface
+    error -> onError
+    success -> onSuccess
+    disabled -> onDisabled
+    background -> onBackground
+    else -> Color.Unspecified
 }

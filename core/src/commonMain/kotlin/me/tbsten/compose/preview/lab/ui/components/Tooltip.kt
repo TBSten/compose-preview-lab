@@ -107,7 +107,7 @@ fun TooltipBox(
     enableUserInput: Boolean = true,
     content: @Composable () -> Unit,
 ) = TooltipBox(
-    tooltip = { Tooltip { Text(tooltip) }},
+    tooltip = { Tooltip { Text(tooltip) } },
     modifier = modifier,
     positionProvider = positionProvider,
     state = state,
@@ -153,13 +153,13 @@ fun TooltipScope.Tooltip(
     ) {
         Box(
             modifier =
-                Modifier
-                    .sizeIn(
-                        minWidth = TooltipDefaults.MinWidth,
-                        maxWidth = maxWidth,
-                        minHeight = TooltipDefaults.MinHeight,
-                    )
-                    .padding(TooltipDefaults.ContentPadding),
+            Modifier
+                .sizeIn(
+                    minWidth = TooltipDefaults.MinWidth,
+                    maxWidth = maxWidth,
+                    minHeight = TooltipDefaults.MinHeight,
+                )
+                .padding(TooltipDefaults.ContentPadding),
         ) {
             content()
         }
@@ -171,9 +171,8 @@ sealed interface TooltipScope {
 }
 
 internal class DefaultTooltipScope(val getAnchorBounds: () -> LayoutCoordinates?) : TooltipScope {
-    override fun Modifier.drawCaret(
-        draw: CacheDrawScope.(LayoutCoordinates?) -> DrawResult,
-    ): Modifier = this.drawWithCache { draw(getAnchorBounds()) }
+    override fun Modifier.drawCaret(draw: CacheDrawScope.(LayoutCoordinates?) -> DrawResult,): Modifier =
+        this.drawWithCache { draw(getAnchorBounds()) }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -245,14 +244,13 @@ fun rememberTooltipState(
     initialIsVisible: Boolean = false,
     isPersistent: Boolean = false,
     mutatorMutex: MutatorMutex = BasicTooltipDefaults.GlobalMutatorMutex,
-): TooltipState =
-    remember(isPersistent, mutatorMutex) {
-        TooltipStateImpl(
-            initialIsVisible = initialIsVisible,
-            isPersistent = isPersistent,
-            mutatorMutex = mutatorMutex,
-        )
-    }
+): TooltipState = remember(isPersistent, mutatorMutex) {
+    TooltipStateImpl(
+        initialIsVisible = initialIsVisible,
+        isPersistent = isPersistent,
+        mutatorMutex = mutatorMutex,
+    )
+}
 
 @Composable
 fun rememberTooltipPositionProvider(
@@ -285,33 +283,32 @@ fun rememberTooltipPositionProvider(
     }
 }
 
-internal fun Modifier.animateTooltip(transition: Transition<Boolean>): Modifier =
-    composed(
-        inspectorInfo =
-            debugInspectorInfo {
-                name = "animateTooltip"
-                properties["transition"] = transition
-            },
+internal fun Modifier.animateTooltip(transition: Transition<Boolean>): Modifier = composed(
+    inspectorInfo =
+    debugInspectorInfo {
+        name = "animateTooltip"
+        properties["transition"] = transition
+    },
+) {
+    val inOutScaleAnimationSpec = tween<Float>(durationMillis = 100, easing = FastOutLinearInEasing)
+    val inOutAlphaAnimationSpec = tween<Float>(durationMillis = 50, easing = FastOutSlowInEasing)
+
+    val scale by transition.animateFloat(
+        transitionSpec = { inOutScaleAnimationSpec },
+        label = "tooltip transition: scaling",
     ) {
-        val inOutScaleAnimationSpec = tween<Float>(durationMillis = 100, easing = FastOutLinearInEasing)
-        val inOutAlphaAnimationSpec = tween<Float>(durationMillis = 50, easing = FastOutSlowInEasing)
-
-        val scale by transition.animateFloat(
-            transitionSpec = { inOutScaleAnimationSpec },
-            label = "tooltip transition: scaling",
-        ) {
-            if (it) 1f else 0.8f
-        }
-
-        val alpha by transition.animateFloat(
-            transitionSpec = { inOutAlphaAnimationSpec },
-            label = "tooltip transition: alpha",
-        ) {
-            if (it) 1f else 0f
-        }
-
-        this.graphicsLayer(scaleX = scale, scaleY = scale, alpha = alpha)
+        if (it) 1f else 0.8f
     }
+
+    val alpha by transition.animateFloat(
+        transitionSpec = { inOutAlphaAnimationSpec },
+        label = "tooltip transition: alpha",
+    ) {
+        if (it) 1f else 0f
+    }
+
+    this.graphicsLayer(scaleX = scale, scaleY = scale, alpha = alpha)
+}
 
 private fun CacheDrawScope.drawCaretWithPath(
     density: Density,
@@ -420,9 +417,9 @@ fun PlainTooltipWithCaret() {
         ) {
             Box(
                 modifier =
-                    Modifier
-                        .size(40.dp)
-                        .background(Color.Blue),
+                Modifier
+                    .size(40.dp)
+                    .background(Color.Blue),
             )
         }
     }

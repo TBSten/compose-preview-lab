@@ -79,11 +79,11 @@ fun TextField(
     CompositionLocalProvider(LocalTextSelectionColors provides colors.selectionColors) {
         BasicTextField(
             modifier =
-                modifier
-                    .defaultMinSize(
-                        minHeight = TextFieldDefaults.MinHeight,
-                    )
-                    .fillMaxWidth(),
+            modifier
+                .defaultMinSize(
+                    minHeight = TextFieldDefaults.MinHeight,
+                )
+                .fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
             enabled = enabled,
@@ -158,11 +158,11 @@ fun TextField(
     CompositionLocalProvider(LocalTextSelectionColors provides colors.selectionColors) {
         BasicTextField(
             modifier =
-                modifier
-                    .defaultMinSize(
-                        minHeight = TextFieldDefaults.MinHeight,
-                    )
-                    .fillMaxWidth(),
+            modifier
+                .defaultMinSize(
+                    minHeight = TextFieldDefaults.MinHeight,
+                )
+                .fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
             enabled = enabled,
@@ -243,9 +243,7 @@ object TextFieldDefaults {
     ): PaddingValues = PaddingValues(start, top, end, bottom)
 
     @Composable
-    fun containerBorderThickness(
-        interactionSource: InteractionSource,
-    ): Dp {
+    fun containerBorderThickness(interactionSource: InteractionSource,): Dp {
         val focused by interactionSource.collectIsFocusedAsState()
 
         return if (focused) FocusedOutlineThickness else UnfocusedOutlineThickness
@@ -313,51 +311,49 @@ object TextFieldDefaults {
     }
 
     @Composable
-    fun colors(): TextFieldColors {
-        return TextFieldColors(
-            focusedTextColor = PreviewLabTheme.colors.text,
-            unfocusedTextColor = PreviewLabTheme.colors.text,
-            disabledTextColor = PreviewLabTheme.colors.onDisabled,
-            errorTextColor = PreviewLabTheme.colors.text,
-            focusedContainerColor = PreviewLabTheme.colors.surface,
-            unfocusedContainerColor = PreviewLabTheme.colors.surface,
-            disabledContainerColor = PreviewLabTheme.colors.disabled,
-            errorContainerColor = PreviewLabTheme.colors.surface,
-            cursorColor = PreviewLabTheme.colors.primary,
-            errorCursorColor = PreviewLabTheme.colors.error,
-            textSelectionColors = LocalTextSelectionColors.current,
-            focusedOutlineColor = PreviewLabTheme.colors.transparent,
-            unfocusedOutlineColor = PreviewLabTheme.colors.transparent,
-            disabledOutlineColor = PreviewLabTheme.colors.transparent,
-            errorOutlineColor = PreviewLabTheme.colors.error,
-            focusedLeadingIconColor = PreviewLabTheme.colors.primary,
-            unfocusedLeadingIconColor = PreviewLabTheme.colors.primary,
-            disabledLeadingIconColor = PreviewLabTheme.colors.onDisabled,
-            errorLeadingIconColor = PreviewLabTheme.colors.primary,
-            focusedTrailingIconColor = PreviewLabTheme.colors.primary,
-            unfocusedTrailingIconColor = PreviewLabTheme.colors.primary,
-            disabledTrailingIconColor = PreviewLabTheme.colors.onDisabled,
-            errorTrailingIconColor = PreviewLabTheme.colors.primary,
-            focusedLabelColor = PreviewLabTheme.colors.primary,
-            unfocusedLabelColor = PreviewLabTheme.colors.primary,
-            disabledLabelColor = PreviewLabTheme.colors.textDisabled,
-            errorLabelColor = PreviewLabTheme.colors.error,
-            focusedPlaceholderColor = PreviewLabTheme.colors.textSecondary,
-            unfocusedPlaceholderColor = PreviewLabTheme.colors.textSecondary,
-            disabledPlaceholderColor = PreviewLabTheme.colors.textDisabled,
-            errorPlaceholderColor = PreviewLabTheme.colors.textSecondary,
-            focusedSupportingTextColor = PreviewLabTheme.colors.primary,
-            unfocusedSupportingTextColor = PreviewLabTheme.colors.primary,
-            disabledSupportingTextColor = PreviewLabTheme.colors.textDisabled,
-            errorSupportingTextColor = PreviewLabTheme.colors.error,
-            focusedPrefixColor = PreviewLabTheme.colors.primary,
-            unfocusedPrefixColor = PreviewLabTheme.colors.primary,
-            disabledPrefixColor = PreviewLabTheme.colors.onDisabled,
-            errorPrefixColor = PreviewLabTheme.colors.primary,
-            focusedSuffixColor = PreviewLabTheme.colors.primary,
-            unfocusedSuffixColor = PreviewLabTheme.colors.primary,
-            disabledSuffixColor = PreviewLabTheme.colors.onDisabled,
-            errorSuffixColor = PreviewLabTheme.colors.primary,
-        )
-    }
+    fun colors(): TextFieldColors = TextFieldColors(
+        focusedTextColor = PreviewLabTheme.colors.text,
+        unfocusedTextColor = PreviewLabTheme.colors.text,
+        disabledTextColor = PreviewLabTheme.colors.onDisabled,
+        errorTextColor = PreviewLabTheme.colors.text,
+        focusedContainerColor = PreviewLabTheme.colors.surface,
+        unfocusedContainerColor = PreviewLabTheme.colors.surface,
+        disabledContainerColor = PreviewLabTheme.colors.disabled,
+        errorContainerColor = PreviewLabTheme.colors.surface,
+        cursorColor = PreviewLabTheme.colors.primary,
+        errorCursorColor = PreviewLabTheme.colors.error,
+        textSelectionColors = LocalTextSelectionColors.current,
+        focusedOutlineColor = PreviewLabTheme.colors.transparent,
+        unfocusedOutlineColor = PreviewLabTheme.colors.transparent,
+        disabledOutlineColor = PreviewLabTheme.colors.transparent,
+        errorOutlineColor = PreviewLabTheme.colors.error,
+        focusedLeadingIconColor = PreviewLabTheme.colors.primary,
+        unfocusedLeadingIconColor = PreviewLabTheme.colors.primary,
+        disabledLeadingIconColor = PreviewLabTheme.colors.onDisabled,
+        errorLeadingIconColor = PreviewLabTheme.colors.primary,
+        focusedTrailingIconColor = PreviewLabTheme.colors.primary,
+        unfocusedTrailingIconColor = PreviewLabTheme.colors.primary,
+        disabledTrailingIconColor = PreviewLabTheme.colors.onDisabled,
+        errorTrailingIconColor = PreviewLabTheme.colors.primary,
+        focusedLabelColor = PreviewLabTheme.colors.primary,
+        unfocusedLabelColor = PreviewLabTheme.colors.primary,
+        disabledLabelColor = PreviewLabTheme.colors.textDisabled,
+        errorLabelColor = PreviewLabTheme.colors.error,
+        focusedPlaceholderColor = PreviewLabTheme.colors.textSecondary,
+        unfocusedPlaceholderColor = PreviewLabTheme.colors.textSecondary,
+        disabledPlaceholderColor = PreviewLabTheme.colors.textDisabled,
+        errorPlaceholderColor = PreviewLabTheme.colors.textSecondary,
+        focusedSupportingTextColor = PreviewLabTheme.colors.primary,
+        unfocusedSupportingTextColor = PreviewLabTheme.colors.primary,
+        disabledSupportingTextColor = PreviewLabTheme.colors.textDisabled,
+        errorSupportingTextColor = PreviewLabTheme.colors.error,
+        focusedPrefixColor = PreviewLabTheme.colors.primary,
+        unfocusedPrefixColor = PreviewLabTheme.colors.primary,
+        disabledPrefixColor = PreviewLabTheme.colors.onDisabled,
+        errorPrefixColor = PreviewLabTheme.colors.primary,
+        focusedSuffixColor = PreviewLabTheme.colors.primary,
+        unfocusedSuffixColor = PreviewLabTheme.colors.primary,
+        disabledSuffixColor = PreviewLabTheme.colors.onDisabled,
+        errorSuffixColor = PreviewLabTheme.colors.primary,
+    )
 }

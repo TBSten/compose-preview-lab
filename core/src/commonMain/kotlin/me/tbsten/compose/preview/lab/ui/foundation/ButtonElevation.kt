@@ -25,18 +25,11 @@ class ButtonElevation internal constructor(
     private val disabledElevation: Dp,
 ) {
     @Composable
-    internal fun shadowElevation(
-        enabled: Boolean,
-        interactionSource: InteractionSource,
-    ): State<Dp> {
-        return animateElevation(enabled = enabled, interactionSource = interactionSource)
-    }
+    internal fun shadowElevation(enabled: Boolean, interactionSource: InteractionSource,): State<Dp> =
+        animateElevation(enabled = enabled, interactionSource = interactionSource)
 
     @Composable
-    private fun animateElevation(
-        enabled: Boolean,
-        interactionSource: InteractionSource,
-    ): State<Dp> {
+    private fun animateElevation(enabled: Boolean, interactionSource: InteractionSource,): State<Dp> {
         val interactions = remember { mutableStateListOf<Interaction>() }
         LaunchedEffect(interactionSource) {
             interactionSource.interactions.collect { interaction ->
@@ -44,27 +37,21 @@ class ButtonElevation internal constructor(
                     is HoverInteraction.Enter -> {
                         interactions.add(interaction)
                     }
-
                     is HoverInteraction.Exit -> {
                         interactions.remove(interaction.enter)
                     }
-
                     is FocusInteraction.Focus -> {
                         interactions.add(interaction)
                     }
-
                     is FocusInteraction.Unfocus -> {
                         interactions.remove(interaction.focus)
                     }
-
                     is PressInteraction.Press -> {
                         interactions.add(interaction)
                     }
-
                     is PressInteraction.Release -> {
                         interactions.remove(interaction.press)
                     }
-
                     is PressInteraction.Cancel -> {
                         interactions.remove(interaction.press)
                     }

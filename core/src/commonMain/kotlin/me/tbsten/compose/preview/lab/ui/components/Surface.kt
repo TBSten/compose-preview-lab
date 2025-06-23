@@ -44,17 +44,17 @@ fun Surface(
     ) {
         Box(
             modifier =
-                modifier
-                    .surface(
-                        shape = shape,
-                        backgroundColor = color,
-                        border = border,
-                        shadowElevation = shadowElevation,
-                    )
-                    .semantics(mergeDescendants = false) {
-                        isTraversalGroup = true
-                    }
-                    .pointerInput(Unit) {},
+            modifier
+                .surface(
+                    shape = shape,
+                    backgroundColor = color,
+                    border = border,
+                    shadowElevation = shadowElevation,
+                )
+                .semantics(mergeDescendants = false) {
+                    isTraversalGroup = true
+                }
+                .pointerInput(Unit) {},
             propagateMinConstraints = true,
         ) {
             content()
@@ -81,19 +81,19 @@ fun Surface(
     ) {
         Box(
             modifier =
-                modifier
-                    .surface(
-                        shape = shape,
-                        backgroundColor = color,
-                        border = border,
-                        shadowElevation = shadowElevation,
-                    )
-                    .clickable(
-                        interactionSource = interactionSource,
-                        indication = ripple(color = contentColor),
-                        enabled = enabled,
-                        onClick = onClick,
-                    ),
+            modifier
+                .surface(
+                    shape = shape,
+                    backgroundColor = color,
+                    border = border,
+                    shadowElevation = shadowElevation,
+                )
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = ripple(color = contentColor),
+                    enabled = enabled,
+                    onClick = onClick,
+                ),
             propagateMinConstraints = true,
         ) {
             content()
@@ -121,20 +121,20 @@ fun Surface(
     ) {
         Box(
             modifier =
-                modifier
-                    .surface(
-                        shape = shape,
-                        backgroundColor = color,
-                        border = border,
-                        shadowElevation = shadowElevation,
-                    )
-                    .selectable(
-                        selected = selected,
-                        interactionSource = interactionSource,
-                        indication = ripple(),
-                        enabled = enabled,
-                        onClick = onClick,
-                    ),
+            modifier
+                .surface(
+                    shape = shape,
+                    backgroundColor = color,
+                    border = border,
+                    shadowElevation = shadowElevation,
+                )
+                .selectable(
+                    selected = selected,
+                    interactionSource = interactionSource,
+                    indication = ripple(),
+                    enabled = enabled,
+                    onClick = onClick,
+                ),
             propagateMinConstraints = true,
         ) {
             content()
@@ -162,20 +162,20 @@ fun Surface(
     ) {
         Box(
             modifier =
-                modifier
-                    .surface(
-                        shape = shape,
-                        backgroundColor = color,
-                        border = border,
-                        shadowElevation = shadowElevation,
-                    )
-                    .toggleable(
-                        value = checked,
-                        interactionSource = interactionSource,
-                        indication = ripple(),
-                        enabled = enabled,
-                        onValueChange = onCheckedChange,
-                    ),
+            modifier
+                .surface(
+                    shape = shape,
+                    backgroundColor = color,
+                    border = border,
+                    shadowElevation = shadowElevation,
+                )
+                .toggleable(
+                    value = checked,
+                    interactionSource = interactionSource,
+                    indication = ripple(),
+                    enabled = enabled,
+                    onValueChange = onCheckedChange,
+                ),
             propagateMinConstraints = true,
         ) {
             content()
@@ -184,12 +184,7 @@ fun Surface(
 }
 
 @Composable
-private fun Modifier.surface(
-    shape: Shape,
-    backgroundColor: Color,
-    border: BorderStroke?,
-    shadowElevation: Dp,
-) = this
+private fun Modifier.surface(shape: Shape, backgroundColor: Color, border: BorderStroke?, shadowElevation: Dp,) = this
     .shadow(
         ambientColor = PreviewLabTheme.colors.elevation,
         spotColor = PreviewLabTheme.colors.elevation,

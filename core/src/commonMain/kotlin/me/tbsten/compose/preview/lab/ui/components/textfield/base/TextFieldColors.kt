@@ -150,11 +150,7 @@ class TextFieldColors(
     private fun TextSelectionColors?.takeOrElse(block: () -> TextSelectionColors): TextSelectionColors = this ?: block()
 
     @Composable
-    internal fun leadingIconColor(
-        enabled: Boolean,
-        isError: Boolean,
-        interactionSource: InteractionSource,
-    ): State<Color> {
+    internal fun leadingIconColor(enabled: Boolean, isError: Boolean, interactionSource: InteractionSource,): State<Color> {
         val focused by interactionSource.collectIsFocusedAsState()
 
         return rememberUpdatedState(
@@ -168,11 +164,7 @@ class TextFieldColors(
     }
 
     @Composable
-    internal fun trailingIconColor(
-        enabled: Boolean,
-        isError: Boolean,
-        interactionSource: InteractionSource,
-    ): State<Color> {
+    internal fun trailingIconColor(enabled: Boolean, isError: Boolean, interactionSource: InteractionSource,): State<Color> {
         val focused by interactionSource.collectIsFocusedAsState()
 
         return rememberUpdatedState(
@@ -186,11 +178,7 @@ class TextFieldColors(
     }
 
     @Composable
-    internal fun labelColor(
-        enabled: Boolean,
-        isError: Boolean,
-        interactionSource: InteractionSource,
-    ): State<Color> {
+    internal fun labelColor(enabled: Boolean, isError: Boolean, interactionSource: InteractionSource,): State<Color> {
         val focused by interactionSource.collectIsFocusedAsState()
 
         return rememberUpdatedState(
@@ -204,11 +192,7 @@ class TextFieldColors(
     }
 
     @Composable
-    internal fun placeholderColor(
-        enabled: Boolean,
-        isError: Boolean,
-        interactionSource: InteractionSource,
-    ): State<Color> {
+    internal fun placeholderColor(enabled: Boolean, isError: Boolean, interactionSource: InteractionSource,): State<Color> {
         val focused by interactionSource.collectIsFocusedAsState()
 
         return rememberUpdatedState(
@@ -222,11 +206,7 @@ class TextFieldColors(
     }
 
     @Composable
-    internal fun supportingTextColor(
-        enabled: Boolean,
-        isError: Boolean,
-        interactionSource: InteractionSource,
-    ): State<Color> {
+    internal fun supportingTextColor(enabled: Boolean, isError: Boolean, interactionSource: InteractionSource,): State<Color> {
         val focused by interactionSource.collectIsFocusedAsState()
 
         return rememberUpdatedState(
@@ -240,11 +220,7 @@ class TextFieldColors(
     }
 
     @Composable
-    internal fun prefixColor(
-        enabled: Boolean,
-        isError: Boolean,
-        interactionSource: InteractionSource,
-    ): State<Color> {
+    internal fun prefixColor(enabled: Boolean, isError: Boolean, interactionSource: InteractionSource,): State<Color> {
         val focused by interactionSource.collectIsFocusedAsState()
 
         return rememberUpdatedState(
@@ -258,11 +234,7 @@ class TextFieldColors(
     }
 
     @Composable
-    internal fun suffixColor(
-        enabled: Boolean,
-        isError: Boolean,
-        interactionSource: InteractionSource,
-    ): State<Color> {
+    internal fun suffixColor(enabled: Boolean, isError: Boolean, interactionSource: InteractionSource,): State<Color> {
         val focused by interactionSource.collectIsFocusedAsState()
 
         return rememberUpdatedState(
@@ -276,11 +248,7 @@ class TextFieldColors(
     }
 
     @Composable
-    internal fun containerColor(
-        enabled: Boolean,
-        isError: Boolean,
-        interactionSource: InteractionSource,
-    ): State<Color> {
+    internal fun containerColor(enabled: Boolean, isError: Boolean, interactionSource: InteractionSource,): State<Color> {
         val focused by interactionSource.collectIsFocusedAsState()
 
         return rememberUpdatedState(
@@ -294,11 +262,7 @@ class TextFieldColors(
     }
 
     @Composable
-    fun containerOutlineColor(
-        enabled: Boolean,
-        isError: Boolean,
-        interactionSource: InteractionSource,
-    ): State<Color> {
+    fun containerOutlineColor(enabled: Boolean, isError: Boolean, interactionSource: InteractionSource,): State<Color> {
         val focused by interactionSource.collectIsFocusedAsState()
         return rememberUpdatedState(
             when {
@@ -311,11 +275,7 @@ class TextFieldColors(
     }
 
     @Composable
-    internal fun textColor(
-        enabled: Boolean,
-        isError: Boolean,
-        interactionSource: InteractionSource,
-    ): State<Color> {
+    internal fun textColor(enabled: Boolean, isError: Boolean, interactionSource: InteractionSource,): State<Color> {
         val focused by interactionSource.collectIsFocusedAsState()
 
         return rememberUpdatedState(
@@ -329,9 +289,8 @@ class TextFieldColors(
     }
 
     @Composable
-    internal fun cursorColor(isError: Boolean): State<Color> {
-        return rememberUpdatedState(if (isError) errorCursorColor else cursorColor)
-    }
+    internal fun cursorColor(isError: Boolean): State<Color> =
+        rememberUpdatedState(if (isError) errorCursorColor else cursorColor)
 
     internal val selectionColors: TextSelectionColors
         @Composable get() = textSelectionColors

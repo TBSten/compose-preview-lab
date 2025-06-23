@@ -72,10 +72,10 @@ internal fun TextFieldLayout(
             if (leading != null) {
                 Box(
                     modifier =
-                        Modifier
-                            .layoutId(LeadingId)
-                            .padding(leadingIconPaddingValues)
-                            .then(IconDefaultSizeModifier),
+                    Modifier
+                        .layoutId(LeadingId)
+                        .padding(leadingIconPaddingValues)
+                        .then(IconDefaultSizeModifier),
                     contentAlignment = Alignment.Center,
                 ) {
                     leading()
@@ -84,10 +84,10 @@ internal fun TextFieldLayout(
             if (trailing != null) {
                 Box(
                     modifier =
-                        Modifier
-                            .layoutId(TrailingId)
-                            .padding(trailingIconPaddingValues)
-                            .then(IconDefaultSizeModifier),
+                    Modifier
+                        .layoutId(TrailingId)
+                        .padding(trailingIconPaddingValues)
+                        .then(IconDefaultSizeModifier),
                     contentAlignment = Alignment.Center,
                 ) {
                     trailing()
@@ -153,9 +153,9 @@ internal fun TextFieldLayout(
             }
             Box(
                 modifier =
-                    Modifier
-                        .layoutId(TextFieldId)
-                        .then(textPadding),
+                Modifier
+                    .layoutId(TextFieldId)
+                    .then(textPadding),
                 propagateMinConstraints = true,
             ) {
                 textField()
@@ -175,13 +175,8 @@ internal fun TextFieldLayout(
     )
 }
 
-private class TextFieldMeasurePolicy(
-    private val paddingValues: PaddingValues,
-) : MeasurePolicy {
-    override fun MeasureScope.measure(
-        measurables: List<Measurable>,
-        constraints: Constraints,
-    ): MeasureResult {
+private class TextFieldMeasurePolicy(private val paddingValues: PaddingValues,) : MeasurePolicy {
+    override fun MeasureScope.measure(measurables: List<Measurable>, constraints: Constraints,): MeasureResult {
         val topPaddingValue = paddingValues.calculateTopPadding().roundToPx()
         val bottomPaddingValue = paddingValues.calculateBottomPadding().roundToPx()
 
@@ -243,7 +238,8 @@ private class TextFieldMeasurePolicy(
         occupiedSpaceVertically =
             max(
                 occupiedSpaceVertically,
-                max(heightOrZero(textFieldPlaceable), heightOrZero(placeholderPlaceable)) + effectiveTopOffset + bottomPaddingValue,
+                max(heightOrZero(textFieldPlaceable), heightOrZero(placeholderPlaceable)) + effectiveTopOffset +
+                    bottomPaddingValue,
             )
         val width =
             calculateWidth(
@@ -311,41 +307,25 @@ private class TextFieldMeasurePolicy(
         }
     }
 
-    override fun IntrinsicMeasureScope.maxIntrinsicHeight(
-        measurables: List<IntrinsicMeasurable>,
-        width: Int,
-    ): Int {
-        return intrinsicHeight(measurables, width) { intrinsicMeasurable, w ->
+    override fun IntrinsicMeasureScope.maxIntrinsicHeight(measurables: List<IntrinsicMeasurable>, width: Int,): Int =
+        intrinsicHeight(measurables, width) { intrinsicMeasurable, w ->
             intrinsicMeasurable.maxIntrinsicHeight(w)
         }
-    }
 
-    override fun IntrinsicMeasureScope.minIntrinsicHeight(
-        measurables: List<IntrinsicMeasurable>,
-        width: Int,
-    ): Int {
-        return intrinsicHeight(measurables, width) { intrinsicMeasurable, w ->
+    override fun IntrinsicMeasureScope.minIntrinsicHeight(measurables: List<IntrinsicMeasurable>, width: Int,): Int =
+        intrinsicHeight(measurables, width) { intrinsicMeasurable, w ->
             intrinsicMeasurable.minIntrinsicHeight(w)
         }
-    }
 
-    override fun IntrinsicMeasureScope.maxIntrinsicWidth(
-        measurables: List<IntrinsicMeasurable>,
-        height: Int,
-    ): Int {
-        return intrinsicWidth(measurables, height) { intrinsicMeasurable, h ->
+    override fun IntrinsicMeasureScope.maxIntrinsicWidth(measurables: List<IntrinsicMeasurable>, height: Int,): Int =
+        intrinsicWidth(measurables, height) { intrinsicMeasurable, h ->
             intrinsicMeasurable.maxIntrinsicWidth(h)
         }
-    }
 
-    override fun IntrinsicMeasureScope.minIntrinsicWidth(
-        measurables: List<IntrinsicMeasurable>,
-        height: Int,
-    ): Int {
-        return intrinsicWidth(measurables, height) { intrinsicMeasurable, h ->
+    override fun IntrinsicMeasureScope.minIntrinsicWidth(measurables: List<IntrinsicMeasurable>, height: Int,): Int =
+        intrinsicWidth(measurables, height) { intrinsicMeasurable, h ->
             intrinsicMeasurable.minIntrinsicWidth(h)
         }
-    }
 
     private fun intrinsicWidth(
         measurables: List<IntrinsicMeasurable>,
