@@ -47,7 +47,10 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.components.resources)
+            api(compose.ui)
             implementation(compose.components.uiToolingPreview)
+            implementation(libs.nomanrComposables)
+            implementation("org.jetbrains.compose.material:material-ripple:${libs.versions.compose.get()}")
             // TODO migrate retain { } (compose runtime api)
             implementation("io.github.takahirom.rin:rin:0.3.0")
         }
