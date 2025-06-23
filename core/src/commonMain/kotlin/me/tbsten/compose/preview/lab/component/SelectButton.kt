@@ -1,19 +1,26 @@
 package me.tbsten.compose.preview.lab.component
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.composables.core.rememberMenuState
+import me.tbsten.compose.preview.lab.core.generated.resources.Res
+import me.tbsten.compose.preview.lab.core.generated.resources.icon_check
 import me.tbsten.compose.preview.lab.ui.LocalTextStyle
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Button
 import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.Icon
 import me.tbsten.compose.preview.lab.ui.components.Text
+import org.jetbrains.compose.resources.imageResource
 
 @Composable
 internal fun <V> SelectButton(
@@ -41,60 +48,63 @@ internal fun <V> SelectButton(
     modifier: Modifier = Modifier,
     itemDetail: (V) -> String? = { null },
 ) {
-    var showMenu by remember { mutableStateOf(false) }
+    val menuState = rememberMenuState(expanded = false)
 
-    Button(
-        variant = ButtonVariant.PrimaryOutlined,
-        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
-        onClick = { showMenu = true },
-        modifier = modifier,
+    CommonMenu(
+        state = menuState,
     ) {
-        CompositionLocalProvider(
-            LocalTextStyle provides PreviewLabTheme.typography.label3,
+        Button(
+            variant = ButtonVariant.PrimaryOutlined,
+            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+            onClick = { menuState.expanded = true },
+            modifier = modifier,
         ) {
-            Text(title(value))
+            CompositionLocalProvider(
+                LocalTextStyle provides PreviewLabTheme.typography.label3,
+            ) {
+                Text(title(value))
+            }
+        }
+
+        CommonMenuContent {
+            Column(Modifier.verticalScroll(rememberScrollState())) {
+                choices.forEachIndexed { index, item ->
+                    val isSelected = item == value
+
+                    CommonMenuItem(
+                        onClick = {
+                            onSelect(item)
+                            menuState.expanded = false
+                        },
+                        contentPadding = PaddingValues(vertical = 8.dp, horizontal = 12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        if (isSelected) {
+                            Icon(
+                                imageResource(Res.drawable.icon_check),
+                                contentDescription = "selected",
+                            )
+                        }
+
+                        Column(
+                            Modifier.fillMaxWidth(),
+                        ) {
+                            Text(
+                                text = title(item),
+                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                                style = PreviewLabTheme.typography.body3,
+                            )
+
+                            itemDetail(item)?.let {
+                                Text(
+                                    text = it,
+                                    style = PreviewLabTheme.typography.body3,
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
-
-    // TODO
-//    DropdownMenu(
-//        expanded = showMenu,
-//        onDismissRequest = { showMenu = false },
-//    ) {
-//        choices.forEachIndexed { index, item ->
-//            val isSelected = item == value
-//            DropdownMenuItem(
-//                text = {
-//                    Column(modifier = Modifier.padding(4.dp)) {
-//                        Text(
-//                            text = title(item),
-//                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-//                            style = PreviewLabTheme.typography.bodySmall,
-//                        )
-//                        itemDetail(item)?.let {
-//                            Text(
-//                                text = it,
-//                                style = PreviewLabTheme.typography.bodySmall,
-//                            )
-//                        }
-//                    }
-//                },
-//                onClick = {
-//                    onSelect(item)
-//                    showMenu = false
-//                },
-//                enabled = !isSelected,
-//                leadingIcon = if (isSelected) {
-//                    @Composable {
-//                        Icon(
-//                            imageResource(Res.drawable.icon_check),
-//                            contentDescription = null,
-//                        )
-//                    }
-//                } else {
-//                    null
-//                },
-//            )
-//        }
-//    }
 }
