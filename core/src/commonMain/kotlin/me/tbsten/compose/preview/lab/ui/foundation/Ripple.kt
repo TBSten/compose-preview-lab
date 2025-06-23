@@ -19,9 +19,14 @@ import androidx.compose.ui.node.currentValueOf
 import androidx.compose.ui.node.observeReads
 import androidx.compose.ui.unit.Dp
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
+import me.tbsten.compose.preview.lab.ui.foundation.RippleDefaults.RippleAlpha
 
 @Stable
-internal fun ripple(bounded: Boolean = true, radius: Dp = Dp.Unspecified, color: Color = Color.Unspecified,): IndicationNodeFactory {
+internal fun ripple(
+    bounded: Boolean = true,
+    radius: Dp = Dp.Unspecified,
+    color: Color = Color.Unspecified,
+): IndicationNodeFactory {
     return if (radius == Dp.Unspecified && color == Color.Unspecified) {
         if (bounded) return DefaultBoundedRipple else DefaultUnboundedRipple
     } else {
@@ -30,7 +35,7 @@ internal fun ripple(bounded: Boolean = true, radius: Dp = Dp.Unspecified, color:
 }
 
 @Stable
-internal fun ripple(color: ColorProducer, bounded: Boolean = true, radius: Dp = Dp.Unspecified,): IndicationNodeFactory =
+internal fun ripple(color: ColorProducer, bounded: Boolean = true, radius: Dp = Dp.Unspecified): IndicationNodeFactory =
     RippleNodeFactory(bounded, radius, color)
 
 /** Default values used by [ripple]. */
@@ -54,7 +59,7 @@ internal val LocalRippleConfiguration: ProvidableCompositionLocal<RippleConfigur
     }
 
 @Immutable
-internal class RippleConfiguration(val color: Color = Color.Unspecified, val rippleAlpha: RippleAlpha? = null,) {
+internal class RippleConfiguration(val color: Color = Color.Unspecified, val rippleAlpha: RippleAlpha? = null) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is RippleConfiguration) return false
