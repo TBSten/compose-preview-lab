@@ -107,7 +107,7 @@ internal fun TooltipBox(
     enableUserInput: Boolean = true,
     content: @Composable () -> Unit,
 ) = TooltipBox(
-    tooltip = { Tooltip { Text(tooltip) } },
+    tooltip = { Tooltip { Text(tooltip, style = PreviewLabTheme.typography.label3) } },
     modifier = modifier,
     positionProvider = positionProvider,
     state = state,

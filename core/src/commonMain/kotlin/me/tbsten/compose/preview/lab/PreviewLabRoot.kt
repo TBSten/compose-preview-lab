@@ -23,16 +23,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.nomanr.composables.bottomsheet.rememberModalBottomSheetState
 import me.tbsten.compose.preview.lab.component.Divider
 import me.tbsten.compose.preview.lab.component.NoPreview
 import me.tbsten.compose.preview.lab.component.NoSelectedPreview
+import me.tbsten.compose.preview.lab.component.SimpleBottomSheet
 import me.tbsten.compose.preview.lab.component.adaptive
 import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 import me.tbsten.compose.preview.lab.previewlist.PreviewListTree
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.ModalBottomSheet
 
 /**
  * A Composable function that catalogs and displays a list of Previews. The left sidebar actually displays the list of Previews, and the selected Preview is displayed in the center of the screen.
@@ -128,9 +127,7 @@ internal fun <Item : Any> ListDetailScaffold(
 
     adaptive(
         small = {
-            // TODO replace to SimpleBottomSheet
             var openBottomSheet by remember { mutableStateOf(false) }
-            val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
             LaunchedEffect(selectedItem) {
                 openBottomSheet = selectedItem != null
@@ -139,10 +136,9 @@ internal fun <Item : Any> ListDetailScaffold(
             Box {
                 listContent()
 
-                ModalBottomSheet(
+                SimpleBottomSheet(
                     isVisible = openBottomSheet,
                     onDismissRequest = { onUnselect() },
-                    sheetState = bottomSheetState,
                 ) {
                     if (selectedItem != null) {
                         detailContent(selectedItem)

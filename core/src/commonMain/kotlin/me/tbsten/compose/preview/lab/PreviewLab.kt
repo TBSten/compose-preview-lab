@@ -35,6 +35,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import me.tbsten.compose.preview.lab.component.CommonIconButton
 import me.tbsten.compose.preview.lab.component.Divider
 import me.tbsten.compose.preview.lab.component.EventListSection
 import me.tbsten.compose.preview.lab.component.FieldListSection
@@ -56,7 +57,7 @@ import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Button
 import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
 import me.tbsten.compose.preview.lab.ui.components.Icon
-import me.tbsten.compose.preview.lab.ui.components.IconButton
+import me.tbsten.compose.preview.lab.ui.components.IconButtonVariant
 import me.tbsten.compose.preview.lab.ui.components.Text
 import me.tbsten.compose.preview.lab.ui.components.TooltipBox
 import me.tbsten.compose.preview.lab.util.toDpOffset
@@ -270,19 +271,12 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                         .sizeIn(maxWidth = maxWidth / 3, maxHeight = maxHeight * 2 / 3),
                 ) {
                     InspectorTab.entries.forEachIndexed { index, tab ->
-                        TooltipBox(tooltip = tab.title) {
-                            IconButton { }
-
-                            // TODO
-//                            SmallFloatingActionButton(
-//                                onClick = { state.selectedTabIndex = index },
-//                            ) {
-//                                Icon(
-//                                    painter = painterResource(tab.iconRes),
-//                                    contentDescription = tab.title,
-//                                )
-//                            }
-                        }
+                        CommonIconButton(
+                            variant = IconButtonVariant.PrimaryElevated,
+                            painter = painterResource(tab.iconRes),
+                            contentDescription = tab.title,
+                            onClick = { state.selectedTabIndex = index },
+                        )
 
                         SimpleBottomSheet(
                             isVisible = state.selectedTabIndex == index,
@@ -294,29 +288,27 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                         }
                     }
 
-                    TooltipBox(tooltip = "Show Source Code") {
-                        val filePath = LocalCollectedPreview.current?.filePath
-                        val startLineNumber = LocalCollectedPreview.current?.startLineNumber
-                        val openHandler = LocalOpenFileHandler.current
-                        if (filePath != null && openHandler != null) {
+                    val openHandler = LocalOpenFileHandler.current
+                    val filePath = LocalCollectedPreview.current?.filePath
+                    val startLineNumber = LocalCollectedPreview.current?.startLineNumber
+
+                    if (filePath != null && openHandler != null) {
+                        TooltipBox(tooltip = "Show Source Code") {
                             val configuredValue = openHandler.configure()
-                            // TODO
-//                            SmallFloatingActionButton(
-//                                onClick = {
-//                                    (openHandler as OpenFileHandler<in Any?>).openFile(
-//                                        OpenFileHandler.Params(
-//                                            configuredValue = configuredValue,
-//                                            filePathInProject = filePath,
-//                                            startLineNumber = startLineNumber,
-//                                        ),
-//                                    )
-//                                },
-//                            ) {
-//                                Icon(
-//                                    painter = painterResource(Res.drawable.icon_code),
-//                                    contentDescription = "Show source code",
-//                                )
-//                            }
+                            CommonIconButton(
+                                variant = IconButtonVariant.PrimaryOutlined,
+                                painter = painterResource(Res.drawable.icon_code),
+                                contentDescription = "Show source code",
+                                onClick = {
+                                    (openHandler as OpenFileHandler<in Any?>).openFile(
+                                        OpenFileHandler.Params(
+                                            configuredValue = configuredValue,
+                                            filePathInProject = filePath,
+                                            startLineNumber = startLineNumber,
+                                        ),
+                                    )
+                                },
+                            )
                         }
                     }
                 }

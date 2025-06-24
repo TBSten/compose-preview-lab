@@ -18,12 +18,14 @@ internal fun CommonIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    variant: IconButtonVariant = IconButtonVariant.Ghost,
 ) = if (contentDescription == null) {
     IconButtonContent(
         imageVector = imageVector,
         contentDescription = contentDescription,
         onClick = onClick,
         enabled = enabled,
+        variant = variant,
         modifier = modifier,
     )
 } else {
@@ -35,6 +37,7 @@ internal fun CommonIconButton(
             contentDescription = contentDescription,
             onClick = onClick,
             enabled = enabled,
+            variant = variant,
             modifier = modifier,
         )
     }
@@ -47,7 +50,8 @@ private fun IconButtonContent(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-) = IconButton(onClick = onClick, enabled = enabled, modifier = modifier.size(28.dp)) {
+    variant: IconButtonVariant = IconButtonVariant.Ghost,
+) = IconButton(variant = variant, onClick = onClick, enabled = enabled, modifier = modifier.size(28.dp)) {
     Icon(
         imageVector = imageVector,
         contentDescription = contentDescription,
@@ -62,12 +66,14 @@ internal fun CommonIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    variant: IconButtonVariant = IconButtonVariant.Ghost,
 ) = if (contentDescription == null) {
     IconButtonContent(
         painter = painter,
         contentDescription = contentDescription,
         onClick = onClick,
         enabled = enabled,
+        variant = variant,
         modifier = modifier,
     )
 } else {
@@ -79,6 +85,7 @@ internal fun CommonIconButton(
             contentDescription = contentDescription,
             onClick = onClick,
             enabled = enabled,
+            variant = variant,
             modifier = modifier,
         )
     }
@@ -90,9 +97,10 @@ private fun IconButtonContent(
     contentDescription: String? = null,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    variant: IconButtonVariant = IconButtonVariant.Ghost,
     enabled: Boolean = true,
 ) = IconButton(
-    variant = IconButtonVariant.Ghost,
+    variant = variant,
     onClick = onClick,
     enabled = enabled,
     modifier = modifier.size(28.dp),
