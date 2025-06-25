@@ -69,7 +69,7 @@ private fun GroupView(group: PreviewTreeNode.Group, children: @Composable () -> 
         Button(
             variant = ButtonVariant.PrimaryGhost,
             onClick = { isOpen = !isOpen },
-            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
             modifier = modifier.fillMaxWidth(),
         ) {
             Row(
