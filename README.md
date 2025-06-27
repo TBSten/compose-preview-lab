@@ -110,11 +110,14 @@ A solution similar to Compose Preview Lab is [Storytale](https://github.com/Kotl
 Jetbrains.
 The table below shows the differences between the two.
 
+(The following information is current as of 28.6.2025)
+
 | | Compose Preview Lab | Storytale |
 |---|---|---|
 | Cataloging UI Component | ✅ | ✅ |
-| View source code | ❌ <br> Future support is planned. | ✅ |
+| View source code | ❌ <br> Future support is under consideration. | ✅ |
 | Ease of preparing the Composable catalog | ✅ <br> Just enclose @Preview in `PreviewLab { }`. | ⚠️ <br> You must have the code in the `***Stories` source set. Existing code with @Preview must be migrated. |
+| Parameter of your own type | ✅ <br> By implementing a custom Field, you can freely customize the UI, including the operation UI. ([see](https://example.com))。It also provides useful utilities such as SelectableField. | ❌ <br> Not supported. Following the [source code](https://github.com/Kotlin/Storytale/blob/57f41aaee1a21d98d637fe752931715232deed9e/modules/gallery/src/commonMain/kotlin/org/jetbrains/compose/storytale/gallery/material3/StoryParameters.kt#L161) shows that there is a non-zero chance of support in the future. |
 
 ## Roadmap
 
