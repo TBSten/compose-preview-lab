@@ -129,6 +129,6 @@ The table below shows the differences between the two.
 ## More information
 
 - [WIP] [Documentation Site]()
-- [Improve Review Experience on Pull Request by using Compose Preview Lab](https://github.com/TBSten/compose-preview-lab/blob/main/docs/improve-review-experience-on-pull-request.md)
-- [Tips for Compose Preview Lab](https://github.com/TBSten/compose-preview-lab/blob/main/docs/tips.md)
-- [Improve documentation of component library](https://github.com/TBSten/compose-preview-lab/blob/main/docs/improve-documentation-of-component-library.md)
+- [WIP] [Improve Review Experience on Pull Request by using Compose Preview Lab](https://github.com/TBSten/compose-preview-lab/blob/main/docs/improve-review-experience-on-pull-request.md)
+- [WIP] [Tips for Compose Preview Lab](https://github.com/TBSten/compose-preview-lab/blob/main/docs/tips.md)
+- [WIP] [Improve documentation of component library](https://github.com/TBSten/compose-preview-lab/blob/main/docs/improve-documentation-of-component-library.md)
