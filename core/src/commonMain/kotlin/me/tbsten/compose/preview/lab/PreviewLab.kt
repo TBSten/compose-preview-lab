@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -59,7 +61,6 @@ import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
 import me.tbsten.compose.preview.lab.ui.components.Icon
 import me.tbsten.compose.preview.lab.ui.components.IconButtonVariant
 import me.tbsten.compose.preview.lab.ui.components.Text
-import me.tbsten.compose.preview.lab.ui.components.TooltipBox
 import me.tbsten.compose.preview.lab.util.toDpOffset
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
@@ -281,8 +282,13 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                         SimpleModal(
                             isVisible = state.selectedTabIndex == index,
                             onDismissRequest = { state.deselectTab() },
+                            contentPadding = PaddingValues(20.dp),
                         ) {
-                            Box(Modifier.heightIn(min = 200.dp)) {
+                            Box(
+                                Modifier
+                                    .background(PreviewLabTheme.colors.background, shape = RoundedCornerShape(8.dp))
+                                    .heightIn(min = 200.dp),
+                            ) {
                                 tab.content(state)
                             }
                         }
@@ -293,23 +299,21 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                     val startLineNumber = LocalCollectedPreview.current?.startLineNumber
 
                     if (filePath != null && openHandler != null) {
-                        TooltipBox(tooltip = "Show Source Code") {
-                            val configuredValue = openHandler.configure()
-                            CommonIconButton(
-                                variant = IconButtonVariant.PrimaryOutlined,
-                                painter = painterResource(Res.drawable.icon_code),
-                                contentDescription = "Show source code",
-                                onClick = {
-                                    (openHandler as OpenFileHandler<in Any?>).openFile(
-                                        OpenFileHandler.Params(
-                                            configuredValue = configuredValue,
-                                            filePathInProject = filePath,
-                                            startLineNumber = startLineNumber,
-                                        ),
-                                    )
-                                },
-                            )
-                        }
+                        val configuredValue = openHandler.configure()
+                        CommonIconButton(
+                            variant = IconButtonVariant.PrimaryOutlined,
+                            painter = painterResource(Res.drawable.icon_code),
+                            contentDescription = "Show source code",
+                            onClick = {
+                                (openHandler as OpenFileHandler<in Any?>).openFile(
+                                    OpenFileHandler.Params(
+                                        configuredValue = configuredValue,
+                                        filePathInProject = filePath,
+                                        startLineNumber = startLineNumber,
+                                    ),
+                                )
+                            },
+                        )
                     }
                 }
             }
@@ -341,7 +345,7 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                             },
                         modifier = Modifier.weight(1f),
                     ) {
-                        it.content(state)
+                        tabContent(it, state)
                     }
 
                     val startLineNumber = LocalCollectedPreview.current?.startLineNumber
