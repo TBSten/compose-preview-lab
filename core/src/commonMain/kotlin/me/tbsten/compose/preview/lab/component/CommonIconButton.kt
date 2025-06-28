@@ -21,7 +21,7 @@ internal fun CommonIconButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     variant: IconButtonVariant = IconButtonVariant.Ghost,
-    tint: Color = LocalContentColor.current,
+    tint: Color? = null,
 ) = if (contentDescription == null) {
     IconButtonContent(
         imageVector = imageVector,
@@ -56,13 +56,13 @@ private fun IconButtonContent(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     variant: IconButtonVariant = IconButtonVariant.Ghost,
-    tint: Color = LocalContentColor.current,
+    tint: Color? = null,
 ) = IconButton(variant = variant, onClick = onClick, enabled = enabled, modifier = modifier.size(28.dp)) {
     Icon(
         imageVector = imageVector,
         contentDescription = contentDescription,
         modifier = modifier.size(20.dp),
-        tint = tint,
+        tint = tint ?: LocalContentColor.current,
     )
 }
 
@@ -74,7 +74,7 @@ internal fun CommonIconButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     variant: IconButtonVariant = IconButtonVariant.Ghost,
-    tint: Color = LocalContentColor.current,
+    tint: Color? = null,
 ) = if (contentDescription == null) {
     IconButtonContent(
         painter = painter,
@@ -108,7 +108,7 @@ private fun IconButtonContent(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     variant: IconButtonVariant = IconButtonVariant.Ghost,
-    tint: Color = LocalContentColor.current,
+    tint: Color? = null,
     enabled: Boolean = true,
 ) = IconButton(
     variant = variant,
@@ -119,7 +119,7 @@ private fun IconButtonContent(
     Icon(
         painter = painter,
         contentDescription = contentDescription,
-        tint = tint,
+        tint = tint ?: LocalContentColor.current,
         modifier = modifier.size(20.dp),
     )
 }
