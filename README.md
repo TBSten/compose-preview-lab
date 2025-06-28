@@ -4,6 +4,8 @@
 
 <img src="./docs/cover.png" width="1024" />
 
+[English](https://github.com/TBSten/compose-preview-lab) | [日本語](https://github.com/TBSten/compose-preview-lab/blob/main/README.ja.md)
+
 > [!IMPORTANT]
 > This project is still a work in progress, and its API is unstable and may change without any
 > notice. Using this plugin for a hobby project is fine, but we do not recommend using it for
