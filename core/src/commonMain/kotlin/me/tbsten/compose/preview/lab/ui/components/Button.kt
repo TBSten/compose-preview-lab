@@ -38,17 +38,20 @@ internal fun Button(
     isSelected: Boolean = false,
     isLoading: Boolean = false,
     variant: ButtonVariant = ButtonVariant.Primary,
+    shape: Shape? = null,
     onClick: () -> Unit = {},
     contentPadding: PaddingValues = ButtonDefaults.contentPadding,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: (@Composable () -> Unit)? = null,
 ) {
+    val style = buttonStyleFor(variant, isSelected = isSelected)
     ButtonComponent(
         text = text,
         modifier = modifier,
         enabled = isEnabled,
         loading = isLoading,
-        style = buttonStyleFor(variant, isSelected = isSelected),
+        style = style,
+        shape = shape ?: style.shape,
         onClick = onClick,
         contentPadding = contentPadding,
         interactionSource = interactionSource,
@@ -63,6 +66,7 @@ internal fun ButtonComponent(
     enabled: Boolean = true,
     loading: Boolean = false,
     style: ButtonStyle,
+    shape: Shape = style.shape,
     onClick: () -> Unit,
     contentPadding: PaddingValues = ButtonDefaults.contentPadding,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -92,7 +96,7 @@ internal fun ButtonComponent(
         modifier
             .semantics { role = Role.Button },
         enabled = enabled,
-        shape = style.shape,
+        shape = shape,
         color = containerColor,
         contentColor = contentColor,
         border = borderStroke,

@@ -1,19 +1,17 @@
 package me.tbsten.compose.preview.lab.component
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.Button
+import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
 import me.tbsten.compose.preview.lab.ui.components.Text
-import me.tbsten.compose.preview.lab.util.thenIf
-import me.tbsten.compose.preview.lab.util.thenIfNotNull
 
 private const val SelectedBorderWidth = 12
 
@@ -27,7 +25,11 @@ internal fun CommonListItem(
     isSelected = isSelected,
     onSelect = onSelect,
     modifier = modifier,
-    content = { Text(title, style = PreviewLabTheme.typography.body3) },
+    content = {
+        Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()) {
+            Text(title, style = PreviewLabTheme.typography.body3)
+        }
+    },
 )
 
 @Composable
@@ -43,7 +45,9 @@ internal fun CommonListItem(
     modifier = modifier,
     content = {
         leadingContent?.invoke()
-        Text(title, style = PreviewLabTheme.typography.body3)
+        Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()) {
+            Text(title, style = PreviewLabTheme.typography.body3)
+        }
     },
 )
 
@@ -54,24 +58,16 @@ internal fun CommonListItem(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    Row(
-        modifier = modifier
-            .thenIfNotNull(onSelect) { clickable(onClick = it) }
-            .thenIf(isSelected) {
-                drawWithContent {
-                    drawRect(color = Color.LightGray)
-                    drawContent()
-                    drawLine(
-                        color = Color.Gray,
-                        strokeWidth = SelectedBorderWidth.dp.toPx(),
-                        start = Offset(0f, 0f),
-                        end = Offset(0f, size.height),
-                    )
-                }.padding(start = SelectedBorderWidth.dp)
-            }
-            .padding(vertical = 8.dp, horizontal = 12.dp)
-            .fillMaxWidth(),
+    Button(
+        variant = ButtonVariant.PrimaryGhost,
+        shape = RectangleShape,
+        onClick = onSelect ?: {},
+        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+        isSelected = isSelected,
+        modifier = modifier.fillMaxWidth(),
     ) {
-        content()
+        Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()) {
+            content()
+        }
     }
 }
