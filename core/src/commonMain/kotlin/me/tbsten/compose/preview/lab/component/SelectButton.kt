@@ -1,15 +1,27 @@
 package me.tbsten.compose.preview.lab.component
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.core.generated.resources.Res
+import me.tbsten.compose.preview.lab.core.generated.resources.icon_check
 import me.tbsten.compose.preview.lab.ui.LocalTextStyle
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Button
 import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.Icon
 import me.tbsten.compose.preview.lab.ui.components.Text
+import org.jetbrains.compose.resources.imageResource
 
 @Composable
 internal fun <V> SelectButton(
@@ -38,11 +50,12 @@ internal fun <V> SelectButton(
     itemDetail: (V) -> String? = { null },
 ) {
 //    val menuState = rememberMenuState(expanded = false)
+    var isOpenMenu by remember { mutableStateOf(false) }
 
     Button(
         variant = ButtonVariant.PrimaryOutlined,
         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
-        onClick = { TODO("open menu") },
+        onClick = { isOpenMenu = true },
         modifier = modifier,
     ) {
         CompositionLocalProvider(
@@ -51,49 +64,40 @@ internal fun <V> SelectButton(
             Text(title(value))
         }
     }
-//    CommonMenu(
-//        state = menuState,
-//    ) {
-//
-//        CommonMenuContent {
-//            Column(Modifier.verticalScroll(rememberScrollState())) {
-//                choices.forEachIndexed { index, item ->
-//                    val isSelected = item == value
-//
-//                    CommonMenuItem(
-//                        onClick = {
-//                            onSelect(item)
-//                            menuState.expanded = false
-//                        },
-//                        contentPadding = PaddingValues(vertical = 8.dp, horizontal = 12.dp),
-//                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-//                    ) {
-//                        if (isSelected) {
-//                            Icon(
-//                                imageResource(Res.drawable.icon_check),
-//                                contentDescription = "selected",
-//                            )
-//                        }
-//
-//                        Column(
-//                            Modifier.fillMaxWidth(),
-//                        ) {
-//                            Text(
-//                                text = title(item),
-//                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-//                                style = PreviewLabTheme.typography.body3,
-//                            )
-//
-//                            itemDetail(item)?.let {
-//                                Text(
-//                                    text = it,
-//                                    style = PreviewLabTheme.typography.body3,
-//                                )
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
+    CommonMenu(
+        expanded = isOpenMenu,
+        onDismissRequest = { isOpenMenu = false },
+    ) {
+        choices.forEach { item ->
+            val isSelected = item == value
+            CommonListItem(
+                isSelected = isSelected,
+                onSelect = {
+                    onSelect(item)
+                    isOpenMenu = false
+                },
+                modifier = Modifier.widthIn(min = adaptive(100, 200).dp),
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    if (isSelected) {
+                        Icon(
+                            imageResource(Res.drawable.icon_check),
+                            contentDescription = "selected",
+                        )
+                    }
+                    Column {
+                        Text(text = title(item), style = PreviewLabTheme.typography.body2)
+                        itemDetail(item)?.let {
+                            Text(
+                                text = it,
+                                style = PreviewLabTheme.typography.body3,
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
