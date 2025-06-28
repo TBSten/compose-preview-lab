@@ -41,7 +41,7 @@ import me.tbsten.compose.preview.lab.component.EventListSection
 import me.tbsten.compose.preview.lab.component.FieldListSection
 import me.tbsten.compose.preview.lab.component.LayoutSection
 import me.tbsten.compose.preview.lab.component.PreviewLabHeader
-import me.tbsten.compose.preview.lab.component.SimpleBottomSheet
+import me.tbsten.compose.preview.lab.component.SimpleModal
 import me.tbsten.compose.preview.lab.component.TabPager
 import me.tbsten.compose.preview.lab.component.adaptive
 import me.tbsten.compose.preview.lab.core.generated.resources.Res
@@ -278,7 +278,7 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                             onClick = { state.selectedTabIndex = index },
                         )
 
-                        SimpleBottomSheet(
+                        SimpleModal(
                             isVisible = state.selectedTabIndex == index,
                             onDismissRequest = { state.deselectTab() },
                         ) {

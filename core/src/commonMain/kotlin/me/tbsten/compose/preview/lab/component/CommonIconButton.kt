@@ -3,9 +3,11 @@ package me.tbsten.compose.preview.lab.component
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.ui.LocalContentColor
 import me.tbsten.compose.preview.lab.ui.components.Icon
 import me.tbsten.compose.preview.lab.ui.components.IconButton
 import me.tbsten.compose.preview.lab.ui.components.IconButtonVariant
@@ -19,6 +21,7 @@ internal fun CommonIconButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     variant: IconButtonVariant = IconButtonVariant.Ghost,
+    tint: Color = LocalContentColor.current,
 ) = if (contentDescription == null) {
     IconButtonContent(
         imageVector = imageVector,
@@ -26,6 +29,7 @@ internal fun CommonIconButton(
         onClick = onClick,
         enabled = enabled,
         variant = variant,
+        tint = tint,
         modifier = modifier,
     )
 } else {
@@ -38,6 +42,7 @@ internal fun CommonIconButton(
             onClick = onClick,
             enabled = enabled,
             variant = variant,
+            tint = tint,
             modifier = modifier,
         )
     }
@@ -51,11 +56,13 @@ private fun IconButtonContent(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     variant: IconButtonVariant = IconButtonVariant.Ghost,
+    tint: Color = LocalContentColor.current,
 ) = IconButton(variant = variant, onClick = onClick, enabled = enabled, modifier = modifier.size(28.dp)) {
     Icon(
         imageVector = imageVector,
         contentDescription = contentDescription,
         modifier = modifier.size(20.dp),
+        tint = tint,
     )
 }
 
@@ -67,6 +74,7 @@ internal fun CommonIconButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     variant: IconButtonVariant = IconButtonVariant.Ghost,
+    tint: Color = LocalContentColor.current,
 ) = if (contentDescription == null) {
     IconButtonContent(
         painter = painter,
@@ -74,6 +82,7 @@ internal fun CommonIconButton(
         onClick = onClick,
         enabled = enabled,
         variant = variant,
+        tint = tint,
         modifier = modifier,
     )
 } else {
@@ -86,6 +95,7 @@ internal fun CommonIconButton(
             onClick = onClick,
             enabled = enabled,
             variant = variant,
+            tint = tint,
             modifier = modifier,
         )
     }
@@ -98,6 +108,7 @@ private fun IconButtonContent(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     variant: IconButtonVariant = IconButtonVariant.Ghost,
+    tint: Color = LocalContentColor.current,
     enabled: Boolean = true,
 ) = IconButton(
     variant = variant,
@@ -108,6 +119,7 @@ private fun IconButtonContent(
     Icon(
         painter = painter,
         contentDescription = contentDescription,
+        tint = tint,
         modifier = modifier.size(20.dp),
     )
 }

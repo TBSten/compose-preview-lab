@@ -26,7 +26,7 @@ import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.component.Divider
 import me.tbsten.compose.preview.lab.component.NoPreview
 import me.tbsten.compose.preview.lab.component.NoSelectedPreview
-import me.tbsten.compose.preview.lab.component.SimpleBottomSheet
+import me.tbsten.compose.preview.lab.component.SimpleModal
 import me.tbsten.compose.preview.lab.component.adaptive
 import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
@@ -136,7 +136,7 @@ internal fun <Item : Any> ListDetailScaffold(
             Box {
                 listContent()
 
-                SimpleBottomSheet(
+                SimpleModal(
                     isVisible = openBottomSheet,
                     onDismissRequest = { onUnselect() },
                 ) {
