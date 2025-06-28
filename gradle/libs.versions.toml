@@ -1,7 +1,7 @@
 [versions]
 composePreviewLab = "0.1.0-dev05"
 kotlin = "2.1.21"
-compose = "1.8.1"
+compose = "1.8.2"
 agp = "8.6.1"
 androidx-activityCompose = "1.10.1"
 androidx-uiTest = "1.8.1"
