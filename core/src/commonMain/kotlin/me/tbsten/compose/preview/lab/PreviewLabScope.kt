@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toOffset
+import io.github.takahirom.rin.rememberRetained
 import kotlin.random.Random
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.coroutineScope
@@ -67,7 +68,7 @@ class PreviewLabScope internal constructor() {
      */
     @Composable
     fun <Value> field(builder: () -> MutablePreviewLabField<Value>): MutableState<Value> {
-        val field = remember { builder() }
+        val field = rememberRetained { builder() }
         DisposableEffect(field) {
             fields.add(field)
             onDispose { fields.remove(field) }
