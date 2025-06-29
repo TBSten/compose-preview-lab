@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import kotlinx.coroutines.launch
+import me.tbsten.compose.preview.lab.ui.components.Text
 
 @Composable
 internal fun <T> TabPager(
@@ -20,20 +22,16 @@ internal fun <T> TabPager(
 
     Column(modifier = modifier) {
         pagerState.currentPage
-        // TODO
-//        ScrollableTabRow(
-//            selectedTabIndex = pagerState.currentPage,
-//            edgePadding = 0.dp,
-//            modifier = Modifier.fillMaxWidth(),
-//        ) {
-//            tabs.forEachIndexed { index, tab ->
-//                Tab(
-//                    selected = pagerState.currentPage == index,
-//                    onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
-//                    text = { Text(title(tab)) },
-//                )
-//            }
-//        }
+        TabRow {
+            tabs.forEachIndexed { index, tab ->
+                Tab(
+                    selected = pagerState.currentPage == index,
+                    onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
+                ) {
+                    Text(title(tab))
+                }
+            }
+        }
 
         HorizontalPager(
             state = pagerState,

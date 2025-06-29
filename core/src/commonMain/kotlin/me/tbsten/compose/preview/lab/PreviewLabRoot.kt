@@ -86,6 +86,7 @@ fun PreviewLabRoot(
                                 fadeIn() togetherWith fadeOut()
                             },
                             modifier = Modifier
+                                .background(PreviewLabTheme.colors.background)
                                 .zIndex(0f),
                         ) { selectedPreview ->
                             val preview = selectedPreview.content
