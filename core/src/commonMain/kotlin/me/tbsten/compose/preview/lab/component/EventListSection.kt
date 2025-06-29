@@ -65,7 +65,7 @@ internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: Prev
                             now = Clock.System.now().epochSeconds
                         }
                     }
-                    LaunchedEffect(selectedEvent) {
+                    LaunchedEffect(selectedEvent == event) {
                         showDetail = selectedEvent == event
                     }
 
