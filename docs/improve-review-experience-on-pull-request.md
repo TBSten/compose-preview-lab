@@ -7,6 +7,10 @@ This documentation guides you through setting up Compose Preview Lab to improve 
 Improving the UI implementation review experience is one of the most important goals that Compose Preview Lab has been striving
 for since its inception.
 
+There is a sample project that has been set up according to the steps shown in the guide. Please refer to it as needed.
+
+TODO: Link
+
 ## Prerequisite
 
 - Development is progressing using a GitHub and pull request development workflow
