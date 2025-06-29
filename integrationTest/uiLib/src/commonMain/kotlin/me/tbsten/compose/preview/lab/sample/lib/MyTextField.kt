@@ -14,11 +14,7 @@ import me.tbsten.compose.preview.lab.field.StringField
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun MyTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun MyTextField(value: String, onValueChange: (String) -> Unit, modifier: Modifier = Modifier) {
     TextField(
         value = value,
         onValueChange = onValueChange,

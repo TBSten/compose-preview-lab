@@ -2,25 +2,25 @@ package me.tbsten.compose.preview.lab.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.core.generated.resources.Res
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_check
+import me.tbsten.compose.preview.lab.ui.LocalTextStyle
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.Button
+import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.Icon
+import me.tbsten.compose.preview.lab.ui.components.Text
 import org.jetbrains.compose.resources.imageResource
 
 @Composable
@@ -49,58 +49,57 @@ internal fun <V> SelectButton(
     modifier: Modifier = Modifier,
     itemDetail: (V) -> String? = { null },
 ) {
-    var showMenu by remember { mutableStateOf(false) }
+//    val menuState = rememberMenuState(expanded = false)
+    var isOpenMenu by remember { mutableStateOf(false) }
 
-    OutlinedButton(
-        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 2.dp),
-        onClick = { showMenu = true },
-        modifier = modifier,
-    ) {
-        CompositionLocalProvider(
-            LocalTextStyle provides MaterialTheme.typography.labelSmall,
+    Column {
+        Button(
+            variant = ButtonVariant.PrimaryOutlined,
+            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+            onClick = { isOpenMenu = true },
+            modifier = modifier,
         ) {
-            Text(title(value))
+            CompositionLocalProvider(
+                LocalTextStyle provides PreviewLabTheme.typography.label3,
+            ) {
+                Text(title(value))
+            }
         }
-    }
-
-    DropdownMenu(
-        expanded = showMenu,
-        onDismissRequest = { showMenu = false },
-    ) {
-        choices.forEachIndexed { index, item ->
-            val isSelected = item == value
-            DropdownMenuItem(
-                text = {
-                    Column(modifier = Modifier.padding(4.dp)) {
-                        Text(
-                            text = title(item),
-                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                            style = MaterialTheme.typography.bodySmall,
-                        )
-                        itemDetail(item)?.let {
-                            Text(
-                                text = it,
-                                style = MaterialTheme.typography.bodySmall,
+        CommonMenu(
+            expanded = isOpenMenu,
+            onDismissRequest = { isOpenMenu = false },
+        ) {
+            choices.forEach { item ->
+                val isSelected = item == value
+                CommonListItem(
+                    isSelected = isSelected,
+                    onSelect = {
+                        onSelect(item)
+                        isOpenMenu = false
+                    },
+                    modifier = Modifier.widthIn(min = adaptive(100, 200).dp),
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        if (isSelected) {
+                            Icon(
+                                imageResource(Res.drawable.icon_check),
+                                contentDescription = "selected",
                             )
                         }
+                        Column {
+                            Text(text = title(item), style = PreviewLabTheme.typography.body2)
+                            itemDetail(item)?.let {
+                                Text(
+                                    text = it,
+                                    style = PreviewLabTheme.typography.body3,
+                                )
+                            }
+                        }
                     }
-                },
-                onClick = {
-                    onSelect(item)
-                    showMenu = false
-                },
-                enabled = !isSelected,
-                leadingIcon = if (isSelected) {
-                    @Composable {
-                        Icon(
-                            imageResource(Res.drawable.icon_check),
-                            contentDescription = null,
-                        )
-                    }
-                } else {
-                    null
-                },
-            )
+                }
+            }
         }
     }
 }

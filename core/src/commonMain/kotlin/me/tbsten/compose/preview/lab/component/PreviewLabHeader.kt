@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +22,8 @@ import me.tbsten.compose.preview.lab.core.generated.resources.Res
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_refresh
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_zoom_in
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_zoom_out
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.Text
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -37,7 +37,7 @@ internal fun PreviewLabHeader(
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
+                .background(PreviewLabTheme.colors.background)
                 .fillMaxWidth()
                 .horizontalScroll(rememberScrollState())
                 .height(IntrinsicSize.Min)
@@ -64,7 +64,7 @@ internal fun PreviewLabHeader(
 @Composable
 private fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
-        Text("Zoom", style = MaterialTheme.typography.labelMedium)
+        Text("Zoom", style = PreviewLabTheme.typography.label2)
 
         Row(
             modifier = Modifier.fillMaxWidth().weight(1f),

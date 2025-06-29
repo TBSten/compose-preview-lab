@@ -12,11 +12,7 @@ import me.tbsten.compose.preview.lab.field.StringField
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun MyButton(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun MyButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier,) {
     Button(onClick = onClick, modifier = modifier) {
         Text(text = text)
     }

@@ -1,7 +1,6 @@
 package me.tbsten.compose.preview.lab.previewlist
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -14,10 +13,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,8 +21,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.Button
+import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.Text
 
 @Composable
 internal fun NodeView(
@@ -62,33 +60,34 @@ internal fun NodeView(
 }
 
 @Composable
-private fun GroupView(group: PreviewTreeNode.Group, children: @Composable () -> Unit, modifier: Modifier = Modifier,) {
+private fun GroupView(group: PreviewTreeNode.Group, children: @Composable () -> Unit, modifier: Modifier = Modifier) {
     var isOpen by remember { mutableStateOf(false) }
 
     Column {
         fun <T> toggleAnimationSpec() = tween<T>(durationMillis = 220)
 
-        TextButton(
+        Button(
+            variant = ButtonVariant.PrimaryGhost,
             onClick = { isOpen = !isOpen },
-            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
             modifier = modifier.fillMaxWidth(),
         ) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.Start),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(
                     "▶︎",
-                    style = MaterialTheme.typography.bodySmall,
+                    style = PreviewLabTheme.typography.body3,
                     modifier = Modifier
                         .rotate(
                             animateFloatAsState(
                                 targetValue = if (isOpen) 90f else 0f,
                                 animationSpec = toggleAnimationSpec(),
-                            ).value
-                        )
+                            ).value,
+                        ),
                 )
-                Text(text = group.groupName, style = MaterialTheme.typography.bodySmall)
+                Text(text = group.groupName, style = PreviewLabTheme.typography.body3)
             }
         }
 
@@ -112,19 +111,16 @@ private fun PreviewView(
     onSelect: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val buttonColor by animateColorAsState(if (isSelected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent)
-
-    TextButton(
+    Button(
+        variant = ButtonVariant.PrimaryGhost,
         onClick = onSelect,
-        colors = ButtonDefaults.textButtonColors(
-            containerColor = buttonColor,
-        ),
-        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+        isSelected = isSelected,
         modifier = modifier.fillMaxWidth(),
     ) {
         Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()) {
             val previewName = preview.collectedPreview.displayName.split(".").last()
-            Text(previewName, style = MaterialTheme.typography.bodySmall)
+            Text(previewName, style = PreviewLabTheme.typography.body3)
         }
     }
 }

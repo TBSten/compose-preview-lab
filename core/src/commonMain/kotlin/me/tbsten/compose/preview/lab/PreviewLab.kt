@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -17,16 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.PlainTooltip
-import androidx.compose.material3.SmallFloatingActionButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.TooltipBox
-import androidx.compose.material3.TooltipDefaults
-import androidx.compose.material3.rememberTooltipState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -45,12 +37,13 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import me.tbsten.compose.preview.lab.component.CommonIconButton
 import me.tbsten.compose.preview.lab.component.Divider
 import me.tbsten.compose.preview.lab.component.EventListSection
 import me.tbsten.compose.preview.lab.component.FieldListSection
 import me.tbsten.compose.preview.lab.component.LayoutSection
 import me.tbsten.compose.preview.lab.component.PreviewLabHeader
-import me.tbsten.compose.preview.lab.component.SimpleBottomSheet
+import me.tbsten.compose.preview.lab.component.SimpleModal
 import me.tbsten.compose.preview.lab.component.TabPager
 import me.tbsten.compose.preview.lab.component.adaptive
 import me.tbsten.compose.preview.lab.core.generated.resources.Res
@@ -62,7 +55,12 @@ import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.field.ScreenSizeField
 import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
-import me.tbsten.compose.preview.lab.theme.AppTheme
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.Button
+import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.Icon
+import me.tbsten.compose.preview.lab.ui.components.IconButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.Text
 import me.tbsten.compose.preview.lab.util.toDpOffset
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
@@ -136,14 +134,13 @@ open class PreviewLab {
      * @see PreviewLabState
      * @see ScreenSize
      */
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     operator fun invoke(
         state: PreviewLabState = rememberSaveable(saver = PreviewLabState.Saver) { PreviewLabState() },
         screenSizes: List<ScreenSize> = ScreenSize.SmartphoneAndDesktops,
         content: @Composable PreviewLabScope.() -> Unit,
-    ) = AppTheme {
-        Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
+    ) = PreviewLabTheme {
+        Column(modifier = Modifier.background(PreviewLabTheme.colors.background)) {
             PreviewLabHeader(
                 scale = state.contentScale,
                 onScaleChange = { state.contentScale = it },
@@ -236,7 +233,7 @@ private fun ContentSection(
         ) {
             Box(
                 modifier = Modifier
-                    .border(8.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.15f))
+                    .border(8.dp, PreviewLabTheme.colors.outline.copy(alpha = 0.25f))
                     .padding(8.dp)
                     .onPlaced {
                         state.contentRootOffsetInAppRoot =
@@ -249,7 +246,6 @@ private fun ContentSection(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Unit) {
     val tabContent = remember {
@@ -276,57 +272,48 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                         .sizeIn(maxWidth = maxWidth / 3, maxHeight = maxHeight * 2 / 3),
                 ) {
                     InspectorTab.entries.forEachIndexed { index, tab ->
-                        TooltipBox(
-                            positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
-                            tooltip = { PlainTooltip { Text(tab.title) } },
-                            state = rememberTooltipState(),
-                        ) {
-                            SmallFloatingActionButton(
-                                onClick = { state.selectedTabIndex = index },
-                            ) {
-                                Icon(
-                                    painter = painterResource(tab.iconRes),
-                                    contentDescription = tab.title,
-                                )
-                            }
-                        }
+                        CommonIconButton(
+                            variant = IconButtonVariant.PrimaryElevated,
+                            painter = painterResource(tab.iconRes),
+                            contentDescription = tab.title,
+                            onClick = { state.selectedTabIndex = index },
+                        )
 
-                        if (state.selectedTabIndex == index) {
-                            SimpleBottomSheet(onDismissRequest = { state.deselectTab() }) {
-                                Box(Modifier.heightIn(min = 200.dp)) {
-                                    tab.content(state)
-                                }
+                        SimpleModal(
+                            isVisible = state.selectedTabIndex == index,
+                            onDismissRequest = { state.deselectTab() },
+                            contentPadding = PaddingValues(20.dp),
+                        ) {
+                            Box(
+                                Modifier
+                                    .background(PreviewLabTheme.colors.background, shape = RoundedCornerShape(8.dp))
+                                    .heightIn(min = 200.dp),
+                            ) {
+                                tab.content(state)
                             }
                         }
                     }
 
-                    TooltipBox(
-                        positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
-                        tooltip = { PlainTooltip { Text("Show Source Code") } },
-                        state = rememberTooltipState(),
-                    ) {
-                        val filePath = LocalCollectedPreview.current?.filePath
-                        val startLineNumber = LocalCollectedPreview.current?.startLineNumber
-                        val openHandler = LocalOpenFileHandler.current
-                        if (filePath != null && openHandler != null) {
-                            val configuredValue = openHandler.configure()
-                            SmallFloatingActionButton(
-                                onClick = {
-                                    (openHandler as OpenFileHandler<in Any?>).openFile(
-                                        OpenFileHandler.Params(
-                                            configuredValue = configuredValue,
-                                            filePathInProject = filePath,
-                                            startLineNumber = startLineNumber,
-                                        ),
-                                    )
-                                },
-                            ) {
-                                Icon(
-                                    painter = painterResource(Res.drawable.icon_code),
-                                    contentDescription = "Show source code",
+                    val openHandler = LocalOpenFileHandler.current
+                    val filePath = LocalCollectedPreview.current?.filePath
+                    val startLineNumber = LocalCollectedPreview.current?.startLineNumber
+
+                    if (filePath != null && openHandler != null) {
+                        val configuredValue = openHandler.configure()
+                        CommonIconButton(
+                            variant = IconButtonVariant.PrimaryOutlined,
+                            painter = painterResource(Res.drawable.icon_code),
+                            contentDescription = "Show source code",
+                            onClick = {
+                                (openHandler as OpenFileHandler<in Any?>).openFile(
+                                    OpenFileHandler.Params(
+                                        configuredValue = configuredValue,
+                                        filePathInProject = filePath,
+                                        startLineNumber = startLineNumber,
+                                    ),
                                 )
-                            }
-                        }
+                            },
+                        )
                     }
                 }
             }
@@ -341,7 +328,7 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                 Divider()
                 Column(
                     modifier = Modifier
-                        .background(MaterialTheme.colorScheme.background)
+                        .background(PreviewLabTheme.colors.background)
                         .width(250.dp)
                         .fillMaxHeight(),
                 ) {
@@ -358,7 +345,7 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                             },
                         modifier = Modifier.weight(1f),
                     ) {
-                        it.content(state)
+                        tabContent(it, state)
                     }
 
                     val startLineNumber = LocalCollectedPreview.current?.startLineNumber
@@ -368,7 +355,8 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                         Divider()
 
                         val configuredValue = openHandler.configure()
-                        OutlinedButton(
+                        Button(
+                            variant = ButtonVariant.PrimaryOutlined,
                             onClick = {
                                 (openHandler as OpenFileHandler<in Any?>).openFile(
                                     OpenFileHandler.Params(

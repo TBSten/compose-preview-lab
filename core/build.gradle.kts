@@ -1,5 +1,9 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class, ExperimentalWasmDsl::class)
+
 import org.jetbrains.compose.reload.ComposeHotRun
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
@@ -46,9 +50,10 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material3)
             implementation(compose.components.resources)
+            implementation(compose.ui)
             implementation(compose.components.uiToolingPreview)
+            implementation("org.jetbrains.compose.material:material-ripple:${libs.versions.compose.get()}")
             // TODO migrate retain { } (compose runtime api)
             implementation("io.github.takahirom.rin:rin:0.3.0")
         }
@@ -96,6 +101,10 @@ kotlin {
         val jvmDev by getting {
             dependsOn(commonDev)
             dependsOn(jvmMain.get())
+        }
+
+        commonDev.dependencies {
+            implementation(compose.material3)
         }
     }
 

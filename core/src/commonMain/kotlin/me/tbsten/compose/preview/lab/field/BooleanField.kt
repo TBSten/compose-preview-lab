@@ -1,7 +1,18 @@
 package me.tbsten.compose.preview.lab.field
 
-import androidx.compose.material3.Switch
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.component.animated
+import me.tbsten.compose.preview.lab.ui.Gray50
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.Surface
+import me.tbsten.compose.preview.lab.ui.components.Text
 
 /**
  * Field that holds a Boolean value.
@@ -28,9 +39,37 @@ open class BooleanField(label: String, initialValue: Boolean) :
     ) {
     @Composable
     override fun Content() {
-        Switch(
-            checked = value,
-            onCheckedChange = { value = it },
+        BooleanSwitch(
+            boolean = value,
+            onChange = { value = it },
         )
+    }
+}
+
+@Composable
+private fun BooleanSwitch(boolean: Boolean, onChange: (Boolean) -> Unit) {
+    Surface(
+        shape = RoundedCornerShape(percent = 50),
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(horizontal = 4.dp, vertical = 4.dp),
+        ) {
+            listOf(true, false).forEach {
+                val isSelected = boolean == it
+
+                Surface(
+                    color = (if (isSelected) Gray50 else Color.Transparent).animated(),
+                    shape = RoundedCornerShape(percent = 50),
+                    onClick = { onChange(it) },
+                ) {
+                    Text(
+                        text = it.toString(),
+                        style = PreviewLabTheme.typography.label1,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+                    )
+                }
+            }
+        }
     }
 }
