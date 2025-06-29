@@ -7,6 +7,7 @@ import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.DpOffset
+import me.tbsten.compose.preview.lab.event.PreviewLabEvent
 
 /**
  * Class that holds the state of [PreviewLab].
@@ -19,7 +20,7 @@ class PreviewLabState {
     internal var contentScale by mutableStateOf(1f)
 
     internal var selectedTabIndex by mutableStateOf<Int?>(null)
-
+    internal var selectedEvent by mutableStateOf<PreviewLabEvent?>(null)
     internal val scope: PreviewLabScope = PreviewLabScope()
 
     internal fun deselectTab() {

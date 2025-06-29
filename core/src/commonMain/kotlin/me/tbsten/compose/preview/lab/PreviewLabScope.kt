@@ -8,6 +8,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
@@ -47,6 +48,7 @@ class PreviewLabScope internal constructor() {
 
     internal val selectedLayoutNodeIds = mutableStateSetOf<LayoutNodeId>()
     internal val hoveredLayoutNodeIds = mutableStateSetOf<LayoutNodeId>()
+    internal var onEventHandler: (Event) -> Unit = {}
 
     // field methods
 
@@ -118,7 +120,9 @@ class PreviewLabScope internal constructor() {
      * @param description It will not appear on the toast, but it will appear on the event tab. If you have a lot of information, use description instead of title to make the debug UI easier to read.
      */
     fun onEvent(title: String, description: String? = null) {
-        events.add(PreviewLabEvent(title = title, description = description))
+        val event = PreviewLabEvent(title = title, description = description)
+        events.add(event)
+        onEventHandler.invoke(Event.ShowEventToast(event = event))
     }
 
     // layoutNode methods
@@ -175,6 +179,15 @@ class PreviewLabScope internal constructor() {
 
     internal fun onHidePaddingViewer(hoveredNodeId: LayoutNodeId) {
         println("onHidePaddingViewer: $hoveredNodeId")
+    }
+
+    @Composable
+    internal fun HandleEvents(onEvent: (Event) -> Unit) {
+        onEventHandler = rememberUpdatedState(onEvent).value
+    }
+
+    internal sealed interface Event {
+        data class ShowEventToast(val event: PreviewLabEvent) : Event
     }
 }
 

@@ -37,6 +37,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.dokar.sonner.TextToastAction
+import com.dokar.sonner.Toaster
+import com.dokar.sonner.ToasterState
+import com.dokar.sonner.rememberToasterState
 import me.tbsten.compose.preview.lab.component.CommonIconButton
 import me.tbsten.compose.preview.lab.component.Divider
 import me.tbsten.compose.preview.lab.component.EventListSection
@@ -147,38 +151,66 @@ open class PreviewLab(
         state: PreviewLabState = defaultState(),
         screenSizes: List<ScreenSize> = defaultScreenSizes,
         content: @Composable PreviewLabScope.() -> Unit,
-    ) = Providers(state = state) {
-        Column(modifier = Modifier.background(PreviewLabTheme.colors.background)) {
-            PreviewLabHeader(
-                scale = state.contentScale,
-                onScaleChange = { state.contentScale = it },
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                ) {
-                    InspectorsPane(state = state) {
-                        ContentSection(
-                            state = state,
-                            screenSizes = screenSizes,
-                            content = content,
-                            modifier = Modifier
-                                .weight(1f)
-                                .zIndex(-1f),
+    ) {
+        val toaster = rememberToasterState().also { toaster ->
+            state.scope.HandleEvents { event ->
+                when (event) {
+                    is PreviewLabScope.Event.ShowEventToast ->
+                        toaster.show(
+                            message = event.event.title,
+                            action = TextToastAction(
+                                text = "Show Detail",
+                                onClick = {
+                                    state.selectedTabIndex = InspectorTab.entries.indexOf(InspectorTab.Events)
+                                    state.selectedEvent = event.event
+                                    toaster.dismiss(it)
+                                },
+                            ),
                         )
+                }
+            }
+        }
+
+        Providers(state = state, toaster = toaster) {
+            Column(modifier = Modifier.background(PreviewLabTheme.colors.background)) {
+                PreviewLabHeader(
+                    scale = state.contentScale,
+                    onScaleChange = { state.contentScale = it },
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                    ) {
+                        InspectorsPane(state = state) {
+                            ContentSection(
+                                state = state,
+                                screenSizes = screenSizes,
+                                content = content,
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .zIndex(-1f),
+                            )
+                        }
                     }
                 }
             }
+
+            Toaster(
+                state = toaster,
+                maxVisibleToasts = 10,
+                showCloseButton = true,
+            )
         }
     }
 
     @Composable
-    private fun Providers(state: PreviewLabState, content: @Composable () -> Unit) {
+    private fun Providers(state: PreviewLabState, toaster: ToasterState, content: @Composable () -> Unit) {
         contentRoot {
             PreviewLabTheme {
                 CompositionLocalProvider(
                     LocalPreviewLabState provides state,
+                    LocalToaster provides toaster,
                 ) {
                     content()
                 }
@@ -193,6 +225,7 @@ open class PreviewLab(
 }
 
 internal val LocalPreviewLabState = compositionLocalOf<PreviewLabState?> { null }
+internal val LocalToaster = compositionLocalOf<ToasterState> { error("No ToasterState") }
 
 @Composable
 private fun ContentSection(
@@ -421,6 +454,7 @@ private enum class InspectorTab(
         content = { state ->
             EventListSection(
                 events = state.scope.events,
+                selectedEvent = state.selectedEvent,
                 onClear = { state.scope.events.clear() },
             )
         },

@@ -31,7 +31,7 @@ import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalTime::class)
 @Composable
-internal fun EventListSection(events: List<PreviewLabEvent>, onClear: () -> Unit) {
+internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: PreviewLabEvent?, onClear: () -> Unit) {
     SelectionContainer {
         LazyColumn {
             stickyHeader {
@@ -64,6 +64,9 @@ internal fun EventListSection(events: List<PreviewLabEvent>, onClear: () -> Unit
                             delay(1.seconds)
                             now = Clock.System.now().epochSeconds
                         }
+                    }
+                    LaunchedEffect(selectedEvent) {
+                        showDetail = selectedEvent == event
                     }
 
                     Column(
