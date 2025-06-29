@@ -4,7 +4,13 @@
 
 <img src="./docs/cover.png" width="1024" />
 
-[English](https://github.com/TBSten/compose-preview-lab) | [日本語](https://github.com/TBSten/compose-preview-lab/blob/main/README.ja.md)
+<p align="center">
+<a href="https://github.com/TBSten/compose-preview-lab/blob/main/README.md">English</a>
+ | 
+<a href="https://github.com/TBSten/compose-preview-lab/blob/main/README.ja.md">日本語</a>
+ | 
+<a href="https://deepwiki.com/TBSten/compose-preview-lab">DeepWiki</a>
+</p>
 
 > [!IMPORTANT]
 > This project is still a work in progress, and its API is unstable and may change without any
