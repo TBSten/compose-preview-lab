@@ -7,12 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.PreviewLab
 import me.tbsten.compose.preview.lab.field.StringField
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun MyButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier,) {
+fun MyButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Button(onClick = onClick, modifier = modifier) {
         Text(text = text)
     }
@@ -21,7 +20,7 @@ fun MyButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier,) 
 @ComposePreviewLabOption(displayName = "UI Component in library module Preview")
 @Preview
 @Composable
-private fun MyButtonPreview() = PreviewLab {
+private fun MyButtonPreview() = customizedPreviewLab {
     MyButton(
         text = fieldValue { StringField("MyButton.text", "Click Me") },
         onClick = { onEvent("MyButton.onClick") },
