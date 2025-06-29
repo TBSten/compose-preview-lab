@@ -89,12 +89,22 @@ import org.jetbrains.compose.resources.painterResource
  *
  * However, since there are currently no settings that can be shared, it may not be necessary to define your own PreviewLab.
  *
+ * @param defaultState Default PreviewLabState factory.
+ * @param defaultScreenSizes Default list of ScreenSize.
+ * @param contentRoot Wrapper for the entire PreviewLab.
+ * @param disableTrailingLambda This argument has no meaning and exists to avoid defining the `PreviewLab.invoke` method, which is the main part of PreviewLab, as a trailing lambda.
  * @see PreviewLab.invoke
  * @see PreviewLabState
  * @see PreviewLabScope
  * @see ScreenSize
  */
-open class PreviewLab {
+open class PreviewLab(
+    private val defaultState: @Composable () -> PreviewLabState =
+        { rememberSaveable(saver = PreviewLabState.Saver) { PreviewLabState() } },
+    private val defaultScreenSizes: List<ScreenSize> = ScreenSize.SmartphoneAndDesktops,
+    private val contentRoot: @Composable (content: @Composable () -> Unit) -> Unit = { it() },
+    @Suppress("unused") disableTrailingLambda: Nothing? = null,
+) {
     /**
      * Short hand for PreviewLab.invoke() specifying a single screensize.
      *
@@ -102,7 +112,7 @@ open class PreviewLab {
      */
     @Composable
     operator fun invoke(
-        state: PreviewLabState = rememberSaveable(saver = PreviewLabState.Saver) { PreviewLabState() },
+        state: PreviewLabState = defaultState(),
         maxWidth: Dp,
         maxHeight: Dp,
         content: @Composable PreviewLabScope.() -> Unit,
@@ -136,32 +146,34 @@ open class PreviewLab {
      */
     @Composable
     operator fun invoke(
-        state: PreviewLabState = rememberSaveable(saver = PreviewLabState.Saver) { PreviewLabState() },
-        screenSizes: List<ScreenSize> = ScreenSize.SmartphoneAndDesktops,
+        state: PreviewLabState = defaultState(),
+        screenSizes: List<ScreenSize> = defaultScreenSizes,
         content: @Composable PreviewLabScope.() -> Unit,
-    ) = PreviewLabTheme {
-        Column(modifier = Modifier.background(PreviewLabTheme.colors.background)) {
-            PreviewLabHeader(
-                scale = state.contentScale,
-                onScaleChange = { state.contentScale = it },
-            ) {
-                CompositionLocalProvider(
-                    LocalPreviewLabState provides state,
+    ) = contentRoot {
+        PreviewLabTheme {
+            Column(modifier = Modifier.background(PreviewLabTheme.colors.background)) {
+                PreviewLabHeader(
+                    scale = state.contentScale,
+                    onScaleChange = { state.contentScale = it },
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
+                    CompositionLocalProvider(
+                        LocalPreviewLabState provides state,
                     ) {
-                        InspectorsPane(state = state) {
-                            ContentSection(
-                                state = state,
-                                screenSizes = screenSizes,
-                                content = content,
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .zIndex(-1f),
-                            )
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
+                        ) {
+                            InspectorsPane(state = state) {
+                                ContentSection(
+                                    state = state,
+                                    screenSizes = screenSizes,
+                                    content = content,
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .zIndex(-1f),
+                                )
+                            }
                         }
                     }
                 }
