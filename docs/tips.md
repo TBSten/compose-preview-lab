@@ -12,7 +12,7 @@ No need to add more lambdas that call onEvent() as the number of events grows.
    uiState: HomeUiState,
 -  onButtonClick: () -> Unit,
 -  onNameInput: (String) -> Unit,
-   onEvent: (HomeUiEvent) -> Unit,
++  onEvent: (HomeUiEvent) -> Unit,
  ) {
      ...
  }
@@ -27,7 +27,7 @@ No need to add more lambdas that call onEvent() as the number of events grows.
  fun HomeScreenPreview() = PreviewLab {
    HomeScreen(
      ...
-     // ⭐️ More events will not require more here.
+     // ⭐️ Even if the number of events increases, there is no need to increase the number of callbacks here.
      onEvent = { onEvent("$it") },
    )
  }
