@@ -147,33 +147,40 @@ open class PreviewLab(
         state: PreviewLabState = defaultState(),
         screenSizes: List<ScreenSize> = defaultScreenSizes,
         content: @Composable PreviewLabScope.() -> Unit,
-    ) = contentRoot {
-        PreviewLabTheme {
-            Column(modifier = Modifier.background(PreviewLabTheme.colors.background)) {
-                PreviewLabHeader(
-                    scale = state.contentScale,
-                    onScaleChange = { state.contentScale = it },
+    ) = Providers(state = state) {
+        Column(modifier = Modifier.background(PreviewLabTheme.colors.background)) {
+            PreviewLabHeader(
+                scale = state.contentScale,
+                onScaleChange = { state.contentScale = it },
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
                 ) {
-                    CompositionLocalProvider(
-                        LocalPreviewLabState provides state,
-                    ) {
-                        Row(
+                    InspectorsPane(state = state) {
+                        ContentSection(
+                            state = state,
+                            screenSizes = screenSizes,
+                            content = content,
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(1f),
-                        ) {
-                            InspectorsPane(state = state) {
-                                ContentSection(
-                                    state = state,
-                                    screenSizes = screenSizes,
-                                    content = content,
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .zIndex(-1f),
-                                )
-                            }
-                        }
+                                .weight(1f)
+                                .zIndex(-1f),
+                        )
                     }
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun Providers(state: PreviewLabState, content: @Composable () -> Unit) {
+        contentRoot {
+            PreviewLabTheme {
+                CompositionLocalProvider(
+                    LocalPreviewLabState provides state,
+                ) {
+                    content()
                 }
             }
         }
