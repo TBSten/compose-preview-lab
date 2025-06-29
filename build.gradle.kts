@@ -9,9 +9,16 @@ plugins {
     alias(libs.plugins.hotReload).apply(false)
     alias(libs.plugins.vanniktechMavenPublish).apply(false)
     alias(libs.plugins.dokka)
+    alias(libs.plugins.binaryCompatibilityValidator)
 }
 
 allprojects {
     group = "me.tbsten.compose.preview.lab"
     version = rootProject.libs.versions.composePreviewLab.get()
+}
+
+apiValidation {
+    ignoredProjects.add(
+        projects.intellijPlugin.name,
+    )
 }
