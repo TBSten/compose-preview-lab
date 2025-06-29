@@ -23,7 +23,6 @@ public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLab
 	public final fun getLambda$-1261978926$core ()Lkotlin/jvm/functions/Function4;
 	public final fun getLambda$-1616826418$core ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-658061291$core ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-913485078$core ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$1744947294$core ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$1746585086$core ()Lkotlin/jvm/functions/Function3;
 }
@@ -86,10 +85,6 @@ public final class me/tbsten/compose/preview/lab/PreviewLabScope {
 	public static synthetic fun onEvent$default (Lme/tbsten/compose/preview/lab/PreviewLabScope;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)V
 }
 
-public final class me/tbsten/compose/preview/lab/PreviewLabScopeKt {
-	public static final fun layoutLab (Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/Modifier;
-}
-
 public final class me/tbsten/compose/preview/lab/PreviewLabState {
 	public static final field $stable I
 	public static final field Companion Lme/tbsten/compose/preview/lab/PreviewLabState$Companion;
@@ -103,7 +98,7 @@ public final class me/tbsten/compose/preview/lab/PreviewLabState$Companion {
 public final class me/tbsten/compose/preview/lab/component/ComposableSingletons$EventListSectionKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/component/ComposableSingletons$EventListSectionKt;
 	public fun <init> ()V
-	public final fun getLambda$1961559227$core ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-958988956$core ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/component/ComposableSingletons$LayoutSectionKt {
