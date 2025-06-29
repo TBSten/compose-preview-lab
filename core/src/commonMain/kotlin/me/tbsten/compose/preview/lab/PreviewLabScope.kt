@@ -194,7 +194,7 @@ class PreviewLabScope internal constructor() {
  */
 @ExperimentalComposePreviewLabApi
 @Composable
-fun Modifier.layoutLab(label: String): Modifier = composed(
+internal fun Modifier.layoutLab(label: String): Modifier = composed(
     inspectorInfo = {
         name = "layoutLab"
         properties["label"] = label

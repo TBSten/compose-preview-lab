@@ -41,14 +41,12 @@ import me.tbsten.compose.preview.lab.component.CommonIconButton
 import me.tbsten.compose.preview.lab.component.Divider
 import me.tbsten.compose.preview.lab.component.EventListSection
 import me.tbsten.compose.preview.lab.component.FieldListSection
-import me.tbsten.compose.preview.lab.component.LayoutSection
 import me.tbsten.compose.preview.lab.component.PreviewLabHeader
 import me.tbsten.compose.preview.lab.component.SimpleModal
 import me.tbsten.compose.preview.lab.component.TabPager
 import me.tbsten.compose.preview.lab.component.adaptive
 import me.tbsten.compose.preview.lab.core.generated.resources.Res
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_code
-import me.tbsten.compose.preview.lab.core.generated.resources.icon_dashboard
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_edit
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_history
 import me.tbsten.compose.preview.lab.field.ScreenSize
@@ -420,17 +418,18 @@ private enum class InspectorTab(
             )
         },
     ),
-    Layouts(
-        title = "Layouts",
-        iconRes = Res.drawable.icon_dashboard,
-        content = { state ->
-            LayoutSection(
-                contentRootOffset = state.contentRootOffsetInAppRoot,
-                layoutNodes = state.scope.layoutNodes,
-                selectedLayoutNodeIds = state.scope.selectedLayoutNodeIds,
-                hoveredLayoutNodeIds = state.scope.hoveredLayoutNodeIds,
-                onNodeClick = state.scope::toggleLayoutNodeSelect,
-            )
-        },
-    ),
+    // TODO Add Layouts Inspector tab
+//    Layouts(
+//        title = "Layouts",
+//        iconRes = Res.drawable.icon_dashboard,
+//        content = { state ->
+//            LayoutSection(
+//                contentRootOffset = state.contentRootOffsetInAppRoot,
+//                layoutNodes = state.scope.layoutNodes,
+//                selectedLayoutNodeIds = state.scope.selectedLayoutNodeIds,
+//                hoveredLayoutNodeIds = state.scope.hoveredLayoutNodeIds,
+//                onNodeClick = state.scope::toggleLayoutNodeSelect,
+//            )
+//        },
+//    ),
 }
