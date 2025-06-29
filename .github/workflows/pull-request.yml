@@ -27,6 +27,7 @@ jobs:
         shell: bash
         run: ./gradlew ktlintCheck
   validate-binary-compatibility:
+    name: Validate Binary Compatibility
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -38,7 +39,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
-      - name: Validte Binary Compatibility
+      - name: Validate Binary Compatibility
         shell: bash
         run: ./gradlew apiCheck
   test:
