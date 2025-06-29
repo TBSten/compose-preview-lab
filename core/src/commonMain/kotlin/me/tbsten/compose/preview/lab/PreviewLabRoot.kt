@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,6 +32,8 @@ import me.tbsten.compose.preview.lab.component.adaptive
 import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 import me.tbsten.compose.preview.lab.previewlist.PreviewListTree
+import me.tbsten.compose.preview.lab.previewlist.SearchBar
+import me.tbsten.compose.preview.lab.previewlist.filterByQuery
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 
 /**
@@ -67,11 +70,18 @@ fun PreviewLabRoot(
                             .background(PreviewLabTheme.colors.background)
                             .zIndex(2f),
                     ) {
-                        PreviewListTree(
-                            previews = previewList,
-                            isSelected = { it == state.selectedPreview },
-                            onSelect = { state.select(it) },
-                        )
+                        Column {
+                            SearchBar(
+                                query = state.query,
+                                onQueryChange = state::onQueryChange,
+                            )
+                            Divider()
+                            PreviewListTree(
+                                previews = previewList.filterByQuery(state.query),
+                                isSelected = { it == state.selectedPreview },
+                                onSelect = state::select,
+                            )
+                        }
                         Divider()
                     }
                 },

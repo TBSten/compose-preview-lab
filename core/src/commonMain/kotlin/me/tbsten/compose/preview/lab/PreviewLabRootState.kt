@@ -16,6 +16,13 @@ class PreviewLabRootState(selectedPreview: CollectedPreview? = null) {
     var selectedPreview: CollectedPreview? by mutableStateOf(selectedPreview)
         private set
 
+    var query by mutableStateOf("")
+        private set
+
+    fun onQueryChange(query: String) {
+        this.query = query
+    }
+
     /**
      * Select Preview.
      */
