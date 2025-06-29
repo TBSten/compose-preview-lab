@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,6 +25,8 @@ import kotlinx.coroutines.delay
 import me.tbsten.compose.preview.lab.core.generated.resources.Res
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_delete
 import me.tbsten.compose.preview.lab.event.PreviewLabEvent
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.Text
 import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalTime::class)
@@ -77,11 +77,11 @@ internal fun EventListSection(events: List<PreviewLabEvent>, onClear: () -> Unit
                         Text(
                             text = event.title,
                             fontWeight = FontWeight.Bold,
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = PreviewLabTheme.typography.body2,
                         )
                         Text(
                             text = "${now - event.createAt.epochSeconds} seconds ago",
-                            style = MaterialTheme.typography.bodySmall,
+                            style = PreviewLabTheme.typography.body2,
                         )
                     }
 
@@ -91,7 +91,7 @@ internal fun EventListSection(events: List<PreviewLabEvent>, onClear: () -> Unit
                     ) {
                         Text(
                             text = event.description ?: "No Detail",
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = PreviewLabTheme.typography.body2,
                             modifier = Modifier
                                 .padding(horizontal = 12.dp, vertical = 8.dp),
                         )
@@ -110,11 +110,11 @@ private fun NoEvents() {
         Text(
             text = "No Events",
             fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.titleMedium,
+            style = PreviewLabTheme.typography.h2,
         )
         Text(
             text = "No events have been issued by onEvent(\"title\") yet.",
-            style = MaterialTheme.typography.bodyMedium,
+            style = PreviewLabTheme.typography.body2,
         )
     }
 }

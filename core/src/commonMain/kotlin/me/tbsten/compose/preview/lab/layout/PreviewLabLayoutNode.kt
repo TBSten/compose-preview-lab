@@ -11,8 +11,6 @@ internal sealed interface PreviewLabLayoutNode {
     val offsetInAppRoot: DpOffset?
     val size: DpSize?
 
-    fun offsetInContentRoot(contentRootOffset: DpOffset): DpOffset? = TODO("offsetInContentRoot")
-
     data class Unresolved(
         override val id: LayoutNodeId,
         override val label: String,
@@ -29,7 +27,7 @@ internal sealed interface PreviewLabLayoutNode {
 }
 
 @Suppress("ktlint:standard:function-naming")
-internal fun PreviewLabLayoutNode(id: LayoutNodeId, label: String, offsetInAppRoot: DpOffset?, size: DpSize?,) =
+internal fun PreviewLabLayoutNode(id: LayoutNodeId, label: String, offsetInAppRoot: DpOffset?, size: DpSize?) =
     if (offsetInAppRoot != null && size != null) {
         PreviewLabLayoutNode.Resolved(
             id = id,

@@ -10,9 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,6 +26,8 @@ import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.Text
 
 @Composable
 internal fun NoPreview() = SelectionContainer {
@@ -38,9 +37,9 @@ internal fun NoPreview() = SelectionContainer {
         modifier = Modifier
             .background(
                 Brush.horizontalGradient(
-                    0.4f to MaterialTheme.colorScheme.errorContainer,
-                    1.0f to MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.5f),
-                )
+                    0.4f to PreviewLabTheme.colors.error,
+                    1.0f to PreviewLabTheme.colors.error.copy(alpha = 0.5f),
+                ),
             )
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
@@ -48,22 +47,22 @@ internal fun NoPreview() = SelectionContainer {
     ) {
         Text(
             text = "🚨 No previews found.",
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.error,
+            style = PreviewLabTheme.typography.h2,
+            color = PreviewLabTheme.colors.error,
             textAlign = TextAlign.Center,
         )
         Text(
             text = "Compose Preview Lab Gradle Plugin couldn't locate @Previews in PreviewLabRoot.previews.",
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.error,
+            style = PreviewLabTheme.typography.h3,
+            color = PreviewLabTheme.colors.error,
             textAlign = TextAlign.Center,
         )
         Spacer(Modifier.height(48.dp))
-        HorizontalDivider(color = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.25f))
+        Divider(color = PreviewLabTheme.colors.onError.copy(alpha = 0.25f))
         Text(
             noPreviewDetail,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onErrorContainer,
+            style = PreviewLabTheme.typography.body2,
+            color = PreviewLabTheme.colors.onError,
         )
     }
 }

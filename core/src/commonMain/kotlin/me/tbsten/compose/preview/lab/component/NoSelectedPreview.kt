@@ -7,12 +7,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.Text
 
 @Composable
 internal fun NoSelectedPreview() = SelectionContainer {
@@ -26,11 +27,12 @@ internal fun NoSelectedPreview() = SelectionContainer {
     ) {
         Text(
             text = "👈 Please select a @Preview",
-            style = MaterialTheme.typography.headlineMedium,
+            style = PreviewLabTheme.typography.h2,
         )
         Text(
             text = "No preview is selected. Please select a @Preview from the list on the left sidebar.",
-            style = MaterialTheme.typography.bodyMedium,
+            style = PreviewLabTheme.typography.h3,
+            textAlign = TextAlign.Center,
         )
     }
 }

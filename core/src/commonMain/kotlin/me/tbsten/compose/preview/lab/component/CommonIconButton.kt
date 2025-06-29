@@ -1,21 +1,18 @@
 package me.tbsten.compose.preview.lab.component
 
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.PlainTooltip
-import androidx.compose.material3.Text
-import androidx.compose.material3.TooltipBox
-import androidx.compose.material3.TooltipDefaults
-import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.ui.LocalContentColor
+import me.tbsten.compose.preview.lab.ui.components.Icon
+import me.tbsten.compose.preview.lab.ui.components.IconButton
+import me.tbsten.compose.preview.lab.ui.components.IconButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.TooltipBox
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun CommonIconButton(
     imageVector: ImageVector,
@@ -23,25 +20,29 @@ internal fun CommonIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    variant: IconButtonVariant = IconButtonVariant.Ghost,
+    tint: Color? = null,
 ) = if (contentDescription == null) {
     IconButtonContent(
         imageVector = imageVector,
         contentDescription = contentDescription,
         onClick = onClick,
         enabled = enabled,
+        variant = variant,
+        tint = tint,
         modifier = modifier,
     )
 } else {
     TooltipBox(
-        positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
-        tooltip = { PlainTooltip { Text(contentDescription) } },
-        state = rememberTooltipState()
+        tooltip = contentDescription,
     ) {
         IconButtonContent(
             imageVector = imageVector,
             contentDescription = contentDescription,
             onClick = onClick,
             enabled = enabled,
+            variant = variant,
+            tint = tint,
             modifier = modifier,
         )
     }
@@ -54,15 +55,17 @@ private fun IconButtonContent(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-) = IconButton(onClick = onClick, enabled = enabled, modifier = modifier.size(28.dp)) {
+    variant: IconButtonVariant = IconButtonVariant.Ghost,
+    tint: Color? = null,
+) = IconButton(variant = variant, onClick = onClick, enabled = enabled, modifier = modifier.size(28.dp)) {
     Icon(
         imageVector = imageVector,
         contentDescription = contentDescription,
         modifier = modifier.size(20.dp),
+        tint = tint ?: LocalContentColor.current,
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun CommonIconButton(
     painter: Painter,
@@ -70,25 +73,29 @@ internal fun CommonIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    variant: IconButtonVariant = IconButtonVariant.Ghost,
+    tint: Color? = null,
 ) = if (contentDescription == null) {
     IconButtonContent(
         painter = painter,
         contentDescription = contentDescription,
         onClick = onClick,
         enabled = enabled,
+        variant = variant,
+        tint = tint,
         modifier = modifier,
     )
 } else {
     TooltipBox(
-        positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
-        tooltip = { PlainTooltip { Text(contentDescription) } },
-        state = rememberTooltipState()
+        tooltip = contentDescription,
     ) {
         IconButtonContent(
             painter = painter,
             contentDescription = contentDescription,
             onClick = onClick,
             enabled = enabled,
+            variant = variant,
+            tint = tint,
             modifier = modifier,
         )
     }
@@ -100,11 +107,19 @@ private fun IconButtonContent(
     contentDescription: String? = null,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    variant: IconButtonVariant = IconButtonVariant.Ghost,
+    tint: Color? = null,
     enabled: Boolean = true,
-) = IconButton(onClick = onClick, enabled = enabled, modifier = modifier.size(28.dp)) {
+) = IconButton(
+    variant = variant,
+    onClick = onClick,
+    enabled = enabled,
+    modifier = modifier.size(28.dp),
+) {
     Icon(
         painter = painter,
         contentDescription = contentDescription,
+        tint = tint ?: LocalContentColor.current,
         modifier = modifier.size(20.dp),
     )
 }
