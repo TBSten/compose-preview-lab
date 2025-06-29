@@ -52,48 +52,50 @@ internal fun <V> SelectButton(
 //    val menuState = rememberMenuState(expanded = false)
     var isOpenMenu by remember { mutableStateOf(false) }
 
-    Button(
-        variant = ButtonVariant.PrimaryOutlined,
-        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
-        onClick = { isOpenMenu = true },
-        modifier = modifier,
-    ) {
-        CompositionLocalProvider(
-            LocalTextStyle provides PreviewLabTheme.typography.label3,
+    Column {
+        Button(
+            variant = ButtonVariant.PrimaryOutlined,
+            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+            onClick = { isOpenMenu = true },
+            modifier = modifier,
         ) {
-            Text(title(value))
-        }
-    }
-    CommonMenu(
-        expanded = isOpenMenu,
-        onDismissRequest = { isOpenMenu = false },
-    ) {
-        choices.forEach { item ->
-            val isSelected = item == value
-            CommonListItem(
-                isSelected = isSelected,
-                onSelect = {
-                    onSelect(item)
-                    isOpenMenu = false
-                },
-                modifier = Modifier.widthIn(min = adaptive(100, 200).dp),
+            CompositionLocalProvider(
+                LocalTextStyle provides PreviewLabTheme.typography.label3,
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                Text(title(value))
+            }
+        }
+        CommonMenu(
+            expanded = isOpenMenu,
+            onDismissRequest = { isOpenMenu = false },
+        ) {
+            choices.forEach { item ->
+                val isSelected = item == value
+                CommonListItem(
+                    isSelected = isSelected,
+                    onSelect = {
+                        onSelect(item)
+                        isOpenMenu = false
+                    },
+                    modifier = Modifier.widthIn(min = adaptive(100, 200).dp),
                 ) {
-                    if (isSelected) {
-                        Icon(
-                            imageResource(Res.drawable.icon_check),
-                            contentDescription = "selected",
-                        )
-                    }
-                    Column {
-                        Text(text = title(item), style = PreviewLabTheme.typography.body2)
-                        itemDetail(item)?.let {
-                            Text(
-                                text = it,
-                                style = PreviewLabTheme.typography.body3,
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        if (isSelected) {
+                            Icon(
+                                imageResource(Res.drawable.icon_check),
+                                contentDescription = "selected",
                             )
+                        }
+                        Column {
+                            Text(text = title(item), style = PreviewLabTheme.typography.body2)
+                            itemDetail(item)?.let {
+                                Text(
+                                    text = it,
+                                    style = PreviewLabTheme.typography.body3,
+                                )
+                            }
                         }
                     }
                 }
