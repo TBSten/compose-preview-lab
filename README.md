@@ -17,14 +17,9 @@
 > notice. Using this plugin for a hobby project is fine, but we do not recommend using it for
 > production projects yet.
 
-Compose Preview Lab is a component library that turns `@Preview` into a playground.
-PreviewLab does two main jobs
-
-- **Collect `@Preview` in the project** and catalog it.
-  - Compose Multiplatform support. Previews can be collected at build time using generation techniques, even in environments where reflections are difficult to use, such as Javascript.
-  - JS, WasmJS can be set up to seamlessly access the catalog from a pull request. ([Learn more about this topic here](https://github.com/TBSten/compose-preview-lab/blob/main/docs/improve-review-experience-on-pull-request.md))
-- Allows you to pass parameters to Component, turning your Preview from a mere snapshot of a component into a **Component Playground**.
-  - This facilitates manual testing and improves the speed of component comprehension for those new to the component.
+Compose Preview Lab turns @Preview into an interactive Component Playground.
+You can pass parameters to components, enabling more than just static snapshots—making manual testing easier and helping new developers understand components faster.
+Compose Multiplatform is supported.
 
 ## Setup
 
