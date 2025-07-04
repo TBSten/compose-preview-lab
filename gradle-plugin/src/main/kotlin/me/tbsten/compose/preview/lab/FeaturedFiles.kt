@@ -71,7 +71,7 @@ internal abstract class GenerateFeaturedFilesCode : DefaultTask() {
         featuredFilesCode += "\n"
 
         val groupNames = mutableListOf<String>()
-        featuredFilesDir.asFile.listFiles().forEach { featuredFileFile ->
+        featuredFilesDir.asFile.listFiles().sorted().forEach { featuredFileFile ->
             val groupName = featuredFileFile.name
                 .also { groupNames.add(it) }
             featuredFileFile.useLines { lines ->
