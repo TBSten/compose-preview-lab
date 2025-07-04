@@ -24,8 +24,9 @@ public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLab
 public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabRootKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabRootKt;
 	public fun <init> ()V
-	public final fun getLambda$-1286077839$core_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$1686164197$core_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2143766127$core_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$559994497$core_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public abstract interface annotation class me/tbsten/compose/preview/lab/ComposePreviewLabOption : java/lang/annotation/Annotation {
@@ -89,16 +90,17 @@ public final class me/tbsten/compose/preview/lab/PreviewLab$Companion : me/tbste
 }
 
 public final class me/tbsten/compose/preview/lab/PreviewLabRootKt {
-	public static final fun PreviewLabRoot (Ljava/util/List;Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/PreviewLabRootState;Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabRoot (Ljava/util/List;Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/PreviewLabRootState;Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler;Ljava/util/Map;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/PreviewLabRootState {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (Lme/tbsten/compose/preview/lab/CollectedPreview;)V
-	public synthetic fun <init> (Lme/tbsten/compose/preview/lab/CollectedPreview;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun getSelectedPreview ()Lme/tbsten/compose/preview/lab/CollectedPreview;
-	public final fun select (Lme/tbsten/compose/preview/lab/CollectedPreview;)V
+	public fun <init> (Lkotlin/Pair;)V
+	public synthetic fun <init> (Lkotlin/Pair;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getQuery ()Ljava/lang/String;
+	public final fun onQueryChange (Ljava/lang/String;)V
+	public final fun select (Ljava/lang/String;Lme/tbsten/compose/preview/lab/CollectedPreview;)V
 	public final fun unselect ()V
 }
 
