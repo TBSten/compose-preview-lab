@@ -1,4 +1,3 @@
-import me.tbsten.compose.preview.lab.composePreviewLab
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
@@ -67,6 +66,6 @@ dependencies {
     add("kspWasmJs", composePreviewLabKspPlugin)
 }
 
-ksp {
-    composePreviewLab.publicPreviewList = true
+composePreviewLab {
+    publicPreviewList = true
 }

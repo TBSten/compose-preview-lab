@@ -18,7 +18,7 @@ allprojects {
 }
 
 apiValidation {
-    ignoredProjects.add(
-        projects.intellijPlugin.name,
-    )
+//    ignoredProjects.add(
+//        projects.intellijPlugin.name,
+//    )
 }

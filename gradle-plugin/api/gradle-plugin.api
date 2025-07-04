@@ -1,19 +1,13 @@
+public abstract class me/tbsten/compose/preview/lab/ComposePreviewLabExtension {
+	public fun <init> (Lorg/gradle/api/model/ObjectFactory;Lorg/gradle/api/Project;)V
+	public final fun getPreviewsListPackage ()Lorg/gradle/api/provider/Property;
+	public final fun getProjectRootPath ()Lorg/gradle/api/provider/Property;
+	public final fun getPublicPreviewList ()Lorg/gradle/api/provider/Property;
+}
+
 public final class me/tbsten/compose/preview/lab/ComposePreviewLabGradlePlugin : org/gradle/api/Plugin {
 	public fun <init> ()V
 	public synthetic fun apply (Ljava/lang/Object;)V
 	public fun apply (Lorg/gradle/api/Project;)V
-}
-
-public final class me/tbsten/compose/preview/lab/ComposePreviewLabGradlePluginKt {
-	public static final fun getComposePreviewLab (Lcom/google/devtools/ksp/gradle/KspExtension;)Lme/tbsten/compose/preview/lab/TypeSafeComposePreviewLabKspArgAccessor;
-}
-
-public final class me/tbsten/compose/preview/lab/TypeSafeComposePreviewLabKspArgAccessor {
-	public final fun getPreviewsListPackage ()Ljava/lang/String;
-	public final fun getProjectRootPath ()Ljava/lang/String;
-	public final fun getPublicPreviewList ()Z
-	public final fun setPreviewsListPackage (Ljava/lang/String;)V
-	public final fun setProjectRootPath (Ljava/lang/String;)V
-	public final fun setPublicPreviewList (Z)V
 }
 

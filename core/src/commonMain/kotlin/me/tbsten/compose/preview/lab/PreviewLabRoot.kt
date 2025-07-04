@@ -9,17 +9,25 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -31,7 +39,12 @@ import me.tbsten.compose.preview.lab.component.adaptive
 import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 import me.tbsten.compose.preview.lab.previewlist.PreviewListTree
+import me.tbsten.compose.preview.lab.previewlist.SearchBar
+import me.tbsten.compose.preview.lab.previewlist.filterByQuery
+import me.tbsten.compose.preview.lab.previewlist.groupingByFeaturedFiles
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.HorizontalDivider
+import me.tbsten.compose.preview.lab.ui.components.Text
 
 /**
  * A Composable function that catalogs and displays a list of Previews. The left sidebar actually displays the list of Previews, and the selected Preview is displayed in the center of the screen.
@@ -49,39 +62,97 @@ fun PreviewLabRoot(
     modifier: Modifier = Modifier,
     state: PreviewLabRootState = remember { PreviewLabRootState() },
     openFileHandler: OpenFileHandler<out Any?>? = null,
+    featuredFiles: Map<String, List<String>> = emptyMap(),
 ) = PreviewLabTheme {
     CompositionLocalProvider(
         LocalOpenFileHandler provides openFileHandler,
     ) {
         val previewList = remember { previews.toList() }
+        val groupedPreviews by remember {
+            derivedStateOf {
+                previewList.groupingByFeaturedFiles(featuredFiles) +
+                    ("all" to previewList)
+            }
+        }
+
+        val background = PreviewLabTheme.colors.background
 
         Box(
             modifier = modifier
-                .background(PreviewLabTheme.colors.background)
+                .background(background)
                 .fillMaxSize(),
         ) {
             ListDetailScaffold(
                 list = {
                     Row(
                         modifier = Modifier
-                            .background(PreviewLabTheme.colors.background)
+                            .background(background)
                             .zIndex(2f),
                     ) {
-                        PreviewListTree(
-                            previews = previewList,
-                            isSelected = { it == state.selectedPreview },
-                            onSelect = { state.select(it) },
-                        )
+                        LazyColumn {
+                            stickyHeader {
+                                SearchBar(
+                                    query = state.query,
+                                    onQueryChange = state::onQueryChange,
+                                    modifier = Modifier
+                                        .background(background),
+                                )
+                                HorizontalDivider()
+                            }
+
+                            groupedPreviews.entries.forEachIndexed { index, (groupName, previews) ->
+                                val filteredPreviews = previews.filterByQuery(state.query)
+
+                                item {
+                                    SelectionContainer {
+                                        Text(
+                                            text = buildAnnotatedString {
+                                                append(groupName)
+                                                withStyle(PreviewLabTheme.typography.label3.toSpanStyle()) {
+                                                    append(" ")
+                                                    append("(")
+                                                    append("${filteredPreviews.size}")
+                                                    append(")")
+                                                }
+                                            },
+                                            color = PreviewLabTheme.colors.textSecondary,
+                                            style = PreviewLabTheme.typography.label2,
+                                            fontWeight = FontWeight.Bold,
+                                            modifier = Modifier
+                                                .background(PreviewLabTheme.colors.background)
+                                                .padding(4.dp)
+                                                .fillMaxWidth(),
+                                        )
+                                    }
+                                }
+                                item {
+                                    PreviewListTree(
+                                        previews = filteredPreviews,
+                                        isSelected = {
+                                            groupName == state.selectedPreview?.groupName &&
+                                                it == state.selectedPreview?.preview
+                                        },
+                                        onSelect = {
+                                            state.select(groupName, it)
+                                        },
+                                    )
+                                }
+
+                                if (index != groupedPreviews.entries.size - 1) {
+                                    item { HorizontalDivider() }
+                                }
+                            }
+                        }
                         Divider()
                     }
                 },
                 selectedItem = state.selectedPreview,
                 detail = { selectedPreview ->
                     CompositionLocalProvider(
-                        LocalCollectedPreview provides selectedPreview,
+                        LocalCollectedPreview provides selectedPreview.preview,
                     ) {
                         AnimatedContent(
-                            targetState = selectedPreview,
+                            targetState = selectedPreview.preview,
                             transitionSpec = {
                                 fadeIn() togetherWith fadeOut()
                             },

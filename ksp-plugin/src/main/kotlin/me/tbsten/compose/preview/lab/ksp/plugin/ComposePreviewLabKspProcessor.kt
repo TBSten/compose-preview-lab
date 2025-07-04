@@ -10,6 +10,8 @@ import com.google.devtools.ksp.validate
 private const val AndroidPreviewAnnotation = "androidx.compose.ui.tooling.preview.Preview"
 private const val CMPPreviewAnnotation = "org.jetbrains.compose.ui.tooling.preview.Preview"
 
+// TODO Migrate to Kotlin Compiler Plugin
+//  https://github.com/TBSten/compose-preview-lab/issues/52
 internal class ComposePreviewLabKspProcessor(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger,

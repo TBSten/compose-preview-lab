@@ -20,12 +20,14 @@ import org.w3c.dom.HTMLElement
 @OptIn(ExperimentalComposeUiApi::class)
 fun previewLabApplication(
     previews: List<CollectedPreview>,
+    featuredFiles: Map<String, List<String>> = emptyMap(),
     openFileHandler: OpenFileHandler<out Any?>? = null,
     rootElement: HTMLElement = document.body!!,
 ) {
     ComposeViewport(rootElement) {
         PreviewLabRoot(
             previews = previews,
+            featuredFiles = featuredFiles,
             openFileHandler = openFileHandler,
         )
     }
