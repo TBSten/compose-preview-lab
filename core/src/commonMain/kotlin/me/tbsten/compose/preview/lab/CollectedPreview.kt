@@ -69,6 +69,7 @@ internal data class CollectedPreviewImpl(
  * @param code The source code of Preview.
  * @param content The content of Preview. You can display the content of Preview by calling invoke().
  */
+@OptIn(InternalComposePreviewLabApi::class)
 fun CollectedPreview(
     displayName: String,
     filePath: String?,
