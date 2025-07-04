@@ -3,8 +3,6 @@ package me.tbsten.compose.preview.lab.previewlist
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -27,7 +25,6 @@ internal fun PreviewListTree(
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp),
         modifier = modifier
-            .verticalScroll(rememberScrollState())
             .padding(4.dp),
     ) {
         tree.forEach { node ->

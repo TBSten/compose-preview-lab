@@ -12,6 +12,7 @@ import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import java.util.Collections.emptyMap
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 
 /**
@@ -28,6 +29,7 @@ import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 fun previewLabApplication(
     previews: List<CollectedPreview>,
     openFileHandler: OpenFileHandler<out Any?>? = null,
+    featuredFiles: Map<String, List<String>> = emptyMap(),
     // Window arguments
     onCloseRequest: ApplicationScope.() -> Unit = { exitApplication() },
     visible: Boolean = true,
@@ -73,6 +75,7 @@ fun previewLabApplication(
         windowConfiguration()
         PreviewLabRoot(
             previews = previews,
+            featuredFiles = featuredFiles,
             openFileHandler = openFileHandler,
         )
     }
