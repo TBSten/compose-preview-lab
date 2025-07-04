@@ -29,6 +29,9 @@ jobs:
   validate-binary-compatibility:
     name: Validate Binary Compatibility
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # for checkout, peter-evans/create-pull-request
+      pull-requests: write # for yumemi/comment-pull-request
     steps:
       - uses: actions/checkout@v4
       - name: Setup Java for Gradle
