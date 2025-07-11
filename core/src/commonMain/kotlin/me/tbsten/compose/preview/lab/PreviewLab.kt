@@ -26,6 +26,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.TransformOrigin
@@ -391,6 +392,12 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                                     state.selectedTabIndex?.let {
                                         pagerState.animateScrollToPage(it)
                                     }
+                                }
+                                LaunchedEffect(Unit) {
+                                    snapshotFlow { pagerState.currentPage }
+                                        .collect {
+                                            state.selectedTabIndex = it
+                                        }
                                 }
                             },
                         modifier = Modifier.weight(1f),
