@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -63,6 +64,8 @@ internal fun ComposeMultiplatformWizardDefaultUI() = AppTheme {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        TestPublicPreview()
+        HorizontalDivider()
         Text(
             text = stringResource(Res.string.cyclone),
             fontFamily = FontFamily(Font(Res.font.IndieFlower_Regular)),

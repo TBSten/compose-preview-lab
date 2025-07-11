@@ -138,3 +138,7 @@ composeCompiler {
 tasks.register<ComposeHotRun>("runHot") {
     mainClass.set("MainKt")
 }
+
+publicPreview {
+    enabled = true
+}

@@ -8,6 +8,7 @@ plugins {
 dependencies {
     compileOnly(gradleApi())
     implementation(libs.kotlinGradlePlugin)
+    implementation(libs.kotlinGradlePluginApi)
     implementation(libs.kspGradlePlugin)
 }
 
