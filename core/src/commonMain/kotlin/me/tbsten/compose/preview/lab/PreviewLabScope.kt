@@ -131,8 +131,7 @@ class PreviewLabScope internal constructor() {
     }
 
     internal fun removeLayoutNode(id: Long) {
-        layoutNodes.indexOfFirst { it.id == id }
-            .also { if (it != -1) layoutNodes.removeAt(it) }
+        layoutNodes.removeAll { it.id == id }
     }
 
     internal fun putLayoutNode(id: Long, label: String, offsetInAppRoot: DpOffset?, size: DpSize?) {
