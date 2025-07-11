@@ -300,7 +300,7 @@ private fun ContentSection(
 @Composable
 private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Unit) {
     val tabContent = remember {
-        movableContentOf { tab: InspectorTab, state: PreviewLabState ->
+        movableContentOf { tab: InspectorTab ->
             tab.content(state)
         }
     }
@@ -340,7 +340,7 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                                     .background(PreviewLabTheme.colors.background, shape = RoundedCornerShape(8.dp))
                                     .heightIn(min = 200.dp),
                             ) {
-                                tab.content(state)
+                                tabContent(tab)
                             }
                         }
                     }
@@ -402,7 +402,7 @@ private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Un
                             },
                         modifier = Modifier.weight(1f),
                     ) {
-                        tabContent(it, state)
+                        tabContent(it)
                     }
 
                     val startLineNumber = LocalCollectedPreview.current?.startLineNumber
