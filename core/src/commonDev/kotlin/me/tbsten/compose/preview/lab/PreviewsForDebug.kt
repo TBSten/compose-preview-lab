@@ -41,6 +41,7 @@ import me.tbsten.compose.preview.lab.component.AdaptiveContainer
 import me.tbsten.compose.preview.lab.component.Divider
 import me.tbsten.compose.preview.lab.component.adaptive
 import me.tbsten.compose.preview.lab.field.BooleanField
+import me.tbsten.compose.preview.lab.field.ColorField
 import me.tbsten.compose.preview.lab.field.DpOffsetField
 import me.tbsten.compose.preview.lab.field.DpSizeField
 import me.tbsten.compose.preview.lab.field.EnumField
@@ -103,10 +104,14 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                         val spValue = fieldValue {
                             SpField("spValue", 20.sp)
                         }
+                        val colorValue = fieldValue {
+                            ColorField("colorValue", Color.Red)
+                        }
+
                         Box(
                             Modifier
                                 .offset(x = dpOffsetValue.x, y = dpOffsetValue.y)
-                                .background(Color.Yellow)
+                                .background(colorValue)
                                 .size(dpSizeValue),
                         ) {
                             Text("spValue", fontSize = spValue)
