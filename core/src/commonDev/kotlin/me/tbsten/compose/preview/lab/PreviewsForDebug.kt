@@ -98,7 +98,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                         val dpSizeValue = fieldValue {
                             DpSizeField(
                                 "dpSizeValue",
-                                DpSize(20.dp, 20.dp),
+                                DpSize(200.dp, 120.dp),
                             )
                         }
                         val spValue = fieldValue {
