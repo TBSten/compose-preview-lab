@@ -72,7 +72,7 @@ class ScaleModifierFieldValue(scaleX: Float, scaleY: Float) : ModifierFieldValue
         var scaleY by mutableStateOf(initialScaleY)
 
         override val canCreate: Boolean
-            get() = scaleY != null
+            get() = scaleX != null && scaleY != null
 
         @Composable
         override fun Content(createButton: @Composable (() -> Unit)) = Column {
