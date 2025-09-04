@@ -13,6 +13,12 @@ import me.tbsten.compose.preview.lab.field.modifier.background
 import me.tbsten.compose.preview.lab.field.modifier.border
 import me.tbsten.compose.preview.lab.field.modifier.padding
 
+/**
+ * A field for building and editing Modifier chains interactively.
+ * 
+ * @param label The display label for this field
+ * @param initialValue The initial list of modifier values to display
+ */
 class ModifierField(label: String, initialValue: ModifierFieldValueList = ModifierFieldValue.mark()) :
     ImmutablePreviewLabField<Modifier>(
         label = label,
@@ -34,12 +40,27 @@ class ModifierField(label: String, initialValue: ModifierFieldValueList = Modifi
     }
 }
 
+/**
+ * Adds visual marking to a ModifierFieldValueList with border and background.
+ * 
+ * @param color The color to use for both border and background (with adjusted alpha)
+ * @param borderWidth The width of the border
+ * @return A new ModifierFieldValueList with marking applied
+ */
 fun ModifierFieldValueList.mark(color: Color = Color.Red.copy(alpha = 0.5f), borderWidth: Dp = 2.dp) = mark(
     borderColor = color,
     backgroundColor = color.copy(alpha = color.alpha * 0.5f),
     borderWidth = borderWidth,
 )
 
+/**
+ * Adds visual marking to a ModifierFieldValueList with customizable border and background colors.
+ * 
+ * @param borderColor The color for the border
+ * @param backgroundColor The color for the background
+ * @param borderWidth The width of the border
+ * @return A new ModifierFieldValueList with marking applied
+ */
 fun ModifierFieldValueList.mark(
     borderColor: Color = Color.Red.copy(alpha = 0.75f),
     backgroundColor: Color = borderColor.copy(alpha = borderColor.alpha * 0.5f),

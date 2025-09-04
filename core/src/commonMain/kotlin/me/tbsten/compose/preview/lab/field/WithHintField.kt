@@ -16,9 +16,23 @@ import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Chip
 import me.tbsten.compose.preview.lab.ui.components.Text
 
+/**
+ * Adds hint choices to a MutablePreviewLabField, allowing users to quickly select from predefined values.
+ * 
+ * @param choices Vararg of pairs where first is the hint label and second is the value
+ * @return A WithHintField wrapper that displays the base field with hint choices
+ */
 fun <Value> MutablePreviewLabField<Value>.withHint(vararg choices: Pair<String, Value>): MutablePreviewLabField<Value> =
     WithHintField<Value>(this, choices = mapOf(*choices))
 
+/**
+ * A field wrapper that adds hint choices below the base field.
+ * Users can click on hint chips to quickly apply predefined values.
+ * 
+ * @param Value The type of value managed by the field
+ * @param baseField The underlying field to wrap with hints
+ * @param choices Map of hint labels to their corresponding values
+ */
 class WithHintField<Value> internal constructor(
     private val baseField: MutablePreviewLabField<Value>,
     private val choices: Map<String, Value>,

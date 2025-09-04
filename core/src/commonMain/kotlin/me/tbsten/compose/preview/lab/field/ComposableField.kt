@@ -23,6 +23,13 @@ import me.tbsten.compose.preview.lab.ui.LocalTextStyle
 import me.tbsten.compose.preview.lab.util.thenIf
 import me.tbsten.compose.preview.lab.util.thenIfNotNull
 
+/**
+ * A field that allows selecting from predefined Composable content options.
+ * 
+ * @param label The display label for this field
+ * @param initialValue The initial ComposableFieldValue to display
+ * @param choices List of available ComposableFieldValue options to choose from
+ */
 open class ComposableField(
     label: String,
     initialValue: ComposableFieldValue,
@@ -50,12 +57,21 @@ open class ComposableField(
     }
 }
 
+/**
+ * Interface for values that can be used in a ComposableField.
+ * Provides a label and composable content.
+ */
 interface ComposableFieldValue {
+    /** Display label for this composable value */
     val label: String
 
+    /** Renders the composable content */
     @Composable
     operator fun invoke()
 
+    /**
+     * An empty ComposableFieldValue that renders nothing.
+     */
     object Empty : ComposableFieldValue {
         override val label: String = "Empty"
 
@@ -65,6 +81,10 @@ interface ComposableFieldValue {
         }
     }
 
+    /**
+     * A ComposableFieldValue that renders a colored box with configurable dimensions.
+     * Supports both fixed dimensions and fill options.
+     */
     class ColorBox private constructor(
         private val color: Color,
         private val widthOrFill: Dp?,
@@ -128,6 +148,14 @@ interface ComposableFieldValue {
         }
     }
 
+    /**
+     * A ComposableFieldValue that renders text with optional font scaling and styling.
+     * 
+     * @param text The text content to display
+     * @param fontScale Scale factor for the font size (default: 1f)
+     * @param label Optional custom label (defaults to generated label)
+     * @param textStyle Optional text style to apply
+     */
     class Text(val text: String, val fontScale: Float = 1f, label: String? = null, private val textStyle: TextStyle? = null) :
         ComposableFieldValue {
         override val label: String =
@@ -206,6 +234,13 @@ interface ComposableFieldValue {
     }
 }
 
+/**
+ * Creates a ComposableFieldValue with custom content.
+ * 
+ * @param label The display label for this value
+ * @param content The composable content to render
+ * @return A ComposableFieldValue that renders the provided content
+ */
 @Suppress("ktlint:standard:function-naming")
 fun ComposableFieldValue(label: String, content: @Composable () -> Unit) = object : ComposableFieldValue {
     override val label: String = label
