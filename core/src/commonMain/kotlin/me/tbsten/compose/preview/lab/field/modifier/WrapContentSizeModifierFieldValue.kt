@@ -94,6 +94,7 @@ class WrapContentHeightModifierFieldValue : ModifierFieldValue {
 
         @Composable
         override fun Content(createButton: @Composable (() -> Unit)) {
+            // No configuration needed for wrapContentHeight
         }
 
         override fun create(): Result<WrapContentHeightModifierFieldValue> = runCatching {

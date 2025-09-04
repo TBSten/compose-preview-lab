@@ -39,18 +39,6 @@ internal fun AlphaSlider(selectedColor: Color, onColorSelected: (Color) -> Unit,
     val thumbColor = colorPickerThumbColor()
     val updateColor by rememberUpdatedState(onColorSelected)
 
-//    val onThumbPositionChange(newOffset: Offset) = sliderSize?.let { sliderSize ->
-//        val start = thumbHeightPx / 2
-//        val end = sliderSize.height - thumbHeightPx / 2
-//        val y = newOffset.y.coerceIn(start..end)
-//        val newPosition = y - start
-//
-//        val alpha = (y - start) / (end - start)
-//        val newColor = selectedColor.copy(alpha = alpha)
-//
-//        thumbPositionY = newPosition
-//        updateColor(newColor)
-//    }
     val onThumbPositionChange by rememberUpdatedState { newOffset: Offset ->
         sliderSize?.let { sliderSize ->
             val start = thumbHeightPx / 2
