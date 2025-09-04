@@ -58,6 +58,7 @@ import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.mark
 import me.tbsten.compose.preview.lab.field.modifier.ModifierFieldValue
 import me.tbsten.compose.preview.lab.field.nullable
+import me.tbsten.compose.preview.lab.field.withHint
 
 val previewsForUiDebug = listOf<CollectedPreview>(
     CollectedPreview("Fields", "src/commonMain/kotlin/me/tbsten/example/Fields.kt") {
@@ -186,6 +187,22 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                                     )
                                 }
                             }",
+                        )
+                    }
+                    header("With Hint")
+                    item {
+                        Text(
+                            text = "StringField value: " +
+                                "\"" +
+                                fieldValue {
+                                    StringField("Text.text", "")
+                                        .withHint(
+                                            "Empty" to "",
+                                            "Very long" to "very " + "long ".repeat(1000) + "text",
+                                            "Simple" to "Hello World",
+                                        )
+                                } +
+                                "\"",
                         )
                     }
                 }
