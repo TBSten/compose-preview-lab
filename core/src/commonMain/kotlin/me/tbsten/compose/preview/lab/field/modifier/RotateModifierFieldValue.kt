@@ -1,0 +1,85 @@
+package me.tbsten.compose.preview.lab.field.modifier
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
+import me.tbsten.compose.preview.lab.component.FloatTransformer
+import me.tbsten.compose.preview.lab.component.NullableFloatTransformer
+import me.tbsten.compose.preview.lab.component.TransformableTextField
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.Text
+
+class RotateModifierFieldValue(degrees: Float) : ModifierFieldValue {
+    var degrees by mutableStateOf(degrees)
+
+    override fun Modifier.createModifier(): Modifier = rotate(
+        degrees = degrees,
+    )
+
+    @Composable
+    override fun Builder() = DefaultModifierFieldValueBuilder(
+        modifierTextCode = buildAnnotatedString {
+            appendLine(".rotate(")
+
+            append("  degrees = ")
+            withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                append("$degrees")
+            }
+            appendLine("f,")
+
+            append(")")
+        },
+        menuContent = {
+            DefaultMenu {
+                TextFieldItem(
+                    label = "degrees",
+                    value = degrees,
+                    onValueChange = { degrees = it },
+                    transformer = FloatTransformer,
+                )
+            }
+        },
+    )
+
+    class Factory(initialDegrees: Float? = null) : ModifierFieldValueFactory<RotateModifierFieldValue> {
+        override val title: String = ".rotate(...)"
+        var degrees by mutableStateOf(initialDegrees)
+
+        override val canCreate: Boolean
+            get() = degrees != null
+
+        @Composable
+        override fun Content(createButton: @Composable (() -> Unit)) = Column {
+            TransformableTextField(
+                value = degrees,
+                onValueChange = { degrees = it },
+                transformer = NullableFloatTransformer,
+                textStyle = PreviewLabTheme.typography.label1,
+                prefix = { Text("degrees: ", style = PreviewLabTheme.typography.label2) },
+            )
+
+            Row { createButton() }
+        }
+
+        override fun create(): Result<RotateModifierFieldValue> = runCatching {
+            RotateModifierFieldValue(
+                degrees = requireNotNull(degrees) { "degrees is null" },
+            )
+        }
+    }
+}
+
+fun ModifierFieldValueList.rotate(degrees: Float) = then(
+    RotateModifierFieldValue(
+        degrees = degrees,
+    ),
+)

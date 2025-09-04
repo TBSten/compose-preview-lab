@@ -28,6 +28,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import kotlin.math.max
 
 @Composable
 internal fun AlphaSlider(selectedColor: Color, onColorSelected: (Color) -> Unit, modifier: Modifier = Modifier) {
@@ -54,7 +55,7 @@ internal fun AlphaSlider(selectedColor: Color, onColorSelected: (Color) -> Unit,
         sliderSize?.let { sliderSize ->
             val start = thumbHeightPx / 2
             val end = sliderSize.height - thumbHeightPx / 2
-            val y = newOffset.y.coerceIn(start..end)
+            val y = newOffset.y.coerceIn(start..max(end, start))
             val newPosition = y - start
 
             val alpha = (y - start) / (end - start)

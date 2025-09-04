@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
+import androidx.compose.ui.window.PopupProperties
 import kotlin.math.max
 import kotlin.math.min
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
@@ -61,6 +62,7 @@ internal fun CommonMenu(expanded: Boolean, onDismissRequest: () -> Unit, content
             }
 
         Popup(
+            properties = PopupProperties(focusable = true),
             onDismissRequest = onDismissRequest,
             popupPositionProvider = popupPositionProvider,
         ) {
@@ -172,7 +174,8 @@ internal fun calculateTransformOrigin(anchorBounds: IntRect, menuBounds: IntRect
                     (
                         max(anchorBounds.left, menuBounds.left) +
                             min(anchorBounds.right, menuBounds.right)
-                        ) / 2
+                        ) /
+                        2
                 (intersectionCenter - menuBounds.left).toFloat() / menuBounds.width
             }
         }
@@ -186,7 +189,8 @@ internal fun calculateTransformOrigin(anchorBounds: IntRect, menuBounds: IntRect
                     (
                         max(anchorBounds.top, menuBounds.top) +
                             min(anchorBounds.bottom, menuBounds.bottom)
-                        ) / 2
+                        ) /
+                        2
                 (intersectionCenter - menuBounds.top).toFloat() / menuBounds.height
             }
         }
