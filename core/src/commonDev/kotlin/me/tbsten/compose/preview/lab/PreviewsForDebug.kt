@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import me.tbsten.compose.preview.lab.component.AdaptiveContainer
 import me.tbsten.compose.preview.lab.component.Divider
 import me.tbsten.compose.preview.lab.component.adaptive
+import me.tbsten.compose.preview.lab.event.withEvent
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.ColorField
 import me.tbsten.compose.preview.lab.field.DpOffsetField
@@ -47,10 +48,13 @@ import me.tbsten.compose.preview.lab.field.DpSizeField
 import me.tbsten.compose.preview.lab.field.EnumField
 import me.tbsten.compose.preview.lab.field.FloatField
 import me.tbsten.compose.preview.lab.field.IntField
+import me.tbsten.compose.preview.lab.field.ModifierField
 import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.field.SelectableField
 import me.tbsten.compose.preview.lab.field.SpField
 import me.tbsten.compose.preview.lab.field.StringField
+import me.tbsten.compose.preview.lab.field.mark
+import me.tbsten.compose.preview.lab.field.modifier.ModifierFieldValue
 import me.tbsten.compose.preview.lab.field.nullable
 
 val previewsForUiDebug = listOf<CollectedPreview>(
@@ -105,7 +109,10 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                             SpField("spValue", 20.sp)
                         }
                         val colorValue = fieldValue {
-                            ColorField("colorValue", Color.Red)
+                            ColorField("colorValue", Color.Yellow)
+                        }
+                        val textModifierValue = fieldValue {
+                            ModifierField("modifier")
                         }
 
                         Box(
@@ -114,7 +121,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                                 .background(colorValue)
                                 .size(dpSizeValue),
                         ) {
-                            Text("spValue", fontSize = spValue)
+                            Text("spValue", fontSize = spValue, modifier = textModifierValue)
                         }
                     }
 
@@ -347,6 +354,31 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                     .forEach {
                         Text(it)
                     }
+            }
+        }
+    },
+    CollectedPreview("Modifier Fields", "src/commonMain/kotlin/me/tbsten/example/ModifierField.kt") {
+        PreviewLab {
+            Button(
+                onClick = withEvent("onClick"),
+                modifier = fieldValue {
+                    ModifierField(
+                        label = "Button.modifier",
+                        initialValue = ModifierFieldValue
+                            .mark(color = Color.Blue),
+                    )
+                },
+            ) {
+                Text(
+                    text = "Click Me !",
+                    modifier = fieldValue {
+                        ModifierField(
+                            label = "Text.modifier",
+                            initialValue = ModifierFieldValue
+                                .mark(color = Color.Red),
+                        )
+                    },
+                )
             }
         }
     },
