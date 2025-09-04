@@ -128,7 +128,7 @@ object NullableDpTransformer : Transformer<Dp?> {
 
 object FloatTransformer : Transformer<Float> {
     override fun toString(value: Float) = value.toString()
-    override fun fromString(string: String) = string.toFloatOrNull() ?: error("$string is not a valid dp")
+    override fun fromString(string: String) = string.toFloatOrNull() ?: error("$string is not a valid float")
 }
 
 object NullableFloatTransformer : Transformer<Float?> {
