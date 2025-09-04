@@ -144,6 +144,14 @@ The table below shows the differences between the two.
 ## More information
 
 - [WIP] [Documentation Site]()
+
+### Practical Guides for Each Use Case
+
 - [WIP] [Improve Review Experience on Pull Request by using Compose Preview Lab](https://github.com/TBSten/compose-preview-lab/blob/main/docs/improve-review-experience-on-pull-request.md)
-- [WIP] [Tips for Compose Preview Lab](https://github.com/TBSten/compose-preview-lab/blob/main/docs/tips.md)
 - [WIP] [Improve documentation of component library](https://github.com/TBSten/compose-preview-lab/blob/main/docs/improve-documentation-of-component-library.md)
+
+### Gain a Deeper Understanding of Compose Preview Lab
+
+- [WIP] [Tips for Compose Preview Lab](https://github.com/TBSten/compose-preview-lab/blob/main/docs/tips.md)
+- [WIP] [Customize and extend fields](https://github.com/TBSten/compose-preview-lab/blob/main/docs/customize-field.md)
+- [WIP] [Design Documents](https://github.com/TBSten/compose-preview-lab/blob/main/docs/design/index.md)
