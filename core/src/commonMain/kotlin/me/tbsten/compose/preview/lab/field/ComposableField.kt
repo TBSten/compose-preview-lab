@@ -25,7 +25,7 @@ import me.tbsten.compose.preview.lab.util.thenIfNotNull
 
 /**
  * A field that allows selecting from predefined Composable content options.
- * 
+ *
  * @param label The display label for this field
  * @param initialValue The initial ComposableFieldValue to display
  * @param choices List of available ComposableFieldValue options to choose from
@@ -150,7 +150,7 @@ interface ComposableFieldValue {
 
     /**
      * A ComposableFieldValue that renders text with optional font scaling and styling.
-     * 
+     *
      * @param text The text content to display
      * @param fontScale Scale factor for the font size (default: 1f)
      * @param label Optional custom label (defaults to generated label)
@@ -236,7 +236,7 @@ interface ComposableFieldValue {
 
 /**
  * Creates a ComposableFieldValue with custom content.
- * 
+ *
  * @param label The display label for this value
  * @param content The composable content to render
  * @return A ComposableFieldValue that renders the provided content
