@@ -1579,6 +1579,12 @@ public final class me/tbsten/compose/preview/lab/field/modifier/ZIndexModifierFi
 	public static final fun zIndex (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;F)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
 }
 
+public final class me/tbsten/compose/preview/lab/openfilehandler/GithubOpenFileHandler : me/tbsten/compose/preview/lab/openfilehandler/UrlOpenFileHandler {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun getGithubRepository ()Ljava/lang/String;
+}
+
 public abstract interface class me/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler {
 	public abstract fun configure (Landroidx/compose/runtime/Composer;I)Ljava/lang/Object;
 	public abstract fun openFile (Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler$Params;)V
@@ -1595,11 +1601,9 @@ public final class me/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler
 	public static final fun OpenFileHandler (Lkotlin/jvm/functions/Function1;)Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler;
 }
 
-public final class me/tbsten/compose/preview/lab/openfilehandler/UrlOpenFileHandler : me/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler {
+public class me/tbsten/compose/preview/lab/openfilehandler/UrlOpenFileHandler : me/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler {
 	public static final field $stable I
-	public fun <init> ()V
 	public fun <init> (Ljava/lang/String;)V
-	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun configure (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/platform/UriHandler;
 	public synthetic fun configure (Landroidx/compose/runtime/Composer;I)Ljava/lang/Object;
 	public fun openFile (Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler$Params;)V
