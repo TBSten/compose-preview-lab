@@ -2,17 +2,21 @@ package me.tbsten.compose.preview.lab.field
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.tbsten.compose.preview.lab.component.colorpicker.CommonColorPicker
 import me.tbsten.compose.preview.lab.field.NumberField.InputType
 import me.tbsten.compose.preview.lab.ui.components.Text
 
@@ -225,5 +229,23 @@ class DpSizeField(label: String, initialValue: DpSize) :
                 modifier = Modifier.weight(1f),
             )
         }
+    }
+}
+
+class ColorField(label: String, initialValue: Color) :
+    MutablePreviewLabField<Color>(
+        label = label,
+        initialValue = initialValue,
+    ) {
+    @Composable
+    override fun Content() {
+        CommonColorPicker(
+            color = value,
+            onColorSelected = { value = it },
+            modifier = Modifier
+                .widthIn(max = 180.dp)
+                .fillMaxWidth()
+                .aspectRatio(3f / 2f),
+        )
     }
 }

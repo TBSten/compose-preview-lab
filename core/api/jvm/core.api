@@ -20,7 +20,6 @@ public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLab
 public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabKt;
 	public fun <init> ()V
-	public final fun getLambda$-1261978926$core ()Lkotlin/jvm/functions/Function4;
 	public final fun getLambda$-1616826418$core ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-658061291$core ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$1744947294$core ()Lkotlin/jvm/functions/Function3;
@@ -121,6 +120,56 @@ public final class me/tbsten/compose/preview/lab/component/ComposableSingletons$
 	public final fun getLambda$599713757$core ()Lkotlin/jvm/functions/Function2;
 }
 
+public final class me/tbsten/compose/preview/lab/component/DpTransformer : me/tbsten/compose/preview/lab/component/Transformer {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/component/DpTransformer;
+	public synthetic fun fromString (Ljava/lang/String;)Ljava/lang/Object;
+	public fun fromString-u2uoSUM (Ljava/lang/String;)F
+	public synthetic fun toString (Ljava/lang/Object;)Ljava/lang/String;
+	public fun toString-0680j_4 (F)Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/component/FloatTransformer : me/tbsten/compose/preview/lab/component/Transformer {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/component/FloatTransformer;
+	public fun fromString (Ljava/lang/String;)Ljava/lang/Float;
+	public synthetic fun fromString (Ljava/lang/String;)Ljava/lang/Object;
+	public fun toString (F)Ljava/lang/String;
+	public synthetic fun toString (Ljava/lang/Object;)Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/component/NullableDpTransformer : me/tbsten/compose/preview/lab/component/Transformer {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/component/NullableDpTransformer;
+	public synthetic fun fromString (Ljava/lang/String;)Ljava/lang/Object;
+	public fun fromString-yt-Azvs (Ljava/lang/String;)Landroidx/compose/ui/unit/Dp;
+	public synthetic fun toString (Ljava/lang/Object;)Ljava/lang/String;
+	public fun toString-YLDhkOg (Landroidx/compose/ui/unit/Dp;)Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/component/NullableFloatTransformer : me/tbsten/compose/preview/lab/component/Transformer {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/component/NullableFloatTransformer;
+	public fun fromString (Ljava/lang/String;)Ljava/lang/Float;
+	public synthetic fun fromString (Ljava/lang/String;)Ljava/lang/Object;
+	public fun toString (Ljava/lang/Float;)Ljava/lang/String;
+	public synthetic fun toString (Ljava/lang/Object;)Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/component/TransformableTextFieldKt {
+	public static final fun bindTransform (Landroidx/compose/runtime/MutableState;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/component/Transformer;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/MutableState;
+}
+
+public final class me/tbsten/compose/preview/lab/component/TransformableTextFieldSlotScope {
+	public static final field $stable I
+	public final fun isError ()Z
+}
+
+public abstract interface class me/tbsten/compose/preview/lab/component/Transformer {
+	public abstract fun fromString (Ljava/lang/String;)Ljava/lang/Object;
+	public abstract fun toString (Ljava/lang/Object;)Ljava/lang/String;
+}
+
 public final class me/tbsten/compose/preview/lab/event/ChangeEventKt {
 	public static final fun ChangeEvent (Lme/tbsten/compose/preview/lab/PreviewLabScope;Ljava/lang/Object;Ljava/lang/String;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
 	public static final fun ChangeEvent (Lme/tbsten/compose/preview/lab/PreviewLabScope;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
@@ -147,6 +196,103 @@ public class me/tbsten/compose/preview/lab/field/ByteField : me/tbsten/compose/p
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;BLme/tbsten/compose/preview/lab/field/NumberField$InputType;)V
 	public synthetic fun <init> (Ljava/lang/String;BLme/tbsten/compose/preview/lab/field/NumberField$InputType;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/ColorField : me/tbsten/compose/preview/lab/field/MutablePreviewLabField {
+	public static final field $stable I
+	public synthetic fun <init> (Ljava/lang/String;JLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Landroidx/compose/runtime/Composer;I)V
+}
+
+public class me/tbsten/compose/preview/lab/field/ComposableField : me/tbsten/compose/preview/lab/field/ImmutablePreviewLabField {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/ComposableFieldValue;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/ComposableFieldValue;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public final fun getChoices ()Ljava/util/List;
+	public synthetic fun getValue ()Ljava/lang/Object;
+	public fun getValue ()Lkotlin/jvm/functions/Function2;
+	public synthetic fun setValue (Ljava/lang/Object;)V
+	protected fun setValue (Lkotlin/jvm/functions/Function2;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/ComposableFieldKt {
+	public static final fun ComposableFieldValue (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lme/tbsten/compose/preview/lab/field/ComposableFieldValue;
+}
+
+public abstract interface class me/tbsten/compose/preview/lab/field/ComposableFieldValue {
+	public static final field Companion Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$Companion;
+	public abstract fun getLabel ()Ljava/lang/String;
+	public abstract fun invoke (Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox : me/tbsten/compose/preview/lab/field/ComposableFieldValue {
+	public static final field $stable I
+	public static final field Companion Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox$Companion;
+	public synthetic fun <init> (JFFLjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JFFLjava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JFLme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox$Fill;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JFLme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox$Fill;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JLme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox$Fill;FLjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JLme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox$Fill;FLjava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JLme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox$Fill;Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox$Fill;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JLme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox$Fill;Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox$Fill;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun copy-DxMtmZc (JLjava/lang/String;)Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox;
+	public static synthetic fun copy-DxMtmZc$default (Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox;JLjava/lang/String;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox;
+	public fun getLabel ()Ljava/lang/String;
+	public fun invoke (Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox$Companion {
+}
+
+public final class me/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox$Fill {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox$Fill;
+}
+
+public final class me/tbsten/compose/preview/lab/field/ComposableFieldValue$Companion {
+	public final fun getBigScaledText ()Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$Text;
+	public final fun getBodyText ()Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$Text;
+	public final fun getDefaultChoices ()Ljava/util/List;
+	public final fun getHeadingText ()Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$Text;
+	public final fun getLongText ()Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$Text;
+	public final fun getRed180X80 ()Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox;
+	public final fun getRed20X20 ()Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox;
+	public final fun getRed300X300 ()Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox;
+	public final fun getRed300XFill ()Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox;
+	public final fun getRed32X32 ()Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox;
+	public final fun getRed64X64 ()Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox;
+	public final fun getRed80XFill ()Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox;
+	public final fun getRedFillX300 ()Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox;
+	public final fun getRedFillX80 ()Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox;
+	public final fun getRedFillXFill ()Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$ColorBox;
+	public final fun getShortText ()Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$Text;
+	public final fun getSimpleText ()Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$Text;
+	public final fun getSmallScaledText ()Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$Text;
+}
+
+public final class me/tbsten/compose/preview/lab/field/ComposableFieldValue$Empty : me/tbsten/compose/preview/lab/field/ComposableFieldValue {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/ComposableFieldValue$Empty;
+	public fun getLabel ()Ljava/lang/String;
+	public fun invoke (Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/ComposableFieldValue$Text : me/tbsten/compose/preview/lab/field/ComposableFieldValue {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;FLjava/lang/String;Landroidx/compose/ui/text/TextStyle;)V
+	public synthetic fun <init> (Ljava/lang/String;FLjava/lang/String;Landroidx/compose/ui/text/TextStyle;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getFontScale ()F
+	public fun getLabel ()Ljava/lang/String;
+	public final fun getText ()Ljava/lang/String;
+	public fun invoke (Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/ComposableSingletons$ComposableFieldKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/ComposableSingletons$ComposableFieldKt;
+	public fun <init> ()V
+	public final fun getLambda$1979839625$core ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class me/tbsten/compose/preview/lab/field/ComposableSingletons$ComposeValueFieldKt {
@@ -212,6 +358,7 @@ public abstract class me/tbsten/compose/preview/lab/field/ImmutablePreviewLabFie
 	public fun getInitialValue ()Ljava/lang/Object;
 	public fun getLabel ()Ljava/lang/String;
 	public fun getValue ()Ljava/lang/Object;
+	protected fun setValue (Ljava/lang/Object;)V
 }
 
 public class me/tbsten/compose/preview/lab/field/IntField : me/tbsten/compose/preview/lab/field/NumberField {
@@ -224,6 +371,23 @@ public class me/tbsten/compose/preview/lab/field/LongField : me/tbsten/compose/p
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;JLme/tbsten/compose/preview/lab/field/NumberField$InputType;)V
 	public synthetic fun <init> (Ljava/lang/String;JLme/tbsten/compose/preview/lab/field/NumberField$InputType;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/ModifierField : me/tbsten/compose/preview/lab/field/ImmutablePreviewLabField {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;)V
+	public synthetic fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun getValue ()Landroidx/compose/ui/Modifier;
+	public synthetic fun getValue ()Ljava/lang/Object;
+	public synthetic fun setValue (Ljava/lang/Object;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/ModifierFieldKt {
+	public static final fun mark--WgHM3s (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;JJF)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static synthetic fun mark--WgHM3s$default (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;JJFILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static final fun mark-Hht5A8o (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;JF)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static synthetic fun mark-Hht5A8o$default (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;JFILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
 }
 
 public abstract class me/tbsten/compose/preview/lab/field/MutablePreviewLabField : androidx/compose/runtime/MutableState, me/tbsten/compose/preview/lab/field/PreviewLabField {
@@ -404,6 +568,709 @@ public class me/tbsten/compose/preview/lab/field/TransformField : me/tbsten/comp
 	public fun Content (Landroidx/compose/runtime/Composer;I)V
 	public fun getValue ()Ljava/lang/Object;
 	public fun setValue (Ljava/lang/Object;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/WithHintField : me/tbsten/compose/preview/lab/field/TransformField {
+	public static final field $stable I
+	public fun Content (Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/WithHintFieldKt {
+	public static final fun withHint (Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;[Lkotlin/Pair;)Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/AlphaModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public fun <init> (F)V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public final fun getAlpha ()F
+	public final fun setAlpha (F)V
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/AlphaModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Float;)V
+	public synthetic fun <init> (Ljava/lang/Float;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public final fun getAlpha ()Ljava/lang/Float;
+	public fun getCanCreate ()Z
+	public fun getTitle ()Ljava/lang/String;
+	public final fun setAlpha (Ljava/lang/Float;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/AlphaModifierFieldValueKt {
+	public static final fun alpha (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;F)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/AnimateContentSizeModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/AnimateContentSizeModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public fun getTitle ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/AnimateContentSizeModifierFieldValueKt {
+	public static final fun animateContentSize (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/AspectRatioModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public fun <init> (F)V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public final fun getRatio ()F
+	public final fun setRatio (F)V
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/AspectRatioModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Float;)V
+	public synthetic fun <init> (Ljava/lang/Float;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public final fun getRatio ()Ljava/lang/Float;
+	public fun getTitle ()Ljava/lang/String;
+	public final fun setRatio (Ljava/lang/Float;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/AspectRatioModifierFieldValueKt {
+	public static final fun aspectRatio (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;F)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/BackgroundModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public synthetic fun <init> (JLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public final fun getColor-0d7_KjU ()J
+	public final fun setColor-8_81llA (J)V
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/BackgroundModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public synthetic fun <init> (Landroidx/compose/ui/graphics/Color;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Landroidx/compose/ui/graphics/Color;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public final fun getColor-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
+	public fun getTitle ()Ljava/lang/String;
+	public final fun setColor-Y2TPw74 (Landroidx/compose/ui/graphics/Color;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/BackgroundModifierFieldValueKt {
+	public static final fun background-4WTKRHQ (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;J)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/BorderModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public synthetic fun <init> (JFLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public final fun getColor-0d7_KjU ()J
+	public final fun getWidth-D9Ej5fM ()F
+	public final fun setColor-8_81llA (J)V
+	public final fun setWidth-0680j_4 (F)V
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/BorderModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public synthetic fun <init> (Landroidx/compose/ui/graphics/Color;Landroidx/compose/ui/unit/Dp;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Landroidx/compose/ui/graphics/Color;Landroidx/compose/ui/unit/Dp;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public final fun getColor-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
+	public fun getTitle ()Ljava/lang/String;
+	public final fun getWidth-lTKBWiU ()Landroidx/compose/ui/unit/Dp;
+	public final fun setColor-Y2TPw74 (Landroidx/compose/ui/graphics/Color;)V
+	public final fun setWidth-YLDhkOg (Landroidx/compose/ui/unit/Dp;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/BorderModifierFieldValueKt {
+	public static final fun border-Hht5A8o (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;JF)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$AlphaModifierFieldValueKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$AlphaModifierFieldValueKt;
+	public fun <init> ()V
+	public final fun getLambda$1138601732$core ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$AspectRatioModifierFieldValueKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$AspectRatioModifierFieldValueKt;
+	public fun <init> ()V
+	public final fun getLambda$-820743974$core ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$BorderModifierFieldValueKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$BorderModifierFieldValueKt;
+	public fun <init> ()V
+	public final fun getLambda$1786220828$core ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$FillMaxSizeModifierFieldValueKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$FillMaxSizeModifierFieldValueKt;
+	public fun <init> ()V
+	public final fun getLambda$-165920452$core ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-855156266$core ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$408572367$core ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$ModifierBuilderKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$ModifierBuilderKt;
+	public fun <init> ()V
+	public final fun getLambda$-1923522710$core ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$OffsetModifierBuilderValueKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$OffsetModifierBuilderValueKt;
+	public fun <init> ()V
+	public final fun getLambda$529145501$core ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$551637844$core ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$PaddingModifierFieldValueKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$PaddingModifierFieldValueKt;
+	public fun <init> ()V
+	public final fun getLambda$-1973636971$core ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1996129314$core ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-755357354$core ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$462922263$core ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$RotateModifierFieldValueKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$RotateModifierFieldValueKt;
+	public fun <init> ()V
+	public final fun getLambda$794480892$core ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$ScaleModifierFieldValueKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$ScaleModifierFieldValueKt;
+	public fun <init> ()V
+	public final fun getLambda$1371628332$core ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$241535843$core ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$SizeModifierFieldValueKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$SizeModifierFieldValueKt;
+	public fun <init> ()V
+	public final fun getLambda$-1149430788$core ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-534847902$core ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1401323799$core ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$145481203$core ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$ZIndexModifierFieldValueKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$ZIndexModifierFieldValueKt;
+	public fun <init> ()V
+	public final fun getLambda$-958045540$core ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope {
+	public static final field $stable I
+	public fun <init> ()V
+	public final fun menuItemPadding (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderKt {
+	public static final fun ColorPickerItem-FNF3uiM (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Ljava/lang/String;JLkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun DefaultMenuItem (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public static final fun Label (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Landroidx/compose/ui/text/AnnotatedString;Landroidx/compose/runtime/Composer;I)V
+	public static final fun Label (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Ljava/lang/String;Landroidx/compose/runtime/Composer;I)V
+	public static final fun TextFieldItem (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Ljava/lang/String;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/component/Transformer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderMenuScope {
+	public static final field $stable I
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/FillMaxHeightModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public fun <init> (F)V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public final fun getFraction ()F
+	public final fun setFraction (F)V
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/FillMaxHeightModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Float;)V
+	public synthetic fun <init> (Ljava/lang/Float;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public final fun getFraction ()Ljava/lang/Float;
+	public fun getTitle ()Ljava/lang/String;
+	public final fun setFraction (Ljava/lang/Float;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/FillMaxSizeModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public fun <init> (F)V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public final fun getFraction ()F
+	public final fun setFraction (F)V
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/FillMaxSizeModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Float;)V
+	public synthetic fun <init> (Ljava/lang/Float;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public final fun getFraction ()Ljava/lang/Float;
+	public fun getTitle ()Ljava/lang/String;
+	public final fun setFraction (Ljava/lang/Float;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/FillMaxSizeModifierFieldValueKt {
+	public static final fun fillMaxHeight (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;F)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static synthetic fun fillMaxHeight$default (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;FILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static final fun fillMaxSize (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;F)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static synthetic fun fillMaxSize$default (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;FILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static final fun fillMaxWidth (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;F)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static synthetic fun fillMaxWidth$default (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;FILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/FillMaxWidthModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public fun <init> (F)V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public final fun getFraction ()F
+	public final fun setFraction (F)V
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/FillMaxWidthModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Float;)V
+	public synthetic fun <init> (Ljava/lang/Float;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public final fun getFraction ()Ljava/lang/Float;
+	public fun getTitle ()Ljava/lang/String;
+	public final fun setFraction (Ljava/lang/Float;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/HeightModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public synthetic fun <init> (FLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public final fun getHeight-D9Ej5fM ()F
+	public final fun setHeight-0680j_4 (F)V
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/HeightModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public synthetic fun <init> (Landroidx/compose/ui/unit/Dp;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Landroidx/compose/ui/unit/Dp;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public final fun getHeight-lTKBWiU ()Landroidx/compose/ui/unit/Dp;
+	public fun getTitle ()Ljava/lang/String;
+	public final fun setHeight-YLDhkOg (Landroidx/compose/ui/unit/Dp;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/MenuState {
+	public static final field $stable I
+	public fun <init> ()V
+	public final fun close ()V
+	public final fun isAddMenuOpen ()Z
+	public final fun toggle ()V
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ModifierBuilderDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ModifierBuilderDefaults;
+	public final fun getModifierFieldValueFactories ()Ljava/util/List;
+}
+
+public abstract interface class me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field Companion Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue$Companion;
+	public abstract fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public abstract fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public abstract fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue$Companion : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList {
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue$DefaultImpls {
+	public static fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public abstract interface class me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public abstract fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public abstract fun create-d1pmJ48 ()Ljava/lang/Object;
+	public abstract fun getCanCreate ()Z
+	public abstract fun getTitle ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory$DefaultImpls {
+	public static fun getCanCreate (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory;)Z
+}
+
+public class me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList : java/util/List, kotlin/jvm/internal/markers/KMappedMarker {
+	public static final field $stable I
+	public static final field Companion Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList$Companion;
+	public fun <init> (Ljava/util/List;)V
+	public fun <init> ([Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)V
+	public synthetic fun add (ILjava/lang/Object;)V
+	public fun add (ILme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)V
+	public synthetic fun add (Ljava/lang/Object;)Z
+	public fun add (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Z
+	public fun addAll (ILjava/util/Collection;)Z
+	public fun addAll (Ljava/util/Collection;)Z
+	public fun clear ()V
+	public final fun contains (Ljava/lang/Object;)Z
+	public fun contains (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Z
+	public fun containsAll (Ljava/util/Collection;)Z
+	public final fun createModifier ()Landroidx/compose/ui/Modifier;
+	public synthetic fun get (I)Ljava/lang/Object;
+	public fun get (I)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;
+	public fun getSize ()I
+	public final fun indexOf (Ljava/lang/Object;)I
+	public fun indexOf (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)I
+	public fun isEmpty ()Z
+	public fun iterator ()Ljava/util/Iterator;
+	public final fun lastIndexOf (Ljava/lang/Object;)I
+	public fun lastIndexOf (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)I
+	public fun listIterator ()Ljava/util/ListIterator;
+	public fun listIterator (I)Ljava/util/ListIterator;
+	public synthetic fun remove (I)Ljava/lang/Object;
+	public fun remove (I)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;
+	public fun remove (Ljava/lang/Object;)Z
+	public fun removeAll (Ljava/util/Collection;)Z
+	public fun replaceAll (Ljava/util/function/UnaryOperator;)V
+	public fun retainAll (Ljava/util/Collection;)Z
+	public synthetic fun set (ILjava/lang/Object;)Ljava/lang/Object;
+	public fun set (ILme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;
+	public final fun size ()I
+	public fun sort (Ljava/util/Comparator;)V
+	public fun subList (II)Ljava/util/List;
+	public final fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public final fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public fun toArray ()[Ljava/lang/Object;
+	public fun toArray ([Ljava/lang/Object;)[Ljava/lang/Object;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList$Companion : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList {
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/OffsetModifierBuilderValueKt {
+	public static final fun offset-3ABfNKs (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;F)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static synthetic fun offset-3ABfNKs$default (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;FILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static final fun offset-VpY3zN4 (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;FF)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static synthetic fun offset-VpY3zN4$default (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;FFILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/OffsetModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public synthetic fun <init> (FFLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public final fun getX-D9Ej5fM ()F
+	public final fun getY-D9Ej5fM ()F
+	public final fun setX-0680j_4 (F)V
+	public final fun setY-0680j_4 (F)V
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/OffsetModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public synthetic fun <init> (Landroidx/compose/ui/unit/Dp;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Landroidx/compose/ui/unit/Dp;Landroidx/compose/ui/unit/Dp;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Landroidx/compose/ui/unit/Dp;Landroidx/compose/ui/unit/Dp;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Landroidx/compose/ui/unit/Dp;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public fun getTitle ()Ljava/lang/String;
+	public final fun getX-lTKBWiU ()Landroidx/compose/ui/unit/Dp;
+	public final fun getY-lTKBWiU ()Landroidx/compose/ui/unit/Dp;
+	public final fun setX-YLDhkOg (Landroidx/compose/ui/unit/Dp;)V
+	public final fun setY-YLDhkOg (Landroidx/compose/ui/unit/Dp;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/PaddingModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public synthetic fun <init> (FFFFLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public final fun getBottom-D9Ej5fM ()F
+	public final fun getEnd-D9Ej5fM ()F
+	public final fun getStart-D9Ej5fM ()F
+	public final fun getTop-D9Ej5fM ()F
+	public final fun setBottom-0680j_4 (F)V
+	public final fun setEnd-0680j_4 (F)V
+	public final fun setStart-0680j_4 (F)V
+	public final fun setTop-0680j_4 (F)V
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public class me/tbsten/compose/preview/lab/field/modifier/PaddingModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public synthetic fun <init> (Landroidx/compose/ui/unit/Dp;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Landroidx/compose/ui/unit/Dp;Landroidx/compose/ui/unit/Dp;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Landroidx/compose/ui/unit/Dp;Landroidx/compose/ui/unit/Dp;Landroidx/compose/ui/unit/Dp;Landroidx/compose/ui/unit/Dp;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Landroidx/compose/ui/unit/Dp;Landroidx/compose/ui/unit/Dp;Landroidx/compose/ui/unit/Dp;Landroidx/compose/ui/unit/Dp;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Landroidx/compose/ui/unit/Dp;Landroidx/compose/ui/unit/Dp;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Landroidx/compose/ui/unit/Dp;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public final fun getBottom-lTKBWiU ()Landroidx/compose/ui/unit/Dp;
+	public fun getCanCreate ()Z
+	public final fun getEnd-lTKBWiU ()Landroidx/compose/ui/unit/Dp;
+	public final fun getStart-lTKBWiU ()Landroidx/compose/ui/unit/Dp;
+	public fun getTitle ()Ljava/lang/String;
+	public final fun getTop-lTKBWiU ()Landroidx/compose/ui/unit/Dp;
+	public final fun setBottom-YLDhkOg (Landroidx/compose/ui/unit/Dp;)V
+	public final fun setEnd-YLDhkOg (Landroidx/compose/ui/unit/Dp;)V
+	public final fun setStart-YLDhkOg (Landroidx/compose/ui/unit/Dp;)V
+	public final fun setTop-YLDhkOg (Landroidx/compose/ui/unit/Dp;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/PaddingModifierFieldValueKt {
+	public static final fun padding-3ABfNKs (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;F)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static final fun padding-VpY3zN4 (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;FF)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static synthetic fun padding-VpY3zN4$default (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;FFILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static final fun padding-qDBjuR0 (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;FFFF)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static synthetic fun padding-qDBjuR0$default (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;FFFFILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/RotateModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public fun <init> (F)V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public final fun getDegrees ()F
+	public final fun setDegrees (F)V
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/RotateModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Float;)V
+	public synthetic fun <init> (Ljava/lang/Float;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public final fun getDegrees ()Ljava/lang/Float;
+	public fun getTitle ()Ljava/lang/String;
+	public final fun setDegrees (Ljava/lang/Float;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/RotateModifierFieldValueKt {
+	public static final fun rotate (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;F)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ScaleModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public fun <init> (FF)V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public final fun getScaleX ()F
+	public final fun getScaleY ()F
+	public final fun setScaleX (F)V
+	public final fun setScaleY (F)V
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ScaleModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Float;Ljava/lang/Float;)V
+	public synthetic fun <init> (Ljava/lang/Float;Ljava/lang/Float;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public final fun getScaleX ()Ljava/lang/Float;
+	public final fun getScaleY ()Ljava/lang/Float;
+	public fun getTitle ()Ljava/lang/String;
+	public final fun setScaleX (Ljava/lang/Float;)V
+	public final fun setScaleY (Ljava/lang/Float;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ScaleModifierFieldValueKt {
+	public static final fun scale (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;F)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static final fun scale (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;FF)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/SizeModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public synthetic fun <init> (FFLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public final fun getHeight-D9Ej5fM ()F
+	public final fun getWidth-D9Ej5fM ()F
+	public final fun setHeight-0680j_4 (F)V
+	public final fun setWidth-0680j_4 (F)V
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/SizeModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public synthetic fun <init> (Landroidx/compose/ui/unit/Dp;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Landroidx/compose/ui/unit/Dp;Landroidx/compose/ui/unit/Dp;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Landroidx/compose/ui/unit/Dp;Landroidx/compose/ui/unit/Dp;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Landroidx/compose/ui/unit/Dp;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public final fun getHeight-lTKBWiU ()Landroidx/compose/ui/unit/Dp;
+	public fun getTitle ()Ljava/lang/String;
+	public final fun getWidth-lTKBWiU ()Landroidx/compose/ui/unit/Dp;
+	public final fun setHeight-YLDhkOg (Landroidx/compose/ui/unit/Dp;)V
+	public final fun setWidth-YLDhkOg (Landroidx/compose/ui/unit/Dp;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/SizeModifierFieldValueKt {
+	public static final fun height-3ABfNKs (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;F)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static final fun size-3ABfNKs (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;F)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static synthetic fun size-3ABfNKs$default (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;FILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static final fun size-VpY3zN4 (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;FF)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static synthetic fun size-VpY3zN4$default (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;FFILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static final fun width-3ABfNKs (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;F)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/WidthModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public synthetic fun <init> (FLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public final fun getWidth-D9Ej5fM ()F
+	public final fun setWidth-0680j_4 (F)V
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/WidthModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public synthetic fun <init> (Landroidx/compose/ui/unit/Dp;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Landroidx/compose/ui/unit/Dp;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public fun getTitle ()Ljava/lang/String;
+	public final fun getWidth-lTKBWiU ()Landroidx/compose/ui/unit/Dp;
+	public final fun setWidth-YLDhkOg (Landroidx/compose/ui/unit/Dp;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/WrapContentHeightModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/WrapContentHeightModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public fun getTitle ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/WrapContentSizeModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/WrapContentSizeModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public fun getTitle ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/WrapContentSizeModifierFieldValueKt {
+	public static final fun wrapContentHeight (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static final fun wrapContentSize (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static final fun wrapContentWidth (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/WrapContentWidthModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/WrapContentWidthModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public fun getTitle ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ZIndexModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public fun <init> (F)V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public final fun getZIndex ()F
+	public final fun setZIndex (F)V
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ZIndexModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Float;)V
+	public synthetic fun <init> (Ljava/lang/Float;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public fun getTitle ()Ljava/lang/String;
+	public final fun getZIndex ()Ljava/lang/Float;
+	public final fun setZIndex (Ljava/lang/Float;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ZIndexModifierFieldValueKt {
+	public static final fun zIndex (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;F)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
 }
 
 public abstract interface class me/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler {

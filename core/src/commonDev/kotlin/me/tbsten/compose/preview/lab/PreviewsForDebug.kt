@@ -40,17 +40,25 @@ import androidx.compose.ui.unit.sp
 import me.tbsten.compose.preview.lab.component.AdaptiveContainer
 import me.tbsten.compose.preview.lab.component.Divider
 import me.tbsten.compose.preview.lab.component.adaptive
+import me.tbsten.compose.preview.lab.event.withEvent
 import me.tbsten.compose.preview.lab.field.BooleanField
+import me.tbsten.compose.preview.lab.field.ColorField
+import me.tbsten.compose.preview.lab.field.ComposableField
+import me.tbsten.compose.preview.lab.field.ComposableFieldValue
 import me.tbsten.compose.preview.lab.field.DpOffsetField
 import me.tbsten.compose.preview.lab.field.DpSizeField
 import me.tbsten.compose.preview.lab.field.EnumField
 import me.tbsten.compose.preview.lab.field.FloatField
 import me.tbsten.compose.preview.lab.field.IntField
+import me.tbsten.compose.preview.lab.field.ModifierField
 import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.field.SelectableField
 import me.tbsten.compose.preview.lab.field.SpField
 import me.tbsten.compose.preview.lab.field.StringField
+import me.tbsten.compose.preview.lab.field.mark
+import me.tbsten.compose.preview.lab.field.modifier.ModifierFieldValue
 import me.tbsten.compose.preview.lab.field.nullable
+import me.tbsten.compose.preview.lab.field.withHint
 
 val previewsForUiDebug = listOf<CollectedPreview>(
     CollectedPreview("Fields", "src/commonMain/kotlin/me/tbsten/example/Fields.kt") {
@@ -97,19 +105,41 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                         val dpSizeValue = fieldValue {
                             DpSizeField(
                                 "dpSizeValue",
-                                DpSize(20.dp, 20.dp),
+                                DpSize(200.dp, 120.dp),
                             )
                         }
                         val spValue = fieldValue {
                             SpField("spValue", 20.sp)
                         }
-                        Box(
+                        val colorValue = fieldValue {
+                            ColorField("colorValue", Color.Yellow)
+                        }
+                        val textModifierValue = fieldValue {
+                            ModifierField("modifier")
+                        }
+                        val childrenValue = fieldValue {
+                            val choices = listOf(
+                                ComposableFieldValue("Blue") {
+                                    Box(Modifier.background(Color.Blue).size(100.dp))
+                                },
+                            ) +
+                                ComposableFieldValue.DefaultChoices
+                            ComposableField(
+                                "children",
+                                initialValue = choices.first(),
+                                choices = choices,
+                            )
+                        }
+
+                        Column(
                             Modifier
                                 .offset(x = dpOffsetValue.x, y = dpOffsetValue.y)
-                                .background(Color.Yellow)
+                                .background(colorValue)
                                 .size(dpSizeValue),
                         ) {
-                            Text("spValue", fontSize = spValue)
+                            Text("spValue", fontSize = spValue, modifier = textModifierValue)
+                            Divider()
+                            childrenValue()
                         }
                     }
 
@@ -157,6 +187,22 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                                     )
                                 }
                             }",
+                        )
+                    }
+                    header("With Hint")
+                    item {
+                        Text(
+                            text = "StringField value: " +
+                                "\"" +
+                                fieldValue {
+                                    StringField("Text.text", "")
+                                        .withHint(
+                                            "Empty" to "",
+                                            "Very long" to "very " + "long ".repeat(1000) + "text",
+                                            "Simple" to "Hello World",
+                                        )
+                                } +
+                                "\"",
                         )
                     }
                 }
@@ -342,6 +388,59 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                     .forEach {
                         Text(it)
                     }
+            }
+        }
+    },
+    CollectedPreview("Modifier/Composable Fields", "src/commonMain/kotlin/me/tbsten/example/ModifierAndComposableField.kt") {
+        PreviewLab {
+            Column {
+                Button(
+                    onClick = withEvent("onClick"),
+                    modifier = fieldValue {
+                        ModifierField(
+                            label = "Button.modifier",
+                            initialValue = ModifierFieldValue
+                                .mark(color = Color.Blue),
+                        )
+                    },
+                    content = {
+                        fieldValue { ComposableField(label = "Button.content", initialValue = ComposableFieldValue.SimpleText) }
+                            .invoke()
+                    },
+                )
+
+                Divider()
+
+                Scaffold(
+                    topBar = fieldValue {
+                        ComposableField(
+                            label = "Scaffold.topBar",
+                            initialValue = ComposableFieldValue.RedFillX80.copy(color = Color.Red),
+                        )
+                    },
+                    bottomBar = fieldValue {
+                        ComposableField(
+                            label = "Scaffold.bottomBar",
+                            initialValue = ComposableFieldValue.RedFillX80.copy(color = Color.Blue),
+                        )
+                    },
+                    floatingActionButton = fieldValue {
+                        ComposableField(
+                            label = "Scaffold.floatingActionButton",
+                            initialValue = ComposableFieldValue.Red64X64.copy(color = Color.Green),
+                        )
+                    },
+                    content = { innerPadding ->
+                        Box(modifier = Modifier.padding(innerPadding)) {
+                            fieldValue {
+                                ComposableField(
+                                    label = "Scaffold.content",
+                                    initialValue = ComposableFieldValue.BodyText,
+                                )
+                            }.invoke()
+                        }
+                    },
+                )
             }
         }
     },

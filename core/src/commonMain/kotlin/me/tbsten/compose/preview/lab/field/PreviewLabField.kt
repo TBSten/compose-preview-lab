@@ -66,7 +66,7 @@ interface PreviewLabField<Value> {
 abstract class ImmutablePreviewLabField<Value> private constructor(
     override val label: String,
     override val initialValue: Value,
-    state: State<Value> = mutableStateOf(initialValue),
+    private val state: MutableState<Value>,
 ) : PreviewLabField<Value>,
     State<Value> by state {
     constructor(
@@ -77,6 +77,12 @@ abstract class ImmutablePreviewLabField<Value> private constructor(
         initialValue = initialValue,
         state = mutableStateOf(initialValue),
     )
+
+    override var value: Value
+        get() = state.value
+        protected set(newValue) {
+            state.value = newValue
+        }
 }
 
 /**
