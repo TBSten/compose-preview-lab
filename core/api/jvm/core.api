@@ -204,6 +204,80 @@ public final class me/tbsten/compose/preview/lab/field/ColorField : me/tbsten/co
 	public fun Content (Landroidx/compose/runtime/Composer;I)V
 }
 
+public class me/tbsten/compose/preview/lab/field/CombinedField : me/tbsten/compose/preview/lab/field/MutablePreviewLabField {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V
+	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun getValue ()Ljava/lang/Object;
+	public fun setValue (Ljava/lang/Object;)V
+}
+
+public class me/tbsten/compose/preview/lab/field/CombinedField10 : me/tbsten/compose/preview/lab/field/CombinedField {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function10;Lkotlin/jvm/functions/Function1;)V
+}
+
+public class me/tbsten/compose/preview/lab/field/CombinedField2 : me/tbsten/compose/preview/lab/field/CombinedField {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;)V
+}
+
+public class me/tbsten/compose/preview/lab/field/CombinedField3 : me/tbsten/compose/preview/lab/field/CombinedField {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;)V
+}
+
+public class me/tbsten/compose/preview/lab/field/CombinedField4 : me/tbsten/compose/preview/lab/field/CombinedField {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function1;)V
+}
+
+public class me/tbsten/compose/preview/lab/field/CombinedField5 : me/tbsten/compose/preview/lab/field/CombinedField {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function5;Lkotlin/jvm/functions/Function1;)V
+}
+
+public class me/tbsten/compose/preview/lab/field/CombinedField6 : me/tbsten/compose/preview/lab/field/CombinedField {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function6;Lkotlin/jvm/functions/Function1;)V
+}
+
+public class me/tbsten/compose/preview/lab/field/CombinedField7 : me/tbsten/compose/preview/lab/field/CombinedField {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function7;Lkotlin/jvm/functions/Function1;)V
+}
+
+public class me/tbsten/compose/preview/lab/field/CombinedField8 : me/tbsten/compose/preview/lab/field/CombinedField {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function8;Lkotlin/jvm/functions/Function1;)V
+}
+
+public class me/tbsten/compose/preview/lab/field/CombinedField9 : me/tbsten/compose/preview/lab/field/CombinedField {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function9;Lkotlin/jvm/functions/Function1;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/CombinedFieldKt {
+	public static final fun combined (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;)Lme/tbsten/compose/preview/lab/field/CombinedField2;
+	public static final fun combined (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;)Lme/tbsten/compose/preview/lab/field/CombinedField3;
+	public static final fun combined (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function1;)Lme/tbsten/compose/preview/lab/field/CombinedField4;
+	public static final fun combined (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function5;Lkotlin/jvm/functions/Function1;)Lme/tbsten/compose/preview/lab/field/CombinedField5;
+	public static final fun combined (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function6;Lkotlin/jvm/functions/Function1;)Lme/tbsten/compose/preview/lab/field/CombinedField6;
+	public static final fun combined (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function7;Lkotlin/jvm/functions/Function1;)Lme/tbsten/compose/preview/lab/field/CombinedField7;
+	public static final fun combined (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function8;Lkotlin/jvm/functions/Function1;)Lme/tbsten/compose/preview/lab/field/CombinedField8;
+	public static final fun combined (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function9;Lkotlin/jvm/functions/Function1;)Lme/tbsten/compose/preview/lab/field/CombinedField9;
+	public static final fun combined (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function10;Lkotlin/jvm/functions/Function1;)Lme/tbsten/compose/preview/lab/field/CombinedField10;
+	public static final fun splitedOf (Ljava/lang/Object;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited2;
+	public static final fun splitedOf (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited3;
+	public static final fun splitedOf (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited4;
+	public static final fun splitedOf (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited5;
+	public static final fun splitedOf (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited6;
+	public static final fun splitedOf (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited7;
+	public static final fun splitedOf (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited8;
+	public static final fun splitedOf (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited9;
+	public static final fun splitedOf (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited10;
+}
+
 public class me/tbsten/compose/preview/lab/field/ComposableField : me/tbsten/compose/preview/lab/field/ImmutablePreviewLabField {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/ComposableFieldValue;Ljava/util/List;)V
@@ -550,6 +624,204 @@ public final class me/tbsten/compose/preview/lab/field/SpField : me/tbsten/compo
 	public synthetic fun <init> (Ljava/lang/String;JLkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 
+public final class me/tbsten/compose/preview/lab/field/Splited10 {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component10 ()Ljava/lang/Object;
+	public final fun component2 ()Ljava/lang/Object;
+	public final fun component3 ()Ljava/lang/Object;
+	public final fun component4 ()Ljava/lang/Object;
+	public final fun component5 ()Ljava/lang/Object;
+	public final fun component6 ()Ljava/lang/Object;
+	public final fun component7 ()Ljava/lang/Object;
+	public final fun component8 ()Ljava/lang/Object;
+	public final fun component9 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited10;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/field/Splited10;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited10;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEighth ()Ljava/lang/Object;
+	public final fun getFifth ()Ljava/lang/Object;
+	public final fun getFirst ()Ljava/lang/Object;
+	public final fun getFourth ()Ljava/lang/Object;
+	public final fun getNinth ()Ljava/lang/Object;
+	public final fun getSecond ()Ljava/lang/Object;
+	public final fun getSeventh ()Ljava/lang/Object;
+	public final fun getSixth ()Ljava/lang/Object;
+	public final fun getTenth ()Ljava/lang/Object;
+	public final fun getThird ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/Splited2 {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/Object;Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited2;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/field/Splited2;Ljava/lang/Object;Ljava/lang/Object;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited2;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFirst ()Ljava/lang/Object;
+	public final fun getSecond ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/Splited3 {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()Ljava/lang/Object;
+	public final fun component3 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited3;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/field/Splited3;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited3;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFirst ()Ljava/lang/Object;
+	public final fun getSecond ()Ljava/lang/Object;
+	public final fun getThird ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/Splited4 {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()Ljava/lang/Object;
+	public final fun component3 ()Ljava/lang/Object;
+	public final fun component4 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited4;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/field/Splited4;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited4;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFirst ()Ljava/lang/Object;
+	public final fun getFourth ()Ljava/lang/Object;
+	public final fun getSecond ()Ljava/lang/Object;
+	public final fun getThird ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/Splited5 {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()Ljava/lang/Object;
+	public final fun component3 ()Ljava/lang/Object;
+	public final fun component4 ()Ljava/lang/Object;
+	public final fun component5 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited5;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/field/Splited5;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited5;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFifth ()Ljava/lang/Object;
+	public final fun getFirst ()Ljava/lang/Object;
+	public final fun getFourth ()Ljava/lang/Object;
+	public final fun getSecond ()Ljava/lang/Object;
+	public final fun getThird ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/Splited6 {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()Ljava/lang/Object;
+	public final fun component3 ()Ljava/lang/Object;
+	public final fun component4 ()Ljava/lang/Object;
+	public final fun component5 ()Ljava/lang/Object;
+	public final fun component6 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited6;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/field/Splited6;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited6;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFifth ()Ljava/lang/Object;
+	public final fun getFirst ()Ljava/lang/Object;
+	public final fun getFourth ()Ljava/lang/Object;
+	public final fun getSecond ()Ljava/lang/Object;
+	public final fun getSixth ()Ljava/lang/Object;
+	public final fun getThird ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/Splited7 {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()Ljava/lang/Object;
+	public final fun component3 ()Ljava/lang/Object;
+	public final fun component4 ()Ljava/lang/Object;
+	public final fun component5 ()Ljava/lang/Object;
+	public final fun component6 ()Ljava/lang/Object;
+	public final fun component7 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited7;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/field/Splited7;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited7;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFifth ()Ljava/lang/Object;
+	public final fun getFirst ()Ljava/lang/Object;
+	public final fun getFourth ()Ljava/lang/Object;
+	public final fun getSecond ()Ljava/lang/Object;
+	public final fun getSeventh ()Ljava/lang/Object;
+	public final fun getSixth ()Ljava/lang/Object;
+	public final fun getThird ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/Splited8 {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()Ljava/lang/Object;
+	public final fun component3 ()Ljava/lang/Object;
+	public final fun component4 ()Ljava/lang/Object;
+	public final fun component5 ()Ljava/lang/Object;
+	public final fun component6 ()Ljava/lang/Object;
+	public final fun component7 ()Ljava/lang/Object;
+	public final fun component8 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited8;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/field/Splited8;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited8;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEighth ()Ljava/lang/Object;
+	public final fun getFifth ()Ljava/lang/Object;
+	public final fun getFirst ()Ljava/lang/Object;
+	public final fun getFourth ()Ljava/lang/Object;
+	public final fun getSecond ()Ljava/lang/Object;
+	public final fun getSeventh ()Ljava/lang/Object;
+	public final fun getSixth ()Ljava/lang/Object;
+	public final fun getThird ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/Splited9 {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()Ljava/lang/Object;
+	public final fun component3 ()Ljava/lang/Object;
+	public final fun component4 ()Ljava/lang/Object;
+	public final fun component5 ()Ljava/lang/Object;
+	public final fun component6 ()Ljava/lang/Object;
+	public final fun component7 ()Ljava/lang/Object;
+	public final fun component8 ()Ljava/lang/Object;
+	public final fun component9 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited9;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/field/Splited9;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/Splited9;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEighth ()Ljava/lang/Object;
+	public final fun getFifth ()Ljava/lang/Object;
+	public final fun getFirst ()Ljava/lang/Object;
+	public final fun getFourth ()Ljava/lang/Object;
+	public final fun getNinth ()Ljava/lang/Object;
+	public final fun getSecond ()Ljava/lang/Object;
+	public final fun getSeventh ()Ljava/lang/Object;
+	public final fun getSixth ()Ljava/lang/Object;
+	public final fun getThird ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class me/tbsten/compose/preview/lab/field/StringField : me/tbsten/compose/preview/lab/field/MutablePreviewLabField {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;)V
@@ -577,6 +849,7 @@ public final class me/tbsten/compose/preview/lab/field/WithHintField : me/tbsten
 
 public final class me/tbsten/compose/preview/lab/field/WithHintFieldKt {
 	public static final fun withHint (Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;[Lkotlin/Pair;)Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;
+	public static final fun withInitialValueHint (Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/AlphaModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
