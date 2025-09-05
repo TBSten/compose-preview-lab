@@ -26,11 +26,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.DpSize
@@ -55,155 +59,205 @@ import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.field.SelectableField
 import me.tbsten.compose.preview.lab.field.SpField
 import me.tbsten.compose.preview.lab.field.StringField
+import me.tbsten.compose.preview.lab.field.combined
 import me.tbsten.compose.preview.lab.field.mark
 import me.tbsten.compose.preview.lab.field.modifier.ModifierFieldValue
 import me.tbsten.compose.preview.lab.field.nullable
+import me.tbsten.compose.preview.lab.field.splitedOf
 import me.tbsten.compose.preview.lab.field.withHint
+import me.tbsten.compose.preview.lab.field.withInitialValueHint
+
+fun FloatField.withBasicFontScalesHint() = withHint(
+    "small" to 1.0f,
+    "normal" to 1.5f,
+    "large" to 2.0f,
+)
 
 val previewsForUiDebug = listOf<CollectedPreview>(
     CollectedPreview("Fields", "src/commonMain/kotlin/me/tbsten/example/Fields.kt") {
         PreviewLab {
-            SampleScreen(
-                title = "Fields",
-                onListItemClick = {},
+            CompositionLocalProvider(
+                LocalDensity provides LocalDensity.current.let { density ->
+                    Density(
+                        density = fieldValue { FloatField("density", density.density) },
+                        fontScale = fieldValue { FloatField("fontScale", density.fontScale).withBasicFontScalesHint() },
+                    )
+                },
             ) {
-                LazyColumn(
-                    contentPadding = it.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                SampleScreen(
+                    title = "Fields",
+                    onListItemClick = {},
                 ) {
-                    header("Primitive types")
-                    item {
-                        val stringValue =
-                            fieldValue { StringField("stringValue", "input some text") }
-                        Text("intValue: $stringValue")
-                    }
-                    item {
-                        val intValue = fieldValue { IntField("intValue", 0) }
-                        Text("intValue: $intValue")
-                    }
-                    item {
-                        val floatValue = fieldValue { FloatField("floatField", 0f) }
-                        Text("floatField: $floatValue")
-                    }
-                    item {
-                        val floatValue = fieldValue { FloatField("floatField", 0f) }
-                        Text("floatField: $floatValue")
-                    }
-                    item {
-                        val booleanValue = fieldValue { BooleanField("booleanValue", false) }
-                        Text("booleanValue: $booleanValue")
-                    }
-
-                    header("ComposeValueField")
-                    item {
-                        val dpOffsetValue = fieldValue {
-                            DpOffsetField(
-                                "dpOffsetValue",
-                                DpOffset(0.dp, 0.dp),
-                            )
+                    LazyColumn(
+                        contentPadding = it.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        header("Primitive types")
+                        item {
+                            val stringValue =
+                                fieldValue { StringField("stringValue", "input some text") }
+                            Text("intValue: $stringValue")
                         }
-                        val dpSizeValue = fieldValue {
-                            DpSizeField(
-                                "dpSizeValue",
-                                DpSize(200.dp, 120.dp),
-                            )
+                        item {
+                            val intValue = fieldValue { IntField("intValue", 0) }
+                            Text("intValue: $intValue")
                         }
-                        val spValue = fieldValue {
-                            SpField("spValue", 20.sp)
+                        item {
+                            val floatValue = fieldValue { FloatField("floatField", 0f) }
+                            Text("floatField: $floatValue")
                         }
-                        val colorValue = fieldValue {
-                            ColorField("colorValue", Color.Yellow)
+                        item {
+                            val floatValue = fieldValue { FloatField("floatField", 0f) }
+                            Text("floatField: $floatValue")
                         }
-                        val textModifierValue = fieldValue {
-                            ModifierField("modifier")
-                        }
-                        val childrenValue = fieldValue {
-                            val choices = listOf(
-                                ComposableFieldValue("Blue") {
-                                    Box(Modifier.background(Color.Blue).size(100.dp))
-                                },
-                            ) +
-                                ComposableFieldValue.DefaultChoices
-                            ComposableField(
-                                "children",
-                                initialValue = choices.first(),
-                                choices = choices,
-                            )
+                        item {
+                            val booleanValue = fieldValue { BooleanField("booleanValue", false) }
+                            Text("booleanValue: $booleanValue")
                         }
 
-                        Column(
-                            Modifier
-                                .offset(x = dpOffsetValue.x, y = dpOffsetValue.y)
-                                .background(colorValue)
-                                .size(dpSizeValue),
-                        ) {
-                            Text("spValue", fontSize = spValue, modifier = textModifierValue)
-                            Divider()
-                            childrenValue()
-                        }
-                    }
-
-                    header("NullableField")
-                    item {
-                        val nullableStringField =
-                            fieldValue {
-                                StringField("nullableStringField", "").nullable(
-                                    initialValue = null,
+                        header("ComposeValueField")
+                        item {
+                            val dpOffsetValue = fieldValue {
+                                DpOffsetField(
+                                    "dpOffsetValue",
+                                    DpOffset(0.dp, 0.dp),
                                 )
                             }
-                        Text("nullableStringField: ${nullableStringField ?: "🚨🚨🚨 is null 🚨🚨🚨"}")
-                    }
+                            val dpSizeValue = fieldValue {
+                                DpSizeField(
+                                    "dpSizeValue",
+                                    DpSize(200.dp, 120.dp),
+                                )
+                            }
+                            val spValue = fieldValue {
+                                SpField("spValue", 20.sp)
+                            }
+                            val colorValue = fieldValue {
+                                ColorField("colorValue", Color.Yellow)
+                            }
+                            val textModifierValue = fieldValue {
+                                ModifierField("modifier")
+                            }
+                            val childrenValue = fieldValue {
+                                val choices = listOf(
+                                    ComposableFieldValue("Blue") {
+                                        Box(Modifier.background(Color.Blue).size(100.dp))
+                                    },
+                                ) +
+                                    ComposableFieldValue.DefaultChoices
+                                ComposableField(
+                                    "children",
+                                    initialValue = choices.first(),
+                                    choices = choices,
+                                )
+                            }
 
-                    header("SelectableField")
-                    item {
-                        val backgroundColor = fieldValue {
-                            SelectableField("backgroundColor") {
-                                choice(Color.Red, isDefault = true)
-                                choice(Color.Blue)
-                                choice(Color.Green)
+                            Column(
+                                Modifier
+                                    .offset(x = dpOffsetValue.x, y = dpOffsetValue.y)
+                                    .background(colorValue)
+                                    .size(dpSizeValue),
+                            ) {
+                                Text("spValue", fontSize = spValue, modifier = textModifierValue)
+                                Divider()
+                                childrenValue()
                             }
                         }
-                        Box(
-                            Modifier
-                                .background(
-                                    color = backgroundColor,
-                                )
-                                .size(50.dp),
-                        )
-                    }
-                    item {
-                        Text(
-                            "myEnumValue: ${
-                                fieldValue { EnumField<MyEnum>("myEnumValue", MyEnum.A) }
-                            }",
-                        )
-                        Text(
-                            "myEnumValue (chip UI): ${
+
+                        header("NullableField")
+                        item {
+                            val nullableStringField =
                                 fieldValue {
-                                    EnumField<MyEnum>(
-                                        "myEnumValue",
-                                        MyEnum.A,
-                                        type = SelectableField.Type.CHIPS,
+                                    StringField("nullableStringField", "").nullable(
+                                        initialValue = null,
                                     )
                                 }
-                            }",
-                        )
-                    }
-                    header("With Hint")
-                    item {
-                        Text(
-                            text = "StringField value: " +
-                                "\"" +
-                                fieldValue {
-                                    StringField("Text.text", "")
-                                        .withHint(
-                                            "Empty" to "",
-                                            "Very long" to "very " + "long ".repeat(1000) + "text",
-                                            "Simple" to "Hello World",
+                            Text("nullableStringField: ${nullableStringField ?: "🚨🚨🚨 is null 🚨🚨🚨"}")
+                        }
+
+                        header("SelectableField")
+                        item {
+                            val backgroundColor = fieldValue {
+                                SelectableField("backgroundColor") {
+                                    choice(Color.Red, isDefault = true)
+                                    choice(Color.Blue)
+                                    choice(Color.Green)
+                                }
+                            }
+                            Box(
+                                Modifier
+                                    .background(
+                                        color = backgroundColor,
+                                    )
+                                    .size(50.dp),
+                            )
+                        }
+                        item {
+                            Text(
+                                "myEnumValue: ${
+                                    fieldValue { EnumField<MyEnum>("myEnumValue", MyEnum.A) }
+                                }",
+                            )
+                            Text(
+                                "myEnumValue (chip UI): ${
+                                    fieldValue {
+                                        EnumField<MyEnum>(
+                                            "myEnumValue",
+                                            MyEnum.A,
+                                            type = SelectableField.Type.CHIPS,
                                         )
-                                } +
-                                "\"",
-                        )
+                                    }
+                                }",
+                            )
+                        }
+                        header("With Hint")
+                        item {
+                            Text(
+                                text = "StringField value: " +
+                                    "\"" +
+                                    fieldValue {
+                                        StringField("Text.text", "")
+                                            .withHint(
+                                                "Empty" to "",
+                                                "Very long" to "very " + "long ".repeat(100) + "text",
+                                                "Simple" to "Hello World",
+                                            )
+                                    } +
+                                    "\"",
+                            )
+                        }
+                        item {
+                            Text(
+                                text = "StringField value: " +
+                                    "\"" +
+                                    fieldValue {
+                                        StringField("Text.text", "")
+                                            .withInitialValueHint()
+                                    } +
+                                    "\"",
+                            )
+                        }
+
+                        header("Combined Field")
+                        item {
+                            class UiState(val str: String, val int: Int, val bool: Boolean)
+
+                            val uiStateField by field {
+                                combined(
+                                    "uiState",
+                                    field1 = StringField("str", ""),
+                                    field2 = IntField("int", 0),
+                                    field3 = BooleanField("bool", false),
+                                    combine = { str, int, bool -> UiState(str, int, bool) },
+                                    split = { splitedOf(it.str, it.int, it.bool) },
+                                )
+                            }
+
+                            Text("uiState")
+                            Text("  str: ${uiStateField.str}")
+                            Text("  int: ${uiStateField.int}")
+                            Text("  bool: ${uiStateField.bool}")
+                        }
                     }
                 }
             }
