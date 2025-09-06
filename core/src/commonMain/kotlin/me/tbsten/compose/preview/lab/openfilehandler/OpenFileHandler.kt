@@ -75,4 +75,5 @@ open class UrlOpenFileHandler(private val baseUrl: String) : OpenFileHandler<Uri
 
 internal val LocalOpenFileHandler = compositionLocalOf<OpenFileHandler<out Any?>?> { null }
 
-class GithubOpenFileHandler(val githubRepository: String) : UrlOpenFileHandler(baseUrl = "$githubRepository/blob/main/")
+class GithubOpenFileHandler(githubRepository: String, branch: String = "main", server: String = "https://github.com") :
+    UrlOpenFileHandler(baseUrl = "$server/$githubRepository/blob/$branch/")
