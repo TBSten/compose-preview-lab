@@ -20,6 +20,12 @@ import me.tbsten.compose.preview.lab.component.TransformableTextField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Text
 
+/**
+ * A modifier field value that scales a component.
+ *
+ * @param scaleX The scale factor for the X axis
+ * @param scaleY The scale factor for the Y axis
+ */
 class ScaleModifierFieldValue(scaleX: Float, scaleY: Float) : ModifierFieldValue {
     var scaleX by mutableStateOf(scaleX)
     var scaleY by mutableStateOf(scaleY)
@@ -108,6 +114,13 @@ class ScaleModifierFieldValue(scaleX: Float, scaleY: Float) : ModifierFieldValue
     }
 }
 
+/**
+ * Scales this modifier list with separate X and Y scale factors.
+ *
+ * @param scaleX The horizontal scale factor
+ * @param scaleY The vertical scale factor
+ * @return A new ModifierFieldValueList with scaling applied
+ */
 fun ModifierFieldValueList.scale(scaleX: Float, scaleY: Float) = then(
     ScaleModifierFieldValue(
         scaleX = scaleX,
@@ -115,6 +128,12 @@ fun ModifierFieldValueList.scale(scaleX: Float, scaleY: Float) = then(
     ),
 )
 
+/**
+ * Scales this modifier list uniformly in both X and Y directions.
+ *
+ * @param scale The scale factor to apply to both X and Y dimensions
+ * @return A new ModifierFieldValueList with uniform scaling applied
+ */
 fun ModifierFieldValueList.scale(scale: Float) = then(
     ScaleModifierFieldValue(
         scaleX = scale,

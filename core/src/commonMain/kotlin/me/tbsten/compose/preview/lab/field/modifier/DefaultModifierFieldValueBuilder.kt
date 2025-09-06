@@ -104,10 +104,20 @@ internal fun DefaultModifierFieldValueBuilderMenuScope.DefaultMenu(
     }
 }
 
+/**
+ * Scope class for default menu items in ModifierFieldValue builders.
+ * Provides utility functions for consistent menu item styling.
+ */
 class DefaultModifierFieldValueBuilderDefaultMenuScope {
     fun Modifier.menuItemPadding() = then(Modifier.padding(horizontal = 12.dp))
 }
 
+/**
+ * Creates a default menu item with consistent styling and layout.
+ *
+ * @param label The text label for the menu item
+ * @param content The content composable to display alongside the label
+ */
 @Composable
 fun DefaultModifierFieldValueBuilderDefaultMenuScope.DefaultMenuItem(label: String, content: @Composable () -> Unit) {
     Row(
@@ -125,6 +135,11 @@ fun DefaultModifierFieldValueBuilderDefaultMenuScope.DefaultMenuItem(label: Stri
     }
 }
 
+/**
+ * Creates a label with AnnotatedString text for menu items.
+ *
+ * @param label The annotated string to display as label
+ */
 @Composable
 fun DefaultModifierFieldValueBuilderDefaultMenuScope.Label(label: AnnotatedString) = Text(
     text = label,
@@ -159,6 +174,13 @@ fun <Value> DefaultModifierFieldValueBuilderDefaultMenuScope.TextFieldItem(
     }
 }
 
+/**
+ * Creates a color picker menu item with label and interactive color selection.
+ *
+ * @param label The text label for the color picker
+ * @param value The current color value
+ * @param onValueChange Callback when the color changes
+ */
 @Composable
 fun DefaultModifierFieldValueBuilderDefaultMenuScope.ColorPickerItem(
     label: String,

@@ -20,6 +20,11 @@ import me.tbsten.compose.preview.lab.component.TransformableTextField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Text
 
+/**
+ * ModifierFieldValue that controls the layering order (Z-index) of a composable.
+ *
+ * @param zIndex The Z-index value determining the stacking order. Higher values appear on top of lower values.
+ */
 class ZIndexModifierFieldValue(zIndex: Float) : ModifierFieldValue {
     var zIndex by mutableStateOf(zIndex)
 
@@ -51,6 +56,11 @@ class ZIndexModifierFieldValue(zIndex: Float) : ModifierFieldValue {
         },
     )
 
+    /**
+     * Factory for creating ZIndexModifierFieldValue instances with configurable initial values.
+     *
+     * @param initialZIndex Initial Z-index value for controlling the layering order
+     */
     class Factory(initialZIndex: Float? = null) : ModifierFieldValueFactory<ZIndexModifierFieldValue> {
         override val title: String = ".zIndex(...)"
         var zIndex by mutableStateOf(initialZIndex)
@@ -81,6 +91,12 @@ class ZIndexModifierFieldValue(zIndex: Float) : ModifierFieldValue {
     }
 }
 
+/**
+ * Sets the Z-index (layering order) for this modifier list.
+ *
+ * @param zIndex The Z-index value determining the stacking order (higher values appear on top)
+ * @return A new ModifierFieldValueList with Z-index applied
+ */
 fun ModifierFieldValueList.zIndex(zIndex: Float) = then(
     ZIndexModifierFieldValue(
         zIndex = zIndex,

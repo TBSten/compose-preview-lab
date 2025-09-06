@@ -22,6 +22,11 @@ import me.tbsten.compose.preview.lab.component.TransformableTextField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Text
 
+/**
+ * A modifier field value that makes a component fill the maximum available size.
+ *
+ * @param fraction The fraction of the maximum size to fill (0.0 to 1.0)
+ */
 class FillMaxSizeModifierFieldValue(fraction: Float) : ModifierFieldValue {
     var fraction by mutableStateOf(fraction)
 
@@ -54,6 +59,11 @@ class FillMaxSizeModifierFieldValue(fraction: Float) : ModifierFieldValue {
         },
     )
 
+    /**
+     * Factory for creating FillMaxSizeModifierFieldValue instances with configurable initial values.
+     *
+     * @param initialFraction Initial fraction value for filling the maximum size (0.0 to 1.0)
+     */
     class Factory(initialFraction: Float? = null) : ModifierFieldValueFactory<FillMaxSizeModifierFieldValue> {
         override val title: String = ".fillMaxSize(...)"
         var fraction by mutableStateOf(initialFraction)
@@ -84,12 +94,23 @@ class FillMaxSizeModifierFieldValue(fraction: Float) : ModifierFieldValue {
     }
 }
 
+/**
+ * Adds a fillMaxSize modifier to this modifier list.
+ *
+ * @param fraction The fraction of the maximum size to fill (0.0 to 1.0)
+ * @return A new ModifierFieldValueList with fillMaxSize applied
+ */
 fun ModifierFieldValueList.fillMaxSize(fraction: Float = 1f) = then(
     FillMaxSizeModifierFieldValue(
         fraction = fraction,
     ),
 )
 
+/**
+ * A modifier field value that makes a component fill the maximum available width.
+ *
+ * @param fraction The fraction of the maximum width to fill (0.0 to 1.0)
+ */
 class FillMaxWidthModifierFieldValue(fraction: Float) : ModifierFieldValue {
     var fraction by mutableStateOf(fraction)
 
@@ -122,6 +143,11 @@ class FillMaxWidthModifierFieldValue(fraction: Float) : ModifierFieldValue {
         },
     )
 
+    /**
+     * Factory for creating FillMaxWidthModifierFieldValue instances with configurable initial values.
+     *
+     * @param initialFraction Initial fraction value for filling the maximum width (0.0 to 1.0)
+     */
     class Factory(initialFraction: Float? = null) : ModifierFieldValueFactory<FillMaxWidthModifierFieldValue> {
         override val title: String = ".fillMaxWidth(...)"
         var fraction by mutableStateOf(initialFraction)
@@ -150,12 +176,23 @@ class FillMaxWidthModifierFieldValue(fraction: Float) : ModifierFieldValue {
     }
 }
 
+/**
+ * Adds a fillMaxWidth modifier to this modifier list.
+ *
+ * @param fraction The fraction of the maximum width to fill (0.0 to 1.0)
+ * @return A new ModifierFieldValueList with fillMaxWidth applied
+ */
 fun ModifierFieldValueList.fillMaxWidth(fraction: Float = 1f) = then(
     FillMaxWidthModifierFieldValue(
         fraction = fraction,
     ),
 )
 
+/**
+ * A modifier field value that makes a component fill the maximum available height.
+ *
+ * @param fraction The fraction of the maximum height to fill (0.0 to 1.0)
+ */
 class FillMaxHeightModifierFieldValue(fraction: Float) : ModifierFieldValue {
     var fraction by mutableStateOf(fraction)
 
@@ -188,6 +225,11 @@ class FillMaxHeightModifierFieldValue(fraction: Float) : ModifierFieldValue {
         },
     )
 
+    /**
+     * Factory for creating FillMaxHeightModifierFieldValue instances with configurable initial values.
+     *
+     * @param initialFraction Initial fraction value for filling the maximum height (0.0 to 1.0)
+     */
     class Factory(initialFraction: Float? = null) : ModifierFieldValueFactory<FillMaxHeightModifierFieldValue> {
         override val title: String = ".fillMaxHeight(...)"
         var fraction by mutableStateOf(initialFraction)
@@ -216,6 +258,12 @@ class FillMaxHeightModifierFieldValue(fraction: Float) : ModifierFieldValue {
     }
 }
 
+/**
+ * Adds a fillMaxHeight modifier to this modifier list.
+ *
+ * @param fraction The fraction of the maximum height to fill (0.0 to 1.0)
+ * @return A new ModifierFieldValueList with fillMaxHeight applied
+ */
 fun ModifierFieldValueList.fillMaxHeight(fraction: Float = 1f) = then(
     FillMaxHeightModifierFieldValue(
         fraction = fraction,

@@ -20,6 +20,11 @@ import me.tbsten.compose.preview.lab.component.TransformableTextField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Text
 
+/**
+ * A modifier field value that applies alpha/transparency to a component.
+ *
+ * @param alpha The alpha value from 0.0 (transparent) to 1.0 (opaque)
+ */
 class AlphaModifierFieldValue(alpha: Float) : ModifierFieldValue {
     var alpha by mutableStateOf(alpha)
 
@@ -52,6 +57,11 @@ class AlphaModifierFieldValue(alpha: Float) : ModifierFieldValue {
         },
     )
 
+    /**
+     * Factory for creating AlphaModifierFieldValue instances.
+     *
+     * @param initialAlpha The initial alpha value
+     */
     class Factory(initialAlpha: Float? = null) : ModifierFieldValueFactory<AlphaModifierFieldValue> {
         override val title: String = ".alpha(...)"
         var alpha by mutableStateOf(initialAlpha)
@@ -82,6 +92,12 @@ class AlphaModifierFieldValue(alpha: Float) : ModifierFieldValue {
     }
 }
 
+/**
+ * Adds alpha/transparency to this modifier list.
+ *
+ * @param alpha The alpha value from 0.0 (transparent) to 1.0 (opaque)
+ * @return A new ModifierFieldValueList with alpha applied
+ */
 fun ModifierFieldValueList.alpha(alpha: Float) = then(
     AlphaModifierFieldValue(
         alpha = alpha,

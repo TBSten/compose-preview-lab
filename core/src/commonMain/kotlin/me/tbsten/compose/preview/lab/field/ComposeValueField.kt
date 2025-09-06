@@ -232,6 +232,15 @@ class DpSizeField(label: String, initialValue: DpSize) :
     }
 }
 
+/**
+ * A field for selecting colors using an interactive color picker.
+ *
+ * Provides a visual color picker interface allowing users to select colors
+ * using HSV sliders and alpha channel controls.
+ *
+ * @param label The display label for this field
+ * @param initialValue The initial color value
+ */
 class ColorField(label: String, initialValue: Color) :
     MutablePreviewLabField<Color>(
         label = label,

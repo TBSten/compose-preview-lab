@@ -29,6 +29,14 @@ import androidx.compose.ui.unit.sp
 import kotlin.math.roundToInt
 import me.tbsten.compose.preview.lab.component.colorpicker.CommonColorPicker
 
+/**
+ * A modifier field value that applies a background color to a component.
+ *
+ * Allows configuring the background color of a component through an interactive
+ * color picker in the Preview Lab interface.
+ *
+ * @param color The background color to apply
+ */
 class BackgroundModifierFieldValue(color: Color) : ModifierFieldValue {
     var color by mutableStateOf(color)
 
@@ -83,6 +91,11 @@ class BackgroundModifierFieldValue(color: Color) : ModifierFieldValue {
         },
     )
 
+    /**
+     * Factory for creating BackgroundModifierFieldValue instances with configurable initial values.
+     *
+     * @param initialColor Initial background color to apply
+     */
     class Factory(initialColor: Color? = null) : ModifierFieldValueFactory<BackgroundModifierFieldValue> {
         override val title: String = ".background(...)"
         var color by mutableStateOf(initialColor)
@@ -110,6 +123,12 @@ class BackgroundModifierFieldValue(color: Color) : ModifierFieldValue {
     }
 }
 
+/**
+ * Adds a background color to this modifier list.
+ *
+ * @param color The background color to apply
+ * @return A new ModifierFieldValueList with background applied
+ */
 fun ModifierFieldValueList.background(color: Color) = then(
     BackgroundModifierFieldValue(
         color = color,

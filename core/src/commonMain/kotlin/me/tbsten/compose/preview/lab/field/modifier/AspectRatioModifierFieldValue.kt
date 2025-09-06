@@ -20,6 +20,11 @@ import me.tbsten.compose.preview.lab.component.TransformableTextField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Text
 
+/**
+ * ModifierFieldValue that applies an aspect ratio constraint to a composable.
+ *
+ * @param ratio The aspect ratio value (width/height). For example, 1.0f for square, 16/9f for widescreen.
+ */
 class AspectRatioModifierFieldValue(ratio: Float) : ModifierFieldValue {
     var ratio by mutableStateOf(ratio)
 
@@ -51,6 +56,11 @@ class AspectRatioModifierFieldValue(ratio: Float) : ModifierFieldValue {
         },
     )
 
+    /**
+     * Factory for creating AspectRatioModifierFieldValue instances with configurable initial values.
+     *
+     * @param initialRatio Initial aspect ratio value (width/height ratio)
+     */
     class Factory(initialRatio: Float? = null) : ModifierFieldValueFactory<AspectRatioModifierFieldValue> {
         override val title: String = ".aspectRatio(...)"
         var ratio by mutableStateOf(initialRatio)
@@ -81,6 +91,12 @@ class AspectRatioModifierFieldValue(ratio: Float) : ModifierFieldValue {
     }
 }
 
+/**
+ * Sets the aspect ratio constraint for this modifier list.
+ *
+ * @param ratio The aspect ratio value (width/height)
+ * @return A new ModifierFieldValueList with aspect ratio applied
+ */
 fun ModifierFieldValueList.aspectRatio(ratio: Float) = then(
     AspectRatioModifierFieldValue(
         ratio = ratio,

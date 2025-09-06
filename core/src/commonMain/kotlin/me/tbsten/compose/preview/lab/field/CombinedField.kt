@@ -15,6 +15,20 @@ import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Text
 
+/**
+ * A field that combines multiple sub-fields into a single composite value.
+ *
+ * CombinedField allows creating complex field types by combining simpler field types.
+ * For example, combining multiple number fields to create a coordinate field, or
+ * combining color and size fields to create a styled element field.
+ *
+ * @param Base The base type of the individual sub-fields
+ * @param Value The composite value type created by combining the sub-fields
+ * @param label The display label for this combined field
+ * @param fields The list of sub-fields to combine
+ * @param combine Function to combine values from sub-fields into the composite value
+ * @param split Function to split a composite value back into individual sub-field values
+ */
 open class CombinedField<Base, Value>(
     label: String,
     private val fields: List<MutablePreviewLabField<out Base>>,
@@ -66,8 +80,25 @@ open class CombinedField<Base, Value>(
 }
 
 // CombinedField2
+/**
+ * Data class that holds two values split from a combined field.
+ *
+ * @param A Type of the first value
+ * @param B Type of the second value
+ * @param first The first split value
+ * @param second The second split value
+ */
 data class Splited2<A, B>(val first: A, val second: B)
 
+/**
+ * Creates a [Splited2] instance containing two values.
+ *
+ * @param A Type of the first value
+ * @param B Type of the second value
+ * @param first The first value
+ * @param second The second value
+ * @return A new [Splited2] instance
+ */
 fun <A, B> splitedOf(first: A, second: B) = Splited2(first, second)
 
 open class CombinedField2<A, B, Value>(
@@ -104,8 +135,29 @@ fun <A, B, Value> combined(
 )
 
 // CombinedField3
+/**
+ * Data class that holds three values split from a combined field.
+ *
+ * @param A Type of the first value
+ * @param B Type of the second value
+ * @param C Type of the third value
+ * @param first The first split value
+ * @param second The second split value
+ * @param third The third split value
+ */
 data class Splited3<A, B, C>(val first: A, val second: B, val third: C)
 
+/**
+ * Creates a [Splited3] instance containing three values.
+ *
+ * @param A Type of the first value
+ * @param B Type of the second value
+ * @param C Type of the third value
+ * @param first The first value
+ * @param second The second value
+ * @param third The third value
+ * @return A new [Splited3] instance
+ */
 fun <A, B, C> splitedOf(first: A, second: B, third: C) = Splited3(first, second, third)
 
 open class CombinedField3<A, B, C, Value>(
@@ -144,8 +196,33 @@ fun <A, B, C, Value> combined(
 )
 
 // CombinedField4
+/**
+ * Data class that holds four values split from a combined field.
+ *
+ * @param A Type of the first value
+ * @param B Type of the second value
+ * @param C Type of the third value
+ * @param D Type of the fourth value
+ * @param first The first split value
+ * @param second The second split value
+ * @param third The third split value
+ * @param fourth The fourth split value
+ */
 data class Splited4<A, B, C, D>(val first: A, val second: B, val third: C, val fourth: D)
 
+/**
+ * Creates a [Splited4] instance containing four values.
+ *
+ * @param A Type of the first value
+ * @param B Type of the second value
+ * @param C Type of the third value
+ * @param D Type of the fourth value
+ * @param first The first value
+ * @param second The second value
+ * @param third The third value
+ * @param fourth The fourth value
+ * @return A new [Splited4] instance
+ */
 fun <A, B, C, D> splitedOf(first: A, second: B, third: C, fourth: D) = Splited4(first, second, third, fourth)
 
 open class CombinedField4<A, B, C, D, Value>(
@@ -188,8 +265,37 @@ fun <A, B, C, D, Value> combined(
 )
 
 // CombinedField5
+/**
+ * Data class that holds five values split from a combined field.
+ *
+ * @param A Type of the first value
+ * @param B Type of the second value
+ * @param C Type of the third value
+ * @param D Type of the fourth value
+ * @param E Type of the fifth value
+ * @param first The first split value
+ * @param second The second split value
+ * @param third The third split value
+ * @param fourth The fourth split value
+ * @param fifth The fifth split value
+ */
 data class Splited5<A, B, C, D, E>(val first: A, val second: B, val third: C, val fourth: D, val fifth: E)
 
+/**
+ * Creates a [Splited5] instance containing five values.
+ *
+ * @param A Type of the first value
+ * @param B Type of the second value
+ * @param C Type of the third value
+ * @param D Type of the fourth value
+ * @param E Type of the fifth value
+ * @param first The first value
+ * @param second The second value
+ * @param third The third value
+ * @param fourth The fourth value
+ * @param fifth The fifth value
+ * @return A new [Splited5] instance
+ */
 fun <A, B, C, D, E> splitedOf(first: A, second: B, third: C, fourth: D, fifth: E) =
     Splited5(first, second, third, fourth, fifth)
 
@@ -236,8 +342,41 @@ fun <A, B, C, D, E, Value> combined(
 )
 
 // CombinedField6
+/**
+ * Data class that holds six values split from a combined field.
+ *
+ * @param A Type of the first value
+ * @param B Type of the second value
+ * @param C Type of the third value
+ * @param D Type of the fourth value
+ * @param E Type of the fifth value
+ * @param F Type of the sixth value
+ * @param first The first split value
+ * @param second The second split value
+ * @param third The third split value
+ * @param fourth The fourth split value
+ * @param fifth The fifth split value
+ * @param sixth The sixth split value
+ */
 data class Splited6<A, B, C, D, E, F>(val first: A, val second: B, val third: C, val fourth: D, val fifth: E, val sixth: F)
 
+/**
+ * Creates a [Splited6] instance containing six values.
+ *
+ * @param A Type of the first value
+ * @param B Type of the second value
+ * @param C Type of the third value
+ * @param D Type of the fourth value
+ * @param E Type of the fifth value
+ * @param F Type of the sixth value
+ * @param first The first value
+ * @param second The second value
+ * @param third The third value
+ * @param fourth The fourth value
+ * @param fifth The fifth value
+ * @param sixth The sixth value
+ * @return A new [Splited6] instance
+ */
 fun <A, B, C, D, E, F> splitedOf(first: A, second: B, third: C, fourth: D, fifth: E, sixth: F) =
     Splited6(first, second, third, fourth, fifth, sixth)
 
@@ -294,6 +433,24 @@ fun <A, B, C, D, E, F, Value> combined(
 )
 
 // CombinedField7
+/**
+ * Data class that holds seven values split from a combined field.
+ *
+ * @param A Type of the first value
+ * @param B Type of the second value
+ * @param C Type of the third value
+ * @param D Type of the fourth value
+ * @param E Type of the fifth value
+ * @param F Type of the sixth value
+ * @param G Type of the seventh value
+ * @param first The first split value
+ * @param second The second split value
+ * @param third The third split value
+ * @param fourth The fourth split value
+ * @param fifth The fifth split value
+ * @param sixth The sixth split value
+ * @param seventh The seventh split value
+ */
 data class Splited7<A, B, C, D, E, F, G>(
     val first: A,
     val second: B,
@@ -304,6 +461,25 @@ data class Splited7<A, B, C, D, E, F, G>(
     val seventh: G,
 )
 
+/**
+ * Creates a [Splited7] instance containing seven values.
+ *
+ * @param A Type of the first value
+ * @param B Type of the second value
+ * @param C Type of the third value
+ * @param D Type of the fourth value
+ * @param E Type of the fifth value
+ * @param F Type of the sixth value
+ * @param G Type of the seventh value
+ * @param first The first value
+ * @param second The second value
+ * @param third The third value
+ * @param fourth The fourth value
+ * @param fifth The fifth value
+ * @param sixth The sixth value
+ * @param seventh The seventh value
+ * @return A new [Splited7] instance
+ */
 fun <A, B, C, D, E, F, G> splitedOf(first: A, second: B, third: C, fourth: D, fifth: E, sixth: F, seventh: G) =
     Splited7(first, second, third, fourth, fifth, sixth, seventh)
 
@@ -364,6 +540,26 @@ fun <A, B, C, D, E, F, G, Value> combined(
 )
 
 // CombinedField8
+/**
+ * Data class that holds eight values split from a combined field.
+ *
+ * @param A Type of the first value
+ * @param B Type of the second value
+ * @param C Type of the third value
+ * @param D Type of the fourth value
+ * @param E Type of the fifth value
+ * @param F Type of the sixth value
+ * @param G Type of the seventh value
+ * @param H Type of the eighth value
+ * @param first The first split value
+ * @param second The second split value
+ * @param third The third split value
+ * @param fourth The fourth split value
+ * @param fifth The fifth split value
+ * @param sixth The sixth split value
+ * @param seventh The seventh split value
+ * @param eighth The eighth split value
+ */
 data class Splited8<A, B, C, D, E, F, G, H>(
     val first: A,
     val second: B,
@@ -375,6 +571,27 @@ data class Splited8<A, B, C, D, E, F, G, H>(
     val eighth: H,
 )
 
+/**
+ * Creates a [Splited8] instance containing eight values.
+ *
+ * @param A Type of the first value
+ * @param B Type of the second value
+ * @param C Type of the third value
+ * @param D Type of the fourth value
+ * @param E Type of the fifth value
+ * @param F Type of the sixth value
+ * @param G Type of the seventh value
+ * @param H Type of the eighth value
+ * @param first The first value
+ * @param second The second value
+ * @param third The third value
+ * @param fourth The fourth value
+ * @param fifth The fifth value
+ * @param sixth The sixth value
+ * @param seventh The seventh value
+ * @param eighth The eighth value
+ * @return A new [Splited8] instance
+ */
 fun <A, B, C, D, E, F, G, H> splitedOf(first: A, second: B, third: C, fourth: D, fifth: E, sixth: F, seventh: G, eighth: H) =
     Splited8(first, second, third, fourth, fifth, sixth, seventh, eighth)
 
@@ -448,6 +665,28 @@ fun <A, B, C, D, E, F, G, H, Value> combined(
 )
 
 // CombinedField9
+/**
+ * Data class that holds nine values split from a combined field.
+ *
+ * @param A Type of the first value
+ * @param B Type of the second value
+ * @param C Type of the third value
+ * @param D Type of the fourth value
+ * @param E Type of the fifth value
+ * @param F Type of the sixth value
+ * @param G Type of the seventh value
+ * @param H Type of the eighth value
+ * @param I Type of the ninth value
+ * @param first The first split value
+ * @param second The second split value
+ * @param third The third split value
+ * @param fourth The fourth split value
+ * @param fifth The fifth split value
+ * @param sixth The sixth split value
+ * @param seventh The seventh split value
+ * @param eighth The eighth split value
+ * @param ninth The ninth split value
+ */
 data class Splited9<A, B, C, D, E, F, G, H, I>(
     val first: A,
     val second: B,
@@ -460,6 +699,29 @@ data class Splited9<A, B, C, D, E, F, G, H, I>(
     val ninth: I,
 )
 
+/**
+ * Creates a [Splited9] instance containing nine values.
+ *
+ * @param A Type of the first value
+ * @param B Type of the second value
+ * @param C Type of the third value
+ * @param D Type of the fourth value
+ * @param E Type of the fifth value
+ * @param F Type of the sixth value
+ * @param G Type of the seventh value
+ * @param H Type of the eighth value
+ * @param I Type of the ninth value
+ * @param first The first value
+ * @param second The second value
+ * @param third The third value
+ * @param fourth The fourth value
+ * @param fifth The fifth value
+ * @param sixth The sixth value
+ * @param seventh The seventh value
+ * @param eighth The eighth value
+ * @param ninth The ninth value
+ * @return A new [Splited9] instance
+ */
 fun <A, B, C, D, E, F, G, H, I> splitedOf(
     first: A,
     second: B,
@@ -533,6 +795,30 @@ fun <A, B, C, D, E, F, G, H, I, Value> combined(
 )
 
 // CombinedField10
+/**
+ * Data class that holds ten values split from a combined field.
+ *
+ * @param A Type of the first value
+ * @param B Type of the second value
+ * @param C Type of the third value
+ * @param D Type of the fourth value
+ * @param E Type of the fifth value
+ * @param F Type of the sixth value
+ * @param G Type of the seventh value
+ * @param H Type of the eighth value
+ * @param I Type of the ninth value
+ * @param J Type of the tenth value
+ * @param first The first split value
+ * @param second The second split value
+ * @param third The third split value
+ * @param fourth The fourth split value
+ * @param fifth The fifth split value
+ * @param sixth The sixth split value
+ * @param seventh The seventh split value
+ * @param eighth The eighth split value
+ * @param ninth The ninth split value
+ * @param tenth The tenth split value
+ */
 data class Splited10<A, B, C, D, E, F, G, H, I, J>(
     val first: A,
     val second: B,
@@ -546,6 +832,31 @@ data class Splited10<A, B, C, D, E, F, G, H, I, J>(
     val tenth: J,
 )
 
+/**
+ * Creates a [Splited10] instance containing ten values.
+ *
+ * @param A Type of the first value
+ * @param B Type of the second value
+ * @param C Type of the third value
+ * @param D Type of the fourth value
+ * @param E Type of the fifth value
+ * @param F Type of the sixth value
+ * @param G Type of the seventh value
+ * @param H Type of the eighth value
+ * @param I Type of the ninth value
+ * @param J Type of the tenth value
+ * @param first The first value
+ * @param second The second value
+ * @param third The third value
+ * @param fourth The fourth value
+ * @param fifth The fifth value
+ * @param sixth The sixth value
+ * @param seventh The seventh value
+ * @param eighth The eighth value
+ * @param ninth The ninth value
+ * @param tenth The tenth value
+ * @return A new [Splited10] instance
+ */
 fun <A, B, C, D, E, F, G, H, I, J> splitedOf(
     first: A,
     second: B,

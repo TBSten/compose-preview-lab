@@ -35,6 +35,12 @@ import me.tbsten.compose.preview.lab.component.colorpicker.CommonColorPicker
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Text
 
+/**
+ * A modifier field value that applies a border to a component.
+ *
+ * @param color The border color
+ * @param width The border width
+ */
 class BorderModifierFieldValue(color: Color, width: Dp) : ModifierFieldValue {
     var color by mutableStateOf(color)
     var width by mutableStateOf(width)
@@ -105,6 +111,12 @@ class BorderModifierFieldValue(color: Color, width: Dp) : ModifierFieldValue {
         },
     )
 
+    /**
+     * Factory for creating BorderModifierFieldValue instances with configurable initial values.
+     *
+     * @param initialColor Initial border color to apply
+     * @param initialWidth Initial border width to apply
+     */
     class Factory(initialColor: Color? = null, initialWidth: Dp? = null) :
         ModifierFieldValueFactory<BorderModifierFieldValue> {
         override val title: String = ".border(...)"
@@ -144,6 +156,13 @@ class BorderModifierFieldValue(color: Color, width: Dp) : ModifierFieldValue {
     }
 }
 
+/**
+ * Adds a border to this modifier list with specified color and width.
+ *
+ * @param color The color of the border
+ * @param width The width of the border
+ * @return A new ModifierFieldValueList with border applied
+ */
 fun ModifierFieldValueList.border(color: Color, width: Dp) = then(
     BorderModifierFieldValue(
         color = color,

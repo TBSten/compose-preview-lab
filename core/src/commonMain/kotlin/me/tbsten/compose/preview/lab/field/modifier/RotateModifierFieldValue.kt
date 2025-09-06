@@ -20,6 +20,11 @@ import me.tbsten.compose.preview.lab.component.TransformableTextField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Text
 
+/**
+ * ModifierFieldValue that applies rotation transformation to a composable.
+ *
+ * @param degrees The rotation angle in degrees. Positive values rotate clockwise.
+ */
 class RotateModifierFieldValue(degrees: Float) : ModifierFieldValue {
     var degrees by mutableStateOf(degrees)
 
@@ -52,6 +57,11 @@ class RotateModifierFieldValue(degrees: Float) : ModifierFieldValue {
         },
     )
 
+    /**
+     * Factory for creating RotateModifierFieldValue instances with configurable initial values.
+     *
+     * @param initialDegrees Initial rotation angle in degrees (positive values rotate clockwise)
+     */
     class Factory(initialDegrees: Float? = null) : ModifierFieldValueFactory<RotateModifierFieldValue> {
         override val title: String = ".rotate(...)"
         var degrees by mutableStateOf(initialDegrees)
@@ -82,6 +92,12 @@ class RotateModifierFieldValue(degrees: Float) : ModifierFieldValue {
     }
 }
 
+/**
+ * Rotates this modifier list by the specified degrees.
+ *
+ * @param degrees The rotation angle in degrees
+ * @return A new ModifierFieldValueList with rotation applied
+ */
 fun ModifierFieldValueList.rotate(degrees: Float) = then(
     RotateModifierFieldValue(
         degrees = degrees,

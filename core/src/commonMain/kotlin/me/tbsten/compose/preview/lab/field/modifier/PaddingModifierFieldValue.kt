@@ -22,6 +22,17 @@ import me.tbsten.compose.preview.lab.component.TransformableTextField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Text
 
+/**
+ * A modifier field value that applies padding to a component.
+ *
+ * Allows configuring padding values for all four sides (start, end, top, bottom)
+ * of a component through the Preview Lab interface.
+ *
+ * @param start The start padding value
+ * @param end The end padding value  
+ * @param top The top padding value
+ * @param bottom The bottom padding value
+ */
 class PaddingModifierFieldValue(start: Dp, end: Dp, top: Dp, bottom: Dp) : ModifierFieldValue {
     var start by mutableStateOf(start)
     var end by mutableStateOf(end)
@@ -89,6 +100,14 @@ class PaddingModifierFieldValue(start: Dp, end: Dp, top: Dp, bottom: Dp) : Modif
         },
     )
 
+    /**
+     * Factory for creating PaddingModifierFieldValue instances with configurable initial values.
+     *
+     * @param initialStart Initial start padding value
+     * @param initialEnd Initial end padding value
+     * @param initialTop Initial top padding value
+     * @param initialBottom Initial bottom padding value
+     */
     open class Factory(
         private val initialStart: Dp? = null,
         private val initialEnd: Dp? = null,
@@ -181,6 +200,15 @@ private fun AnnotatedString.Builder.appendDp(argName: String, dp: Dp) {
     append(".dp")
 }
 
+/**
+ * Adds padding to this modifier list with individual side values.
+ *
+ * @param start The start padding
+ * @param end The end padding
+ * @param top The top padding
+ * @param bottom The bottom padding
+ * @return A new ModifierFieldValueList with padding applied
+ */
 fun ModifierFieldValueList.padding(start: Dp = 0.dp, end: Dp = 0.dp, top: Dp = 0.dp, bottom: Dp = 0.dp) = then(
     PaddingModifierFieldValue(
         start = start,
@@ -190,6 +218,13 @@ fun ModifierFieldValueList.padding(start: Dp = 0.dp, end: Dp = 0.dp, top: Dp = 0
     ),
 )
 
+/**
+ * Adds padding to this modifier list with horizontal and vertical values.
+ *
+ * @param horizontal The horizontal padding (applied to start and end)
+ * @param vertical The vertical padding (applied to top and bottom)
+ * @return A new ModifierFieldValueList with padding applied
+ */
 fun ModifierFieldValueList.padding(horizontal: Dp = 0.dp, vertical: Dp = 0.dp) = then(
     PaddingModifierFieldValue(
         start = horizontal,
@@ -199,6 +234,12 @@ fun ModifierFieldValueList.padding(horizontal: Dp = 0.dp, vertical: Dp = 0.dp) =
     ),
 )
 
+/**
+ * Adds equal padding to all sides of this modifier list.
+ *
+ * @param all The padding value to apply to all sides
+ * @return A new ModifierFieldValueList with padding applied
+ */
 fun ModifierFieldValueList.padding(all: Dp) = then(
     PaddingModifierFieldValue(
         start = all,

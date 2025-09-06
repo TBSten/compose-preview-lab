@@ -32,6 +32,10 @@ import me.tbsten.compose.preview.lab.ui.components.Icon
 import me.tbsten.compose.preview.lab.ui.components.Text
 import org.jetbrains.compose.resources.painterResource
 
+/**
+ * Default configuration object for ModifierBuilder functionality.
+ * Provides default sets of modifier field value factories organized by category.
+ */
 object ModifierBuilderDefaults {
     val modifierFieldValueFactories: ModifierFieldValueFactories = listOf(
         // Layout

@@ -25,8 +25,29 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.TextField
 import me.tbsten.compose.preview.lab.ui.components.textfield.TextFieldDefaults
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldColors
 
+/**
+ * Interface for transforming values to and from string representation.
+ * 
+ * Used by TransformableTextField to handle conversion between typed values
+ * and their string representation for text field input/output.
+ *
+ * @param Value The type of value being transformed
+ */
 interface Transformer<Value> {
+    /**
+     * Converts a value to its string representation.
+     *
+     * @param value The value to convert
+     * @return String representation of the value
+     */
     fun toString(value: Value): String
+
+    /**
+     * Converts a string back to a typed value.
+     *
+     * @param string The string to convert
+     * @return The typed value parsed from the string
+     */
     fun fromString(string: String): Value
 }
 
@@ -101,6 +122,14 @@ internal fun <Value> TransformableTextField(
     )
 }
 
+/**
+ * Binds a MutableState<String> to a typed value using a transformer for bidirectional conversion.
+ *
+ * @param value The current typed value
+ * @param onValueChange Callback when the typed value changes
+ * @param transformer The transformer to convert between string and typed value
+ * @return This MutableState for chaining
+ */
 @Composable
 fun <Value> MutableState<String>.bindTransform(
     value: Value,
@@ -116,26 +145,45 @@ fun <Value> MutableState<String>.bindTransform(
     }
 }
 
+/**
+ * Transformer for converting between Dp values and their string representation.
+ */
 object DpTransformer : Transformer<Dp> {
     override fun toString(value: Dp) = value.value.toString()
     override fun fromString(string: String) = string.toFloatOrNull()?.dp ?: error("$string is not a valid dp")
 }
 
+/**
+ * Transformer for converting between nullable Dp values and their string representation.
+ * Empty strings are converted to null values.
+ */
 object NullableDpTransformer : Transformer<Dp?> {
     override fun toString(value: Dp?) = value?.value?.toString() ?: ""
     override fun fromString(string: String) = string.toFloatOrNull()?.dp
 }
 
+/**
+ * Transformer for converting between Float values and their string representation.
+ */
 object FloatTransformer : Transformer<Float> {
     override fun toString(value: Float) = value.toString()
     override fun fromString(string: String) = string.toFloatOrNull() ?: error("$string is not a valid float")
 }
 
+/**
+ * Transformer for converting between nullable Float values and their string representation.
+ * Empty strings are converted to null values.
+ */
 object NullableFloatTransformer : Transformer<Float?> {
     override fun toString(value: Float?) = value?.toString() ?: ""
     override fun fromString(string: String) = string.toFloatOrNull()
 }
 
+/**
+ * Scope class providing context for TransformableTextField slot content.
+ *
+ * @param isError Whether the current field value has a transformation error
+ */
 class TransformableTextFieldSlotScope internal constructor(val isError: Boolean)
 
 @Composable

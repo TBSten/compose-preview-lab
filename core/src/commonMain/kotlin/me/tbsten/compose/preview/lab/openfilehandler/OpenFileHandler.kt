@@ -75,5 +75,15 @@ open class UrlOpenFileHandler(private val baseUrl: String) : OpenFileHandler<Uri
 
 internal val LocalOpenFileHandler = compositionLocalOf<OpenFileHandler<out Any?>?> { null }
 
+/**
+ * An OpenFileHandler that opens files in GitHub's web interface.
+ *
+ * This handler generates URLs that point to specific files and line numbers in a GitHub repository,
+ * allowing users to view the source code of previews directly in their web browser.
+ *
+ * @param githubRepository The GitHub repository in format "owner/repository"
+ * @param branch The branch name to link to (defaults to "main")
+ * @param server The GitHub server URL (defaults to "https://github.com" for public GitHub)
+ */
 class GithubOpenFileHandler(githubRepository: String, branch: String = "main", server: String = "https://github.com") :
     UrlOpenFileHandler(baseUrl = "$server/$githubRepository/blob/$branch/")

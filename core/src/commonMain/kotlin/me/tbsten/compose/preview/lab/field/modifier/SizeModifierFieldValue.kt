@@ -23,6 +23,12 @@ import me.tbsten.compose.preview.lab.component.TransformableTextField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Text
 
+/**
+ * A modifier field value that sets both width and height of a component.
+ *
+ * @param width The component width
+ * @param height The component height
+ */
 class SizeModifierFieldValue(width: Dp, height: Dp) : ModifierFieldValue {
     var width by mutableStateOf(width)
     var height by mutableStateOf(height)
@@ -73,6 +79,12 @@ class SizeModifierFieldValue(width: Dp, height: Dp) : ModifierFieldValue {
         },
     )
 
+    /**
+     * Factory for creating SizeModifierFieldValue instances with configurable initial values.
+     *
+     * @param initialWidth Initial width value for the component
+     * @param initialHeight Initial height value for the component
+     */
     class Factory(initialWidth: Dp? = null, initialHeight: Dp? = null) :
         ModifierFieldValueFactory<SizeModifierFieldValue> {
         override val title: String = ".size(...)"
@@ -120,6 +132,13 @@ class SizeModifierFieldValue(width: Dp, height: Dp) : ModifierFieldValue {
     }
 }
 
+/**
+ * Adds size to this modifier list with individual width and height values.
+ *
+ * @param width The component width
+ * @param height The component height
+ * @return A new ModifierFieldValueList with size applied
+ */
 fun ModifierFieldValueList.size(width: Dp = 0.dp, height: Dp = 0.dp) = then(
     SizeModifierFieldValue(
         width = width,
@@ -127,6 +146,12 @@ fun ModifierFieldValueList.size(width: Dp = 0.dp, height: Dp = 0.dp) = then(
     ),
 )
 
+/**
+ * Adds equal size to this modifier list for both width and height.
+ *
+ * @param size The size value to apply to both width and height
+ * @return A new ModifierFieldValueList with size applied
+ */
 fun ModifierFieldValueList.size(size: Dp = 0.dp) = then(
     SizeModifierFieldValue(
         width = size,
@@ -136,6 +161,11 @@ fun ModifierFieldValueList.size(size: Dp = 0.dp) = then(
 
 // width
 
+/**
+ * A modifier field value that sets the width of a component.
+ *
+ * @param width The component width
+ */
 class WidthModifierFieldValue(width: Dp) : ModifierFieldValue {
     var width by mutableStateOf(width)
 
@@ -168,6 +198,11 @@ class WidthModifierFieldValue(width: Dp) : ModifierFieldValue {
         },
     )
 
+    /**
+     * Factory for creating WidthModifierFieldValue instances with configurable initial values.
+     *
+     * @param initialWidth Initial width value for the component
+     */
     class Factory(initialWidth: Dp? = null) : ModifierFieldValueFactory<WidthModifierFieldValue> {
         override val title: String = ".width(...)"
         var width by mutableStateOf(initialWidth)
@@ -198,6 +233,12 @@ class WidthModifierFieldValue(width: Dp) : ModifierFieldValue {
     }
 }
 
+/**
+ * Sets the width of this modifier list to the specified value.
+ *
+ * @param width The component width
+ * @return A new ModifierFieldValueList with width applied
+ */
 fun ModifierFieldValueList.width(width: Dp) = then(
     WidthModifierFieldValue(
         width = width,
@@ -206,6 +247,11 @@ fun ModifierFieldValueList.width(width: Dp) = then(
 
 // height
 
+/**
+ * A modifier field value that sets the height of a component.
+ *
+ * @param height The component height
+ */
 class HeightModifierFieldValue(height: Dp) : ModifierFieldValue {
     var height by mutableStateOf(height)
 
@@ -238,6 +284,11 @@ class HeightModifierFieldValue(height: Dp) : ModifierFieldValue {
         },
     )
 
+    /**
+     * Factory for creating HeightModifierFieldValue instances with configurable initial values.
+     *
+     * @param initialHeight Initial height value for the component
+     */
     class Factory(initialHeight: Dp? = null) : ModifierFieldValueFactory<HeightModifierFieldValue> {
         override val title: String = ".height(...)"
         var height by mutableStateOf(initialHeight)
@@ -266,6 +317,12 @@ class HeightModifierFieldValue(height: Dp) : ModifierFieldValue {
     }
 }
 
+/**
+ * Sets the height of this modifier list to the specified value.
+ *
+ * @param height The component height
+ * @return A new ModifierFieldValueList with height applied
+ */
 fun ModifierFieldValueList.height(height: Dp) = then(
     HeightModifierFieldValue(
         height = height,

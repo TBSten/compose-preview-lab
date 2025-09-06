@@ -21,6 +21,12 @@ import me.tbsten.compose.preview.lab.component.TransformableTextField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Text
 
+/**
+ * ModifierFieldValue that applies positional offset to a composable.
+ *
+ * @param x The horizontal offset in Dp. Positive values move to the right.
+ * @param y The vertical offset in Dp. Positive values move downward.
+ */
 class OffsetModifierFieldValue(x: Dp, y: Dp) : ModifierFieldValue {
     var x by mutableStateOf(x)
     var y by mutableStateOf(y)
@@ -71,6 +77,12 @@ class OffsetModifierFieldValue(x: Dp, y: Dp) : ModifierFieldValue {
         },
     )
 
+    /**
+     * Factory for creating OffsetModifierFieldValue instances with configurable initial values.
+     *
+     * @param initialX Initial horizontal offset value
+     * @param initialY Initial vertical offset value
+     */
     class Factory(initialX: Dp? = null, initialY: Dp? = null) : ModifierFieldValueFactory<OffsetModifierFieldValue> {
         override val title: String = ".offset(...)"
         var x by mutableStateOf(initialX)
@@ -119,6 +131,13 @@ class OffsetModifierFieldValue(x: Dp, y: Dp) : ModifierFieldValue {
     }
 }
 
+/**
+ * Offsets this modifier list by the specified X and Y coordinates.
+ *
+ * @param x The horizontal offset in Dp (defaults to 0.dp)
+ * @param y The vertical offset in Dp (defaults to 0.dp)
+ * @return A new ModifierFieldValueList with offset applied
+ */
 fun ModifierFieldValueList.offset(x: Dp = 0.dp, y: Dp = 0.dp) = then(
     OffsetModifierFieldValue(
         x = x,
@@ -126,6 +145,12 @@ fun ModifierFieldValueList.offset(x: Dp = 0.dp, y: Dp = 0.dp) = then(
     ),
 )
 
+/**
+ * Offsets this modifier list uniformly in both X and Y directions.
+ *
+ * @param offset The offset value to apply to both X and Y coordinates (defaults to 0.dp)
+ * @return A new ModifierFieldValueList with uniform offset applied
+ */
 fun ModifierFieldValueList.offset(offset: Dp = 0.dp) = then(
     OffsetModifierFieldValue(
         x = offset,

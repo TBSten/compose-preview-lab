@@ -45,10 +45,25 @@ abstract class NumberField<Num : Number>(
         is InputType.Slider -> TODO("InputType.Slider")
     }
 
+    /**
+     * Defines the type of input UI to display for the number field.
+     */
     sealed interface InputType {
+        /**
+         * Text field input with optional prefix and suffix composables.
+         *
+         * @param prefix Optional composable to display before the input
+         * @param suffix Optional composable to display after the input
+         */
         data class TextField(val prefix: (@Composable () -> Unit)? = null, val suffix: (@Composable () -> Unit)? = null) :
             InputType
 
+        /**
+         * Slider input for selecting values within a range.
+         *
+         * @param min The minimum value
+         * @param max The maximum value
+         */
         data class Slider(val min: Int, val max: Int) : InputType
     }
 }
