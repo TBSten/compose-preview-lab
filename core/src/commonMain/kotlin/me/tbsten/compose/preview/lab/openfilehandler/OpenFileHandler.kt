@@ -62,7 +62,7 @@ fun OpenFileHandler(openFile: (OpenFileHandler.Params<Unit>) -> Unit) = object :
  * val githubOpenFileHandler = UrlOpenFileHandler("https://github.com/me/my-repo/blob/main/")
  * ```
  */
-class UrlOpenFileHandler(private val baseUrl: String = "") : OpenFileHandler<UriHandler> {
+open class UrlOpenFileHandler(private val baseUrl: String) : OpenFileHandler<UriHandler> {
     @Composable
     override fun configure(): UriHandler = LocalUriHandler.current
 
@@ -74,3 +74,6 @@ class UrlOpenFileHandler(private val baseUrl: String = "") : OpenFileHandler<Uri
 }
 
 internal val LocalOpenFileHandler = compositionLocalOf<OpenFileHandler<out Any?>?> { null }
+
+class GithubOpenFileHandler(githubRepository: String, branch: String = "main", server: String = "https://github.com") :
+    UrlOpenFileHandler(baseUrl = "$server/$githubRepository/blob/$branch/")
