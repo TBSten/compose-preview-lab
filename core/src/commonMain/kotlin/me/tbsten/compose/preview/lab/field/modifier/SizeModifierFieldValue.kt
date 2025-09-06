@@ -1,5 +1,6 @@
 package me.tbsten.compose.preview.lab.field.modifier
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
@@ -175,7 +176,9 @@ class WidthModifierFieldValue(width: Dp) : ModifierFieldValue {
             get() = width != null
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column {
+        override fun Content(createButton: @Composable (() -> Unit)) = Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
             TransformableTextField(
                 value = width,
                 onValueChange = { width = it },

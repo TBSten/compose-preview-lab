@@ -36,8 +36,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.foundation.ProvideContentColorTextStyle
 
 @Composable
@@ -187,7 +187,7 @@ internal fun CommonDecorationBox(
 }
 
 @Composable
-internal fun Decoration(contentColor: Color, typography: TextStyle? = null, content: @Composable () -> Unit,) {
+internal fun Decoration(contentColor: Color, typography: TextStyle? = null, content: @Composable () -> Unit) {
     val contentWithColor: @Composable () -> Unit = @Composable {
         CompositionLocalProvider(
             LocalContentColor provides contentColor,
@@ -338,7 +338,8 @@ internal val ZeroConstraints = Constraints(0, 0, 0, 0)
 private const val PlaceholderAnimationDuration = 83
 private const val PlaceholderAnimationDelayOrDuration = 67
 
-internal val TextFieldMinHeight = 40.dp
+internal val TextFieldMinWidth = 180.dp
+internal val TextFieldMinHeight = 32.dp
 
 internal val TextFieldHorizontalPadding = 16.dp
 internal val TextFieldVerticalPadding = 10.dp

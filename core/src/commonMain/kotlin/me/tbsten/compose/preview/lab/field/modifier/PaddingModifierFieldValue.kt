@@ -1,5 +1,6 @@
 package me.tbsten.compose.preview.lab.field.modifier
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -123,7 +124,9 @@ class PaddingModifierFieldValue(start: Dp, end: Dp, top: Dp, bottom: Dp) : Modif
         )
 
         @Composable
-        override fun Content(createButton: @Composable () -> Unit) = Column {
+        override fun Content(createButton: @Composable (() -> Unit)) = Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
             TransformableTextField(
                 value = start,
                 onValueChange = { start = it },

@@ -132,7 +132,7 @@ object FloatTransformer : Transformer<Float> {
 }
 
 object NullableFloatTransformer : Transformer<Float?> {
-    override fun toString(value: Float?) = value.toString()
+    override fun toString(value: Float?) = value?.toString() ?: ""
     override fun fromString(string: String) = string.toFloatOrNull()
 }
 

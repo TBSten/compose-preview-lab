@@ -38,6 +38,7 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.base.SupportingTopP
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldColors
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldHorizontalPadding
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldMinHeight
+import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldMinWidth
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldVerticalPadding
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.UnfocusedOutlineThickness
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.containerOutline
@@ -81,6 +82,7 @@ internal fun TextField(
             modifier =
             modifier
                 .defaultMinSize(
+                    minWidth = TextFieldDefaults.MinWidth,
                     minHeight = TextFieldDefaults.MinHeight,
                 )
                 .fillMaxWidth(),
@@ -202,6 +204,7 @@ internal fun TextField(
 
 @Immutable
 internal object TextFieldDefaults {
+    val MinWidth = TextFieldMinWidth
     val MinHeight = TextFieldMinHeight
     val Shape: Shape = RoundedCornerShape(8.dp)
 
@@ -243,7 +246,7 @@ internal object TextFieldDefaults {
     ): PaddingValues = PaddingValues(start, top, end, bottom)
 
     @Composable
-    fun containerBorderThickness(interactionSource: InteractionSource,): Dp {
+    fun containerBorderThickness(interactionSource: InteractionSource): Dp {
         val focused by interactionSource.collectIsFocusedAsState()
 
         return if (focused) FocusedOutlineThickness else UnfocusedOutlineThickness

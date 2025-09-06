@@ -2,6 +2,7 @@ package me.tbsten.compose.preview.lab.field.modifier
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -90,7 +91,9 @@ class BackgroundModifierFieldValue(color: Color) : ModifierFieldValue {
             get() = color != null
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column {
+        override fun Content(createButton: @Composable (() -> Unit)) = Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
             CommonColorPicker(
                 color = color ?: Color.Unspecified,
                 onColorSelected = { color = it },

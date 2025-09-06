@@ -1,5 +1,6 @@
 package me.tbsten.compose.preview.lab.field.modifier
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
@@ -11,6 +12,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.component.FloatTransformer
 import me.tbsten.compose.preview.lab.component.NullableFloatTransformer
@@ -57,7 +59,9 @@ class ZIndexModifierFieldValue(zIndex: Float) : ModifierFieldValue {
             get() = zIndex != null
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column {
+        override fun Content(createButton: @Composable (() -> Unit)) = Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
             TransformableTextField(
                 value = zIndex,
                 onValueChange = { zIndex = it },
