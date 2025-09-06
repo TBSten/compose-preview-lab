@@ -16,7 +16,7 @@ annotation class ExperimentalComposePreviewLabApi
  * It may change or be removed in future versions without notice.
  */
 @Suppress("ExperimentalAnnotationRetention")
-@RequiresOptIn(message = "This API is experimental. It could change in the future without notice.")
+@RequiresOptIn(message = "This API is for internal. It could change in the future without notice.")
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 annotation class InternalComposePreviewLabApi
