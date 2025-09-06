@@ -32,6 +32,29 @@ open class TransformField<BaseValue, TransformedValue>(
     }
 }
 
+/**
+ * Transforms a [MutablePreviewLabField] to work with a different value type.
+ *
+ * This extension function creates a [TransformField] that allows you to work with
+ * a transformed representation of the original field's value while keeping the
+ * original field's UI and behavior.
+ *
+ * # Usage
+ *
+ * ```kt
+ * val stringField = StringField("number", "42")
+ * val intField = stringField.transform(
+ *     transform = { it.toIntOrNull() ?: 0 },
+ *     reverse = { it.toString() }
+ * )
+ * ```
+ *
+ * @param transform Function to convert from base value to transformed value.
+ * @param reverse Function to convert from transformed value back to base value.
+ * @param label Label for the transformed field. Defaults to the original field's label.
+ * @param initialValue Initial value for the transformed field. Defaults to transforming the original field's current value.
+ * @return A [TransformField] that presents the transformed value type.
+ */
 fun <BaseValue, TransformedValue> MutablePreviewLabField<BaseValue>.transform(
     transform: (BaseValue) -> TransformedValue,
     reverse: (TransformedValue) -> BaseValue,
