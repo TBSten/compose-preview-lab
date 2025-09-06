@@ -31,3 +31,16 @@ open class TransformField<BaseValue, TransformedValue>(
         baseField.Content()
     }
 }
+
+fun <BaseValue, TransformedValue> MutablePreviewLabField<BaseValue>.transform(
+    transform: (BaseValue) -> TransformedValue,
+    reverse: (TransformedValue) -> BaseValue,
+    label: String = this.label,
+    initialValue: TransformedValue = transform(this.value),
+) = TransformField(
+    baseField = this,
+    transform = transform,
+    reverse = reverse,
+    label = label,
+    initialValue = initialValue,
+)
