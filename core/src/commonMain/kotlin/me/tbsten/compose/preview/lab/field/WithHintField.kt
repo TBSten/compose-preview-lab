@@ -22,6 +22,11 @@ import me.tbsten.compose.preview.lab.ui.components.Text
 fun <Value> MutablePreviewLabField<Value>.withHint(vararg choices: Pair<String, Value>): MutablePreviewLabField<Value> =
     WithHintField<Value>(this, choices = mapOf(*choices))
 
+/**
+ * Adds a "Reset" hint that returns the field to its initial value.
+ *
+ * @return A WithHintField wrapper that includes a reset hint
+ */
 fun <Value> MutablePreviewLabField<Value>.withInitialValueHint(): MutablePreviewLabField<Value> =
     withHint("Reset" to this.initialValue)
 
@@ -41,12 +46,46 @@ class WithHintField<Value> internal constructor(
     transform = { it },
     reverse = { it },
 ) {
+    /**
+     * Finds the deepest non-WithHintField base field by traversing nested WithHintField instances.
+     */
+    private fun findDeepestBaseField(): MutablePreviewLabField<Value> {
+        var current = baseField
+        while (current is WithHintField<Value>) {
+            current = current.baseField
+        }
+        return current
+    }
+
+    /**
+     * Collects all choices from nested WithHintField instances in the chain.
+     */
+    private fun collectAllChoices(): Map<String, Value> {
+        val allChoices = mutableMapOf<String, Value>()
+        
+        // Add choices from the current field
+        allChoices.putAll(choices)
+        
+        // Traverse nested WithHintField instances and collect their choices
+        var current = baseField
+        while (current is WithHintField<Value>) {
+            allChoices.putAll(current.choices)
+            current = current.baseField
+        }
+        
+        return allChoices
+    }
+
     @Composable
     override fun Content() {
+        val deepestBaseField = findDeepestBaseField()
+        val allChoices = collectAllChoices()
+        
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            super.Content()
+            // Display the Content of the deepest non-WithHintField base field
+            deepestBaseField.Content()
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -54,7 +93,7 @@ class WithHintField<Value> internal constructor(
                     .fillMaxWidth()
                     .horizontalScroll(rememberScrollState()),
             ) {
-                choices.forEach { choice ->
+                allChoices.forEach { choice ->
                     Chip(
                         selected = value == choice.value,
                         label = { Text(choice.key, style = PreviewLabTheme.typography.label2) },
