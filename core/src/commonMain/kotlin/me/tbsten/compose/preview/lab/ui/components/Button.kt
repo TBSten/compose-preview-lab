@@ -144,9 +144,10 @@ private fun DefaultButtonContent(
             )
         }
     } else if (content != null) {
-        Box(
+        Row(
             modifier = modifier,
-            contentAlignment = Alignment.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
         ) {
             content()
         }
