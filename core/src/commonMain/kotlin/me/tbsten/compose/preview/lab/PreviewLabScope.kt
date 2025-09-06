@@ -93,7 +93,7 @@ class PreviewLabScope internal constructor() {
      * ```
      */
     @Composable
-    fun <Value> fieldValue(builder: () -> PreviewLabField<Value>): Value {
+    fun <Value> fieldValue(builder: () -> PreviewLabField<out Value>): Value {
         val field = remember { builder() }
         DisposableEffect(field) {
             fields.add(field)
