@@ -19,9 +19,12 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.component.SelectButton
+import me.tbsten.compose.preview.lab.field.SelectableField.Type
+import me.tbsten.compose.preview.lab.field.SelectableField.Type.DROPDOWN
 import me.tbsten.compose.preview.lab.ui.LocalTextStyle
 import me.tbsten.compose.preview.lab.util.thenIf
 import me.tbsten.compose.preview.lab.util.thenIfNotNull
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 /**
  * A field that allows selecting from predefined Composable content options.
@@ -250,3 +253,40 @@ fun ComposableFieldValue(label: String, content: @Composable () -> Unit) = objec
         content()
     }
 }
+
+/**
+ * Converts a [PreviewParameterProvider] to a [SelectableField].
+ *
+ * # Usage
+ *
+ * ```kt
+ * class MyButtonProperty(val text: String, val backgroundColor: Color, val contentColor: Color)
+ * class MyButtonPreviewParameterProvider() : PreviewParameterProvider<MyButtonProperty> {
+ *   override val values: Sequence<MyButtonProperty> = sequenceOf(...)
+ * }
+ *
+ * @Preview
+ * @Composable
+ * private fun MyButtonPreview() = PreviewLab {
+ *   val properties = fieldValue {
+ *     MyButtonPreviewParameterProvider().toField("properties")
+ *   }
+ *
+ *   MyButton(
+ *     text = properties.text,
+ *     backgroundColor = properties.backgroundColor,
+ *     contentColor = properties.contentColor,
+ *   )
+ * }
+ * ```
+ */
+fun <Value> PreviewParameterProvider<Value>.toField(
+    label: String,
+    choiceLabel: (Value) -> String = { it.toString() },
+    type: Type = DROPDOWN,
+): SelectableField<Value> = SelectableField(
+    label = label,
+    choices = this.values.toList(),
+    choiceLabel = choiceLabel,
+    type = type,
+)
