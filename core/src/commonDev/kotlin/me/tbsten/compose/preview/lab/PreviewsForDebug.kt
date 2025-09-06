@@ -32,9 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.DpSize
@@ -63,26 +61,16 @@ import me.tbsten.compose.preview.lab.field.combined
 import me.tbsten.compose.preview.lab.field.mark
 import me.tbsten.compose.preview.lab.field.modifier.ModifierFieldValue
 import me.tbsten.compose.preview.lab.field.nullable
+import me.tbsten.compose.preview.lab.field.provideDefaultCompositionLocalFields
 import me.tbsten.compose.preview.lab.field.splitedOf
 import me.tbsten.compose.preview.lab.field.withHint
 import me.tbsten.compose.preview.lab.field.withInitialValueHint
-
-fun FloatField.withBasicFontScalesHint() = withHint(
-    "small" to 1.0f,
-    "normal" to 1.5f,
-    "large" to 2.0f,
-)
 
 val previewsForUiDebug = listOf<CollectedPreview>(
     CollectedPreview("Fields", "src/commonMain/kotlin/me/tbsten/example/Fields.kt") {
         PreviewLab {
             CompositionLocalProvider(
-                LocalDensity provides LocalDensity.current.let { density ->
-                    Density(
-                        density = fieldValue { FloatField("density", density.density) },
-                        fontScale = fieldValue { FloatField("fontScale", density.fontScale).withBasicFontScalesHint() },
-                    )
-                },
+                *provideDefaultCompositionLocalFields(),
             ) {
                 SampleScreen(
                     title = "Fields",
