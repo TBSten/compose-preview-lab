@@ -7,7 +7,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 
 /**
  * ModifierFieldValue that animates content size changes with smooth transitions.
- * 
+ *
  * When the content size changes, this modifier provides smooth animation transitions
  * instead of abrupt size changes.
  */

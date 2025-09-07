@@ -27,7 +27,7 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldColor
 
 /**
  * Interface for transforming values to and from string representation.
- * 
+ *
  * Used by TransformableTextField to handle conversion between typed values
  * and their string representation for text field input/output.
  *

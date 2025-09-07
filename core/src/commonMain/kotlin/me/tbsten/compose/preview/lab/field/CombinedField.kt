@@ -80,6 +80,7 @@ open class CombinedField<Base, Value>(
 }
 
 // CombinedField2
+
 /**
  * Data class that holds two values split from a combined field.
  *
@@ -135,6 +136,7 @@ fun <A, B, Value> combined(
 )
 
 // CombinedField3
+
 /**
  * Data class that holds three values split from a combined field.
  *
@@ -196,6 +198,7 @@ fun <A, B, C, Value> combined(
 )
 
 // CombinedField4
+
 /**
  * Data class that holds four values split from a combined field.
  *
@@ -265,6 +268,7 @@ fun <A, B, C, D, Value> combined(
 )
 
 // CombinedField5
+
 /**
  * Data class that holds five values split from a combined field.
  *
@@ -342,6 +346,7 @@ fun <A, B, C, D, E, Value> combined(
 )
 
 // CombinedField6
+
 /**
  * Data class that holds six values split from a combined field.
  *
@@ -433,6 +438,7 @@ fun <A, B, C, D, E, F, Value> combined(
 )
 
 // CombinedField7
+
 /**
  * Data class that holds seven values split from a combined field.
  *
@@ -540,6 +546,7 @@ fun <A, B, C, D, E, F, G, Value> combined(
 )
 
 // CombinedField8
+
 /**
  * Data class that holds eight values split from a combined field.
  *
@@ -665,6 +672,7 @@ fun <A, B, C, D, E, F, G, H, Value> combined(
 )
 
 // CombinedField9
+
 /**
  * Data class that holds nine values split from a combined field.
  *
@@ -795,6 +803,7 @@ fun <A, B, C, D, E, F, G, H, I, Value> combined(
 )
 
 // CombinedField10
+
 /**
  * Data class that holds ten values split from a combined field.
  *

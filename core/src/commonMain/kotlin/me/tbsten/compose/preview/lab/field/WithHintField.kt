@@ -62,17 +62,17 @@ class WithHintField<Value> internal constructor(
      */
     private fun collectAllChoices(): Map<String, Value> {
         val allChoices = mutableMapOf<String, Value>()
-        
+
         // Add choices from the current field
         allChoices.putAll(choices)
-        
+
         // Traverse nested WithHintField instances and collect their choices
         var current = baseField
         while (current is WithHintField<Value>) {
             allChoices.putAll(current.choices)
             current = current.baseField
         }
-        
+
         return allChoices
     }
 
@@ -80,7 +80,7 @@ class WithHintField<Value> internal constructor(
     override fun Content() {
         val deepestBaseField = findDeepestBaseField()
         val allChoices = collectAllChoices()
-        
+
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {

@@ -29,7 +29,7 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  * of a component through the Preview Lab interface.
  *
  * @param start The start padding value
- * @param end The end padding value  
+ * @param end The end padding value
  * @param top The top padding value
  * @param bottom The bottom padding value
  */
