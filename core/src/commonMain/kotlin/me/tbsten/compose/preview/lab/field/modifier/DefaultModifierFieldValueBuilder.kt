@@ -33,6 +33,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.component.CommonMenu
+import me.tbsten.compose.preview.lab.component.SelectButton
 import me.tbsten.compose.preview.lab.component.TransformableTextField
 import me.tbsten.compose.preview.lab.component.Transformer
 import me.tbsten.compose.preview.lab.component.colorpicker.CommonColorPicker
@@ -45,13 +46,15 @@ import me.tbsten.compose.preview.lab.util.thenIfNotNull
 internal fun DefaultModifierFieldValueBuilder(
     modifierTextCode: AnnotatedString,
     inlineContent: Map<String, InlineTextContent> = mapOf(),
+    header: @Composable () -> Unit = {},
+    footer: @Composable () -> Unit = {},
     menuContent: (@Composable DefaultModifierFieldValueBuilderMenuScope.() -> Unit)? = null,
 ) {
     var isMenuOpen by remember { mutableStateOf(false) }
 
     Column {
         val shape = RoundedCornerShape(4.dp)
-        Box(
+        Column(
             modifier = Modifier
                 .clip(shape = shape)
                 .thenIfNotNull(menuContent) { clickable { isMenuOpen = !isMenuOpen } }
@@ -60,12 +63,14 @@ internal fun DefaultModifierFieldValueBuilder(
                 .horizontalScroll(rememberScrollState())
                 .padding(vertical = 4.dp, horizontal = 8.dp),
         ) {
+            header()
             Text(
                 text = modifierTextCode,
                 inlineContent = inlineContent,
                 style = PreviewLabTheme.typography.body3,
                 modifier = Modifier.wrapContentSize(),
             )
+            footer()
         }
 
         if (menuContent != null) {
@@ -196,6 +201,26 @@ fun DefaultModifierFieldValueBuilderDefaultMenuScope.ColorPickerItem(
             modifier = Modifier
                 .width(140.dp)
                 .aspectRatio(16f / 9f),
+        )
+    }
+}
+
+@Composable
+fun <T> DefaultModifierFieldValueBuilderDefaultMenuScope.SelectItem(
+    label: String,
+    value: T,
+    choices: List<T>,
+    title: (T) -> String,
+    onValueChange: (T) -> Unit,
+) {
+    DefaultMenuItem(
+        label = label,
+    ) {
+        SelectButton(
+            value = value,
+            choices = choices,
+            onSelect = onValueChange,
+            title = title,
         )
     }
 }

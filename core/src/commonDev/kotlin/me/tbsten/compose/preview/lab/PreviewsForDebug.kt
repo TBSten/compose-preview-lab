@@ -305,8 +305,15 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     item {
-                        Button(onClick = {}) {
-                            Text("Primary Button")
+                        Button(
+                            onClick = { onEvent("onClick") },
+                            modifier = fieldValue { ModifierField("modifier", ModifierFieldValue) },
+                            enabled = fieldValue { BooleanField("enabled", true) },
+                        ) {
+                            Text(
+                                text = fieldValue { StringField("Text.text", "Primary Button") },
+                                modifier = fieldValue { ModifierField("Text.modifier") },
+                            )
                         }
                     }
                 }

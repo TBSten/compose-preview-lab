@@ -54,6 +54,10 @@ object ModifierBuilderDefaults {
         // Offset
         OffsetModifierFieldValue.Factory(initialX = 0.dp, initialY = 0.dp),
         ZIndexModifierFieldValue.Factory(initialZIndex = 0f),
+        // Layout Listener
+        CaptureSizeModifierFieldValue.Factory(),
+        CaptureOffsetModifierFieldValue.Factory(),
+        CaptureLayoutRectModifierFieldValue.Factory(),
         // Graphics
         BorderModifierFieldValue.Factory(initialColor = Color.Red, initialWidth = 1.dp),
         BackgroundModifierFieldValue.Factory(initialColor = Color.Red),
