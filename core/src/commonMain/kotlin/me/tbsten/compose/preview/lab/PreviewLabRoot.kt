@@ -133,7 +133,6 @@ fun PreviewLabRoot(
                                     }
                                 }
                                 item {
-                                    println("PreviewListTree(canAddToComparePanel=${state.canAddToComparePanel})")
                                     PreviewListTree(
                                         previews = filteredPreviews,
                                         canAddToComparePanel = state.canAddToComparePanel,

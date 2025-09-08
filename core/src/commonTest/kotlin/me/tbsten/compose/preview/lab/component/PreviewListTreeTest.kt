@@ -1,12 +1,12 @@
 package me.tbsten.compose.preview.lab.component
 
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
 import me.tbsten.compose.preview.lab.CollectedPreview
 import me.tbsten.compose.preview.lab.previewlist.PreviewTreeNode
 import me.tbsten.compose.preview.lab.previewlist.collapse
 import me.tbsten.compose.preview.lab.previewlist.toTree
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertIs
 
 class PreviewListTreeTest {
     @Test
@@ -82,12 +82,11 @@ class PreviewListTreeTest {
                     PreviewTreeNode.Group(
                         "b",
                         mutableListOf(PreviewTreeNode.Preview(aBC)),
-                    )
+                    ),
                 ),
-            )
+            ),
         )
         val collapsedTree = tree.collapse()
-        println(collapsedTree)
 
         // a.b
         val aB = collapsedTree.getOrNull(0)
@@ -98,7 +97,7 @@ class PreviewListTreeTest {
             aB.children,
             mutableListOf<PreviewTreeNode>(
                 PreviewTreeNode.Preview(aBC),
-            )
+            ),
         )
     }
 }
