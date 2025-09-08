@@ -177,13 +177,15 @@ open class PreviewLab(
                 PreviewLabHeader(
                     scale = state.contentScale,
                     onScaleChange = { state.contentScale = it },
+                    isInspectorPanelVisible = state.isInspectorPanelVisible,
+                    onIsInspectorPanelVisibleToggle = { state.isInspectorPanelVisible = !state.isInspectorPanelVisible },
                 ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f),
                     ) {
-                        InspectorsPane(state = state) {
+                        InspectorsPane(state = state, isVisible = state.isInspectorPanelVisible) {
                             ContentSection(
                                 state = state,
                                 screenSizes = screenSizes,
@@ -298,7 +300,12 @@ private fun ContentSection(
 }
 
 @Composable
-private fun InspectorsPane(state: PreviewLabState, content: @Composable () -> Unit) {
+private fun InspectorsPane(state: PreviewLabState, isVisible: Boolean, content: @Composable () -> Unit) {
+    if (!isVisible) {
+        content()
+        return
+    }
+
     val tabContent = remember {
         movableContentOf { tab: InspectorTab ->
             tab.content(state)

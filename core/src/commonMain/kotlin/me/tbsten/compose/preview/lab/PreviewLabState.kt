@@ -18,6 +18,7 @@ class PreviewLabState {
     internal var contentOffset by mutableStateOf(Offset.Zero)
     internal val contentDraggableState = Draggable2DState { contentOffset += it }
     internal var contentScale by mutableStateOf(1f)
+    internal var isInspectorPanelVisible by mutableStateOf(true)
 
     internal var selectedTabIndex by mutableStateOf<Int?>(null)
     internal var selectedEvent by mutableStateOf<PreviewLabEvent?>(null)
