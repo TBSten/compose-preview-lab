@@ -9,7 +9,7 @@ import androidx.compose.runtime.setValue
 /**
  * State holder for [PreviewLabRoot].
  *
- * @param initialSelectedPreview 初期状態で選択されている Preview。
+ * @param initialSelectedPreview Preview, selected by default.
  *
  * @see PreviewLabRoot
  */
@@ -35,10 +35,10 @@ class PreviewLabRootState(initialSelectedPreview: Pair<String, CollectedPreview>
 
     /**
      * Changes the search query
-     * 
+     *
      * Updates the search query string used for filtering Previews.
      * This value is used by the filtering functionality to narrow down the Preview list.
-     * 
+     *
      * @param query New search query string
      */
     fun onQueryChange(query: String) {
@@ -67,12 +67,12 @@ class PreviewLabRootState(initialSelectedPreview: Pair<String, CollectedPreview>
 
     /**
      * Adds a Preview to the compare panel
-     * 
+     *
      * In addition to the already selected Preview, adds a new Preview to the compare panel.
      * If a Preview with the same name already exists, a sequentially numbered title is
      * automatically assigned for distinction. Supports up to 100 Previews with the same name
      * to prevent infinite loops.
-     * 
+     *
      * @param groupName Group name the Preview belongs to
      * @param newPreview Preview to add to the compare panel
      */
@@ -95,11 +95,11 @@ class PreviewLabRootState(initialSelectedPreview: Pair<String, CollectedPreview>
 
     /**
      * Removes a Preview from the compare panel
-     * 
+     *
      * Specifies an index in the selected Preview list to remove the corresponding
      * Preview from the compare panel. Index 0 is the main selected Preview,
      * and index 1 and above are Previews in the compare panel.
-     * 
+     *
      * @param indexInSelectedPreviews Index position in the selected Preview list (1 or greater)
      */
     fun removeFromComparePanel(indexInSelectedPreviews: Int) {
