@@ -263,8 +263,8 @@ private fun ContentSection(
                 .layout { m, c ->
                     val p = m.measure(
                         c.copy(
-                            maxWidth = screenSize?.width?.roundToPx() ?: c.maxWidth,
-                            maxHeight = screenSize?.height?.roundToPx() ?: c.maxHeight,
+                            maxWidth = screenSize.width.roundToPx(),
+                            maxHeight = screenSize.height.roundToPx(),
                         ),
                     )
                     layout(p.width, p.height) {
