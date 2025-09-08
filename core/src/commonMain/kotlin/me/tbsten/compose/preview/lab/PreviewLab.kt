@@ -301,6 +301,8 @@ private fun ContentSection(
 
 @Composable
 private fun InspectorsPane(state: PreviewLabState, isVisible: Boolean, content: @Composable () -> Unit) {
+    val content = remember { movableContentOf { content() } }
+
     if (!isVisible) {
         content()
         return
