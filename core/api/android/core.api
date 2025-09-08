@@ -1024,6 +1024,94 @@ public final class me/tbsten/compose/preview/lab/field/modifier/BorderModifierFi
 	public static final fun border-Hht5A8o (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;JF)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
 }
 
+public final class me/tbsten/compose/preview/lab/field/modifier/CaptureLayoutRectModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lme/tbsten/compose/preview/lab/field/modifier/CaptureLayoutRectModifierFieldValue$Type;)V
+	public synthetic fun <init> (Lme/tbsten/compose/preview/lab/field/modifier/CaptureLayoutRectModifierFieldValue$Type;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public final fun getCaptureType ()Lme/tbsten/compose/preview/lab/field/modifier/CaptureLayoutRectModifierFieldValue$Type;
+	public final fun getCapturedLayoutRect ()Landroidx/compose/ui/spatial/RelativeLayoutBounds;
+	public final fun setCaptureType (Lme/tbsten/compose/preview/lab/field/modifier/CaptureLayoutRectModifierFieldValue$Type;)V
+	public final fun setCapturedLayoutRect (Landroidx/compose/ui/spatial/RelativeLayoutBounds;)V
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/CaptureLayoutRectModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public fun getTitle ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/CaptureLayoutRectModifierFieldValue$Type : java/lang/Enum {
+	public static final field BoundsInWindow Lme/tbsten/compose/preview/lab/field/modifier/CaptureLayoutRectModifierFieldValue$Type;
+	public static final field PositionInRoot Lme/tbsten/compose/preview/lab/field/modifier/CaptureLayoutRectModifierFieldValue$Type;
+	public static final field PositionInScreen Lme/tbsten/compose/preview/lab/field/modifier/CaptureLayoutRectModifierFieldValue$Type;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getGetLayoutRect ()Lkotlin/jvm/functions/Function1;
+	public final fun getLabel ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lme/tbsten/compose/preview/lab/field/modifier/CaptureLayoutRectModifierFieldValue$Type;
+	public static fun values ()[Lme/tbsten/compose/preview/lab/field/modifier/CaptureLayoutRectModifierFieldValue$Type;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/CaptureOffsetModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lme/tbsten/compose/preview/lab/field/modifier/CaptureOffsetModifierFieldValue$Type;)V
+	public synthetic fun <init> (Lme/tbsten/compose/preview/lab/field/modifier/CaptureOffsetModifierFieldValue$Type;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public final fun getCaptureType ()Lme/tbsten/compose/preview/lab/field/modifier/CaptureOffsetModifierFieldValue$Type;
+	public final fun getCapturedOffset ()Landroidx/compose/ui/layout/LayoutCoordinates;
+	public final fun setCaptureType (Lme/tbsten/compose/preview/lab/field/modifier/CaptureOffsetModifierFieldValue$Type;)V
+	public final fun setCapturedOffset (Landroidx/compose/ui/layout/LayoutCoordinates;)V
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/CaptureOffsetModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public fun getTitle ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/CaptureOffsetModifierFieldValue$Type : java/lang/Enum {
+	public static final field PositionInParent Lme/tbsten/compose/preview/lab/field/modifier/CaptureOffsetModifierFieldValue$Type;
+	public static final field PositionInRoot Lme/tbsten/compose/preview/lab/field/modifier/CaptureOffsetModifierFieldValue$Type;
+	public static final field PositionInWindow Lme/tbsten/compose/preview/lab/field/modifier/CaptureOffsetModifierFieldValue$Type;
+	public static final field PositionOnScreen Lme/tbsten/compose/preview/lab/field/modifier/CaptureOffsetModifierFieldValue$Type;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getGetOffset ()Lkotlin/jvm/functions/Function1;
+	public final fun getLabel ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lme/tbsten/compose/preview/lab/field/modifier/CaptureOffsetModifierFieldValue$Type;
+	public static fun values ()[Lme/tbsten/compose/preview/lab/field/modifier/CaptureOffsetModifierFieldValue$Type;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/CaptureSizeModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun Builder (Landroidx/compose/runtime/Composer;I)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public final fun getCapturedSize-bOM6tXw ()Landroidx/compose/ui/unit/IntSize;
+	public final fun setCapturedSize-fhxjrPA (Landroidx/compose/ui/unit/IntSize;)V
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/CaptureSizeModifierFieldValue$Factory : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public fun create-d1pmJ48 ()Ljava/lang/Object;
+	public fun getCanCreate ()Z
+	public fun getTitle ()Ljava/lang/String;
+}
+
 public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$AlphaModifierFieldValueKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$AlphaModifierFieldValueKt;
 	public fun <init> ()V
@@ -1040,6 +1128,13 @@ public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingle
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$BorderModifierFieldValueKt;
 	public fun <init> ()V
 	public final fun getLambda$1786220828$core_release ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$DefaultModifierFieldValueBuilderKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$DefaultModifierFieldValueBuilderKt;
+	public fun <init> ()V
+	public final fun getLambda$-1031548214$core_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1439515352$core_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$FillMaxSizeModifierFieldValueKt {
@@ -1111,6 +1206,7 @@ public final class me/tbsten/compose/preview/lab/field/modifier/DefaultModifierF
 	public static final fun DefaultMenuItem (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
 	public static final fun Label (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Landroidx/compose/ui/text/AnnotatedString;Landroidx/compose/runtime/Composer;I)V
 	public static final fun Label (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Ljava/lang/String;Landroidx/compose/runtime/Composer;I)V
+	public static final fun SelectItem (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Ljava/lang/String;Ljava/lang/Object;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
 	public static final fun TextFieldItem (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Ljava/lang/String;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/component/Transformer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
 }
 
@@ -1345,6 +1441,14 @@ public final class me/tbsten/compose/preview/lab/field/modifier/OffsetModifierFi
 	public final fun getY-lTKBWiU ()Landroidx/compose/ui/unit/Dp;
 	public final fun setX-YLDhkOg (Landroidx/compose/ui/unit/Dp;)V
 	public final fun setY-YLDhkOg (Landroidx/compose/ui/unit/Dp;)V
+}
+
+public final class me/tbsten/compose/preview/lab/field/modifier/OnLayoutChangeModifierFieldValueKt {
+	public static final fun captureLayoutRect (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;Lme/tbsten/compose/preview/lab/field/modifier/CaptureLayoutRectModifierFieldValue$Type;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static synthetic fun captureLayoutRect$default (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;Lme/tbsten/compose/preview/lab/field/modifier/CaptureLayoutRectModifierFieldValue$Type;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static final fun captureOffset (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;Lme/tbsten/compose/preview/lab/field/modifier/CaptureOffsetModifierFieldValue$Type;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static synthetic fun captureOffset$default (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;Lme/tbsten/compose/preview/lab/field/modifier/CaptureOffsetModifierFieldValue$Type;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public static final fun captureSize (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/PaddingModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
