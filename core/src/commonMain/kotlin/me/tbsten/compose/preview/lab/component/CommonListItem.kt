@@ -20,11 +20,13 @@ internal fun CommonListItem(
     title: String,
     isSelected: Boolean,
     onSelect: (() -> Unit)? = null,
+    isEnabled: Boolean = true,
     modifier: Modifier = Modifier,
 ) = CommonListItem(
     isSelected = isSelected,
     onSelect = onSelect,
     modifier = modifier,
+    isEnabled = isEnabled,
     content = {
         Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()) {
             Text(title, style = PreviewLabTheme.typography.body3)
@@ -38,11 +40,13 @@ internal fun CommonListItem(
     isSelected: Boolean,
     onSelect: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
+    isEnabled: Boolean = true,
     leadingContent: @Composable (() -> Unit)? = null,
 ) = CommonListItem(
     isSelected = isSelected,
     onSelect = onSelect,
     modifier = modifier,
+    isEnabled = isEnabled,
     content = {
         leadingContent?.invoke()
         Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()) {
@@ -56,6 +60,7 @@ internal fun CommonListItem(
     isSelected: Boolean,
     onSelect: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
+    isEnabled: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     Button(
@@ -64,6 +69,7 @@ internal fun CommonListItem(
         onClick = onSelect ?: {},
         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
         isSelected = isSelected,
+        isEnabled = isEnabled,
         modifier = modifier.fillMaxWidth(),
     ) {
         Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()) {

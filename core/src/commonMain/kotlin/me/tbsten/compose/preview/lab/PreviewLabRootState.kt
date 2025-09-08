@@ -1,6 +1,8 @@
 package me.tbsten.compose.preview.lab
 
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
@@ -17,6 +19,16 @@ class PreviewLabRootState(initialSelectedPreview: Pair<String, CollectedPreview>
             ?.let(SelectedPreview::from),
     )
         private set
+
+    internal var comparePanelPreviews = mutableStateListOf<SelectedPreview>()
+
+    internal val selectedPreviews: List<SelectedPreview> by derivedStateOf {
+        selectedPreview?.let { selectedPreview ->
+            listOf(selectedPreview) + comparePanelPreviews
+        } ?: emptyList()
+    }
+
+    internal val canAddToComparePanel by derivedStateOf { selectedPreviews.isNotEmpty() }
 
     var query by mutableStateOf("")
         private set
@@ -42,10 +54,33 @@ class PreviewLabRootState(initialSelectedPreview: Pair<String, CollectedPreview>
      */
     fun unselect() {
         selectedPreview = null
+        comparePanelPreviews.clear()
+    }
+
+    fun addToComparePanel(groupName: String, newPreview: CollectedPreview) {
+        val newPanelTitle = run {
+            val baseTitle = newPreview.displayName
+            var newPanelTitle = baseTitle
+            var count = 1
+            while (selectedPreviews.any { it.title == newPanelTitle }) {
+                newPanelTitle = "$baseTitle ($count)"
+                count++
+                // 無限ループ対策 (同じ名前の Preview が多数ある場合)
+                // 通常は起こりえないはず
+                if (count > 100) break
+            }
+            newPanelTitle
+        }
+        comparePanelPreviews.add(SelectedPreview(groupName, newPreview, title = newPanelTitle))
+    }
+
+    fun removeFromComparePanel(indexInSelectedPreviews: Int) {
+        val indexInComparePanelPreviews = indexInSelectedPreviews - 1
+        comparePanelPreviews.removeAt(indexInComparePanelPreviews)
     }
 }
 
-internal class SelectedPreview(val groupName: String, val preview: CollectedPreview) {
+internal class SelectedPreview(val groupName: String, val preview: CollectedPreview, val title: String = preview.displayName) {
     override fun toString(): String = "SelectedPreview(groupName='$groupName', preview=$preview)"
 
     override fun equals(other: Any?): Boolean {

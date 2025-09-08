@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,15 +28,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import me.tbsten.compose.preview.lab.component.CommonIconButton
 import me.tbsten.compose.preview.lab.component.Divider
 import me.tbsten.compose.preview.lab.component.NoPreview
 import me.tbsten.compose.preview.lab.component.NoSelectedPreview
 import me.tbsten.compose.preview.lab.component.SimpleModal
 import me.tbsten.compose.preview.lab.component.adaptive
+import me.tbsten.compose.preview.lab.core.generated.resources.Res
+import me.tbsten.compose.preview.lab.core.generated.resources.icon_remove
 import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 import me.tbsten.compose.preview.lab.previewlist.PreviewListTree
@@ -45,6 +50,8 @@ import me.tbsten.compose.preview.lab.previewlist.groupingByFeaturedFiles
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.HorizontalDivider
 import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.VerticalDivider
+import org.jetbrains.compose.resources.painterResource
 
 /**
  * A Composable function that catalogs and displays a list of Previews. The left sidebar actually displays the list of Previews, and the selected Preview is displayed in the center of the screen.
@@ -126,14 +133,19 @@ fun PreviewLabRoot(
                                     }
                                 }
                                 item {
+                                    println("PreviewListTree(canAddToComparePanel=${state.canAddToComparePanel})")
                                     PreviewListTree(
                                         previews = filteredPreviews,
+                                        canAddToComparePanel = state.canAddToComparePanel,
                                         isSelected = {
                                             groupName == state.selectedPreview?.groupName &&
                                                 it == state.selectedPreview?.preview
                                         },
                                         onSelect = {
                                             state.select(groupName, it)
+                                        },
+                                        onAddToComparePanel = {
+                                            state.addToComparePanel(groupName, it)
                                         },
                                     )
                                 }
@@ -148,28 +160,63 @@ fun PreviewLabRoot(
                 },
                 selectedItem = state.selectedPreview,
                 detail = { selectedPreview ->
-                    CompositionLocalProvider(
-                        LocalCollectedPreview provides selectedPreview.preview,
-                    ) {
-                        AnimatedContent(
-                            targetState = selectedPreview.preview,
-                            transitionSpec = {
-                                fadeIn() togetherWith fadeOut()
-                            },
-                            modifier = Modifier
-                                .background(PreviewLabTheme.colors.background)
-                                .zIndex(0f),
-                        ) { selectedPreview ->
-                            val preview = selectedPreview.content
+                    Row {
+                        state.selectedPreviews.forEachIndexed { index, selected ->
+                            val title = selected.title
+                            val preview = selected.preview
 
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
+                            Column(
+                                modifier = Modifier.weight(1f),
                             ) {
-                                if (previewList.isEmpty()) {
-                                    NoPreview()
-                                } else {
-                                    preview.invoke()
+                                Row(
+                                    modifier = Modifier.padding(12.dp).fillMaxWidth(),
+                                ) {
+                                    Text(
+                                        text = title,
+                                        style = PreviewLabTheme.typography.body2,
+                                        maxLines = 3,
+                                        overflow = TextOverflow.MiddleEllipsis,
+                                        modifier = Modifier.weight(1f),
+                                    )
+
+                                    CommonIconButton(
+                                        painter = painterResource(Res.drawable.icon_remove),
+                                        contentDescription = "Remove $title",
+                                        onClick = { state.removeFromComparePanel(index) },
+                                        enabled = index != 0,
+                                    )
                                 }
+
+                                Divider()
+
+                                CompositionLocalProvider(
+                                    LocalCollectedPreview provides preview,
+                                ) {
+                                    AnimatedContent(
+                                        targetState = preview,
+                                        transitionSpec = {
+                                            fadeIn() togetherWith fadeOut()
+                                        },
+                                        modifier = Modifier
+                                            .background(PreviewLabTheme.colors.background)
+                                            .zIndex(0f),
+                                    ) { selectedPreview ->
+                                        val preview = selectedPreview.content
+
+                                        Box(
+                                            modifier = Modifier.fillMaxSize(),
+                                        ) {
+                                            if (previewList.isEmpty()) {
+                                                NoPreview()
+                                            } else {
+                                                preview.invoke()
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (index != state.selectedPreviews.lastIndex) {
+                                VerticalDivider()
                             }
                         }
                     }

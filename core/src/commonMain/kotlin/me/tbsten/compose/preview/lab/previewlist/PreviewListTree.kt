@@ -12,8 +12,10 @@ import me.tbsten.compose.preview.lab.CollectedPreview
 @Composable
 internal fun PreviewListTree(
     previews: List<CollectedPreview>,
+    canAddToComparePanel: Boolean,
     isSelected: (CollectedPreview) -> Boolean,
     onSelect: (CollectedPreview) -> Unit,
+    onAddToComparePanel: (CollectedPreview) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val tree = rememberRetained(key = "$previews") {
@@ -32,6 +34,8 @@ internal fun PreviewListTree(
                 previewTreeNode = node,
                 isSelected = { it is PreviewTreeNode.Preview && isSelected(it.collectedPreview) },
                 onSelect = { if (it is PreviewTreeNode.Preview) onSelect(it.collectedPreview) },
+                onAddToComparePanel = { onAddToComparePanel(it.collectedPreview) },
+                canAddToComparePanel = canAddToComparePanel,
             )
         }
     }
