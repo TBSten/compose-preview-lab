@@ -24,6 +24,12 @@ class PreviewLabState {
     internal var selectedEvent by mutableStateOf<PreviewLabEvent?>(null)
     internal val scope: PreviewLabScope = PreviewLabScope()
 
+    /**
+     * Deselects the currently selected tab
+     * 
+     * If there is a selected tab in the inspector tabs, this removes the selection
+     * and returns to a state where no tab is selected.
+     */
     internal fun deselectTab() {
         selectedTabIndex = null
     }

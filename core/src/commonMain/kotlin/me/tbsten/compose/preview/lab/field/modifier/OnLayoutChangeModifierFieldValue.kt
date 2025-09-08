@@ -29,6 +29,30 @@ import me.tbsten.compose.preview.lab.ui.components.Text
 
 // captureSize
 
+/**
+ * A ModifierFieldValue that captures layout size changes
+ * 
+ * This class monitors size changes of Compose components and captures
+ * size information (width, height) when changes occur. It's useful for
+ * debugging and layout adjustment, allowing real-time size information
+ * verification. Values are displayed in dp units with automatic density conversion.
+ * 
+ * ```kotlin
+ * // Basic usage
+ * modifier = ModifierFieldValueList().captureSize()
+ * 
+ * // Direct creation
+ * val captureSizeField = CaptureSizeModifierFieldValue()
+ * 
+ * // Usage in components
+ * Box(modifier = modifier.apply { createModifier() }) {
+ *     Text("Hello World")
+ * }
+ * ```
+ * 
+ * @see ModifierFieldValue
+ * @see captureSize
+ */
 class CaptureSizeModifierFieldValue : ModifierFieldValue {
     var capturedSize by mutableStateOf<IntSize?>(null)
 
@@ -63,6 +87,12 @@ class CaptureSizeModifierFieldValue : ModifierFieldValue {
         },
     )
 
+    /**
+     * Factory class for creating CaptureSizeModifierFieldValue instances
+     * 
+     * Implements ModifierFieldValueFactory interface to handle
+     * creation button display and instance generation in the UI.
+     */
     class Factory : ModifierFieldValueFactory<CaptureSizeModifierFieldValue> {
         override val title: String = ".onSizeChanged { /* capture size */ }"
         override val canCreate: Boolean = true
@@ -78,12 +108,46 @@ class CaptureSizeModifierFieldValue : ModifierFieldValue {
     }
 }
 
+/**
+ * Extension function to add size capture functionality to ModifierFieldValueList
+ * 
+ * ```kotlin
+ * modifier = ModifierFieldValueList().captureSize()
+ * ```
+ * 
+ * @return ModifierFieldValueList with CaptureSizeModifierFieldValue added
+ * @see CaptureSizeModifierFieldValue
+ */
 fun ModifierFieldValueList.captureSize() = then(
     CaptureSizeModifierFieldValue(),
 )
 
 // captureOffset
 
+/**
+ * A ModifierFieldValue that captures layout offset changes
+ * 
+ * This class monitors position changes of Compose components and captures
+ * position information (x, y coordinates) when changes occur.
+ * Multiple coordinate systems (Root, Screen, Window, Parent) are supported
+ * for position retrieval, used to accurately determine component positions
+ * during debugging and layout adjustment.
+ * 
+ * ```kotlin
+ * // Offset capture in Root coordinate system
+ * modifier = ModifierFieldValueList().captureOffset()
+ * 
+ * // Offset capture in Screen coordinate system
+ * modifier = ModifierFieldValueList().captureOffset(Type.PositionOnScreen)
+ * 
+ * // Direct creation
+ * val captureOffsetField = CaptureOffsetModifierFieldValue(Type.PositionInWindow)
+ * ```
+ * 
+ * @param initialCaptureType Initial coordinate system type (default: PositionInRoot)
+ * @see ModifierFieldValue
+ * @see captureOffset
+ */
 class CaptureOffsetModifierFieldValue(initialCaptureType: Type = Type.PositionInRoot) : ModifierFieldValue {
     var capturedOffset by mutableStateOf<LayoutCoordinates?>(null)
     var captureType by mutableStateOf<Type>(initialCaptureType)
@@ -132,6 +196,12 @@ class CaptureOffsetModifierFieldValue(initialCaptureType: Type = Type.PositionIn
         },
     )
 
+    /**
+     * Defines coordinate system types for offset capture
+     * 
+     * @param label Label for UI display
+     * @param getOffset Lambda to retrieve corresponding Offset from LayoutCoordinates
+     */
     enum class Type(val label: String, val getOffset: LayoutCoordinates.() -> Offset) {
         PositionInRoot("positionInRoot", { positionInRoot() }),
         PositionOnScreen("positionOnScreen", { positionOnScreen() }),
@@ -139,6 +209,12 @@ class CaptureOffsetModifierFieldValue(initialCaptureType: Type = Type.PositionIn
         PositionInParent("positionInParent", { positionInParent() }),
     }
 
+    /**
+     * Factory class for creating CaptureOffsetModifierFieldValue instances
+     * 
+     * Implements ModifierFieldValueFactory interface to handle
+     * creation button display and instance generation in the UI.
+     */
     class Factory : ModifierFieldValueFactory<CaptureOffsetModifierFieldValue> {
         override val title: String = ".onPlaced { /* capture offset */ }"
         override val canCreate: Boolean = true
@@ -154,6 +230,21 @@ class CaptureOffsetModifierFieldValue(initialCaptureType: Type = Type.PositionIn
     }
 }
 
+/**
+ * Extension function to add offset capture functionality to ModifierFieldValueList
+ * 
+ * ```kotlin
+ * // Default (Root coordinate system) offset capture
+ * modifier = ModifierFieldValueList().captureOffset()
+ * 
+ * // Screen coordinate system offset capture
+ * modifier = ModifierFieldValueList().captureOffset(CaptureOffsetModifierFieldValue.Type.PositionOnScreen)
+ * ```
+ * 
+ * @param captureType Coordinate system type to use (default: PositionInRoot)
+ * @return ModifierFieldValueList with CaptureOffsetModifierFieldValue added
+ * @see CaptureOffsetModifierFieldValue
+ */
 fun ModifierFieldValueList.captureOffset(captureType: Type = Type.PositionInRoot) = then(
     CaptureOffsetModifierFieldValue(
         initialCaptureType = captureType,
@@ -162,6 +253,29 @@ fun ModifierFieldValueList.captureOffset(captureType: Type = Type.PositionInRoot
 
 // captureLayoutRect
 
+/**
+ * A ModifierFieldValue that captures layout rectangle (position and size) changes
+ * 
+ * This class monitors layout rectangle changes of Compose components and captures
+ * both position information (x, y coordinates) and size information (width, height)
+ * when changes occur. Rectangle information retrieval from multiple coordinate systems
+ * is supported, useful when more detailed layout information is needed.
+ * 
+ * ```kotlin
+ * // Rectangle information capture in Root coordinate system
+ * modifier = ModifierFieldValueList().captureLayoutRect()
+ * 
+ * // Rectangle information capture in Screen coordinate system
+ * modifier = ModifierFieldValueList().captureLayoutRect(CaptureLayoutRectModifierFieldValue.Type.PositionInScreen)
+ * 
+ * // Direct creation
+ * val captureLayoutRectField = CaptureLayoutRectModifierFieldValue(CaptureLayoutRectModifierFieldValue.Type.BoundsInWindow)
+ * ```
+ * 
+ * @param initialCaptureType Initial coordinate system type (default: PositionInRoot)
+ * @see ModifierFieldValue
+ * @see captureLayoutRect
+ */
 class CaptureLayoutRectModifierFieldValue(initialCaptureType: Type = Type.PositionInRoot) : ModifierFieldValue {
     var capturedLayoutRect by mutableStateOf<RelativeLayoutBounds?>(null)
     var captureType by mutableStateOf<Type>(initialCaptureType)
@@ -214,12 +328,24 @@ class CaptureLayoutRectModifierFieldValue(initialCaptureType: Type = Type.Positi
         },
     )
 
+    /**
+     * Defines coordinate system types for layout rectangle capture
+     * 
+     * @param label Label for UI display
+     * @param getLayoutRect Lambda to retrieve corresponding IntRect from RelativeLayoutBounds
+     */
     enum class Type(val label: String, val getLayoutRect: RelativeLayoutBounds.() -> IntRect) {
         PositionInRoot("positionInRoot", { boundsInRoot }),
         PositionInScreen("positionInScreen", { boundsInScreen }),
         BoundsInWindow("boundsInWindow", { boundsInWindow }),
     }
 
+    /**
+     * Factory class for creating CaptureLayoutRectModifierFieldValue instances
+     * 
+     * Implements ModifierFieldValueFactory interface to handle
+     * creation button display and instance generation in the UI.
+     */
     class Factory : ModifierFieldValueFactory<CaptureLayoutRectModifierFieldValue> {
         override val title: String = ".onLayoutRectChanged { /* capture offset and size */ }"
         override val canCreate: Boolean = true
@@ -235,6 +361,21 @@ class CaptureLayoutRectModifierFieldValue(initialCaptureType: Type = Type.Positi
     }
 }
 
+/**
+ * Extension function to add layout rectangle capture functionality to ModifierFieldValueList
+ * 
+ * ```kotlin
+ * // Default (Root coordinate system) rectangle information capture
+ * modifier = ModifierFieldValueList().captureLayoutRect()
+ * 
+ * // Screen coordinate system rectangle information capture
+ * modifier = ModifierFieldValueList().captureLayoutRect(CaptureLayoutRectModifierFieldValue.Type.PositionInScreen)
+ * ```
+ * 
+ * @param captureType Coordinate system type to use (default: PositionInRoot)
+ * @return ModifierFieldValueList with CaptureLayoutRectModifierFieldValue added
+ * @see CaptureLayoutRectModifierFieldValue
+ */
 fun ModifierFieldValueList.captureLayoutRect(
     captureType: CaptureLayoutRectModifierFieldValue.Type = CaptureLayoutRectModifierFieldValue.Type.PositionInRoot,
 ) = then(

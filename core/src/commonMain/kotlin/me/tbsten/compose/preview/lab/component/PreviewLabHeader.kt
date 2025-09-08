@@ -119,6 +119,16 @@ private fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, modifier: Modifie
 
 private const val MinZoomScale = 0.10f
 private const val MaxZoomScale = 10.00f
+
+/**
+ * Calculates the next zoom-in scale from the current zoom ratio
+ *
+ * Applies appropriate increment amounts based on the ratio, supporting gradual
+ * adjustments from fine-tuning to large adjustments. Below 1.0x increases by 0.1x,
+ * between 1.0-2.0x increases by 0.25x, above 2.0x increases by 1.0x.
+ *
+ * @return Next zoom-in scale
+ */
 private fun Float.nextZoomInScale(): Float = when (this) {
     in Float.MIN_VALUE..<1.0f -> this + 0.10f
     in 1.0f..<2.0f -> this + 0.25f
@@ -126,6 +136,15 @@ private fun Float.nextZoomInScale(): Float = when (this) {
     else -> TODO("Zoom value is out of range: $this")
 }
 
+/**
+ * Calculates the next zoom-out scale from the current zoom ratio
+ *
+ * Applies appropriate decrement amounts based on the ratio, supporting gradual
+ * adjustments from fine-tuning to large adjustments. Below 1.0x decreases by 0.1x,
+ * between 1.0-2.0x decreases by 0.25x, above 2.0x decreases by 1.0x.
+ *
+ * @return Next zoom-out scale
+ */
 private fun Float.nextZoomOutScale(): Float = when (this) {
     in Float.MIN_VALUE..<1.0f -> this - 0.10f
     in 1.0f..<2.0f -> this - 0.25f

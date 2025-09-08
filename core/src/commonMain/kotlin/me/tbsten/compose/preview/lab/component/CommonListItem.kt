@@ -15,6 +15,18 @@ import me.tbsten.compose.preview.lab.ui.components.Text
 
 private const val SelectedBorderWidth = 12
 
+/**
+ * Common list item with title display
+ * 
+ * Displays a selectable list item with a title text. Provides consistent
+ * styling and behavior across the application for simple text-based list items.
+ * 
+ * @param title Text to display in the list item
+ * @param isSelected Whether the item is currently selected
+ * @param onSelect Callback invoked when the item is selected (null for non-selectable)
+ * @param isEnabled Whether the item is enabled for interaction
+ * @param modifier Modifier to apply to the item
+ */
 @Composable
 internal fun CommonListItem(
     title: String,
@@ -34,6 +46,19 @@ internal fun CommonListItem(
     },
 )
 
+/**
+ * Common list item with title and optional leading content
+ * 
+ * Displays a selectable list item with title text and optional leading content.
+ * The leading content appears before the title text, useful for icons or other decorative elements.
+ * 
+ * @param title Text to display in the list item
+ * @param isSelected Whether the item is currently selected
+ * @param onSelect Callback invoked when the item is selected (null for non-selectable)
+ * @param modifier Modifier to apply to the item
+ * @param isEnabled Whether the item is enabled for interaction
+ * @param leadingContent Optional composable content to display before the title
+ */
 @Composable
 internal fun CommonListItem(
     title: String,
@@ -55,6 +80,18 @@ internal fun CommonListItem(
     },
 )
 
+/**
+ * Common list item with custom content
+ * 
+ * The base list item component that other variants use internally.
+ * Provides consistent styling and selection behavior with fully customizable content.
+ * 
+ * @param isSelected Whether the item is currently selected
+ * @param onSelect Callback invoked when the item is selected (null for non-selectable)
+ * @param modifier Modifier to apply to the item
+ * @param isEnabled Whether the item is enabled for interaction
+ * @param content Composable content to display within the list item
+ */
 @Composable
 internal fun CommonListItem(
     isSelected: Boolean,
