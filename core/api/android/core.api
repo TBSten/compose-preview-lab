@@ -14,7 +14,7 @@ public final class me/tbsten/compose/preview/lab/CollectedPreviewKt {
 public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabKt;
 	public fun <init> ()V
-	public final fun getLambda$-1616826418$core_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1441570262$core_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-658061291$core_release ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$1744947294$core_release ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$1746585086$core_release ()Lkotlin/jvm/functions/Function3;
@@ -97,8 +97,10 @@ public final class me/tbsten/compose/preview/lab/PreviewLabRootState {
 	public fun <init> ()V
 	public fun <init> (Lkotlin/Pair;)V
 	public synthetic fun <init> (Lkotlin/Pair;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun addToComparePanel (Ljava/lang/String;Lme/tbsten/compose/preview/lab/CollectedPreview;)V
 	public final fun getQuery ()Ljava/lang/String;
 	public final fun onQueryChange (Ljava/lang/String;)V
+	public final fun removeFromComparePanel (I)V
 	public final fun select (Ljava/lang/String;Lme/tbsten/compose/preview/lab/CollectedPreview;)V
 	public final fun unselect ()V
 }
