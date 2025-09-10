@@ -1,0 +1,40 @@
+name: Preview on Web
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  hoge:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: pages-deploy
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Java for Gradle
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - run: mkdir ./public
+
+      - name: Build publish wasmJs contents
+        run: ./gradlew :dev:wasmJsBrowserDistribution
+      - run: cp -r ./dev/build/dist/wasmJs/productionExecutable ./public/wasmJs
+
+      - name: Build publish js contents
+        run: ./gradlew :dev:jsBrowserDistribution
+      - run: cp -r ./dev/build/dist/js/productionExecutable ./public/js
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          destination_dir: dev/main
