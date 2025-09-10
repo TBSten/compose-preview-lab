@@ -94,6 +94,16 @@ public final class me/tbsten/compose/preview/lab/PreviewLabRootKt {
 	public static final fun PreviewLabRoot (Ljava/util/List;Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/PreviewLabRootState;Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler;Ljava/util/Map;Landroidx/compose/runtime/Composer;II)V
 }
 
+public abstract interface class me/tbsten/compose/preview/lab/PreviewLabRootNavigator {
+	public abstract fun back ()V
+	public abstract fun navigate (Ljava/lang/String;)V
+}
+
+public final class me/tbsten/compose/preview/lab/PreviewLabRootNavigatorKt {
+	public static final fun getLocalPreviewLabRootNavigator ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun navigateOr (Lme/tbsten/compose/preview/lab/PreviewLabRootNavigator;Ljava/lang/String;Lkotlin/jvm/functions/Function0;)V
+}
+
 public final class me/tbsten/compose/preview/lab/PreviewLabRootState {
 	public static final field $stable I
 	public fun <init> ()V
