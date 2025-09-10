@@ -15,16 +15,16 @@ import me.tbsten.compose.preview.lab.field.modifier.padding
 
 /**
  * Interactive field for building and editing Compose Modifier chains
- * 
+ *
  * Provides a visual interface for constructing complex Modifier chains through a builder pattern.
  * Users can add, remove, and configure individual modifier values like padding, background,
  * size constraints, etc. The field displays a real-time preview of the constructed modifier
  * and allows fine-tuning of parameters through dedicated UI controls.
- * 
+ *
  * ```kotlin
  * // Basic modifier field with default marking
  * val modifier = fieldValue { ModifierField("Layout Modifier") }
- * 
+ *
  * // Custom initial modifier chain
  * val customModifier = fieldValue {
  *     ModifierField(
@@ -34,7 +34,7 @@ import me.tbsten.compose.preview.lab.field.modifier.padding
  *             .background(Color.Blue)
  *     )
  * }
- * 
+ *
  * // Use in component
  * Button(
  *     onClick = { },
@@ -43,7 +43,7 @@ import me.tbsten.compose.preview.lab.field.modifier.padding
  *     Text("Styled Button")
  * }
  * ```
- * 
+ *
  * @param label Display label for the field in the inspector
  * @param initialValue Starting modifier chain configuration
  * @see ModifierFieldValue

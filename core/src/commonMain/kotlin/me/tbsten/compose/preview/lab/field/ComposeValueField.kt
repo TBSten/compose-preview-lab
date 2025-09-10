@@ -22,18 +22,18 @@ import me.tbsten.compose.preview.lab.ui.components.Text
 
 /**
  * Field for editing Compose density-independent pixel (Dp) values
- * 
+ *
  * Provides a numeric input field with "dp" suffix for editing Dp measurements.
  * Essential for layout dimensions, spacing, and sizing in Compose UI.
  * Built on top of FloatField with automatic conversion between Float and Dp.
- * 
+ *
  * ```kotlin
  * // Basic dp field for padding
  * val padding = fieldValue { DpField("Padding", 16.dp) }
- * 
+ *
  * // Size dimension field
  * val buttonSize = fieldValue { DpField("Button Size", 120.dp) }
- * 
+ *
  * // Use in component
  * Box(
  *     modifier = Modifier
@@ -43,7 +43,7 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  *     Text("Content")
  * }
  * ```
- * 
+ *
  * @param label Display label for the field
  * @param initialValue Starting Dp value
  * @see FloatField
@@ -64,26 +64,26 @@ class DpField(label: String, initialValue: Dp) :
 
 /**
  * Field for editing Compose scalable pixel (Sp) values for typography
- * 
+ *
  * Provides a numeric input field with "sp" suffix for editing text size measurements.
  * Specifically designed for font sizes and text-related dimensions that should
  * scale with user accessibility settings. Built on FloatField with automatic
  * conversion between Float and TextUnit.
- * 
+ *
  * ```kotlin
  * // Font size field
  * val fontSize = fieldValue { SpField("Font Size", 16.sp) }
- * 
+ *
  * // Title text size
  * val titleSize = fieldValue { SpField("Title Size", 24.sp) }
- * 
+ *
  * // Use in text components
  * Text(
  *     text = "Sample Text",
  *     fontSize = fontSize
  * )
  * ```
- * 
+ *
  * @param label Display label for the field
  * @param initialValue Starting TextUnit value
  * @see FloatField
@@ -104,18 +104,18 @@ class SpField(label: String, initialValue: TextUnit) :
 
 /**
  * Field for editing Compose Offset values (x, y coordinates)
- * 
+ *
  * Provides separate input fields for x and y coordinates in pixels.
  * Used for positioning elements or defining translation offsets.
  * Each coordinate can be edited independently through dedicated text fields.
- * 
+ *
  * ```kotlin
  * // Position offset field
  * val offset = fieldValue { OffsetField("Position", Offset(50f, 100f)) }
- * 
+ *
  * // Translation offset
  * val translation = fieldValue { OffsetField("Translation", Offset.Zero) }
- * 
+ *
  * // Use with graphics layer
  * Box(
  *     modifier = Modifier.graphicsLayer {
@@ -124,7 +124,7 @@ class SpField(label: String, initialValue: TextUnit) :
  *     }
  * )
  * ```
- * 
+ *
  * @param label Display label for the field
  * @param initialValue Starting Offset value
  * @see DpOffsetField
@@ -160,25 +160,25 @@ class OffsetField(label: String, initialValue: Offset) :
 
 /**
  * Field for editing Compose DpOffset values (x, y coordinates in Dp)
- * 
+ *
  * Provides separate input fields for x and y coordinates in density-independent pixels.
  * Used for layout positioning and spacing that should scale with screen density.
  * Each coordinate can be edited independently with automatic Dp conversion.
- * 
+ *
  * ```kotlin
  * // Layout offset field
  * val layoutOffset = fieldValue { DpOffsetField("Offset", DpOffset(16.dp, 8.dp)) }
- * 
+ *
  * // Positioning offset
  * val position = fieldValue { DpOffsetField("Position", DpOffset.Zero) }
- * 
+ *
  * // Use with offset modifier
  * Text(
  *     text = "Positioned Text",
  *     modifier = Modifier.offset(layoutOffset.x, layoutOffset.y)
  * )
  * ```
- * 
+ *
  * @param label Display label for the field
  * @param initialValue Starting DpOffset value
  * @see OffsetField
@@ -214,18 +214,18 @@ class DpOffsetField(label: String, initialValue: DpOffset) :
 
 /**
  * Field for editing Compose Size values (width, height in pixels)
- * 
+ *
  * Provides separate input fields for width and height dimensions in pixels.
  * Used for defining component sizes, canvas dimensions, or geometric measurements.
  * Each dimension can be edited independently through dedicated text fields.
- * 
+ *
  * ```kotlin
  * // Canvas size field
  * val canvasSize = fieldValue { SizeField("Canvas", Size(200f, 150f)) }
- * 
+ *
  * // Image dimensions
  * val imageSize = fieldValue { SizeField("Image Size", Size(300f, 200f)) }
- * 
+ *
  * // Use with Canvas
  * Canvas(
  *     modifier = Modifier.size(
@@ -236,7 +236,7 @@ class DpOffsetField(label: String, initialValue: DpOffset) :
  *     // Drawing operations
  * }
  * ```
- * 
+ *
  * @param label Display label for the field
  * @param initialValue Starting Size value
  * @see DpSizeField
@@ -272,18 +272,18 @@ class SizeField(label: String, initialValue: Size) :
 
 /**
  * Field for editing Compose DpSize values (width, height in Dp)
- * 
+ *
  * Provides separate input fields for width and height dimensions in density-independent pixels.
  * Used for layout dimensions, component sizing, and spacing that should scale with screen density.
  * Each dimension can be edited independently with automatic Dp conversion.
- * 
+ *
  * ```kotlin
  * // Component size field
  * val buttonSize = fieldValue { DpSizeField("Button Size", DpSize(120.dp, 48.dp)) }
- * 
+ *
  * // Container dimensions
  * val containerSize = fieldValue { DpSizeField("Container", DpSize(200.dp, 100.dp)) }
- * 
+ *
  * // Use with size modifier
  * Button(
  *     onClick = { },
@@ -292,7 +292,7 @@ class SizeField(label: String, initialValue: Size) :
  *     Text("Sized Button")
  * }
  * ```
- * 
+ *
  * @param label Display label for the field
  * @param initialValue Starting DpSize value
  * @see SizeField

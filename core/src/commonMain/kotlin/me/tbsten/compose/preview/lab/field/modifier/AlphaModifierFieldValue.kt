@@ -22,18 +22,18 @@ import me.tbsten.compose.preview.lab.ui.components.Text
 
 /**
  * Modifier field value for controlling component transparency
- * 
+ *
  * Applies alpha blending to make components partially or fully transparent.
  * Essential for creating overlay effects, fade animations, and visual hierarchy.
  * Provides an interactive slider or text input for precise alpha control.
- * 
+ *
  * ```kotlin
  * // Semi-transparent overlay
  * val overlay = ModifierFieldValueList().alpha(0.7f)
- * 
+ *
  * // Fade effect
  * val fadeOut = ModifierFieldValueList().alpha(0.3f)
- * 
+ *
  * // Use in component
  * Box(
  *     modifier = overlay.createModifier()
@@ -41,7 +41,7 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  *     Text("Transparent content")
  * }
  * ```
- * 
+ *
  * @param alpha Transparency level from 0.0 (fully transparent) to 1.0 (fully opaque)
  * @see ModifierFieldValue
  * @see alpha
@@ -80,10 +80,10 @@ class AlphaModifierFieldValue(alpha: Float) : ModifierFieldValue {
 
     /**
      * Factory for creating AlphaModifierFieldValue instances with configurable initial value
-     * 
+     *
      * Provides UI for setting the alpha value before creating the modifier field value.
      * Includes validation to ensure alpha is set before creation.
-     * 
+     *
      * @param initialAlpha Starting alpha value (optional)
      */
     class Factory(initialAlpha: Float? = null) : ModifierFieldValueFactory<AlphaModifierFieldValue> {

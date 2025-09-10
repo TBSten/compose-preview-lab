@@ -7,12 +7,12 @@ internal typealias LayoutNodeId = Long
 
 /**
  * Represents a layout node in the preview environment for layout inspection
- * 
+ *
  * Tracks the position and size of individual layout components within the preview.
  * Used by the layout inspector to visualize component boundaries and relationships.
  * Nodes can be in resolved or unresolved states depending on whether complete
  * layout information is available.
- * 
+ *
  * @property id Unique identifier for this layout node
  * @property label Human-readable name for the node
  * @property offsetInAppRoot Position relative to the application root (if available)
@@ -26,7 +26,7 @@ internal sealed interface PreviewLabLayoutNode {
 
     /**
      * Layout node with incomplete position or size information
-     * 
+     *
      * Represents a node that hasn't been fully measured or positioned yet.
      * May be missing offset or size data during layout phases.
      */
@@ -39,7 +39,7 @@ internal sealed interface PreviewLabLayoutNode {
 
     /**
      * Layout node with complete position and size information
-     * 
+     *
      * Represents a fully measured and positioned layout node.
      * Contains definitive offset and size data for accurate visualization.
      */
@@ -53,11 +53,11 @@ internal sealed interface PreviewLabLayoutNode {
 
 /**
  * Creates a PreviewLabLayoutNode with automatic resolution based on available data
- * 
+ *
  * Determines whether to create a Resolved or Unresolved node based on the completeness
  * of layout information. If both offset and size are available, creates a Resolved node;
  * otherwise creates an Unresolved node.
- * 
+ *
  * @param id Unique identifier for this layout node
  * @param label Human-readable name for the node
  * @param offsetInAppRoot Position relative to application root (nullable)

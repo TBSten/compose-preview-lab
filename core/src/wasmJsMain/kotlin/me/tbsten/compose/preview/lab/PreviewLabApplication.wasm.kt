@@ -8,18 +8,18 @@ import org.w3c.dom.HTMLElement
 
 /**
  * Launches a WebAssembly application for previewing Compose components
- * 
+ *
  * Creates a high-performance browser-based interface using Compose for WebAssembly.
  * Provides near-native performance for interactive component development and testing
  * in web environments. Supports the same features as the standard web version with
  * improved execution speed and memory efficiency.
- * 
+ *
  * ```kotlin
  * // Basic WASM application
  * fun main() = previewLabApplication(
  *     previews = myModule.previews
  * )
- * 
+ *
  * // With file handler integration
  * fun main() = previewLabApplication(
  *     previews = myModule.previews,
@@ -29,7 +29,7 @@ import org.w3c.dom.HTMLElement
  *         "Navigation" to listOf("TopBar.kt", "Drawer.kt")
  *     )
  * )
- * 
+ *
  * // Performance-optimized setup
  * fun main() {
  *     val container = document.getElementById("preview-app") as HTMLElement
@@ -39,7 +39,7 @@ import org.w3c.dom.HTMLElement
  *     )
  * }
  * ```
- * 
+ *
  * @param previews Collection of previews to display in the interface
  * @param featuredFiles Grouped file organization for navigation
  * @param openFileHandler Handler for opening source files (optional)

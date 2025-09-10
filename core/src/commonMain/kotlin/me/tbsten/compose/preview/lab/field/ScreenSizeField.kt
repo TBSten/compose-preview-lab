@@ -14,15 +14,15 @@ import me.tbsten.compose.preview.lab.ui.components.Text
 
 /**
  * A field for selecting screen sizes in the preview environment
- * 
+ *
  * Provides a user interface for selecting from predefined screen sizes or creating custom dimensions.
  * The field displays as a dropdown with common device sizes and allows manual width/height adjustment.
  * Essential for testing responsive designs across different device form factors.
- * 
+ *
  * ```kotlin
  * // Basic usage with default smartphone sizes
  * val screenSize = fieldValue { ScreenSizeField() }
- * 
+ *
  * // Custom sizes with specific presets
  * val customScreenSize = fieldValue {
  *     ScreenSizeField(
@@ -30,7 +30,7 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  *         sizes = ScreenSize.SmartPhones + ScreenSize.Tablets
  *     )
  * }
- * 
+ *
  * // With specific initial size
  * val tabletSize = fieldValue {
  *     ScreenSizeField(
@@ -39,7 +39,7 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  *     )
  * }
  * ```
- * 
+ *
  * @param label Display label for the field
  * @param sizes List of available screen size options, defaults to medium smartphone
  * @param type UI presentation type, defaults to dropdown selection
@@ -112,26 +112,26 @@ open class ScreenSizeField(
 
 /**
  * Represents a screen size with width and height in density-independent pixels
- * 
+ *
  * Encapsulates screen dimensions for different device types, providing common presets
  * for smartphones, tablets, and desktop displays. Used primarily in ScreenSizeField
  * for responsive design testing and preview environments.
- * 
+ *
  * ```kotlin
  * // Create custom screen size
  * val customSize = ScreenSize(width = 400.dp, height = 800.dp, label = "Custom Phone")
- * 
+ *
  * // Use predefined presets
  * val phone = ScreenSize.MediumSmartPhone
  * val tablet = ScreenSize.LargeTablet
  * val desktop = ScreenSize.MediumDesktop
- * 
+ *
  * // Create landscape version
  * val landscapePhone = ScreenSize.MediumSmartPhone.reversed()
  * ```
- * 
+ *
  * @param width Screen width in dp
- * @param height Screen height in dp 
+ * @param height Screen height in dp
  * @param label Display name for UI selection (auto-generated if not provided)
  * @see ScreenSizeField
  * @see ScreenSize.Companion
@@ -139,15 +139,15 @@ open class ScreenSizeField(
 class ScreenSize(val width: Dp, val height: Dp, val label: String = "${width}x$height") {
     /**
      * Creates a landscape orientation of this screen size
-     * 
+     *
      * Swaps width and height dimensions to convert between portrait and landscape orientations.
      * Useful for testing how layouts adapt to device rotation.
-     * 
+     *
      * ```kotlin
      * val portrait = ScreenSize(375.dp, 667.dp, "iPhone")
      * val landscape = portrait.reversed() // 667.dp x 375.dp
      * ```
-     * 
+     *
      * @return New ScreenSize with swapped dimensions
      */
     fun reversed() = ScreenSize(
@@ -158,18 +158,18 @@ class ScreenSize(val width: Dp, val height: Dp, val label: String = "${width}x$h
 
     /**
      * Common device size presets for testing responsive designs
-     * 
+     *
      * Provides predefined screen sizes for smartphones, tablets, and desktop displays
      * in both portrait and landscape orientations. These presets represent typical
      * device dimensions found in the market and help ensure compatibility across
      * different screen sizes.
-     * 
+     *
      * ```kotlin
      * // Individual device types
      * ScreenSize.MediumSmartPhone  // 375x667 dp
      * ScreenSize.LargeTablet       // 900x1440 dp
      * ScreenSize.MediumDesktop     // 1440x900 dp
-     * 
+     *
      * // Device categories
      * ScreenSize.SmartPhones       // All smartphone sizes
      * ScreenSize.Tablets          // All tablet sizes

@@ -17,18 +17,18 @@ import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 
 /**
  * Launches a desktop application for previewing Compose components
- * 
+ *
  * Creates a native desktop window running the PreviewLab interface for interactive
  * component development and testing. Provides comprehensive window customization options
  * including size, position, decorations, and behavior. Integrates with file opening
  * handlers for source code navigation and supports featured file grouping.
- * 
+ *
  * ```kotlin
  * // Basic application launch
  * fun main() = previewLabApplication(
  *     previews = myModule.previews
  * )
- * 
+ *
  * // Advanced configuration with file handler
  * fun main() = previewLabApplication(
  *     previews = myModule.previews,
@@ -41,19 +41,19 @@ import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
  *     width = 1200.dp,
  *     height = 800.dp
  * )
- * 
+ *
  * // Custom window behavior
  * fun main() = previewLabApplication(
  *     previews = myModule.previews,
  *     alwaysOnTop = true,
  *     resizable = false,
- *     onCloseRequest = { 
+ *     onCloseRequest = {
  *         // Custom cleanup
  *         exitApplication()
  *     }
  * )
  * ```
- * 
+ *
  * @param previews Collection of previews to display in the interface
  * @param openFileHandler Handler for opening source files (optional)
  * @param featuredFiles Grouped file organization for navigation
