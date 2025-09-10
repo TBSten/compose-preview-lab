@@ -3,12 +3,13 @@ public abstract interface class me/tbsten/compose/preview/lab/CollectedPreview {
 	public abstract fun getContent ()Lkotlin/jvm/functions/Function2;
 	public abstract fun getDisplayName ()Ljava/lang/String;
 	public abstract fun getFilePath ()Ljava/lang/String;
+	public abstract fun getId ()Ljava/lang/String;
 	public abstract fun getStartLineNumber ()Ljava/lang/Integer;
 }
 
 public final class me/tbsten/compose/preview/lab/CollectedPreviewKt {
-	public static final fun CollectedPreview (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lme/tbsten/compose/preview/lab/CollectedPreview;
-	public static synthetic fun CollectedPreview$default (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/CollectedPreview;
+	public static final fun CollectedPreview (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lme/tbsten/compose/preview/lab/CollectedPreview;
+	public static synthetic fun CollectedPreview$default (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/CollectedPreview;
 }
 
 public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabKt {
@@ -30,6 +31,7 @@ public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLab
 
 public abstract interface annotation class me/tbsten/compose/preview/lab/ComposePreviewLabOption : java/lang/annotation/Annotation {
 	public abstract fun displayName ()Ljava/lang/String;
+	public abstract fun id ()Ljava/lang/String;
 	public abstract fun ignore ()Z
 }
 
