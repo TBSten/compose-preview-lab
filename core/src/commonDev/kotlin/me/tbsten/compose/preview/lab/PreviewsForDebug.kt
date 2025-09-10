@@ -67,7 +67,7 @@ import me.tbsten.compose.preview.lab.field.withHint
 import me.tbsten.compose.preview.lab.field.withInitialValueHint
 
 val previewsForUiDebug = listOf<CollectedPreview>(
-    CollectedPreview("Fields", "src/commonMain/kotlin/me/tbsten/example/Fields.kt") {
+    CollectedPreview("Fields", "Fields", "src/commonMain/kotlin/me/tbsten/example/Fields.kt") {
         PreviewLab {
             CompositionLocalProvider(
                 *provideDefaultCompositionLocalFields(),
@@ -251,7 +251,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
             }
         }
     },
-    CollectedPreview("Events", "src/commonMain/kotlin/me/tbsten/example/Events.kt") {
+    CollectedPreview("Events", "Events", "src/commonMain/kotlin/me/tbsten/example/Events.kt") {
         PreviewLab {
             SampleScreen(
                 title = "Events",
@@ -259,7 +259,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
             )
         }
     },
-    CollectedPreview("Layouts", "src/commonMain/kotlin/me/tbsten/example/Layouts.kt") {
+    CollectedPreview("Layouts", "Layouts", "src/commonMain/kotlin/me/tbsten/example/Layouts.kt") {
         PreviewLab {
             SampleScreen(
                 title = "Layouts",
@@ -267,7 +267,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
             )
         }
     },
-    CollectedPreview("ScreenSize", "src/commonMain/kotlin/me/tbsten/example/ScreenSize.kt") {
+    CollectedPreview("ScreenSize", "ScreenSize", "src/commonMain/kotlin/me/tbsten/example/ScreenSize.kt") {
         PreviewLab(
             screenSizes = ScreenSize.AllPresets,
         ) {
@@ -286,12 +286,14 @@ val previewsForUiDebug = listOf<CollectedPreview>(
         }
     },
     CollectedPreview(
+        "WithoutPreviewLab",
         "Without PreviewLab",
         "src/commonMain/kotlin/me/tbsten/example/WithoutPreviewLab.kt",
     ) {
         Text("Without PreviewLab { }")
     },
     CollectedPreview(
+        "ButtonPrimary",
         "com.example.ui.components.ButtonPrimary",
         "src/commonMain/kotlin/com/example/ui/components/ButtonPrimary.kt",
     ) {
@@ -321,6 +323,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
         }
     },
     CollectedPreview(
+        "ButtonSecondary",
         "com.example.ui.components.ButtonSecondary",
         "src/commonMain/kotlin/com/example/ui/components/ButtonSecondary.kt",
     ) {
@@ -343,6 +346,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
         }
     },
     CollectedPreview(
+        "HeadingText",
         "com.example.ui.components.text.HeadingText",
         "src/commonMain/kotlin/com/example/ui/components/text/HeadingText.kt",
     ) {
@@ -366,6 +370,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
         }
     },
     CollectedPreview(
+        "LoginForm",
         "com.example.screens.login.LoginForm",
         "src/commonMain/kotlin/com/example/screens/login/LoginForm.kt",
     ) {
@@ -386,6 +391,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
         }
     },
     CollectedPreview(
+        "ProfileSettings",
         "com.example.screens.profile.ProfileSettings",
         "src/commonMain/kotlin/com/example/screens/profile/ProfileSettings.kt",
     ) {
@@ -406,6 +412,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
         }
     },
     CollectedPreview(
+        "AdaptiveUI",
         "Adaptive UI",
         "src/commonMain/kotlin/me/tbsten/example/AdaptiveUI.kt",
     ) {
@@ -440,7 +447,11 @@ val previewsForUiDebug = listOf<CollectedPreview>(
             }
         }
     },
-    CollectedPreview("Modifier/Composable Fields", "src/commonMain/kotlin/me/tbsten/example/ModifierAndComposableField.kt") {
+    CollectedPreview(
+        "ModifierAndComposableField",
+        "Modifier/Composable Fields",
+        "src/commonMain/kotlin/me/tbsten/example/ModifierAndComposableField.kt",
+    ) {
         PreviewLab {
             Column {
                 Button(
