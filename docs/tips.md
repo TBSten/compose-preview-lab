@@ -104,7 +104,8 @@ eliminating the need to display the code one by one.
 ## 5. Prepare a set of sources to easily set up placeholders for development tools
 
 For example, let's say your project targets Android and iOS apps.
-You would enable `kotlin.androidTarget`, `kotlin.ios***` in build.gradle.kts, plus `kotlin.jvm()`, `kotlin.js()`, ` kotlin.wasmJs()` for devtools such as Compose Preview Lab.
+You would enable `kotlin.androidTarget`, `kotlin.ios***` in build.gradle.kts, plus `kotlin.jvm()`, `kotlin.js()`,
+` kotlin.wasmJs()` for devtools such as Compose Preview Lab.
 
 <details>
     <summary>build.gradle.kts</summary>
@@ -148,7 +149,8 @@ kotlin {
 
 </details>
 
-As you implement features in your application, you may encounter cases where you want to display a placeholder because it is difficult or inconvenient to implement in devtool, even though it is necessary in the actual application.
+As you implement features in your application, you may encounter cases where you want to display a placeholder because it is
+difficult or inconvenient to implement in devtool, even though it is necessary in the actual application.
 In this case, the following placeholders can be prepared.
 
 ```kt
@@ -181,8 +183,10 @@ actual fun Map() = /* TODO implementation */
 actual fun Map() = Placeholder("Map()")
 ```
 
-In this case, it is troublesome to call the Placeholder in each sourceSet added for development, such as jvmMain, jsMain, and wasmJsMain.
-Therefore, let's create a sourceSet called **devToolsMain** and call the placeholder there. This eliminates the need to call the Placeholder multiple times.
+In this case, it is troublesome to call the Placeholder in each sourceSet added for development, such as jvmMain, jsMain, and
+wasmJsMain.
+Therefore, let's create a sourceSet called **devToolsMain** and call the placeholder there. This eliminates the need to call the
+Placeholder multiple times.
 
 ```
 // before
