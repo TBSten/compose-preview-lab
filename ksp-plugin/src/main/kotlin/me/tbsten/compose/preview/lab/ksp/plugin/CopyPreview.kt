@@ -10,6 +10,8 @@ import me.tbsten.compose.preview.lab.ksp.plugin.util.findAnnotation
 import me.tbsten.compose.preview.lab.ksp.plugin.util.findArg
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
+import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment.Companion.getOrCreateApplicationEnvironment
+import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment.ProjectEnvironment
 import org.jetbrains.kotlin.com.intellij.openapi.util.Disposer
 import org.jetbrains.kotlin.com.intellij.psi.util.PsiUtilCore
 import org.jetbrains.kotlin.config.CompilerConfiguration
@@ -54,9 +56,13 @@ internal fun copyPreview(preview: ValidPreview, codeGenerator: CodeGenerator): C
         )
     val (psiFile, previewBody) =
         run {
+            val disposable = Disposer.newDisposable()
+            val configuration = CompilerConfiguration()
+            val appEnv = getOrCreateApplicationEnvironment(disposable, configuration)
+            val projectEnv = ProjectEnvironment(disposable, appEnv, configuration)
             val environment = KotlinCoreEnvironment.createForProduction(
-                Disposer.newDisposable(),
-                CompilerConfiguration(),
+                projectEnvironment = projectEnv,
+                configuration = configuration,
                 EnvironmentConfigFiles.JVM_CONFIG_FILES,
             )
             val virtualFile = requireNotNull(environment.findLocalFile(filePath))

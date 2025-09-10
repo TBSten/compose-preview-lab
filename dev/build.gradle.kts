@@ -1,24 +1,24 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.reload.gradle.ComposeHotRun
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     alias(libs.plugins.multiplatform)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.compose)
-    alias(libs.plugins.android.application)
+    // FIXME enable android application debug
+//    alias(libs.plugins.android.application)
     alias(libs.plugins.hotReload)
     alias(libs.plugins.ksp)
 }
 
 kotlin {
     jvmToolchain(11)
-    androidTarget {
-        // https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
-        @Suppress("OPT_IN_USAGE")
-        instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
-    }
+//    androidTarget {
+//        // https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
+//        @Suppress("OPT_IN_USAGE")
+//        instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
+//    }
 
     jvm()
 
@@ -61,10 +61,10 @@ kotlin {
             implementation(kotlin("test"))
         }
 
-        androidMain.dependencies {
-            implementation(compose.uiTooling)
-            implementation(libs.androidx.activityCompose)
-        }
+//        androidMain.dependencies {
+//            implementation(compose.uiTooling)
+//            implementation(libs.androidx.activityCompose)
+//        }
 
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -76,27 +76,27 @@ kotlin {
     }
 }
 
-android {
-    namespace = "me.tbsten.compose.preview.lab.sample"
-    compileSdk = 36
+// android {
+//    namespace = "me.tbsten.compose.preview.lab"
+//    compileSdk = 36
+//
+//    defaultConfig {
+//        minSdk = 21
+//        targetSdk = 36
+//
+//        applicationId = "me.tbsten.compose.preview.lab.androidApp"
+//        versionCode = 1
+//        versionName = "1.0.0"
+//
+//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+//    }
+// }
 
-    defaultConfig {
-        minSdk = 21
-        targetSdk = 36
-
-        applicationId = "me.tbsten.compose.preview.lab.sample.androidApp"
-        versionCode = 1
-        versionName = "1.0.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-}
-
-// https://developer.android.com/develop/ui/compose/testing#setup
-dependencies {
-    androidTestImplementation(libs.androidx.uitest.junit4)
-    debugImplementation(libs.androidx.uitest.testManifest)
-}
+// // https://developer.android.com/develop/ui/compose/testing#setup
+// dependencies {
+//    androidTestImplementation(libs.androidx.uitest.junit4)
+//    debugImplementation(libs.androidx.uitest.testManifest)
+// }
 
 compose.desktop {
     application {

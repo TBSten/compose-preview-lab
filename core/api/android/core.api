@@ -586,7 +586,7 @@ public final class me/tbsten/compose/preview/lab/field/OffsetField : me/tbsten/c
 
 public abstract interface class me/tbsten/compose/preview/lab/field/PreviewLabField {
 	public abstract fun Content (Landroidx/compose/runtime/Composer;I)V
-	public abstract fun View (Landroidx/compose/runtime/Composer;I)V
+	public fun View (Landroidx/compose/runtime/Composer;I)V
 	public abstract fun getInitialValue ()Ljava/lang/Object;
 	public abstract fun getLabel ()Ljava/lang/String;
 	public abstract fun getValue ()Ljava/lang/Object;
@@ -1346,7 +1346,7 @@ public abstract interface class me/tbsten/compose/preview/lab/field/modifier/Mod
 	public static final field Companion Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue$Companion;
 	public abstract fun Builder (Landroidx/compose/runtime/Composer;I)V
 	public abstract fun createModifier (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
-	public abstract fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
+	public fun then (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue;)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue$Companion : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList {
@@ -1359,7 +1359,7 @@ public final class me/tbsten/compose/preview/lab/field/modifier/ModifierFieldVal
 public abstract interface class me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueFactory {
 	public abstract fun Content (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
 	public abstract fun create-d1pmJ48 ()Ljava/lang/Object;
-	public abstract fun getCanCreate ()Z
+	public fun getCanCreate ()Z
 	public abstract fun getTitle ()Ljava/lang/String;
 }
 
