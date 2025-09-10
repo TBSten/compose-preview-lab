@@ -103,7 +103,7 @@ class PreviewListTreeTest {
 }
 
 private fun previewForTest(displayName: String): CollectedPreview = CollectedPreview(
-    "{{qualifiedName}}",
+    displayName,
     displayName,
     "src/commonMain/kotlin/${displayName.replace(".", "/")}.kt",
 ) { }
