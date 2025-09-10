@@ -114,7 +114,7 @@ plugins {
     kotlin("multiplatform")
 }
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(11)
     androidTarget {
         // https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
         instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)

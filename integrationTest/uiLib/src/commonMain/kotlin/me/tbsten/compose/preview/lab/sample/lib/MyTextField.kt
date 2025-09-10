@@ -22,7 +22,10 @@ fun MyTextField(value: String, onValueChange: (String) -> Unit, modifier: Modifi
     )
 }
 
-@ComposePreviewLabOption(displayName = "Statefull UI Component")
+@ComposePreviewLabOption(
+    id = "MyTextFieldPreview",
+    displayName = "Statefull UI Component",
+)
 @Preview
 @Composable
 private fun MyTextFieldPreview() = PreviewLab {
