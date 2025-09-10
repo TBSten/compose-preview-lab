@@ -45,6 +45,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  * @property content The content of Preview. You can display the content of Preview by calling invoke().
  */
 interface CollectedPreview {
+    val id: String
     val displayName: String
     val filePath: String?
     val startLineNumber: Int?
@@ -53,6 +54,7 @@ interface CollectedPreview {
 }
 
 internal data class CollectedPreviewImpl(
+    override val id: String,
     override val displayName: String,
     override val filePath: String?,
     override val startLineNumber: Int? = null,
@@ -71,12 +73,14 @@ internal data class CollectedPreviewImpl(
  */
 @OptIn(InternalComposePreviewLabApi::class)
 fun CollectedPreview(
+    id: String,
     displayName: String,
     filePath: String?,
     startLineNumber: Int? = null,
     code: String? = null,
     content: @Composable () -> Unit,
 ): CollectedPreview = CollectedPreviewImpl(
+    id = id,
     displayName = displayName,
     filePath = filePath,
     startLineNumber = startLineNumber,

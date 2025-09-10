@@ -34,7 +34,12 @@ package me.tbsten.compose.preview.lab
  *
  * @property displayName {{package}}, {{simpleName}}, {{className}}, {{qualifiedName}} or a custom string. It does not have to match other Previews as it does not function like an ID. `. Each segment separated by ` is considered a group.
  * @property ignore if true, Compose Preview Lab Gradle Plugin don't collect this Preview.
+ * @property id An ID to identify each Preview. It can be used for navigation within the PreviewLabNavController. The same placeholder as displayName can be used.
  */
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.FUNCTION)
-annotation class ComposePreviewLabOption(val displayName: String = "{{qualifiedName}}", val ignore: Boolean = false)
+annotation class ComposePreviewLabOption(
+    val displayName: String = "{{qualifiedName}}",
+    val ignore: Boolean = false,
+    val id: String = "{{qualifiedName}}",
+)

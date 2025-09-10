@@ -21,18 +21,23 @@ internal fun checkPreview(annotated: KSAnnotated): ValidPreview? {
         annotated.findAnnotation("me.tbsten.compose.preview.lab.ComposePreviewLabOption")
     val displayName = optionAnnotation?.findArg<String>("displayName")
     val ignore = optionAnnotation?.findArg<Boolean>("ignore")
+    val id = optionAnnotation?.findArg<String>("id")
     if (ignore == true) return null
     return ValidPreview(
         previewFun = annotated,
         placeholderedDisplayName = displayName ?: "{{qualifiedName}}",
+        placeholderedId = id ?: "{{qualifiedName}}",
     )
 }
 
-internal data class ValidPreview(val previewFun: KSFunctionDeclaration, val placeholderedDisplayName: String)
+internal data class ValidPreview(
+    val previewFun: KSFunctionDeclaration,
+    val placeholderedDisplayName: String,
+    val placeholderedId: String,
+)
 
 internal fun copyPreview(preview: ValidPreview, codeGenerator: CodeGenerator): CopiedPreview {
     val startLineNumber = (preview.previewFun.location as? FileLocation)?.lineNumber
-    preview.previewFun
     val copied = CopiedPreview(
         packageName = preview.previewFun.packageName.asString(),
         baseName = preview.previewFun.simpleName.asString(),
@@ -40,6 +45,7 @@ internal fun copyPreview(preview: ValidPreview, codeGenerator: CodeGenerator): C
             ?: throw IllegalStateException("Preview containing file is null"),
         startLineNumber = startLineNumber,
         placeholderedDisplayName = preview.placeholderedDisplayName,
+        placeholderedId = preview.placeholderedId,
     )
 
     val filePath = (
@@ -100,12 +106,18 @@ internal data class CopiedPreview(
     val baseFile: KSFile,
     val startLineNumber: Int?,
     val placeholderedDisplayName: String,
+    val placeholderedId: String,
 ) {
     val fullBaseName = "$packageName.$baseName"
     val copyName = "__copied__$baseName"
     val fullCopyName = "$packageName.$copyName"
 
     val displayName = placeholderedDisplayName
+        .replace("{{package}}", packageName)
+        .replace("{{simpleName}}", baseName)
+        .replace("{{qualifiedName}}", fullBaseName)
+
+    val id = placeholderedId
         .replace("{{package}}", packageName)
         .replace("{{simpleName}}", baseName)
         .replace("{{qualifiedName}}", fullBaseName)

@@ -36,13 +36,14 @@ internal fun generateList(
         previews.forEach { preview ->
             it.appendLine("    // ${preview.fullBaseName}")
             it.appendLine("    CollectedPreview(")
-            it.appendLine("        displayName = \"\"\"${preview.displayName}\"\"\",")
+            it.appendLine("        id = ${str(preview.id)},")
+            it.appendLine("        displayName = ${str(preview.displayName)},")
             val filePath = if (projectRootPath != null) {
-                Paths.get(preview.baseFile.filePath).relativeTo(Paths.get(projectRootPath))
+                Paths.get(preview.baseFile.filePath).relativeTo(Paths.get(projectRootPath)).toString()
             } else {
                 preview.baseFile.filePath
             }
-            it.appendLine("        filePath = \"\"\"$filePath\"\"\",")
+            it.appendLine("        filePath = ${str(filePath)},")
             it.appendLine("        startLineNumber = ${preview.startLineNumber ?: "null"},")
             it.appendLine("    ) { ${preview.fullCopyName}() },")
         }
@@ -67,6 +68,8 @@ internal fun generateList(
         )
     }
 }
+
+private fun str(text: String) = "\"${text.replace("\"", "\\\"")}\""
 
 @Serializable
 internal data class CollectedPreviewJsonData(val previewsListPackage: String)

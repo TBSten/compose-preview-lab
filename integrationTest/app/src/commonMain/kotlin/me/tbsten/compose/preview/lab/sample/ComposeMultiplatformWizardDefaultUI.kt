@@ -142,7 +142,10 @@ internal fun ComposeMultiplatformWizardDefaultUI() = AppTheme {
     }
 }
 
-@ComposePreviewLabOption(displayName = "Compose Multiplatform Wizard Default UI")
+@ComposePreviewLabOption(
+    id = "ComposeMultiplatformWizardDefaultUIPreview",
+    displayName = "Compose Multiplatform Wizard Default UI",
+)
 @Preview
 @Composable
 private fun ComposeMultiplatformWizardDefaultUIPreview() = PreviewLab {
