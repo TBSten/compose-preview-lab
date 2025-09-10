@@ -5,7 +5,7 @@ on:
       - main
 
 jobs:
-  hoge:
+  deploy-to-web:
     runs-on: ubuntu-latest
     permissions:
       contents: write
