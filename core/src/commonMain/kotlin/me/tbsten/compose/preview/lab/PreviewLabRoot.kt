@@ -71,19 +71,26 @@ fun PreviewLabRoot(
     openFileHandler: OpenFileHandler<out Any?>? = null,
     featuredFiles: Map<String, List<String>> = emptyMap(),
 ) = PreviewLabTheme {
+    val previewList = remember { previews.toList() }
+    val groupedPreviews by remember {
+        derivedStateOf {
+            previewList.groupingByFeaturedFiles(featuredFiles) +
+                ("all" to previewList)
+        }
+    }
+
+    val previewLabRootNavigator =
+        rememberPreviewLabRootNavigator(
+            state = state,
+            groupedPreviews = groupedPreviews,
+        )
+
+    val background = PreviewLabTheme.colors.background
+
     CompositionLocalProvider(
         LocalOpenFileHandler provides openFileHandler,
+        LocalPreviewLabRootNavigator provides previewLabRootNavigator,
     ) {
-        val previewList = remember { previews.toList() }
-        val groupedPreviews by remember {
-            derivedStateOf {
-                previewList.groupingByFeaturedFiles(featuredFiles) +
-                    ("all" to previewList)
-            }
-        }
-
-        val background = PreviewLabTheme.colors.background
-
         Box(
             modifier = modifier
                 .background(background)
