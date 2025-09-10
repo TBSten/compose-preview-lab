@@ -1,11 +1,12 @@
 package me.tbsten.compose.preview.lab
 
+// import me.tbsten.compose.preview.lab.component.AdaptiveContainer
+// import me.tbsten.compose.preview.lab.component.Divider
+// import me.tbsten.compose.preview.lab.component.adaptive
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,8 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -39,9 +38,6 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.tbsten.compose.preview.lab.component.AdaptiveContainer
-import me.tbsten.compose.preview.lab.component.Divider
-import me.tbsten.compose.preview.lab.component.adaptive
 import me.tbsten.compose.preview.lab.event.withEvent
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.ColorField
@@ -66,8 +62,6 @@ import me.tbsten.compose.preview.lab.field.splitedOf
 import me.tbsten.compose.preview.lab.field.withHint
 import me.tbsten.compose.preview.lab.field.withInitialValueHint
 
-// TODO delete
-//  For debug code moved to :dev module
 val previewsForUiDebug = listOf<CollectedPreview>(
     CollectedPreview("Fields", "Fields", "src/commonMain/kotlin/me/tbsten/example/Fields.kt") {
         PreviewLab {
@@ -149,7 +143,8 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                                     .size(dpSizeValue),
                             ) {
                                 Text("spValue", fontSize = spValue, modifier = textModifierValue)
-                                Divider()
+//                                Divider()
+                                HorizontalDivider()
                                 childrenValue()
                             }
                         }
@@ -413,42 +408,42 @@ val previewsForUiDebug = listOf<CollectedPreview>(
             }
         }
     },
-    CollectedPreview(
-        "AdaptiveUI",
-        "Adaptive UI",
-        "src/commonMain/kotlin/me/tbsten/example/AdaptiveUI.kt",
-    ) {
-        Column {
-            Text(adaptive(small = "S", medium = "M", large = "L"))
-            Text(adaptive("S or M", large = "L"))
-            Text(adaptive("S", medium = "M or L"))
-            Text(adaptive("ALL"))
-            Divider(Modifier.padding(vertical = 16.dp))
-
-            val scrollState = rememberScrollState()
-            val arrangement = Arrangement.spacedBy(8.dp)
-            AdaptiveContainer(
-                small = {
-                    Column(
-                        verticalArrangement = arrangement,
-                        modifier = Modifier.verticalScroll(scrollState),
-                    ) { it() }
-                },
-                medium = {
-                    FlowRow(
-                        horizontalArrangement = arrangement,
-                        modifier = Modifier.horizontalScroll(scrollState),
-                    ) { it() }
-                },
-            ) {
-                "This text is displayed in FlowColumn when ScreenWidth is S, and in FlowRow when ScreenWidth is M or more."
-                    .split(" ")
-                    .forEach {
-                        Text(it)
-                    }
-            }
-        }
-    },
+//    CollectedPreview(
+//        "AdaptiveUI",
+//        "Adaptive UI",
+//        "src/commonMain/kotlin/me/tbsten/example/AdaptiveUI.kt",
+//    ) {
+//        Column {
+//            Text(adaptive(small = "S", medium = "M", large = "L"))
+//            Text(adaptive("S or M", large = "L"))
+//            Text(adaptive("S", medium = "M or L"))
+//            Text(adaptive("ALL"))
+//            Divider(Modifier.padding(vertical = 16.dp))
+//
+//            val scrollState = rememberScrollState()
+//            val arrangement = Arrangement.spacedBy(8.dp)
+//            AdaptiveContainer(
+//                small = {
+//                    Column(
+//                        verticalArrangement = arrangement,
+//                        modifier = Modifier.verticalScroll(scrollState),
+//                    ) { it() }
+//                },
+//                medium = {
+//                    FlowRow(
+//                        horizontalArrangement = arrangement,
+//                        modifier = Modifier.horizontalScroll(scrollState),
+//                    ) { it() }
+//                },
+//            ) {
+//                "This text is displayed in FlowColumn when ScreenWidth is S, and in FlowRow when ScreenWidth is M or more."
+//                    .split(" ")
+//                    .forEach {
+//                        Text(it)
+//                    }
+//            }
+//        }
+//    },
     CollectedPreview(
         "ModifierAndComposableField",
         "Modifier/Composable Fields",
@@ -471,7 +466,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                     },
                 )
 
-                Divider()
+                HorizontalDivider()
 
                 Scaffold(
                     topBar = fieldValue {
@@ -548,7 +543,7 @@ private fun SampleScreen(
         TopAppBar(
             title = { Text(title) },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White.copy(alpha = 0.8f)),
-            modifier = Modifier.layoutLab("TopAppBar"),
+//            modifier = Modifier.layoutLab("TopAppBar"),
         )
     },
     modifier = modifier,
@@ -561,7 +556,7 @@ private fun DefaultSampleScreenContent(paddingValues: PaddingValues, onListItemC
         contentPadding = paddingValues.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
-            .layoutLab("LazyColumn")
+//            .layoutLab("LazyColumn")
             .background(
                 Brush.linearGradient(
                     0f to Color.Green,
@@ -576,7 +571,7 @@ private fun DefaultSampleScreenContent(paddingValues: PaddingValues, onListItemC
             Button(
                 onClick = { onListItemClick(count) },
                 modifier = Modifier
-                    .layoutLab("Item: $count")
+//                    .layoutLab("Item: $count")
                     .fillMaxWidth(),
             ) {
                 Text(

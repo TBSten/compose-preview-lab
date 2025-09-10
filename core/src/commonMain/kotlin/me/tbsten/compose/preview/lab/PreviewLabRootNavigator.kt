@@ -34,16 +34,21 @@ private fun rememberPreviewLabRootNavigator(onNavigatePreview: (String) -> Unit,
 internal fun rememberPreviewLabRootNavigator(
     state: PreviewLabRootState,
     groupedPreviews: Map<String, List<CollectedPreview>>,
-) = rememberPreviewLabRootNavigator(
-    onNavigatePreview = { id ->
-        val target = groupedPreviews.entries.firstNotNullOfOrNull { (groupName, previewsInGroup) ->
-            previewsInGroup
-                .firstOrNull { preview -> preview.id == id }
-                ?.let { groupName to it }
+) = remember {
+    object : PreviewLabRootNavigator {
+        override fun navigate(id: String) {
+            val target = groupedPreviews.entries.firstNotNullOfOrNull { (groupName, previewsInGroup) ->
+                previewsInGroup
+                    .firstOrNull { preview -> preview.id == id }
+                    ?.let { groupName to it }
+            }
+            target?.let { (groupName, preview) ->
+                state.select(groupName = groupName, preview = preview)
+            }
         }
-        target?.let { (groupName, preview) ->
-            state.select(groupName = groupName, preview = preview)
+
+        override fun back() {
+            state.unselect()
         }
-    },
-    onBack = { state.unselect() },
-)
+    }
+}

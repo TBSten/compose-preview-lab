@@ -3,8 +3,6 @@ import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 import me.tbsten.compose.preview.lab.previewLabApplication
 import me.tbsten.compose.preview.lab.previewsForUiDebug
 
-// TODO delete
-//  For debug code moved to :dev module
 fun main(): Unit = previewLabApplication(
     previews = previewsForUiDebug,
     featuredFiles = featuredFilesForDebug,

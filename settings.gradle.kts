@@ -41,3 +41,6 @@ include(":core")
 include(":ksp-plugin")
 include(":gradle-plugin")
 // include(":intellij-plugin")
+
+// for dev
+include(":dev")

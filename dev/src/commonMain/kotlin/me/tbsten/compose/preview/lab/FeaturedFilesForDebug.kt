@@ -1,7 +1,5 @@
 package me.tbsten.compose.preview.lab
 
-// TODO delete
-//  For debug code moved to :dev module
 val featuredFilesForDebug = mapOf(
     "core" to listOf(
         "src/commonMain/kotlin/me/tbsten/example/Fields.kt",
