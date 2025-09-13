@@ -94,10 +94,14 @@ public final class me/tbsten/compose/preview/lab/PreviewLabRootState {
 
 public final class me/tbsten/compose/preview/lab/PreviewLabScope {
 	public static final field $stable I
-	public final fun field (Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/MutableState;
-	public final fun fieldValue (Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)Ljava/lang/Object;
+	public final fun fieldState (Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/MutableState;
+	public final fun fieldValue (Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)Ljava/lang/Object;
 	public final fun onEvent (Ljava/lang/String;Ljava/lang/String;)V
 	public static synthetic fun onEvent$default (Lme/tbsten/compose/preview/lab/PreviewLabScope;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)V
+}
+
+public final class me/tbsten/compose/preview/lab/PreviewLabScope$FieldBuilderScope {
+	public static final field $stable I
 }
 
 public final class me/tbsten/compose/preview/lab/PreviewLabState {
@@ -875,7 +879,6 @@ public final class me/tbsten/compose/preview/lab/field/WithHintField : me/tbsten
 
 public final class me/tbsten/compose/preview/lab/field/WithHintFieldKt {
 	public static final fun withHint (Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;[Lkotlin/Pair;)Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;
-	public static final fun withInitialValueHint (Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/AlphaModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
