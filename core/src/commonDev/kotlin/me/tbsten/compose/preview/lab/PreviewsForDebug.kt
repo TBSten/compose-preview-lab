@@ -258,14 +258,6 @@ val previewsForUiDebug = listOf<CollectedPreview>(
             )
         }
     },
-    CollectedPreview("Layouts", "Layouts", "src/commonMain/kotlin/me/tbsten/example/Layouts.kt") {
-        PreviewLab {
-            SampleScreen(
-                title = "Layouts",
-                onListItemClick = { },
-            )
-        }
-    },
     CollectedPreview("ScreenSize", "ScreenSize", "src/commonMain/kotlin/me/tbsten/example/ScreenSize.kt") {
         PreviewLab(
             screenSizes = ScreenSize.AllPresets,
@@ -545,7 +537,6 @@ private fun SampleScreen(
         TopAppBar(
             title = { Text(title) },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White.copy(alpha = 0.8f)),
-            modifier = Modifier.layoutLab("TopAppBar"),
         )
     },
     modifier = modifier,
@@ -558,7 +549,6 @@ private fun DefaultSampleScreenContent(paddingValues: PaddingValues, onListItemC
         contentPadding = paddingValues.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
-            .layoutLab("LazyColumn")
             .background(
                 Brush.linearGradient(
                     0f to Color.Green,
@@ -573,7 +563,6 @@ private fun DefaultSampleScreenContent(paddingValues: PaddingValues, onListItemC
             Button(
                 onClick = { onListItemClick(count) },
                 modifier = Modifier
-                    .layoutLab("Item: $count")
                     .fillMaxWidth(),
             ) {
                 Text(

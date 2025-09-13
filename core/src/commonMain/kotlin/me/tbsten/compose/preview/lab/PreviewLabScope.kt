@@ -1,38 +1,15 @@
 package me.tbsten.compose.preview.lab
 
-import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateSetOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerEventType
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.onLayoutRectChanged
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.toOffset
 import io.github.takahirom.rin.RetainedObserver
 import io.github.takahirom.rin.rememberRetained
-import kotlin.random.Random
 import kotlin.time.ExperimentalTime
-import kotlinx.coroutines.coroutineScope
 import me.tbsten.compose.preview.lab.event.PreviewLabEvent
 import me.tbsten.compose.preview.lab.field.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.PreviewLabField
-import me.tbsten.compose.preview.lab.layout.LayoutNodeId
-import me.tbsten.compose.preview.lab.layout.PreviewLabLayoutNode
-import me.tbsten.compose.preview.lab.util.thenIf
-import me.tbsten.compose.preview.lab.util.toDpOffset
-import me.tbsten.compose.preview.lab.util.toDpSize
 
 /**
  * The scope of the [PreviewLab], which provides methods to create fields, handle events, and manage layout nodes.
@@ -45,10 +22,7 @@ import me.tbsten.compose.preview.lab.util.toDpSize
 class PreviewLabScope internal constructor() {
     internal val fields = mutableStateListOf<PreviewLabField<*>>()
     internal val events = mutableStateListOf<PreviewLabEvent>()
-    internal val layoutNodes = mutableStateListOf<PreviewLabLayoutNode>()
 
-    internal val selectedLayoutNodeIds = mutableStateSetOf<LayoutNodeId>()
-    internal val hoveredLayoutNodeIds = mutableStateSetOf<LayoutNodeId>()
     internal var onEventHandler: (Event) -> Unit = {}
 
     // field methods
@@ -143,61 +117,6 @@ class PreviewLabScope internal constructor() {
         onEventHandler.invoke(Event.ShowEventToast(event = event))
     }
 
-    // layoutNode methods
-    internal fun addLayoutNode(node: PreviewLabLayoutNode) {
-        layoutNodes.add(node)
-    }
-
-    internal fun removeLayoutNode(id: Long) {
-        layoutNodes.removeAll { it.id == id }
-    }
-
-    internal fun putLayoutNode(id: Long, label: String, offsetInAppRoot: DpOffset?, size: DpSize?) {
-        val nodeIndex = layoutNodes.indexOfFirst { it.id == id }
-        if (nodeIndex == -1) {
-            addLayoutNode(
-                PreviewLabLayoutNode(
-                    id = id,
-                    label = label,
-                    offsetInAppRoot = offsetInAppRoot,
-                    size = size,
-                ),
-            )
-        } else {
-            val new = PreviewLabLayoutNode(
-                id = id,
-                label = label,
-                offsetInAppRoot = offsetInAppRoot ?: layoutNodes[nodeIndex].offsetInAppRoot,
-                size = size ?: layoutNodes[nodeIndex].size,
-            )
-            layoutNodes[nodeIndex] = new
-        }
-    }
-
-    internal fun toggleLayoutNodeSelect(id: LayoutNodeId) {
-        if (selectedLayoutNodeIds.contains(id)) {
-            selectedLayoutNodeIds.remove(id)
-        } else {
-            selectedLayoutNodeIds.add(id)
-        }
-    }
-
-    internal fun onHoverMouseLayoutNode(id: LayoutNodeId) {
-        hoveredLayoutNodeIds.add(id)
-    }
-
-    internal fun onLeaveMouseLayoutNode(id: LayoutNodeId) {
-        hoveredLayoutNodeIds.remove(id)
-    }
-
-    internal fun onShowPaddingViewer(hoveredNodeId: LayoutNodeId) {
-        println("onShowPaddingViewer: $hoveredNodeId")
-    }
-
-    internal fun onHidePaddingViewer(hoveredNodeId: LayoutNodeId) {
-        println("onHidePaddingViewer: $hoveredNodeId")
-    }
-
     @Composable
     internal fun HandleEvents(onEvent: (Event) -> Unit) {
         onEventHandler = rememberUpdatedState(onEvent).value
@@ -208,82 +127,4 @@ class PreviewLabScope internal constructor() {
     }
 
     class FieldBuilderScope internal constructor()
-}
-
-/**
- * Composable with this modifier can display various information in the sidebar when a layout tab is selected.
- *
- * ```kt
- * @Composable
- * fun MyButton(text: String) {
- *   Surface(
- *     modifier = Modifier.layoutLab("MyButton.Root").padding(16.dp),
- *   ) {
- *     Text(text, modifier = Modifier.layoutLab("MyButton.Text"))
- *   }
- * }
- * ```
- */
-@ExperimentalComposePreviewLabApi
-@Composable
-internal fun Modifier.layoutLab(label: String): Modifier = composed(
-    inspectorInfo = {
-        name = "layoutLab"
-        properties["label"] = label
-    },
-) {
-    val state = LocalPreviewLabState.current ?: return@composed this
-    val scope = state.scope
-
-    val density = LocalDensity.current
-    val id = remember(label) {
-        Random.nextLong()
-    }
-    DisposableEffect(scope, id) {
-        onDispose {
-            scope.removeLayoutNode(id)
-        }
-    }
-
-    val isSelected = scope.selectedLayoutNodeIds.any { it == id }
-    val isHovered = scope.hoveredLayoutNodeIds.any { it == id }
-
-    onLayoutRectChanged {
-        it.boundsInRoot.also {
-            scope.putLayoutNode(
-                id = id,
-                label = label,
-                offsetInAppRoot = it.topLeft.toOffset().toDpOffset(density),
-                size = it.size.toDpSize(density),
-            )
-        }
-    }.thenIf(
-        state.selectedTabIndex == 2,
-    ) {
-        pointerInput(Unit) {
-            coroutineScope {
-                detectTapGestures(
-                    onTap = {
-                        scope.toggleLayoutNodeSelect(id = id)
-                    },
-                )
-            }
-        }.pointerInput(Unit) {
-            awaitPointerEventScope {
-                while (true) {
-                    val event = awaitPointerEvent()
-                    if (event.type == PointerEventType.Enter) {
-                        scope.onHoverMouseLayoutNode(id = id)
-                    } else if (event.type == PointerEventType.Exit) {
-                        scope.onLeaveMouseLayoutNode(id = id)
-                    }
-                }
-            }
-        }.thenIf(isSelected || isHovered) {
-            border(
-                2.dp,
-                Color.Red.copy(alpha = if (isSelected) 1.0f else 0.5f),
-            )
-        }
-    }
 }
