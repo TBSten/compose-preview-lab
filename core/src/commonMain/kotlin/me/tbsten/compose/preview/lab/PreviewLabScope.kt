@@ -69,8 +69,11 @@ class PreviewLabScope internal constructor() {
      * ```
      */
     @Composable
-    fun <Value> fieldState(builder: FieldBuilderScope.() -> MutablePreviewLabField<Value>): MutableState<Value> {
-        val field = rememberRetained { builder(FieldBuilderScope()) }
+    fun <Value> fieldState(
+        key: String? = null,
+        builder: FieldBuilderScope.() -> MutablePreviewLabField<Value>,
+    ): MutableState<Value> {
+        val field = rememberRetained(key = key) { builder(FieldBuilderScope()) }
         DisposableEffect(field) {
             fields.add(field)
             onDispose { fields.remove(field) }
@@ -93,8 +96,8 @@ class PreviewLabScope internal constructor() {
      * ```
      */
     @Composable
-    fun <Value> fieldValue(builder: FieldBuilderScope.() -> PreviewLabField<out Value>): Value {
-        val field = remember { builder(FieldBuilderScope()) }
+    fun <Value> fieldValue(key: String? = null, builder: FieldBuilderScope.() -> PreviewLabField<out Value>): Value {
+        val field = rememberRetained(key = key) { builder(FieldBuilderScope()) }
         DisposableEffect(field) {
             fields.add(field)
             onDispose { fields.remove(field) }
