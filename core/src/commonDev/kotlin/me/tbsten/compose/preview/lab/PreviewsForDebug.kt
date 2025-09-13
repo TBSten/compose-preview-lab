@@ -63,7 +63,6 @@ import me.tbsten.compose.preview.lab.field.nullable
 import me.tbsten.compose.preview.lab.field.provideDefaultCompositionLocalFields
 import me.tbsten.compose.preview.lab.field.splitedOf
 import me.tbsten.compose.preview.lab.field.withHint
-import me.tbsten.compose.preview.lab.field.withInitialValueHint
 
 // TODO delete
 //  For debug code moved to :dev module
@@ -221,7 +220,6 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                                     "\"" +
                                     fieldValue {
                                         StringField("Text.text", "")
-                                            .withInitialValueHint()
                                     } +
                                     "\"",
                             )

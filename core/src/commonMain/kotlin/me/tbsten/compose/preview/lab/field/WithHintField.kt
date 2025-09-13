@@ -23,14 +23,6 @@ fun <Value> MutablePreviewLabField<Value>.withHint(vararg choices: Pair<String, 
     WithHintField<Value>(this, choices = mapOf(*choices))
 
 /**
- * Adds a "Reset" hint that returns the field to its initial value.
- *
- * @return A WithHintField wrapper that includes a reset hint
- */
-fun <Value> MutablePreviewLabField<Value>.withInitialValueHint(): MutablePreviewLabField<Value> =
-    withHint("Reset" to this.initialValue)
-
-/**
  * A field wrapper that adds hint choices below the base field.
  * Users can click on hint chips to quickly apply predefined values.
  *
