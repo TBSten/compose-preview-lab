@@ -114,7 +114,7 @@ open class PreviewLab(
      * @see ScreenSize
      */
     @Composable
-    operator fun invoke(
+    open operator fun invoke(
         state: PreviewLabState = defaultState(),
         screenSizes: List<ScreenSize> = defaultScreenSizes,
         content: @Composable PreviewLabScope.() -> Unit,

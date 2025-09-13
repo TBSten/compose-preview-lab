@@ -16,7 +16,7 @@ import me.tbsten.compose.preview.lab.ui.components.Chip
 import me.tbsten.compose.preview.lab.ui.components.Text
 
 /**
- * List で指定する選択肢から1つを選択する Field.
+ * A field that allows selection of one option from a list of specified choices.
  *
  * @param choiceLabel Text to be displayed in the UI to select a choice.
  * @param type Select UI type, default is [Type.DROPDOWN]. See also [SelectableField.Type].
@@ -117,10 +117,15 @@ fun <Value> SelectableField(
  * @see SelectableField
  */
 @Suppress("FunctionName")
-inline fun <reified E : Enum<E>> EnumField(label: String, initialValue: E, type: Type = DROPDOWN) = SelectableField<E>(
+inline fun <reified E : Enum<E>> EnumField(
+    label: String,
+    initialValue: E,
+    type: Type = DROPDOWN,
+    noinline choiceLabel: (E) -> String = { it.name },
+) = SelectableField<E>(
     label = label,
     choices = enumValues<E>().toList(),
-    choiceLabel = { it.name },
+    choiceLabel = choiceLabel,
     type = type,
     initialValue = initialValue,
 )
