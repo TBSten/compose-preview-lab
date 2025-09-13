@@ -7,7 +7,7 @@ import me.tbsten.compose.preview.lab.PreviewLabScope
  *
  * ```kt
  * PreviewLab {
- *   var text by field { StringField("text", "") }
+ *   var text by fieldState {StringField("text", "") }
  *   TextField(
  *     value = text,
  *     onValueChange = withEvent("text changed") { text = it },
@@ -32,7 +32,7 @@ fun PreviewLabScope.withEvent(title: String, description: String? = null, block:
  *
  * ```kt
  * PreviewLab {
- *   var text by field { StringField("text", "") }
+ *   var text by fieldState {StringField("text", "") }
  *   TextField(
  *     value = text,
  *     onValueChange = withEvent("text changed") { text = it },
@@ -58,7 +58,7 @@ fun <Arg1> PreviewLabScope.withEvent(title: String, description: String? = null,
  *
  * ```kt
  * PreviewLab {
- *   var text by field { StringField("text", "") }
+ *   var text by fieldState {StringField("text", "") }
  *   TextField(
  *     value = text,
  *     onValueChange = withEvent("text changed") { text = it },
@@ -87,7 +87,7 @@ fun <Arg1, Arg2> PreviewLabScope.withEvent(
  *
  * ```kt
  * PreviewLab {
- *   var text by field { StringField("text", "") }
+ *   var text by fieldState {StringField("text", "") }
  *   TextField(
  *     value = text,
  *     onValueChange = withEvent("text changed") { text = it },

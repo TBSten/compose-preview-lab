@@ -114,6 +114,7 @@ kotlin {
             "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
             "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
         )
+        freeCompilerArgs.add("-Xcontext-parameters")
     }
 }
 

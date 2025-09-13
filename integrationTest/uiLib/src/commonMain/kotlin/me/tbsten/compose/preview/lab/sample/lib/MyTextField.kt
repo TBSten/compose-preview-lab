@@ -29,7 +29,7 @@ fun MyTextField(value: String, onValueChange: (String) -> Unit, modifier: Modifi
 @Preview
 @Composable
 private fun MyTextFieldPreview() = PreviewLab {
-    var textFieldValue by field { StringField("MyTextField.value", "") }
+    var textFieldValue by fieldState { StringField("MyTextField.value", "") }
         .also {
             ChangeEvent(
                 value = it.value,

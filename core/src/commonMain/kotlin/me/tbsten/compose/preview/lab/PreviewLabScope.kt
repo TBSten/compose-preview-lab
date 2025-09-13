@@ -59,7 +59,7 @@ class PreviewLabScope internal constructor() {
      *
      * ```kt
      * PreviewLab {
-     *   var myText by field { StringField("myText", "initialValue") }
+     *   var myText by fieldState { StringField("myText", "initialValue") }
      *
      *   TextField(
      *     value = myText,
@@ -69,8 +69,8 @@ class PreviewLabScope internal constructor() {
      * ```
      */
     @Composable
-    fun <Value> field(builder: () -> MutablePreviewLabField<Value>): MutableState<Value> {
-        val field = rememberRetained { builder() }
+    fun <Value> fieldState(builder: FieldBuilderScope.() -> MutablePreviewLabField<Value>): MutableState<Value> {
+        val field = rememberRetained { builder(FieldBuilderScope()) }
         DisposableEffect(field) {
             fields.add(field)
             onDispose { fields.remove(field) }
@@ -93,8 +93,8 @@ class PreviewLabScope internal constructor() {
      * ```
      */
     @Composable
-    fun <Value> fieldValue(builder: () -> PreviewLabField<out Value>): Value {
-        val field = remember { builder() }
+    fun <Value> fieldValue(builder: FieldBuilderScope.() -> PreviewLabField<out Value>): Value {
+        val field = remember { builder(FieldBuilderScope()) }
         DisposableEffect(field) {
             fields.add(field)
             onDispose { fields.remove(field) }
@@ -188,6 +188,8 @@ class PreviewLabScope internal constructor() {
     internal sealed interface Event {
         data class ShowEventToast(val event: PreviewLabEvent) : Event
     }
+
+    class FieldBuilderScope internal constructor()
 }
 
 /**

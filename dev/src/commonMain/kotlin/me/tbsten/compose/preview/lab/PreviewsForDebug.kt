@@ -227,7 +227,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                         item {
                             class UiState(val str: String, val int: Int, val bool: Boolean)
 
-                            val uiStateField by field {
+                            val uiStateField by fieldState {
                                 combined(
                                     "uiState",
                                     field1 = StringField("str", ""),

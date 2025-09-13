@@ -22,7 +22,7 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  * PreviewLab {
  *   MyButton(
  *     ...,
- *     enabled = field { BooleanField("enabled", true) },
+ *     enabled = fieldState { BooleanField("enabled", true) },
  *   )
  * }
  * ```

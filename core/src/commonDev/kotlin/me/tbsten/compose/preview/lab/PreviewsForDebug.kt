@@ -27,7 +27,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -232,7 +231,7 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                         item {
                             class UiState(val str: String, val int: Int, val bool: Boolean)
 
-                            val uiStateField by field {
+                            val uiStateField = fieldValue {
                                 combined(
                                     "uiState",
                                     field1 = StringField("str", ""),
