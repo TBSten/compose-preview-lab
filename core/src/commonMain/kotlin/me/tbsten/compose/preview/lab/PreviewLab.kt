@@ -46,10 +46,10 @@ import me.tbsten.compose.preview.lab.component.CommonIconButton
 import me.tbsten.compose.preview.lab.component.Divider
 import me.tbsten.compose.preview.lab.component.EventListSection
 import me.tbsten.compose.preview.lab.component.FieldListSection
-import me.tbsten.compose.preview.lab.component.PreviewLabHeader
 import me.tbsten.compose.preview.lab.component.SimpleModal
 import me.tbsten.compose.preview.lab.component.TabPager
 import me.tbsten.compose.preview.lab.component.adaptive
+import me.tbsten.compose.preview.lab.component.header.PreviewLabHeader
 import me.tbsten.compose.preview.lab.core.generated.resources.Res
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_code
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_edit
