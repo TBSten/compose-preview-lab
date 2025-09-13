@@ -32,11 +32,11 @@ open class SelectableField<Value>(
     initialValue = initialValue,
 ) {
     class Builder<Value> internal constructor() {
-        internal val choices = mutableListOf<Value>()
+        internal val choices = mutableListOf<Pair<String, Value>>()
         internal var defaultValue: Value? = null
         internal var isDefaultValueSet = false
-        fun choice(value: Value, isDefault: Boolean = false) {
-            choices.add(value)
+        fun choice(value: Value, label: String = value.toString(), isDefault: Boolean = false) {
+            choices.add(label to value)
             if (isDefault) {
                 defaultValue = value
                 isDefaultValueSet = true
@@ -105,9 +105,10 @@ fun <Value> SelectableField(
     val builder = SelectableField.Builder<Value>().apply(builder)
     return SelectableField<Value>(
         label = label,
-        choices = builder.choices,
+        choices = builder.choices.map { it.second },
         type = type,
-        initialValue = if (builder.isDefaultValueSet) builder.defaultValue as Value else builder.choices[0],
+        choiceLabel = { choice -> builder.choices.first { it.second == choice }.first },
+        initialValue = if (builder.isDefaultValueSet) builder.defaultValue as Value else builder.choices[0].second,
     )
 }
 
