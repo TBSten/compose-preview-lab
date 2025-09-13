@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toOffset
+import io.github.takahirom.rin.RetainedObserver
 import io.github.takahirom.rin.rememberRetained
 import kotlin.random.Random
 import kotlin.time.ExperimentalTime
@@ -74,9 +75,16 @@ class PreviewLabScope internal constructor() {
         builder: FieldBuilderScope.() -> MutablePreviewLabField<Value>,
     ): MutableState<Value> {
         val field = rememberRetained(key = key) { builder(FieldBuilderScope()) }
-        DisposableEffect(field) {
-            fields.add(field)
-            onDispose { fields.remove(field) }
+        rememberRetained {
+            object : RetainedObserver {
+                override fun onRemembered() {
+                    fields.add(field)
+                }
+
+                override fun onForgotten() {
+                    fields.remove(field)
+                }
+            }
         }
         return field
     }
@@ -98,9 +106,16 @@ class PreviewLabScope internal constructor() {
     @Composable
     fun <Value> fieldValue(key: String? = null, builder: FieldBuilderScope.() -> PreviewLabField<out Value>): Value {
         val field = rememberRetained(key = key) { builder(FieldBuilderScope()) }
-        DisposableEffect(field) {
-            fields.add(field)
-            onDispose { fields.remove(field) }
+        rememberRetained {
+            object : RetainedObserver {
+                override fun onRemembered() {
+                    fields.add(field)
+                }
+
+                override fun onForgotten() {
+                    fields.remove(field)
+                }
+            }
         }
         return field.value
     }
