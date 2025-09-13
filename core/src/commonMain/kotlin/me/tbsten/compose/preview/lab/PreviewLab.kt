@@ -120,9 +120,9 @@ open class PreviewLab(
         content: @Composable PreviewLabScope.() -> Unit,
     ) {
         val toaster = rememberToasterState().also { toaster ->
-            state.scope.HandleEvents { event ->
+            state.scope.HandleEffect { event ->
                 when (event) {
-                    is PreviewLabScope.Event.ShowEventToast ->
+                    is PreviewLabScope.Effect.ShowEventToast ->
                         toaster.show(
                             message = event.event.title,
                             action = TextToastAction(

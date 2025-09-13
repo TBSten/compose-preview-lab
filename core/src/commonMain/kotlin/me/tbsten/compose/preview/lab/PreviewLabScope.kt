@@ -22,7 +22,7 @@ class PreviewLabScope internal constructor() {
     internal val fields = mutableStateListOf<PreviewLabField<*>>()
     internal val events = mutableStateListOf<PreviewLabEvent>()
 
-    internal var onEventHandler: (Event) -> Unit = {}
+    internal var onEffectHandler: (Effect) -> Unit = {}
 
     // field methods
 
@@ -113,16 +113,16 @@ class PreviewLabScope internal constructor() {
     fun onEvent(title: String, description: String? = null) {
         val event = PreviewLabEvent(title = title, description = description)
         events.add(event)
-        onEventHandler.invoke(Event.ShowEventToast(event = event))
+        onEffectHandler.invoke(Effect.ShowEventToast(event = event))
     }
 
     @Composable
-    internal fun HandleEvents(onEvent: (Event) -> Unit) {
-        onEventHandler = rememberUpdatedState(onEvent).value
+    internal fun HandleEffect(onEffect: (Effect) -> Unit) {
+        onEffectHandler = rememberUpdatedState(onEffect).value
     }
 
-    internal sealed interface Event {
-        data class ShowEventToast(val event: PreviewLabEvent) : Event
+    internal sealed interface Effect {
+        data class ShowEventToast(val event: PreviewLabEvent) : Effect
     }
 
     class FieldBuilderScope internal constructor()
