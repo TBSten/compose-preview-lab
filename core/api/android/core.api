@@ -119,8 +119,8 @@ public final class me/tbsten/compose/preview/lab/PreviewLabRootState {
 
 public final class me/tbsten/compose/preview/lab/PreviewLabScope {
 	public static final field $stable I
-	public final fun fieldState (Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/MutableState;
-	public final fun fieldValue (Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)Ljava/lang/Object;
+	public final fun fieldState (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/MutableState;
+	public final fun fieldValue (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Ljava/lang/Object;
 	public final fun onEvent (Ljava/lang/String;Ljava/lang/String;)V
 	public static synthetic fun onEvent$default (Lme/tbsten/compose/preview/lab/PreviewLabScope;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)V
 }
@@ -143,12 +143,6 @@ public final class me/tbsten/compose/preview/lab/component/ComposableSingletons$
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/component/ComposableSingletons$EventListSectionKt;
 	public fun <init> ()V
 	public final fun getLambda$-958988956$core_release ()Lkotlin/jvm/functions/Function3;
-}
-
-public final class me/tbsten/compose/preview/lab/component/ComposableSingletons$LayoutSectionKt {
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/component/ComposableSingletons$LayoutSectionKt;
-	public fun <init> ()V
-	public final fun getLambda$1746369199$core_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class me/tbsten/compose/preview/lab/component/ComposableSingletons$NoPreviewKt {
