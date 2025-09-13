@@ -16,7 +16,6 @@ import me.tbsten.compose.preview.lab.field.PreviewLabField
  *
  * @see PreviewLabField
  * @see PreviewLabEvent
- * @see PreviewLabLayoutNode
  */
 @OptIn(ExperimentalTime::class)
 class PreviewLabScope internal constructor() {
