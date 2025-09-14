@@ -130,3 +130,16 @@ inline fun <reified E : Enum<E>> EnumField(
     type = type,
     initialValue = initialValue,
 )
+
+fun <Value> List<Value>.toField(
+    label: String,
+    choiceLabel: (Value) -> String = { it.toString() },
+    type: Type = DROPDOWN,
+    initialValue: Value = this[0],
+): SelectableField<Value> = SelectableField(
+    label = label,
+    choices = this,
+    choiceLabel = choiceLabel,
+    type = type,
+    initialValue = initialValue,
+)
