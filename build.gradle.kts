@@ -1,3 +1,5 @@
+import kotlinx.validation.ExperimentalBCVApi
+
 plugins {
     alias(libs.plugins.multiplatform).apply(false)
     alias(libs.plugins.jvm).apply(false)
@@ -18,6 +20,8 @@ allprojects {
 }
 
 apiValidation {
+    @OptIn(ExperimentalBCVApi::class)
+    klib.enabled = true
     ignoredProjects.add(
         projects.dev.name,
     )
