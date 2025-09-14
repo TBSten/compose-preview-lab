@@ -1,22 +1,22 @@
 [versions]
 composePreviewLab = "0.1.0-dev06"
-kotlin = "2.2.20-RC2"
+kotlin = "2.2.20"
 compose = "1.9.0-rc01"
 agp = "8.6.1"
-androidx-activityCompose = "1.10.1"
-androidx-uiTest = "1.8.1"
+androidx-activityCompose = "1.11.0"
+androidx-uiTest = "1.9.1"
 lumoUi = "1.2.5"
 dokar3Sonner = "0.3.8"
 hotReload = "1.0.0-beta06"
-ksp = "2.2.20-RC2-2.0.2"
+ksp = "2.2.20-2.0.3"
 intellijPlatform = "2.6.0"
 jewelIdeLafBridge = "0.27.0"
-kotlinxSerializationJson = "1.8.1"
-vanniktechMavenPublish = "0.32.0"
+kotlinxSerializationJson = "1.9.0"
+vanniktechMavenPublish = "0.34.0"
 dokka = "2.0.0"
-binaryCompatibilityValidator = "0.18.0"
+binaryCompatibilityValidator = "0.18.1"
 ktlint = "1.6.0"
-ktlintGradle = "12.3.0"
+ktlintGradle = "13.1.0"
 
 [libraries]
 
@@ -26,7 +26,6 @@ androidx-uitest-junit4 = { module = "androidx.compose.ui:ui-test-junit4", versio
 dokar3Sonner = { module = "io.github.dokar3:sonner", version.ref = "dokar3Sonner" }
 
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-kotlinGradlePluginApi = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api", version.ref = "kotlin" }
 kotlinCompilerEmbeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
 kspApi = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 jewelIdeLafBridge = { module = "org.jetbrains.jewel:jewel-ide-laf-bridge-243", version.ref = "jewelIdeLafBridge" }
