@@ -15,15 +15,13 @@ public final class me/tbsten/compose/preview/lab/CollectedPreviewKt {
 public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabKt;
 	public fun <init> ()V
-	public final fun getLambda$-1441570262$core_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-658061291$core_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1744947294$core_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1746585086$core_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabRootKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabRootKt;
 	public fun <init> ()V
+	public final fun getLambda$-1425352284$core_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$1686164197$core_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$2143766127$core_release ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$559994497$core_release ()Lkotlin/jvm/functions/Function2;
@@ -83,11 +81,16 @@ public class me/tbsten/compose/preview/lab/PreviewLab {
 	public fun <init> ()V
 	public fun <init> (Lkotlin/jvm/functions/Function2;Ljava/util/List;Lkotlin/jvm/functions/Function3;Ljava/lang/Void;)V
 	public synthetic fun <init> (Lkotlin/jvm/functions/Function2;Ljava/util/List;Lkotlin/jvm/functions/Function3;Ljava/lang/Void;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun invoke (Lme/tbsten/compose/preview/lab/PreviewLabState;Ljava/util/List;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public fun invoke (Lme/tbsten/compose/preview/lab/PreviewLabState;Ljava/util/List;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;I)V
+	public synthetic fun invoke (Lme/tbsten/compose/preview/lab/PreviewLabState;Ljava/util/List;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public final fun invoke-djqs-MU (Lme/tbsten/compose/preview/lab/PreviewLabState;FFLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/PreviewLab$Companion : me/tbsten/compose/preview/lab/PreviewLab {
+}
+
+public final class me/tbsten/compose/preview/lab/PreviewLab$ComposeDefaultImpls {
+	public static final fun invoke$default (Lme/tbsten/compose/preview/lab/PreviewLabState;Ljava/util/List;Lkotlin/jvm/functions/Function3;Lme/tbsten/compose/preview/lab/PreviewLab;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/PreviewLabRootKt {
@@ -205,6 +208,19 @@ public final class me/tbsten/compose/preview/lab/component/TransformableTextFiel
 public abstract interface class me/tbsten/compose/preview/lab/component/Transformer {
 	public abstract fun fromString (Ljava/lang/String;)Ljava/lang/Object;
 	public abstract fun toString (Ljava/lang/Object;)Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/component/inspectorspane/ComposableSingletons$InspectorTabKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/component/inspectorspane/ComposableSingletons$InspectorTabKt;
+	public fun <init> ()V
+	public final fun getLambda$-1699139674$core_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-756829882$core_release ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class me/tbsten/compose/preview/lab/component/inspectorspane/ComposableSingletons$InspectorsPaneKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/component/inspectorspane/ComposableSingletons$InspectorsPaneKt;
+	public fun <init> ()V
+	public final fun getLambda$-616688332$core_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class me/tbsten/compose/preview/lab/event/ChangeEventKt {
@@ -644,8 +660,8 @@ public class me/tbsten/compose/preview/lab/field/SelectableField : me/tbsten/com
 
 public final class me/tbsten/compose/preview/lab/field/SelectableField$Builder {
 	public static final field $stable I
-	public final fun choice (Ljava/lang/Object;Z)V
-	public static synthetic fun choice$default (Lme/tbsten/compose/preview/lab/field/SelectableField$Builder;Ljava/lang/Object;ZILjava/lang/Object;)V
+	public final fun choice (Ljava/lang/Object;Ljava/lang/String;Z)V
+	public static synthetic fun choice$default (Lme/tbsten/compose/preview/lab/field/SelectableField$Builder;Ljava/lang/Object;Ljava/lang/String;ZILjava/lang/Object;)V
 }
 
 public final class me/tbsten/compose/preview/lab/field/SelectableField$Type : java/lang/Enum {
@@ -659,6 +675,8 @@ public final class me/tbsten/compose/preview/lab/field/SelectableField$Type : ja
 public final class me/tbsten/compose/preview/lab/field/SelectableFieldKt {
 	public static final fun SelectableField (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Lkotlin/jvm/functions/Function1;)Lme/tbsten/compose/preview/lab/field/SelectableField;
 	public static synthetic fun SelectableField$default (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/SelectableField;
+	public static final fun toField (Ljava/util/List;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/SelectableField;
+	public static synthetic fun toField$default (Ljava/util/List;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Ljava/lang/Object;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/SelectableField;
 }
 
 public final class me/tbsten/compose/preview/lab/field/SizeField : me/tbsten/compose/preview/lab/field/MutablePreviewLabField {
