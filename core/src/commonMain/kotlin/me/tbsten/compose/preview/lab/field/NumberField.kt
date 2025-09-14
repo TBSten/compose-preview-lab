@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
  * @param initialValue initial value of the field.
  * @param fromString Function to convert a string to the numeric type of this Field.
  * @param toString Function to convert the numeric type of this Field to a string.
- * @param inputType InputType, specifies how values are made available for input in the UI. [See InputType.
+ * @param inputType InputType, specifies how values are made available for input in the UI. See [InputType].
  *
  * @see IntField
  * @see LongField
