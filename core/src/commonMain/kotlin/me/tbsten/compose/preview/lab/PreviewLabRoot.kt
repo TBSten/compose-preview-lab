@@ -21,7 +21,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -166,34 +165,43 @@ fun PreviewLabRoot(
                 },
                 selectedItem = state.selectedPreview,
                 detail = { selectedPreview ->
-                    Row {
+                    Row(modifier = Modifier.fillMaxSize()) {
                         state.selectedPreviews.forEachIndexed { index, selected ->
                             val title = selected.title
                             val preview = selected.preview
 
                             Column(
-                                modifier = Modifier.weight(1f),
+                                modifier = Modifier
+                                    .background(PreviewLabTheme.colors.background)
+                                    .weight(1f),
                             ) {
-                                Row(
-                                    modifier = Modifier.padding(12.dp).fillMaxWidth(),
-                                ) {
-                                    Text(
-                                        text = title,
-                                        style = PreviewLabTheme.typography.body2,
-                                        maxLines = 3,
-                                        overflow = TextOverflow.MiddleEllipsis,
-                                        modifier = Modifier.weight(1f),
-                                    )
+                                adaptive(
+                                    small = {},
+                                    medium = {
+                                        Column {
+                                            Row(
+                                                modifier = Modifier.padding(12.dp).fillMaxWidth(),
+                                            ) {
+                                                Text(
+                                                    text = title,
+                                                    style = PreviewLabTheme.typography.body2,
+                                                    maxLines = 3,
+                                                    overflow = TextOverflow.MiddleEllipsis,
+                                                    modifier = Modifier.weight(1f),
+                                                )
 
-                                    CommonIconButton(
-                                        painter = painterResource(Res.drawable.icon_remove),
-                                        contentDescription = "Remove $title",
-                                        onClick = { state.removeFromComparePanel(index) },
-                                        enabled = index != 0,
-                                    )
-                                }
+                                                CommonIconButton(
+                                                    painter = painterResource(Res.drawable.icon_remove),
+                                                    contentDescription = "Remove $title",
+                                                    onClick = { state.removeFromComparePanel(index) },
+                                                    enabled = index != 0,
+                                                )
+                                            }
 
-                                Divider()
+                                            Divider()
+                                        }
+                                    },
+                                )
 
                                 CompositionLocalProvider(
                                     LocalCollectedPreview provides preview,
@@ -247,8 +255,8 @@ internal fun <Item : Any> ListDetailScaffold(
     modifier: Modifier = Modifier,
     listMaxWidth: Dp = 200.dp,
 ) {
-    val listContent = remember { movableContentOf { list() } }
-    val detailContent = remember { movableContentOf { item: Item -> detail(item) } }
+//    val listContent = remember { movableContentOf { list() } }
+//    val detailContent = remember { movableContentOf { item: Item -> detail(item) } }
 
     adaptive(
         small = {
@@ -259,14 +267,14 @@ internal fun <Item : Any> ListDetailScaffold(
             }
 
             Box {
-                listContent()
+                list()
 
                 SimpleModal(
                     isVisible = openBottomSheet,
                     onDismissRequest = { onUnselect() },
                 ) {
                     if (selectedItem != null) {
-                        detailContent(selectedItem)
+                        detail(selectedItem)
                     } else {
                         detailPlaceholder()
                     }
@@ -283,11 +291,11 @@ internal fun <Item : Any> ListDetailScaffold(
                         .fillMaxHeight()
                         .zIndex(2f),
                 ) {
-                    listContent()
+                    list()
                 }
 
                 if (selectedItem != null) {
-                    detailContent(selectedItem)
+                    detail(selectedItem)
                 } else {
                     detailPlaceholder()
                 }

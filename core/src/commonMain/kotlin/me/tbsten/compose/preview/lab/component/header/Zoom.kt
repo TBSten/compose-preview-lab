@@ -3,9 +3,12 @@ package me.tbsten.compose.preview.lab.component.header
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.component.CommonIconButton
 import me.tbsten.compose.preview.lab.core.generated.resources.Res
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_refresh
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_zoom_in
@@ -20,10 +23,13 @@ internal fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, modifier: Modifi
         Text("Zoom", style = PreviewLabTheme.typography.label2)
 
         Row(
-            modifier = Modifier.fillMaxWidth().weight(1f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f, fill = false)
+                .padding(vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            _root_ide_package_.me.tbsten.compose.preview.lab.component.CommonIconButton(
+            CommonIconButton(
                 painter = painterResource(Res.drawable.icon_zoom_in),
                 contentDescription = "Zoom In",
                 enabled = scale < MaxZoomScale,
@@ -32,7 +38,7 @@ internal fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, modifier: Modifi
                 },
             )
 
-            _root_ide_package_.me.tbsten.compose.preview.lab.component.CommonIconButton(
+            CommonIconButton(
                 painter = painterResource(Res.drawable.icon_zoom_out),
                 contentDescription = "Zoom Out",
                 enabled = MinZoomScale < scale,
@@ -42,7 +48,7 @@ internal fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, modifier: Modifi
                 modifier = Modifier.weight(1f),
             )
 
-            _root_ide_package_.me.tbsten.compose.preview.lab.component.CommonIconButton(
+            CommonIconButton(
                 painter = painterResource(Res.drawable.icon_refresh),
                 contentDescription = "Zoom Reset",
                 onClick = {

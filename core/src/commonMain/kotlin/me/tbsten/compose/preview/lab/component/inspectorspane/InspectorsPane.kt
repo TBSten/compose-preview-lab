@@ -46,7 +46,7 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 internal fun InspectorsPane(state: PreviewLabState, isVisible: Boolean, content: @Composable () -> Unit) {
-    val content = remember { movableContentOf { content() } }
+//    val content = remember { movableContentOf { content() } }
 
     if (!isVisible) {
         content()

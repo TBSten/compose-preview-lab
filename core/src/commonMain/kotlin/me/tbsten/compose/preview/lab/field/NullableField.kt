@@ -9,9 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,7 +60,7 @@ class NullableField<Value : Any> internal constructor(private val baseField: Pre
 
     @Composable
     override fun Content() {
-        val baseFieldContent = remember { movableContentOf { baseField.Content() } }
+//        val baseFieldContent = remember { movableContentOf { baseField.Content() } }
 
         AnimatedContent(
             targetState = isNull,
@@ -73,7 +71,7 @@ class NullableField<Value : Any> internal constructor(private val baseField: Pre
             if (!isNull) {
                 Row {
                     SwitchIsNullCheckbox()
-                    baseFieldContent()
+                    baseField.Content()
                 }
             } else {
                 Row(

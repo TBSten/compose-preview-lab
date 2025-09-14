@@ -4,13 +4,10 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -49,24 +46,20 @@ internal fun SimpleModal(
                 Column(
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                     modifier = Modifier
-                        .width(IntrinsicSize.Min)
+                        .widthIn(min = 200.dp, max = 600.dp)
                         .padding(contentPadding),
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End,
-                    ) {
-                        CommonIconButton(
-                            painter = painterResource(Res.drawable.icon_close),
-                            contentDescription = "close",
-                            tint = PreviewLabTheme.colors.background,
-                            onClick = onDismissRequest,
-                        )
-                    }
+                    CommonIconButton(
+                        painter = painterResource(Res.drawable.icon_close),
+                        contentDescription = "close",
+                        tint = PreviewLabTheme.colors.background,
+                        onClick = onDismissRequest,
+                        modifier = Modifier.align(Alignment.End),
+                    )
 
                     Box(
                         Modifier
-                            .pointerInput(Unit) { detectTapGestures { } }
+                            .disableTapEvents()
                             .clip(RoundedCornerShape(8.dp)),
                     ) {
                         content()
@@ -76,3 +69,5 @@ internal fun SimpleModal(
         }
     }
 }
+
+private fun Modifier.disableTapEvents() = pointerInput(Unit) { detectTapGestures { } }

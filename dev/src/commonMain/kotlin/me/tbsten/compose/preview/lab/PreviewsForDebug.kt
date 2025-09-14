@@ -1,8 +1,5 @@
 package me.tbsten.compose.preview.lab
 
-// import me.tbsten.compose.preview.lab.component.AdaptiveContainer
-// import me.tbsten.compose.preview.lab.component.Divider
-// import me.tbsten.compose.preview.lab.component.adaptive
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

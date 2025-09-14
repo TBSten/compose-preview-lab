@@ -43,13 +43,13 @@ fun PreviewLabScope.provideDefaultCompositionLocalFields(
 ): Array<ProvidedValue<*>> = arrayOf(
     LocalDensity provides LocalDensity.current.let { density ->
         Density(
-            density = fieldValue { FloatField("[default] density", density.density).let(densityField) },
-            fontScale = fieldValue { FloatField("[default] fontScale", density.fontScale).let(fontScaleField) },
+            density = fieldValue { FloatField("density", density.density).let(densityField) },
+            fontScale = fieldValue { FloatField("fontScale", density.fontScale).let(fontScaleField) },
         )
     },
     LocalLayoutDirection provides fieldValue {
         SelectableField(
-            "[default] layoutDirection",
+            "layoutDirection",
             choices = LayoutDirection.entries,
         )
     },

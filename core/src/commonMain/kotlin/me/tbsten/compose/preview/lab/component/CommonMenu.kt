@@ -8,7 +8,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -153,7 +152,7 @@ private fun DropdownMenuContent(
             modifier =
             modifier
                 .padding(vertical = 8.dp)
-                .width(IntrinsicSize.Max)
+                .width(200.dp)
                 .verticalScroll(scrollState),
         ) {
             val menuScope = CommonMenuScope(this)
