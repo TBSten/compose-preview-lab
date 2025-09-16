@@ -15,7 +15,7 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="core:runHot" />
+          <option value="dev:runHot" />
           <option value="--auto" />
         </list>
       </option>

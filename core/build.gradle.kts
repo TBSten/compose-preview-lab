@@ -1,7 +1,5 @@
 @file:OptIn(ExperimentalKotlinGradlePluginApi::class, ExperimentalWasmDsl::class)
 
-import org.jetbrains.compose.reload.gradle.ComposeHotRun
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
@@ -11,7 +9,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.compose)
     alias(libs.plugins.android.library)
-    alias(libs.plugins.hotReload)
+    alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.conventionFormat)
     alias(libs.plugins.conventionPublish)
 }
@@ -94,20 +92,6 @@ dependencies {
 
 kotlin {
     applyDefaultHierarchyTemplate()
-    sourceSets {
-        val commonDev by creating {
-            dependsOn(commonMain.get())
-        }
-
-        val jvmDev by getting {
-            dependsOn(commonDev)
-            dependsOn(jvmMain.get())
-        }
-
-        commonDev.dependencies {
-            implementation(compose.material3)
-        }
-    }
 
     compilerOptions {
         optIn.addAll(
@@ -116,16 +100,6 @@ kotlin {
         )
         freeCompilerArgs.add("-Xcontext-parameters")
     }
-}
-
-tasks.register<ComposeHotRun>("runHot") {
-    compilation.set(kotlin.targets.named("jvm").get().compilations.named("dev").get())
-    mainClass.set("MainKt")
-}
-
-// https://github.com/JetBrains/compose-hot-reload
-composeCompiler {
-    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
 }
 
 publishConvention {
