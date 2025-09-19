@@ -1,5 +1,5 @@
 [versions]
-composePreviewLab = "0.1.0-dev06"
+composePreviewLab = "0.1.0-dev07"
 kotlin = "2.2.20"
 compose = "1.9.0-rc01"
 agp = "8.6.1"
