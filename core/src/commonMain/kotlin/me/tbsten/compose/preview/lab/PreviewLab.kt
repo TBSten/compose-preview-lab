@@ -49,7 +49,7 @@ import me.tbsten.compose.preview.lab.util.toDpOffset
  *   val buttonText by fieldState { StringField("Text", "Click Me!") }
  *   val isEnabled by fieldState { BooleanField("Enabled", true) }
  *   val variant by fieldState { EnumField<ButtonVariant>("Variant", ButtonVariant.Primary) }
- *   
+ *
  *   MyButton(
  *     text = buttonText,
  *     enabled = isEnabled,
@@ -107,7 +107,7 @@ import me.tbsten.compose.preview.lab.util.toDpOffset
  *     choice(Locale.JAPANESE, "日本語")
  *   }}
  *   val isLoading by fieldState { BooleanField("Loading State", false) }
- *   
+ *
  *   MyApp(theme = theme, locale = language, isLoading = isLoading)
  * }
  * ```
@@ -162,7 +162,7 @@ import me.tbsten.compose.preview.lab.util.toDpOffset
  *   )
  *   ```
  *
- * @param contentRoot 
+ * @param contentRoot
  *   Wrapper composable that surrounds the entire PreviewLab UI. Useful for providing custom
  *   themes, composition locals, or other global configuration.
  *
@@ -209,7 +209,7 @@ import me.tbsten.compose.preview.lab.util.toDpOffset
  *   )
  *   ```
  *
- * @param disableTrailingLambda 
+ * @param disableTrailingLambda
  *   Technical parameter to prevent the invoke method from being treated as a trailing lambda.
  *   Always null and has no functional purpose.
  *
@@ -219,7 +219,7 @@ import me.tbsten.compose.preview.lab.util.toDpOffset
  *   PreviewLab(
  *     defaultScreenSizes = ScreenSize.AllPresets
  *     // disableTrailingLambda is automatically null
- *   ) { 
+ *   ) {
  *     // Preview content
  *   }
  *   ```
@@ -238,7 +238,7 @@ open class PreviewLab(
 ) {
     /**
      * Convenience overload for single screen size preview.
-     * 
+     *
      * Use this when you want to test with a specific screen dimension instead of multiple sizes.
      * This is equivalent to calling the main invoke method with a single-item screenSizes list.
      *
@@ -274,10 +274,10 @@ open class PreviewLab(
 
     /**
      * Main entry point for PreviewLab that enables interactive preview development with dynamic controls.
-     * 
+     *
      * This function wraps your preview content in a full-featured development environment that provides:
      * - Interactive field controls for dynamic parameter adjustment
-     * - Event tracking and debugging capabilities  
+     * - Event tracking and debugging capabilities
      * - Multi-device screen size testing
      * - Visual inspection tools with zoom and pan
      * - State persistence across recompositions
@@ -290,7 +290,7 @@ open class PreviewLab(
      *   val buttonText by fieldState { StringField("Text", "Click Me!") }
      *   val buttonColor by fieldState { EnumField<Color>("Color", Color.Blue) }
      *   val isEnabled by fieldState { BooleanField("Enabled", true) }
-     *   
+     *
      *   MyButton(
      *     text = buttonText,
      *     color = buttonColor,
@@ -302,18 +302,18 @@ open class PreviewLab(
      *
      * ## Advanced Example with Multiple Screen Sizes
      * ```kt
-     * @Preview  
+     * @Preview
      * @Composable
      * private fun ResponsiveLayoutPreview() = PreviewLab(
      *   screenSizes = listOf(
      *     ScreenSize.Phone,
-     *     ScreenSize.Tablet, 
+     *     ScreenSize.Tablet,
      *     ScreenSize.Desktop
      *   )
      * ) {
      *   val itemCount by fieldState { IntField("Item Count", 10) }
      *   val layoutStyle by fieldState { EnumField<LayoutStyle>("Layout", LayoutStyle.Grid) }
-     *   
+     *
      *   ResponsiveLayout(
      *     items = generateItems(itemCount),
      *     style = layoutStyle,
@@ -324,7 +324,7 @@ open class PreviewLab(
      *
      * ## Field Types Available
      * - **StringField**: Text input fields
-     * - **BooleanField**: Toggle switches  
+     * - **BooleanField**: Toggle switches
      * - **IntField, FloatField, etc.**: Numeric input fields
      * - **EnumField**: Dropdown selection from enum values
      * - **SelectableField**: Custom dropdown with builder DSL
@@ -341,34 +341,34 @@ open class PreviewLab(
      * - Events show as toast notifications and are logged in the Events tab
      * - Useful for tracking user interactions and debugging component behavior
      *
-     * @param state 
+     * @param state
      *   PreviewLabState instance that manages the preview's configuration and field values.
      *   Defaults to a saveable state that persists across recompositions. Override to provide
      *   custom state management or sharing state between multiple previews.
      *
-     * @param screenSizes 
+     * @param screenSizes
      *   List of screen sizes to test the preview content against. The preview will show a
      *   screen size selector allowing switching between different device form factors.
      *   Must not be empty - use single-element list or the single-size overload for fixed sizing.
-     *   
+     *
      *   Common configurations:
      *   - `ScreenSize.SmartphoneAndDesktops` (default): Phone and desktop sizes
      *   - `ScreenSize.AllPresets`: All built-in device presets including tablets
      *   - `listOf(ScreenSize.Phone)`: Single phone size for focused testing
      *   - Custom list: `listOf(ScreenSize(360.dp, 640.dp), ScreenSize(1920.dp, 1080.dp))`
      *
-     * @param content 
+     * @param content
      *   Preview content lambda with PreviewLabScope receiver. Within this scope you have access to:
      *   - **fieldState { ... }**: Create mutable state fields
-     *   - **fieldValue { ... }**: Create read-only parameter fields  
+     *   - **fieldValue { ... }**: Create read-only parameter fields
      *   - **onEvent(title, description?)**: Log events for tracking and debugging
-     *   
+     *
      *   The content will be rendered within the selected screen size constraints and can use
      *   layout modifiers like fillMaxSize() which will be bounded by the selected screen size.
      *
      * @throws IllegalArgumentException if screenSizes is empty
      * @see PreviewLabState State management and persistence
-     * @see PreviewLabScope Scope providing field and event functions  
+     * @see PreviewLabScope Scope providing field and event functions
      * @see ScreenSize Device screen size definitions and presets
      */
     @Composable
@@ -447,21 +447,21 @@ open class PreviewLab(
 
     /**
      * PreviewLab companion object with default settings.
-     * 
+     *
      * This provides the most common way to use PreviewLab with sensible defaults:
      * - State persistence using rememberSaveable
-     * - Smartphone and desktop screen sizes  
+     * - Smartphone and desktop screen sizes
      * - No custom content wrapper
-     * 
+     *
      * Most preview functions will use this default instance:
      * ```kt
      * @Preview
-     * @Composable  
+     * @Composable
      * private fun MyPreview() = PreviewLab {
      *   // Preview content with interactive fields
      * }
      * ```
-     * 
+     *
      * Equivalent to creating: `PreviewLab()` with default parameters.
      */
     companion object : PreviewLab()
