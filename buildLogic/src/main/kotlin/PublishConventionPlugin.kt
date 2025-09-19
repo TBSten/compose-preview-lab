@@ -1,4 +1,3 @@
-import com.vanniktech.maven.publish.SonatypeHost
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPom
@@ -32,7 +31,7 @@ class PublishConventionPlugin : Plugin<Project> {
 private fun Project.configurePublish(publishConvention: PublishConventionExtension) {
     afterEvaluate {
         mavenPublishing {
-            publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+            publishToMavenCentral()
 
             if (!(gradle.startParameter.taskNames.contains("publishToMavenLocal"))) {
                 signAllPublications()
