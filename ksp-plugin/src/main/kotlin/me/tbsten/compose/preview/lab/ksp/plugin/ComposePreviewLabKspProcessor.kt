@@ -1,5 +1,6 @@
 package me.tbsten.compose.preview.lab.ksp.plugin
 
+import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
@@ -18,6 +19,8 @@ internal class ComposePreviewLabKspProcessor(
     private val options: Map<String, String>,
 ) : SymbolProcessor {
     private var isExecuted = false
+
+    @OptIn(KspExperimental::class)
     override fun process(resolver: Resolver): List<KSAnnotated> {
         if (isExecuted) return emptyList()
         isExecuted = true
@@ -57,6 +60,17 @@ internal class ComposePreviewLabKspProcessor(
             previewsListPackage = previewsListPackage,
             publicPreviewList = publicPreviewList,
             projectRootPath = projectRootPath,
+        )
+
+        prepareModuleForPreviewAllAggregate(
+            codeGenerator = codeGenerator,
+            previewsListPackage = previewsListPackage,
+        )
+
+        generatePreviewAll(
+            resolver = resolver,
+            codeGenerator = codeGenerator,
+            previewsListPackage = previewsListPackage,
         )
         return emptyList()
     }

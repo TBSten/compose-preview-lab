@@ -5,7 +5,18 @@ plugins {
     alias(libs.plugins.conventionPublish)
 }
 
+kotlin {
+    compilerOptions {
+        optIn.addAll(
+            "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
+            "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
+        )
+    }
+}
+
 dependencies {
+    implementation(projects.core)
+
     implementation(libs.kspApi)
     implementation(libs.kotlinCompilerEmbeddable)
 
