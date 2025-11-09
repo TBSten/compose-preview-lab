@@ -1,3 +1,6 @@
+public abstract interface annotation class me/tbsten/compose/preview/lab/AggregateToAll : java/lang/annotation/Annotation {
+}
+
 public abstract interface class me/tbsten/compose/preview/lab/CollectedPreview {
 	public abstract fun getCode ()Ljava/lang/String;
 	public abstract fun getContent ()Lkotlin/jvm/functions/Function2;
@@ -10,12 +13,6 @@ public abstract interface class me/tbsten/compose/preview/lab/CollectedPreview {
 public final class me/tbsten/compose/preview/lab/CollectedPreviewKt {
 	public static final fun CollectedPreview (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lme/tbsten/compose/preview/lab/CollectedPreview;
 	public static synthetic fun CollectedPreview$default (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/CollectedPreview;
-}
-
-public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabApplication_jvmKt {
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabApplication_jvmKt;
-	public fun <init> ()V
-	public final fun getLambda$-1234734234$core ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabKt {
@@ -64,8 +61,7 @@ public final class me/tbsten/compose/preview/lab/PreviewLab$ComposeDefaultImpls 
 }
 
 public final class me/tbsten/compose/preview/lab/PreviewLabApplication_jvmKt {
-	public static final fun previewLabApplication-ejdT35A (Ljava/util/List;Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler;Ljava/util/Map;Lkotlin/jvm/functions/Function1;ZLjava/lang/String;Landroidx/compose/ui/graphics/painter/Painter;ZZZZZZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function3;Landroidx/compose/ui/window/WindowPlacement;ZLandroidx/compose/ui/window/WindowPosition;FF)V
-	public static synthetic fun previewLabApplication-ejdT35A$default (Ljava/util/List;Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler;Ljava/util/Map;Lkotlin/jvm/functions/Function1;ZLjava/lang/String;Landroidx/compose/ui/graphics/painter/Painter;ZZZZZZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function3;Landroidx/compose/ui/window/WindowPlacement;ZLandroidx/compose/ui/window/WindowPosition;FFILjava/lang/Object;)V
+	public static final fun PreviewLabRootWindows (Landroidx/compose/ui/window/ApplicationScope;Ljava/util/List;Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler;Ljava/util/Map;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/window/WindowState;ZLjava/lang/String;Landroidx/compose/ui/graphics/painter/Painter;ZZZZZZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;III)V
 }
 
 public final class me/tbsten/compose/preview/lab/PreviewLabRootKt {

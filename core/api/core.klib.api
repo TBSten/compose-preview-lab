@@ -6,6 +6,10 @@
 // - Show declarations: true
 
 // Library unique name: <me.tbsten.compose.preview.lab:core>
+open annotation class me.tbsten.compose.preview.lab/AggregateToAll : kotlin/Annotation { // me.tbsten.compose.preview.lab/AggregateToAll|null[0]
+    constructor <init>() // me.tbsten.compose.preview.lab/AggregateToAll.<init>|<init>(){}[0]
+}
+
 open annotation class me.tbsten.compose.preview.lab/ComposePreviewLabOption : kotlin/Annotation { // me.tbsten.compose.preview.lab/ComposePreviewLabOption|null[0]
     constructor <init>(kotlin/String = ..., kotlin/Boolean = ..., kotlin/String = ...) // me.tbsten.compose.preview.lab/ComposePreviewLabOption.<init>|<init>(kotlin.String;kotlin.Boolean;kotlin.String){}[0]
 
