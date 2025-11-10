@@ -13,9 +13,10 @@ internal fun prepareModuleForPreviewAllAggregate(codeGenerator: CodeGenerator, p
     codeGenerator.createNewFile(
         dependencies = Dependencies.ALL_FILES,
         packageName = "me.tbsten.compose.preview.lab.generated",
-        fileName = "${previewsListPackage}__PreviewListForAggregate",
+        fileName = "__${previewsListPackage}__previewsForAggregateAll",
     ).bufferedWriter().use {
-        val forAggregatePreviewAllPropertyName = "`${previewsListPackage}PreviewsForAggregateAll`"
+        val forAggregatePreviewAllPropertyName =
+            "`__${previewsListPackage}__previewsForAggregateAll`"
 
         it.appendLine("package me.tbsten.compose.preview.lab.generated")
         it.appendLine()
