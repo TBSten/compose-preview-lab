@@ -21,7 +21,7 @@ internal fun prepareModuleForPreviewAllAggregate(codeGenerator: CodeGenerator, p
         it.appendLine("package me.tbsten.compose.preview.lab.generated")
         it.appendLine()
         it.appendLine("@Suppress(\"RemoveRedundantBackticks\")")
-        it.appendLine("@OptIn(${InternalComposePreviewLabApi::class.qualifiedName}::class)")
+        it.appendLine("@${InternalComposePreviewLabApi::class.qualifiedName}")
         it.appendLine("@${AggregateToAll::class.qualifiedName}")
         it.appendLine("val $forAggregatePreviewAllPropertyName = $previewsListPackage.previews")
     }
@@ -44,6 +44,7 @@ internal fun generatePreviewAll(resolver: Resolver, codeGenerator: CodeGenerator
     ).bufferedWriter().use {
         it.appendLine("package $previewsListPackage")
         it.appendLine()
+        it.appendLine("@OptIn(${InternalComposePreviewLabApi::class.qualifiedName}::class)")
         it.appendLine("val previewsAll =")
         it.appendLine(
             previewsProperty
