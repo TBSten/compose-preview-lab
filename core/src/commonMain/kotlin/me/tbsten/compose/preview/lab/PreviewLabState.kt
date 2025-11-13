@@ -1,6 +1,7 @@
 package me.tbsten.compose.preview.lab
 
 import androidx.compose.foundation.gestures.Draggable2DState
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.mapSaver
@@ -13,6 +14,7 @@ import me.tbsten.compose.preview.lab.event.PreviewLabEvent
  * Class that holds the state of [PreviewLab].
  * Mainly holds state values that have changed due to user interaction during debugging.
  */
+@Stable
 class PreviewLabState {
     internal var contentRootOffsetInAppRoot by mutableStateOf<DpOffset?>(null)
     internal var contentOffset by mutableStateOf(Offset.Zero)

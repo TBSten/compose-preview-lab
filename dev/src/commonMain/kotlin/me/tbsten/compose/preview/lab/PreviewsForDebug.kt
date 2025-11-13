@@ -461,7 +461,9 @@ val previewsForUiDebug = listOf<CollectedPreview>(
                     },
                 )
 
-                HorizontalDivider()
+                HorizontalDivider(
+                    modifier = Modifier.padding(vertical = 20.dp),
+                )
 
                 Scaffold(
                     topBar = fieldValue {
