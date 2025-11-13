@@ -55,6 +55,8 @@ kotlin {
             implementation("me.tbsten.compose.preview.lab:core:${libs.versions.composePreviewLab.get()}")
             implementation(project(":uiLib"))
 
+            implementation("me.tbsten.compose.preview.lab:dev")
+
             // TODO migrate retain { } (compose runtime api)
             implementation("io.github.takahirom.rin:rin:0.3.0")
         }
