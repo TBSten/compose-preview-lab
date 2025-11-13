@@ -39,6 +39,11 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation("me.tbsten.compose.preview.lab:core:${libs.versions.composePreviewLab.get()}")
         }
+
+        jvmTest.dependencies {
+            implementation(kotlin("test"))
+            implementation(kotlin("test-junit"))
+        }
     }
 }
 

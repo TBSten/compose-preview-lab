@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLab
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
  * Example screen components that will use the generated field() functions
@@ -130,7 +131,7 @@ private fun NestedScreenPreview() = PreviewLab {
     NestedScreen(uiState = uiState)
 }
 
-@OptIn(InternalComposePreviewLabApi::class)
+@Preview
 @Composable
 private fun ComplexScreenPreview() = PreviewLab {
     val uiState = fieldValue { ComplexUiState.field("uiState", ComplexUiState.fake()) }
