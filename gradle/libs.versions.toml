@@ -1,22 +1,22 @@
 [versions]
 composePreviewLab = "0.1.0-dev07"
-kotlin = "2.2.20-RC2"
+kotlin = "2.2.21"
 compose = "1.9.3"
 agp = "8.9.3"
 androidx-activityCompose = "1.11.0"
-androidx-uiTest = "1.9.1"
+androidx-uiTest = "1.9.4"
 lumoUi = "1.2.5"
 dokar3Sonner = "0.3.8"
-hotReload = "1.0.0-beta07"
-ksp = "2.2.20-RC2-2.0.2"
+hotReload = "1.0.0-rc03"
+ksp = "2.3.2"
 intellijPlatform = "2.6.0"
 jewelIdeLafBridge = "0.27.0"
 kotlinxSerializationJson = "1.9.0"
 vanniktechMavenPublish = "0.30.0"
-dokka = "2.0.0"
+dokka = "2.1.0"
 binaryCompatibilityValidator = "0.18.1"
 ktlint = "1.6.0"
-ktlintGradle = "13.1.0"
+ktlintGradle = "14.0.1"
 
 [libraries]
 

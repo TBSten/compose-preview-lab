@@ -1,6 +1,5 @@
 package me.tbsten.compose.preview.lab
 
-import com.google.devtools.ksp.gradle.KspTaskMetadata
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
@@ -39,11 +38,6 @@ internal fun Project.configureFeaturedFiles(extension: ComposePreviewLabExtensio
     ).forEach { sourceSetName ->
         kotlinExtension.sourceSets.findByName(sourceSetName)?.apply {
             kotlin.srcDir(internalGenerateFeaturedFilesCode)
-            // KSP と共存するために設定を加える必要がある
-            // refs: https://github.com/google/ksp/issues/963#issuecomment-1894144639
-            kotlin.srcDir(
-                tasks.withType<KspTaskMetadata>().map { it.destinationDirectory },
-            )
         }
     }
 }
