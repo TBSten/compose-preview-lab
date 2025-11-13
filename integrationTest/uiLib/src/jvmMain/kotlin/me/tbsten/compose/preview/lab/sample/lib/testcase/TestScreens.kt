@@ -12,6 +12,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.PreviewLab
 
 /**
  * Example screen components that will use the generated field() functions
@@ -110,10 +112,8 @@ fun ComplexScreen(uiState: ComplexUiState) {
 
 /**
  * PreviewLab usage examples
- * These will be uncommented once the KSP plugin generates the field() functions
  */
 
-/*
 @OptIn(InternalComposePreviewLabApi::class)
 @Composable
 private fun SimpleScreenPreview() = PreviewLab {
@@ -137,4 +137,3 @@ private fun ComplexScreenPreview() = PreviewLab {
 
     ComplexScreen(uiState = uiState)
 }
-*/
