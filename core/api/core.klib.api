@@ -6,6 +6,10 @@
 // - Show declarations: true
 
 // Library unique name: <me.tbsten.compose.preview.lab:core>
+open annotation class me.tbsten.compose.preview.lab.generatecombinedfield/GenerateCombinedField : kotlin/Annotation { // me.tbsten.compose.preview.lab.generatecombinedfield/GenerateCombinedField|null[0]
+    constructor <init>() // me.tbsten.compose.preview.lab.generatecombinedfield/GenerateCombinedField.<init>|<init>(){}[0]
+}
+
 open annotation class me.tbsten.compose.preview.lab/AggregateToAll : kotlin/Annotation { // me.tbsten.compose.preview.lab/AggregateToAll|null[0]
     constructor <init>() // me.tbsten.compose.preview.lab/AggregateToAll.<init>|<init>(){}[0]
 }

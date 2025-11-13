@@ -60,10 +60,7 @@ internal fun generateCombinedFields(resolver: Resolver, codeGenerator: CodeGener
  * Finds all data classes with companion objects that are used as property types
  * in the given class declaration
  */
-private fun findDependentDataClasses(
-    classDeclaration: KSClassDeclaration,
-    logger: KSPLogger,
-): List<KSClassDeclaration> {
+private fun findDependentDataClasses(classDeclaration: KSClassDeclaration, logger: KSPLogger,): List<KSClassDeclaration> {
     val properties = classDeclaration.primaryConstructor?.parameters ?: return emptyList()
     val dependentClasses = mutableListOf<KSClassDeclaration>()
 
@@ -72,7 +69,8 @@ private fun findDependentDataClasses(
         val typeDeclaration = paramType.declaration as? KSClassDeclaration
 
         if (typeDeclaration != null &&
-            typeDeclaration.modifiers.contains(Modifier.DATA)) {
+            typeDeclaration.modifiers.contains(Modifier.DATA)
+        ) {
             val hasCompanionObject = typeDeclaration.declarations
                 .filterIsInstance<KSClassDeclaration>()
                 .any { it.isCompanionObject }
@@ -216,10 +214,163 @@ private fun generateFieldCreator(
     imports: MutableSet<String>,
     logger: KSPLogger,
 ): String {
-    val typeName = paramType.declaration.simpleName.asString()
-    val qualifiedTypeName = paramType.declaration.qualifiedName?.asString()
+    // Check if the type is nullable
+    val isNullable = paramType.isMarkedNullable
+    val nonNullType = if (isNullable) {
+        // Get the non-null version of the type
+        paramType.makeNotNullable()
+    } else {
+        paramType
+    }
 
-    // 1. Check if the type has @GenerateCombinedField annotation
+    val typeName = nonNullType.declaration.simpleName.asString()
+    val qualifiedTypeName = nonNullType.declaration.qualifiedName?.asString()
+    val typeDeclaration = nonNullType.declaration as? KSClassDeclaration
+
+    // Generate the base field creator
+    val baseFieldCreator = generateBaseFieldCreator(
+        paramName,
+        nonNullType,
+        typeName,
+        qualifiedTypeName,
+        typeDeclaration,
+        imports,
+        logger,
+    )
+
+    // Wrap with nullable() if needed
+    return if (isNullable) {
+        imports.add("me.tbsten.compose.preview.lab.field.nullable")
+        // For nullable fields, we need to adjust the baseFieldCreator to handle null values
+        // by providing a default value when unwrapping value classes or accessing properties
+        val adjustedBaseFieldCreator = adjustBaseFieldCreatorForNullable(
+            baseFieldCreator,
+            paramName,
+            nonNullType,
+            typeDeclaration,
+        )
+        "$adjustedBaseFieldCreator.nullable(initialValue = initialValue.$paramName)"
+    } else {
+        baseFieldCreator
+    }
+}
+
+private fun adjustBaseFieldCreatorForNullable(
+    baseFieldCreator: String,
+    paramName: String,
+    nonNullType: KSType,
+    typeDeclaration: KSClassDeclaration?,
+): String {
+    // If it's a Transform Field for value class, we need to use safe navigation
+    if (baseFieldCreator.contains("TransformField")) {
+        // Replace `initialValue.$paramName.property` with `initialValue.$paramName?.property ?: defaultValue`
+        // We need to find the default value for the underlying type
+        val underlyingProperty = typeDeclaration?.getAllProperties()?.firstOrNull()
+        if (underlyingProperty != null) {
+            val underlyingType = underlyingProperty.type.resolve()
+            val defaultValue = getDefaultValueForType(underlyingType)
+            val propertyName = underlyingProperty.simpleName.asString()
+            return baseFieldCreator.replace(
+                "initialValue.$paramName.$propertyName",
+                "initialValue.$paramName?.$propertyName ?: $defaultValue",
+            )
+        }
+    }
+    // For other nullable fields, just use default values
+    return baseFieldCreator.replace(
+        "initialValue.$paramName",
+        "initialValue.$paramName ?: ${getDefaultValueForType(nonNullType)}",
+    )
+}
+
+private fun getDefaultValueForType(type: KSType): String {
+    return when (type.declaration.qualifiedName?.asString()) {
+        "kotlin.String" -> "\"\""
+        "kotlin.Int" -> "0"
+        "kotlin.Long" -> "0L"
+        "kotlin.Float" -> "0f"
+        "kotlin.Double" -> "0.0"
+        "kotlin.Boolean" -> "false"
+        "kotlin.Byte" -> "0"
+        else -> {
+            // For enum types, use the first entry
+            val typeDecl = type.declaration as? KSClassDeclaration
+            if (typeDecl != null && typeDecl.classKind == com.google.devtools.ksp.symbol.ClassKind.ENUM_CLASS) {
+                val firstEntry = typeDecl.declarations
+                    .filterIsInstance<KSClassDeclaration>()
+                    .firstOrNull { it.classKind == com.google.devtools.ksp.symbol.ClassKind.ENUM_ENTRY }
+                if (firstEntry != null) {
+                    val typeName = typeDecl.simpleName.asString()
+                    val entryName = firstEntry.simpleName.asString()
+                    return "$typeName.$entryName"
+                }
+            }
+            // Default fallback
+            "null"
+        }
+    }
+}
+
+private fun generateBaseFieldCreator(
+    paramName: String,
+    paramType: KSType,
+    typeName: String,
+    qualifiedTypeName: String?,
+    typeDeclaration: KSClassDeclaration?,
+    imports: MutableSet<String>,
+    logger: KSPLogger,
+): String {
+    // 1. Check for Enum type
+    if (typeDeclaration != null && typeDeclaration.classKind == com.google.devtools.ksp.symbol.ClassKind.ENUM_CLASS) {
+        imports.add("me.tbsten.compose.preview.lab.field.EnumField")
+        val qualifiedName = typeDeclaration.qualifiedName?.asString() ?: typeName
+        imports.add(qualifiedName)
+        return "EnumField<$typeName>(label = \"$paramName\", initialValue = initialValue.$paramName)"
+    }
+
+    // 2. Check for Value class (inline value class)
+    // Value classes are marked with @JvmInline annotation in Kotlin
+    val isValueClass = typeDeclaration != null &&
+        (
+            typeDeclaration.modifiers.contains(Modifier.INLINE) ||
+                typeDeclaration.modifiers.contains(Modifier.VALUE) ||
+                typeDeclaration.annotations.any {
+                    val annotationName = it.annotationType.resolve().declaration.qualifiedName?.asString()
+                    annotationName == "kotlin.jvm.JvmInline"
+                }
+            )
+
+    if (isValueClass && typeDeclaration != null) {
+        logger.info("Found value class: $qualifiedTypeName")
+        // Value classes have a single property that holds the actual value
+        val underlyingProperty = typeDeclaration.getAllProperties().firstOrNull()
+        if (underlyingProperty != null) {
+            val underlyingType = underlyingProperty.type.resolve()
+            val propertyName = underlyingProperty.simpleName.asString()
+
+            // Generate the field creator for the underlying type, but use the unwrapped initial value
+            val underlyingFieldCreatorPattern = generateFieldCreatorPattern(
+                paramName,
+                underlyingType,
+                imports,
+                logger,
+            )
+
+            // We need to unwrap the value class to get its underlying value, then wrap it back
+            imports.add("me.tbsten.compose.preview.lab.field.TransformField")
+            val qualifiedName = typeDeclaration.qualifiedName?.asString() ?: typeName
+            imports.add(qualifiedName)
+
+            return "TransformField(" +
+                "label = \"$paramName\", " +
+                "baseField = $underlyingFieldCreatorPattern, initialValue = initialValue.$paramName.$propertyName), " +
+                "transform = { $typeName(it) }, " +
+                "reverse = { it.$propertyName }" +
+                ")"
+        }
+    }
+
+    // 3. Check if the type has @GenerateCombinedField annotation
     val isGeneratedField = paramType.declaration.annotations.any {
         it.annotationType.resolve().declaration.qualifiedName?.asString() == GenerateCombinedFieldAnnotation
     }
@@ -229,8 +380,7 @@ private fun generateFieldCreator(
         return "$typeName.field(label = \"$paramName\", initialValue = initialValue.$paramName)"
     }
 
-    // 2. Check if it's a data class with companion object (potential for recursive field generation)
-    val typeDeclaration = paramType.declaration as? KSClassDeclaration
+    // 4. Check if it's a data class with companion object (potential for recursive field generation)
     if (typeDeclaration != null && typeDeclaration.modifiers.contains(Modifier.DATA)) {
         val hasCompanionObject = typeDeclaration.declarations
             .filterIsInstance<KSClassDeclaration>()
@@ -244,7 +394,7 @@ private fun generateFieldCreator(
         }
     }
 
-    // 3. Map primitive types to field types
+    // 5. Map primitive types to field types
     val fieldType = when (qualifiedTypeName) {
         "kotlin.String" -> {
             imports.add("me.tbsten.compose.preview.lab.field.StringField")
@@ -275,7 +425,7 @@ private fun generateFieldCreator(
             "ByteField"
         }
         else -> {
-            // 4. Fallback: check if there's a known field type for this type
+            // 6. Fallback: check if there's a known field type for this type
             val potentialFieldType = findKnownFieldType(qualifiedTypeName, paramName, imports)
             if (potentialFieldType != null) {
                 return potentialFieldType
@@ -291,13 +441,61 @@ private fun generateFieldCreator(
 }
 
 /**
+ * Generates just the field constructor pattern without the initialValue parameter.
+ * This is used for value classes where we need to provide a custom initialValue.
+ */
+private fun generateFieldCreatorPattern(
+    paramName: String,
+    paramType: KSType,
+    imports: MutableSet<String>,
+    logger: KSPLogger,
+): String {
+    val qualifiedTypeName = paramType.declaration.qualifiedName?.asString()
+
+    // Map primitive types to field types
+    val fieldType = when (qualifiedTypeName) {
+        "kotlin.String" -> {
+            imports.add("me.tbsten.compose.preview.lab.field.StringField")
+            "StringField"
+        }
+        "kotlin.Int" -> {
+            imports.add("me.tbsten.compose.preview.lab.field.IntField")
+            "IntField"
+        }
+        "kotlin.Long" -> {
+            imports.add("me.tbsten.compose.preview.lab.field.LongField")
+            "LongField"
+        }
+        "kotlin.Float" -> {
+            imports.add("me.tbsten.compose.preview.lab.field.FloatField")
+            "FloatField"
+        }
+        "kotlin.Double" -> {
+            imports.add("me.tbsten.compose.preview.lab.field.DoubleField")
+            "DoubleField"
+        }
+        "kotlin.Boolean" -> {
+            imports.add("me.tbsten.compose.preview.lab.field.BooleanField")
+            "BooleanField"
+        }
+        "kotlin.Byte" -> {
+            imports.add("me.tbsten.compose.preview.lab.field.ByteField")
+            "ByteField"
+        }
+        else -> {
+            logger.warn("Unsupported underlying type $qualifiedTypeName for value class. Falling back to StringField.")
+            imports.add("me.tbsten.compose.preview.lab.field.StringField")
+            "StringField"
+        }
+    }
+
+    return "$fieldType(label = \"$paramName\""
+}
+
+/**
  * Searches for known field types in the compose-preview-lab library
  */
-private fun findKnownFieldType(
-    qualifiedTypeName: String?,
-    paramName: String,
-    imports: MutableSet<String>,
-): String? {
+private fun findKnownFieldType(qualifiedTypeName: String?, paramName: String, imports: MutableSet<String>,): String? {
     if (qualifiedTypeName == null) return null
 
     // Map known types to their corresponding field types
