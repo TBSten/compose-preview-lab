@@ -18,6 +18,52 @@ import me.tbsten.compose.preview.lab.ui.components.Text
 /**
  * A field that allows selection of one option from a list of specified choices.
  *
+ * # Usage
+ *
+ * ```kt
+ * // Basic usage with list of values
+ * @Preview
+ * @Composable
+ * fun MyPreview() = PreviewLab {
+ *     val theme: String = fieldValue {
+ *         SelectableField(
+ *             label = "Theme",
+ *             choices = listOf("Light", "Dark", "Auto")
+ *         )
+ *     }
+ *     MyApp(theme = theme)
+ * }
+ *
+ * // With custom labels using CHIPS type
+ * @Preview
+ * @Composable
+ * fun ButtonPreview() = PreviewLab {
+ *     val size: Int = fieldValue {
+ *         SelectableField(
+ *             label = "Size",
+ *             choices = listOf(32, 48, 64),
+ *             choiceLabel = { "${it}dp" },
+ *             type = SelectableField.Type.CHIPS
+ *         )
+ *     }
+ *     MyButton(size = size)
+ * }
+ *
+ * // Using builder syntax
+ * @Preview
+ * @Composable
+ * fun IconPreview() = PreviewLab {
+ *     val icon: ImageVector = fieldValue {
+ *         SelectableField<ImageVector>(label = "Icon") {
+ *             choice(Icons.Default.Home, "Home", isDefault = true)
+ *             choice(Icons.Default.Search, "Search")
+ *             choice(Icons.Default.Settings, "Settings")
+ *         }
+ *     }
+ *     Icon(icon, contentDescription = null)
+ * }
+ * ```
+ *
  * @param choiceLabel Text to be displayed in the UI to select a choice.
  * @param type Select UI type, default is [Type.DROPDOWN]. See also [SelectableField.Type].
  */
@@ -92,7 +138,24 @@ open class SelectableField<Value>(
 }
 
 /**
- * Create a [SelectableField] with the given label and choices.
+ * Create a [SelectableField] with the given label and choices using a builder syntax.
+ *
+ * # Usage
+ *
+ * ```kt
+ * @Preview
+ * @Composable
+ * fun MyPreview() = PreviewLab {
+ *     val alignment: Alignment = fieldValue {
+ *         SelectableField<Alignment>(label = "Alignment") {
+ *             choice(Alignment.Start, "Start", isDefault = true)
+ *             choice(Alignment.Center, "Center")
+ *             choice(Alignment.End, "End")
+ *         }
+ *     }
+ *     MyComponent(alignment = alignment)
+ * }
+ * ```
  *
  * @see SelectableField
  */
@@ -113,7 +176,27 @@ fun <Value> SelectableField(
 }
 
 /**
- * Create a [SelectableField] with the given label and choices.
+ * Create a [SelectableField] with the given label and choices from a map.
+ *
+ * # Usage
+ *
+ * ```kt
+ * @Preview
+ * @Composable
+ * fun MyPreview() = PreviewLab {
+ *     val language: Locale = fieldValue {
+ *         SelectableField(
+ *             label = "Language",
+ *             choices = mapOf(
+ *                 "English" to Locale.ENGLISH,
+ *                 "Japanese" to Locale.JAPANESE,
+ *                 "French" to Locale.FRENCH
+ *             )
+ *         )
+ *     }
+ *     MyApp(locale = language)
+ * }
+ * ```
  *
  * @see SelectableField
  */
@@ -134,6 +217,38 @@ fun <Value> SelectableField(
 /**
  * Create a [SelectableField] from enum class values.
  *
+ * # Usage
+ *
+ * ```kt
+ * enum class ButtonVariant { Primary, Secondary, Tertiary }
+ *
+ * @Preview
+ * @Composable
+ * fun ButtonPreview() = PreviewLab {
+ *     val variant: ButtonVariant = fieldValue {
+ *         EnumField(
+ *             label = "Variant",
+ *             initialValue = ButtonVariant.Primary
+ *         )
+ *     }
+ *     MyButton(variant = variant)
+ * }
+ *
+ * // With custom labels
+ * @Preview
+ * @Composable
+ * fun LayoutPreview() = PreviewLab {
+ *     val direction: LayoutDirection = fieldValue {
+ *         EnumField(
+ *             label = "Direction",
+ *             initialValue = LayoutDirection.Ltr,
+ *             choiceLabel = { if (it == LayoutDirection.Ltr) "Left to Right" else "Right to Left" }
+ *         )
+ *     }
+ *     MyLayout(layoutDirection = direction)
+ * }
+ * ```
+ *
  * @see SelectableField
  */
 @Suppress("FunctionName")
@@ -150,6 +265,39 @@ inline fun <reified E : Enum<E>> EnumField(
     initialValue = initialValue,
 )
 
+/**
+ * Extension function to convert a [List] to a [SelectableField].
+ *
+ * # Usage
+ *
+ * ```kt
+ * @Preview
+ * @Composable
+ * fun ColorPreview() = PreviewLab {
+ *     val color: Color = fieldValue {
+ *         listOf(Color.Red, Color.Green, Color.Blue).toField(
+ *             label = "Color",
+ *             choiceLabel = { it.toString() }
+ *         )
+ *     }
+ *     Box(Modifier.background(color).size(100.dp))
+ * }
+ *
+ * // With custom type
+ * @Preview
+ * @Composable
+ * fun SizePreview() = PreviewLab {
+ *     val size: Int = fieldValue {
+ *         listOf(8, 16, 24, 32).toField(
+ *             label = "Spacing",
+ *             choiceLabel = { "${it}dp" },
+ *             type = SelectableField.Type.CHIPS
+ *         )
+ *     }
+ *     Spacer(Modifier.height(size.dp))
+ * }
+ * ```
+ */
 fun <Value> List<Value>.toField(
     label: String,
     choiceLabel: (Value) -> String = { it.toString() },

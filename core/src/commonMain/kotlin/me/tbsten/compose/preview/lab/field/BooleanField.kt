@@ -18,18 +18,23 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  * Field that holds a Boolean value.
  * Switch allows you to switch values.
  *
+ * # Usage
+ *
  * ```kt
- * PreviewLab {
- *   MyButton(
- *     ...,
- *     enabled = fieldState { BooleanField("enabled", true) },
- *   )
+ * // Basic usage for component enabled state
+ * @Preview
+ * @Composable
+ * fun ButtonPreview() = PreviewLab {
+ *     val enabled: Boolean = fieldValue { BooleanField("enabled", true) }
+ *     MyButton(
+ *         text = "Click me",
+ *         enabled = enabled
+ *     )
  * }
  * ```
  *
  * @param label label of the field.
  * @param initialValue initial value of the field.
- *
  * @see MutablePreviewLabField
  */
 open class BooleanField(label: String, initialValue: Boolean) :

@@ -29,6 +29,59 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 /**
  * A field that allows selecting from predefined Composable content options.
  *
+ * # Usage
+ *
+ * ```kt
+ * // Basic usage with default choices
+ * @Preview
+ * @Composable
+ * fun ContentPreview() = PreviewLab {
+ *     val content: @Composable () -> Unit = fieldValue {
+ *         ComposableField(
+ *             label = "Content",
+ *             initialValue = ComposableFieldValue.Red32X32
+ *         )
+ *     }
+ *     MyContainer(content = content)
+ * }
+ *
+ * // With custom choices
+ * @Preview
+ * @Composable
+ * fun IconSlotPreview() = PreviewLab {
+ *     val icon: @Composable () -> Unit = fieldValue {
+ *         ComposableField(
+ *             label = "Icon",
+ *             initialValue = ComposableFieldValue.Empty,
+ *             choices = listOf(
+ *                 ComposableFieldValue.Empty,
+ *                 ComposableFieldValue("Home Icon") { Icon(Icons.Default.Home, null) },
+ *                 ComposableFieldValue("Search Icon") { Icon(Icons.Default.Search, null) }
+ *             )
+ *         )
+ *     }
+ *     MyButton(icon = icon)
+ * }
+ *
+ * // With text content options
+ * @Preview
+ * @Composable
+ * fun HeaderPreview() = PreviewLab {
+ *     val header: @Composable () -> Unit = fieldValue {
+ *         ComposableField(
+ *             label = "Header",
+ *             initialValue = ComposableFieldValue.HeadingText,
+ *             choices = listOf(
+ *                 ComposableFieldValue.HeadingText,
+ *                 ComposableFieldValue.SimpleText,
+ *                 ComposableFieldValue.LongText
+ *             )
+ *         )
+ *     }
+ *     MyCard(header = header)
+ * }
+ * ```
+ *
  * @param label The display label for this field
  * @param initialValue The initial ComposableFieldValue to display
  * @param choices List of available ComposableFieldValue options to choose from
@@ -63,6 +116,54 @@ open class ComposableField(
 /**
  * Interface for values that can be used in a ComposableField.
  * Provides a label and composable content.
+ *
+ * # Usage
+ *
+ * ```kt
+ * // Using predefined values
+ * @Preview
+ * @Composable
+ * fun MyPreview() = PreviewLab {
+ *     val content: @Composable () -> Unit = fieldValue {
+ *         ComposableField(
+ *             label = "Content",
+ *             initialValue = ComposableFieldValue.Red64X64,
+ *             choices = listOf(
+ *                 ComposableFieldValue.Red32X32,
+ *                 ComposableFieldValue.Red64X64,
+ *                 ComposableFieldValue.SimpleText,
+ *                 ComposableFieldValue.Empty
+ *             )
+ *         )
+ *     }
+ *     MyBox(content = content)
+ * }
+ *
+ * // Creating custom ComposableFieldValue
+ * val CustomIcon: ComposableFieldValue = object : ComposableFieldValue {
+ *     override val label: String = "Custom Icon"
+ *
+ *     @Composable
+ *     override fun invoke() {
+ *         Icon(Icons.Default.Star, contentDescription = null)
+ *     }
+ * }
+ *
+ * // Using in a preview
+ * @Preview
+ * @Composable
+ * fun CustomPreview() = PreviewLab {
+ *     val icon: @Composable () -> Unit = fieldValue {
+ *         ComposableField(
+ *             label = "Icon",
+ *             initialValue = CustomIcon
+ *         )
+ *     }
+ *     MyButton(icon = icon)
+ * }
+ * ```
+ *
+ * @see ComposableField
  */
 interface ComposableFieldValue {
     /** Display label for this composable value */
@@ -87,6 +188,74 @@ interface ComposableFieldValue {
     /**
      * A ComposableFieldValue that renders a colored box with configurable dimensions.
      * Supports both fixed dimensions and fill options.
+     *
+     * # Usage
+     *
+     * ```kt
+     * // Fixed dimensions
+     * @Preview
+     * @Composable
+     * fun ColorBoxPreview() = PreviewLab {
+     *     val box: @Composable () -> Unit = fieldValue {
+     *         ComposableField(
+     *             label = "Box",
+     *             initialValue = ComposableFieldValue.ColorBox(Color.Blue, 50.dp, 50.dp),
+     *             choices = listOf(
+     *                 ComposableFieldValue.ColorBox(Color.Red, 32.dp, 32.dp),
+     *                 ComposableFieldValue.ColorBox(Color.Blue, 50.dp, 50.dp),
+     *                 ComposableFieldValue.ColorBox(Color.Green, 64.dp, 64.dp)
+     *             )
+     *         )
+     *     }
+     *     MyContainer(content = box)
+     * }
+     *
+     * // Fill dimensions
+     * @Preview
+     * @Composable
+     * fun FillBoxPreview() = PreviewLab {
+     *     val box: @Composable () -> Unit = fieldValue {
+     *         ComposableField(
+     *             label = "Background",
+     *             initialValue = ComposableFieldValue.ColorBox(
+     *                 Color.Gray,
+     *                 ComposableFieldValue.ColorBox.Fill,
+     *                 ComposableFieldValue.ColorBox.Fill
+     *             ),
+     *             choices = listOf(
+     *                 ComposableFieldValue.ColorBox(Color.Red, ComposableFieldValue.ColorBox.Fill, 100.dp),
+     *                 ComposableFieldValue.ColorBox(Color.Blue, 200.dp, ComposableFieldValue.ColorBox.Fill),
+     *                 ComposableFieldValue.ColorBox(Color.Green, ComposableFieldValue.ColorBox.Fill, ComposableFieldValue.ColorBox.Fill)
+     *             )
+     *         )
+     *     }
+     *     MyCard(background = box)
+     * }
+     *
+     * // With custom label
+     * @Preview
+     * @Composable
+     * fun LabeledBoxPreview() = PreviewLab {
+     *     val divider: @Composable () -> Unit = fieldValue {
+     *         ComposableField(
+     *             label = "Divider",
+     *             initialValue = ComposableFieldValue.ColorBox(
+     *                 Color.Gray,
+     *                 ComposableFieldValue.ColorBox.Fill,
+     *                 1.dp,
+     *                 label = "Thin Divider"
+     *             )
+     *         )
+     *     }
+     *     Column {
+     *         Text("Above")
+     *         divider()
+     *         Text("Below")
+     *     }
+     * }
+     * ```
+     *
+     * @see ComposableField
      */
     class ColorBox private constructor(
         private val color: Color,
@@ -154,10 +323,70 @@ interface ComposableFieldValue {
     /**
      * A ComposableFieldValue that renders text with optional font scaling and styling.
      *
+     * # Usage
+     *
+     * ```kt
+     * // Basic text content
+     * @Preview
+     * @Composable
+     * fun TextPreview() = PreviewLab {
+     *     val content: @Composable () -> Unit = fieldValue {
+     *         ComposableField(
+     *             label = "Content",
+     *             initialValue = ComposableFieldValue.Text("Hello World"),
+     *             choices = listOf(
+     *                 ComposableFieldValue.Text("Short text"),
+     *                 ComposableFieldValue.Text("Medium length text here"),
+     *                 ComposableFieldValue.Text("Very long text that might wrap to multiple lines")
+     *             )
+     *         )
+     *     }
+     *     MyTextContainer(content = content)
+     * }
+     *
+     * // With font scaling
+     * @Preview
+     * @Composable
+     * fun ScaledTextPreview() = PreviewLab {
+     *     val label: @Composable () -> Unit = fieldValue {
+     *         ComposableField(
+     *             label = "Label",
+     *             initialValue = ComposableFieldValue.Text("Normal", fontScale = 1.0f),
+     *             choices = listOf(
+     *                 ComposableFieldValue.Text("Small", fontScale = 0.8f, label = "Small (0.8x)"),
+     *                 ComposableFieldValue.Text("Normal", fontScale = 1.0f, label = "Normal (1.0x)"),
+     *                 ComposableFieldValue.Text("Large", fontScale = 1.5f, label = "Large (1.5x)")
+     *             )
+     *         )
+     *     }
+     *     MyCard(label = label)
+     * }
+     *
+     * // Using predefined text values
+     * @Preview
+     * @Composable
+     * fun PredefinedTextPreview() = PreviewLab {
+     *     val content: @Composable () -> Unit = fieldValue {
+     *         ComposableField(
+     *             label = "Content",
+     *             initialValue = ComposableFieldValue.SimpleText,
+     *             choices = listOf(
+     *                 ComposableFieldValue.ShortText,
+     *                 ComposableFieldValue.SimpleText,
+     *                 ComposableFieldValue.HeadingText,
+     *                 ComposableFieldValue.BodyText,
+     *                 ComposableFieldValue.LongText
+     *             )
+     *         )
+     *     }
+     *     MyArticle(content = content)
+     * }
+     *
      * @param text The text content to display
      * @param fontScale Scale factor for the font size (default: 1f)
      * @param label Optional custom label (defaults to generated label)
      * @param textStyle Optional text style to apply
+     * @see ComposableField
      */
     class Text(val text: String, val fontScale: Float = 1f, label: String? = null, private val textStyle: TextStyle? = null) :
         ComposableFieldValue {
@@ -240,9 +469,86 @@ interface ComposableFieldValue {
 /**
  * Creates a ComposableFieldValue with custom content.
  *
+ * # Usage
+ *
+ * ```kt
+ * // Simple custom content
+ * @Preview
+ * @Composable
+ * fun CustomContentPreview() = PreviewLab {
+ *     val content: @Composable () -> Unit = fieldValue {
+ *         ComposableField(
+ *             label = "Content",
+ *             initialValue = ComposableFieldValue("Icon") {
+ *                 Icon(Icons.Default.Star, contentDescription = null)
+ *             },
+ *             choices = listOf(
+ *                 ComposableFieldValue("Star") { Icon(Icons.Default.Star, null) },
+ *                 ComposableFieldValue("Heart") { Icon(Icons.Default.Favorite, null) },
+ *                 ComposableFieldValue("Home") { Icon(Icons.Default.Home, null) }
+ *             )
+ *         )
+ *     }
+ *     MyButton(icon = content)
+ * }
+ *
+ * // Complex custom content
+ * @Preview
+ * @Composable
+ * fun ComplexContentPreview() = PreviewLab {
+ *     val slot: @Composable () -> Unit = fieldValue {
+ *         ComposableField(
+ *             label = "Slot Content",
+ *             initialValue = ComposableFieldValue("Image + Text") {
+ *                 Row {
+ *                     Icon(Icons.Default.Image, null)
+ *                     Text("With Image")
+ *                 }
+ *             },
+ *             choices = listOf(
+ *                 ComposableFieldValue("Text Only") { Text("Simple Text") },
+ *                 ComposableFieldValue("Image + Text") {
+ *                     Row {
+ *                         Icon(Icons.Default.Image, null)
+ *                         Text("With Image")
+ *                     }
+ *                 },
+ *                 ComposableFieldValue("Complex") {
+ *                     Column {
+ *                         Text("Title", style = MaterialTheme.typography.h6)
+ *                         Text("Subtitle", style = MaterialTheme.typography.body2)
+ *                     }
+ *                 }
+ *             )
+ *         )
+ *     }
+ *     MyCard(content = slot)
+ * }
+ *
+ * // Mixing with predefined values
+ * @Preview
+ * @Composable
+ * fun MixedContentPreview() = PreviewLab {
+ *     val content: @Composable () -> Unit = fieldValue {
+ *         ComposableField(
+ *             label = "Content",
+ *             initialValue = ComposableFieldValue.Empty,
+ *             choices = listOf(
+ *                 ComposableFieldValue.Empty,
+ *                 ComposableFieldValue("Custom Icon") { Icon(Icons.Default.Settings, null) },
+ *                 ComposableFieldValue.Red32X32,
+ *                 ComposableFieldValue.SimpleText
+ *             )
+ *         )
+ *     }
+ *     MyContainer(trailing = content)
+ * }
+ * ```
+ *
  * @param label The display label for this value
  * @param content The composable content to render
  * @return A ComposableFieldValue that renders the provided content
+ * @see ComposableField
  */
 @Suppress("ktlint:standard:function-naming")
 fun ComposableFieldValue(label: String, content: @Composable () -> Unit) = object : ComposableFieldValue {
@@ -279,6 +585,8 @@ fun ComposableFieldValue(label: String, content: @Composable () -> Unit) = objec
  *   )
  * }
  * ```
+ *
+ * @see ComposableField
  */
 fun <Value> PreviewParameterProvider<Value>.toField(
     label: String,

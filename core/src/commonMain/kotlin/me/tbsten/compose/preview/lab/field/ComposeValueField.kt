@@ -27,20 +27,50 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  * Essential for layout dimensions, spacing, and sizing in Compose UI.
  * Built on top of FloatField with automatic conversion between Float and Dp.
  *
+ * # Usage
+ *
  * ```kotlin
  * // Basic dp field for padding
- * val padding = fieldValue { DpField("Padding", 16.dp) }
+ * @Preview
+ * @Composable
+ * fun PaddingPreview() = PreviewLab {
+ *     val padding: Dp = fieldValue { DpField("Padding", 16.dp) }
+ *
+ *     Box(
+ *         modifier = Modifier
+ *             .background(Color.LightGray)
+ *             .padding(padding)
+ *     ) {
+ *         Text("Padded Content")
+ *     }
+ * }
  *
  * // Size dimension field
- * val buttonSize = fieldValue { DpField("Button Size", 120.dp) }
+ * @Preview
+ * @Composable
+ * fun ButtonSizePreview() = PreviewLab {
+ *     val buttonSize: Dp = fieldValue { DpField("Button Size", 120.dp) }
  *
- * // Use in component
- * Box(
- *     modifier = Modifier
- *         .size(buttonSize)
- *         .padding(padding)
- * ) {
- *     Text("Content")
+ *     Button(
+ *         onClick = { },
+ *         modifier = Modifier.size(buttonSize)
+ *     ) {
+ *         Text("Sized Button")
+ *     }
+ * }
+ *
+ * // Multiple dp fields for different dimensions
+ * @Preview
+ * @Composable
+ * fun BoxSizePreview() = PreviewLab {
+ *     val width: Dp = fieldValue { DpField("Width", 200.dp) }
+ *     val height: Dp = fieldValue { DpField("Height", 100.dp) }
+ *
+ *     Box(
+ *         modifier = Modifier
+ *             .size(width = width, height = height)
+ *             .background(Color.Blue)
+ *     )
  * }
  * ```
  *
@@ -70,18 +100,46 @@ class DpField(label: String, initialValue: Dp) :
  * scale with user accessibility settings. Built on FloatField with automatic
  * conversion between Float and TextUnit.
  *
+ * # Usage
+ *
  * ```kotlin
  * // Font size field
- * val fontSize = fieldValue { SpField("Font Size", 16.sp) }
+ * @Preview
+ * @Composable
+ * fun TextSizePreview() = PreviewLab {
+ *     val fontSize: TextUnit = fieldValue { SpField("Font Size", 16.sp) }
+ *
+ *     Text(
+ *         text = "Sample Text",
+ *         fontSize = fontSize
+ *     )
+ * }
  *
  * // Title text size
- * val titleSize = fieldValue { SpField("Title Size", 24.sp) }
+ * @Preview
+ * @Composable
+ * fun TitlePreview() = PreviewLab {
+ *     val titleSize: TextUnit = fieldValue { SpField("Title Size", 24.sp) }
  *
- * // Use in text components
- * Text(
- *     text = "Sample Text",
- *     fontSize = fontSize
- * )
+ *     Text(
+ *         text = "Large Title",
+ *         fontSize = titleSize,
+ *         fontWeight = FontWeight.Bold
+ *     )
+ * }
+ *
+ * // Multiple text sizes
+ * @Preview
+ * @Composable
+ * fun TypographyPreview() = PreviewLab {
+ *     val headingSize: TextUnit = fieldValue { SpField("Heading", 32.sp) }
+ *     val bodySize: TextUnit = fieldValue { SpField("Body", 16.sp) }
+ *
+ *     Column {
+ *         Text("Heading", fontSize = headingSize)
+ *         Text("Body text content", fontSize = bodySize)
+ *     }
+ * }
  * ```
  *
  * @param label Display label for the field
@@ -109,20 +167,40 @@ class SpField(label: String, initialValue: TextUnit) :
  * Used for positioning elements or defining translation offsets.
  * Each coordinate can be edited independently through dedicated text fields.
  *
+ * # Usage
+ *
  * ```kotlin
  * // Position offset field
- * val offset = fieldValue { OffsetField("Position", Offset(50f, 100f)) }
+ * @Preview
+ * @Composable
+ * fun TranslationPreview() = PreviewLab {
+ *     val offset: Offset = fieldValue { OffsetField("Position", Offset(50f, 100f)) }
  *
- * // Translation offset
- * val translation = fieldValue { OffsetField("Translation", Offset.Zero) }
+ *     Box(
+ *         modifier = Modifier
+ *             .size(100.dp)
+ *             .graphicsLayer {
+ *                 translationX = offset.x
+ *                 translationY = offset.y
+ *             }
+ *             .background(Color.Blue)
+ *     )
+ * }
  *
- * // Use with graphics layer
- * Box(
- *     modifier = Modifier.graphicsLayer {
- *         translationX = offset.x
- *         translationY = offset.y
+ * // Shadow offset
+ * @Preview
+ * @Composable
+ * fun ShadowOffsetPreview() = PreviewLab {
+ *     val shadowOffset: Offset = fieldValue { OffsetField("Shadow Offset", Offset(4f, 4f)) }
+ *
+ *     Canvas(modifier = Modifier.size(100.dp)) {
+ *         drawRect(
+ *             color = Color.Gray,
+ *             topLeft = shadowOffset
+ *         )
+ *         drawRect(color = Color.Blue)
  *     }
- * )
+ * }
  * ```
  *
  * @param label Display label for the field
@@ -165,18 +243,51 @@ class OffsetField(label: String, initialValue: Offset) :
  * Used for layout positioning and spacing that should scale with screen density.
  * Each coordinate can be edited independently with automatic Dp conversion.
  *
+ * # Usage
+ *
  * ```kotlin
  * // Layout offset field
- * val layoutOffset = fieldValue { DpOffsetField("Offset", DpOffset(16.dp, 8.dp)) }
+ * @Preview
+ * @Composable
+ * fun OffsetTextPreview() = PreviewLab {
+ *     val layoutOffset: DpOffset = fieldValue { DpOffsetField("Offset", DpOffset(16.dp, 8.dp)) }
  *
- * // Positioning offset
- * val position = fieldValue { DpOffsetField("Position", DpOffset.Zero) }
+ *     Text(
+ *         text = "Positioned Text",
+ *         modifier = Modifier.offset(layoutOffset.x, layoutOffset.y)
+ *     )
+ * }
  *
- * // Use with offset modifier
- * Text(
- *     text = "Positioned Text",
- *     modifier = Modifier.offset(layoutOffset.x, layoutOffset.y)
- * )
+ * // Positioning offset with box
+ * @Preview
+ * @Composable
+ * fun PositionedBoxPreview() = PreviewLab {
+ *     val position: DpOffset = fieldValue { DpOffsetField("Position", DpOffset.Zero) }
+ *
+ *     Box(modifier = Modifier.size(200.dp)) {
+ *         Box(
+ *             modifier = Modifier
+ *                 .size(50.dp)
+ *                 .offset(position.x, position.y)
+ *                 .background(Color.Red)
+ *         )
+ *     }
+ * }
+ *
+ * // Absolute positioning
+ * @Preview
+ * @Composable
+ * fun AbsoluteOffsetPreview() = PreviewLab {
+ *     val offset: DpOffset = fieldValue { DpOffsetField("Absolute Offset", DpOffset(32.dp, 24.dp)) }
+ *
+ *     Box(modifier = Modifier.size(150.dp).background(Color.LightGray)) {
+ *         Icon(
+ *             Icons.Default.Star,
+ *             contentDescription = null,
+ *             modifier = Modifier.absoluteOffset(offset.x, offset.y)
+ *         )
+ *     }
+ * }
  * ```
  *
  * @param label Display label for the field
@@ -219,21 +330,37 @@ class DpOffsetField(label: String, initialValue: DpOffset) :
  * Used for defining component sizes, canvas dimensions, or geometric measurements.
  * Each dimension can be edited independently through dedicated text fields.
  *
+ * # Usage
+ *
  * ```kotlin
  * // Canvas size field
- * val canvasSize = fieldValue { SizeField("Canvas", Size(200f, 150f)) }
+ * @Preview
+ * @Composable
+ * fun CanvasSizePreview() = PreviewLab {
+ *     val canvasSize: Size = fieldValue { SizeField("Canvas", Size(200f, 150f)) }
  *
- * // Image dimensions
- * val imageSize = fieldValue { SizeField("Image Size", Size(300f, 200f)) }
+ *     Canvas(
+ *         modifier = Modifier.size(
+ *             width = canvasSize.width.dp,
+ *             height = canvasSize.height.dp
+ *         )
+ *     ) {
+ *         drawRect(Color.Blue)
+ *     }
+ * }
  *
- * // Use with Canvas
- * Canvas(
- *     modifier = Modifier.size(
- *         width = canvasSize.width.dp,
- *         height = canvasSize.height.dp
- *     )
- * ) {
- *     // Drawing operations
+ * // Rectangle dimensions
+ * @Preview
+ * @Composable
+ * fun RectangleSizePreview() = PreviewLab {
+ *     val rectSize: Size = fieldValue { SizeField("Rectangle", Size(100f, 50f)) }
+ *
+ *     Canvas(modifier = Modifier.size(200.dp)) {
+ *         drawRect(
+ *             color = Color.Red,
+ *             size = rectSize
+ *         )
+ *     }
  * }
  * ```
  *
@@ -277,19 +404,49 @@ class SizeField(label: String, initialValue: Size) :
  * Used for layout dimensions, component sizing, and spacing that should scale with screen density.
  * Each dimension can be edited independently with automatic Dp conversion.
  *
+ * # Usage
+ *
  * ```kotlin
  * // Component size field
- * val buttonSize = fieldValue { DpSizeField("Button Size", DpSize(120.dp, 48.dp)) }
+ * @Preview
+ * @Composable
+ * fun ButtonSizePreview() = PreviewLab {
+ *     val buttonSize: DpSize = fieldValue { DpSizeField("Button Size", DpSize(120.dp, 48.dp)) }
+ *
+ *     Button(
+ *         onClick = { },
+ *         modifier = Modifier.size(buttonSize)
+ *     ) {
+ *         Text("Sized Button")
+ *     }
+ * }
  *
  * // Container dimensions
- * val containerSize = fieldValue { DpSizeField("Container", DpSize(200.dp, 100.dp)) }
+ * @Preview
+ * @Composable
+ * fun ContainerPreview() = PreviewLab {
+ *     val containerSize: DpSize = fieldValue { DpSizeField("Container", DpSize(200.dp, 100.dp)) }
  *
- * // Use with size modifier
- * Button(
- *     onClick = { },
- *     modifier = Modifier.size(buttonSize)
- * ) {
- *     Text("Sized Button")
+ *     Box(
+ *         modifier = Modifier
+ *             .size(containerSize)
+ *             .background(Color.LightGray)
+ *     ) {
+ *         Text("Container Content")
+ *     }
+ * }
+ *
+ * // Image dimensions
+ * @Preview
+ * @Composable
+ * fun ImageSizePreview() = PreviewLab {
+ *     val imageSize: DpSize = fieldValue { DpSizeField("Image Size", DpSize(150.dp, 150.dp)) }
+ *
+ *     Image(
+ *         painter = painterResource(R.drawable.sample),
+ *         contentDescription = null,
+ *         modifier = Modifier.size(imageSize)
+ *     )
  * }
  * ```
  *
@@ -338,6 +495,54 @@ class DpSizeField(label: String, initialValue: DpSize) :
  *
  * Provides a visual color picker interface allowing users to select colors
  * using HSV sliders and alpha channel controls.
+ *
+ * # Usage
+ *
+ * ```kotlin
+ * // Basic color picker
+ * @Preview
+ * @Composable
+ * fun ColorPickerPreview() = PreviewLab {
+ *     val backgroundColor: Color = fieldValue { ColorField("Background", Color.Blue) }
+ *
+ *     Box(
+ *         modifier = Modifier
+ *             .size(100.dp)
+ *             .background(backgroundColor)
+ *     )
+ * }
+ *
+ * // Multiple color fields
+ * @Preview
+ * @Composable
+ * fun MultiColorPreview() = PreviewLab {
+ *     val backgroundColor: Color = fieldValue { ColorField("Background", Color.White) }
+ *     val textColor: Color = fieldValue { ColorField("Text Color", Color.Black) }
+ *
+ *     Box(
+ *         modifier = Modifier
+ *             .size(150.dp)
+ *             .background(backgroundColor),
+ *         contentAlignment = Alignment.Center
+ *     ) {
+ *         Text("Styled Text", color = textColor)
+ *     }
+ * }
+ *
+ * // Border color picker
+ * @Preview
+ * @Composable
+ * fun BorderColorPreview() = PreviewLab {
+ *     val borderColor: Color = fieldValue { ColorField("Border", Color.Red) }
+ *
+ *     Box(
+ *         modifier = Modifier
+ *             .size(100.dp)
+ *             .border(3.dp, borderColor)
+ *             .background(Color.LightGray)
+ *     )
+ * }
+ * ```
  *
  * @param label The display label for this field
  * @param initialValue The initial color value
