@@ -9,8 +9,9 @@ import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import me.tbsten.compose.preview.lab.ksp.plugin.util.findAnnotation
 import me.tbsten.compose.preview.lab.ksp.plugin.util.findArg
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
+import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreApplicationEnvironment
+import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreApplicationEnvironmentMode
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
-import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment.Companion.getOrCreateApplicationEnvironment
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment.ProjectEnvironment
 import org.jetbrains.kotlin.com.intellij.openapi.util.Disposer
 import org.jetbrains.kotlin.com.intellij.psi.util.PsiUtilCore
@@ -58,7 +59,10 @@ internal fun copyPreview(preview: ValidPreview, codeGenerator: CodeGenerator): C
         run {
             val disposable = Disposer.newDisposable()
             val configuration = CompilerConfiguration()
-            val appEnv = getOrCreateApplicationEnvironment(disposable, configuration)
+            val appEnv = KotlinCoreApplicationEnvironment.create(
+                parentDisposable = disposable,
+                environmentMode = KotlinCoreApplicationEnvironmentMode.Production,
+            )
             val projectEnv = ProjectEnvironment(disposable, appEnv, configuration)
             val environment = KotlinCoreEnvironment.createForProduction(
                 projectEnvironment = projectEnv,
