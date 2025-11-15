@@ -676,7 +676,9 @@ public final class me/tbsten/compose/preview/lab/field/SelectableField$Type : ja
 }
 
 public final class me/tbsten/compose/preview/lab/field/SelectableFieldKt {
+	public static final fun SelectableField (Ljava/lang/String;Ljava/util/Map;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/SelectableField;
 	public static final fun SelectableField (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Lkotlin/jvm/functions/Function1;)Lme/tbsten/compose/preview/lab/field/SelectableField;
+	public static synthetic fun SelectableField$default (Ljava/lang/String;Ljava/util/Map;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Ljava/lang/Object;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/SelectableField;
 	public static synthetic fun SelectableField$default (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/SelectableField;
 	public static final fun toField (Ljava/util/List;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/SelectableField;
 	public static synthetic fun toField$default (Ljava/util/List;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Ljava/lang/Object;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/SelectableField;
