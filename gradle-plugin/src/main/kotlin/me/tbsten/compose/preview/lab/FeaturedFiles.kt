@@ -3,9 +3,10 @@ package me.tbsten.compose.preview.lab
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.register
@@ -18,10 +19,11 @@ internal fun Project.configureFeaturedFiles(extension: ComposePreviewLabExtensio
     val internalGenerateFeaturedFilesCode = tasks.register<GenerateFeaturedFilesCode>("internalGeneratefeaturedFilesCode") {
         group = "compose preview lab internal"
         this.packageName = extension.previewsListPackage.get()
-        this.featuredFilesDir =
+        this.featuredFilesDir.set(
             rootProject
                 .layout.projectDirectory
-                .dir(".composepreviewlab/featured")
+                .dir(".composepreviewlab/featured"),
+        )
         this.projectRootPath = extension.projectRootPath.get()
         this.outputDir = outputDir.also { it.get().asFile.mkdirs() }
     }
@@ -46,8 +48,8 @@ internal abstract class GenerateFeaturedFilesCode : DefaultTask() {
     @get:Input
     abstract var packageName: String
 
-    @get:InputDirectory
-    abstract var featuredFilesDir: Directory
+    @get:Internal
+    abstract val featuredFilesDir: DirectoryProperty
 
     @get:Input
     abstract var projectRootPath: String
@@ -65,21 +67,26 @@ internal abstract class GenerateFeaturedFilesCode : DefaultTask() {
         featuredFilesCode += "\n"
 
         val groupNames = mutableListOf<String>()
-        featuredFilesDir.asFile.listFiles().sorted().forEach { featuredFileFile ->
-            val groupName = featuredFileFile.name
-                .also { groupNames.add(it) }
-            featuredFileFile.useLines { lines ->
-                val featuredFiles = lines
-                    .filter { line -> line.isNotBlank() }
-                    .toList()
 
-                if (featuredFiles.isNotEmpty()) {
-                    featuredFilesCode += """
+        featuredFilesDir.asFile.orNull?.let { featuredFilesDir ->
+            if (featuredFilesDir.exists()) {
+                featuredFilesDir.listFiles()?.sorted()?.forEach { featuredFileFile ->
+                    val groupName = featuredFileFile.name
+                        .also { groupNames.add(it) }
+                    featuredFileFile.useLines { lines ->
+                        val featuredFiles = lines
+                            .filter { line -> line.isNotBlank() }
+                            .toList()
+
+                        if (featuredFiles.isNotEmpty()) {
+                            featuredFilesCode += """
                     |    // ${featuredFileFile.path}
                     |    "$groupName" to listOf(
                     |${featuredFiles.joinToString(",\n") { "        \"$it\"" }}
                     |    ),
-                    """.trimMargin() + "\n"
+                            """.trimMargin() + "\n"
+                        }
+                    }
                 }
             }
         }
