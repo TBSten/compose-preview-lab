@@ -3,6 +3,8 @@ package me.tbsten.compose.preview.lab
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
@@ -18,7 +20,7 @@ fun ApplicationScope.PreviewLabRootWindows(
     // Window arguments
     // TODO: Review appropriate default values
     onCloseRequest: () -> Unit = ::exitApplication,
-    state: WindowState = rememberWindowState(),
+    state: WindowState = rememberWindowState(size = DpSize(1000.dp, 800.dp)),
     visible: Boolean = true,
     title: String = "Compose Preview Lab",
     icon: Painter? = null,
