@@ -24,10 +24,10 @@ public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLab
 public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabRootKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabRootKt;
 	public fun <init> ()V
-	public final fun getLambda$-1425352284$core_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-422513048$core_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-696575611$core_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1377656563$core_release ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$1686164197$core_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$2143766127$core_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$559994497$core_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public abstract interface annotation class me/tbsten/compose/preview/lab/ComposePreviewLabOption : java/lang/annotation/Annotation {
@@ -96,21 +96,12 @@ public final class me/tbsten/compose/preview/lab/PreviewLab$ComposeDefaultImpls 
 	public static final fun invoke$default (Lme/tbsten/compose/preview/lab/PreviewLabState;Ljava/util/List;Lkotlin/jvm/functions/Function3;Lme/tbsten/compose/preview/lab/PreviewLab;Landroidx/compose/runtime/Composer;II)V
 }
 
-public final class me/tbsten/compose/preview/lab/PreviewLabRootKt {
-	public static final fun PreviewLabRoot (Ljava/util/List;Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/PreviewLabRootState;Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler;Ljava/util/Map;Landroidx/compose/runtime/Composer;II)V
-}
-
-public abstract interface class me/tbsten/compose/preview/lab/PreviewLabRootNavigator {
+public abstract interface class me/tbsten/compose/preview/lab/PreviewLabGalleryNavigator {
 	public abstract fun back ()V
 	public abstract fun navigate (Ljava/lang/String;)V
 }
 
-public final class me/tbsten/compose/preview/lab/PreviewLabRootNavigatorKt {
-	public static final fun getLocalPreviewLabRootNavigator ()Landroidx/compose/runtime/ProvidableCompositionLocal;
-	public static final fun navigateOr (Lme/tbsten/compose/preview/lab/PreviewLabRootNavigator;Ljava/lang/String;Lkotlin/jvm/functions/Function0;)V
-}
-
-public final class me/tbsten/compose/preview/lab/PreviewLabRootState {
+public final class me/tbsten/compose/preview/lab/PreviewLabGalleryState {
 	public static final field $stable I
 	public fun <init> ()V
 	public fun <init> (Lkotlin/Pair;)V
@@ -121,6 +112,15 @@ public final class me/tbsten/compose/preview/lab/PreviewLabRootState {
 	public final fun removeFromComparePanel (I)V
 	public final fun select (Ljava/lang/String;Lme/tbsten/compose/preview/lab/CollectedPreview;)V
 	public final fun unselect ()V
+}
+
+public final class me/tbsten/compose/preview/lab/PreviewLabRootKt {
+	public static final fun PreviewLabGallery (Ljava/util/List;Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/PreviewLabGalleryState;Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler;Ljava/util/Map;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/PreviewLabRootNavigatorKt {
+	public static final fun getLocalPreviewLabGalleryNavigator ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun navigateOr (Lme/tbsten/compose/preview/lab/PreviewLabGalleryNavigator;Ljava/lang/String;Lkotlin/jvm/functions/Function0;)V
 }
 
 public final class me/tbsten/compose/preview/lab/PreviewLabScope {
