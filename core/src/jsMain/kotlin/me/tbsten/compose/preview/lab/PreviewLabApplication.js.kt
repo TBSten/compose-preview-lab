@@ -46,7 +46,7 @@ import org.w3c.dom.HTMLElement
  * @param featuredFiles Grouped file organization for navigation
  * @param openFileHandler Handler for opening source files (optional)
  * @param rootElement HTML element to mount the application (defaults to document.body)
- * @see PreviewLabRoot
+ * @see PreviewLabGallery
  * @see CollectedPreview
  * @see OpenFileHandler
  */
@@ -58,7 +58,7 @@ fun previewLabApplication(
     rootElement: HTMLElement = document.body!!,
 ) {
     ComposeViewport(rootElement) {
-        PreviewLabRoot(
+        PreviewLabGallery(
             previews = previews,
             featuredFiles = featuredFiles,
             openFileHandler = openFileHandler,

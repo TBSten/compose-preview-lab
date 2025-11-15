@@ -7,13 +7,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
 /**
- * State holder for [PreviewLabRoot].
+ * State holder for [PreviewLabGallery].
  *
  * @param initialSelectedPreview Preview, selected by default.
  *
- * @see PreviewLabRoot
+ * @see PreviewLabGallery
  */
-class PreviewLabRootState(initialSelectedPreview: Pair<String, CollectedPreview>? = null) {
+class PreviewLabGalleryState(initialSelectedPreview: Pair<String, CollectedPreview>? = null) {
     internal var selectedPreview: SelectedPreview? by mutableStateOf(
         initialSelectedPreview
             ?.let(SelectedPreview::from),

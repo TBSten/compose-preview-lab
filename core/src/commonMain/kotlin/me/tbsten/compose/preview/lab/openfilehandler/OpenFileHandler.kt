@@ -7,10 +7,10 @@ import androidx.compose.ui.platform.UriHandler
 
 /**
  * interface, which determines the behavior when opening source code, etc.
- * PreviewLabRoot に指定することで機能するようになります。
+ * PreviewLabGallery に指定することで機能するようになります。
  *
  * ```kt
- * PreviewLabRoot(
+ * PreviewLabGallery(
  *   openFileHandler = object : OpenFileHandler<UriHandler> { ... }
  * )
  * ```

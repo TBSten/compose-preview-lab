@@ -13,7 +13,7 @@ import java.util.Collections.emptyMap
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 
 @Composable
-fun ApplicationScope.PreviewLabRootWindows(
+fun ApplicationScope.PreviewLabGalleryWindows(
     previews: List<CollectedPreview>,
     openFileHandler: OpenFileHandler<out Any?>? = null,
     featuredFiles: Map<String, List<String>> = emptyMap(),
@@ -48,7 +48,7 @@ fun ApplicationScope.PreviewLabRootWindows(
         onPreviewKeyEvent = onPreviewKeyEvent,
         onKeyEvent = onKeyEvent,
     ) {
-        PreviewLabRoot(
+        PreviewLabGallery(
             previews = previews,
             featuredFiles = featuredFiles,
             openFileHandler = openFileHandler,

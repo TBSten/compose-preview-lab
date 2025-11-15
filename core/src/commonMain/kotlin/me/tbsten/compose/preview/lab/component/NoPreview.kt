@@ -52,7 +52,7 @@ internal fun NoPreview() = SelectionContainer {
             textAlign = TextAlign.Center,
         )
         Text(
-            text = "Compose Preview Lab Gradle Plugin couldn't locate @Previews in PreviewLabRoot.previews.",
+            text = "Compose Preview Lab Gradle Plugin couldn't locate @Previews in PreviewLabGallery.previews.",
             style = PreviewLabTheme.typography.h3,
             color = PreviewLabTheme.colors.error,
             textAlign = TextAlign.Center,
@@ -68,7 +68,7 @@ internal fun NoPreview() = SelectionContainer {
 }
 
 private val noPreviewDetail = buildAnnotatedString {
-    appendLine("PreviewLabRoot.previews return no @Previews. ")
+    appendLine("PreviewLabGallery.previews return no @Previews. ")
     appendLine("Check the following:")
 
     withStyle(ParagraphStyle(textIndent = TextIndent(firstLine = 20.sp, restLine = 20.sp))) {

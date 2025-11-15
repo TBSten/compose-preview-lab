@@ -56,17 +56,17 @@ import org.jetbrains.compose.resources.painterResource
  * A Composable function that catalogs and displays a list of Previews. The left sidebar actually displays the list of Previews, and the selected Preview is displayed in the center of the screen.
  *
  * @param previews CollectedPreviews collected from gradle plugins, etc. Note that CollectedPreviews not specified here will not be displayed.
- * @param state [PreviewLabRootState] to manage the state of the PreviewLabRoot. Preserves the state of the selected Preview, etc. By default, remember is used (i.e., the composition of the call to Composable is the scope of the state), but the scope (storage period) of the state can be adjusted by moving it to a state holder, such as ViewModel, if necessary.
+ * @param state [PreviewLabGalleryState] to manage the state of the PreviewLabGallery. Preserves the state of the selected Preview, etc. By default, remember is used (i.e., the composition of the call to Composable is the scope of the state), but the scope (storage period) of the state can be adjusted by moving it to a state holder, such as ViewModel, if necessary.
  * @param openFileHandler By specifying OpenFileHandler, you can display a "Source Code" button that displays the source code corresponding to the Preview.
  *
  * @see CollectedPreview
  * @see OpenFileHandler
  */
 @Composable
-fun PreviewLabRoot(
+fun PreviewLabGallery(
     previews: List<CollectedPreview>,
     modifier: Modifier = Modifier,
-    state: PreviewLabRootState = remember { PreviewLabRootState() },
+    state: PreviewLabGalleryState = remember { PreviewLabGalleryState() },
     openFileHandler: OpenFileHandler<out Any?>? = null,
     featuredFiles: Map<String, List<String>> = emptyMap(),
 ) = PreviewLabTheme {
@@ -78,8 +78,8 @@ fun PreviewLabRoot(
         }
     }
 
-    val previewLabRootNavigator =
-        rememberPreviewLabRootNavigator(
+    val PreviewLabGalleryNavigator =
+        rememberPreviewLabGalleryNavigator(
             state = state,
             groupedPreviews = groupedPreviews,
         )
@@ -88,7 +88,7 @@ fun PreviewLabRoot(
 
     CompositionLocalProvider(
         LocalOpenFileHandler provides openFileHandler,
-        LocalPreviewLabRootNavigator provides previewLabRootNavigator,
+        LocalPreviewLabGalleryNavigator provides PreviewLabGalleryNavigator,
     ) {
         Box(
             modifier = modifier
