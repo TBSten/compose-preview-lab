@@ -113,6 +113,25 @@ fun <Value> SelectableField(
 }
 
 /**
+ * Create a [SelectableField] with the given label and choices.
+ *
+ * @see SelectableField
+ */
+@Suppress("UNCHECKED_CAST")
+fun <Value> SelectableField(
+    label: String,
+    choices: Map<String, Value>,
+    type: Type = DROPDOWN,
+    initialValue: Value = choices.entries.first().value,
+): SelectableField<Value> = SelectableField(
+    label = label,
+    type = type,
+) {
+    choices.forEach { (label, value) -> choice(value, label) }
+    defaultValue = initialValue
+}
+
+/**
  * Create a [SelectableField] from enum class values.
  *
  * @see SelectableField
