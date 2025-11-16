@@ -85,7 +85,7 @@ enum class PreviewsForUiDebug(
                             item {
                                 val stringValue =
                                     fieldValue { StringField("stringValue", "input some text") }
-                                Text("intValue: $stringValue")
+                                Text("stringValue: $stringValue")
                             }
                             item {
                                 val intValue = fieldValue { IntField("intValue", 0) }

@@ -55,8 +55,8 @@ class PreviewsForUiDebugTest {
 
         awaitIdle()
 
-        // Verify the preview updated (note: the label in PreviewsForDebug is "intValue" not "stringValue")
-        onNodeWithText("intValue: Hello World")
+        // Verify the preview updated
+        onNodeWithText("stringValue: Hello World")
             .assertIsDisplayed()
     }
 

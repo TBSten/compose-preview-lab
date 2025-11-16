@@ -12,6 +12,35 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import me.tbsten.compose.preview.lab.field.MutablePreviewLabField
 
+/**
+ * Test helper composable that provides the necessary environment for testing PreviewLab components.
+ *
+ * This function sets up all required CompositionLocals (ViewModelStoreOwner, LifecycleOwner, and PreviewLabState)
+ * needed for PreviewLab components to work correctly in tests.
+ *
+ * @param state The PreviewLabState instance to provide to the content
+ * @param viewModelStoreOwner The ViewModelStoreOwner to provide. Defaults to a test instance if not in a Compose context
+ * @param lifecycleOwner The LifecycleOwner to provide. Defaults to a test instance if not in a Compose context
+ * @param block The composable content to test
+ *
+ * Example usage:
+ * ```kotlin
+ * @Test
+ * fun `test preview lab functionality`() = runDesktopComposeUiTest {
+ *     val state = PreviewLabState()
+ *     setContent {
+ *         TestPreviewLab(state) {
+ *             PreviewsForUiDebug.Fields.content()
+ *         }
+ *     }
+ *
+ *     val intField = state.requireField<Int>("intValue")
+ *     intField.value = 42
+ *     awaitIdle()
+ *     onNodeWithText("intValue: 42").assertIsDisplayed()
+ * }
+ * ```
+ */
 @Composable
 fun TestPreviewLab(
     state: PreviewLabState,
@@ -43,15 +72,47 @@ private fun defaultTestLifecycleOwner() = runCatching {
 }.getOrElse {
     remember {
         object : LifecycleOwner {
-            override val lifecycle: Lifecycle = LifecycleRegistry(this)
+            override val lifecycle: Lifecycle =
+                LifecycleRegistry(this).apply {
+                    handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
+                }
         }
     }
 }
 
+/**
+ * Finds a mutable field by its label in the PreviewLabState.
+ *
+ * @param Value The type of the field's value
+ * @param label The label of the field to find
+ * @return The field if found and matches the type, null otherwise
+ *
+ * Example:
+ * ```kotlin
+ * val intField = state.field<Int>("intValue")
+ * if (intField != null) {
+ *     intField.value = 42
+ * }
+ * ```
+ */
 @OptIn(InternalComposePreviewLabApi::class)
 inline fun <reified Value> PreviewLabState.field(label: String): MutablePreviewLabField<Value>? =
-    scope.fields.find { it.label == label } as? MutablePreviewLabField<Value>?
+    scope.fields.find { it.label == label } as? MutablePreviewLabField<Value>
 
+/**
+ * Finds a mutable field by its label in the PreviewLabState, throwing an error if not found.
+ *
+ * @param Value The type of the field's value
+ * @param label The label of the field to find
+ * @return The field if found and matches the type
+ * @throws IllegalStateException if the field is not found
+ *
+ * Example:
+ * ```kotlin
+ * val intField = state.requireField<Int>("intValue")
+ * intField.value = 42
+ * ```
+ */
 @OptIn(InternalComposePreviewLabApi::class)
 inline fun <reified Value> PreviewLabState.requireField(label: String): MutablePreviewLabField<Value> =
     field<Value>(label = label)
