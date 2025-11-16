@@ -13,7 +13,11 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(11)
+    compilerOptions {
+        freeCompilerArgs.add("-Xcontext-parameters")
+    }
+
+    jvmToolchain(17)
     androidTarget {
         // https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
         @Suppress("OPT_IN_USAGE")
@@ -59,6 +63,15 @@ kotlin {
 
         commonTest.dependencies {
             implementation(kotlin("test"))
+            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+            implementation(compose.uiTest)
+            implementation(libs.androidxLifecycleViewmodel)
+            implementation(libs.androidxLifecycleRuntimeCompose)
+        }
+
+        jvmTest.dependencies {
+            implementation(compose.desktop.currentOs)
+            implementation(compose.desktop.uiTestJUnit4)
         }
 
         androidMain.dependencies {
