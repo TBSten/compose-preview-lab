@@ -13,10 +13,6 @@ plugins {
 }
 
 kotlin {
-    compilerOptions {
-        freeCompilerArgs.add("-Xcontext-parameters")
-    }
-
     jvmToolchain(17)
     androidTarget {
         // https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
