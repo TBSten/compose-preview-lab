@@ -19,6 +19,7 @@ public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLab
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabKt;
 	public fun <init> ()V
 	public final fun getLambda$-658061291$core ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1054862624$core ()Lkotlin/jvm/functions/Function4;
 }
 
 public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabRootKt {
@@ -82,6 +83,10 @@ public final class me/tbsten/compose/preview/lab/PreviewLabGalleryState {
 	public final fun unselect ()V
 }
 
+public final class me/tbsten/compose/preview/lab/PreviewLabKt {
+	public static final fun getLocalPreviewLabState ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+}
+
 public final class me/tbsten/compose/preview/lab/PreviewLabRootKt {
 	public static final fun PreviewLabGallery (Ljava/util/List;Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/PreviewLabGalleryState;Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler;Ljava/util/Map;Landroidx/compose/runtime/Composer;II)V
 }
@@ -95,6 +100,7 @@ public final class me/tbsten/compose/preview/lab/PreviewLabScope {
 	public static final field $stable I
 	public final fun fieldState (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/MutableState;
 	public final fun fieldValue (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Ljava/lang/Object;
+	public final fun getFields ()Landroidx/compose/runtime/snapshots/SnapshotStateList;
 	public final fun onEvent (Ljava/lang/String;Ljava/lang/String;)V
 	public static synthetic fun onEvent$default (Lme/tbsten/compose/preview/lab/PreviewLabScope;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)V
 }
@@ -107,6 +113,7 @@ public final class me/tbsten/compose/preview/lab/PreviewLabState {
 	public static final field $stable I
 	public static final field Companion Lme/tbsten/compose/preview/lab/PreviewLabState$Companion;
 	public fun <init> ()V
+	public final fun getScope ()Lme/tbsten/compose/preview/lab/PreviewLabScope;
 }
 
 public final class me/tbsten/compose/preview/lab/PreviewLabState$Companion {
