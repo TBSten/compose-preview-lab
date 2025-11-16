@@ -30,7 +30,7 @@ class PreviewsForUiDebugTest {
         setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
 
         // Get the IntField
-        val intField = state.requireField<Int>("intValue")
+        val intField = state.field<Int>("intValue")
 
         // Change the value
         intField.value = 42
@@ -48,7 +48,7 @@ class PreviewsForUiDebugTest {
         setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
 
         // Get the StringField
-        val stringField = state.requireField<String>("stringValue")
+        val stringField = state.field<String>("stringValue")
 
         // Change the value
         stringField.value = "Hello World"
@@ -66,7 +66,7 @@ class PreviewsForUiDebugTest {
         setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
 
         // Get the BooleanField
-        val boolField = state.requireField<Boolean>("booleanValue")
+        val boolField = state.field<Boolean>("booleanValue")
 
         // Verify initial state (false)
         onNodeWithText("booleanValue: false")
@@ -97,7 +97,7 @@ class PreviewsForUiDebugTest {
         setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
 
         // Get the FloatField
-        val floatField = state.requireField<Float>("floatField")
+        val floatField = state.field<Float>("floatField")
 
         // Change the value
         floatField.value = 3.14f

@@ -34,7 +34,7 @@ import me.tbsten.compose.preview.lab.field.MutablePreviewLabField
  *         }
  *     }
  *
- *     val intField = state.requireField<Int>("intValue")
+ *     val intField = state.field<Int>("intValue")
  *     intField.value = 42
  *     awaitIdle()
  *     onNodeWithText("intValue: 42").assertIsDisplayed()
@@ -96,7 +96,7 @@ private fun defaultTestLifecycleOwner() = runCatching {
  * ```
  */
 @OptIn(InternalComposePreviewLabApi::class)
-inline fun <reified Value> PreviewLabState.field(label: String): MutablePreviewLabField<Value>? =
+inline fun <reified Value> PreviewLabState.fieldOrNull(label: String): MutablePreviewLabField<Value>? =
     scope.fields.find { it.label == label } as? MutablePreviewLabField<Value>
 
 /**
@@ -109,11 +109,11 @@ inline fun <reified Value> PreviewLabState.field(label: String): MutablePreviewL
  *
  * Example:
  * ```kotlin
- * val intField = state.requireField<Int>("intValue")
+ * val intField = state.field<Int>("intValue")
  * intField.value = 42
  * ```
  */
 @OptIn(InternalComposePreviewLabApi::class)
-inline fun <reified Value> PreviewLabState.requireField(label: String): MutablePreviewLabField<Value> =
-    field<Value>(label = label)
+inline fun <reified Value> PreviewLabState.field(label: String): MutablePreviewLabField<Value> =
+    fieldOrNull<Value>(label = label)
         ?: error("Can not find update target field: label=$label")
