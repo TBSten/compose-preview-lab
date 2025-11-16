@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
@@ -59,8 +60,10 @@ import me.tbsten.compose.preview.lab.field.withHint
 
 enum class PreviewsForUiDebug(
     override val id: String,
-    override val filePath: String? = "src/commonMain/kotlin/me/tbsten/example/$id.kt",
     override val displayName: String = id,
+    override val filePath: String? = "src/commonMain/kotlin/me/tbsten/example/$id.kt",
+    override val startLineNumber: Int? = null,
+    override val code: String? = null,
     override val content: @Composable (() -> Unit),
 ) : CollectedPreview {
     Fields(
@@ -82,7 +85,7 @@ enum class PreviewsForUiDebug(
                             item {
                                 val stringValue =
                                     fieldValue { StringField("stringValue", "input some text") }
-                                Text("intValue: $stringValue")
+                                Text("stringValue: $stringValue")
                             }
                             item {
                                 val intValue = fieldValue { IntField("intValue", 0) }
@@ -320,7 +323,9 @@ enum class PreviewsForUiDebug(
                             ) {
                                 Text(
                                     text = fieldValue { StringField("Text.text", "Primary Button") },
-                                    modifier = fieldValue { ModifierField("Text.modifier") },
+                                    modifier = fieldValue {
+                                        ModifierField("Text.modifier")
+                                    }.then(Modifier.testTag("PrimaryButton")),
                                 )
                             }
                         }
@@ -343,7 +348,10 @@ enum class PreviewsForUiDebug(
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
                         item {
-                            OutlinedButton(onClick = { onEvent("SecondaryButton.onClick") }) {
+                            OutlinedButton(
+                                onClick = { onEvent("SecondaryButton.onClick") },
+                                modifier = Modifier.testTag("SecondaryButton"),
+                            ) {
                                 Text("Secondary Button")
                             }
                         }
@@ -480,10 +488,6 @@ enum class PreviewsForUiDebug(
             }
         },
     ),
-    ;
-
-    override val startLineNumber: Int? = null
-    override val code: String? = null
 }
 
 val previewsForUiDebug = PreviewsForUiDebug.entries
@@ -556,6 +560,7 @@ private fun DefaultSampleScreenContent(paddingValues: PaddingValues, onListItemC
             Button(
                 onClick = { onListItemClick(count) },
                 modifier = Modifier
+                    .testTag("item:$count")
 //                    .layoutLab("Item: $count")
                     .fillMaxWidth(),
             ) {

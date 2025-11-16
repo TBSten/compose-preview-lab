@@ -1295,6 +1295,9 @@ final class me.tbsten.compose.preview.lab/PreviewLabGalleryState { // me.tbsten.
 }
 
 final class me.tbsten.compose.preview.lab/PreviewLabScope { // me.tbsten.compose.preview.lab/PreviewLabScope|null[0]
+    final val fields // me.tbsten.compose.preview.lab/PreviewLabScope.fields|{}fields[0]
+        final fun <get-fields>(): androidx.compose.runtime.snapshots/SnapshotStateList<me.tbsten.compose.preview.lab.field/PreviewLabField<*>> // me.tbsten.compose.preview.lab/PreviewLabScope.fields.<get-fields>|<get-fields>(){}[0]
+
     final fun <#A1: kotlin/Any?> fieldState(kotlin/String?, kotlin/Function1<me.tbsten.compose.preview.lab/PreviewLabScope.FieldBuilderScope, me.tbsten.compose.preview.lab.field/MutablePreviewLabField<#A1>>, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int): androidx.compose.runtime/MutableState<#A1> // me.tbsten.compose.preview.lab/PreviewLabScope.fieldState|fieldState(kotlin.String?;kotlin.Function1<me.tbsten.compose.preview.lab.PreviewLabScope.FieldBuilderScope,me.tbsten.compose.preview.lab.field.MutablePreviewLabField<0:0>>;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){0§<kotlin.Any?>}[0]
     final fun <#A1: kotlin/Any?> fieldValue(kotlin/String?, kotlin/Function1<me.tbsten.compose.preview.lab/PreviewLabScope.FieldBuilderScope, me.tbsten.compose.preview.lab.field/PreviewLabField<out #A1>>, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int): #A1 // me.tbsten.compose.preview.lab/PreviewLabScope.fieldValue|fieldValue(kotlin.String?;kotlin.Function1<me.tbsten.compose.preview.lab.PreviewLabScope.FieldBuilderScope,me.tbsten.compose.preview.lab.field.PreviewLabField<out|0:0>>;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){0§<kotlin.Any?>}[0]
     final fun onEvent(kotlin/String, kotlin/String? = ...) // me.tbsten.compose.preview.lab/PreviewLabScope.onEvent|onEvent(kotlin.String;kotlin.String?){}[0]
@@ -1304,6 +1307,9 @@ final class me.tbsten.compose.preview.lab/PreviewLabScope { // me.tbsten.compose
 
 final class me.tbsten.compose.preview.lab/PreviewLabState { // me.tbsten.compose.preview.lab/PreviewLabState|null[0]
     constructor <init>() // me.tbsten.compose.preview.lab/PreviewLabState.<init>|<init>(){}[0]
+
+    final val scope // me.tbsten.compose.preview.lab/PreviewLabState.scope|{}scope[0]
+        final fun <get-scope>(): me.tbsten.compose.preview.lab/PreviewLabScope // me.tbsten.compose.preview.lab/PreviewLabState.scope.<get-scope>|<get-scope>(){}[0]
 
     final object Companion { // me.tbsten.compose.preview.lab/PreviewLabState.Companion|null[0]
         final val Saver // me.tbsten.compose.preview.lab/PreviewLabState.Companion.Saver|{}Saver[0]
@@ -1630,6 +1636,8 @@ final val me.tbsten.compose.preview.lab.previewlist/me_tbsten_compose_preview_la
 final val me.tbsten.compose.preview.lab.previewlist/me_tbsten_compose_preview_lab_previewlist_PreviewTreeNode_Preview$stableprop // me.tbsten.compose.preview.lab.previewlist/me_tbsten_compose_preview_lab_previewlist_PreviewTreeNode_Preview$stableprop|#static{}me_tbsten_compose_preview_lab_previewlist_PreviewTreeNode_Preview$stableprop[0]
 final val me.tbsten.compose.preview.lab/LocalPreviewLabGalleryNavigator // me.tbsten.compose.preview.lab/LocalPreviewLabGalleryNavigator|{}LocalPreviewLabGalleryNavigator[0]
     final fun <get-LocalPreviewLabGalleryNavigator>(): androidx.compose.runtime/ProvidableCompositionLocal<me.tbsten.compose.preview.lab/PreviewLabGalleryNavigator?> // me.tbsten.compose.preview.lab/LocalPreviewLabGalleryNavigator.<get-LocalPreviewLabGalleryNavigator>|<get-LocalPreviewLabGalleryNavigator>(){}[0]
+final val me.tbsten.compose.preview.lab/LocalPreviewLabState // me.tbsten.compose.preview.lab/LocalPreviewLabState|{}LocalPreviewLabState[0]
+    final fun <get-LocalPreviewLabState>(): androidx.compose.runtime/ProvidableCompositionLocal<me.tbsten.compose.preview.lab/PreviewLabState?> // me.tbsten.compose.preview.lab/LocalPreviewLabState.<get-LocalPreviewLabState>|<get-LocalPreviewLabState>(){}[0]
 final val me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLab$stableprop // me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLab$stableprop|#static{}me_tbsten_compose_preview_lab_PreviewLab$stableprop[0]
 final val me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLabGalleryState$stableprop // me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLabGalleryState$stableprop|#static{}me_tbsten_compose_preview_lab_PreviewLabGalleryState$stableprop[0]
 final val me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLabScope$stableprop // me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLabScope$stableprop|#static{}me_tbsten_compose_preview_lab_PreviewLabScope$stableprop[0]

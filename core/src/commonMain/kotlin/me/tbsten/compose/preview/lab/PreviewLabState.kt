@@ -22,7 +22,9 @@ class PreviewLabState {
 
     internal var selectedTabIndex by mutableStateOf<Int?>(null)
     internal var selectedEvent by mutableStateOf<PreviewLabEvent?>(null)
-    internal val scope: PreviewLabScope = PreviewLabScope()
+
+    @InternalComposePreviewLabApi
+    val scope: PreviewLabScope = PreviewLabScope()
 
     /**
      * Deselects the currently selected tab

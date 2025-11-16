@@ -1,5 +1,6 @@
 package me.tbsten.compose.preview.lab
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.draggable2D
@@ -19,6 +20,7 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -262,7 +264,7 @@ open class PreviewLab(
      */
     @Composable
     operator fun invoke(
-        state: PreviewLabState = defaultState(),
+        state: PreviewLabState = LocalPreviewLabState.current ?: defaultState(),
         maxWidth: Dp,
         maxHeight: Dp,
         content: @Composable PreviewLabScope.() -> Unit,
@@ -373,7 +375,7 @@ open class PreviewLab(
      */
     @Composable
     open operator fun invoke(
-        state: PreviewLabState = defaultState(),
+        state: PreviewLabState = LocalPreviewLabState.current ?: defaultState(),
         screenSizes: List<ScreenSize> = defaultScreenSizes,
         content: @Composable PreviewLabScope.() -> Unit,
     ) {
@@ -427,6 +429,11 @@ open class PreviewLab(
                 state = toaster,
                 maxVisibleToasts = 10,
                 showCloseButton = true,
+                toastBox = { toast, toastContent ->
+                    Box(Modifier.testTag(toast.message.toString())) {
+                        toastContent()
+                    }
+                },
             )
         }
     }
@@ -467,7 +474,8 @@ open class PreviewLab(
     companion object : PreviewLab()
 }
 
-internal val LocalPreviewLabState = compositionLocalOf<PreviewLabState?> { null }
+@VisibleForTesting
+val LocalPreviewLabState = compositionLocalOf<PreviewLabState?> { null }
 internal val LocalToaster = compositionLocalOf<ToasterState> { error("No ToasterState") }
 
 @Composable

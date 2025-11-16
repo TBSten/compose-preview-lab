@@ -17,6 +17,7 @@ dokka = "2.1.0"
 binaryCompatibilityValidator = "0.18.1"
 ktlint = "1.6.0"
 ktlintGradle = "14.0.1"
+androidxLifecycle = "2.9.6"
 
 [libraries]
 
@@ -34,6 +35,9 @@ ktlintGradlePlugin = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.
 vanniktechMavenPublishGradlePlugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "vanniktechMavenPublish" }
 dokkaGradlePlugin = { module = "org.jetbrains.dokka:org.jetbrains.dokka.gradle.plugin", version.ref = "dokka" }
 kspGradlePlugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+
+androidxLifecycleViewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+androidxLifecycleRuntimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 
 [plugins]
 
