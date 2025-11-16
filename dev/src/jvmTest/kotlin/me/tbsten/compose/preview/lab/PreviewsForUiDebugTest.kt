@@ -1,21 +1,11 @@
 package me.tbsten.compose.preview.lab
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.test.DesktopComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runDesktopComposeUiTest
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
-import androidx.lifecycle.ViewModelStore
-import androidx.lifecycle.ViewModelStoreOwner
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import kotlin.test.Test
 
 /**
@@ -24,36 +14,11 @@ import kotlin.test.Test
  */
 @OptIn(ExperimentalTestApi::class)
 class PreviewsForUiDebugTest {
-    private val testViewModelStoreOwner = object : ViewModelStoreOwner {
-        override val viewModelStore: ViewModelStore = ViewModelStore()
-    }
-    private val testLifecycleOwner = object : LifecycleOwner {
-        private val lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
-        override val lifecycle: Lifecycle by ::lifecycleRegistry
-    }
-
-    /**
-     * Sets up content with PreviewLab test environment including ViewModelStore and Lifecycle.
-     * Returns PreviewLabState for accessing fields and other state.
-     */
-    private fun DesktopComposeUiTest.setContentInTestEnvironment(content: @Composable () -> Unit): PreviewLabState {
-        val state = PreviewLabState()
-        setContent {
-            CompositionLocalProvider(
-                LocalViewModelStoreOwner provides testViewModelStoreOwner,
-                LocalLifecycleOwner provides testLifecycleOwner,
-            ) {
-                state.Provider {
-                    content()
-                }
-            }
-        }
-        return state
-    }
 
     @Test
     fun `Fields preview should render`() = runDesktopComposeUiTest {
-        setContentInTestEnvironment { PreviewsForUiDebug.Fields.content() }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
         // Verify that Fields preview renders without errors
         awaitIdle()
         // Fields preview contains various field types, just verify it renders
@@ -61,7 +26,8 @@ class PreviewsForUiDebugTest {
 
     @Test
     fun `IntField should update preview when value changes`() = runDesktopComposeUiTest {
-        val state = setContentInTestEnvironment { PreviewsForUiDebug.Fields.content() }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
 
         // Get the IntField
         val intField = state.requireField<Int>("intValue")
@@ -78,7 +44,8 @@ class PreviewsForUiDebugTest {
 
     @Test
     fun `StringField should update preview when value changes`() = runDesktopComposeUiTest {
-        val state = setContentInTestEnvironment { PreviewsForUiDebug.Fields.content() }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
 
         // Get the StringField
         val stringField = state.requireField<String>("stringValue")
@@ -95,7 +62,8 @@ class PreviewsForUiDebugTest {
 
     @Test
     fun `BooleanField should toggle preview when value changes`() = runDesktopComposeUiTest {
-        val state = setContentInTestEnvironment { PreviewsForUiDebug.Fields.content() }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
 
         // Get the BooleanField
         val boolField = state.requireField<Boolean>("booleanValue")
@@ -125,7 +93,8 @@ class PreviewsForUiDebugTest {
 
     @Test
     fun `FloatField should update preview when value changes`() = runDesktopComposeUiTest {
-        val state = setContentInTestEnvironment { PreviewsForUiDebug.Fields.content() }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
 
         // Get the FloatField
         val floatField = state.requireField<Float>("floatField")
@@ -142,7 +111,8 @@ class PreviewsForUiDebugTest {
 
     @Test
     fun `Events preview should show toast after call onEvent()`() = runDesktopComposeUiTest {
-        setContentInTestEnvironment { PreviewsForUiDebug.Events.content() }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Events.content() } }
 
         onNodeWithTag("item:0")
             .performClick()
@@ -155,7 +125,8 @@ class PreviewsForUiDebugTest {
 
     @Test
     fun `Layouts preview should render and respond to clicks`() = runDesktopComposeUiTest {
-        setContentInTestEnvironment { PreviewsForUiDebug.Layouts.content() }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Layouts.content() } }
 
         awaitIdle()
 
@@ -176,7 +147,8 @@ class PreviewsForUiDebugTest {
         width = 1920,
         height = 1080,
     ) {
-        setContentInTestEnvironment { PreviewsForUiDebug.ScreenSize.content() }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.ScreenSize.content() } }
 
         awaitIdle()
         // ScreenSize preview uses PreviewLab with AllPresets, verify it renders
@@ -184,7 +156,8 @@ class PreviewsForUiDebugTest {
 
     @Test
     fun `WithoutPreviewLab should render simple text`() = runDesktopComposeUiTest {
-        setContentInTestEnvironment { PreviewsForUiDebug.WithoutPreviewLab.content() }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.WithoutPreviewLab.content() } }
 
         onNodeWithText("Without PreviewLab { }")
             .assertIsDisplayed()
@@ -192,7 +165,8 @@ class PreviewsForUiDebugTest {
 
     @Test
     fun `ButtonPrimary should render and trigger event on click`() = runDesktopComposeUiTest {
-        setContentInTestEnvironment { PreviewsForUiDebug.ButtonPrimary.content() }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.ButtonPrimary.content() } }
 
         awaitIdle()
 
@@ -209,7 +183,8 @@ class PreviewsForUiDebugTest {
 
     @Test
     fun `ButtonSecondary should render and trigger event on click`() = runDesktopComposeUiTest {
-        setContentInTestEnvironment { PreviewsForUiDebug.ButtonSecondary.content() }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.ButtonSecondary.content() } }
 
         awaitIdle()
 
@@ -226,7 +201,8 @@ class PreviewsForUiDebugTest {
 
     @Test
     fun `HeadingText should render with correct style`() = runDesktopComposeUiTest {
-        setContentInTestEnvironment { PreviewsForUiDebug.HeadingText.content() }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.HeadingText.content() } }
 
         awaitIdle()
 
@@ -236,7 +212,8 @@ class PreviewsForUiDebugTest {
 
     @Test
     fun `LoginForm should render`() = runDesktopComposeUiTest {
-        setContentInTestEnvironment { PreviewsForUiDebug.LoginForm.content() }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.LoginForm.content() } }
 
         awaitIdle()
 
@@ -246,7 +223,8 @@ class PreviewsForUiDebugTest {
 
     @Test
     fun `ProfileSettings should render`() = runDesktopComposeUiTest {
-        setContentInTestEnvironment { PreviewsForUiDebug.ProfileSettings.content() }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.ProfileSettings.content() } }
 
         awaitIdle()
 
@@ -256,7 +234,8 @@ class PreviewsForUiDebugTest {
 
     @Test
     fun `ModifierAndComposableField should render button with fields`() = runDesktopComposeUiTest {
-        setContentInTestEnvironment { PreviewsForUiDebug.ModifierAndComposableField.content() }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.ModifierAndComposableField.content() } }
 
         awaitIdle()
 
