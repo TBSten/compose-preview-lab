@@ -78,7 +78,7 @@ fun PreviewLabGallery(
         }
     }
 
-    val PreviewLabGalleryNavigator =
+    val previewLabGalleryNavigator =
         rememberPreviewLabGalleryNavigator(
             state = state,
             groupedPreviews = groupedPreviews,
@@ -88,7 +88,7 @@ fun PreviewLabGallery(
 
     CompositionLocalProvider(
         LocalOpenFileHandler provides openFileHandler,
-        LocalPreviewLabGalleryNavigator provides PreviewLabGalleryNavigator,
+        LocalPreviewLabGalleryNavigator provides previewLabGalleryNavigator,
     ) {
         Box(
             modifier = modifier
