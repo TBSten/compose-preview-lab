@@ -85,5 +85,10 @@ dependencies {
 }
 
 composePreviewLab {
+    generatePackage = "helloComposePreviewLab"
     publicPreviewList = true
+    projectRootPath = rootProject.projectDir.absolutePath
+    generatePreviewList = true
+    generatePreviewAllList = false
+    generateFeaturedFiles = false
 }
