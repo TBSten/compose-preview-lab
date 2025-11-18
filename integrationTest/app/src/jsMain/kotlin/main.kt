@@ -5,4 +5,5 @@ import me.tbsten.compose.preview.lab.previewLabApplication
 fun main() = previewLabApplication(
     previews = app.previewsAll,
     featuredFiles = app.FeaturedFiles,
+    initialSelectId = "AboutComposePreviewLab",
 )
