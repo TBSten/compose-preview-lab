@@ -1,0 +1,77 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class, ExperimentalWasmDsl::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
+
+plugins {
+    alias(libs.plugins.multiplatform)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.conventionFormat)
+    alias(libs.plugins.conventionPublish)
+}
+
+kotlin {
+    jvmToolchain(11)
+    androidTarget {
+        // https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
+        instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
+    }
+
+    jvm()
+
+    js {
+        browser()
+        binaries.executable()
+    }
+
+    wasmJs {
+        browser()
+        binaries.executable()
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64(),
+    ).forEach {
+        it.binaries.framework {
+            baseName = "Annotation"
+            isStatic = true
+        }
+    }
+}
+
+android {
+    namespace = "me.tbsten.compose.preview.lab.annotation"
+    compileSdk = 36
+
+    defaultConfig {
+        minSdk = 21
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+}
+
+// for library development configuration
+
+kotlin {
+    applyDefaultHierarchyTemplate()
+
+    compilerOptions {
+        optIn.addAll(
+            "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
+            "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
+        )
+    }
+}
+
+publishConvention {
+    artifactName = "Annotation"
+    artifactId = "annotation"
+    description =
+        "A component catalog library that collects and lists @Preview. \n" +
+        "By providing APIs such as Field, Event, etc., it provides not only display but also interactive preview.\n" +
+        "annotation provides annotations used in runtime and tooling"
+}

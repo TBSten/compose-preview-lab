@@ -38,6 +38,7 @@ plugins {
 
 includeBuild("./buildLogic")
 include(":core")
+include(":annotation")
 include(":ksp-plugin")
 include(":gradle-plugin")
 // include(":intellij-plugin")
