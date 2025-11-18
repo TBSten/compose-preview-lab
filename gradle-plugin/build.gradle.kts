@@ -6,6 +6,7 @@ plugins {
 }
 
 dependencies {
+    api(projects.annotation)
     compileOnly(gradleApi())
     implementation(libs.kotlinGradlePlugin)
     implementation(libs.kspGradlePlugin)
