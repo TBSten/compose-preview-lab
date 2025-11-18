@@ -39,7 +39,7 @@ import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.PreviewLab
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.StringField
-import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.CodeBlock
+import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.KotlinCodeBlock
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -245,7 +245,7 @@ private fun BeforeAfterCodeSection(
                 .padding(16.dp)
                 .fillMaxWidth(),
         ) {
-            CodeBlock(
+            KotlinCodeBlock(
                 code = code,
             )
         }

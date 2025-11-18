@@ -10,11 +10,11 @@ import dev.snipme.highlights.model.SyntaxLanguage
 import dev.snipme.kodeview.view.CodeTextView
 
 @Composable
-internal fun CodeBlock(code: String, language: SyntaxLanguage = SyntaxLanguage.KOTLIN, modifier: Modifier = Modifier) {
-    val highlights by remember(code, language) {
+internal actual fun KotlinCodeBlock(code: String, modifier: Modifier) {
+    val highlights by remember(code) {
         mutableStateOf(
             Highlights
-                .Builder(code = code, language = language)
+                .Builder(code = code, language = SyntaxLanguage.KOTLIN)
                 .build(),
         )
     }
