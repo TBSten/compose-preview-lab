@@ -104,7 +104,7 @@ internal abstract class GenerateFeaturedFilesCode : DefaultTask() {
 
         outputDir.get()
             .dir(packageName.replace(".", "/"))
-            .file("featuredFiles.kt")
+            .file("FeaturedFileList.kt")
             .also { it.asFile.parentFile.mkdirs() }
             .asFile
             .bufferedWriter()

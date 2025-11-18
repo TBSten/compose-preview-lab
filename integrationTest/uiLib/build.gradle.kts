@@ -67,5 +67,10 @@ dependencies {
 }
 
 composePreviewLab {
+    generatePackage = "uiLib"
     publicPreviewList = true
+    projectRootPath = rootProject.projectDir.absolutePath
+    generatePreviewList = true
+    generatePreviewAllList = false
+    generateFeaturedFiles = false
 }

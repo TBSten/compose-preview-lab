@@ -138,6 +138,15 @@ compose.desktop {
     }
 }
 
+composePreviewLab {
+    generatePackage = "app"
+    publicPreviewList = true
+    projectRootPath = rootProject.projectDir.absolutePath
+    generatePreviewList = false
+    generatePreviewAllList = true
+    generateFeaturedFiles = true
+}
+
 // https://github.com/JetBrains/compose-hot-reload
 composeCompiler {
     featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)

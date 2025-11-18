@@ -3,5 +3,5 @@ import me.tbsten.compose.preview.lab.previewLabApplication
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() = previewLabApplication(
-    previewList = app.PreviewAllList,
+    previewList = uiLib.PreviewList,
 )
