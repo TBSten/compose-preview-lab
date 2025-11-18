@@ -23,7 +23,7 @@ internal fun generateList(
             sources = previews.map { it.baseFile }.toTypedArray(),
         ),
         packageName = previewsListPackage,
-        fileName = "Previews",
+        fileName = "PreviewList",
     ).bufferedWriter().use {
         it.appendLine("package $previewsListPackage")
         it.appendLine()
@@ -31,7 +31,7 @@ internal fun generateList(
         it.appendLine()
         it.appendLine(
             "${if (publicPreviewList) "public" else "internal"} " +
-                "val previews = listOf<CollectedPreview>(",
+                "object PreviewList : List<CollectedPreview> by listOf(",
         )
         previews.forEach { preview ->
             it.appendLine("    // ${preview.fullBaseName}")
@@ -47,7 +47,11 @@ internal fun generateList(
             it.appendLine("        startLineNumber = ${preview.startLineNumber ?: "null"},")
             it.appendLine("    ) { ${preview.fullCopyName}() },")
         }
-        it.appendLine(")")
+        it.appendLine(") {")
+        previews.forEachIndexed { index, preview ->
+            it.appendLine("    val `${preview.id}` get() = this[$index]")
+        }
+        it.appendLine("}")
         it.appendLine()
     }
 
