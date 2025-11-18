@@ -3,7 +3,6 @@ import me.tbsten.compose.preview.lab.previewLabApplication
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() = previewLabApplication(
-    previews = app.previewsAll,
+    previews = app.PreviewsAll,
     featuredFiles = app.FeaturedFiles,
-    initialSelectId = "AboutComposePreviewLab",
 )

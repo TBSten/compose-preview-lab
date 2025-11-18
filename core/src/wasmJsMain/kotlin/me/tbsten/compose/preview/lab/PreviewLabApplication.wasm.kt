@@ -17,12 +17,12 @@ import org.w3c.dom.HTMLElement
  * ```kotlin
  * // Basic WASM application
  * fun main() = previewLabApplication(
- *     previews = myModule.previews
+ *     previews = myModule.Previews
  * )
  *
  * // With file handler integration
  * fun main() = previewLabApplication(
- *     previews = myModule.previews,
+ *     previews = myModule.Previews,
  *     openFileHandler = UrlOpenFileHandler("https://github.com/user/repo/blob/main"),
  *     featuredFiles = mapOf(
  *         "UI Components" to listOf("Button.kt", "TextField.kt"),
@@ -34,7 +34,7 @@ import org.w3c.dom.HTMLElement
  * fun main() {
  *     val container = document.getElementById("preview-app") as HTMLElement
  *     previewLabApplication(
- *         previews = myModule.previews,
+ *         previews = myModule.Previews,
  *         rootElement = container
  *     )
  * }

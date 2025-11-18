@@ -17,18 +17,18 @@ import org.w3c.dom.HTMLElement
  * ```kotlin
  * // Basic web application
  * fun main() = previewLabApplication(
- *     previews = myModule.previews
+ *     previews = myModule.Previews
  * )
  *
  * // With file handler and grouping
  * fun main() = previewLabApplication(
- *     previews = myModule.previews,
+ *     previews = myModule.Previews,
  *     openFileHandler = UrlOpenFileHandler("https://github.com/user/repo/blob/main"),
  * )
  *
  * // With `.composepreviewlab/featured/` directory
  * fun main() = previewLabApplication(
- *     previews = myModule.previews,
+ *     previews = myModule.Previews,
  *     featuredFiles = app.FeaturedFiles,
  * )
  *
@@ -36,7 +36,7 @@ import org.w3c.dom.HTMLElement
  * fun main() {
  *     val customContainer = document.getElementById("preview-container") as HTMLElement
  *     previewLabApplication(
- *         previews = myModule.previews,
+ *         previews = myModule.Previews,
  *         rootElement = customContainer
  *     )
  * }
