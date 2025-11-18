@@ -146,3 +146,7 @@ composeCompiler {
 tasks.register<ComposeHotRun>("runHot") {
     mainClass.set("MainKt")
 }
+
+composePreviewLab {
+    generateFeaturedFiles = true
+}

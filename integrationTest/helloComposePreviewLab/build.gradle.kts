@@ -30,6 +30,8 @@ kotlin {
         }
     }
 
+    applyDefaultHierarchyTemplate()
+
     sourceSets {
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -38,7 +40,22 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation("me.tbsten.compose.preview.lab:core:${libs.versions.composePreviewLab.get()}")
-            implementation("dev.snipme:kodeview:0.9.0")
+        }
+
+        val otherWasmJs by creating {
+            dependsOn(commonMain.get())
+        }
+        listOf(
+            androidMain,
+            iosMain,
+            jvmMain,
+            jsMain,
+        ).forEach {
+            it.get().dependsOn(otherWasmJs)
+        }
+
+        otherWasmJs.dependencies {
+            implementation(libs.kodeview)
         }
     }
 }
