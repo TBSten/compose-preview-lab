@@ -13,6 +13,61 @@ import androidx.compose.ui.window.rememberWindowState
 import java.util.Collections.emptyMap
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 
+/**
+ * Creates a desktop window application for previewing Compose components
+ *
+ * Launches a JVM desktop application with PreviewLab interface in a native window.
+ * Provides full desktop integration with customizable window properties for
+ * interactive component development and testing.
+ *
+ * ```kotlin
+ * // Basic desktop application
+ * fun main() = application {
+ *     PreviewLabGalleryWindows(
+ *         previews = myModule.PreviewList
+ *     )
+ * }
+ *
+ * // With file handler and featured files
+ * fun main() = application {
+ *     PreviewLabGalleryWindows(
+ *         previews = myModule.PreviewList,
+ *         openFileHandler = UrlOpenFileHandler("https://github.com/user/repo/blob/main"),
+ *         featuredFiles = myModule.FeaturedFileList,
+ *     )
+ * }
+ *
+ * // Custom window configuration
+ * fun main() = application {
+ *     PreviewLabGalleryWindows(
+ *         previews = myModule.PreviewList,
+ *         windowState = rememberWindowState(size = DpSize(1400.dp, 900.dp)),
+ *         title = "My Component Gallery",
+ *     )
+ * }
+ * ```
+ *
+ * @param previews Collection of previews to display in the interface
+ * @param openFileHandler Handler for opening source files (optional)
+ * @param featuredFiles Grouped file organization for navigation
+ * @param state PreviewLabGalleryState for managing gallery state
+ * @param onCloseRequest Callback invoked when window close is requested
+ * @param windowState WindowState for managing window properties
+ * @param visible Whether the window is visible
+ * @param title Window title text
+ * @param icon Window icon painter
+ * @param undecorated Whether to remove window decorations
+ * @param transparent Whether the window background is transparent
+ * @param resizable Whether the window can be resized
+ * @param enabled Whether the window is enabled for user interaction
+ * @param focusable Whether the window can receive focus
+ * @param alwaysOnTop Whether the window should stay on top of other windows
+ * @param onPreviewKeyEvent Callback for preview key events
+ * @param onKeyEvent Callback for key events
+ * @see PreviewLabGallery
+ * @see CollectedPreview
+ * @see OpenFileHandler
+ */
 @Composable
 fun ApplicationScope.PreviewLabGalleryWindows(
     previews: List<CollectedPreview>,
