@@ -9,8 +9,7 @@ import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.property
 
 abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFactory, project: Project) {
-    // TODO generatePackage に rename (featured でも使うため)
-    val previewsListPackage: Property<String> = objects.property<String>()
+    val generatePackage: Property<String> = objects.property<String>()
         .convention(
             project.name
                 .split(Regex("(\\.)|_|-"))
@@ -28,7 +27,7 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
 internal fun Project.applyToKspExtension(extension: ComposePreviewLabExtension) {
     afterEvaluate {
         ksp {
-            arg("composePreviewLab.previewsListPackage", extension.previewsListPackage.orNull ?: "")
+            arg("composePreviewLab.previewsListPackage", extension.generatePackage.orNull ?: "")
             arg("composePreviewLab.publicPreviewList", extension.publicPreviewList.get().toString())
             arg("composePreviewLab.projectRootPath", extension.projectRootPath.orNull ?: "")
         }

@@ -18,7 +18,7 @@ internal fun Project.configureFeaturedFiles(extension: ComposePreviewLabExtensio
     val outputDir = layout.buildDirectory.dir("generated/composepreviewlab/")
     val internalGenerateFeaturedFilesCode = tasks.register<GenerateFeaturedFilesCode>("internalGeneratefeaturedFilesCode") {
         group = "compose preview lab internal"
-        this.packageName = extension.previewsListPackage.get()
+        this.packageName = extension.generatePackage.get()
         this.featuredFilesDir.set(
             rootProject
                 .layout.projectDirectory
