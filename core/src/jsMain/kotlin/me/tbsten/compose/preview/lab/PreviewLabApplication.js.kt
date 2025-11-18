@@ -29,7 +29,7 @@ import org.w3c.dom.HTMLElement
  * // With `.composepreviewlab/featured/` directory
  * fun main() = previewLabApplication(
  *     previewList = myModule.PreviewList,
- *     featuredFiles = app.FeaturedFileList,
+ *     featuredFileList = app.FeaturedFileList,
  * )
  *
  * // Custom root element
@@ -43,7 +43,7 @@ import org.w3c.dom.HTMLElement
  * ```
  *
  * @param previewList Collection of previews to display in the interface
- * @param featuredFiles Grouped file organization for navigation
+ * @param featuredFileList Grouped file organization for navigation
  * @param openFileHandler Handler for opening source files (optional)
  * @param rootElement HTML element to mount the application (defaults to document.body)
  * @param state PreviewLabGalleryState for managing gallery state
@@ -54,7 +54,7 @@ import org.w3c.dom.HTMLElement
 @OptIn(ExperimentalComposeUiApi::class)
 fun previewLabApplication(
     previewList: List<CollectedPreview>,
-    featuredFiles: Map<String, List<String>> = emptyMap(),
+    featuredFileList: Map<String, List<String>> = emptyMap(),
     openFileHandler: OpenFileHandler<out Any?>? = null,
     rootElement: HTMLElement = document.body!!,
     state: PreviewLabGalleryState = PreviewLabGalleryState(),
@@ -62,7 +62,7 @@ fun previewLabApplication(
     ComposeViewport(rootElement) {
         PreviewLabGallery(
             previewList = previewList,
-            featuredFiles = featuredFiles,
+            featuredFileList = featuredFileList,
             openFileHandler = openFileHandler,
             state = state,
         )

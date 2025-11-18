@@ -6,8 +6,8 @@ import me.tbsten.compose.preview.lab.previewsForUiDebug
 
 fun main(): Unit = application {
     PreviewLabGalleryWindows(
-        previews = previewsForUiDebug,
-        featuredFiles = featuredFilesForDebug,
+        previewList = previewsForUiDebug,
+        featuredFileList = featuredFilesForDebug,
         openFileHandler = OpenFileHandler { TODO("open file: $it") },
     )
 }

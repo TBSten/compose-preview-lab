@@ -24,7 +24,7 @@ import org.w3c.dom.HTMLElement
  * fun main() = previewLabApplication(
  *     previewList = myModule.PreviewList,
  *     openFileHandler = UrlOpenFileHandler("https://github.com/user/repo/blob/main"),
- *     featuredFiles = mapOf(
+ *     featuredFileList = mapOf(
  *         "UI Components" to listOf("Button.kt", "TextField.kt"),
  *         "Navigation" to listOf("TopBar.kt", "Drawer.kt")
  *     )
@@ -41,7 +41,7 @@ import org.w3c.dom.HTMLElement
  * ```
  *
  * @param previewList Collection of previews to display in the interface
- * @param featuredFiles Grouped file organization for navigation
+ * @param featuredFileList Grouped file organization for navigation
  * @param openFileHandler Handler for opening source files (optional)
  * @param state PreviewLabGalleryState for managing gallery state
  * @param rootElement HTML element to mount the application (defaults to document.body)
@@ -52,7 +52,7 @@ import org.w3c.dom.HTMLElement
 @OptIn(ExperimentalComposeUiApi::class)
 fun previewLabApplication(
     previewList: List<CollectedPreview>,
-    featuredFiles: Map<String, List<String>> = emptyMap(),
+    featuredFileList: Map<String, List<String>> = emptyMap(),
     openFileHandler: OpenFileHandler<out Any?>? = null,
     state: PreviewLabGalleryState = PreviewLabGalleryState(),
     rootElement: HTMLElement = document.body!!,
@@ -60,7 +60,7 @@ fun previewLabApplication(
     ComposeViewport(rootElement) {
         PreviewLabGallery(
             previewList = previewList,
-            featuredFiles = featuredFiles,
+            featuredFileList = featuredFileList,
             openFileHandler = openFileHandler,
             state = state,
         )

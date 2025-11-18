@@ -59,7 +59,7 @@ import org.jetbrains.compose.resources.painterResource
  * @param modifier Modifier to be applied to the root layout of the PreviewLabGallery.
  * @param state [PreviewLabGalleryState] to manage the state of the PreviewLabGallery. Preserves the state of the selected Preview, etc. By default, remember is used (i.e., the composition of the call to Composable is the scope of the state), but the scope (storage period) of the state can be adjusted by moving it to a state holder, such as ViewModel, if necessary.
  * @param openFileHandler By specifying OpenFileHandler, you can display a "Source Code" button that displays the source code corresponding to the Preview.
- * @param featuredFiles Map of group names to file paths for organizing previews into featured categories. Files matching these paths will be grouped under their respective category names in the preview list.
+ * @param featuredFileList Map of group names to file paths for organizing previews into featured categories. Files matching these paths will be grouped under their respective category names in the preview list.
  *
  * @see CollectedPreview
  * @see OpenFileHandler
@@ -70,12 +70,12 @@ fun PreviewLabGallery(
     modifier: Modifier = Modifier,
     state: PreviewLabGalleryState = remember { PreviewLabGalleryState() },
     openFileHandler: OpenFileHandler<out Any?>? = null,
-    featuredFiles: Map<String, List<String>> = emptyMap(),
+    featuredFileList: Map<String, List<String>> = emptyMap(),
 ) = PreviewLabTheme {
     val previews = remember { previewList.toList() }
     val groupedPreviews by remember {
         derivedStateOf {
-            previewList.groupingByFeaturedFiles(featuredFiles) +
+            previewList.groupingByFeaturedFiles(featuredFileList) +
                 ("all" to previewList)
         }
     }

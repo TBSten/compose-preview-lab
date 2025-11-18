@@ -19,7 +19,7 @@ class AppActivity : ComponentActivity() {
         setContent {
             PreviewLabGallery(
                 state = rememberRetained { PreviewLabGalleryState() },
-                previews = previewsForUiDebug,
+                previewList = previewsForUiDebug,
                 modifier = Modifier
                     .systemBarsPadding()
                     .displayCutoutPadding(),

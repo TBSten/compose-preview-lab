@@ -33,7 +33,7 @@ import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
  *     PreviewLabGalleryWindows(
  *         previewList = myModule.PreviewList,
  *         openFileHandler = UrlOpenFileHandler("https://github.com/user/repo/blob/main"),
- *         featuredFiles = myModule.FeaturedFileList,
+ *         featuredFileList = myModule.FeaturedFileList,
  *     )
  * }
  *
@@ -49,7 +49,7 @@ import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
  *
  * @param previewList Collection of previews to display in the interface
  * @param openFileHandler Handler for opening source files (optional)
- * @param featuredFiles Grouped file organization for navigation
+ * @param featuredFileList Grouped file organization for navigation
  * @param state PreviewLabGalleryState for managing gallery state
  * @param onCloseRequest Callback invoked when window close is requested
  * @param windowState WindowState for managing window properties
@@ -72,7 +72,7 @@ import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 fun ApplicationScope.PreviewLabGalleryWindows(
     previewList: List<CollectedPreview>,
     openFileHandler: OpenFileHandler<out Any?>? = null,
-    featuredFiles: Map<String, List<String>> = emptyMap(),
+    featuredFileList: Map<String, List<String>> = emptyMap(),
     state: PreviewLabGalleryState = remember { PreviewLabGalleryState() },
     // Window arguments
     // TODO: Review appropriate default values
@@ -107,7 +107,7 @@ fun ApplicationScope.PreviewLabGalleryWindows(
     ) {
         PreviewLabGallery(
             previewList = previewList,
-            featuredFiles = featuredFiles,
+            featuredFileList = featuredFileList,
             openFileHandler = openFileHandler,
             state = state,
         )

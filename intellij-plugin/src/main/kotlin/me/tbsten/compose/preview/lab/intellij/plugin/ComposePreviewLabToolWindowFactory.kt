@@ -41,7 +41,7 @@ class ComposePreviewLabToolWindowFactory : ToolWindowFactory {
             Text("selectedFileFlow: ${selectedFileFlow?.name ?: "null"}")
             PreviewLabGallery(
                 // TODO capture from ksp generated source
-                previews = List(3) {
+                previewList = List(3) {
                     CollectedPreview("Preview $it") {
                         PreviewLab {
                             Button(
