@@ -38,6 +38,7 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation("me.tbsten.compose.preview.lab:core:${libs.versions.composePreviewLab.get()}")
+            implementation("dev.snipme:kodeview:0.9.0")
         }
     }
 }
