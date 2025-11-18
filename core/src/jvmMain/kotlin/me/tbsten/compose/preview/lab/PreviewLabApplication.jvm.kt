@@ -1,6 +1,7 @@
 package me.tbsten.compose.preview.lab
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.unit.DpSize
@@ -17,10 +18,11 @@ fun ApplicationScope.PreviewLabGalleryWindows(
     previews: List<CollectedPreview>,
     openFileHandler: OpenFileHandler<out Any?>? = null,
     featuredFiles: Map<String, List<String>> = emptyMap(),
+    state: PreviewLabGalleryState = remember { PreviewLabGalleryState() },
     // Window arguments
     // TODO: Review appropriate default values
     onCloseRequest: () -> Unit = ::exitApplication,
-    state: WindowState = rememberWindowState(size = DpSize(1000.dp, 800.dp)),
+    windowState: WindowState = rememberWindowState(size = DpSize(1000.dp, 800.dp)),
     visible: Boolean = true,
     title: String = "Compose Preview Lab",
     icon: Painter? = null,
@@ -35,7 +37,7 @@ fun ApplicationScope.PreviewLabGalleryWindows(
 ) {
     Window(
         onCloseRequest = onCloseRequest,
-        state = state,
+        state = windowState,
         visible = visible,
         title = title,
         icon = icon,
@@ -52,6 +54,7 @@ fun ApplicationScope.PreviewLabGalleryWindows(
             previews = previews,
             featuredFiles = featuredFiles,
             openFileHandler = openFileHandler,
+            state = state,
         )
     }
 }

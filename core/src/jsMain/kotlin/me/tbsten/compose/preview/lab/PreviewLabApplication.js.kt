@@ -56,12 +56,14 @@ fun previewLabApplication(
     featuredFiles: Map<String, List<String>> = emptyMap(),
     openFileHandler: OpenFileHandler<out Any?>? = null,
     rootElement: HTMLElement = document.body!!,
+    state: PreviewLabGalleryState = PreviewLabGalleryState(),
 ) {
     ComposeViewport(rootElement) {
         PreviewLabGallery(
             previews = previews,
             featuredFiles = featuredFiles,
             openFileHandler = openFileHandler,
+            state = state,
         )
     }
 }
