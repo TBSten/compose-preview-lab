@@ -83,7 +83,7 @@ internal class ComposePreviewLabKspProcessor(
                 projectRootPath = projectRootPath,
             )
 
-            if (options[KspArg.generatePreviewAllList]?.lowercase() == "true") {
+            if (options.optionIsTrue(KspArg.generatePreviewAllList)) {
                 prepareModuleForPreviewAllAggregate(
                     codeGenerator = codeGenerator,
                     previewsListPackage = previewsListPackage,

@@ -14,7 +14,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  * // user code
  * fun MyAppEntryPoint() {
  *   ComposePreviewLabGallery(
- *     previews = myApp.PreviewList,
+ *     previewList = myApp.PreviewList,
  *   )
  * }
  * ```

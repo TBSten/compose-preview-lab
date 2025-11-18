@@ -45,8 +45,8 @@ import org.w3c.dom.HTMLElement
  * @param previewList Collection of previews to display in the interface
  * @param featuredFileList Grouped file organization for navigation
  * @param openFileHandler Handler for opening source files (optional)
- * @param rootElement HTML element to mount the application (defaults to document.body)
  * @param state PreviewLabGalleryState for managing gallery state
+ * @param rootElement HTML element to mount the application (defaults to document.body)
  * @see PreviewLabGallery
  * @see CollectedPreview
  * @see OpenFileHandler
@@ -56,8 +56,8 @@ fun previewLabApplication(
     previewList: List<CollectedPreview>,
     featuredFileList: Map<String, List<String>> = emptyMap(),
     openFileHandler: OpenFileHandler<out Any?>? = null,
-    rootElement: HTMLElement = document.body!!,
     state: PreviewLabGalleryState = PreviewLabGalleryState(),
+    rootElement: HTMLElement = document.body!!,
 ) {
     ComposeViewport(rootElement) {
         PreviewLabGallery(

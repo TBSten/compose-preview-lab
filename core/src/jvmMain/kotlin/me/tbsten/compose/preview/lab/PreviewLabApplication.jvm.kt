@@ -51,8 +51,8 @@ import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
  * @param openFileHandler Handler for opening source files (optional)
  * @param featuredFileList Grouped file organization for navigation
  * @param state PreviewLabGalleryState for managing gallery state
- * @param onCloseRequest Callback invoked when window close is requested
  * @param windowState WindowState for managing window properties
+ * @param onCloseRequest Callback invoked when window close is requested
  * @param visible Whether the window is visible
  * @param title Window title text
  * @param icon Window icon painter
@@ -76,8 +76,8 @@ fun ApplicationScope.PreviewLabGalleryWindows(
     state: PreviewLabGalleryState = remember { PreviewLabGalleryState() },
     // Window arguments
     // TODO: Review appropriate default values
-    onCloseRequest: () -> Unit = ::exitApplication,
     windowState: WindowState = rememberWindowState(size = DpSize(1000.dp, 800.dp)),
+    onCloseRequest: () -> Unit = ::exitApplication,
     visible: Boolean = true,
     title: String = "Compose Preview Lab",
     icon: Painter? = null,

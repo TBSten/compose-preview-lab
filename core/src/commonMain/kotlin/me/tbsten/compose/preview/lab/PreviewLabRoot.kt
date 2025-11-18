@@ -76,7 +76,7 @@ fun PreviewLabGallery(
     val groupedPreviews by remember {
         derivedStateOf {
             previewList.groupingByFeaturedFiles(featuredFileList) +
-                ("all" to previewList)
+                ("all" to previews)
         }
     }
 

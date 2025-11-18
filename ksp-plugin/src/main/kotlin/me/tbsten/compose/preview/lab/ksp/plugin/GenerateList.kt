@@ -49,7 +49,8 @@ internal fun generateList(
         }
         it.appendLine(") {")
         previews.forEachIndexed { index, preview ->
-            it.appendLine("    val `${preview.id}` get() = this[$index]")
+            val escapedId = preview.id.replace("`", "\\`")
+            it.appendLine("    val `$escapedId` get() = this[$index]")
         }
         it.appendLine("}")
         it.appendLine()
