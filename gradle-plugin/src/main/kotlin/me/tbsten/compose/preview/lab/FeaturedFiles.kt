@@ -98,6 +98,7 @@ internal abstract class GenerateFeaturedFilesCode : DefaultTask() {
 
         featuredFilesCode += ") {\n"
         groupNames.forEach { group ->
+            featuredFilesCode += "    @get:kotlin.jvm.JvmName(\"${group.replace(" ", "_")}\")\n"
             featuredFilesCode += "    val `$group` get() = this[\"$group\"]!!\n"
         }
         featuredFilesCode += "}"

@@ -109,6 +109,7 @@ dependencies {
     val composePreviewLabKspPlugin =
         "me.tbsten.compose.preview.lab:ksp-plugin:${libs.versions.composePreviewLab.get()}"
     add("kspCommonMainMetadata", composePreviewLabKspPlugin)
+    ksp(composePreviewLabKspPlugin)
     add("kspAndroid", composePreviewLabKspPlugin)
     add("kspJvm", composePreviewLabKspPlugin)
     add("kspJs", composePreviewLabKspPlugin)
@@ -139,11 +140,6 @@ compose.desktop {
 }
 
 composePreviewLab {
-    generatePackage = "app"
-    publicPreviewList = true
-    projectRootPath = rootProject.projectDir.absolutePath
-    generatePreviewList = false
-    generatePreviewAllList = true
     generateFeaturedFiles = true
 }
 
