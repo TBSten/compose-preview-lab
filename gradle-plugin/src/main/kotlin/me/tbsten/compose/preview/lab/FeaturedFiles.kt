@@ -15,31 +15,36 @@ import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 internal fun Project.configureFeaturedFiles(extension: ComposePreviewLabExtension) {
-    val outputDir = layout.buildDirectory.dir("generated/composepreviewlab/")
-    val internalGenerateFeaturedFilesCode = tasks.register<GenerateFeaturedFilesCode>("internalGeneratefeaturedFilesCode") {
-        group = "compose preview lab internal"
-        this.packageName = extension.generatePackage.get()
-        this.featuredFilesDir.set(
-            rootProject
-                .layout.projectDirectory
-                .dir(".composepreviewlab/featured"),
-        )
-        this.projectRootPath = extension.projectRootPath.get()
-        this.outputDir = outputDir.also { it.get().asFile.mkdirs() }
-    }
+    afterEvaluate {
+        if (extension.generateFeaturedFiles) {
+            val outputDir = layout.buildDirectory.dir("generated/composepreviewlab/")
+            val internalGenerateFeaturedFilesCode =
+                tasks.register<GenerateFeaturedFilesCode>("internalGeneratefeaturedFilesCode") {
+                    group = "compose preview lab internal"
+                    this.packageName = extension.generatePackage
+                    this.featuredFilesDir.set(
+                        rootProject
+                            .layout.projectDirectory
+                            .dir(".composepreviewlab/featured"),
+                    )
+                    this.projectRootPath = extension.projectRootPath
+                    this.outputDir = outputDir.also { it.get().asFile.mkdirs() }
+                }
 
-    tasks.withType<KotlinCompile> {
-        dependsOn(internalGenerateFeaturedFilesCode)
-        mustRunAfter(internalGenerateFeaturedFilesCode)
-    }
+            tasks.withType<KotlinCompile> {
+                dependsOn(internalGenerateFeaturedFilesCode)
+                mustRunAfter(internalGenerateFeaturedFilesCode)
+            }
 
-    // kotlin.sourceSets に出力先を追加
-    listOf(
-        "main",
-        "commonMain",
-    ).forEach { sourceSetName ->
-        kotlinExtension.sourceSets.findByName(sourceSetName)?.apply {
-            kotlin.srcDir(internalGenerateFeaturedFilesCode)
+            // kotlin.sourceSets に出力先を追加
+            listOf(
+                "main",
+                "commonMain",
+            ).forEach { sourceSetName ->
+                kotlinExtension.sourceSets.findByName(sourceSetName)?.apply {
+                    kotlin.srcDir(internalGenerateFeaturedFilesCode)
+                }
+            }
         }
     }
 }

@@ -1,15 +1,18 @@
 package me.tbsten.compose.preview.lab
 
 import javax.inject.Inject
+import me.tbsten.compose.preview.lab.internal.KspArg
 import me.tbsten.compose.preview.lab.util.invoke
 import me.tbsten.compose.preview.lab.util.ksp
 import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory
-import org.gradle.api.provider.Property
+import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.property
+import org.gradle.kotlin.dsl.provideDelegate
+import org.gradle.kotlin.dsl.setValue
 
 abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFactory, project: Project) {
-    val generatePackage: Property<String> = objects.property<String>()
+    var generatePackage: String by objects.property<String>()
         .convention(
             project.name
                 .split(Regex("(\\.)|_|-"))
@@ -17,19 +20,30 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
                 .joinToString(""),
         )
 
-    val publicPreviewList: Property<Boolean> = objects.property<Boolean>()
+    var publicPreviewList: Boolean by objects.property<Boolean>()
         .convention(false)
 
-    val projectRootPath: Property<String?> = objects.property<String?>()
+    var projectRootPath: String by objects.property<String>()
         .convention(project.rootProject.projectDir.absolutePath)
+
+    var generatePreviewList: Boolean by objects.property<Boolean>()
+        .convention(true)
+
+    var generatePreviewAllList: Boolean by objects.property<Boolean>()
+        .convention(true)
+
+    var generateFeaturedFiles: Boolean by objects.property<Boolean>()
+        .convention(false)
 }
 
 internal fun Project.applyToKspExtension(extension: ComposePreviewLabExtension) {
     afterEvaluate {
         ksp {
-            arg("composePreviewLab.previewsListPackage", extension.generatePackage.orNull ?: "")
-            arg("composePreviewLab.publicPreviewList", extension.publicPreviewList.get().toString())
-            arg("composePreviewLab.projectRootPath", extension.projectRootPath.orNull ?: "")
+            arg(KspArg.previewsListPackage, extension.generatePackage)
+            arg(KspArg.publicPreviewList, extension.publicPreviewList.toString())
+            arg(KspArg.projectRootPath, extension.projectRootPath)
+            arg(KspArg.generatePreviewList, extension.generatePreviewList.toString())
+            arg(KspArg.generatePreviewAllList, extension.generatePreviewAllList.toString())
         }
     }
 }
