@@ -236,6 +236,7 @@ open class PreviewLab(
         { rememberSaveable(saver = PreviewLabState.Saver) { PreviewLabState() } },
     private val defaultScreenSizes: List<ScreenSize> = ScreenSize.SmartphoneAndDesktops,
     private val contentRoot: @Composable (content: @Composable () -> Unit) -> Unit = { it() },
+    private val isHeaderShow: Boolean = true,
     @Suppress("unused") disableTrailingLambda: Nothing? = null,
 ) {
     /**
@@ -267,10 +268,14 @@ open class PreviewLab(
         state: PreviewLabState = LocalPreviewLabState.current ?: defaultState(),
         maxWidth: Dp,
         maxHeight: Dp,
+        modifier: Modifier = Modifier,
+        isHeaderShow: Boolean = this.isHeaderShow,
         content: @Composable PreviewLabScope.() -> Unit,
     ) = invoke(
         state = state,
         screenSizes = listOf(ScreenSize(maxWidth, maxHeight)),
+        modifier = modifier,
+        isHeaderShow = isHeaderShow,
         content = content,
     )
 
@@ -377,6 +382,8 @@ open class PreviewLab(
     open operator fun invoke(
         state: PreviewLabState = LocalPreviewLabState.current ?: defaultState(),
         screenSizes: List<ScreenSize> = defaultScreenSizes,
+        modifier: Modifier = Modifier,
+        isHeaderShow: Boolean = this.isHeaderShow,
         content: @Composable PreviewLabScope.() -> Unit,
     ) {
         val toaster = rememberToasterState().also { toaster ->
@@ -399,8 +406,9 @@ open class PreviewLab(
         }
 
         Providers(state = state, toaster = toaster) {
-            Column(modifier = Modifier.background(PreviewLabTheme.colors.background)) {
+            Column(modifier = modifier.background(PreviewLabTheme.colors.background)) {
                 PreviewLabHeader(
+                    isHeaderShow = isHeaderShow,
                     scale = state.contentScale,
                     onScaleChange = { state.contentScale = it },
                     isInspectorPanelVisible = state.isInspectorPanelVisible,
@@ -411,7 +419,10 @@ open class PreviewLab(
                             .fillMaxWidth()
                             .weight(1f),
                     ) {
-                        InspectorsPane(state = state, isVisible = state.isInspectorPanelVisible) {
+                        InspectorsPane(
+                            state = state,
+                            isVisible = state.isInspectorPanelVisible,
+                        ) {
                             ContentSection(
                                 state = state,
                                 screenSizes = screenSizes,

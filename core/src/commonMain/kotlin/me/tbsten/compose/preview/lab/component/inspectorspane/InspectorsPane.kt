@@ -45,7 +45,7 @@ import me.tbsten.compose.preview.lab.ui.components.Text
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-internal fun InspectorsPane(state: PreviewLabState, isVisible: Boolean, content: @Composable () -> Unit) {
+internal fun InspectorsPane(state: PreviewLabState, isVisible: Boolean, content: @Composable () -> Unit,) {
 //    val content = remember { movableContentOf { content() } }
 
     if (!isVisible) {
