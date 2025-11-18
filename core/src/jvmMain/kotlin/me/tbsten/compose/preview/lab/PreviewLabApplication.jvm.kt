@@ -24,14 +24,14 @@ import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
  * // Basic desktop application
  * fun main() = application {
  *     PreviewLabGalleryWindows(
- *         previews = myModule.PreviewList
+ *         previewList = myModule.PreviewList
  *     )
  * }
  *
  * // With file handler and featured files
  * fun main() = application {
  *     PreviewLabGalleryWindows(
- *         previews = myModule.PreviewList,
+ *         previewList = myModule.PreviewList,
  *         openFileHandler = UrlOpenFileHandler("https://github.com/user/repo/blob/main"),
  *         featuredFiles = myModule.FeaturedFileList,
  *     )
@@ -40,14 +40,14 @@ import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
  * // Custom window configuration
  * fun main() = application {
  *     PreviewLabGalleryWindows(
- *         previews = myModule.PreviewList,
+ *         previewList = myModule.PreviewList,
  *         windowState = rememberWindowState(size = DpSize(1400.dp, 900.dp)),
  *         title = "My Component Gallery",
  *     )
  * }
  * ```
  *
- * @param previews Collection of previews to display in the interface
+ * @param previewList Collection of previews to display in the interface
  * @param openFileHandler Handler for opening source files (optional)
  * @param featuredFiles Grouped file organization for navigation
  * @param state PreviewLabGalleryState for managing gallery state
@@ -70,7 +70,7 @@ import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
  */
 @Composable
 fun ApplicationScope.PreviewLabGalleryWindows(
-    previews: List<CollectedPreview>,
+    previewList: List<CollectedPreview>,
     openFileHandler: OpenFileHandler<out Any?>? = null,
     featuredFiles: Map<String, List<String>> = emptyMap(),
     state: PreviewLabGalleryState = remember { PreviewLabGalleryState() },
@@ -106,7 +106,7 @@ fun ApplicationScope.PreviewLabGalleryWindows(
         onKeyEvent = onKeyEvent,
     ) {
         PreviewLabGallery(
-            previews = previews,
+            previewList = previewList,
             featuredFiles = featuredFiles,
             openFileHandler = openFileHandler,
             state = state,

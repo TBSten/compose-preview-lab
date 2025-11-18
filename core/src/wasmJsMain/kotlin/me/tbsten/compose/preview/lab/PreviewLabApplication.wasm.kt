@@ -17,12 +17,12 @@ import org.w3c.dom.HTMLElement
  * ```kotlin
  * // Basic WASM application
  * fun main() = previewLabApplication(
- *     previews = myModule.PreviewList
+ *     previewList = myModule.PreviewList
  * )
  *
  * // With file handler integration
  * fun main() = previewLabApplication(
- *     previews = myModule.PreviewList,
+ *     previewList = myModule.PreviewList,
  *     openFileHandler = UrlOpenFileHandler("https://github.com/user/repo/blob/main"),
  *     featuredFiles = mapOf(
  *         "UI Components" to listOf("Button.kt", "TextField.kt"),
@@ -34,15 +34,16 @@ import org.w3c.dom.HTMLElement
  * fun main() {
  *     val container = document.getElementById("preview-app") as HTMLElement
  *     previewLabApplication(
- *         previews = myModule.PreviewList,
+ *         previewList = myModule.PreviewList,
  *         rootElement = container
  *     )
  * }
  * ```
  *
- * @param previews Collection of previews to display in the interface
+ * @param previewList Collection of previews to display in the interface
  * @param featuredFiles Grouped file organization for navigation
  * @param openFileHandler Handler for opening source files (optional)
+ * @param state PreviewLabGalleryState for managing gallery state
  * @param rootElement HTML element to mount the application (defaults to document.body)
  * @see PreviewLabGallery
  * @see CollectedPreview
@@ -50,7 +51,7 @@ import org.w3c.dom.HTMLElement
  */
 @OptIn(ExperimentalComposeUiApi::class)
 fun previewLabApplication(
-    previews: List<CollectedPreview>,
+    previewList: List<CollectedPreview>,
     featuredFiles: Map<String, List<String>> = emptyMap(),
     openFileHandler: OpenFileHandler<out Any?>? = null,
     state: PreviewLabGalleryState = PreviewLabGalleryState(),
@@ -58,7 +59,7 @@ fun previewLabApplication(
 ) {
     ComposeViewport(rootElement) {
         PreviewLabGallery(
-            previews = previews,
+            previewList = previewList,
             featuredFiles = featuredFiles,
             openFileHandler = openFileHandler,
             state = state,

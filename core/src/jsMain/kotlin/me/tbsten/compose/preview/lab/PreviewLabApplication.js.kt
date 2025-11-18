@@ -17,18 +17,18 @@ import org.w3c.dom.HTMLElement
  * ```kotlin
  * // Basic web application
  * fun main() = previewLabApplication(
- *     previews = myModule.PreviewList
+ *     previewList = myModule.PreviewList
  * )
  *
  * // With file handler and grouping
  * fun main() = previewLabApplication(
- *     previews = myModule.PreviewList,
+ *     previewList = myModule.PreviewList,
  *     openFileHandler = UrlOpenFileHandler("https://github.com/user/repo/blob/main"),
  * )
  *
  * // With `.composepreviewlab/featured/` directory
  * fun main() = previewLabApplication(
- *     previews = myModule.PreviewList,
+ *     previewList = myModule.PreviewList,
  *     featuredFiles = app.FeaturedFileList,
  * )
  *
@@ -36,23 +36,24 @@ import org.w3c.dom.HTMLElement
  * fun main() {
  *     val customContainer = document.getElementById("preview-container") as HTMLElement
  *     previewLabApplication(
- *         previews = myModule.PreviewList,
+ *         previewList = myModule.PreviewList,
  *         rootElement = customContainer
  *     )
  * }
  * ```
  *
- * @param previews Collection of previews to display in the interface
+ * @param previewList Collection of previews to display in the interface
  * @param featuredFiles Grouped file organization for navigation
  * @param openFileHandler Handler for opening source files (optional)
  * @param rootElement HTML element to mount the application (defaults to document.body)
+ * @param state PreviewLabGalleryState for managing gallery state
  * @see PreviewLabGallery
  * @see CollectedPreview
  * @see OpenFileHandler
  */
 @OptIn(ExperimentalComposeUiApi::class)
 fun previewLabApplication(
-    previews: List<CollectedPreview>,
+    previewList: List<CollectedPreview>,
     featuredFiles: Map<String, List<String>> = emptyMap(),
     openFileHandler: OpenFileHandler<out Any?>? = null,
     rootElement: HTMLElement = document.body!!,
@@ -60,7 +61,7 @@ fun previewLabApplication(
 ) {
     ComposeViewport(rootElement) {
         PreviewLabGallery(
-            previews = previews,
+            previewList = previewList,
             featuredFiles = featuredFiles,
             openFileHandler = openFileHandler,
             state = state,
