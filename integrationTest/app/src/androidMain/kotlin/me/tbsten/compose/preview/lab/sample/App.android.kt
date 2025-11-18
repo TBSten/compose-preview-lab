@@ -18,7 +18,8 @@ class AppActivity : ComponentActivity() {
         setContent {
             PreviewLabGallery(
                 state = rememberRetained { PreviewLabGalleryState() },
-                previewList = app.PreviewList,
+                previewList = uiLib.PreviewList,
+                featuredFileList = app.FeaturedFileList,
                 modifier = Modifier
                     .systemBarsPadding()
                     .displayCutoutPadding(),
