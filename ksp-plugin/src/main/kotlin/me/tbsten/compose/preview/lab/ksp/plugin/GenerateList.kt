@@ -31,7 +31,6 @@ internal fun generateList(
         it.appendLine()
         it.appendLine(
             "${if (publicPreviewList) "public" else "internal"} " +
-//                "val previews = listOf<CollectedPreview>(",
                 "object Previews : List<CollectedPreview> by listOf(",
         )
         previews.forEach { preview ->

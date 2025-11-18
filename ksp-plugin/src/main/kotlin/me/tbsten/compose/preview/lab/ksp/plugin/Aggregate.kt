@@ -7,6 +7,7 @@ import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import me.tbsten.compose.preview.lab.AggregateToAll
+import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 internal fun prepareModuleForPreviewAllAggregate(codeGenerator: CodeGenerator, previewsListPackage: String) {
@@ -46,10 +47,20 @@ internal fun generatePreviewAll(resolver: Resolver, codeGenerator: CodeGenerator
         packageName = previewsListPackage,
         fileName = "PreviewsAll",
     ).bufferedWriter().use {
+        it.appendLine(
+            "@file:OptIn(${
+                listOf(
+                    ExperimentalComposePreviewLabApi::class,
+                    InternalComposePreviewLabApi::class,
+                ).joinToString(", ") { "${it.simpleName}::class" }
+            })",
+        )
+        it.appendLine()
         it.appendLine("package $previewsListPackage")
         it.appendLine("import me.tbsten.compose.preview.lab.CollectedPreview")
+        it.appendLine("import ${ExperimentalComposePreviewLabApi::class.qualifiedName}")
+        it.appendLine("import ${InternalComposePreviewLabApi::class.qualifiedName}")
         it.appendLine()
-        it.appendLine("@OptIn(${InternalComposePreviewLabApi::class.qualifiedName}::class)")
         it.appendLine("object PreviewsAll : List<CollectedPreview> by (")
         it.appendLine("    (")
         it.appendLine(
@@ -57,7 +68,7 @@ internal fun generatePreviewAll(resolver: Resolver, codeGenerator: CodeGenerator
                 .map { "        $it" }
                 .joinToString(" +\n"),
         )
-        it.appendLine("    )")
+        it.appendLine("    ).distinctBy { it.id }")
         it.appendLine(")")
     }
 }
