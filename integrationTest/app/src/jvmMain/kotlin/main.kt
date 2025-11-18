@@ -9,15 +9,15 @@ fun main(): Unit = application {
     val galleryState = remember { PreviewLabGalleryState() }.also { galleryState ->
         LaunchedEffect(galleryState) {
             galleryState.select(
-                groupName = app.FeaturedFiles.`hello compose preview lab`.first(),
-                preview = helloComposePreviewLab.Previews.AboutComposePreviewLab,
+                groupName = app.FeaturedFileList.`hello compose preview lab`.first(),
+                preview = helloComposePreviewLab.PreviewList.AboutComposePreviewLab,
             )
         }
     }
 
     PreviewLabGalleryWindows(
-        previews = app.PreviewsAll,
-        featuredFiles = app.FeaturedFiles,
+        previews = app.PreviewAllList,
+        featuredFiles = app.FeaturedFileList,
         openFileHandler = UrlOpenFileHandler(
             baseUrl = "https://github.com/TBSten/compose-preview-lab/blob/main/integrationTest/",
         ),

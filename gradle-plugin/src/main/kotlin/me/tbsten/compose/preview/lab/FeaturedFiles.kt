@@ -67,7 +67,7 @@ internal abstract class GenerateFeaturedFilesCode : DefaultTask() {
         var featuredFilesCode = """
             package $packageName
 
-            data object FeaturedFiles : Map<String, List<String>> by mapOf(
+            data object FeaturedFileList : Map<String, List<String>> by mapOf(
         """.trimIndent()
         featuredFilesCode += "\n"
 

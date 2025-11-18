@@ -23,7 +23,7 @@ internal fun generateList(
             sources = previews.map { it.baseFile }.toTypedArray(),
         ),
         packageName = previewsListPackage,
-        fileName = "Previews",
+        fileName = "PreviewList",
     ).bufferedWriter().use {
         it.appendLine("package $previewsListPackage")
         it.appendLine()
@@ -31,7 +31,7 @@ internal fun generateList(
         it.appendLine()
         it.appendLine(
             "${if (publicPreviewList) "public" else "internal"} " +
-                "object Previews : List<CollectedPreview> by listOf(",
+                "object PreviewList : List<CollectedPreview> by listOf(",
         )
         previews.forEach { preview ->
             it.appendLine("    // ${preview.fullBaseName}")

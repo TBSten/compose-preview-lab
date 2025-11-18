@@ -28,14 +28,14 @@ internal fun prepareModuleForPreviewAllAggregate(codeGenerator: CodeGenerator, p
         it.appendLine("@Suppress(\"RemoveRedundantBackticks\", \"ObjectPropertyName\", \"unused\")")
         it.appendLine("@${InternalComposePreviewLabApi::class.simpleName}")
         it.appendLine("@${AggregateToAll::class.simpleName}")
-        it.appendLine("val $forAggregatePreviewAllPropertyName: List<CollectedPreview> = $previewsListPackage.Previews")
+        it.appendLine("val $forAggregatePreviewAllPropertyName: List<CollectedPreview> = $previewsListPackage.PreviewList")
     }
 }
 
 @OptIn(KspExperimental::class)
 internal fun generatePreviewAll(resolver: Resolver, codeGenerator: CodeGenerator, previewsListPackage: String) {
     val previewsProperty =
-        sequenceOf("$previewsListPackage.Previews") +
+        sequenceOf("$previewsListPackage.PreviewList") +
             resolver
                 .getDeclarationsFromPackage("me.tbsten.compose.preview.lab.generated")
                 .filterIsInstance<KSPropertyDeclaration>()
@@ -45,7 +45,7 @@ internal fun generatePreviewAll(resolver: Resolver, codeGenerator: CodeGenerator
     codeGenerator.createNewFile(
         dependencies = Dependencies.ALL_FILES,
         packageName = previewsListPackage,
-        fileName = "PreviewsAll",
+        fileName = "PreviewAllList",
     ).bufferedWriter().use {
         it.appendLine(
             "@file:OptIn(${
@@ -61,7 +61,7 @@ internal fun generatePreviewAll(resolver: Resolver, codeGenerator: CodeGenerator
         it.appendLine("import ${ExperimentalComposePreviewLabApi::class.qualifiedName}")
         it.appendLine("import ${InternalComposePreviewLabApi::class.qualifiedName}")
         it.appendLine()
-        it.appendLine("object PreviewsAll : List<CollectedPreview> by (")
+        it.appendLine("object PreviewAllList : List<CollectedPreview> by (")
         it.appendLine("    (")
         it.appendLine(
             previewsProperty
