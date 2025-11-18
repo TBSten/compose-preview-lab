@@ -31,7 +31,8 @@ internal fun generateList(
         it.appendLine()
         it.appendLine(
             "${if (publicPreviewList) "public" else "internal"} " +
-                "val previews = listOf<CollectedPreview>(",
+//                "val previews = listOf<CollectedPreview>(",
+                "object Previews : List<CollectedPreview> by listOf(",
         )
         previews.forEach { preview ->
             it.appendLine("    // ${preview.fullBaseName}")
@@ -47,7 +48,11 @@ internal fun generateList(
             it.appendLine("        startLineNumber = ${preview.startLineNumber ?: "null"},")
             it.appendLine("    ) { ${preview.fullCopyName}() },")
         }
-        it.appendLine(")")
+        it.appendLine(") {")
+        previews.forEach { preview ->
+            it.appendLine("    val `${preview.id}` get() = this[0]")
+        }
+        it.appendLine("}")
         it.appendLine()
     }
 

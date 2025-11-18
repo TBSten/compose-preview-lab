@@ -22,18 +22,19 @@ internal fun prepareModuleForPreviewAllAggregate(codeGenerator: CodeGenerator, p
         it.appendLine()
         it.appendLine("import ${InternalComposePreviewLabApi::class.qualifiedName}")
         it.appendLine("import ${AggregateToAll::class.qualifiedName}")
+        it.appendLine("import me.tbsten.compose.preview.lab.CollectedPreview")
         it.appendLine()
         it.appendLine("@Suppress(\"RemoveRedundantBackticks\", \"ObjectPropertyName\", \"unused\")")
         it.appendLine("@${InternalComposePreviewLabApi::class.simpleName}")
         it.appendLine("@${AggregateToAll::class.simpleName}")
-        it.appendLine("val $forAggregatePreviewAllPropertyName = $previewsListPackage.previews")
+        it.appendLine("val $forAggregatePreviewAllPropertyName: List<CollectedPreview> = $previewsListPackage.Previews")
     }
 }
 
 @OptIn(KspExperimental::class)
 internal fun generatePreviewAll(resolver: Resolver, codeGenerator: CodeGenerator, previewsListPackage: String) {
     val previewsProperty =
-        sequenceOf("$previewsListPackage.previews") +
+        sequenceOf("$previewsListPackage.Previews") +
             resolver
                 .getDeclarationsFromPackage("me.tbsten.compose.preview.lab.generated")
                 .filterIsInstance<KSPropertyDeclaration>()
@@ -46,14 +47,17 @@ internal fun generatePreviewAll(resolver: Resolver, codeGenerator: CodeGenerator
         fileName = "PreviewsAll",
     ).bufferedWriter().use {
         it.appendLine("package $previewsListPackage")
+        it.appendLine("import me.tbsten.compose.preview.lab.CollectedPreview")
         it.appendLine()
         it.appendLine("@OptIn(${InternalComposePreviewLabApi::class.qualifiedName}::class)")
-        it.appendLine("val previewsAll = (")
+        it.appendLine("object PreviewsAll : List<CollectedPreview> by (")
+        it.appendLine("    (")
         it.appendLine(
             previewsProperty
-                .map { previews -> "    $previews" }
+                .map { "        $it" }
                 .joinToString(" +\n"),
         )
-        it.appendLine(").distinctBy { it.id }")
+        it.appendLine("    )")
+        it.appendLine(")")
     }
 }
