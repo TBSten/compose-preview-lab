@@ -5,7 +5,17 @@ plugins {
     `kotlin-dsl`
 }
 
+kotlin {
+    compilerOptions {
+        optIn.addAll(
+            "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
+            "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
+        )
+    }
+}
+
 dependencies {
+    implementation(projects.annotation)
     compileOnly(gradleApi())
     implementation(libs.kotlinGradlePlugin)
     implementation(libs.kspGradlePlugin)

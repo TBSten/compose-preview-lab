@@ -39,13 +39,14 @@ kotlin {
         iosSimulatorArm64(),
     ).forEach {
         it.binaries.framework {
-            baseName = "ComposeApp"
+            baseName = "ComposePreviewLabCore"
             isStatic = true
         }
     }
 
     sourceSets {
         commonMain.dependencies {
+            api(projects.annotation)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.components.resources)
@@ -98,7 +99,6 @@ kotlin {
             "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
             "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
         )
-        freeCompilerArgs.add("-Xcontext-parameters")
     }
 }
 

@@ -15,7 +15,7 @@ kotlin {
 }
 
 dependencies {
-    implementation(projects.core)
+    implementation(projects.annotation)
 
     implementation(libs.kspApi)
     implementation(libs.kotlinCompilerEmbeddable)
