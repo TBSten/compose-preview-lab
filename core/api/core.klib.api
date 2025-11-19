@@ -6,29 +6,6 @@
 // - Show declarations: true
 
 // Library unique name: <me.tbsten.compose.preview.lab:core>
-open annotation class me.tbsten.compose.preview.lab/AggregateToAll : kotlin/Annotation { // me.tbsten.compose.preview.lab/AggregateToAll|null[0]
-    constructor <init>() // me.tbsten.compose.preview.lab/AggregateToAll.<init>|<init>(){}[0]
-}
-
-open annotation class me.tbsten.compose.preview.lab/ComposePreviewLabOption : kotlin/Annotation { // me.tbsten.compose.preview.lab/ComposePreviewLabOption|null[0]
-    constructor <init>(kotlin/String = ..., kotlin/Boolean = ..., kotlin/String = ...) // me.tbsten.compose.preview.lab/ComposePreviewLabOption.<init>|<init>(kotlin.String;kotlin.Boolean;kotlin.String){}[0]
-
-    final val displayName // me.tbsten.compose.preview.lab/ComposePreviewLabOption.displayName|{}displayName[0]
-        final fun <get-displayName>(): kotlin/String // me.tbsten.compose.preview.lab/ComposePreviewLabOption.displayName.<get-displayName>|<get-displayName>(){}[0]
-    final val id // me.tbsten.compose.preview.lab/ComposePreviewLabOption.id|{}id[0]
-        final fun <get-id>(): kotlin/String // me.tbsten.compose.preview.lab/ComposePreviewLabOption.id.<get-id>|<get-id>(){}[0]
-    final val ignore // me.tbsten.compose.preview.lab/ComposePreviewLabOption.ignore|{}ignore[0]
-        final fun <get-ignore>(): kotlin/Boolean // me.tbsten.compose.preview.lab/ComposePreviewLabOption.ignore.<get-ignore>|<get-ignore>(){}[0]
-}
-
-open annotation class me.tbsten.compose.preview.lab/ExperimentalComposePreviewLabApi : kotlin/Annotation { // me.tbsten.compose.preview.lab/ExperimentalComposePreviewLabApi|null[0]
-    constructor <init>() // me.tbsten.compose.preview.lab/ExperimentalComposePreviewLabApi.<init>|<init>(){}[0]
-}
-
-open annotation class me.tbsten.compose.preview.lab/InternalComposePreviewLabApi : kotlin/Annotation { // me.tbsten.compose.preview.lab/InternalComposePreviewLabApi|null[0]
-    constructor <init>() // me.tbsten.compose.preview.lab/InternalComposePreviewLabApi.<init>|<init>(){}[0]
-}
-
 abstract interface <#A: kotlin/Any?> me.tbsten.compose.preview.lab.component/Transformer { // me.tbsten.compose.preview.lab.component/Transformer|null[0]
     abstract fun fromString(kotlin/String): #A // me.tbsten.compose.preview.lab.component/Transformer.fromString|fromString(kotlin.String){}[0]
     abstract fun toString(#A): kotlin/String // me.tbsten.compose.preview.lab.component/Transformer.toString|toString(1:0){}[0]
@@ -1850,4 +1827,4 @@ final inline fun (me.tbsten.compose.preview.lab/PreviewLabGalleryNavigator?).me.
 final inline fun <#A: reified kotlin/Enum<#A>> me.tbsten.compose.preview.lab.field/EnumField(kotlin/String, #A, me.tbsten.compose.preview.lab.field/SelectableField.Type = ..., noinline kotlin/Function1<#A, kotlin/String> = ...): me.tbsten.compose.preview.lab.field/SelectableField<#A> // me.tbsten.compose.preview.lab.field/EnumField|EnumField(kotlin.String;0:0;me.tbsten.compose.preview.lab.field.SelectableField.Type;kotlin.Function1<0:0,kotlin.String>){0§<kotlin.Enum<0:0>>}[0]
 
 // Targets: [js, wasmJs]
-final fun me.tbsten.compose.preview.lab/previewLabApplication(kotlin.collections/List<me.tbsten.compose.preview.lab/CollectedPreview>, kotlin.collections/Map<kotlin/String, kotlin.collections/List<kotlin/String>> = ..., me.tbsten.compose.preview.lab.openfilehandler/OpenFileHandler<out kotlin/Any?>? = ..., org.w3c.dom/HTMLElement = ...) // me.tbsten.compose.preview.lab/previewLabApplication|previewLabApplication(kotlin.collections.List<me.tbsten.compose.preview.lab.CollectedPreview>;kotlin.collections.Map<kotlin.String,kotlin.collections.List<kotlin.String>>;me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler<out|kotlin.Any?>?;org.w3c.dom.HTMLElement){}[0]
+final fun me.tbsten.compose.preview.lab/previewLabApplication(kotlin.collections/List<me.tbsten.compose.preview.lab/CollectedPreview>, kotlin.collections/Map<kotlin/String, kotlin.collections/List<kotlin/String>> = ..., me.tbsten.compose.preview.lab.openfilehandler/OpenFileHandler<out kotlin/Any?>? = ..., me.tbsten.compose.preview.lab/PreviewLabGalleryState = ..., org.w3c.dom/HTMLElement = ...) // me.tbsten.compose.preview.lab/previewLabApplication|previewLabApplication(kotlin.collections.List<me.tbsten.compose.preview.lab.CollectedPreview>;kotlin.collections.Map<kotlin.String,kotlin.collections.List<kotlin.String>>;me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler<out|kotlin.Any?>?;me.tbsten.compose.preview.lab.PreviewLabGalleryState;org.w3c.dom.HTMLElement){}[0]

@@ -109,6 +109,7 @@ dependencies {
     val composePreviewLabKspPlugin =
         "me.tbsten.compose.preview.lab:ksp-plugin:${libs.versions.composePreviewLab.get()}"
     add("kspCommonMainMetadata", composePreviewLabKspPlugin)
+    ksp(composePreviewLabKspPlugin)
     add("kspAndroid", composePreviewLabKspPlugin)
     add("kspJvm", composePreviewLabKspPlugin)
     add("kspJs", composePreviewLabKspPlugin)
@@ -136,6 +137,10 @@ compose.desktop {
             }
         }
     }
+}
+
+composePreviewLab {
+    generateFeaturedFiles = true
 }
 
 // https://github.com/JetBrains/compose-hot-reload

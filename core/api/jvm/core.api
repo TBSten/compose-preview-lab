@@ -1,6 +1,3 @@
-public abstract interface annotation class me/tbsten/compose/preview/lab/AggregateToAll : java/lang/annotation/Annotation {
-}
-
 public abstract interface class me/tbsten/compose/preview/lab/CollectedPreview {
 	public abstract fun getCode ()Ljava/lang/String;
 	public abstract fun getContent ()Lkotlin/jvm/functions/Function2;
@@ -31,18 +28,6 @@ public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLab
 	public final fun getLambda$1686164197$core ()Lkotlin/jvm/functions/Function2;
 }
 
-public abstract interface annotation class me/tbsten/compose/preview/lab/ComposePreviewLabOption : java/lang/annotation/Annotation {
-	public abstract fun displayName ()Ljava/lang/String;
-	public abstract fun id ()Ljava/lang/String;
-	public abstract fun ignore ()Z
-}
-
-public abstract interface annotation class me/tbsten/compose/preview/lab/ExperimentalComposePreviewLabApi : java/lang/annotation/Annotation {
-}
-
-public abstract interface annotation class me/tbsten/compose/preview/lab/InternalComposePreviewLabApi : java/lang/annotation/Annotation {
-}
-
 public class me/tbsten/compose/preview/lab/PreviewLab {
 	public static final field $stable I
 	public static final field Companion Lme/tbsten/compose/preview/lab/PreviewLab$Companion;
@@ -62,7 +47,7 @@ public final class me/tbsten/compose/preview/lab/PreviewLab$ComposeDefaultImpls 
 }
 
 public final class me/tbsten/compose/preview/lab/PreviewLabApplication_jvmKt {
-	public static final fun PreviewLabGalleryWindows (Landroidx/compose/ui/window/ApplicationScope;Ljava/util/List;Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler;Ljava/util/Map;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/window/WindowState;ZLjava/lang/String;Landroidx/compose/ui/graphics/painter/Painter;ZZZZZZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;III)V
+	public static final fun PreviewLabGalleryWindows (Landroidx/compose/ui/window/ApplicationScope;Ljava/util/List;Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler;Ljava/util/Map;Lme/tbsten/compose/preview/lab/PreviewLabGalleryState;Landroidx/compose/ui/window/WindowState;Lkotlin/jvm/functions/Function0;ZLjava/lang/String;Landroidx/compose/ui/graphics/painter/Painter;ZZZZZZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;III)V
 }
 
 public abstract interface class me/tbsten/compose/preview/lab/PreviewLabGalleryNavigator {

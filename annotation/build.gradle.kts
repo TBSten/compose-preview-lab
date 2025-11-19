@@ -6,8 +6,6 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     alias(libs.plugins.multiplatform)
-    alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.compose)
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.conventionFormat)
@@ -39,41 +37,14 @@ kotlin {
         iosSimulatorArm64(),
     ).forEach {
         it.binaries.framework {
-            baseName = "ComposePreviewLabCore"
+            baseName = "Annotation"
             isStatic = true
-        }
-    }
-
-    sourceSets {
-        commonMain.dependencies {
-            api(projects.annotation)
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.components.resources)
-            implementation(compose.ui)
-            implementation(compose.components.uiToolingPreview)
-            implementation("org.jetbrains.compose.material:material-ripple:${libs.versions.compose.get()}")
-            implementation(libs.dokar3Sonner)
-            // TODO migrate retain { } (compose runtime api)
-            implementation("io.github.takahirom.rin:rin:0.3.0")
-        }
-        commonTest.dependencies {
-            implementation(kotlin("test"))
-        }
-        androidMain.dependencies {
-            implementation(compose.uiTooling)
-        }
-        jvmMain.dependencies {
-            implementation(compose.desktop.currentOs)
-        }
-        jsMain.dependencies {
-            implementation(compose.html.core)
         }
     }
 }
 
 android {
-    namespace = "me.tbsten.compose.preview.lab"
+    namespace = "me.tbsten.compose.preview.lab.annotation"
     compileSdk = 36
 
     defaultConfig {
@@ -81,12 +52,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-}
-
-// https://developer.android.com/develop/ui/compose/testing#setup
-dependencies {
-    androidTestImplementation(libs.androidx.uitest.junit4)
-    debugImplementation(libs.androidx.uitest.testManifest)
 }
 
 // for library development configuration
@@ -103,10 +68,10 @@ kotlin {
 }
 
 publishConvention {
-    artifactName = "Core"
-    artifactId = "core"
+    artifactName = "Annotation"
+    artifactId = "annotation"
     description =
         "A component catalog library that collects and lists @Preview. \n" +
         "By providing APIs such as Field, Event, etc., it provides not only display but also interactive preview.\n" +
-        "core provides runtime APIs such as annotations and gallery UI needed to collect Previews."
+        "annotation provides annotations used in runtime and tooling"
 }
