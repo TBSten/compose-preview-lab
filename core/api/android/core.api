@@ -28,18 +28,6 @@ public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLab
 	public final fun getLambda$1686164197$core_release ()Lkotlin/jvm/functions/Function2;
 }
 
-public abstract interface annotation class me/tbsten/compose/preview/lab/ComposePreviewLabOption : java/lang/annotation/Annotation {
-	public abstract fun displayName ()Ljava/lang/String;
-	public abstract fun id ()Ljava/lang/String;
-	public abstract fun ignore ()Z
-}
-
-public abstract interface annotation class me/tbsten/compose/preview/lab/ExperimentalComposePreviewLabApi : java/lang/annotation/Annotation {
-}
-
-public abstract interface annotation class me/tbsten/compose/preview/lab/InternalComposePreviewLabApi : java/lang/annotation/Annotation {
-}
-
 public abstract interface annotation class me/tbsten/compose/preview/lab/LabPreview : java/lang/annotation/Annotation {
 }
 
