@@ -1,5 +1,12 @@
 package me.tbsten.compose.preview.lab.sample.helloComposePreviewLab
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.EaseOutElastic
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -27,6 +34,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentCompositeKeyHashCode
 import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -71,6 +79,21 @@ internal fun AboutComposePreviewLab() = MaterialTheme(
     }
 }
 
+private object SingletonStore {
+    private val storedDataMap = mutableMapOf<Any?, Any?>()
+
+    @Composable
+    fun <T> stored(key: Any? = null, block: () -> T): T {
+        val key = key ?: currentCompositeKeyHashCode.toString()
+        return if (storedDataMap.containsKey(key)) {
+            storedDataMap[key] as T
+        } else {
+            block()
+                .also { storedDataMap[key] = it }
+        }
+    }
+}
+
 @Composable
 private fun CoverSection() = Column(
     modifier = Modifier.fillMaxWidth(),
@@ -80,16 +103,27 @@ private fun CoverSection() = Column(
     val uriHandler = LocalUriHandler.current
     val githubUrl = "https://github.com/TBSten/compose-preview-lab"
 
-    Image(
-        painter = cover,
-        contentDescription = "Compose Preview Lab",
-        modifier = Modifier
-            .widthIn(max = 600.dp)
-            .fillMaxWidth()
-            .aspectRatio(cover.intrinsicSize.let { it.width / it.height })
-            .clip(RoundedCornerShape(8.dp))
-            .clickable { uriHandler.openUri(githubUrl) },
-    )
+    val visibleState = SingletonStore.stored {
+        MutableTransitionState(false)
+    }.apply { targetState = true }
+
+    AnimatedVisibility(
+        visibleState = visibleState,
+        enter = fadeIn(tween(300, 100)) +
+            scaleIn(tween(600, easing = EaseOutElastic)),
+        exit = fadeOut(),
+    ) {
+        Image(
+            painter = cover,
+            contentDescription = "Compose Preview Lab",
+            modifier = Modifier
+                .widthIn(max = 600.dp)
+                .fillMaxWidth()
+                .aspectRatio(cover.intrinsicSize.let { it.width / it.height })
+                .clip(RoundedCornerShape(8.dp))
+                .clickable { uriHandler.openUri(githubUrl) },
+        )
+    }
 
     Spacer(Modifier.height(8.dp))
 
