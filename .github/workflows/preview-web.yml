@@ -25,12 +25,12 @@ jobs:
       - run: mkdir ./public
 
       - name: Build publish wasmJs contents
-        run: ./gradlew :integrationTest:wasmJsBrowserDistribution
-      - run: cp -r ./integrationTest/build/dist/wasmJs/productionExecutable ./public/wasmJs
+        run: cd integrationTest && ./gradlew :app:wasmJsBrowserDistribution
+      - run: cp -r ./integrationTest/app/build/dist/wasmJs/productionExecutable ./public/wasmJs
 
       - name: Build publish js contents
-        run: ./gradlew :integrationTest:jsBrowserDistribution
-      - run: cp -r ./integrationTest/build/dist/js/productionExecutable ./public/js
+        run: cd integrationTest && ./gradlew :app:jsBrowserDistribution
+      - run: cp -r ./integrationTest/app/build/dist/js/productionExecutable ./public/js
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
