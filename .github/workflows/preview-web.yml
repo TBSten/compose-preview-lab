@@ -25,16 +25,16 @@ jobs:
       - run: mkdir ./public
 
       - name: Build publish wasmJs contents
-        run: ./gradlew :dev:wasmJsBrowserDistribution
-      - run: cp -r ./dev/build/dist/wasmJs/productionExecutable ./public/wasmJs
+        run: ./gradlew :integrationTest:wasmJsBrowserDistribution
+      - run: cp -r ./integrationTest/build/dist/wasmJs/productionExecutable ./public/wasmJs
 
       - name: Build publish js contents
-        run: ./gradlew :dev:jsBrowserDistribution
-      - run: cp -r ./dev/build/dist/js/productionExecutable ./public/js
+        run: ./gradlew :integrationTest:jsBrowserDistribution
+      - run: cp -r ./integrationTest/build/dist/js/productionExecutable ./public/js
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-          destination_dir: dev/main
+          destination_dir: integrationTest/main

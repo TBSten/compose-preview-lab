@@ -158,5 +158,5 @@ The table below shows the differences between the two.
 
 ### For those who contribute to development
 
-- [Web Preview of the latest main Branch](https://tbsten.github.io/compose-preview-lab/dev/main/wasmJs/)
+- [Web Preview of the latest main Branch](https://tbsten.github.io/compose-preview-lab/integrationTest/main/wasmJs/)
 - [WIP] [Contribution Guide](https://github.com/TBSten/compose-preview-lab/blob/main/docs/contribute-guide.md)
