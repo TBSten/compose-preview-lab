@@ -211,6 +211,24 @@ import me.tbsten.compose.preview.lab.util.toDpOffset
  *   )
  *   ```
  *
+ * @param isHeaderShow
+ *   Controls whether the PreviewLab header is visible. When set to false, hides the header
+ *   controls (scale, inspector panel toggle, etc.) to provide a cleaner preview view.
+ *   Defaults to true.
+ *
+ *   Usage examples:
+ *   ```kt
+ *   // Default - header is visible
+ *   PreviewLab() // Header shown
+ *
+ *   // Hide header for embedded preview
+ *   PreviewLab(
+ *     isHeaderShow = false
+ *   ) {
+ *     MyComponent()
+ *   }
+ *   ```
+ *
  * @param disableTrailingLambda
  *   Technical parameter to prevent the invoke method from being treated as a trailing lambda.
  *   Always null and has no functional purpose.
@@ -236,6 +254,7 @@ open class PreviewLab(
         { rememberSaveable(saver = PreviewLabState.Saver) { PreviewLabState() } },
     private val defaultScreenSizes: List<ScreenSize> = ScreenSize.SmartphoneAndDesktops,
     private val contentRoot: @Composable (content: @Composable () -> Unit) -> Unit = { it() },
+    private val isHeaderShow: Boolean = true,
     @Suppress("unused") disableTrailingLambda: Nothing? = null,
 ) {
     /**
@@ -259,6 +278,8 @@ open class PreviewLab(
      * @param state PreviewLabState instance to use for this preview
      * @param maxWidth Maximum width constraint for the preview content
      * @param maxHeight Maximum height constraint for the preview content
+     * @param modifier Modifier to apply to the PreviewLab container
+     * @param isHeaderShow Controls whether the PreviewLab header is visible
      * @param content Preview content within PreviewLabScope
      * @see PreviewLab.invoke Main invoke method with multiple screen size support
      */
@@ -267,10 +288,14 @@ open class PreviewLab(
         state: PreviewLabState = LocalPreviewLabState.current ?: defaultState(),
         maxWidth: Dp,
         maxHeight: Dp,
+        modifier: Modifier = Modifier,
+        isHeaderShow: Boolean = this.isHeaderShow,
         content: @Composable PreviewLabScope.() -> Unit,
     ) = invoke(
         state = state,
         screenSizes = listOf(ScreenSize(maxWidth, maxHeight)),
+        modifier = modifier,
+        isHeaderShow = isHeaderShow,
         content = content,
     )
 
@@ -359,6 +384,15 @@ open class PreviewLab(
      *   - `listOf(ScreenSize.Phone)`: Single phone size for focused testing
      *   - Custom list: `listOf(ScreenSize(360.dp, 640.dp), ScreenSize(1920.dp, 1080.dp))`
      *
+     * @param modifier
+     *   Modifier to apply to the PreviewLab container. Can be used to control size, background,
+     *   padding, or other layout properties of the entire PreviewLab UI.
+     *
+     * @param isHeaderShow
+     *   Controls whether the PreviewLab header is visible for this specific invocation.
+     *   Defaults to the PreviewLab instance's configured value. When false, hides header controls
+     *   to provide a cleaner preview view.
+     *
      * @param content
      *   Preview content lambda with PreviewLabScope receiver. Within this scope you have access to:
      *   - **fieldState { ... }**: Create mutable state fields
@@ -377,6 +411,8 @@ open class PreviewLab(
     open operator fun invoke(
         state: PreviewLabState = LocalPreviewLabState.current ?: defaultState(),
         screenSizes: List<ScreenSize> = defaultScreenSizes,
+        modifier: Modifier = Modifier,
+        isHeaderShow: Boolean = this.isHeaderShow,
         content: @Composable PreviewLabScope.() -> Unit,
     ) {
         val toaster = rememberToasterState().also { toaster ->
@@ -399,8 +435,9 @@ open class PreviewLab(
         }
 
         Providers(state = state, toaster = toaster) {
-            Column(modifier = Modifier.background(PreviewLabTheme.colors.background)) {
+            Column(modifier = modifier.background(PreviewLabTheme.colors.background)) {
                 PreviewLabHeader(
+                    isHeaderShow = isHeaderShow,
                     scale = state.contentScale,
                     onScaleChange = { state.contentScale = it },
                     isInspectorPanelVisible = state.isInspectorPanelVisible,
@@ -411,7 +448,10 @@ open class PreviewLab(
                             .fillMaxWidth()
                             .weight(1f),
                     ) {
-                        InspectorsPane(state = state, isVisible = state.isInspectorPanelVisible) {
+                        InspectorsPane(
+                            state = state,
+                            isVisible = state.isInspectorPanelVisible,
+                        ) {
                             ContentSection(
                                 state = state,
                                 screenSizes = screenSizes,
