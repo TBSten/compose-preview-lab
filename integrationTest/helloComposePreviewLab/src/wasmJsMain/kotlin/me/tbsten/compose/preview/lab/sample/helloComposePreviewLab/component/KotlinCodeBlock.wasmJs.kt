@@ -18,7 +18,7 @@ internal actual fun KotlinCodeBlock(code: String, modifier: Modifier) {
         color = Color.Transparent,
     ) {
         Text(
-            modifier = modifier
+            modifier = Modifier
                 .verticalScroll(rememberScrollState())
                 .horizontalScroll(rememberScrollState()),
             text = code,

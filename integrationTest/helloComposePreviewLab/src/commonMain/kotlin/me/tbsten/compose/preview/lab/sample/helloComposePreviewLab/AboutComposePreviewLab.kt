@@ -51,8 +51,7 @@ internal fun AboutComposePreviewLab() = SelectionContainer {
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
-            .padding(16.dp)
-            .fillMaxWidth(),
+            .padding(16.dp),
     ) {
         CoverSection()
 
@@ -153,7 +152,7 @@ private fun BeforeAfterSection() = Column {
                     private fun MyButtonPreview() = PreviewLab {
                         MyButton(
                             text = fieldValue { StringField("text", "Click Me !") },
-                            isEnable = fieldValue { Boolean("isEnable", true) },
+                            isEnable = fieldValue { BooleanField("isEnable", true) },
                             onClick = { onEvent("onClick") },
                         )
                     }
