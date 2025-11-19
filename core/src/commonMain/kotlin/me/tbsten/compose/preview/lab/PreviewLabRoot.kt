@@ -72,11 +72,10 @@ fun PreviewLabGallery(
     openFileHandler: OpenFileHandler<out Any?>? = null,
     featuredFileList: Map<String, List<String>> = emptyMap(),
 ) = PreviewLabTheme {
-    val previews = remember { previewList.toList() }
-    val groupedPreviews by remember {
+    val groupedPreviews by remember(previewList, featuredFileList) {
         derivedStateOf {
             previewList.groupingByFeaturedFiles(featuredFileList) +
-                ("all" to previews)
+                ("all" to previewList)
         }
     }
 
