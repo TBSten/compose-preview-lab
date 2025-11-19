@@ -3,10 +3,12 @@ package me.tbsten.compose.preview.lab.sample.helloComposePreviewLab
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -62,18 +65,32 @@ internal fun AboutComposePreviewLab() = SelectionContainer {
 }
 
 @Composable
-private fun CoverSection() = Column(Modifier.fillMaxWidth()) {
+private fun CoverSection() = Column(
+    modifier = Modifier.fillMaxWidth(),
+    horizontalAlignment = Alignment.CenterHorizontally,
+) {
     val cover = painterResource(Res.drawable.cover)
+    val uriHandler = LocalUriHandler.current
+    val githubUrl = "https://github.com/TBSten/compose-preview-lab"
 
     Image(
         painter = cover,
         contentDescription = "Compose Preview Lab",
         modifier = Modifier
-            .align(Alignment.CenterHorizontally)
             .widthIn(max = 600.dp)
             .fillMaxWidth()
             .aspectRatio(cover.intrinsicSize.let { it.width / it.height })
-            .clip(RoundedCornerShape(8.dp)),
+            .clip(RoundedCornerShape(8.dp))
+            .clickable { uriHandler.openUri(githubUrl) },
+    )
+
+    Spacer(Modifier.height(8.dp))
+
+    Text(
+        text = githubUrl,
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.clickable { uriHandler.openUri(githubUrl) },
     )
 }
 
