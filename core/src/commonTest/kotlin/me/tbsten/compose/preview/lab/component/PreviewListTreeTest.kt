@@ -4,6 +4,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import me.tbsten.compose.preview.lab.CollectedPreview
+import me.tbsten.compose.preview.lab.PreviewLabPreview
 import me.tbsten.compose.preview.lab.previewlist.PreviewTreeNode
 import me.tbsten.compose.preview.lab.previewlist.collapse
 import me.tbsten.compose.preview.lab.previewlist.toTree
