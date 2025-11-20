@@ -138,24 +138,24 @@ abstract interface me.tbsten.compose.preview.lab.field/ComposableFieldValue { //
     }
 }
 
-abstract interface me.tbsten.compose.preview.lab/CollectedPreview { // me.tbsten.compose.preview.lab/CollectedPreview|null[0]
-    abstract val code // me.tbsten.compose.preview.lab/CollectedPreview.code|{}code[0]
-        abstract fun <get-code>(): kotlin/String? // me.tbsten.compose.preview.lab/CollectedPreview.code.<get-code>|<get-code>(){}[0]
-    abstract val content // me.tbsten.compose.preview.lab/CollectedPreview.content|{}content[0]
-        abstract fun <get-content>(): kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit> // me.tbsten.compose.preview.lab/CollectedPreview.content.<get-content>|<get-content>(){}[0]
-    abstract val displayName // me.tbsten.compose.preview.lab/CollectedPreview.displayName|{}displayName[0]
-        abstract fun <get-displayName>(): kotlin/String // me.tbsten.compose.preview.lab/CollectedPreview.displayName.<get-displayName>|<get-displayName>(){}[0]
-    abstract val filePath // me.tbsten.compose.preview.lab/CollectedPreview.filePath|{}filePath[0]
-        abstract fun <get-filePath>(): kotlin/String? // me.tbsten.compose.preview.lab/CollectedPreview.filePath.<get-filePath>|<get-filePath>(){}[0]
-    abstract val id // me.tbsten.compose.preview.lab/CollectedPreview.id|{}id[0]
-        abstract fun <get-id>(): kotlin/String // me.tbsten.compose.preview.lab/CollectedPreview.id.<get-id>|<get-id>(){}[0]
-    abstract val startLineNumber // me.tbsten.compose.preview.lab/CollectedPreview.startLineNumber|{}startLineNumber[0]
-        abstract fun <get-startLineNumber>(): kotlin/Int? // me.tbsten.compose.preview.lab/CollectedPreview.startLineNumber.<get-startLineNumber>|<get-startLineNumber>(){}[0]
-}
-
 abstract interface me.tbsten.compose.preview.lab/PreviewLabGalleryNavigator { // me.tbsten.compose.preview.lab/PreviewLabGalleryNavigator|null[0]
     abstract fun back() // me.tbsten.compose.preview.lab/PreviewLabGalleryNavigator.back|back(){}[0]
     abstract fun navigate(kotlin/String) // me.tbsten.compose.preview.lab/PreviewLabGalleryNavigator.navigate|navigate(kotlin.String){}[0]
+}
+
+abstract interface me.tbsten.compose.preview.lab/PreviewLabPreview { // me.tbsten.compose.preview.lab/PreviewLabPreview|null[0]
+    abstract val code // me.tbsten.compose.preview.lab/PreviewLabPreview.code|{}code[0]
+        abstract fun <get-code>(): kotlin/String? // me.tbsten.compose.preview.lab/PreviewLabPreview.code.<get-code>|<get-code>(){}[0]
+    abstract val content // me.tbsten.compose.preview.lab/PreviewLabPreview.content|{}content[0]
+        abstract fun <get-content>(): kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit> // me.tbsten.compose.preview.lab/PreviewLabPreview.content.<get-content>|<get-content>(){}[0]
+    abstract val displayName // me.tbsten.compose.preview.lab/PreviewLabPreview.displayName|{}displayName[0]
+        abstract fun <get-displayName>(): kotlin/String // me.tbsten.compose.preview.lab/PreviewLabPreview.displayName.<get-displayName>|<get-displayName>(){}[0]
+    abstract val filePath // me.tbsten.compose.preview.lab/PreviewLabPreview.filePath|{}filePath[0]
+        abstract fun <get-filePath>(): kotlin/String? // me.tbsten.compose.preview.lab/PreviewLabPreview.filePath.<get-filePath>|<get-filePath>(){}[0]
+    abstract val id // me.tbsten.compose.preview.lab/PreviewLabPreview.id|{}id[0]
+        abstract fun <get-id>(): kotlin/String // me.tbsten.compose.preview.lab/PreviewLabPreview.id.<get-id>|<get-id>(){}[0]
+    abstract val startLineNumber // me.tbsten.compose.preview.lab/PreviewLabPreview.startLineNumber|{}startLineNumber[0]
+        abstract fun <get-startLineNumber>(): kotlin/Int? // me.tbsten.compose.preview.lab/PreviewLabPreview.startLineNumber.<get-startLineNumber>|<get-startLineNumber>(){}[0]
 }
 
 abstract class <#A: kotlin/Any?> me.tbsten.compose.preview.lab.field/ImmutablePreviewLabField : androidx.compose.runtime/State<#A>, me.tbsten.compose.preview.lab.field/PreviewLabField<#A> { // me.tbsten.compose.preview.lab.field/ImmutablePreviewLabField|null[0]
@@ -1258,6 +1258,34 @@ final class me.tbsten.compose.preview.lab.openfilehandler/GithubOpenFileHandler 
     constructor <init>(kotlin/String, kotlin/String = ..., kotlin/String = ...) // me.tbsten.compose.preview.lab.openfilehandler/GithubOpenFileHandler.<init>|<init>(kotlin.String;kotlin.String;kotlin.String){}[0]
 }
 
+final class me.tbsten.compose.preview.lab/CollectedPreview : me.tbsten.compose.preview.lab/PreviewLabPreview { // me.tbsten.compose.preview.lab/CollectedPreview|null[0]
+    constructor <init>(kotlin/String, kotlin/String = ..., kotlin/String? = ..., kotlin/Int? = ..., kotlin/String? = ..., kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>) // me.tbsten.compose.preview.lab/CollectedPreview.<init>|<init>(kotlin.String;kotlin.String;kotlin.String?;kotlin.Int?;kotlin.String?;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>){}[0]
+
+    final val code // me.tbsten.compose.preview.lab/CollectedPreview.code|{}code[0]
+        final fun <get-code>(): kotlin/String? // me.tbsten.compose.preview.lab/CollectedPreview.code.<get-code>|<get-code>(){}[0]
+    final val content // me.tbsten.compose.preview.lab/CollectedPreview.content|{}content[0]
+        final fun <get-content>(): kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit> // me.tbsten.compose.preview.lab/CollectedPreview.content.<get-content>|<get-content>(){}[0]
+    final val displayName // me.tbsten.compose.preview.lab/CollectedPreview.displayName|{}displayName[0]
+        final fun <get-displayName>(): kotlin/String // me.tbsten.compose.preview.lab/CollectedPreview.displayName.<get-displayName>|<get-displayName>(){}[0]
+    final val filePath // me.tbsten.compose.preview.lab/CollectedPreview.filePath|{}filePath[0]
+        final fun <get-filePath>(): kotlin/String? // me.tbsten.compose.preview.lab/CollectedPreview.filePath.<get-filePath>|<get-filePath>(){}[0]
+    final val id // me.tbsten.compose.preview.lab/CollectedPreview.id|{}id[0]
+        final fun <get-id>(): kotlin/String // me.tbsten.compose.preview.lab/CollectedPreview.id.<get-id>|<get-id>(){}[0]
+    final val startLineNumber // me.tbsten.compose.preview.lab/CollectedPreview.startLineNumber|{}startLineNumber[0]
+        final fun <get-startLineNumber>(): kotlin/Int? // me.tbsten.compose.preview.lab/CollectedPreview.startLineNumber.<get-startLineNumber>|<get-startLineNumber>(){}[0]
+
+    final fun component1(): kotlin/String // me.tbsten.compose.preview.lab/CollectedPreview.component1|component1(){}[0]
+    final fun component2(): kotlin/String // me.tbsten.compose.preview.lab/CollectedPreview.component2|component2(){}[0]
+    final fun component3(): kotlin/String? // me.tbsten.compose.preview.lab/CollectedPreview.component3|component3(){}[0]
+    final fun component4(): kotlin/Int? // me.tbsten.compose.preview.lab/CollectedPreview.component4|component4(){}[0]
+    final fun component5(): kotlin/String? // me.tbsten.compose.preview.lab/CollectedPreview.component5|component5(){}[0]
+    final fun component6(): kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit> // me.tbsten.compose.preview.lab/CollectedPreview.component6|component6(){}[0]
+    final fun copy(kotlin/String = ..., kotlin/String = ..., kotlin/String? = ..., kotlin/Int? = ..., kotlin/String? = ..., kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit> = ...): me.tbsten.compose.preview.lab/CollectedPreview // me.tbsten.compose.preview.lab/CollectedPreview.copy|copy(kotlin.String;kotlin.String;kotlin.String?;kotlin.Int?;kotlin.String?;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // me.tbsten.compose.preview.lab/CollectedPreview.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // me.tbsten.compose.preview.lab/CollectedPreview.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // me.tbsten.compose.preview.lab/CollectedPreview.toString|toString(){}[0]
+}
+
 final class me.tbsten.compose.preview.lab/PreviewLabGalleryState { // me.tbsten.compose.preview.lab/PreviewLabGalleryState|null[0]
     constructor <init>(kotlin/Pair<kotlin/String, me.tbsten.compose.preview.lab/CollectedPreview>? = ...) // me.tbsten.compose.preview.lab/PreviewLabGalleryState.<init>|<init>(kotlin.Pair<kotlin.String,me.tbsten.compose.preview.lab.CollectedPreview>?){}[0]
 
@@ -1615,6 +1643,7 @@ final val me.tbsten.compose.preview.lab/LocalPreviewLabGalleryNavigator // me.tb
     final fun <get-LocalPreviewLabGalleryNavigator>(): androidx.compose.runtime/ProvidableCompositionLocal<me.tbsten.compose.preview.lab/PreviewLabGalleryNavigator?> // me.tbsten.compose.preview.lab/LocalPreviewLabGalleryNavigator.<get-LocalPreviewLabGalleryNavigator>|<get-LocalPreviewLabGalleryNavigator>(){}[0]
 final val me.tbsten.compose.preview.lab/LocalPreviewLabState // me.tbsten.compose.preview.lab/LocalPreviewLabState|{}LocalPreviewLabState[0]
     final fun <get-LocalPreviewLabState>(): androidx.compose.runtime/ProvidableCompositionLocal<me.tbsten.compose.preview.lab/PreviewLabState?> // me.tbsten.compose.preview.lab/LocalPreviewLabState.<get-LocalPreviewLabState>|<get-LocalPreviewLabState>(){}[0]
+final val me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_CollectedPreview$stableprop // me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_CollectedPreview$stableprop|#static{}me_tbsten_compose_preview_lab_CollectedPreview$stableprop[0]
 final val me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLab$stableprop // me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLab$stableprop|#static{}me_tbsten_compose_preview_lab_PreviewLab$stableprop[0]
 final val me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLabGalleryState$stableprop // me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLabGalleryState$stableprop|#static{}me_tbsten_compose_preview_lab_PreviewLabGalleryState$stableprop[0]
 final val me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLabScope$stableprop // me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLabScope$stableprop|#static{}me_tbsten_compose_preview_lab_PreviewLabScope$stableprop[0]
@@ -1815,8 +1844,9 @@ final fun me.tbsten.compose.preview.lab.openfilehandler/me_tbsten_compose_previe
 final fun me.tbsten.compose.preview.lab.openfilehandler/me_tbsten_compose_preview_lab_openfilehandler_UrlOpenFileHandler$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.openfilehandler/me_tbsten_compose_preview_lab_openfilehandler_UrlOpenFileHandler$stableprop_getter|me_tbsten_compose_preview_lab_openfilehandler_UrlOpenFileHandler$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.previewlist/me_tbsten_compose_preview_lab_previewlist_PreviewTreeNode_Group$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.previewlist/me_tbsten_compose_preview_lab_previewlist_PreviewTreeNode_Group$stableprop_getter|me_tbsten_compose_preview_lab_previewlist_PreviewTreeNode_Group$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.previewlist/me_tbsten_compose_preview_lab_previewlist_PreviewTreeNode_Preview$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.previewlist/me_tbsten_compose_preview_lab_previewlist_PreviewTreeNode_Preview$stableprop_getter|me_tbsten_compose_preview_lab_previewlist_PreviewTreeNode_Preview$stableprop_getter(){}[0]
-final fun me.tbsten.compose.preview.lab/CollectedPreview(kotlin/String, kotlin/String, kotlin/String?, kotlin/Int? = ..., kotlin/String? = ..., kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>): me.tbsten.compose.preview.lab/CollectedPreview // me.tbsten.compose.preview.lab/CollectedPreview|CollectedPreview(kotlin.String;kotlin.String;kotlin.String?;kotlin.Int?;kotlin.String?;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>){}[0]
 final fun me.tbsten.compose.preview.lab/PreviewLabGallery(kotlin.collections/List<me.tbsten.compose.preview.lab/CollectedPreview>, androidx.compose.ui/Modifier?, me.tbsten.compose.preview.lab/PreviewLabGalleryState?, me.tbsten.compose.preview.lab.openfilehandler/OpenFileHandler<out kotlin/Any?>?, kotlin.collections/Map<kotlin/String, kotlin.collections/List<kotlin/String>>?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // me.tbsten.compose.preview.lab/PreviewLabGallery|PreviewLabGallery(kotlin.collections.List<me.tbsten.compose.preview.lab.CollectedPreview>;androidx.compose.ui.Modifier?;me.tbsten.compose.preview.lab.PreviewLabGalleryState?;me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler<out|kotlin.Any?>?;kotlin.collections.Map<kotlin.String,kotlin.collections.List<kotlin.String>>?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun me.tbsten.compose.preview.lab/PreviewLabPreview(kotlin/String, kotlin/String = ..., kotlin/String? = ..., kotlin/Int? = ..., kotlin/String? = ..., kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>): me.tbsten.compose.preview.lab/PreviewLabPreview // me.tbsten.compose.preview.lab/PreviewLabPreview|PreviewLabPreview(kotlin.String;kotlin.String;kotlin.String?;kotlin.Int?;kotlin.String?;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>){}[0]
+final fun me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_CollectedPreview$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_CollectedPreview$stableprop_getter|me_tbsten_compose_preview_lab_CollectedPreview$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLab$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLab$stableprop_getter|me_tbsten_compose_preview_lab_PreviewLab$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLabGalleryState$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLabGalleryState$stableprop_getter|me_tbsten_compose_preview_lab_PreviewLabGalleryState$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLabScope$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLabScope$stableprop_getter|me_tbsten_compose_preview_lab_PreviewLabScope$stableprop_getter(){}[0]
