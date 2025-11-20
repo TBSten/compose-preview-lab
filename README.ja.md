@@ -9,6 +9,8 @@
  |
 <a href="./README.ja.md">日本語</a>
  |
+<a href="https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/">Sample</a>
+ |
 <a href="https://deepwiki.com/TBSten/compose-preview-lab">DeepWiki</a>
 </p>
 
@@ -19,6 +21,10 @@
 Compose Preview Labは、@Previewをインタラクティブなコンポーネントプレイグラウンドに変換します。
 コンポーネントにパラメータを渡すことができ、静的なスナップショット以上の体験を提供します。手動テストが簡単になり、新しい開発者がコンポーネントをより早く理解できるようになります。
 Compose Multiplatformに対応しています。
+
+## Try online
+
+- [Online サンプル](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/)
 
 ## セットアップ
 
@@ -107,7 +113,9 @@ dependencies {
 
 `PreviewLab` Composableと`***Field()`、`onEvent()`などの関数を使用して、Previewのインタラクティブモードを強化します。
 
-`@Preview`を収集し、[FigmaのComponent Playground](https://help.figma.com/hc/en-us/articles/15023124644247-Guide-to-Dev-Mode#try-component-variations-in-the-component-playground)のようなインタラクティブなプレイグラウンドを作成できます。
+`@Preview`
+を収集し、[FigmaのComponent Playground](https://help.figma.com/hc/en-us/articles/15023124644247-Guide-to-Dev-Mode#try-component-variations-in-the-component-playground)
+のようなインタラクティブなプレイグラウンドを作成できます。
 
 ```kt
 @Preview
@@ -124,10 +132,10 @@ private fun MyButtonPreview() = PreviewLab {
 
 ## 2つのコアコンセプト
 
-| Field                                                                                                                                                                                      | Event                                                                                                          |
-|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| `fieldValue { ***Field(defaultValue) }` Previewで値を手動で変更できるようにします。<br> これにより、PreviewParameterProviderが大量のPreviewを表示して認知負荷が増加する問題とお別れできます。                                                | Previewでイベントが発生したとき（よくある例：Button#onClick、HomeScreen#onIntent）、`onEvent()`を呼び出してイベントの発生を可視化します。 |
-| TODO image                                                                                                                                                                                 | TODO image                                                                                                     |
+| Field                                                                                                                                    | Event                                                                                          |
+|------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|
+| `fieldValue { ***Field(defaultValue) }` Previewで値を手動で変更できるようにします。<br> これにより、PreviewParameterProviderが大量のPreviewを表示して認知負荷が増加する問題とお別れできます。 | Previewでイベントが発生したとき（よくある例：Button#onClick、HomeScreen#onIntent）、`onEvent()`を呼び出してイベントの発生を可視化します。 |
+| TODO image                                                                                                                               | TODO image                                                                                     |
 
 ## [Storytale](https://github.com/Kotlin/Storytale)との違い
 
@@ -136,12 +144,12 @@ Compose Preview Labと類似したソリューションとして、Jetbrainsに�
 
 (以下の情報は2025年6月28日時点のものです)
 
-|                        | Compose Preview Lab                                                                                                                                                                     | Storytale                                                                                                                                                                                                                                                  |
-|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| UIコンポーネントのカタログ化       | ✅                                                                                                                                                                                      | ✅                                                                                                                                                                                                                                                          |
-| ソースコードの表示              | ❌ <br> 将来のサポートを検討中です。                                                                                                                                                                 | ✅                                                                                                                                                                                                                                                          |
-| Composableカタログの準備の容易さ | ✅ <br> @Previewを`PreviewLab { }`で囲むだけです。                                                                                                                                                | ⚠️ <br> `***Stories`ソースセットにコードを配置する必要があります。@Previewを使った既存のコードは移行する必要があります。                                                                                                                                                                               |
-| 独自型のパラメータ              | ✅ <br> カスタムFieldを実装することで、操作UIを含めてUIを自由にカスタマイズできます。([参照](https://example.com))。SelectableFieldなどの便利なユーティリティも提供しています。                                                                    | ❌ <br> サポートされていません。[ソースコード](https://github.com/Kotlin/Storytale/blob/57f41aaee1a21d98d637fe752931715232deed9e/modules/gallery/src/commonMain/kotlin/org/jetbrains/compose/storytale/gallery/material3/StoryParameters.kt#L161)を見ると、将来的にサポートされる可能性はゼロではありません。 |
+|                       | Compose Preview Lab                                                                                                 | Storytale                                                                                                                                                                                                                                                    |
+|-----------------------|---------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| UIコンポーネントのカタログ化       | ✅                                                                                                                   | ✅                                                                                                                                                                                                                                                            |
+| ソースコードの表示             | ❌ <br> 将来のサポートを検討中です。                                                                                               | ✅                                                                                                                                                                                                                                                            |
+| Composableカタログの準備の容易さ | ✅ <br> @Previewを`PreviewLab { }`で囲むだけです。                                                                            | ⚠️ <br> `***Stories`ソースセットにコードを配置する必要があります。@Previewを使った既存のコードは移行する必要があります。                                                                                                                                                                                   |
+| 独自型のパラメータ             | ✅ <br> カスタムFieldを実装することで、操作UIを含めてUIを自由にカスタマイズできます。([参照](https://example.com))。SelectableFieldなどの便利なユーティリティも提供しています。 | ❌ <br> サポートされていません。[ソースコード](https://github.com/Kotlin/Storytale/blob/57f41aaee1a21d98d637fe752931715232deed9e/modules/gallery/src/commonMain/kotlin/org/jetbrains/compose/storytale/gallery/material3/StoryParameters.kt#L161)を見ると、将来的にサポートされる可能性はゼロではありません。 |
 
 ## ロードマップ
 
@@ -170,5 +178,5 @@ Compose Preview Labと類似したソリューションとして、Jetbrainsに�
 
 ### 開発に貢献する方へ
 
-- [最新のmainブランチのWebプレビュー](https://tbsten.github.io/compose-preview-lab/integrationTest/main/wasmJs/)
+- [Online サンプル](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/)
 - [WIP] [コントリビューションガイド](https://github.com/TBSten/compose-preview-lab/blob/main/docs/contribute-guide.md)

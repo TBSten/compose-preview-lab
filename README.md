@@ -9,6 +9,8 @@
  |
 <a href="./README.ja.md">日本語</a>
  |
+<a href="https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/">Sample</a>
+ |
 <a href="https://deepwiki.com/TBSten/compose-preview-lab">DeepWiki</a>
 </p>
 
@@ -21,6 +23,10 @@ Compose Preview Lab turns @Preview into an interactive Component Playground.
 You can pass parameters to components, enabling more than just static snapshots—making manual testing easier and helping new
 developers understand components faster.
 Compose Multiplatform is supported.
+
+## Try online
+
+- [Online Sample](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/)
 
 ## Setup
 
@@ -114,7 +120,8 @@ dependencies {
 Use `PreviewLab` Composable and functions such as `***Field()` `onEvent()` to enhance Preview's
 Interactive mode.
 
-You can collect `@Preview`and create an interactive Playground
+You can collect `@Preview`
+and create an interactive Playground
 like [Figma's Component Playground](https://help.figma.com/hc/en-us/articles/15023124644247-Guide-to-Dev-Mode#try-component-variations-in-the-component-playground).
 
 ```kt
@@ -145,12 +152,12 @@ The table below shows the differences between the two.
 
 (The following information is current as of 28.6.2025)
 
-|                                          | Compose Preview Lab                                                                                                                                                                         | Storytale                                                                                                                                                                                                                                                                                                            |
-|------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Cataloging UI Component                  | ✅                                                                                                                                                                                           | ✅                                                                                                                                                                                                                                                                                                                    |
-| View source code                         | ❌ <br> Future support is under consideration.                                                                                                                                               | ✅                                                                                                                                                                                                                                                                                                                    |
-| Ease of preparing the Composable catalog | ✅ <br> Just enclose @Preview in `PreviewLab { }`.                                                                                                                                           | ⚠️ <br> You must have the code in the `***Stories` source set. Existing code with @Preview must be migrated.                                                                                                                                                                                                         |
-| Parameter of your own type               | ✅ <br> By implementing a custom Field, you can freely customize the UI, including the operation UI. ([see](https://example.com))。It also provides useful utilities such as SelectableField. | ❌ <br> Not supported. Following the [source code](https://github.com/Kotlin/Storytale/blob/57f41aaee1a21d98d637fe752931715232deed9e/modules/gallery/src/commonMain/kotlin/org/jetbrains/compose/storytale/gallery/material3/StoryParameters.kt#L161) shows that there is a non-zero chance of support in the future. |
+|                                          | Compose Preview Lab                                                                                                                                                                          | Storytale                                                                                                                                                                                                                                                                                                            |
+|------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Cataloging UI Component                  | ✅                                                                                                                                                                                            | ✅                                                                                                                                                                                                                                                                                                                    |
+| View source code                         | ❌ <br> Future support is under consideration.                                                                                                                                                | ✅                                                                                                                                                                                                                                                                                                                    |
+| Ease of preparing the Composable catalog | ✅ <br> Just enclose @Preview in `PreviewLab { }`.                                                                                                                                            | ⚠️ <br> You must have the code in the `***Stories` source set. Existing code with @Preview must be migrated.                                                                                                                                                                                                         |
+| Parameter of your own type               | ✅ <br> By implementing a custom Field, you can freely customize the UI, including the operation UI. ([see](https://example.com)). It also provides useful utilities such as SelectableField. | ❌ <br> Not supported. Following the [source code](https://github.com/Kotlin/Storytale/blob/57f41aaee1a21d98d637fe752931715232deed9e/modules/gallery/src/commonMain/kotlin/org/jetbrains/compose/storytale/gallery/material3/StoryParameters.kt#L161) shows that there is a non-zero chance of support in the future. |
 
 ## Roadmap
 
@@ -179,5 +186,5 @@ The table below shows the differences between the two.
 
 ### For those who contribute to development
 
-- [Web Preview of the latest main Branch](https://tbsten.github.io/compose-preview-lab/integrationTest/main/wasmJs/)
+- [Online Sample](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/)
 - [WIP] [Contribution Guide](https://github.com/TBSten/compose-preview-lab/blob/main/docs/contribute-guide.md)
