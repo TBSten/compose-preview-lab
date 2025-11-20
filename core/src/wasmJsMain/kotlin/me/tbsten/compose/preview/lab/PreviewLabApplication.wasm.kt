@@ -51,7 +51,7 @@ import org.w3c.dom.HTMLElement
  */
 @OptIn(ExperimentalComposeUiApi::class)
 fun previewLabApplication(
-    previewList: List<CollectedPreview>,
+    previewList: List<PreviewLabPreview>,
     featuredFileList: Map<String, List<String>> = emptyMap(),
     openFileHandler: OpenFileHandler<out Any?>? = null,
     state: PreviewLabGalleryState = PreviewLabGalleryState(),

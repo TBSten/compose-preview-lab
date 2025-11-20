@@ -66,7 +66,7 @@ import org.jetbrains.compose.resources.painterResource
  */
 @Composable
 fun PreviewLabGallery(
-    previewList: List<CollectedPreview>,
+    previewList: List<PreviewLabPreview>,
     modifier: Modifier = Modifier,
     state: PreviewLabGalleryState = remember { PreviewLabGalleryState() },
     openFileHandler: OpenFileHandler<out Any?>? = null,

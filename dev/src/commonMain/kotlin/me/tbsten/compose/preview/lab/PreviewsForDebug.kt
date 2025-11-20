@@ -490,7 +490,7 @@ enum class PreviewsForUiDebug(
     ),
 }
 
-val previewsForUiDebug = PreviewsForUiDebug.entries
+val previewsForUiDebug = PreviewsForUiDebug.entries.toList()
 
 private fun LazyListScope.header(title: String) {
     stickyHeader {

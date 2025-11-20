@@ -1,8 +1,8 @@
 package me.tbsten.compose.preview.lab.previewlist
 
-import me.tbsten.compose.preview.lab.CollectedPreview
+import me.tbsten.compose.preview.lab.PreviewLabPreview
 
-internal fun List<CollectedPreview>.filterByQuery(query: String): List<CollectedPreview> {
+internal fun List<PreviewLabPreview>.filterByQuery(query: String): List<PreviewLabPreview> {
     if (query.isBlank()) return this
 
     val lowerCaseQuery = query.lowercase()
