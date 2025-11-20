@@ -57,6 +57,17 @@ kotlin {
         otherWasmJs.dependencies {
             implementation(libs.kodeview)
         }
+
+        val otherWeb by creating {
+            dependsOn(commonMain.get())
+        }
+        listOf(
+            androidMain,
+            iosMain,
+            jvmMain,
+        ).forEach {
+            it.get().dependsOn(otherWeb)
+        }
     }
 }
 

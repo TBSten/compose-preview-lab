@@ -1,12 +1,14 @@
 package me.tbsten.compose.preview.lab.sample.helloComposePreviewLab
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.EaseOutElastic
 import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.rememberTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -34,13 +36,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.currentCompositeKeyHashCode
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.LocalWindowInfo
@@ -54,7 +59,7 @@ import me.tbsten.compose.preview.lab.PreviewLab
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.KotlinCodeBlock
-import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 // FIXME migrate LabDoc API
@@ -99,30 +104,43 @@ private fun CoverSection() = Column(
     modifier = Modifier.fillMaxWidth(),
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
-    val cover = painterResource(Res.drawable.cover)
+    val cover by Res.drawable.cover.preloadImageVector()
     val uriHandler = LocalUriHandler.current
     val githubUrl = "https://github.com/TBSten/compose-preview-lab"
 
-    val visibleState = SingletonStore.stored {
-        MutableTransitionState(false)
-    }.apply { targetState = true }
+    val coverImageTransition =
+        SingletonStore.stored { MutableTransitionState<ImageBitmap?>(null) }
+            .apply { targetState = cover }
 
-    AnimatedVisibility(
-        visibleState = visibleState,
-        enter = fadeIn(tween(300, 100)) +
-            scaleIn(tween(600, easing = EaseOutElastic)),
-        exit = fadeOut(),
-    ) {
-        Image(
-            painter = cover,
-            contentDescription = "Compose Preview Lab",
-            modifier = Modifier
-                .widthIn(max = 600.dp)
-                .fillMaxWidth()
-                .aspectRatio(cover.intrinsicSize.let { it.width / it.height })
-                .clip(RoundedCornerShape(8.dp))
-                .clickable { uriHandler.openUri(githubUrl) },
-        )
+    rememberTransition(coverImageTransition).AnimatedContent(
+        transitionSpec = {
+            val enter =
+                fadeIn(tween(300, 100)) +
+                    scaleIn(tween(600, easing = EaseOutElastic))
+            val exit = fadeOut(tween(150))
+            enter togetherWith exit
+        },
+    ) { coverImage ->
+        if (coverImage != null) {
+            Image(
+                bitmap = coverImage,
+                contentDescription = "Compose Preview Lab",
+                modifier = Modifier
+                    .clickable { uriHandler.openUri(githubUrl) }
+                    .clip(RoundedCornerShape(8.dp))
+                    .aspectRatio(391f / 220)
+                    .widthIn(max = 600.dp)
+                    .fillMaxWidth(),
+            )
+        } else {
+            Box(
+                Modifier
+                    .background(Color(0xffa3a3a3))
+                    .aspectRatio(391f / 220)
+                    .widthIn(max = 600.dp)
+                    .fillMaxWidth(),
+            )
+        }
     }
 
     Spacer(Modifier.height(8.dp))
@@ -134,6 +152,9 @@ private fun CoverSection() = Column(
         modifier = Modifier.clickable { uriHandler.openUri(githubUrl) },
     )
 }
+
+@Composable
+internal expect fun DrawableResource.preloadImageVector(): State<ImageBitmap?>
 
 @Composable
 private fun QuickSummarySection() = Column {
