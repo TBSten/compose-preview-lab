@@ -1,15 +1,13 @@
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.dokka.gradle.DokkaTask
+import org.gradle.kotlin.dsl.configure
+import org.jetbrains.dokka.gradle.DokkaExtension
 import util.libs
 import util.plugin
 
 internal fun Project.configureDokka(publishConventionExtension: PublishConventionExtension) {
     pluginManager.apply(libs.plugin("dokka").pluginId)
 
-    afterEvaluate {
-        tasks.withType<DokkaTask>().configureEach {
-            moduleName.set(publishConventionExtension.artifactName ?: project.name)
-        }
+    extensions.configure<DokkaExtension> {
+        moduleName.set(publishConventionExtension.artifactName ?: project.name)
     }
 }
