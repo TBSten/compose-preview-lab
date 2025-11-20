@@ -45,12 +45,21 @@ import me.tbsten.compose.preview.lab.ui.components.Text
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-internal fun InspectorsPane(state: PreviewLabState, isVisible: Boolean, content: @Composable () -> Unit) {
+internal fun InspectorsPane(
+    state: PreviewLabState,
+    isVisible: Boolean,
+    additionalTabs: List<InspectorTab> = emptyList(),
+    content: @Composable () -> Unit,
+) {
 //    val content = remember { movableContentOf { content() } }
 
     if (!isVisible) {
         content()
         return
+    }
+
+    val allTabs = remember(additionalTabs) {
+        InspectorTab.defaults + additionalTabs
     }
 
     val tabContent = remember {
@@ -76,10 +85,10 @@ internal fun InspectorsPane(state: PreviewLabState, isVisible: Boolean, content:
                         .padding(12.dp)
                         .sizeIn(maxWidth = maxWidth / 3, maxHeight = maxHeight * 2 / 3),
                 ) {
-                    InspectorTab.entries.forEachIndexed { index, tab ->
+                    allTabs.forEachIndexed { index, tab ->
                         CommonIconButton(
                             variant = IconButtonVariant.PrimaryElevated,
-                            painter = painterResource(tab.iconRes),
+                            painter = tab.icon(),
                             contentDescription = tab.title,
                             onClick = { state.selectedTabIndex = index },
                         )
@@ -126,8 +135,6 @@ internal fun InspectorsPane(state: PreviewLabState, isVisible: Boolean, content:
         medium = {
             // Show Inspector in tabs on large screens
 
-            val tabContents = InspectorTab.entries
-
             Row {
                 content()
                 Divider()
@@ -138,9 +145,9 @@ internal fun InspectorsPane(state: PreviewLabState, isVisible: Boolean, content:
                         .fillMaxHeight(),
                 ) {
                     TabPager(
-                        tabs = tabContents,
+                        tabs = allTabs,
                         title = { it.title },
-                        pagerState = rememberPagerState { tabContents.size }
+                        pagerState = rememberPagerState { allTabs.size }
                             .also { pagerState ->
                                 LaunchedEffect(state.selectedTabIndex) {
                                     state.selectedTabIndex?.let {
