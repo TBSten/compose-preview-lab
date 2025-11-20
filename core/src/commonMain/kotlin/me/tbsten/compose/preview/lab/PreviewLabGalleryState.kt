@@ -50,7 +50,7 @@ class PreviewLabGalleryState(initialSelectedPreview: Pair<String, CollectedPrevi
     /**
      * Select Preview.
      */
-    fun select(groupName: String, preview: CollectedPreview) {
+    fun select(groupName: String, preview: PreviewLabPreview) {
         val newSelectedPreview = SelectedPreview(groupName, preview)
         if (selectedPreview == newSelectedPreview) {
             unselect()
@@ -78,7 +78,7 @@ class PreviewLabGalleryState(initialSelectedPreview: Pair<String, CollectedPrevi
      * @param groupName Group name the Preview belongs to
      * @param newPreview Preview to add to the compare panel
      */
-    fun addToComparePanel(groupName: String, newPreview: CollectedPreview) {
+    fun addToComparePanel(groupName: String, newPreview: PreviewLabPreview) {
         val newPanelTitle = run {
             val baseTitle = newPreview.displayName
             var newPanelTitle = baseTitle
@@ -110,7 +110,7 @@ class PreviewLabGalleryState(initialSelectedPreview: Pair<String, CollectedPrevi
     }
 }
 
-internal class SelectedPreview(val groupName: String, val preview: CollectedPreview, val title: String = preview.displayName) {
+internal class SelectedPreview(val groupName: String, val preview: PreviewLabPreview, val title: String = preview.displayName) {
     override fun toString(): String = "SelectedPreview(groupName='$groupName', preview=$preview)"
 
     override fun equals(other: Any?): Boolean {

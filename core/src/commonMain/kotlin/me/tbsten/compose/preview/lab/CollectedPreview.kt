@@ -44,7 +44,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  * @property code The source code of Preview.
  * @property content The content of Preview. You can display the content of Preview by calling invoke().
  */
-interface CollectedPreview {
+interface PreviewLabPreview {
     val id: String
     val displayName: String
     val filePath: String?
@@ -53,14 +53,15 @@ interface CollectedPreview {
     val content: @Composable () -> Unit
 }
 
-internal data class CollectedPreviewImpl(
+@OptIn(InternalComposePreviewLabApi::class)
+data class CollectedPreview(
     override val id: String,
-    override val displayName: String,
-    override val filePath: String?,
+    override val displayName: String = id,
+    override val filePath: String? = null,
     override val startLineNumber: Int? = null,
     override val code: String? = null,
     override val content: @Composable () -> Unit,
-) : CollectedPreview
+) : PreviewLabPreview
 
 /**
  * Create a [CollectedPreview] instance.
@@ -71,15 +72,14 @@ internal data class CollectedPreviewImpl(
  * @param code The source code of Preview.
  * @param content The content of Preview. You can display the content of Preview by calling invoke().
  */
-@OptIn(InternalComposePreviewLabApi::class)
-fun CollectedPreview(
+fun PreviewLabPreview(
     id: String,
-    displayName: String,
-    filePath: String?,
+    displayName: String = id,
+    filePath: String? = null,
     startLineNumber: Int? = null,
     code: String? = null,
     content: @Composable () -> Unit,
-): CollectedPreview = CollectedPreviewImpl(
+): PreviewLabPreview = PreviewLabPreview(
     id = id,
     displayName = displayName,
     filePath = filePath,

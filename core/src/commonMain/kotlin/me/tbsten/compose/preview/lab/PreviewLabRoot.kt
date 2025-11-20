@@ -205,7 +205,7 @@ fun PreviewLabGallery(
                                 )
 
                                 CompositionLocalProvider(
-                                    LocalCollectedPreview provides preview,
+                                    LocalPreviewLabPreview provides preview,
                                 ) {
                                     AnimatedContent(
                                         targetState = preview,
@@ -244,7 +244,7 @@ fun PreviewLabGallery(
     }
 }
 
-internal val LocalCollectedPreview = compositionLocalOf<CollectedPreview?> { null }
+internal val LocalPreviewLabPreview = compositionLocalOf<PreviewLabPreview?> { null }
 
 @Composable
 internal fun <Item : Any> ListDetailScaffold(

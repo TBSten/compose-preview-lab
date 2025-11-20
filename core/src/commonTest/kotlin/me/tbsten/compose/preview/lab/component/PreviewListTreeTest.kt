@@ -33,7 +33,7 @@ class PreviewListTreeTest {
         // a.b.c
         val aBC = aB.children.getOrNull(0)
         assertIs<PreviewTreeNode.Preview>(aBC)
-        assertEquals(aBC.collectedPreview, previews[0])
+        assertEquals(aBC.preview, previews[0])
         // a.b.d
         val aBD = aB.children.getOrNull(1)
         assertIs<PreviewTreeNode.Group>(aBD)
@@ -41,15 +41,15 @@ class PreviewListTreeTest {
         // a.b.d.x
         val aBDX = aBD.children.getOrNull(0)
         assertIs<PreviewTreeNode.Preview>(aBDX)
-        assertEquals(aBDX.collectedPreview, previews[1])
+        assertEquals(aBDX.preview, previews[1])
         // a.b.e
         val aBE = aB.children.getOrNull(2)
         assertIs<PreviewTreeNode.Preview>(aBE)
-        assertEquals(aBE.collectedPreview, previews[2])
+        assertEquals(aBE.preview, previews[2])
         // a.b
         val aB2 = a.children.getOrNull(1)
         assertIs<PreviewTreeNode.Preview>(aB2)
-        assertEquals(aB2.collectedPreview, previews[3])
+        assertEquals(aB2.preview, previews[3])
         // e
         val e = tree.getOrNull(1)
         assertIs<PreviewTreeNode.Group>(e)
@@ -57,11 +57,11 @@ class PreviewListTreeTest {
         // e.f
         val f = e.children.getOrNull(0)
         assertIs<PreviewTreeNode.Preview>(f)
-        assertEquals(f.collectedPreview, previews[4])
+        assertEquals(f.preview, previews[4])
         // e
         val e2 = tree.getOrNull(2)
         assertIs<PreviewTreeNode.Preview>(e2)
-        assertEquals(e2.collectedPreview, previews[5])
+        assertEquals(e2.preview, previews[5])
         // e.a
         val eA = e.children.getOrNull(1)
         assertIs<PreviewTreeNode.Group>(eA)
@@ -69,7 +69,7 @@ class PreviewListTreeTest {
         // e.a.b
         val eAB = eA.children.getOrNull(0)
         assertIs<PreviewTreeNode.Preview>(eAB)
-        assertEquals(eAB.collectedPreview, previews[6])
+        assertEquals(eAB.preview, previews[6])
     }
 
     @Test
@@ -102,7 +102,7 @@ class PreviewListTreeTest {
     }
 }
 
-private fun previewForTest(displayName: String): CollectedPreview = CollectedPreview(
+private fun previewForTest(displayName: String): PreviewLabPreview = CollectedPreview(
     displayName,
     displayName,
     "src/commonMain/kotlin/${displayName.replace(".", "/")}.kt",

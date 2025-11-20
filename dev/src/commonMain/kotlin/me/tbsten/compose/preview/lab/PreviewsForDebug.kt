@@ -65,7 +65,7 @@ enum class PreviewsForUiDebug(
     override val startLineNumber: Int? = null,
     override val code: String? = null,
     override val content: @Composable (() -> Unit),
-) : CollectedPreview {
+) : PreviewLabPreview {
     Fields(
         "Fields",
         content = {
