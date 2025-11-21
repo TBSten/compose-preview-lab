@@ -188,16 +188,10 @@ internal expect fun DrawableResource.preloadImageVector(): State<ImageBitmap?>
 private fun QuickSummarySection() = Column(
     verticalArrangement = Arrangement.spacedBy(16.dp),
 ) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        IconBox(color = Color(0xFF4CAF50), label = "✓")
-        SectionHeadingText(
-            text = "Quick Summary",
-            modifier = Modifier.padding(top = 0.dp, bottom = 0.dp),
-        )
-    }
+    SectionHeadingText(
+        text = "Quick Summary",
+        iconBox = { IconBox(color = Color(0xFF4CAF50), label = "✓") },
+    )
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -257,16 +251,10 @@ private fun FeatureBullet(icon: String, text: String) {
 private fun BeforeAfterSection() = Column(
     verticalArrangement = Arrangement.spacedBy(16.dp),
 ) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        IconBox(color = Color(0xFF2196F3), label = "?")
-        SectionHeadingText(
-            text = "What is Compose Preview Lab ?",
-            modifier = Modifier.padding(top = 0.dp, bottom = 0.dp),
-        )
-    }
+    SectionHeadingText(
+        text = "What is Compose Preview Lab ?",
+        iconBox = { IconBox(color = Color(0xFF2196F3), label = "?") },
+    )
 
     val windowWidth =
         with(LocalDensity.current) {
@@ -380,13 +368,34 @@ private fun BeforeAfterSection() = Column(
 }
 
 @Composable
-private fun SectionHeadingText(text: String, modifier: Modifier = Modifier) = Text(
-    text = text,
-    style = MaterialTheme.typography.headlineMedium,
-    fontWeight = FontWeight.Bold,
-    modifier = modifier
-        .padding(top = 32.dp, bottom = 16.dp),
-)
+private fun SectionHeadingText(
+    text: String,
+    modifier: Modifier = Modifier,
+    iconBox: (@Composable () -> Unit)? = null,
+) {
+    if (iconBox != null) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = modifier,
+        ) {
+            iconBox()
+            Text(
+                text = text,
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+            )
+        }
+    } else {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            modifier = modifier
+                .padding(top = 32.dp, bottom = 16.dp),
+        )
+    }
+}
 
 @Composable
 private fun BeforeAfterCodeSection(
@@ -513,16 +522,10 @@ internal object CustomizedInfoTab : InspectorTab {
 private fun NextActionSection() = Column(
     verticalArrangement = Arrangement.spacedBy(16.dp),
 ) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        IconBox(color = Color(0xFF9C27B0), label = "→")
-        SectionHeadingText(
-            text = "Next Steps",
-            modifier = Modifier.padding(top = 0.dp, bottom = 0.dp),
-        )
-    }
+    SectionHeadingText(
+        text = "Next Steps",
+        iconBox = { IconBox(color = Color(0xFF9C27B0), label = "→") },
+    )
 
     Text(
         text = "Now that you understand the basics of Compose Preview Lab, here's what you can explore next:",
@@ -532,11 +535,9 @@ private fun NextActionSection() = Column(
     val previewLabGalleryNavigator = LocalPreviewLabGalleryNavigator.current
 
     Card(
+        onClick = { previewLabGalleryNavigator.navigateOr("AboutFields") { } },
         modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-                previewLabGalleryNavigator.navigateOr("AboutFields") { }
-            },
+            .fillMaxWidth(),
     ) {
         Row(
             modifier = Modifier
