@@ -29,8 +29,8 @@ public final class me/tbsten/compose/preview/lab/CollectedPreviewKt {
 public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabKt;
 	public fun <init> ()V
+	public final fun getLambda$-1889208139$core ()Lkotlin/jvm/functions/Function4;
 	public final fun getLambda$-658061291$core ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$743516051$core ()Lkotlin/jvm/functions/Function4;
 }
 
 public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabRootKt {
@@ -48,16 +48,16 @@ public class me/tbsten/compose/preview/lab/PreviewLab {
 	public fun <init> ()V
 	public fun <init> (Lkotlin/jvm/functions/Function2;Ljava/util/List;Lkotlin/jvm/functions/Function3;ZLjava/lang/Void;)V
 	public synthetic fun <init> (Lkotlin/jvm/functions/Function2;Ljava/util/List;Lkotlin/jvm/functions/Function3;ZLjava/lang/Void;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun invoke (Lme/tbsten/compose/preview/lab/PreviewLabState;Ljava/util/List;Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;I)V
-	public synthetic fun invoke (Lme/tbsten/compose/preview/lab/PreviewLabState;Ljava/util/List;Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
-	public final fun invoke-ZUYZQmM (Lme/tbsten/compose/preview/lab/PreviewLabState;FFLandroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public fun invoke (Lme/tbsten/compose/preview/lab/PreviewLabState;Ljava/util/List;Landroidx/compose/ui/Modifier;ZLjava/util/List;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;I)V
+	public synthetic fun invoke (Lme/tbsten/compose/preview/lab/PreviewLabState;Ljava/util/List;Landroidx/compose/ui/Modifier;ZLjava/util/List;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public final fun invoke-KhTvWYU (Lme/tbsten/compose/preview/lab/PreviewLabState;FFLandroidx/compose/ui/Modifier;ZLjava/util/List;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/PreviewLab$Companion : me/tbsten/compose/preview/lab/PreviewLab {
 }
 
 public final class me/tbsten/compose/preview/lab/PreviewLab$ComposeDefaultImpls {
-	public static final fun invoke$default (Lme/tbsten/compose/preview/lab/PreviewLabState;Ljava/util/List;Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function3;Lme/tbsten/compose/preview/lab/PreviewLab;Landroidx/compose/runtime/Composer;II)V
+	public static final fun invoke$default (Lme/tbsten/compose/preview/lab/PreviewLabState;Ljava/util/List;Landroidx/compose/ui/Modifier;ZLjava/util/List;Lkotlin/jvm/functions/Function3;Lme/tbsten/compose/preview/lab/PreviewLab;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/PreviewLabApplication_jvmKt {
@@ -199,14 +199,47 @@ public abstract interface class me/tbsten/compose/preview/lab/component/Transfor
 public final class me/tbsten/compose/preview/lab/component/inspectorspane/ComposableSingletons$InspectorTabKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/component/inspectorspane/ComposableSingletons$InspectorTabKt;
 	public fun <init> ()V
-	public final fun getLambda$-1699139674$core ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-756829882$core ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-64516978$core ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$877792814$core ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/component/inspectorspane/ComposableSingletons$InspectorsPaneKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/component/inspectorspane/ComposableSingletons$InspectorsPaneKt;
 	public fun <init> ()V
-	public final fun getLambda$-616688332$core ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1869555184$core ()Lkotlin/jvm/functions/Function2;
+}
+
+public abstract interface class me/tbsten/compose/preview/lab/component/inspectorspane/InspectorTab {
+	public static final field Companion Lme/tbsten/compose/preview/lab/component/inspectorspane/InspectorTab$Companion;
+	public abstract fun getContent ()Lkotlin/jvm/functions/Function3;
+	public abstract fun getIcon ()Lkotlin/jvm/functions/Function2;
+	public abstract fun getTitle ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/component/inspectorspane/InspectorTab$Companion {
+	public final fun getDefaults ()Ljava/util/List;
+}
+
+public final class me/tbsten/compose/preview/lab/component/inspectorspane/InspectorTab$Events : me/tbsten/compose/preview/lab/component/inspectorspane/InspectorTab {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/component/inspectorspane/InspectorTab$Events;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getContent ()Lkotlin/jvm/functions/Function3;
+	public fun getIcon ()Lkotlin/jvm/functions/Function2;
+	public fun getTitle ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/component/inspectorspane/InspectorTab$Fields : me/tbsten/compose/preview/lab/component/inspectorspane/InspectorTab {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/component/inspectorspane/InspectorTab$Fields;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getContent ()Lkotlin/jvm/functions/Function3;
+	public fun getIcon ()Lkotlin/jvm/functions/Function2;
+	public fun getTitle ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class me/tbsten/compose/preview/lab/event/ChangeEventKt {

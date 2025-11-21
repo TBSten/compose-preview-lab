@@ -290,12 +290,14 @@ open class PreviewLab(
         maxHeight: Dp,
         modifier: Modifier = Modifier,
         isHeaderShow: Boolean = this.isHeaderShow,
+        additionalTabs: List<InspectorTab> = listOf(),
         content: @Composable PreviewLabScope.() -> Unit,
     ) = invoke(
         state = state,
         screenSizes = listOf(ScreenSize(maxWidth, maxHeight)),
         modifier = modifier,
         isHeaderShow = isHeaderShow,
+        additionalTabs = additionalTabs,
         content = content,
     )
 
@@ -393,6 +395,28 @@ open class PreviewLab(
      *   Defaults to the PreviewLab instance's configured value. When false, hides header controls
      *   to provide a cleaner preview view.
      *
+     * @param additionalTabs
+     *   List of custom tabs to add to the inspector panel alongside the default Fields and Events tabs.
+     *   Useful for adding preview-specific debugging tools, documentation, or custom controls.
+     *
+     *   Example usage:
+     *   ```kt
+     *   data class DebugTab(
+     *       override val title: String = "Debug",
+     *       override val icon: @Composable () -> Painter = { painterResource(Res.drawable.icon_debug) },
+     *       override val content: @Composable (state: PreviewLabState) -> Unit = { state ->
+     *           Column {
+     *               Text("Debug Information")
+     *               Text("Fields: ${state.scope.fields.size}")
+     *           }
+     *       }
+     *   ) : InspectorTab
+     *
+     *   PreviewLab(additionalTabs = listOf(DebugTab())) {
+     *       MyComponent()
+     *   }
+     *   ```
+     *
      * @param content
      *   Preview content lambda with PreviewLabScope receiver. Within this scope you have access to:
      *   - **fieldState { ... }**: Create mutable state fields
@@ -413,6 +437,7 @@ open class PreviewLab(
         screenSizes: List<ScreenSize> = defaultScreenSizes,
         modifier: Modifier = Modifier,
         isHeaderShow: Boolean = this.isHeaderShow,
+        additionalTabs: List<InspectorTab> = listOf(),
         content: @Composable PreviewLabScope.() -> Unit,
     ) {
         val toaster = rememberToasterState().also { toaster ->
@@ -424,7 +449,7 @@ open class PreviewLab(
                             action = TextToastAction(
                                 text = "Show Detail",
                                 onClick = {
-                                    state.selectedTabIndex = InspectorTab.entries.indexOf(InspectorTab.Events)
+                                    state.selectedTabIndex = InspectorTab.defaults.indexOf(InspectorTab.Events)
                                     state.selectedEvent = event.event
                                     toaster.dismiss(it)
                                 },
@@ -451,6 +476,7 @@ open class PreviewLab(
                         InspectorsPane(
                             state = state,
                             isVisible = state.isInspectorPanelVisible,
+                            additionalTabs = additionalTabs,
                         ) {
                             ContentSection(
                                 state = state,
