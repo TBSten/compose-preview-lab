@@ -74,11 +74,11 @@ public final class me/tbsten/compose/preview/lab/PreviewLabGalleryState {
 	public fun <init> ()V
 	public fun <init> (Lkotlin/Pair;)V
 	public synthetic fun <init> (Lkotlin/Pair;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun addToComparePanel (Ljava/lang/String;Lme/tbsten/compose/preview/lab/CollectedPreview;)V
+	public final fun addToComparePanel (Ljava/lang/String;Lme/tbsten/compose/preview/lab/PreviewLabPreview;)V
 	public final fun getQuery ()Ljava/lang/String;
 	public final fun onQueryChange (Ljava/lang/String;)V
 	public final fun removeFromComparePanel (I)V
-	public final fun select (Ljava/lang/String;Lme/tbsten/compose/preview/lab/CollectedPreview;)V
+	public final fun select (Ljava/lang/String;Lme/tbsten/compose/preview/lab/PreviewLabPreview;)V
 	public final fun unselect ()V
 }
 
