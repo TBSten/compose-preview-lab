@@ -574,10 +574,7 @@ private object ComposeFieldsGuideTab : InspectorTab {
                     KotlinCodeBlock(
                         code = """
                             val modifier: Modifier = fieldValue {
-                              ModifierField("modifier") {
-                                choice(Modifier, label = "None")
-                                choice(Modifier.shadow(8.dp), label = "Shadow")
-                              }
+                              ModifierField("modifier")
                             }
                         """.trimIndent(),
                         style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
