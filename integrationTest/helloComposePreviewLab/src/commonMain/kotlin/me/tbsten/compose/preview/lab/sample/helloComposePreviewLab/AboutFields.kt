@@ -42,6 +42,12 @@ import me.tbsten.compose.preview.lab.PreviewLab
 import me.tbsten.compose.preview.lab.PreviewLabState
 import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.field.BooleanField
+import me.tbsten.compose.preview.lab.field.ColorField
+import me.tbsten.compose.preview.lab.field.DoubleField
+import me.tbsten.compose.preview.lab.field.DpField
+import me.tbsten.compose.preview.lab.field.FloatField
+import me.tbsten.compose.preview.lab.field.IntField
+import me.tbsten.compose.preview.lab.field.LongField
 import me.tbsten.compose.preview.lab.field.SelectableField
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.KotlinCodeBlock
@@ -403,85 +409,206 @@ private fun CommonlyUsedFieldsSection() {
         )
 
         Text(
-            text = "Compose Preview Lab provides various built-in Fields for different data types:",
+            text = "Compose Preview Lab provides various built-in Fields for different data types. Try them out below:",
             style = MaterialTheme.typography.bodyMedium,
         )
 
         Spacer(modifier = Modifier.height(4.dp))
 
-        // Primitive Fields
-        FieldCategoryCard(
+        // Primitive Fields Demo
+        FieldCategoryDemo(
             title = "Primitive Type Fields",
-            fields = listOf(
-                "StringField" to "Text input for strings",
-                "IntField" to "Numeric input for integers",
-                "LongField" to "Numeric input for long integers",
-                "FloatField" to "Numeric input for floats",
-                "DoubleField" to "Numeric input for doubles",
-                "BooleanField" to "Toggle switch for booleans",
-            ),
-        )
+            description = "Fields for basic data types like strings, numbers, and booleans",
+        ) {
+            PrimitiveFieldsDemo()
+        }
 
-        // Compose Fields
-        FieldCategoryCard(
+        // Compose Fields Demo
+        FieldCategoryDemo(
             title = "Compose Fields",
-            fields = listOf(
-                "ColorField" to "Color picker for Compose Colors",
-                "DpField" to "Input for Dp (density-independent pixels)",
-            ),
-        )
-
-        // Selectable Field
-        FieldCategoryCard(
-            title = "Selectable Field",
-            fields = listOf(
-                "SelectableField" to "Dropdown selector for predefined choices",
-            ),
-        )
+            description = "Fields for Compose-specific types like Color and Dp",
+        ) {
+            ComposeFieldsDemo()
+        }
     }
 }
 
 @Composable
-private fun FieldCategoryCard(title: String, fields: List<Pair<String, String>>) {
-    Card(
+private fun FieldCategoryDemo(
+    title: String,
+    description: String,
+    content: @Composable () -> Unit,
+) {
+    Column(
         modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary,
+        )
+
+        Text(
+            text = description,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+
+        PreviewLab(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 400.dp, max = 600.dp)
+                .shadow(4.dp, RoundedCornerShape(8.dp)),
+        ) {
+            content()
+        }
+    }
+}
+
+@Composable
+private fun PrimitiveFieldsDemo() {
+    val stringValue = fieldValue { StringField("stringField", initialValue = "Hello") }
+    val intValue = fieldValue { IntField("intField", initialValue = 42) }
+    val longValue = fieldValue { LongField("longField", initialValue = 100L) }
+    val floatValue = fieldValue { FloatField("floatField", initialValue = 3.14f) }
+    val doubleValue = fieldValue { DoubleField("doubleField", initialValue = 2.718) }
+    val booleanValue = fieldValue { BooleanField("booleanField", initialValue = true) }
+
+    Card(modifier = Modifier.fillMaxSize()) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium,
+                text = "Primitive Type Fields Demo",
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
             )
 
-            fields.forEach { (name, description) ->
+            HorizontalDivider()
+
+            FieldDemoItem("StringField", stringValue, "String")
+            FieldDemoItem("IntField", intValue.toString(), "Int")
+            FieldDemoItem("LongField", longValue.toString(), "Long")
+            FieldDemoItem("FloatField", floatValue.toString(), "Float")
+            FieldDemoItem("DoubleField", doubleValue.toString(), "Double")
+            FieldDemoItem("BooleanField", booleanValue.toString(), "Boolean")
+        }
+    }
+}
+
+@Composable
+private fun ComposeFieldsDemo() {
+    val colorValue = fieldValue { ColorField("colorField", initialValue = Color(0xFF2196F3)) }
+    val dpValue = fieldValue { DpField("dpField", initialValue = 16.dp) }
+
+    Card(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Text(
+                text = "Compose Fields Demo",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+            )
+
+            HorizontalDivider()
+
+            // ColorField Demo
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    text = "ColorField",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Monospace,
+                )
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.Top,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(
-                        text = "•",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.primary,
+                    Box(
+                        modifier = Modifier
+                            .background(colorValue, RoundedCornerShape(8.dp))
+                            .padding(48.dp),
                     )
-                    Column {
-                        Text(
-                            text = name,
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = FontFamily.Monospace,
-                        )
-                        Text(
-                            text = description,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
+                    Text(
+                        text = "Color: #${colorValue.value.toString(16).uppercase().padStart(8, '0')}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = FontFamily.Monospace,
+                    )
                 }
             }
+
+            HorizontalDivider()
+
+            // DpField Demo
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    text = "DpField",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Monospace,
+                )
+                Box(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(8.dp))
+                        .padding(dpValue),
+                ) {
+                    Text(
+                        text = "Padding: $dpValue",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = FontFamily.Monospace,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun FieldDemoItem(fieldName: String, value: String, type: String) {
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = fieldName,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily.Monospace,
+            )
+            Box(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(4.dp))
+                    .padding(horizontal = 6.dp, vertical = 2.dp),
+            ) {
+                Text(
+                    text = type,
+                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = FontFamily.Monospace,
+                )
+            }
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(4.dp))
+                .padding(12.dp),
+        ) {
+            Text(
+                text = "Value: $value",
+                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = FontFamily.Monospace,
+            )
         }
     }
 }
