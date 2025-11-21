@@ -9,7 +9,9 @@ import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import me.tbsten.compose.preview.lab.ksp.plugin.util.findAnnotation
 import me.tbsten.compose.preview.lab.ksp.plugin.util.findArg
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
+import org.jetbrains.kotlin.com.intellij.openapi.util.TextRange
 import org.jetbrains.kotlin.com.intellij.psi.util.PsiUtilCore
+import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtFile
 
 internal fun checkPreview(annotated: KSAnnotated): ValidPreview? {
@@ -33,7 +35,7 @@ internal data class ValidPreview(
     val placeholderedId: String,
 )
 
-internal class CopyPreviewContext(val environment: KotlinCoreEnvironment,)
+internal class CopyPreviewContext(val environment: KotlinCoreEnvironment)
 
 internal fun copyPreview(context: CopyPreviewContext, preview: ValidPreview, codeGenerator: CodeGenerator): CopiedPreview {
     val startLineNumber = (preview.previewFun.location as? FileLocation)?.lineNumber
@@ -76,11 +78,21 @@ internal fun copyPreview(context: CopyPreviewContext, preview: ValidPreview, cod
             val functionElement =
                 FunctionCollector.visitPsiFile(file = psiFile, funName = copied.baseName)
                     .single()
-            val body = (
-                functionElement.bodyExpression
-                    ?: throw IllegalStateException("Preview body is null.")
-                )
-            psiFile to body
+
+            val bodyExp = functionElement.bodyExpression
+            val bodyText =
+                if (bodyExp is KtBlockExpression) {
+                    val range = TextRange(
+                        bodyExp.lBrace!!.textRange.endOffset - bodyExp.textRange.startOffset,
+                        bodyExp.rBrace!!.textRange.startOffset - bodyExp.textRange.startOffset,
+                    )
+                    bodyExp.text.substring(range.startOffset, range.endOffset)
+                } else if (bodyExp != null) {
+                    bodyExp.text
+                } else {
+                    "// FIXME Warn: ${functionElement.name} has no body"
+                }
+            psiFile to bodyText
         }
 
     codeGenerator.createNewFile(
@@ -103,7 +115,7 @@ internal fun copyPreview(context: CopyPreviewContext, preview: ValidPreview, cod
         writer.appendLine("// base: ${copied.baseName}")
         writer.appendLine("@Composable")
         writer.appendLine("internal fun ${copied.copyName}() {")
-        writer.appendLine(previewBody.text)
+        writer.appendLine(previewBody)
         writer.appendLine("}")
         writer.appendLine()
     }
