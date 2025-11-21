@@ -70,7 +70,7 @@ import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
  */
 @Composable
 fun ApplicationScope.PreviewLabGalleryWindows(
-    previewList: List<CollectedPreview>,
+    previewList: List<PreviewLabPreview>,
     openFileHandler: OpenFileHandler<out Any?>? = null,
     featuredFileList: Map<String, List<String>> = emptyMap(),
     state: PreviewLabGalleryState = remember { PreviewLabGalleryState() },
