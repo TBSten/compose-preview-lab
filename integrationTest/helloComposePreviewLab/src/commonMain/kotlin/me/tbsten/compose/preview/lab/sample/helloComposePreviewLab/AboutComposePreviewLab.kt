@@ -84,7 +84,8 @@ internal fun AboutComposePreviewLab() = MaterialTheme(
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
-                .padding(16.dp),
+                .padding(24.dp),
+            verticalArrangement = Arrangement.spacedBy(32.dp),
         ) {
             CoverSection()
 
@@ -114,8 +115,10 @@ private object SingletonStore {
 
 @Composable
 private fun CoverSection() = Column(
-    modifier = Modifier.fillMaxWidth(),
+    modifier = Modifier
+        .fillMaxWidth(),
     horizontalAlignment = Alignment.CenterHorizontally,
+    verticalArrangement = Arrangement.spacedBy(12.dp),
 ) {
     val cover by Res.drawable.cover.preloadImageVector()
     val uriHandler = LocalUriHandler.current
@@ -125,70 +128,145 @@ private fun CoverSection() = Column(
         SingletonStore.stored { MutableTransitionState<ImageBitmap?>(null) }
             .apply { targetState = cover }
 
-    rememberTransition(coverImageTransition).AnimatedContent(
-        transitionSpec = {
-            val enter =
-                fadeIn(tween(300, 100)) +
-                    scaleIn(tween(600, easing = EaseOutElastic))
-            val exit = fadeOut(tween(150))
-            enter togetherWith exit
-        },
-    ) { coverImage ->
-        if (coverImage != null) {
-            Image(
-                bitmap = coverImage,
-                contentDescription = "Compose Preview Lab",
-                modifier = Modifier
-                    .clickable { uriHandler.openUri(githubUrl) }
-                    .clip(RoundedCornerShape(8.dp))
-                    .aspectRatio(391f / 220)
-                    .widthIn(max = 600.dp)
-                    .fillMaxWidth(),
-            )
-        } else {
-            Box(
-                Modifier
-                    .background(Color(0xffa3a3a3))
-                    .aspectRatio(391f / 220)
-                    .widthIn(max = 600.dp)
-                    .fillMaxWidth(),
-            )
+    Card(
+        modifier = Modifier
+            .widthIn(max = 700.dp)
+            .fillMaxWidth(),
+    ) {
+        rememberTransition(coverImageTransition).AnimatedContent(
+            transitionSpec = {
+                val enter =
+                    fadeIn(tween(300, 100)) +
+                        scaleIn(tween(600, easing = EaseOutElastic))
+                val exit = fadeOut(tween(150))
+                enter togetherWith exit
+            },
+        ) { coverImage ->
+            if (coverImage != null) {
+                Image(
+                    bitmap = coverImage,
+                    contentDescription = "Compose Preview Lab",
+                    modifier = Modifier
+                        .clickable { uriHandler.openUri(githubUrl) }
+                        .aspectRatio(391f / 220)
+                        .fillMaxWidth(),
+                )
+            } else {
+                Box(
+                    Modifier
+                        .background(Color(0xffa3a3a3))
+                        .aspectRatio(391f / 220)
+                        .fillMaxWidth(),
+                )
+            }
         }
     }
 
-    Spacer(Modifier.height(8.dp))
-
-    Text(
-        text = githubUrl,
-        style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.clickable { uriHandler.openUri(githubUrl) },
-    )
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = "GitHub:",
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Text(
+            text = githubUrl,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.primary,
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.clickable { uriHandler.openUri(githubUrl) },
+        )
+    }
 }
 
 @Composable
 internal expect fun DrawableResource.preloadImageVector(): State<ImageBitmap?>
 
 @Composable
-private fun QuickSummarySection() = Column {
-    SectionHeadingText(
-        text = "Quick Summary",
-    )
+private fun QuickSummarySection() = Column(
+    verticalArrangement = Arrangement.spacedBy(16.dp),
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        IconBox(color = Color(0xFF4CAF50), label = "✓")
+        SectionHeadingText(
+            text = "Quick Summary",
+            modifier = Modifier.padding(top = 0.dp, bottom = 0.dp),
+        )
+    }
 
-    Text(
-        text = """
-            ・Collect and display @Preview!
-            ・Turn @Preview into a powerful Playground with just a little code!
-        """.trimIndent(),
-    )
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            FeatureBullet(
+                icon = "📦",
+                text = "Collect and display @Preview!",
+            )
+            FeatureBullet(
+                icon = "🚀",
+                text = "Turn @Preview into a powerful Playground with just a little code!",
+            )
+        }
+    }
+}
+
+@Composable
+private fun IconBox(color: Color, label: String) {
+    Box(
+        modifier = Modifier
+            .background(color, RoundedCornerShape(8.dp))
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+        )
+    }
+}
+
+@Composable
+private fun FeatureBullet(icon: String, text: String) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.Top,
+    ) {
+        Text(
+            text = icon,
+            style = MaterialTheme.typography.titleMedium,
+        )
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyLarge,
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun BeforeAfterSection() = Column {
-    SectionHeadingText(
-        text = "What is Compose Preview Lab ?",
-    )
+private fun BeforeAfterSection() = Column(
+    verticalArrangement = Arrangement.spacedBy(16.dp),
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        IconBox(color = Color(0xFF2196F3), label = "?")
+        SectionHeadingText(
+            text = "What is Compose Preview Lab ?",
+            modifier = Modifier.padding(top = 0.dp, bottom = 0.dp),
+        )
+    }
 
     val windowWidth =
         with(LocalDensity.current) {
@@ -432,17 +510,24 @@ internal object CustomizedInfoTab : InspectorTab {
 }
 
 @Composable
-private fun NextActionSection() {
-    SectionHeadingText(
-        text = "Next Steps",
-    )
+private fun NextActionSection() = Column(
+    verticalArrangement = Arrangement.spacedBy(16.dp),
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        IconBox(color = Color(0xFF9C27B0), label = "→")
+        SectionHeadingText(
+            text = "Next Steps",
+            modifier = Modifier.padding(top = 0.dp, bottom = 0.dp),
+        )
+    }
 
     Text(
         text = "Now that you understand the basics of Compose Preview Lab, here's what you can explore next:",
-        style = MaterialTheme.typography.bodyMedium,
+        style = MaterialTheme.typography.bodyLarge,
     )
-
-    Spacer(Modifier.height(16.dp))
 
     val previewLabGalleryNavigator = LocalPreviewLabGalleryNavigator.current
 
@@ -455,30 +540,38 @@ private fun NextActionSection() {
     ) {
         Row(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(20.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Column(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
                 Text(
                     text = "Learn About Fields",
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary,
                 )
-                Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "Discover how to dynamically control preview parameters with built-in and custom Fields",
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            Text(
-                text = "→",
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.primary,
-            )
+            Box(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(50))
+                    .padding(12.dp),
+            ) {
+                Text(
+                    text = "→",
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+            }
         }
     }
 }
