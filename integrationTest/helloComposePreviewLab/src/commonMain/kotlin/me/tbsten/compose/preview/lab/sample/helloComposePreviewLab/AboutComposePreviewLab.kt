@@ -32,6 +32,7 @@ import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -60,6 +61,7 @@ import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.res
 import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.cover
 import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.icon_add_notes
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
+import me.tbsten.compose.preview.lab.LocalPreviewLabGalleryNavigator
 import me.tbsten.compose.preview.lab.PreviewLab
 import me.tbsten.compose.preview.lab.PreviewLabState
 import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
@@ -88,6 +90,8 @@ internal fun AboutComposePreviewLab() = MaterialTheme(
             QuickSummarySection()
 
             BeforeAfterSection()
+
+            NextActionSection()
         }
     }
 }
@@ -422,6 +426,58 @@ internal object CustomizedInfoTab : InspectorTab {
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun NextActionSection() {
+    SectionHeadingText(
+        text = "Next Steps",
+    )
+
+    Text(
+        text = "Now that you understand the basics of Compose Preview Lab, here's what you can explore next:",
+        style = MaterialTheme.typography.bodyMedium,
+    )
+
+    Spacer(Modifier.height(16.dp))
+
+    val previewLabGalleryNavigator = LocalPreviewLabGalleryNavigator.current
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                previewLabGalleryNavigator.navigateOr("AboutFields") { }
+            },
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "Learn About Fields",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "Discover how to dynamically control preview parameters with built-in and custom Fields",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Text(
+                text = "→",
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.primary,
+            )
         }
     }
 }
