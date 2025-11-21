@@ -7,7 +7,16 @@ package me.tbsten.compose.preview.lab.generatecombinedfield
  * a `field` extension function on the companion object that creates a
  * MutablePreviewLabField<T> with CombinedField.
  *
- * Example:
+ * ## Requirements
+ *
+ * The annotated class must satisfy the following requirements:
+ * - Must be a `data class`
+ * - Must have a `companion object`
+ * - Must have a primary constructor
+ * - Must have at least 1 property
+ * - Must have at most 10 properties
+ *
+ * ## Example
  *
  * ```
  * @GenerateCombinedField
@@ -18,6 +27,15 @@ package me.tbsten.compose.preview.lab.generatecombinedfield
  * // Generates:
  * fun MyUiState.Companion.field(label: String, initialValue: MyUiState): MutablePreviewLabField<MyUiState> = ...
  * ```
+ *
+ * ## Supported Property Types
+ *
+ * - Primitive types: String, Int, Float, Boolean, etc.
+ * - Compose value types: Dp, Color, etc.
+ * - Nullable types
+ * - Enum types
+ * - Value classes
+ * - Nested data classes with companion objects (recursive generation)
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.SOURCE)
