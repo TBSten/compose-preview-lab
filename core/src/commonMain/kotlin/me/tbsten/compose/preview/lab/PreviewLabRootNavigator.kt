@@ -33,7 +33,7 @@ private fun rememberPreviewLabGalleryNavigator(onNavigatePreview: (String) -> Un
 @Composable
 internal fun rememberPreviewLabGalleryNavigator(
     state: PreviewLabGalleryState,
-    groupedPreviews: Map<String, List<CollectedPreview>>,
+    groupedPreviews: Map<String, List<PreviewLabPreview>>,
 ) = remember {
     object : PreviewLabGalleryNavigator {
         override fun navigate(id: String) {
