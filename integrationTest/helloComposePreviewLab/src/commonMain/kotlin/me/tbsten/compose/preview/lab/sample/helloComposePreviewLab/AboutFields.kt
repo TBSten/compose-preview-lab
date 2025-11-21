@@ -443,9 +443,9 @@ private object PrimitiveFieldsGuideTab : InspectorTab {
                     KotlinCodeBlock(
                         code = """
                             PreviewLab {
-                              val name = fieldValue { StringField("name", "John") }
-                              val age = fieldValue { IntField("age", 25) }
-                              val isActive = fieldValue { BooleanField("isActive", true) }
+                              val name: String = fieldValue { StringField("name", "John") }
+                              val age: Int = fieldValue { IntField("age", 25) }
+                              val isActive: Boolean = fieldValue { BooleanField("isActive", true) }
 
                               UserProfile(name = name, age = age, isActive = isActive)
                             }
@@ -538,8 +538,8 @@ private object ComposeFieldsGuideTab : InspectorTab {
                     KotlinCodeBlock(
                         code = """
                             PreviewLab {
-                              val bgColor = fieldValue { ColorField("bgColor", Color.Blue) }
-                              val padding = fieldValue { DpField("padding", 16.dp) }
+                              val bgColor: Color = fieldValue { ColorField("bgColor", Color.Blue) }
+                              val padding: Dp = fieldValue { DpField("padding", 16.dp) }
 
                               Box(
                                 modifier = Modifier
@@ -573,7 +573,7 @@ private object ComposeFieldsGuideTab : InspectorTab {
                 ) {
                     KotlinCodeBlock(
                         code = """
-                            val modifier = fieldValue {
+                            val modifier: Modifier = fieldValue {
                               ModifierField("modifier") {
                                 choice(Modifier, label = "None")
                                 choice(Modifier.shadow(8.dp), label = "Shadow")
@@ -605,7 +605,7 @@ private object ComposeFieldsGuideTab : InspectorTab {
                 ) {
                     KotlinCodeBlock(
                         code = """
-                            val icon = fieldValue {
+                            val icon: @Composable () -> Unit = fieldValue {
                               ComposableField(
                                 label = "icon",
                                 initialValue = ComposableFieldValue.Red64X64,
@@ -646,13 +646,13 @@ private fun CommonlyUsedFieldsSection() {
             description = "Fields for basic data types like strings, numbers, and booleans",
             guideTab = PrimitiveFieldsGuideTab,
             codeSnippet = """
-                val stringValue = fieldValue {
+                val stringValue: String = fieldValue {
                   StringField("stringField", initialValue = "Hello")
                 }
-                val intValue = fieldValue {
+                val intValue: Int = fieldValue {
                   IntField("intField", initialValue = 42)
                 }
-                val booleanValue = fieldValue {
+                val booleanValue: Boolean = fieldValue {
                   BooleanField("booleanField", initialValue = true)
                 }
             """.trimIndent(),
@@ -667,11 +667,14 @@ private fun CommonlyUsedFieldsSection() {
             description = "Fields for Compose-specific types like Color, Dp, Modifier, and Composable slots. These make it easy to manually test components with Modifier arguments and Slot patterns.",
             guideTab = ComposeFieldsGuideTab,
             codeSnippet = """
-                val colorValue = fieldValue {
+                val colorValue: Color = fieldValue {
                   ColorField("colorField", initialValue = Color(0xFF2196F3))
                 }
-                val modifierValue = fieldValue {
-                    ModifierField("modifierField")
+                val modifierValue: Modifier = fieldValue {
+                    ModifierField("modifierField") {
+                        choice(Modifier, label = "None", isDefault = true)
+                        choice(Modifier.background(Color(0xFFFFEB3B)), label = "Yellow")
+                    }
                 }
             """.trimIndent(),
             explanationText = "ColorField, ModifierField, and ComposableField let you dynamically test Compose-specific types. ModifierField and ComposableField use choice() to define multiple options.",
