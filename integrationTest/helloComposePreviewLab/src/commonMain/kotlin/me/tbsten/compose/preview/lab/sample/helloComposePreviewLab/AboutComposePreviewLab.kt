@@ -28,7 +28,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -47,6 +46,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
@@ -68,6 +68,7 @@ import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.navigateOr
+import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.IconBox
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.KotlinCodeBlock
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
@@ -79,10 +80,30 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 internal fun AboutComposePreviewLab() = MaterialTheme(
     colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme(),
 ) {
+    val isDark = isSystemInDarkTheme()
+    val backgroundGradient = if (isDark) {
+        Brush.verticalGradient(
+            colors = listOf(
+                Color(0xFF1A1A2E),
+                Color(0xFF16213E),
+                Color(0xFF0F3460),
+            )
+        )
+    } else {
+        Brush.verticalGradient(
+            colors = listOf(
+                Color(0xFFF8F9FA),
+                Color(0xFFE8EAF6),
+                Color(0xFFE3F2FD),
+            )
+        )
+    }
+
     SelectionContainer {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .background(backgroundGradient)
                 .verticalScroll(rememberScrollState())
                 .padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(32.dp),
@@ -201,11 +222,11 @@ private fun QuickSummarySection() = Column(
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             FeatureBullet(
-                icon = "📦",
+                icon = { IconBox(color = Color(0xFF2196F3), label = "P") },
                 text = "Collect and display @Preview!",
             )
             FeatureBullet(
-                icon = "🚀",
+                icon = { IconBox(color = Color(0xFFFF5722), label = "G") },
                 text = "Turn @Preview into a powerful Playground with just a little code!",
             )
         }
@@ -213,32 +234,12 @@ private fun QuickSummarySection() = Column(
 }
 
 @Composable
-private fun IconBox(color: Color, label: String) {
-    Box(
-        modifier = Modifier
-            .background(color, RoundedCornerShape(8.dp))
-            .padding(horizontal = 12.dp, vertical = 8.dp),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-        )
-    }
-}
-
-@Composable
-private fun FeatureBullet(icon: String, text: String) {
+private fun FeatureBullet(icon: @Composable () -> Unit, text: String) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.Top,
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(
-            text = icon,
-            style = MaterialTheme.typography.titleMedium,
-        )
+        icon()
         Text(
             text = text,
             style = MaterialTheme.typography.bodyLarge,
@@ -269,8 +270,13 @@ private fun BeforeAfterSection() = Column(
     val before = remember {
         movableContentOf {
             BeforeAfterCodeSection(
-                textColor = Color(0xffff4444),
-                backgroundColor = Color(0xffffe0e0),
+                textColor = Color(0xFFD32F2F),
+                backgroundGradient = Brush.verticalGradient(
+                    colors = listOf(
+                        Color(0xFFFFEBEE),
+                        Color(0xFFFFCDD2),
+                    )
+                ),
                 label = "before",
                 code = """
                     @Preview
@@ -301,8 +307,13 @@ private fun BeforeAfterSection() = Column(
             // TODO highlight PreviewLab { }, fieldValue { }, onEvent
 
             BeforeAfterCodeSection(
-                textColor = Color(0xff0a7119),
-                backgroundColor = Color(0xffc8edb7),
+                textColor = Color(0xFF1B5E20),
+                backgroundGradient = Brush.verticalGradient(
+                    colors = listOf(
+                        Color(0xFFE8F5E9),
+                        Color(0xFFC8E6C9),
+                    )
+                ),
                 label = "after",
                 code = """
                     @Preview
@@ -400,7 +411,7 @@ private fun SectionHeadingText(
 @Composable
 private fun BeforeAfterCodeSection(
     textColor: Color,
-    backgroundColor: Color,
+    backgroundGradient: Brush,
     label: String,
     code: String,
     content: @Composable () -> Unit,
@@ -414,17 +425,19 @@ private fun BeforeAfterCodeSection(
             text = label,
             color = textColor,
             textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .background(backgroundColor, shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp))
+                .background(backgroundGradient, shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
                 .fillMaxWidth()
-                .padding(vertical = 4.dp, horizontal = 12.dp),
+                .padding(vertical = 8.dp, horizontal = 12.dp),
         )
 
         Box(
             modifier = Modifier
-                .background(backgroundColor.copy(alpha = 0.25f))
+                .background(backgroundGradient)
                 .padding(16.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(4.dp)),
         ) {
             KotlinCodeBlock(
                 code = code,
@@ -433,13 +446,19 @@ private fun BeforeAfterCodeSection(
 
         Box(
             modifier = Modifier
-                .border(4.dp, backgroundColor.copy(alpha = 0.25f))
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color.White.copy(alpha = 0.3f),
+                            Color.White.copy(alpha = 0.1f),
+                        )
+                    )
+                )
                 .padding(4.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)),
         ) {
-            DisableSelection {
-                content()
-            }
+            content()
         }
     }
 }

@@ -30,6 +30,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.painter.Painter
@@ -52,6 +53,7 @@ import me.tbsten.compose.preview.lab.field.IntField
 import me.tbsten.compose.preview.lab.field.ModifierField
 import me.tbsten.compose.preview.lab.field.SelectableField
 import me.tbsten.compose.preview.lab.field.StringField
+import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.IconBox
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.KotlinCodeBlock
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -59,10 +61,30 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 internal fun AboutFields() = MaterialTheme(
     colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme(),
 ) {
+    val isDark = isSystemInDarkTheme()
+    val backgroundGradient = if (isDark) {
+        Brush.verticalGradient(
+            colors = listOf(
+                Color(0xFF1A1A2E),
+                Color(0xFF16213E),
+                Color(0xFF0F3460),
+            )
+        )
+    } else {
+        Brush.verticalGradient(
+            colors = listOf(
+                Color(0xFFFAFAFA),
+                Color(0xFFE8EAF6),
+                Color(0xFFE3F2FD),
+            )
+        )
+    }
+
     SelectionContainer {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .background(backgroundGradient)
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp),
         ) {
@@ -143,29 +165,20 @@ private fun SectionTitle(
 }
 
 @Composable
-private fun IconBox(color: Color, label: String) {
-    Box(
-        modifier = Modifier
-            .background(color, RoundedCornerShape(6.dp))
-            .padding(horizontal = 12.dp, vertical = 6.dp),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-        )
-    }
-}
-
-@Composable
 private fun ComparisonTable() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp))
-            .padding(16.dp),
+            .background(
+                Brush.linearGradient(
+                    colors = listOf(
+                        Color(0xFFF5F5F5),
+                        Color(0xFFE8EAF6),
+                    )
+                ),
+                RoundedCornerShape(12.dp)
+            )
+            .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         ComparisonRow(
@@ -376,11 +389,11 @@ private object FirstDemoFieldGuideTab : InspectorTab {
                     number = "4",
                     title = "Try SelectableField",
                     description = "Change 'items' using the dropdown to switch between different sample data sets. SelectableField lets you choose from predefined options:",
-                    code = $$"""
+                    code = """
                         fieldValue {
                           SelectableField(label = "items") {
                             choice(emptyList(), label = "Empty")
-                            choice(List(20) { "Item-${it}" }, label = "20 Item", isDefault = true)
+                            choice(List(20) { "Item-${'$'}{it}" }, label = "20 Item", isDefault = true)
                           }
                         }
                     """.trimIndent(),
@@ -438,7 +451,15 @@ private object PrimitiveFieldsGuideTab : InspectorTab {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp)),
+                        .background(
+                            Brush.linearGradient(
+                                colors = listOf(
+                                    Color(0xFFF5F5F5),
+                                    Color(0xFFE0E7FF),
+                                )
+                            ),
+                            RoundedCornerShape(8.dp)
+                        ),
                 ) {
                     KotlinCodeBlock(
                         code = """
@@ -533,7 +554,15 @@ private object ComposeFieldsGuideTab : InspectorTab {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp)),
+                        .background(
+                            Brush.linearGradient(
+                                colors = listOf(
+                                    Color(0xFFF5F5F5),
+                                    Color(0xFFE0E7FF),
+                                )
+                            ),
+                            RoundedCornerShape(8.dp)
+                        ),
                 ) {
                     KotlinCodeBlock(
                         code = """
@@ -569,7 +598,15 @@ private object ComposeFieldsGuideTab : InspectorTab {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp)),
+                        .background(
+                            Brush.linearGradient(
+                                colors = listOf(
+                                    Color(0xFFF5F5F5),
+                                    Color(0xFFE0E7FF),
+                                )
+                            ),
+                            RoundedCornerShape(8.dp)
+                        ),
                 ) {
                     KotlinCodeBlock(
                         code = """
@@ -598,7 +635,15 @@ private object ComposeFieldsGuideTab : InspectorTab {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp)),
+                        .background(
+                            Brush.linearGradient(
+                                colors = listOf(
+                                    Color(0xFFF5F5F5),
+                                    Color(0xFFE0E7FF),
+                                )
+                            ),
+                            RoundedCornerShape(8.dp)
+                        ),
                 ) {
                     KotlinCodeBlock(
                         code = """
@@ -725,7 +770,15 @@ private fun FieldCategoryDemo(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color(0xFFF5F5F5), RoundedCornerShape(4.dp)),
+                        .background(
+                            Brush.linearGradient(
+                                colors = listOf(
+                                    Color(0xFFF5F5F5),
+                                    Color(0xFFE0E7FF),
+                                )
+                            ),
+                            RoundedCornerShape(8.dp)
+                        ),
                 ) {
                     KotlinCodeBlock(
                         code = codeSnippet,
@@ -1149,7 +1202,15 @@ private fun Step(number: String, title: String, description: String, code: Strin
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color(0xFFF5F5F5), RoundedCornerShape(4.dp)),
+                    .background(
+                        Brush.linearGradient(
+                            colors = listOf(
+                                Color(0xFFF5F5F5),
+                                Color(0xFFE0E7FF),
+                            )
+                        ),
+                        RoundedCornerShape(8.dp)
+                    ),
             ) {
                 KotlinCodeBlock(
                     code = code,
