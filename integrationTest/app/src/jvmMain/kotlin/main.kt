@@ -11,7 +11,7 @@ fun main(): Unit = application {
             baseUrl = "https://github.com/TBSten/compose-preview-lab/blob/main/integrationTest/",
         ),
         state = rememberPreviewLabGalleryState(
-            initialGroupName = app.FeaturedFileList.`hello compose preview lab`.first(),
+            initialGroupName = app.FeaturedFileList.hello_compose_preview_lab.first(),
             initialPreview = helloComposePreviewLab.PreviewList.AboutComposePreviewLab,
         ),
     )
