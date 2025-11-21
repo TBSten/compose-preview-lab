@@ -11,9 +11,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,13 +29,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.State
 import androidx.compose.runtime.currentCompositeKeyHashCode
 import androidx.compose.runtime.getValue
@@ -61,13 +59,17 @@ import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.res
 import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.cover
 import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.icon_add_notes
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.LocalPreviewLabGalleryNavigator
 import me.tbsten.compose.preview.lab.PreviewLab
 import me.tbsten.compose.preview.lab.PreviewLabState
 import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.field.BooleanField
+import me.tbsten.compose.preview.lab.field.ColorField
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.navigateOr
+import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
+import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.DocPage
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.IconBox
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.KotlinCodeBlock
 import org.jetbrains.compose.resources.DrawableResource
@@ -77,45 +79,15 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 // FIXME migrate LabDoc API
 
 @Composable
-internal fun AboutComposePreviewLab() = MaterialTheme(
-    colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme(),
-) {
-    val isDark = isSystemInDarkTheme()
-    val backgroundGradient = if (isDark) {
-        Brush.verticalGradient(
-            colors = listOf(
-                Color(0xFF1A1A2E),
-                Color(0xFF16213E),
-                Color(0xFF0F3460),
-            )
-        )
-    } else {
-        Brush.verticalGradient(
-            colors = listOf(
-                Color(0xFFF8F9FA),
-                Color(0xFFE8EAF6),
-                Color(0xFFE3F2FD),
-            )
-        )
-    }
+internal fun AboutComposePreviewLab() {
+    DocPage {
+        CoverSection()
 
-    SelectionContainer {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(backgroundGradient)
-                .verticalScroll(rememberScrollState())
-                .padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(32.dp),
-        ) {
-            CoverSection()
+        QuickSummarySection()
 
-            QuickSummarySection()
+        BeforeAfterSection()
 
-            BeforeAfterSection()
-
-            NextActionSection()
-        }
+        NextActionSection()
     }
 }
 
@@ -247,7 +219,7 @@ private fun FeatureBullet(icon: @Composable () -> Unit, text: String) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, InternalComposePreviewLabApi::class)
 @Composable
 private fun BeforeAfterSection() = Column(
     verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -275,7 +247,7 @@ private fun BeforeAfterSection() = Column(
                     colors = listOf(
                         Color(0xFFFFEBEE),
                         Color(0xFFFFCDD2),
-                    )
+                    ),
                 ),
                 label = "before",
                 code = """
@@ -312,7 +284,7 @@ private fun BeforeAfterSection() = Column(
                     colors = listOf(
                         Color(0xFFE8F5E9),
                         Color(0xFFC8E6C9),
-                    )
+                    ),
                 ),
                 label = "after",
                 code = """
@@ -329,16 +301,25 @@ private fun BeforeAfterSection() = Column(
                     }
                 """.trimIndent(),
                 content = {
-                    PreviewLab(
-                        isHeaderShow = false,
-                        additionalTabs = listOf(CustomizedInfoTab),
-                        modifier = Modifier.height(600.dp),
+                    CompositionLocalProvider(
+                        LocalPreviewLabGalleryNavigator provides null,
+                        LocalOpenFileHandler provides null,
                     ) {
-                        Button(
-                            enabled = fieldValue { BooleanField("isEnable", true) },
-                            onClick = { onEvent("onClick") },
+                        PreviewLab(
+                            isHeaderShow = false,
+                            additionalTabs = listOf(CustomizedInfoTab),
+                            modifier = Modifier.height(450.dp),
                         ) {
-                            Text(text = fieldValue { StringField("text", "Click Me !") })
+                            val defaultButtonColor = MaterialTheme.colorScheme.primary
+                            Button(
+                                enabled = fieldValue { BooleanField("isEnable", true) },
+                                onClick = { onEvent("onClick") },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = fieldValue { ColorField("colors.containerColor", defaultButtonColor) },
+                                ),
+                            ) {
+                                Text(text = fieldValue { StringField("text", "Click Me !") })
+                            }
                         }
                     }
                 },
@@ -350,7 +331,6 @@ private fun BeforeAfterSection() = Column(
         Column(
             verticalArrangement = Arrangement.spacedBy(20.dp),
             modifier = Modifier
-                .height(1000.dp)
                 .fillMaxWidth(),
         ) {
             before()
@@ -360,8 +340,7 @@ private fun BeforeAfterSection() = Column(
         Row(
             horizontalArrangement = Arrangement.spacedBy(20.dp),
             modifier = Modifier
-                .height(600.dp)
-                .widthIn(max = 800.dp)
+                .widthIn(max = 1000.dp)
                 .fillMaxWidth(),
         ) {
             Box(
@@ -379,11 +358,7 @@ private fun BeforeAfterSection() = Column(
 }
 
 @Composable
-private fun SectionHeadingText(
-    text: String,
-    modifier: Modifier = Modifier,
-    iconBox: (@Composable () -> Unit)? = null,
-) {
+private fun SectionHeadingText(text: String, modifier: Modifier = Modifier, iconBox: (@Composable () -> Unit)? = null) {
     if (iconBox != null) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -451,8 +426,8 @@ private fun BeforeAfterCodeSection(
                         colors = listOf(
                             Color.White.copy(alpha = 0.3f),
                             Color.White.copy(alpha = 0.1f),
-                        )
-                    )
+                        ),
+                    ),
                 )
                 .padding(4.dp)
                 .fillMaxWidth()

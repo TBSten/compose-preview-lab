@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 /**
  * interface, which determines the behavior when opening source code, etc.
@@ -73,7 +74,8 @@ open class UrlOpenFileHandler(private val baseUrl: String) : OpenFileHandler<Uri
     }
 }
 
-internal val LocalOpenFileHandler = compositionLocalOf<OpenFileHandler<out Any?>?> { null }
+@InternalComposePreviewLabApi
+val LocalOpenFileHandler = compositionLocalOf<OpenFileHandler<out Any?>?> { null }
 
 /**
  * An OpenFileHandler that opens files in GitHub's web interface.

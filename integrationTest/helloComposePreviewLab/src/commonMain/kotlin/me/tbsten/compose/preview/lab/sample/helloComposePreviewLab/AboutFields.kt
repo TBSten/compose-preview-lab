@@ -1,7 +1,6 @@
 package me.tbsten.compose.preview.lab.sample.helloComposePreviewLab
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,14 +21,11 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.painter.Painter
@@ -39,6 +34,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.LocalPreviewLabGalleryNavigator
 import me.tbsten.compose.preview.lab.PreviewLab
 import me.tbsten.compose.preview.lab.PreviewLabScope
@@ -53,51 +49,28 @@ import me.tbsten.compose.preview.lab.field.IntField
 import me.tbsten.compose.preview.lab.field.ModifierField
 import me.tbsten.compose.preview.lab.field.SelectableField
 import me.tbsten.compose.preview.lab.field.StringField
+import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
+import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.DocPage
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.IconBox
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.KotlinCodeBlock
+import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.createCodeBlockGradient
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-internal fun AboutFields() = MaterialTheme(
-    colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme(),
-) {
-    val isDark = isSystemInDarkTheme()
-    val backgroundGradient = if (isDark) {
-        Brush.verticalGradient(
-            colors = listOf(
-                Color(0xFF1A1A2E),
-                Color(0xFF16213E),
-                Color(0xFF0F3460),
-            )
-        )
-    } else {
-        Brush.verticalGradient(
-            colors = listOf(
-                Color(0xFFFAFAFA),
-                Color(0xFFE8EAF6),
-                Color(0xFFE3F2FD),
-            )
-        )
-    }
+internal fun AboutFields() {
+    DocPage(
+        horizontalPadding = 16.dp,
+        verticalSpacing = 16.dp,
+    ) {
+        AboutSection()
 
-    SelectionContainer {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(backgroundGradient)
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp),
-        ) {
-            AboutSection()
+        FirstDemoSection()
 
-            FirstDemoSection(modifier = Modifier.heightIn(max = 600.dp))
+        CommonlyUsedFieldsSection()
 
-            CommonlyUsedFieldsSection()
+        CustomizeFieldSection()
 
-            CustomizeFieldSection()
-
-            MoreInformationSection()
-        }
+        MoreInformationSection()
     }
 }
 
@@ -170,13 +143,8 @@ private fun ComparisonTable() {
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                Brush.linearGradient(
-                    colors = listOf(
-                        Color(0xFFF5F5F5),
-                        Color(0xFFE8EAF6),
-                    )
-                ),
-                RoundedCornerShape(12.dp)
+                createCodeBlockGradient(),
+                RoundedCornerShape(12.dp),
             )
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -218,17 +186,20 @@ private fun ComparisonRow(icon: @Composable () -> Unit, title: String, descripti
     }
 }
 
+@OptIn(InternalComposePreviewLabApi::class)
 @Composable
 private fun FirstDemoSection(modifier: Modifier = Modifier) {
     CompositionLocalProvider(
         LocalPreviewLabGalleryNavigator provides null,
+        LocalOpenFileHandler provides null,
     ) {
         PreviewLab(
             additionalTabs = listOf(FirstDemoFieldGuideTab),
             isHeaderShow = false,
             modifier = modifier
                 .padding(40.dp)
-                .shadow(8.dp),
+                .shadow(8.dp)
+                .height(600.dp),
         ) {
             FirstDemoItemList(
                 headerText = fieldValue { StringField("headerText", initialValue = "Item List") },
@@ -452,13 +423,8 @@ private object PrimitiveFieldsGuideTab : InspectorTab {
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            Brush.linearGradient(
-                                colors = listOf(
-                                    Color(0xFFF5F5F5),
-                                    Color(0xFFE0E7FF),
-                                )
-                            ),
-                            RoundedCornerShape(8.dp)
+                            createCodeBlockGradient(),
+                            RoundedCornerShape(8.dp),
                         ),
                 ) {
                     KotlinCodeBlock(
@@ -555,13 +521,8 @@ private object ComposeFieldsGuideTab : InspectorTab {
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            Brush.linearGradient(
-                                colors = listOf(
-                                    Color(0xFFF5F5F5),
-                                    Color(0xFFE0E7FF),
-                                )
-                            ),
-                            RoundedCornerShape(8.dp)
+                            createCodeBlockGradient(),
+                            RoundedCornerShape(8.dp),
                         ),
                 ) {
                     KotlinCodeBlock(
@@ -599,13 +560,8 @@ private object ComposeFieldsGuideTab : InspectorTab {
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            Brush.linearGradient(
-                                colors = listOf(
-                                    Color(0xFFF5F5F5),
-                                    Color(0xFFE0E7FF),
-                                )
-                            ),
-                            RoundedCornerShape(8.dp)
+                            createCodeBlockGradient(),
+                            RoundedCornerShape(8.dp),
                         ),
                 ) {
                     KotlinCodeBlock(
@@ -636,13 +592,8 @@ private object ComposeFieldsGuideTab : InspectorTab {
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            Brush.linearGradient(
-                                colors = listOf(
-                                    Color(0xFFF5F5F5),
-                                    Color(0xFFE0E7FF),
-                                )
-                            ),
-                            RoundedCornerShape(8.dp)
+                            createCodeBlockGradient(),
+                            RoundedCornerShape(8.dp),
                         ),
                 ) {
                     KotlinCodeBlock(
@@ -726,6 +677,7 @@ private fun CommonlyUsedFieldsSection() {
     }
 }
 
+@OptIn(InternalComposePreviewLabApi::class)
 @Composable
 private fun FieldCategoryDemo(
     title: String,
@@ -771,13 +723,8 @@ private fun FieldCategoryDemo(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            Brush.linearGradient(
-                                colors = listOf(
-                                    Color(0xFFF5F5F5),
-                                    Color(0xFFE0E7FF),
-                                )
-                            ),
-                            RoundedCornerShape(8.dp)
+                            createCodeBlockGradient(),
+                            RoundedCornerShape(8.dp),
                         ),
                 ) {
                     KotlinCodeBlock(
@@ -798,14 +745,15 @@ private fun FieldCategoryDemo(
 
         CompositionLocalProvider(
             LocalPreviewLabGalleryNavigator provides null,
+            LocalOpenFileHandler provides null,
         ) {
             PreviewLab(
                 additionalTabs = listOf(guideTab),
                 isHeaderShow = false,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 400.dp, max = 600.dp)
-                    .shadow(4.dp, RoundedCornerShape(8.dp)),
+                    .shadow(4.dp, RoundedCornerShape(8.dp))
+                    .height(600.dp),
             ) {
                 content()
             }
@@ -1203,13 +1151,8 @@ private fun Step(number: String, title: String, description: String, code: Strin
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        Brush.linearGradient(
-                            colors = listOf(
-                                Color(0xFFF5F5F5),
-                                Color(0xFFE0E7FF),
-                            )
-                        ),
-                        RoundedCornerShape(8.dp)
+                        createCodeBlockGradient(),
+                        RoundedCornerShape(8.dp),
                     ),
             ) {
                 KotlinCodeBlock(
