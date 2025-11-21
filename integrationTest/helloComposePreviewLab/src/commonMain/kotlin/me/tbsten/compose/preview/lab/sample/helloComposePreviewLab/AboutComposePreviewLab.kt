@@ -389,11 +389,11 @@ internal object CustomizedInfoTab : InspectorTab {
                 ) {
                     KotlinCodeBlock(
                         code = """
-                        data class MyTab(
-                          override val title: String = "My Tab",
-                          override val icon: @Composable () -> Painter = { ... },
+                        object MyTab : InspectorTab {
+                          override val title: String = "My Tab"
+                          override val icon: @Composable () -> Painter = { ... }
                           override val content: @Composable (PreviewLabState) -> Unit = { ... }
-                        ) : InspectorTab
+                        }
                         """.trimIndent(),
                         style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
                         contentPadding = PaddingValues(12.dp),
