@@ -1,7 +1,6 @@
 package me.tbsten.compose.preview.lab.sample.helloComposePreviewLab
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,11 +44,9 @@ import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.ColorField
 import me.tbsten.compose.preview.lab.field.ComposableField
-import me.tbsten.compose.preview.lab.field.DoubleField
+import me.tbsten.compose.preview.lab.field.ComposableFieldValue
 import me.tbsten.compose.preview.lab.field.DpField
-import me.tbsten.compose.preview.lab.field.FloatField
 import me.tbsten.compose.preview.lab.field.IntField
-import me.tbsten.compose.preview.lab.field.LongField
 import me.tbsten.compose.preview.lab.field.ModifierField
 import me.tbsten.compose.preview.lab.field.SelectableField
 import me.tbsten.compose.preview.lab.field.StringField
@@ -401,6 +398,224 @@ private object FirstDemoFieldGuideTab : InspectorTab {
     }
 }
 
+private object PrimitiveFieldsGuideTab : InspectorTab {
+    override val title: String = "Guide"
+    override val icon: @Composable () -> Painter = { ColorPainter(Color(0xFF4CAF50)) }
+    override val content: @Composable (PreviewLabState) -> Unit = { _ ->
+        SelectionContainer {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                Text(
+                    text = "Primitive Type Fields",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                )
+
+                Text(
+                    text = "Primitive型のFieldを使うと、文字列、数値、真偽値などの基本的な値を動的にテストできます。",
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "使い方",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp)),
+                ) {
+                    KotlinCodeBlock(
+                        code = """
+                            PreviewLab {
+                              val name = fieldValue { StringField("name", "John") }
+                              val age = fieldValue { IntField("age", 25) }
+                              val isActive = fieldValue { BooleanField("isActive", true) }
+
+                              UserProfile(name = name, age = age, isActive = isActive)
+                            }
+                        """.trimIndent(),
+                        style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
+                        contentPadding = PaddingValues(12.dp),
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "利用可能なField",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+
+                listOf(
+                    "StringField" to "文字列入力",
+                    "IntField" to "整数入力",
+                    "LongField" to "Long整数入力",
+                    "FloatField" to "Float小数入力",
+                    "DoubleField" to "Double小数入力",
+                    "BooleanField" to "真偽値トグル",
+                ).forEach { (name, description) ->
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(4.dp))
+                            .padding(8.dp),
+                    ) {
+                        Text(
+                            text = "•",
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                        Text(
+                            text = name,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = FontFamily.Monospace,
+                        )
+                        Text(
+                            text = "- $description",
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+private object ComposeFieldsGuideTab : InspectorTab {
+    override val title: String = "Guide"
+    override val icon: @Composable () -> Painter = { ColorPainter(Color(0xFF2196F3)) }
+    override val content: @Composable (PreviewLabState) -> Unit = { _ ->
+        SelectionContainer {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                Text(
+                    text = "Compose Fields",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                )
+
+                Text(
+                    text = "Compose固有の型（Color、Dp、Modifier、Composable）を動的にテストできるFieldです。",
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "ColorField & DpField",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp)),
+                ) {
+                    KotlinCodeBlock(
+                        code = """
+                            PreviewLab {
+                              val bgColor = fieldValue { ColorField("bgColor", Color.Blue) }
+                              val padding = fieldValue { DpField("padding", 16.dp) }
+
+                              Box(
+                                modifier = Modifier
+                                  .background(bgColor)
+                                  .padding(padding)
+                              ) { Text("Hello") }
+                            }
+                        """.trimIndent(),
+                        style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
+                        contentPadding = PaddingValues(12.dp),
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "ModifierField",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+
+                Text(
+                    text = "複数のModifier候補から選択できます。",
+                    style = MaterialTheme.typography.bodySmall,
+                )
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp)),
+                ) {
+                    KotlinCodeBlock(
+                        code = """
+                            val modifier = fieldValue {
+                              ModifierField("modifier") {
+                                choice(Modifier, label = "None")
+                                choice(Modifier.shadow(8.dp), label = "Shadow")
+                              }
+                            }
+                        """.trimIndent(),
+                        style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
+                        contentPadding = PaddingValues(12.dp),
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "ComposableField",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+
+                Text(
+                    text = "Slotパターンのテストに便利です。",
+                    style = MaterialTheme.typography.bodySmall,
+                )
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp)),
+                ) {
+                    KotlinCodeBlock(
+                        code = """
+                            val icon = fieldValue {
+                              ComposableField("icon") {
+                                choice({ Icon(Icons.Default.Home) }, label = "Home")
+                                choice({ Icon(Icons.Default.Star) }, label = "Star")
+                              }
+                            }
+                            // Use: icon()
+                        """.trimIndent(),
+                        style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
+                        contentPadding = PaddingValues(12.dp),
+                    )
+                }
+            }
+        }
+    }
+}
+
 @Composable
 private fun CommonlyUsedFieldsSection() {
     Column(
@@ -423,6 +638,13 @@ private fun CommonlyUsedFieldsSection() {
         FieldCategoryDemo(
             title = "Primitive Type Fields",
             description = "Fields for basic data types like strings, numbers, and booleans",
+            guideTab = PrimitiveFieldsGuideTab,
+            codeSnippet = """
+                val stringValue = fieldValue { StringField("stringField", initialValue = "Hello") }
+                val intValue = fieldValue { IntField("intField", initialValue = 42) }
+                val booleanValue = fieldValue { BooleanField("booleanField", initialValue = true) }
+            """.trimIndent(),
+            explanationText = "fieldValue { } ブロック内でFieldを定義すると、Fieldsタブに自動的にUIコントロールが表示されます。Fieldの値を変更すると、コンポーネントがリアルタイムで更新されます。",
         ) {
             PrimitiveFieldsDemo()
         }
@@ -431,6 +653,17 @@ private fun CommonlyUsedFieldsSection() {
         FieldCategoryDemo(
             title = "Compose Fields",
             description = "Fields for Compose-specific types like Color, Dp, Modifier, and Composable slots. These make it easy to manually test components with Modifier arguments and Slot patterns.",
+            guideTab = ComposeFieldsGuideTab,
+            codeSnippet = """
+                val colorValue = fieldValue { ColorField("colorField", initialValue = Color(0xFF2196F3)) }
+                val modifierValue = fieldValue {
+                    ModifierField("modifierField") {
+                        choice(Modifier, label = "None", isDefault = true)
+                        choice(Modifier.background(Color(0xFFFFEB3B)), label = "Yellow")
+                    }
+                }
+            """.trimIndent(),
+            explanationText = "ColorField、ModifierField、ComposableFieldなどを使うと、Compose固有の型も動的にテストできます。ModifierFieldとComposableFieldはchoice()で複数の選択肢を定義します。",
         ) {
             ComposeFieldsDemo()
         }
@@ -438,7 +671,14 @@ private fun CommonlyUsedFieldsSection() {
 }
 
 @Composable
-private fun FieldCategoryDemo(title: String, description: String, content: @Composable PreviewLabScope.() -> Unit) {
+private fun FieldCategoryDemo(
+    title: String,
+    description: String,
+    guideTab: InspectorTab,
+    codeSnippet: String,
+    explanationText: String,
+    content: @Composable PreviewLabScope.() -> Unit,
+) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -456,7 +696,44 @@ private fun FieldCategoryDemo(title: String, description: String, content: @Comp
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
+        Spacer(modifier = Modifier.height(4.dp))
+
+        // Code snippet and explanation
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Column(
+                modifier = Modifier.padding(12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Text(
+                    text = "Code Example",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xFFF5F5F5), RoundedCornerShape(4.dp)),
+                ) {
+                    KotlinCodeBlock(
+                        code = codeSnippet,
+                        style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
+                        contentPadding = PaddingValues(8.dp),
+                    )
+                }
+                Text(
+                    text = explanationText,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(4.dp))
+
         PreviewLab(
+            additionalTabs = listOf(guideTab),
             isHeaderShow = false,
             modifier = Modifier
                 .fillMaxWidth()
@@ -502,29 +779,13 @@ private fun PreviewLabScope.ComposeFieldsDemo() {
     val colorValue = fieldValue { ColorField("colorField", initialValue = Color(0xFF2196F3)) }
     val dpValue = fieldValue { DpField("dpField", initialValue = 16.dp) }
     val modifierValue = fieldValue {
-        ModifierField("modifierField") {
-            choice(Modifier, label = "None", isDefault = true)
-            choice(Modifier.background(Color(0xFFFFEB3B), RoundedCornerShape(8.dp)), label = "Yellow Background")
-            choice(Modifier.background(Color(0xFF4CAF50), RoundedCornerShape(16.dp)).padding(16.dp), label = "Green + Padding")
-            choice(Modifier.shadow(8.dp, RoundedCornerShape(12.dp)).padding(8.dp), label = "Shadow + Padding")
-        }
+        ModifierField("modifierField")
     }
     val iconValue = fieldValue {
-        ComposableField("icon") {
-            choice(
-                { Box(Modifier.background(Color(0xFFF44336), RoundedCornerShape(4.dp)).padding(8.dp)) },
-                label = "Red Box",
-                isDefault = true,
-            )
-            choice(
-                { Box(Modifier.background(Color(0xFF2196F3), RoundedCornerShape(50)).padding(12.dp)) },
-                label = "Blue Circle",
-            )
-            choice(
-                { Text("★", style = MaterialTheme.typography.headlineMedium, color = Color(0xFFFFEB3B)) },
-                label = "Star Icon",
-            )
-        }
+        ComposableField(
+            label = "icon",
+            initialValue = ComposableFieldValue.Red64X64,
+        )
     }
 
     Card(modifier = Modifier.fillMaxSize()) {
@@ -721,9 +982,9 @@ private fun CustomizeFieldSection() {
         val customizeFieldUrl = "https://github.com/TBSten/compose-preview-lab/blob/main/docs/customize-field.md"
 
         Card(
+            onClick = { uriHandler.openUri(customizeFieldUrl) },
             modifier = Modifier
-                .fillMaxWidth()
-                .clickable { uriHandler.openUri(customizeFieldUrl) },
+                .fillMaxWidth(),
         ) {
             Row(
                 modifier = Modifier
@@ -796,9 +1057,9 @@ private fun MoreInformationSection() {
 @Composable
 private fun LinkCard(title: String, description: String, url: String, onClick: (String) -> Unit) {
     Card(
+        onClick = { onClick(url) },
         modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick(url) },
+            .fillMaxWidth(),
     ) {
         Row(
             modifier = Modifier
