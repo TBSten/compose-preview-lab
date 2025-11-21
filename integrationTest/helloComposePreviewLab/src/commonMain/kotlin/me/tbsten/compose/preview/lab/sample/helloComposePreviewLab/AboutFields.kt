@@ -1,6 +1,7 @@
 package me.tbsten.compose.preview.lab.sample.helloComposePreviewLab
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontFamily
@@ -59,6 +61,12 @@ internal fun AboutFields() = MaterialTheme(
             AboutSection()
 
             FirstDemoSection(modifier = Modifier.heightIn(max = 600.dp))
+
+            CommonlyUsedFieldsSection()
+
+            CustomizeFieldSection()
+
+            MoreInformationSection()
         }
     }
 }
@@ -379,6 +387,231 @@ private object FirstDemoFieldGuideTab : InspectorTab {
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
+        }
+    }
+}
+
+@Composable
+private fun CommonlyUsedFieldsSection() {
+    Column(
+        modifier = Modifier.padding(bottom = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        SectionTitle(
+            icon = { IconBox(color = Color(0xFF4CAF50), label = "F") },
+            text = "Commonly Used Fields",
+        )
+
+        Text(
+            text = "Compose Preview Lab provides various built-in Fields for different data types:",
+            style = MaterialTheme.typography.bodyMedium,
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        // Primitive Fields
+        FieldCategoryCard(
+            title = "Primitive Type Fields",
+            fields = listOf(
+                "StringField" to "Text input for strings",
+                "IntField" to "Numeric input for integers",
+                "LongField" to "Numeric input for long integers",
+                "FloatField" to "Numeric input for floats",
+                "DoubleField" to "Numeric input for doubles",
+                "BooleanField" to "Toggle switch for booleans",
+            ),
+        )
+
+        // Compose Fields
+        FieldCategoryCard(
+            title = "Compose Fields",
+            fields = listOf(
+                "ColorField" to "Color picker for Compose Colors",
+                "DpField" to "Input for Dp (density-independent pixels)",
+            ),
+        )
+
+        // Selectable Field
+        FieldCategoryCard(
+            title = "Selectable Field",
+            fields = listOf(
+                "SelectableField" to "Dropdown selector for predefined choices",
+            ),
+        )
+    }
+}
+
+@Composable
+private fun FieldCategoryCard(title: String, fields: List<Pair<String, String>>) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+            )
+
+            fields.forEach { (name, description) ->
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.Top,
+                ) {
+                    Text(
+                        text = "•",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                    Column {
+                        Text(
+                            text = name,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = FontFamily.Monospace,
+                        )
+                        Text(
+                            text = description,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun CustomizeFieldSection() {
+    Column(
+        modifier = Modifier.padding(bottom = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        SectionTitle(
+            icon = { IconBox(color = Color(0xFF9C27B0), label = "C") },
+            text = "Customize Field",
+        )
+
+        Text(
+            text = "You can create your own custom Fields by implementing the Field interface. This allows you to build specialized input controls tailored to your specific needs.",
+            style = MaterialTheme.typography.bodyMedium,
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        val uriHandler = LocalUriHandler.current
+        val customizeFieldUrl = "https://github.com/TBSten/compose-preview-lab/blob/main/docs/customize-field.md"
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { uriHandler.openUri(customizeFieldUrl) },
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "Customize Field Documentation",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "Learn how to create custom Fields",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Text(
+                    text = "→",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun MoreInformationSection() {
+    Column(
+        modifier = Modifier.padding(bottom = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        SectionTitle(
+            icon = { IconBox(color = Color(0xFF2196F3), label = "i") },
+            text = "More Information",
+        )
+
+        Text(
+            text = "Explore more about Fields:",
+            style = MaterialTheme.typography.bodyMedium,
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        val uriHandler = LocalUriHandler.current
+
+        // Built-in Fields List
+        LinkCard(
+            title = "Built-in Fields List",
+            description = "Complete list of all available built-in Fields",
+            url = "https://github.com/TBSten/compose-preview-lab/blob/main/docs/build-in-fields.md",
+            onClick = { uriHandler.openUri(it) },
+        )
+
+        // Source Code Link
+        LinkCard(
+            title = "Field Source Code",
+            description = "Browse the implementation of built-in Fields",
+            url = "https://github.com/TBSten/compose-preview-lab/tree/main/core/src/commonMain/kotlin/me/tbsten/compose/preview/lab/field",
+            onClick = { uriHandler.openUri(it) },
+        )
+    }
+}
+
+@Composable
+private fun LinkCard(title: String, description: String, url: String, onClick: (String) -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick(url) },
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Text(
+                text = "→",
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.primary,
+            )
         }
     }
 }
