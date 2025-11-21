@@ -290,7 +290,7 @@ open class PreviewLab(
         maxHeight: Dp,
         modifier: Modifier = Modifier,
         isHeaderShow: Boolean = this.isHeaderShow,
-        additionalTabs: List<InspectorTab> = listOf(),
+        additionalTabs: List<InspectorTab> = emptyList(),
         content: @Composable PreviewLabScope.() -> Unit,
     ) = invoke(
         state = state,
@@ -437,7 +437,7 @@ open class PreviewLab(
         screenSizes: List<ScreenSize> = defaultScreenSizes,
         modifier: Modifier = Modifier,
         isHeaderShow: Boolean = this.isHeaderShow,
-        additionalTabs: List<InspectorTab> = listOf(),
+        additionalTabs: List<InspectorTab> = emptyList(),
         content: @Composable PreviewLabScope.() -> Unit,
     ) {
         val toaster = rememberToasterState().also { toaster ->
