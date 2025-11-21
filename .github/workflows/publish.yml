@@ -25,7 +25,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
       - name: Build Dokka Documentation
         run: ./gradlew dokkaHtmlMultiModule
       - name: Publish to Github Pages

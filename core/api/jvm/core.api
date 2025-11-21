@@ -1,84 +1,75 @@
-public abstract interface annotation class me/tbsten/compose/preview/lab/AggregateToAll : java/lang/annotation/Annotation {
-}
-
-public abstract interface class me/tbsten/compose/preview/lab/CollectedPreview {
-	public abstract fun getCode ()Ljava/lang/String;
-	public abstract fun getContent ()Lkotlin/jvm/functions/Function2;
-	public abstract fun getDisplayName ()Ljava/lang/String;
-	public abstract fun getFilePath ()Ljava/lang/String;
-	public abstract fun getId ()Ljava/lang/String;
-	public abstract fun getStartLineNumber ()Ljava/lang/Integer;
+public final class me/tbsten/compose/preview/lab/CollectedPreview : me/tbsten/compose/preview/lab/PreviewLabPreview {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/jvm/functions/Function2;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/Integer;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Lkotlin/jvm/functions/Function2;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lme/tbsten/compose/preview/lab/CollectedPreview;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/CollectedPreview;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/CollectedPreview;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCode ()Ljava/lang/String;
+	public fun getContent ()Lkotlin/jvm/functions/Function2;
+	public fun getDisplayName ()Ljava/lang/String;
+	public fun getFilePath ()Ljava/lang/String;
+	public fun getId ()Ljava/lang/String;
+	public fun getStartLineNumber ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class me/tbsten/compose/preview/lab/CollectedPreviewKt {
-	public static final fun CollectedPreview (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lme/tbsten/compose/preview/lab/CollectedPreview;
-	public static synthetic fun CollectedPreview$default (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/CollectedPreview;
+	public static final fun PreviewLabPreview (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lme/tbsten/compose/preview/lab/PreviewLabPreview;
+	public static synthetic fun PreviewLabPreview$default (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/PreviewLabPreview;
 }
 
 public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabKt;
 	public fun <init> ()V
 	public final fun getLambda$-658061291$core ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$743516051$core ()Lkotlin/jvm/functions/Function4;
 }
 
 public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabRootKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabRootKt;
 	public fun <init> ()V
-	public final fun getLambda$-1425352284$core ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-422513048$core ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-696575611$core ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1377656563$core ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$1686164197$core ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$2143766127$core ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$559994497$core ()Lkotlin/jvm/functions/Function2;
-}
-
-public abstract interface annotation class me/tbsten/compose/preview/lab/ComposePreviewLabOption : java/lang/annotation/Annotation {
-	public abstract fun displayName ()Ljava/lang/String;
-	public abstract fun id ()Ljava/lang/String;
-	public abstract fun ignore ()Z
-}
-
-public abstract interface annotation class me/tbsten/compose/preview/lab/ExperimentalComposePreviewLabApi : java/lang/annotation/Annotation {
-}
-
-public abstract interface annotation class me/tbsten/compose/preview/lab/InternalComposePreviewLabApi : java/lang/annotation/Annotation {
 }
 
 public class me/tbsten/compose/preview/lab/PreviewLab {
 	public static final field $stable I
 	public static final field Companion Lme/tbsten/compose/preview/lab/PreviewLab$Companion;
 	public fun <init> ()V
-	public fun <init> (Lkotlin/jvm/functions/Function2;Ljava/util/List;Lkotlin/jvm/functions/Function3;Ljava/lang/Void;)V
-	public synthetic fun <init> (Lkotlin/jvm/functions/Function2;Ljava/util/List;Lkotlin/jvm/functions/Function3;Ljava/lang/Void;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun invoke (Lme/tbsten/compose/preview/lab/PreviewLabState;Ljava/util/List;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;I)V
-	public synthetic fun invoke (Lme/tbsten/compose/preview/lab/PreviewLabState;Ljava/util/List;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
-	public final fun invoke-djqs-MU (Lme/tbsten/compose/preview/lab/PreviewLabState;FFLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public fun <init> (Lkotlin/jvm/functions/Function2;Ljava/util/List;Lkotlin/jvm/functions/Function3;ZLjava/lang/Void;)V
+	public synthetic fun <init> (Lkotlin/jvm/functions/Function2;Ljava/util/List;Lkotlin/jvm/functions/Function3;ZLjava/lang/Void;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun invoke (Lme/tbsten/compose/preview/lab/PreviewLabState;Ljava/util/List;Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;I)V
+	public synthetic fun invoke (Lme/tbsten/compose/preview/lab/PreviewLabState;Ljava/util/List;Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public final fun invoke-ZUYZQmM (Lme/tbsten/compose/preview/lab/PreviewLabState;FFLandroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/PreviewLab$Companion : me/tbsten/compose/preview/lab/PreviewLab {
 }
 
 public final class me/tbsten/compose/preview/lab/PreviewLab$ComposeDefaultImpls {
-	public static final fun invoke$default (Lme/tbsten/compose/preview/lab/PreviewLabState;Ljava/util/List;Lkotlin/jvm/functions/Function3;Lme/tbsten/compose/preview/lab/PreviewLab;Landroidx/compose/runtime/Composer;II)V
+	public static final fun invoke$default (Lme/tbsten/compose/preview/lab/PreviewLabState;Ljava/util/List;Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function3;Lme/tbsten/compose/preview/lab/PreviewLab;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/PreviewLabApplication_jvmKt {
-	public static final fun PreviewLabRootWindows (Landroidx/compose/ui/window/ApplicationScope;Ljava/util/List;Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler;Ljava/util/Map;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/window/WindowState;ZLjava/lang/String;Landroidx/compose/ui/graphics/painter/Painter;ZZZZZZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;III)V
+	public static final fun PreviewLabGalleryWindows (Landroidx/compose/ui/window/ApplicationScope;Ljava/util/List;Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler;Ljava/util/Map;Lme/tbsten/compose/preview/lab/PreviewLabGalleryState;Landroidx/compose/ui/window/WindowState;Lkotlin/jvm/functions/Function0;ZLjava/lang/String;Landroidx/compose/ui/graphics/painter/Painter;ZZZZZZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;III)V
 }
 
-public final class me/tbsten/compose/preview/lab/PreviewLabRootKt {
-	public static final fun PreviewLabRoot (Ljava/util/List;Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/PreviewLabRootState;Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler;Ljava/util/Map;Landroidx/compose/runtime/Composer;II)V
-}
-
-public abstract interface class me/tbsten/compose/preview/lab/PreviewLabRootNavigator {
+public abstract interface class me/tbsten/compose/preview/lab/PreviewLabGalleryNavigator {
 	public abstract fun back ()V
 	public abstract fun navigate (Ljava/lang/String;)V
 }
 
-public final class me/tbsten/compose/preview/lab/PreviewLabRootNavigatorKt {
-	public static final fun getLocalPreviewLabRootNavigator ()Landroidx/compose/runtime/ProvidableCompositionLocal;
-	public static final fun navigateOr (Lme/tbsten/compose/preview/lab/PreviewLabRootNavigator;Ljava/lang/String;Lkotlin/jvm/functions/Function0;)V
-}
-
-public final class me/tbsten/compose/preview/lab/PreviewLabRootState {
+public final class me/tbsten/compose/preview/lab/PreviewLabGalleryState {
 	public static final field $stable I
 	public fun <init> ()V
 	public fun <init> (Lkotlin/Pair;)V
@@ -91,10 +82,33 @@ public final class me/tbsten/compose/preview/lab/PreviewLabRootState {
 	public final fun unselect ()V
 }
 
+public final class me/tbsten/compose/preview/lab/PreviewLabKt {
+	public static final fun getLocalPreviewLabState ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+}
+
+public abstract interface class me/tbsten/compose/preview/lab/PreviewLabPreview {
+	public abstract fun getCode ()Ljava/lang/String;
+	public abstract fun getContent ()Lkotlin/jvm/functions/Function2;
+	public abstract fun getDisplayName ()Ljava/lang/String;
+	public abstract fun getFilePath ()Ljava/lang/String;
+	public abstract fun getId ()Ljava/lang/String;
+	public abstract fun getStartLineNumber ()Ljava/lang/Integer;
+}
+
+public final class me/tbsten/compose/preview/lab/PreviewLabRootKt {
+	public static final fun PreviewLabGallery (Ljava/util/List;Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/PreviewLabGalleryState;Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler;Ljava/util/Map;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/PreviewLabRootNavigatorKt {
+	public static final fun getLocalPreviewLabGalleryNavigator ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun navigateOr (Lme/tbsten/compose/preview/lab/PreviewLabGalleryNavigator;Ljava/lang/String;Lkotlin/jvm/functions/Function0;)V
+}
+
 public final class me/tbsten/compose/preview/lab/PreviewLabScope {
 	public static final field $stable I
 	public final fun fieldState (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/MutableState;
 	public final fun fieldValue (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Ljava/lang/Object;
+	public final fun getFields ()Landroidx/compose/runtime/snapshots/SnapshotStateList;
 	public final fun onEvent (Ljava/lang/String;Ljava/lang/String;)V
 	public static synthetic fun onEvent$default (Lme/tbsten/compose/preview/lab/PreviewLabScope;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)V
 }
@@ -107,6 +121,7 @@ public final class me/tbsten/compose/preview/lab/PreviewLabState {
 	public static final field $stable I
 	public static final field Companion Lme/tbsten/compose/preview/lab/PreviewLabState$Companion;
 	public fun <init> ()V
+	public final fun getScope ()Lme/tbsten/compose/preview/lab/PreviewLabScope;
 }
 
 public final class me/tbsten/compose/preview/lab/PreviewLabState$Companion {
@@ -640,7 +655,9 @@ public final class me/tbsten/compose/preview/lab/field/SelectableField$Type : ja
 }
 
 public final class me/tbsten/compose/preview/lab/field/SelectableFieldKt {
+	public static final fun SelectableField (Ljava/lang/String;Ljava/util/Map;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/SelectableField;
 	public static final fun SelectableField (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Lkotlin/jvm/functions/Function1;)Lme/tbsten/compose/preview/lab/field/SelectableField;
+	public static synthetic fun SelectableField$default (Ljava/lang/String;Ljava/util/Map;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Ljava/lang/Object;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/SelectableField;
 	public static synthetic fun SelectableField$default (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/SelectableField;
 	public static final fun toField (Ljava/util/List;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/SelectableField;
 	public static synthetic fun toField$default (Ljava/util/List;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Ljava/lang/Object;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/SelectableField;

@@ -19,6 +19,7 @@ import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 
 @Composable
 internal fun PreviewLabHeader(
+    isHeaderShow: Boolean,
     scale: Float,
     onScaleChange: (Float) -> Unit,
     isInspectorPanelVisible: Boolean,
@@ -27,30 +28,32 @@ internal fun PreviewLabHeader(
     content: @Composable () -> Unit,
 ) {
     Column(modifier = modifier.clip(RectangleShape)) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier
-                .background(PreviewLabTheme.colors.background)
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState())
-                .padding(8.dp)
-                .zIndex(2f),
-        ) {
-            Zoom(
-                scale = scale,
-                onScaleChange = onScaleChange,
-            )
+        if (isHeaderShow) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier
+                    .background(PreviewLabTheme.colors.background)
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState())
+                    .padding(8.dp)
+                    .zIndex(2f),
+            ) {
+                Zoom(
+                    scale = scale,
+                    onScaleChange = onScaleChange,
+                )
 
-            InspectorPanelVisible(
-                isInspectorPanelVisible = isInspectorPanelVisible,
-                onToggle = onIsInspectorPanelVisibleToggle,
+                InspectorPanelVisible(
+                    isInspectorPanelVisible = isInspectorPanelVisible,
+                    onToggle = onIsInspectorPanelVisibleToggle,
+                )
+            }
+
+            Divider(
+                Modifier
+                    .zIndex(2f),
             )
         }
-
-        Divider(
-            Modifier
-                .zIndex(2f),
-        )
 
         content()
     }

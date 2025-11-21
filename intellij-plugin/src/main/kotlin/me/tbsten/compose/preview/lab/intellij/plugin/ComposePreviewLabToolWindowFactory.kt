@@ -16,7 +16,7 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import kotlinx.coroutines.flow.MutableSharedFlow
 import me.tbsten.compose.preview.lab.CollectedPreview
 import me.tbsten.compose.preview.lab.PreviewLab
-import me.tbsten.compose.preview.lab.PreviewLabRoot
+import me.tbsten.compose.preview.lab.PreviewLabGallery
 import me.tbsten.compose.preview.lab.field.StringField
 import org.jetbrains.jewel.bridge.addComposeTab
 import org.jetbrains.jewel.ui.component.Text
@@ -31,7 +31,7 @@ class ComposePreviewLabToolWindowFactory : ToolWindowFactory {
                     override fun selectionChanged(event: FileEditorManagerEvent) {
                         event.newFile?.let { flow.tryEmit(it) }
                     }
-                }
+                },
             )
             flow
         }
@@ -39,16 +39,16 @@ class ComposePreviewLabToolWindowFactory : ToolWindowFactory {
         toolWindow.addComposeTab {
             val selectedFileFlow by selectedFileFlow.collectAsState(null)
             Text("selectedFileFlow: ${selectedFileFlow?.name ?: "null"}")
-            PreviewLabRoot(
+            PreviewLabGallery(
                 // TODO capture from ksp generated source
-                previews = List(3) {
+                previewList = List(3) {
                     CollectedPreview("Preview $it") {
                         PreviewLab {
                             Button(
                                 onClick = { onEvent("Click $it") },
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .defaultMinSize(minWidth = 100.dp)
+                                    .defaultMinSize(minWidth = 100.dp),
                             ) {
                                 Text(fieldValue { StringField("value", "Preview $it") })
                             }

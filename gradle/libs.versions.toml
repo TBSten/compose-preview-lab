@@ -1,5 +1,5 @@
 [versions]
-composePreviewLab = "0.1.0-dev07"
+composePreviewLab = "0.1.0-dev08"
 kotlin = "2.2.21"
 compose = "1.9.3"
 agp = "8.9.3"
@@ -7,16 +7,18 @@ androidx-activityCompose = "1.11.0"
 androidx-uiTest = "1.9.4"
 lumoUi = "1.2.5"
 dokar3Sonner = "0.3.8"
-hotReload = "1.0.0-rc03"
+hotReload = "1.1.0-alpha01"
 ksp = "2.3.2"
 intellijPlatform = "2.6.0"
 jewelIdeLafBridge = "0.27.0"
 kotlinxSerializationJson = "1.9.0"
-vanniktechMavenPublish = "0.30.0"
+vanniktechMavenPublish = "0.35.0"
 dokka = "2.1.0"
 binaryCompatibilityValidator = "0.18.1"
 ktlint = "1.6.0"
 ktlintGradle = "14.0.1"
+androidxLifecycle = "2.9.6"
+kodeview = "0.9.0"
 
 [libraries]
 
@@ -34,6 +36,10 @@ ktlintGradlePlugin = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.
 vanniktechMavenPublishGradlePlugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "vanniktechMavenPublish" }
 dokkaGradlePlugin = { module = "org.jetbrains.dokka:org.jetbrains.dokka.gradle.plugin", version.ref = "dokka" }
 kspGradlePlugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+
+androidxLifecycleViewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+androidxLifecycleRuntimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
+kodeview = { module = "dev.snipme:kodeview", version.ref = "kodeview" }
 
 [plugins]
 

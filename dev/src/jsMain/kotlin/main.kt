@@ -5,6 +5,6 @@ import me.tbsten.compose.preview.lab.previewsForUiDebug
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() = previewLabApplication(
-    previews = previewsForUiDebug,
-    featuredFiles = featuredFilesForDebug,
+    previewList = previewsForUiDebug,
+    featuredFileList = featuredFilesForDebug,
 )

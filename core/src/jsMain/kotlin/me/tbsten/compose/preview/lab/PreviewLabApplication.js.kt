@@ -17,51 +17,54 @@ import org.w3c.dom.HTMLElement
  * ```kotlin
  * // Basic web application
  * fun main() = previewLabApplication(
- *     previews = myModule.previews
+ *     previewList = myModule.PreviewList
  * )
  *
  * // With file handler and grouping
  * fun main() = previewLabApplication(
- *     previews = myModule.previews,
+ *     previewList = myModule.PreviewList,
  *     openFileHandler = UrlOpenFileHandler("https://github.com/user/repo/blob/main"),
  * )
  *
  * // With `.composepreviewlab/featured/` directory
  * fun main() = previewLabApplication(
- *     previews = myModule.previews,
- *     featuredFiles = app.FeaturedFiles,
+ *     previewList = myModule.PreviewList,
+ *     featuredFileList = app.FeaturedFileList,
  * )
  *
  * // Custom root element
  * fun main() {
  *     val customContainer = document.getElementById("preview-container") as HTMLElement
  *     previewLabApplication(
- *         previews = myModule.previews,
+ *         previewList = myModule.PreviewList,
  *         rootElement = customContainer
  *     )
  * }
  * ```
  *
- * @param previews Collection of previews to display in the interface
- * @param featuredFiles Grouped file organization for navigation
+ * @param previewList Collection of previews to display in the interface
+ * @param featuredFileList Grouped file organization for navigation
  * @param openFileHandler Handler for opening source files (optional)
+ * @param state PreviewLabGalleryState for managing gallery state
  * @param rootElement HTML element to mount the application (defaults to document.body)
- * @see PreviewLabRoot
+ * @see PreviewLabGallery
  * @see CollectedPreview
  * @see OpenFileHandler
  */
 @OptIn(ExperimentalComposeUiApi::class)
 fun previewLabApplication(
-    previews: List<CollectedPreview>,
-    featuredFiles: Map<String, List<String>> = emptyMap(),
+    previewList: List<PreviewLabPreview>,
+    featuredFileList: Map<String, List<String>> = emptyMap(),
     openFileHandler: OpenFileHandler<out Any?>? = null,
+    state: PreviewLabGalleryState = PreviewLabGalleryState(),
     rootElement: HTMLElement = document.body!!,
 ) {
     ComposeViewport(rootElement) {
-        PreviewLabRoot(
-            previews = previews,
-            featuredFiles = featuredFiles,
+        PreviewLabGallery(
+            previewList = previewList,
+            featuredFileList = featuredFileList,
             openFileHandler = openFileHandler,
+            state = state,
         )
     }
 }

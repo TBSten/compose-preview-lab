@@ -140,7 +140,7 @@ private fun PreviewView(
             modifier = modifier.weight(1f),
         ) {
             Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()) {
-                val previewName = preview.collectedPreview.displayName.split(".").last()
+                val previewName = preview.preview.displayName.split(".").last()
                 Text(previewName, style = PreviewLabTheme.typography.body3)
             }
         }

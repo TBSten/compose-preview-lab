@@ -16,6 +16,57 @@ import me.tbsten.compose.preview.lab.ui.components.Text
 /**
  * Adds hint choices to a MutablePreviewLabField, allowing users to quickly select from predefined values.
  *
+ * # Usage
+ *
+ * ```kt
+ * // Adding hints to number fields (like font sizes)
+ * @Preview
+ * @Composable
+ * fun TextPreview() = PreviewLab {
+ *     val fontSize: Int = fieldValue {
+ *         IntField(label = "Font Size", initialValue = 16)
+ *             .withHint(
+ *                 "Small" to 12,
+ *                 "Medium" to 16,
+ *                 "Large" to 20,
+ *                 "XLarge" to 24
+ *             )
+ *     }
+ *     Text("Sample Text", fontSize = fontSize.sp)
+ * }
+ *
+ * // Adding hints to string fields (like common usernames or URLs)
+ * @Preview
+ * @Composable
+ * fun ProfilePreview() = PreviewLab {
+ *     val username: String = fieldValue {
+ *         StringField(label = "Username", initialValue = "")
+ *             .withHint(
+ *                 "Alice" to "alice_wonder",
+ *                 "Bob" to "bob_builder",
+ *                 "Charlie" to "charlie_choco"
+ *             )
+ *     }
+ *     ProfileCard(username = username)
+ * }
+ *
+ * // Combining withHint with other field modifiers
+ * @Preview
+ * @Composable
+ * fun ApiUrlPreview() = PreviewLab {
+ *     val apiUrl: String = fieldValue {
+ *         StringField(label = "API URL", initialValue = "https://api.example.com")
+ *             .withHint(
+ *                 "Production" to "https://api.example.com",
+ *                 "Staging" to "https://staging.api.example.com",
+ *                 "Development" to "https://dev.api.example.com",
+ *                 "Local" to "http://localhost:3000"
+ *             )
+ *     }
+ *     ApiClient(baseUrl = apiUrl)
+ * }
+ * ```
+ *
  * @param choices Vararg of pairs where first is the hint label and second is the value
  * @return A WithHintField wrapper that displays the base field with hint choices
  */
@@ -25,6 +76,59 @@ fun <Value> MutablePreviewLabField<Value>.withHint(vararg choices: Pair<String, 
 /**
  * A field wrapper that adds hint choices below the base field.
  * Users can click on hint chips to quickly apply predefined values.
+ *
+ * # Usage
+ *
+ * ```kt
+ * // Adding hints to number fields (like font sizes)
+ * @Preview
+ * @Composable
+ * fun FontSizePreview() = PreviewLab {
+ *     val lineHeight: Int = fieldValue {
+ *         IntField(label = "Line Height", initialValue = 24)
+ *             .withHint(
+ *                 "Compact" to 18,
+ *                 "Normal" to 24,
+ *                 "Relaxed" to 32
+ *             )
+ *     }
+ *     Text("Multi-line text example", lineHeight = lineHeight.sp)
+ * }
+ *
+ * // Adding hints to string fields (like common usernames or URLs)
+ * @Preview
+ * @Composable
+ * fun EmailPreview() = PreviewLab {
+ *     val email: String = fieldValue {
+ *         StringField(label = "Email", initialValue = "user@example.com")
+ *             .withHint(
+ *                 "Personal" to "john.doe@gmail.com",
+ *                 "Work" to "john@company.com",
+ *                 "Test" to "test@example.com"
+ *             )
+ *     }
+ *     EmailDisplay(email = email)
+ * }
+ *
+ * // Combining withHint with other field modifiers
+ * @Preview
+ * @Composable
+ * fun PaddingPreview() = PreviewLab {
+ *     val padding: Int = fieldValue {
+ *         IntField(label = "Padding", initialValue = 16)
+ *             .withHint(
+ *                 "None" to 0,
+ *                 "Small" to 8,
+ *                 "Medium" to 16,
+ *                 "Large" to 24,
+ *                 "XLarge" to 32
+ *             )
+ *     }
+ *     Box(Modifier.padding(padding.dp)) {
+ *         Text("Content with padding")
+ *     }
+ * }
+ * ```
  *
  * @param Value The type of value managed by the field
  * @param baseField The underlying field to wrap with hints

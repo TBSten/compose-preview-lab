@@ -21,26 +21,56 @@ import me.tbsten.compose.preview.lab.field.modifier.padding
  * size constraints, etc. The field displays a real-time preview of the constructed modifier
  * and allows fine-tuning of parameters through dedicated UI controls.
  *
+ * # Usage
+ *
  * ```kotlin
  * // Basic modifier field with default marking
- * val modifier = fieldValue { ModifierField("Layout Modifier") }
- *
- * // Custom initial modifier chain
- * val customModifier = fieldValue {
- *     ModifierField(
- *         label = "Button Modifier",
- *         initialValue = ModifierFieldValue.mark()
- *             .padding(16.dp)
- *             .background(Color.Blue)
- *     )
+ * @Preview
+ * @Composable
+ * fun ButtonPreview() = PreviewLab {
+ *     Button(
+ *         onClick = { },
+ *         modifier = fieldValue { ModifierField("Button modifier") },
+ *     ) {
+ *         Text("Styled Button")
+ *     }
  * }
  *
- * // Use in component
- * Button(
- *     onClick = { },
- *     modifier = modifier
- * ) {
- *     Text("Styled Button")
+ * // Custom initial modifier chain
+ * @Preview
+ * @Composable
+ * fun CardPreview() = PreviewLab {
+ *     val customModifier: Modifier = fieldValue {
+ *         ModifierField(
+ *             label = "Card Modifier",
+ *             initialValue = ModifierFieldValue.mark()
+ *                 .padding(16.dp)
+ *                 .background(Color.Blue)
+ *         )
+ *     }
+ *
+ *     Card(modifier = customModifier) {
+ *         Text("Custom Card")
+ *     }
+ * }
+ *
+ * // Pre-configured with multiple modifiers
+ * @Preview
+ * @Composable
+ * fun BoxPreview() = PreviewLab {
+ *     val containerModifier: Modifier = fieldValue {
+ *         ModifierField(
+ *             label = "Container",
+ *             initialValue = ModifierFieldValue.mark()
+ *                 .padding(all = 8.dp)
+ *                 .background(Color.Gray.copy(alpha = 0.3f))
+ *                 .border(width = 2.dp, color = Color.Black)
+ *         )
+ *     }
+ *
+ *     Box(modifier = containerModifier) {
+ *         Text("Container Content")
+ *     }
  * }
  * ```
  *
@@ -73,6 +103,40 @@ class ModifierField(label: String, initialValue: ModifierFieldValueList = Modifi
 /**
  * Adds visual marking to a ModifierFieldValueList with border and background.
  *
+ * # Usage
+ *
+ * ```kotlin
+ * // Basic marking with default red color
+ * @Preview
+ * @Composable
+ * fun MarkedPreview() = PreviewLab {
+ *     val modifier: Modifier = fieldValue {
+ *         ModifierField(
+ *             label = "Marked Box",
+ *             initialValue = ModifierFieldValue.mark()
+ *         )
+ *     }
+ *
+ *     Box(modifier = modifier) {
+ *         Text("Marked Content")
+ *     }
+ * }
+ *
+ * // Custom color marking
+ * @Preview
+ * @Composable
+ * fun CustomMarkPreview() = PreviewLab {
+ *     val modifier: Modifier = fieldValue {
+ *         ModifierField(
+ *             label = "Blue Marked",
+ *             initialValue = ModifierFieldValue.mark(color = Color.Blue, borderWidth = 3.dp)
+ *         )
+ *     }
+ *
+ *     Text("Blue Marked Text", modifier = modifier)
+ * }
+ * ```
+ *
  * @param color The color to use for both border and background (with adjusted alpha)
  * @param borderWidth The width of the border
  * @return A new ModifierFieldValueList with marking applied
@@ -85,6 +149,46 @@ fun ModifierFieldValueList.mark(color: Color = Color.Red.copy(alpha = 0.5f), bor
 
 /**
  * Adds visual marking to a ModifierFieldValueList with customizable border and background colors.
+ *
+ * # Usage
+ *
+ * ```kotlin
+ * // Separate border and background colors
+ * @Preview
+ * @Composable
+ * fun CustomColorMarkPreview() = PreviewLab {
+ *     val modifier: Modifier = fieldValue {
+ *         ModifierField(
+ *             label = "Two-Color Mark",
+ *             initialValue = ModifierFieldValue.mark(
+ *                 borderColor = Color.Red,
+ *                 backgroundColor = Color.Yellow.copy(alpha = 0.3f),
+ *                 borderWidth = 2.dp
+ *             )
+ *         )
+ *     }
+ *
+ *     Text("Two-Color Marked", modifier = modifier)
+ * }
+ *
+ * // Thick border marking
+ * @Preview
+ * @Composable
+ * fun ThickBorderPreview() = PreviewLab {
+ *     val modifier: Modifier = fieldValue {
+ *         ModifierField(
+ *             label = "Thick Border",
+ *             initialValue = ModifierFieldValue.mark(
+ *                 borderColor = Color.Green,
+ *                 backgroundColor = Color.Green.copy(alpha = 0.2f),
+ *                 borderWidth = 5.dp
+ *             )
+ *         )
+ *     }
+ *
+ *     Box(modifier = modifier.size(100.dp))
+ * }
+ * ```
  *
  * @param borderColor The color for the border
  * @param backgroundColor The color for the background

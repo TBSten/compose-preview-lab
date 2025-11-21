@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.ui.Modifier
 import io.github.takahirom.rin.rememberRetained
-import me.tbsten.compose.preview.lab.PreviewLabRoot
-import me.tbsten.compose.preview.lab.PreviewLabRootState
+import me.tbsten.compose.preview.lab.PreviewLabGallery
+import me.tbsten.compose.preview.lab.PreviewLabGalleryState
 import me.tbsten.compose.preview.lab.previewsForUiDebug
 
 class AppActivity : ComponentActivity() {
@@ -17,9 +17,9 @@ class AppActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            PreviewLabRoot(
-                state = rememberRetained { PreviewLabRootState() },
-                previews = previewsForUiDebug,
+            PreviewLabGallery(
+                state = rememberRetained { PreviewLabGalleryState() },
+                previewList = previewsForUiDebug,
                 modifier = Modifier
                     .systemBarsPadding()
                     .displayCutoutPadding(),

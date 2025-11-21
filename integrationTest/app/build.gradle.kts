@@ -54,6 +54,7 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation("me.tbsten.compose.preview.lab:core:${libs.versions.composePreviewLab.get()}")
             implementation(project(":uiLib"))
+            implementation(project(":helloComposePreviewLab"))
 
             // TODO migrate retain { } (compose runtime api)
             implementation("io.github.takahirom.rin:rin:0.3.0")
@@ -61,6 +62,13 @@ kotlin {
 
         commonTest.dependencies {
             implementation(kotlin("test"))
+            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+            implementation(compose.uiTest)
+        }
+
+        jvmTest.dependencies {
+            implementation(compose.desktop.currentOs)
+            implementation(compose.desktop.uiTestJUnit4)
         }
 
         androidMain.dependencies {
@@ -102,6 +110,7 @@ dependencies {
     val composePreviewLabKspPlugin =
         "me.tbsten.compose.preview.lab:ksp-plugin:${libs.versions.composePreviewLab.get()}"
     add("kspCommonMainMetadata", composePreviewLabKspPlugin)
+    ksp(composePreviewLabKspPlugin)
     add("kspAndroid", composePreviewLabKspPlugin)
     add("kspJvm", composePreviewLabKspPlugin)
     add("kspJs", composePreviewLabKspPlugin)
@@ -131,10 +140,18 @@ compose.desktop {
     }
 }
 
+composePreviewLab {
+    generateFeaturedFiles = true
+}
+
 // https://github.com/JetBrains/compose-hot-reload
 composeCompiler {
     featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
 }
 tasks.register<ComposeHotRun>("runHot") {
     mainClass.set("MainKt")
+}
+
+composePreviewLab {
+    generateFeaturedFiles = true
 }

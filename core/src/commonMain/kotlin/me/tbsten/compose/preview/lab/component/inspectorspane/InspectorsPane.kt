@@ -25,7 +25,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.LocalCollectedPreview
+import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
 import me.tbsten.compose.preview.lab.PreviewLabState
 import me.tbsten.compose.preview.lab.component.CommonIconButton
 import me.tbsten.compose.preview.lab.component.Divider
@@ -100,8 +100,8 @@ internal fun InspectorsPane(state: PreviewLabState, isVisible: Boolean, content:
                     }
 
                     val openHandler = LocalOpenFileHandler.current
-                    val filePath = LocalCollectedPreview.current?.filePath
-                    val startLineNumber = LocalCollectedPreview.current?.startLineNumber
+                    val filePath = LocalPreviewLabPreview.current?.filePath
+                    val startLineNumber = LocalPreviewLabPreview.current?.startLineNumber
 
                     if (filePath != null && openHandler != null) {
                         val configuredValue = openHandler.configure()
@@ -159,8 +159,8 @@ internal fun InspectorsPane(state: PreviewLabState, isVisible: Boolean, content:
                         tabContent(it)
                     }
 
-                    val startLineNumber = LocalCollectedPreview.current?.startLineNumber
-                    val filePath = LocalCollectedPreview.current?.filePath
+                    val startLineNumber = LocalPreviewLabPreview.current?.startLineNumber
+                    val filePath = LocalPreviewLabPreview.current?.filePath
                     val openHandler = LocalOpenFileHandler.current
                     if (filePath != null && openHandler != null) {
                         Divider()

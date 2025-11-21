@@ -55,31 +55,32 @@ import org.jetbrains.compose.resources.painterResource
 /**
  * A Composable function that catalogs and displays a list of Previews. The left sidebar actually displays the list of Previews, and the selected Preview is displayed in the center of the screen.
  *
- * @param previews CollectedPreviews collected from gradle plugins, etc. Note that CollectedPreviews not specified here will not be displayed.
- * @param state [PreviewLabRootState] to manage the state of the PreviewLabRoot. Preserves the state of the selected Preview, etc. By default, remember is used (i.e., the composition of the call to Composable is the scope of the state), but the scope (storage period) of the state can be adjusted by moving it to a state holder, such as ViewModel, if necessary.
+ * @param previewList CollectedPreviews collected from gradle plugins, etc. Note that CollectedPreviews not specified here will not be displayed.
+ * @param modifier Modifier to be applied to the root layout of the PreviewLabGallery.
+ * @param state [PreviewLabGalleryState] to manage the state of the PreviewLabGallery. Preserves the state of the selected Preview, etc. By default, remember is used (i.e., the composition of the call to Composable is the scope of the state), but the scope (storage period) of the state can be adjusted by moving it to a state holder, such as ViewModel, if necessary.
  * @param openFileHandler By specifying OpenFileHandler, you can display a "Source Code" button that displays the source code corresponding to the Preview.
+ * @param featuredFileList Map of group names to file paths for organizing previews into featured categories. Files matching these paths will be grouped under their respective category names in the preview list.
  *
  * @see CollectedPreview
  * @see OpenFileHandler
  */
 @Composable
-fun PreviewLabRoot(
-    previews: List<CollectedPreview>,
+fun PreviewLabGallery(
+    previewList: List<PreviewLabPreview>,
     modifier: Modifier = Modifier,
-    state: PreviewLabRootState = remember { PreviewLabRootState() },
+    state: PreviewLabGalleryState = remember { PreviewLabGalleryState() },
     openFileHandler: OpenFileHandler<out Any?>? = null,
-    featuredFiles: Map<String, List<String>> = emptyMap(),
+    featuredFileList: Map<String, List<String>> = emptyMap(),
 ) = PreviewLabTheme {
-    val previewList = remember { previews.toList() }
-    val groupedPreviews by remember {
+    val groupedPreviews by remember(previewList, featuredFileList) {
         derivedStateOf {
-            previewList.groupingByFeaturedFiles(featuredFiles) +
+            previewList.groupingByFeaturedFiles(featuredFileList) +
                 ("all" to previewList)
         }
     }
 
-    val previewLabRootNavigator =
-        rememberPreviewLabRootNavigator(
+    val previewLabGalleryNavigator =
+        rememberPreviewLabGalleryNavigator(
             state = state,
             groupedPreviews = groupedPreviews,
         )
@@ -88,7 +89,7 @@ fun PreviewLabRoot(
 
     CompositionLocalProvider(
         LocalOpenFileHandler provides openFileHandler,
-        LocalPreviewLabRootNavigator provides previewLabRootNavigator,
+        LocalPreviewLabGalleryNavigator provides previewLabGalleryNavigator,
     ) {
         Box(
             modifier = modifier
@@ -204,7 +205,7 @@ fun PreviewLabRoot(
                                 )
 
                                 CompositionLocalProvider(
-                                    LocalCollectedPreview provides preview,
+                                    LocalPreviewLabPreview provides preview,
                                 ) {
                                     AnimatedContent(
                                         targetState = preview,
@@ -243,7 +244,7 @@ fun PreviewLabRoot(
     }
 }
 
-internal val LocalCollectedPreview = compositionLocalOf<CollectedPreview?> { null }
+internal val LocalPreviewLabPreview = compositionLocalOf<PreviewLabPreview?> { null }
 
 @Composable
 internal fun <Item : Any> ListDetailScaffold(

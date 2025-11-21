@@ -66,6 +66,13 @@ internal expect fun PreviewLabScope.providePlatformDefaultCompositionLocalFields
  * - "normal": 1.5f
  * - "large": 2.0f
  *
+ * # Usage
+ *
+ * ```kt
+ * val fontScaleField: MutablePreviewLabField<Float> = FloatField("fontScale", 1.0f)
+ * val fieldWithHints: MutablePreviewLabField<Float> = fontScaleField.withBasicFontScalesHint()
+ * ```
+ *
  * @return [MutablePreviewLabField] with font scale hints added.
  */
 fun MutablePreviewLabField<Float>.withBasicFontScalesHint() = withHint(

@@ -5,11 +5,43 @@ import androidx.compose.runtime.Composable
 /**
  * A field that allows users to input a string value.
  *
+ * # Usage
+ *
  * ```kt
- * PreviewLab {
- *   Text(
- *     text = fieldValue { StringField("Text.text", "Hello World!!") }
- *   )
+ * // Basic usage
+ * @Preview
+ * @Composable
+ * fun TextPreview() = PreviewLab {
+ *     val text: String = fieldValue { StringField("Text", "Hello World!!") }
+ *     Text(text = text)
+ * }
+ *
+ * // With prefix and suffix
+ * @Preview
+ * @Composable
+ * fun UrlPreview() = PreviewLab {
+ *     val path: String = fieldValue {
+ *         StringField(
+ *             label = "Path",
+ *             initialValue = "home",
+ *             prefix = { Text("https://example.com/") },
+ *             suffix = { Icon(Icons.Default.Link, null) }
+ *         )
+ *     }
+ *     Text(text = "URL: https://example.com/$path")
+ * }
+ *
+ * // For multiline text input
+ * @Preview
+ * @Composable
+ * fun DescriptionPreview() = PreviewLab {
+ *     val description: String = fieldValue {
+ *         StringField(
+ *             label = "Description",
+ *             initialValue = "Enter your description here..."
+ *         )
+ *     }
+ *     Text(text = description)
  * }
  * ```
  *

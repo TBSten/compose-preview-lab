@@ -7,15 +7,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.takahirom.rin.rememberRetained
-import me.tbsten.compose.preview.lab.CollectedPreview
+import me.tbsten.compose.preview.lab.PreviewLabPreview
 
 @Composable
 internal fun PreviewListTree(
-    previews: List<CollectedPreview>,
+    previews: List<PreviewLabPreview>,
     canAddToComparePanel: Boolean,
-    isSelected: (CollectedPreview) -> Boolean,
-    onSelect: (CollectedPreview) -> Unit,
-    onAddToComparePanel: (CollectedPreview) -> Unit,
+    isSelected: (PreviewLabPreview) -> Boolean,
+    onSelect: (PreviewLabPreview) -> Unit,
+    onAddToComparePanel: (PreviewLabPreview) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val tree = rememberRetained(key = "$previews") {
@@ -32,9 +32,9 @@ internal fun PreviewListTree(
         tree.forEach { node ->
             NodeView(
                 previewTreeNode = node,
-                isSelected = { it is PreviewTreeNode.Preview && isSelected(it.collectedPreview) },
-                onSelect = { if (it is PreviewTreeNode.Preview) onSelect(it.collectedPreview) },
-                onAddToComparePanel = { onAddToComparePanel(it.collectedPreview) },
+                isSelected = { it is PreviewTreeNode.Preview && isSelected(it.preview) },
+                onSelect = { if (it is PreviewTreeNode.Preview) onSelect(it.preview) },
+                onAddToComparePanel = { onAddToComparePanel(it.preview) },
                 canAddToComparePanel = canAddToComparePanel,
             )
         }
@@ -46,7 +46,7 @@ internal sealed interface PreviewTreeNode {
 
     data class Group(var groupName: String, override var children: MutableList<PreviewTreeNode>) : PreviewTreeNode
 
-    data class Preview(val collectedPreview: CollectedPreview) : PreviewTreeNode {
+    data class Preview(val preview: PreviewLabPreview) : PreviewTreeNode {
         override val children: MutableList<PreviewTreeNode> = mutableListOf()
     }
 }
@@ -75,7 +75,7 @@ internal typealias PreviewTree = MutableList<PreviewTreeNode>
  * F
  * ```
  */
-internal fun List<CollectedPreview>.toTree(): PreviewTree {
+internal fun List<PreviewLabPreview>.toTree(): PreviewTree {
     val tree = PreviewTreeNode.Group(
         groupName = "<root>",
         children = mutableListOf(),

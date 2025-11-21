@@ -8,13 +8,8 @@ import com.google.devtools.ksp.symbol.KSFile
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import me.tbsten.compose.preview.lab.ksp.plugin.util.findAnnotation
 import me.tbsten.compose.preview.lab.ksp.plugin.util.findArg
-import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
-import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment.Companion.getOrCreateApplicationEnvironment
-import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment.ProjectEnvironment
-import org.jetbrains.kotlin.com.intellij.openapi.util.Disposer
 import org.jetbrains.kotlin.com.intellij.psi.util.PsiUtilCore
-import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.psi.KtFile
 
 internal fun checkPreview(annotated: KSAnnotated): ValidPreview? {
@@ -38,7 +33,9 @@ internal data class ValidPreview(
     val placeholderedId: String,
 )
 
-internal fun copyPreview(preview: ValidPreview, codeGenerator: CodeGenerator): CopiedPreview {
+internal class CopyPreviewContext(val environment: KotlinCoreEnvironment,)
+
+internal fun copyPreview(context: CopyPreviewContext, preview: ValidPreview, codeGenerator: CodeGenerator): CopiedPreview {
     val startLineNumber = (preview.previewFun.location as? FileLocation)?.lineNumber
     val copied = CopiedPreview(
         packageName = preview.previewFun.packageName.asString(),
@@ -52,22 +49,30 @@ internal fun copyPreview(preview: ValidPreview, codeGenerator: CodeGenerator): C
 
     val filePath = (
         preview.previewFun.containingFile?.filePath
-            ?: throw IllegalStateException("Can not copy Preview for Compose Preview Lab, because file path is null.")
+            ?: throw IllegalStateException(
+                "Can not copy Preview for Compose Preview Lab, because file path is null.\n" +
+                    "    Preview fun name = ${preview.previewFun.simpleName.asString()} (${preview.previewFun.qualifiedName?.asString()})",
+            )
         )
     val (psiFile, previewBody) =
         run {
-            val disposable = Disposer.newDisposable()
-            val configuration = CompilerConfiguration()
-            val appEnv = getOrCreateApplicationEnvironment(disposable, configuration)
-            val projectEnv = ProjectEnvironment(disposable, appEnv, configuration)
-            val environment = KotlinCoreEnvironment.createForProduction(
-                projectEnvironment = projectEnv,
-                configuration = configuration,
-                EnvironmentConfigFiles.JVM_CONFIG_FILES,
-            )
-            val virtualFile = requireNotNull(environment.findLocalFile(filePath))
-            val psiFile = PsiUtilCore.getPsiFile(environment.project, virtualFile) as? KtFile
-                ?: throw IllegalStateException("Can not copy Preview for Compose Preview Lab, because file is not KtFile.")
+            val virtualFile = requireNotNull(context.environment.findLocalFile(filePath))
+            val psiFile = PsiUtilCore.getPsiFile(context.environment.project, virtualFile) as? KtFile
+                ?: throw IllegalStateException(
+                    "Can not copy Preview for Compose Preview Lab, because file is not KtFile.\n" +
+                        "|  error details:\n" +
+                        "|    file = ${virtualFile.name} (${virtualFile.path})\n" +
+                        "|    fileType = ${
+                            virtualFile.fileType.name +
+                                " (${
+                                    PsiUtilCore.getPsiFile(
+                                        context.environment.project,
+                                        virtualFile,
+                                    )::class.simpleName?.removeSuffix("Impl")
+                                })"
+                        }\n" +
+                        "|",
+                )
             val functionElement =
                 FunctionCollector.visitPsiFile(file = psiFile, funName = copied.baseName)
                     .single()

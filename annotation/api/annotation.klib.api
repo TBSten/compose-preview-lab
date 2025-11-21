@@ -1,0 +1,43 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <me.tbsten.compose.preview.lab:annotation>
+open annotation class me.tbsten.compose.preview.lab/AggregateToAll : kotlin/Annotation { // me.tbsten.compose.preview.lab/AggregateToAll|null[0]
+    constructor <init>() // me.tbsten.compose.preview.lab/AggregateToAll.<init>|<init>(){}[0]
+}
+
+open annotation class me.tbsten.compose.preview.lab/ComposePreviewLabOption : kotlin/Annotation { // me.tbsten.compose.preview.lab/ComposePreviewLabOption|null[0]
+    constructor <init>(kotlin/String = ..., kotlin/Boolean = ..., kotlin/String = ...) // me.tbsten.compose.preview.lab/ComposePreviewLabOption.<init>|<init>(kotlin.String;kotlin.Boolean;kotlin.String){}[0]
+
+    final val displayName // me.tbsten.compose.preview.lab/ComposePreviewLabOption.displayName|{}displayName[0]
+        final fun <get-displayName>(): kotlin/String // me.tbsten.compose.preview.lab/ComposePreviewLabOption.displayName.<get-displayName>|<get-displayName>(){}[0]
+    final val id // me.tbsten.compose.preview.lab/ComposePreviewLabOption.id|{}id[0]
+        final fun <get-id>(): kotlin/String // me.tbsten.compose.preview.lab/ComposePreviewLabOption.id.<get-id>|<get-id>(){}[0]
+    final val ignore // me.tbsten.compose.preview.lab/ComposePreviewLabOption.ignore|{}ignore[0]
+        final fun <get-ignore>(): kotlin/Boolean // me.tbsten.compose.preview.lab/ComposePreviewLabOption.ignore.<get-ignore>|<get-ignore>(){}[0]
+}
+
+open annotation class me.tbsten.compose.preview.lab/ExperimentalComposePreviewLabApi : kotlin/Annotation { // me.tbsten.compose.preview.lab/ExperimentalComposePreviewLabApi|null[0]
+    constructor <init>() // me.tbsten.compose.preview.lab/ExperimentalComposePreviewLabApi.<init>|<init>(){}[0]
+}
+
+open annotation class me.tbsten.compose.preview.lab/InternalComposePreviewLabApi : kotlin/Annotation { // me.tbsten.compose.preview.lab/InternalComposePreviewLabApi|null[0]
+    constructor <init>() // me.tbsten.compose.preview.lab/InternalComposePreviewLabApi.<init>|<init>(){}[0]
+}
+
+final object me.tbsten.compose.preview.lab.internal/KspArg { // me.tbsten.compose.preview.lab.internal/KspArg|null[0]
+    final const val generatePreviewAllList // me.tbsten.compose.preview.lab.internal/KspArg.generatePreviewAllList|{}generatePreviewAllList[0]
+        final fun <get-generatePreviewAllList>(): kotlin/String // me.tbsten.compose.preview.lab.internal/KspArg.generatePreviewAllList.<get-generatePreviewAllList>|<get-generatePreviewAllList>(){}[0]
+    final const val generatePreviewList // me.tbsten.compose.preview.lab.internal/KspArg.generatePreviewList|{}generatePreviewList[0]
+        final fun <get-generatePreviewList>(): kotlin/String // me.tbsten.compose.preview.lab.internal/KspArg.generatePreviewList.<get-generatePreviewList>|<get-generatePreviewList>(){}[0]
+    final const val previewsListPackage // me.tbsten.compose.preview.lab.internal/KspArg.previewsListPackage|{}previewsListPackage[0]
+        final fun <get-previewsListPackage>(): kotlin/String // me.tbsten.compose.preview.lab.internal/KspArg.previewsListPackage.<get-previewsListPackage>|<get-previewsListPackage>(){}[0]
+    final const val projectRootPath // me.tbsten.compose.preview.lab.internal/KspArg.projectRootPath|{}projectRootPath[0]
+        final fun <get-projectRootPath>(): kotlin/String // me.tbsten.compose.preview.lab.internal/KspArg.projectRootPath.<get-projectRootPath>|<get-projectRootPath>(){}[0]
+    final const val publicPreviewList // me.tbsten.compose.preview.lab.internal/KspArg.publicPreviewList|{}publicPreviewList[0]
+        final fun <get-publicPreviewList>(): kotlin/String // me.tbsten.compose.preview.lab.internal/KspArg.publicPreviewList.<get-publicPreviewList>|<get-publicPreviewList>(){}[0]
+}

@@ -7,18 +7,20 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.ui.Modifier
-import io.github.takahirom.rin.rememberRetained
-import me.tbsten.compose.preview.lab.PreviewLabRoot
-import me.tbsten.compose.preview.lab.PreviewLabRootState
+import me.tbsten.compose.preview.lab.PreviewLabGallery
 
 class AppActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            PreviewLabRoot(
-                state = rememberRetained { PreviewLabRootState() },
-                previews = app.previews,
+            PreviewLabGallery(
+                state = rememberPreviewLabGalleryState(
+                    initialGroupName = app.FeaturedFileList.`hello compose preview lab`.first(),
+                    initialPreview = helloComposePreviewLab.PreviewList.AboutComposePreviewLab,
+                ),
+                previewList = app.PreviewList + uiLib.PreviewList + helloComposePreviewLab.PreviewList,
+                featuredFileList = app.FeaturedFileList,
                 modifier = Modifier
                     .systemBarsPadding()
                     .displayCutoutPadding(),

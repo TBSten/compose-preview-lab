@@ -22,7 +22,7 @@ jobs:
           java-version: '17'
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
       - name: Run Lint
         shell: bash
         run: ./gradlew ktlintCheck
@@ -38,7 +38,7 @@ jobs:
           java-version: '17'
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
       - name: Validate Binary Compatibility
         shell: bash
         run: ./gradlew apiCheck
@@ -76,7 +76,7 @@ jobs:
           java-version: '17'
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
       - name: Test Library
         shell: bash
         run: ./gradlew ${{ matrix.test_task }}

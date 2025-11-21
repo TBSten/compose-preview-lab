@@ -19,7 +19,8 @@ import me.tbsten.compose.preview.lab.field.PreviewLabField
  */
 @OptIn(ExperimentalTime::class)
 class PreviewLabScope internal constructor() {
-    internal val fields = mutableStateListOf<PreviewLabField<*>>()
+    @InternalComposePreviewLabApi
+    val fields = mutableStateListOf<PreviewLabField<*>>()
     internal val events = mutableStateListOf<PreviewLabEvent>()
 
     internal var onEffectHandler: (Effect) -> Unit = {}

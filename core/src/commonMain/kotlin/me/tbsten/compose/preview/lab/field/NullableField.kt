@@ -19,12 +19,29 @@ import me.tbsten.compose.preview.lab.ui.components.Text
 /**
  * Create a PreviewLabField that makes the receiver's PreviewLabField nullable.
  *
+ * # Usage
+ *
  * ```kt
- * PreviewLab {
- *   val nullableStringField = fieldValue {
- *     StringField("nullableStringField", "hello")
- *       .nullable()
- *   }
+ * // Basic nullable field
+ * @Preview
+ * @Composable
+ * fun UserNamePreview() = PreviewLab {
+ *     val userName: String? = fieldValue {
+ *         StringField("User Name", "John Doe")
+ *             .nullable()
+ *     }
+ *     UserName(userName = userName)
+ * }
+ *
+ * // Nullable with IntField for optional configuration
+ * @Preview
+ * @Composable
+ * fun TimeoutPreview() = PreviewLab {
+ *     val timeout: Int? = fieldValue {
+ *         IntField("Timeout (seconds)", 30)
+ *             .nullable(initialValue = null)
+ *     }
+ *     MyComponent(timeout = timeout) // null means no timeout
  * }
  * ```
  *
@@ -38,12 +55,31 @@ fun <Value : Any> PreviewLabField<Value>.nullable(initialValue: Value? = this.in
 /**
  * Create a PreviewLabField that makes the receiver's PreviewLabField nullable.
  *
+ * # Usage
+ *
  * ```kt
- * PreviewLab {
- *   val nullableStringField = fieldValue {
- *     StringField("nullableStringField", "hello")
- *       .nullable()
- *   }
+ * // Basic nullable string field
+ * @Preview
+ * @Composable
+ * fun AvatarPreview() = PreviewLab {
+ *     val avatarUrl: String? = fieldValue {
+ *         StringField("Avatar URL", "https://example.com/avatar.jpg")
+ *             .nullable(initialValue = null)
+ *     }
+ *     UserProfile(avatarUrl = avatarUrl) // Show placeholder if null
+ * }
+ *
+ * // Combining nullable with EnumField
+ * enum class IconType { HOME, SEARCH, SETTINGS }
+ * @Preview
+ * @Composable
+ * fun IconPreview() = PreviewLab {
+ *
+ *     val icon: IconType? = fieldValue {
+ *         EnumField("Icon", IconType.HOME)
+ *             .nullable()
+ *     }
+ *     MyButton(icon = icon) // Button without icon if null
  * }
  * ```
  *

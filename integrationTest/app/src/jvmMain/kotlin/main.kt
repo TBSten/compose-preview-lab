@@ -1,13 +1,18 @@
 import androidx.compose.ui.window.application
-import me.tbsten.compose.preview.lab.PreviewLabRootWindows
+import me.tbsten.compose.preview.lab.PreviewLabGalleryWindows
 import me.tbsten.compose.preview.lab.openfilehandler.UrlOpenFileHandler
+import me.tbsten.compose.preview.lab.sample.rememberPreviewLabGalleryState
 
 fun main(): Unit = application {
-    PreviewLabRootWindows(
-        previews = app.previewsAll,
-        featuredFiles = app.FeaturedFiles,
+    PreviewLabGalleryWindows(
+        previewList = uiLib.PreviewList + helloComposePreviewLab.PreviewList,
+        featuredFileList = app.FeaturedFileList,
         openFileHandler = UrlOpenFileHandler(
             baseUrl = "https://github.com/TBSten/compose-preview-lab/blob/main/integrationTest/",
+        ),
+        state = rememberPreviewLabGalleryState(
+            initialGroupName = app.FeaturedFileList.`hello compose preview lab`.first(),
+            initialPreview = helloComposePreviewLab.PreviewList.AboutComposePreviewLab,
         ),
     )
 }
