@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -37,6 +38,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
+import me.tbsten.compose.preview.lab.LocalPreviewLabGalleryNavigator
 import me.tbsten.compose.preview.lab.PreviewLab
 import me.tbsten.compose.preview.lab.PreviewLabScope
 import me.tbsten.compose.preview.lab.PreviewLabState
@@ -205,23 +207,27 @@ private fun ComparisonRow(icon: @Composable () -> Unit, title: String, descripti
 
 @Composable
 private fun FirstDemoSection(modifier: Modifier = Modifier) {
-    PreviewLab(
-        additionalTabs = listOf(FirstDemoFieldGuideTab),
-        isHeaderShow = false,
-        modifier = modifier
-            .padding(40.dp)
-            .shadow(8.dp),
+    CompositionLocalProvider(
+        LocalPreviewLabGalleryNavigator provides null,
     ) {
-        FirstDemoItemList(
-            headerText = fieldValue { StringField("headerText", initialValue = "Item List") },
-            userScrollEnabled = fieldValue { BooleanField("userScrollEnabled", true) },
-            items = fieldValue {
-                SelectableField(label = "items") {
-                    choice(emptyList(), label = "Empty")
-                    choice(List(20) { "Item-$it" }, label = "20 Item", isDefault = true)
-                }
-            },
-        )
+        PreviewLab(
+            additionalTabs = listOf(FirstDemoFieldGuideTab),
+            isHeaderShow = false,
+            modifier = modifier
+                .padding(40.dp)
+                .shadow(8.dp),
+        ) {
+            FirstDemoItemList(
+                headerText = fieldValue { StringField("headerText", initialValue = "Item List") },
+                userScrollEnabled = fieldValue { BooleanField("userScrollEnabled", true) },
+                items = fieldValue {
+                    SelectableField(label = "items") {
+                        choice(emptyList(), label = "Empty")
+                        choice(List(20) { "Item-$it" }, label = "20 Item", isDefault = true)
+                    }
+                },
+            )
+        }
     }
 }
 
@@ -417,14 +423,14 @@ private object PrimitiveFieldsGuideTab : InspectorTab {
                 )
 
                 Text(
-                    text = "Primitive型のFieldを使うと、文字列、数値、真偽値などの基本的な値を動的にテストできます。",
+                    text = "Primitive Type Fields let you dynamically test basic values like strings, numbers, and booleans.",
                     style = MaterialTheme.typography.bodyMedium,
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "使い方",
+                    text = "Usage",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                 )
@@ -452,18 +458,18 @@ private object PrimitiveFieldsGuideTab : InspectorTab {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "利用可能なField",
+                    text = "Available Fields",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                 )
 
                 listOf(
-                    "StringField" to "文字列入力",
-                    "IntField" to "整数入力",
-                    "LongField" to "Long整数入力",
-                    "FloatField" to "Float小数入力",
-                    "DoubleField" to "Double小数入力",
-                    "BooleanField" to "真偽値トグル",
+                    "StringField" to "Text input",
+                    "IntField" to "Integer input",
+                    "LongField" to "Long integer input",
+                    "FloatField" to "Float decimal input",
+                    "DoubleField" to "Double decimal input",
+                    "BooleanField" to "Boolean toggle",
                 ).forEach { (name, description) ->
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -512,7 +518,7 @@ private object ComposeFieldsGuideTab : InspectorTab {
                 )
 
                 Text(
-                    text = "Compose固有の型（Color、Dp、Modifier、Composable）を動的にテストできるFieldです。",
+                    text = "Fields for dynamically testing Compose-specific types (Color, Dp, Modifier, Composable).",
                     style = MaterialTheme.typography.bodyMedium,
                 )
 
@@ -556,7 +562,7 @@ private object ComposeFieldsGuideTab : InspectorTab {
                 )
 
                 Text(
-                    text = "複数のModifier候補から選択できます。",
+                    text = "Select from multiple Modifier candidates.",
                     style = MaterialTheme.typography.bodySmall,
                 )
 
@@ -588,7 +594,7 @@ private object ComposeFieldsGuideTab : InspectorTab {
                 )
 
                 Text(
-                    text = "Slotパターンのテストに便利です。",
+                    text = "Useful for testing Slot patterns.",
                     style = MaterialTheme.typography.bodySmall,
                 )
 
@@ -600,10 +606,10 @@ private object ComposeFieldsGuideTab : InspectorTab {
                     KotlinCodeBlock(
                         code = """
                             val icon = fieldValue {
-                              ComposableField("icon") {
-                                choice({ Icon(Icons.Default.Home) }, label = "Home")
-                                choice({ Icon(Icons.Default.Star) }, label = "Star")
-                              }
+                              ComposableField(
+                                label = "icon",
+                                initialValue = ComposableFieldValue.Red64X64,
+                              )
                             }
                             // Use: icon()
                         """.trimIndent(),
@@ -640,11 +646,17 @@ private fun CommonlyUsedFieldsSection() {
             description = "Fields for basic data types like strings, numbers, and booleans",
             guideTab = PrimitiveFieldsGuideTab,
             codeSnippet = """
-                val stringValue = fieldValue { StringField("stringField", initialValue = "Hello") }
-                val intValue = fieldValue { IntField("intField", initialValue = 42) }
-                val booleanValue = fieldValue { BooleanField("booleanField", initialValue = true) }
+                val stringValue = fieldValue {
+                  StringField("stringField", initialValue = "Hello")
+                }
+                val intValue = fieldValue {
+                  IntField("intField", initialValue = 42)
+                }
+                val booleanValue = fieldValue {
+                  BooleanField("booleanField", initialValue = true)
+                }
             """.trimIndent(),
-            explanationText = "fieldValue { } ブロック内でFieldを定義すると、Fieldsタブに自動的にUIコントロールが表示されます。Fieldの値を変更すると、コンポーネントがリアルタイムで更新されます。",
+            explanationText = "Define Fields inside fieldValue { } blocks, and UI controls will automatically appear in the Fields tab. When you change Field values, the component updates in real-time.",
         ) {
             PrimitiveFieldsDemo()
         }
@@ -655,15 +667,14 @@ private fun CommonlyUsedFieldsSection() {
             description = "Fields for Compose-specific types like Color, Dp, Modifier, and Composable slots. These make it easy to manually test components with Modifier arguments and Slot patterns.",
             guideTab = ComposeFieldsGuideTab,
             codeSnippet = """
-                val colorValue = fieldValue { ColorField("colorField", initialValue = Color(0xFF2196F3)) }
+                val colorValue = fieldValue {
+                  ColorField("colorField", initialValue = Color(0xFF2196F3))
+                }
                 val modifierValue = fieldValue {
-                    ModifierField("modifierField") {
-                        choice(Modifier, label = "None", isDefault = true)
-                        choice(Modifier.background(Color(0xFFFFEB3B)), label = "Yellow")
-                    }
+                    ModifierField("modifierField")
                 }
             """.trimIndent(),
-            explanationText = "ColorField、ModifierField、ComposableFieldなどを使うと、Compose固有の型も動的にテストできます。ModifierFieldとComposableFieldはchoice()で複数の選択肢を定義します。",
+            explanationText = "ColorField, ModifierField, and ComposableField let you dynamically test Compose-specific types. ModifierField and ComposableField use choice() to define multiple options.",
         ) {
             ComposeFieldsDemo()
         }
@@ -732,15 +743,19 @@ private fun FieldCategoryDemo(
 
         Spacer(modifier = Modifier.height(4.dp))
 
-        PreviewLab(
-            additionalTabs = listOf(guideTab),
-            isHeaderShow = false,
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 400.dp, max = 600.dp)
-                .shadow(4.dp, RoundedCornerShape(8.dp)),
+        CompositionLocalProvider(
+            LocalPreviewLabGalleryNavigator provides null,
         ) {
-            content()
+            PreviewLab(
+                additionalTabs = listOf(guideTab),
+                isHeaderShow = false,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 400.dp, max = 600.dp)
+                    .shadow(4.dp, RoundedCornerShape(8.dp)),
+            ) {
+                content()
+            }
         }
     }
 }
