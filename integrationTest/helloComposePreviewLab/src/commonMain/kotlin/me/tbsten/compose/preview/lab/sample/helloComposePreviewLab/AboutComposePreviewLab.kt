@@ -17,9 +17,11 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -46,20 +48,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.Res
 import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.cover
+import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.icon_add_notes
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.PreviewLab
+import me.tbsten.compose.preview.lab.PreviewLabState
+import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.KotlinCodeBlock
 import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 // FIXME migrate LabDoc API
@@ -228,7 +236,9 @@ private fun BeforeAfterSection() = Column {
                 code = """
                     @Preview
                     @Composable
-                    private fun MyButtonPreview() = PreviewLab {
+                    private fun MyButtonPreview() = PreviewLab(
+                        additionalTabs = listOf(MyCustomTab()) // ← Custom tab!
+                    ) {
                         MyButton(
                             text = fieldValue { StringField("text", "Click Me !") },
                             isEnable = fieldValue { BooleanField("isEnable", true) },
@@ -239,6 +249,7 @@ private fun BeforeAfterSection() = Column {
                 content = {
                     PreviewLab(
                         isHeaderShow = false,
+                        additionalTabs = listOf(CustomizedInfoTab),
                         modifier = Modifier.height(600.dp),
                     ) {
                         Button(
@@ -336,6 +347,80 @@ private fun BeforeAfterCodeSection(
         ) {
             DisableSelection {
                 content()
+            }
+        }
+    }
+}
+
+internal object CustomizedInfoTab : InspectorTab {
+    override val title: String = "About"
+    override val icon: @Composable (() -> Painter) = { painterResource(Res.drawable.icon_add_notes) }
+    override val content: @Composable ((state: PreviewLabState) -> Unit) = { _ ->
+        SelectionContainer {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                Text(
+                    text = "✨ Custom Tab Feature",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                )
+
+                Text(
+                    text = "This is a custom inspector tab!",
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = "You can create your own tabs by implementing the InspectorTab interface:",
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp)),
+                ) {
+                    KotlinCodeBlock(
+                        code = """
+                        object MyTab : InspectorTab {
+                          override val title: String = "My Tab"
+                          override val icon: @Composable () -> Painter = { ... }
+                          override val content: @Composable (PreviewLabState) -> Unit = { ... }
+                        }
+                        """.trimIndent(),
+                        style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
+                        contentPadding = PaddingValues(12.dp),
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = "Use cases:",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+
+                listOf(
+                    "📖 Component documentation",
+                    "💡 Usage examples & tips",
+                    "🎨 Design guidelines",
+                    "🐛 Debug information",
+                    "📊 Performance metrics",
+                    "♿ Accessibility info",
+                ).forEach { item ->
+                    Text(
+                        text = item,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
             }
         }
     }

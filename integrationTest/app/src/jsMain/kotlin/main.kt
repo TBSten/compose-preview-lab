@@ -12,7 +12,7 @@ fun main() {
             previewList = app.PreviewList + uiLib.PreviewList + helloComposePreviewLab.PreviewList,
             featuredFileList = app.FeaturedFileList,
             state = rememberPreviewLabGalleryState(
-                initialGroupName = app.FeaturedFileList.`hello compose preview lab`.first(),
+                initialGroupName = app.FeaturedFileList.`hello_compose_preview_lab`.first(),
                 initialPreview = helloComposePreviewLab.PreviewList.AboutComposePreviewLab,
             ),
         )

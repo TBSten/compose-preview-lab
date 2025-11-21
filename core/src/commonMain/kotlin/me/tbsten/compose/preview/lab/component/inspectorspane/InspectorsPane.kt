@@ -19,12 +19,12 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.flow.collectLatest
 import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
 import me.tbsten.compose.preview.lab.PreviewLabState
 import me.tbsten.compose.preview.lab.component.CommonIconButton
@@ -51,8 +51,6 @@ internal fun InspectorsPane(
     additionalTabs: List<InspectorTab> = emptyList(),
     content: @Composable () -> Unit,
 ) {
-//    val content = remember { movableContentOf { content() } }
-
     if (!isVisible) {
         content()
         return
@@ -61,14 +59,6 @@ internal fun InspectorsPane(
     val allTabs = remember(additionalTabs) {
         InspectorTab.defaults + additionalTabs
     }
-
-    val tabContent = remember {
-        movableContentOf { tab: InspectorTab ->
-            tab.content(state)
-        }
-    }
-    // エラーになるので movableContentOf を使わない
-//    val content = remember { movableContentOf(content) }
 
     adaptive(
         small = {
@@ -103,7 +93,7 @@ internal fun InspectorsPane(
                                     .background(PreviewLabTheme.colors.background, shape = RoundedCornerShape(8.dp))
                                     .heightIn(min = 200.dp),
                             ) {
-                                tabContent(tab)
+                                tab.content(state)
                             }
                         }
                     }
@@ -155,15 +145,15 @@ internal fun InspectorsPane(
                                     }
                                 }
                                 LaunchedEffect(Unit) {
-                                    snapshotFlow { pagerState.currentPage }
-                                        .collect {
+                                    snapshotFlow { pagerState.targetPage }
+                                        .collectLatest {
                                             state.selectedTabIndex = it
                                         }
                                 }
                             },
                         modifier = Modifier.weight(1f),
-                    ) {
-                        tabContent(it)
+                    ) { tab ->
+                        tab.content(state)
                     }
 
                     val startLineNumber = LocalPreviewLabPreview.current?.startLineNumber

@@ -21,7 +21,7 @@ import org.jetbrains.compose.resources.painterResource
  * To create a custom tab, implement this interface with your own tab content:
  *
  * ```kt
- * data class CustomTab(
+ * object CustomTab(
  *     override val title: String = "Custom",
  *     override val icon: @Composable () -> Painter = { painterResource(Res.drawable.icon_custom) },
  *     override val content: @Composable (state: PreviewLabState) -> Unit = { state ->
@@ -45,7 +45,7 @@ import org.jetbrains.compose.resources.painterResource
  * }
  * ```
  */
-sealed interface InspectorTab {
+interface InspectorTab {
     /**
      * The display title of the tab
      */
