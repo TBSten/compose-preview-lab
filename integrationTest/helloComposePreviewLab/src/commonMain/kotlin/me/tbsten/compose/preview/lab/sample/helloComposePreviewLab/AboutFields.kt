@@ -31,23 +31,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.PreviewLab
+import me.tbsten.compose.preview.lab.PreviewLabScope
 import me.tbsten.compose.preview.lab.PreviewLabState
 import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.ColorField
+import me.tbsten.compose.preview.lab.field.ComposableField
 import me.tbsten.compose.preview.lab.field.DoubleField
 import me.tbsten.compose.preview.lab.field.DpField
 import me.tbsten.compose.preview.lab.field.FloatField
 import me.tbsten.compose.preview.lab.field.IntField
 import me.tbsten.compose.preview.lab.field.LongField
+import me.tbsten.compose.preview.lab.field.ModifierField
 import me.tbsten.compose.preview.lab.field.SelectableField
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.KotlinCodeBlock
@@ -207,6 +210,7 @@ private fun ComparisonRow(icon: @Composable () -> Unit, title: String, descripti
 private fun FirstDemoSection(modifier: Modifier = Modifier) {
     PreviewLab(
         additionalTabs = listOf(FirstDemoFieldGuideTab),
+        isHeaderShow = false,
         modifier = modifier
             .padding(40.dp)
             .shadow(8.dp),
@@ -426,7 +430,7 @@ private fun CommonlyUsedFieldsSection() {
         // Compose Fields Demo
         FieldCategoryDemo(
             title = "Compose Fields",
-            description = "Fields for Compose-specific types like Color and Dp",
+            description = "Fields for Compose-specific types like Color, Dp, Modifier, and Composable slots. These make it easy to manually test components with Modifier arguments and Slot patterns.",
         ) {
             ComposeFieldsDemo()
         }
@@ -434,11 +438,7 @@ private fun CommonlyUsedFieldsSection() {
 }
 
 @Composable
-private fun FieldCategoryDemo(
-    title: String,
-    description: String,
-    content: @Composable () -> Unit,
-) {
+private fun FieldCategoryDemo(title: String, description: String, content: @Composable PreviewLabScope.() -> Unit) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -457,6 +457,7 @@ private fun FieldCategoryDemo(
         )
 
         PreviewLab(
+            isHeaderShow = false,
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = 400.dp, max = 600.dp)
@@ -468,12 +469,9 @@ private fun FieldCategoryDemo(
 }
 
 @Composable
-private fun PrimitiveFieldsDemo() {
+private fun PreviewLabScope.PrimitiveFieldsDemo() {
     val stringValue = fieldValue { StringField("stringField", initialValue = "Hello") }
     val intValue = fieldValue { IntField("intField", initialValue = 42) }
-    val longValue = fieldValue { LongField("longField", initialValue = 100L) }
-    val floatValue = fieldValue { FloatField("floatField", initialValue = 3.14f) }
-    val doubleValue = fieldValue { DoubleField("doubleField", initialValue = 2.718) }
     val booleanValue = fieldValue { BooleanField("booleanField", initialValue = true) }
 
     Card(modifier = Modifier.fillMaxSize()) {
@@ -494,23 +492,46 @@ private fun PrimitiveFieldsDemo() {
 
             FieldDemoItem("StringField", stringValue, "String")
             FieldDemoItem("IntField", intValue.toString(), "Int")
-            FieldDemoItem("LongField", longValue.toString(), "Long")
-            FieldDemoItem("FloatField", floatValue.toString(), "Float")
-            FieldDemoItem("DoubleField", doubleValue.toString(), "Double")
             FieldDemoItem("BooleanField", booleanValue.toString(), "Boolean")
         }
     }
 }
 
 @Composable
-private fun ComposeFieldsDemo() {
+private fun PreviewLabScope.ComposeFieldsDemo() {
     val colorValue = fieldValue { ColorField("colorField", initialValue = Color(0xFF2196F3)) }
     val dpValue = fieldValue { DpField("dpField", initialValue = 16.dp) }
+    val modifierValue = fieldValue {
+        ModifierField("modifierField") {
+            choice(Modifier, label = "None", isDefault = true)
+            choice(Modifier.background(Color(0xFFFFEB3B), RoundedCornerShape(8.dp)), label = "Yellow Background")
+            choice(Modifier.background(Color(0xFF4CAF50), RoundedCornerShape(16.dp)).padding(16.dp), label = "Green + Padding")
+            choice(Modifier.shadow(8.dp, RoundedCornerShape(12.dp)).padding(8.dp), label = "Shadow + Padding")
+        }
+    }
+    val iconValue = fieldValue {
+        ComposableField("icon") {
+            choice(
+                { Box(Modifier.background(Color(0xFFF44336), RoundedCornerShape(4.dp)).padding(8.dp)) },
+                label = "Red Box",
+                isDefault = true,
+            )
+            choice(
+                { Box(Modifier.background(Color(0xFF2196F3), RoundedCornerShape(50)).padding(12.dp)) },
+                label = "Blue Circle",
+            )
+            choice(
+                { Text("★", style = MaterialTheme.typography.headlineMedium, color = Color(0xFFFFEB3B)) },
+                label = "Star Icon",
+            )
+        }
+    }
 
     Card(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
@@ -567,6 +588,71 @@ private fun ComposeFieldsDemo() {
                         style = MaterialTheme.typography.bodyMedium,
                         fontFamily = FontFamily.Monospace,
                     )
+                }
+            }
+
+            HorizontalDivider()
+
+            // ModifierField Demo
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    text = "ModifierField",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Monospace,
+                )
+                Text(
+                    text = "Easily test different Modifier combinations",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Box(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp))
+                        .padding(24.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Box(
+                        modifier = modifierValue,
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(
+                            text = "Sample Box",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = FontFamily.Monospace,
+                            modifier = Modifier.padding(16.dp),
+                        )
+                    }
+                }
+            }
+
+            HorizontalDivider()
+
+            // ComposableField Demo
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    text = "ComposableField",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Monospace,
+                )
+                Text(
+                    text = "Test components with different slot content (Slot pattern)",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp))
+                        .padding(16.dp),
+                ) {
+                    Text(
+                        text = "Icon:",
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                    iconValue()
                 }
             }
         }
