@@ -66,7 +66,9 @@ private fun findDependentDataClasses(classDeclaration: KSClassDeclaration, logge
 
     properties.forEach { param ->
         val paramType = param.type.resolve()
-        val typeDeclaration = paramType.declaration as? KSClassDeclaration
+        // Unwrap nullable types to get the actual type declaration
+        val nonNullType = paramType.makeNotNullable()
+        val typeDeclaration = nonNullType.declaration as? KSClassDeclaration
 
         if (typeDeclaration != null &&
             typeDeclaration.modifiers.contains(Modifier.DATA)
