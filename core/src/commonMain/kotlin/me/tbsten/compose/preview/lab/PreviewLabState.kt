@@ -17,12 +17,41 @@ import me.tbsten.compose.preview.lab.event.PreviewLabEvent
 @Stable
 class PreviewLabState {
     internal var contentRootOffsetInAppRoot by mutableStateOf<DpOffset?>(null)
-    internal var contentOffset by mutableStateOf(Offset.Zero)
-    internal val contentDraggableState = Draggable2DState { contentOffset += it }
-    internal var contentScale by mutableStateOf(1f)
-    internal var isInspectorPanelVisible by mutableStateOf(true)
 
-    internal var selectedTabIndex by mutableStateOf<Int?>(null)
+    /**
+     * The current pan offset of the preview content.
+     * Controls the x/y translation of the preview content for panning.
+     *
+     * @see contentDraggableState
+     */
+    @ExperimentalComposePreviewLabApi
+    var contentOffset by mutableStateOf(Offset.Zero)
+
+    @ExperimentalComposePreviewLabApi
+    internal val contentDraggableState = Draggable2DState { contentOffset += it }
+
+    /**
+     * The current zoom scale of the preview content.
+     * Controls the zoom level for inspecting UI details. Values greater than 1.0 zoom in,
+     * values less than 1.0 zoom out.
+     */
+    @ExperimentalComposePreviewLabApi
+    var contentScale by mutableStateOf(1f)
+
+    /**
+     * Controls whether the inspector panel is visible.
+     * When true, the inspector panel (Fields, Events, and additional tabs) is shown on the right side.
+     */
+    @ExperimentalComposePreviewLabApi
+    var isInspectorPanelVisible by mutableStateOf(true)
+
+    /**
+     * The currently selected tab index in the inspector panel.
+     * Null when no tab is selected. The index corresponds to the position in the combined list
+     * of default tabs and additional tabs.
+     */
+    @ExperimentalComposePreviewLabApi
+    var selectedTabIndex by mutableStateOf<Int?>(null)
     internal var selectedEvent by mutableStateOf<PreviewLabEvent?>(null)
 
     @InternalComposePreviewLabApi
