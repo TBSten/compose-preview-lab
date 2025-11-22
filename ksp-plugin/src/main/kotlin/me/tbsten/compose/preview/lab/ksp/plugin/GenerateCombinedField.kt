@@ -361,9 +361,21 @@ private fun generateBaseFieldCreator(
             val qualifiedName = typeDeclaration.qualifiedName?.asString() ?: typeName
             imports.add(qualifiedName)
 
+            // Insert initialValue into the underlying field creator pattern
+            val baseFieldWithInitialValue = if (underlyingFieldCreatorPattern.trim().endsWith(")")) {
+                // Insert before the last ')'
+                val idx = underlyingFieldCreatorPattern.lastIndexOf(')')
+                underlyingFieldCreatorPattern.substring(0, idx) +
+                    ", initialValue = initialValue.$paramName.$propertyName" +
+                    underlyingFieldCreatorPattern.substring(idx)
+            } else {
+                // Fallback: just append
+                "$underlyingFieldCreatorPattern, initialValue = initialValue.$paramName.$propertyName"
+            }
+
             return "TransformField(" +
                 "label = \"$paramName\", " +
-                "baseField = $underlyingFieldCreatorPattern, initialValue = initialValue.$paramName.$propertyName), " +
+                "baseField = $baseFieldWithInitialValue, " +
                 "transform = { $typeName(it) }, " +
                 "reverse = { it.$propertyName }" +
                 ")"
