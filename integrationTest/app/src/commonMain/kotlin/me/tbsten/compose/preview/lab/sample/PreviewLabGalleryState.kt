@@ -7,12 +7,14 @@ import me.tbsten.compose.preview.lab.PreviewLabGalleryState
 import me.tbsten.compose.preview.lab.PreviewLabPreview
 
 @Composable
-fun rememberPreviewLabGalleryState(initialGroupName: String, initialPreview: PreviewLabPreview) =
+fun rememberPreviewLabGalleryState(initialGroupName: String, initialPreview: PreviewLabPreview?) =
     remember { PreviewLabGalleryState() }.also { galleryState ->
         LaunchedEffect(galleryState) {
-            galleryState.select(
-                groupName = initialGroupName,
-                preview = initialPreview,
-            )
+            if (initialPreview != null) {
+                galleryState.select(
+                    groupName = initialGroupName,
+                    preview = initialPreview,
+                )
+            }
         }
     }

@@ -18,7 +18,7 @@
         .container {
             display: flex;
             flex-direction: column;
-            height: 100%;
+            min-height: 100%;
             padding: 20px;
             box-sizing: border-box;
         }
@@ -40,12 +40,13 @@
         }
 
         .iframe-wrapper {
-            flex: 1;
+            height: 400px;
             border: 2px solid #ddd;
             border-radius: 8px;
             overflow: hidden;
             background-color: white;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px;
         }
 
         iframe {
