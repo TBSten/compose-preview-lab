@@ -5,13 +5,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -36,6 +41,8 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.graphics.painter.Painter
+import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.event.withEvent
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.ColorField
@@ -490,6 +497,49 @@ enum class PreviewsForUiDebug(
             }
         },
     ),
+    CustomInspectorTab(
+        "CustomInspectorTab",
+        "Custom Inspector Tab Example",
+        content = {
+            PreviewLab(
+                additionalTabs = listOf(DebugInfoTab())
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    Text(
+                        text = "Custom Inspector Tab Demo",
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.Bold,
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(
+                        text = fieldValue { StringField("message", "Hello, Custom Tab!") },
+                        style = MaterialTheme.typography.bodyLarge,
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Button(
+                        enabled = fieldValue { BooleanField("enabled", true) },
+                        onClick = { onEvent("button clicked") }
+                    ) {
+                        Text("Click Me")
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "Check the 'Debug' tab in the inspector panel →",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.secondary,
+                    )
+                }
+            }
+        },
+    ),
 }
 
 val previewsForUiDebug = PreviewsForUiDebug.entries.toList()
@@ -586,3 +636,83 @@ private fun PaddingValues.plus(top: Dp, bottom: Dp, start: Dp = 0.dp, end: Dp = 
 
     override fun calculateBottomPadding(): Dp = this@plus.calculateBottomPadding() + bottom
 }
+
+/**
+ * Example of a custom inspector tab implementation.
+ * This demonstrates how library users can extend PreviewLab's inspector with their own tabs.
+ */
+private data class DebugInfoTab(
+    override val title: String = "Debug",
+    override val icon: @Composable () -> Painter = {
+        // Using a simple colored box as icon instead of material icon
+        androidx.compose.ui.graphics.painter.ColorPainter(Color.Green)
+    },
+    override val content: @Composable (state: PreviewLabState) -> Unit = { state ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text(
+                text = "Custom Debug Tab",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+            )
+
+            HorizontalDivider()
+
+            Text(
+                text = "This is an example of a custom inspector tab!",
+                style = MaterialTheme.typography.bodyLarge,
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp))
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = "You can display:",
+                    fontWeight = FontWeight.Bold,
+                )
+                Text("• Component documentation")
+                Text("• Usage examples")
+                Text("• Design guidelines")
+                Text("• Custom debugging information")
+                Text("• Performance metrics")
+                Text("• Accessibility information")
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "Implementation Tips",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+            )
+
+            Text(
+                text = "Create your own InspectorTab by implementing the interface with:\n" +
+                      "• title: Display name for the tab\n" +
+                      "• icon: Composable icon painter\n" +
+                      "• content: Your custom UI",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = { },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Example Action Button")
+            }
+        }
+    }
+) : InspectorTab
