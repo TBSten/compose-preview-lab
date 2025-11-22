@@ -388,41 +388,45 @@ private fun BeforeAfterCodeSection(
     content: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(2.dp),
+    Card(
         modifier = modifier,
+        elevation = androidx.compose.material3.CardDefaults.elevatedCardElevation(
+            defaultElevation = 4.dp,
+        ),
     ) {
-        Text(
-            text = label,
-            color = labelColor,
-            style = MaterialTheme.typography.labelLarge,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .background(labelBackgroundColor, shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
-                .fillMaxWidth()
-                .padding(vertical = 8.dp, horizontal = 12.dp),
-        )
-
-        Box(
-            modifier = Modifier
-                .background(codeBackgroundColor)
-                .padding(16.dp)
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(4.dp)),
+        Column(
+            verticalArrangement = Arrangement.spacedBy(0.dp),
         ) {
-            KotlinCodeBlock(
-                code = code,
+            Text(
+                text = label,
+                color = labelColor,
+                style = MaterialTheme.typography.labelLarge,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .background(labelBackgroundColor)
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp, horizontal = 12.dp),
             )
-        }
 
-        Box(
-            modifier = Modifier
-                .border(4.dp, contentBorderColor)
-                .padding(4.dp)
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)),
-        ) {
-            content()
+            Box(
+                modifier = Modifier
+                    .background(codeBackgroundColor)
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+            ) {
+                KotlinCodeBlock(
+                    code = code,
+                )
+            }
+
+            Box(
+                modifier = Modifier
+                    .border(4.dp, contentBorderColor)
+                    .padding(4.dp)
+                    .fillMaxWidth(),
+            ) {
+                content()
+            }
         }
     }
 }
