@@ -38,8 +38,8 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.LocalPreviewLabGalleryNavigator
 import me.tbsten.compose.preview.lab.PreviewLab
 import me.tbsten.compose.preview.lab.PreviewLabScope
-import me.tbsten.compose.preview.lab.PreviewLabState
 import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
+import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab.ContentContext
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.ColorField
 import me.tbsten.compose.preview.lab.field.ComposableField
@@ -297,7 +297,9 @@ private fun FirstDemoItemList(
 private object FirstDemoFieldGuideTab : InspectorTab {
     override val title: String = "Guide"
     override val icon: @Composable () -> Painter = { ColorPainter(MaterialTheme.colorScheme.primary) }
-    override val content: @Composable (PreviewLabState) -> Unit = { _ ->
+
+    @Composable
+    override fun ContentContext.Content() {
         SelectionContainer {
             Column(
                 modifier = Modifier
@@ -388,7 +390,9 @@ private object FirstDemoFieldGuideTab : InspectorTab {
 private object PrimitiveFieldsGuideTab : InspectorTab {
     override val title: String = "Guide"
     override val icon: @Composable () -> Painter = { ColorPainter(MaterialTheme.colorScheme.secondary) }
-    override val content: @Composable (PreviewLabState) -> Unit = { _ ->
+
+    @Composable
+    override fun ContentContext.Content() {
         SelectionContainer {
             Column(
                 modifier = Modifier
@@ -486,7 +490,9 @@ private object PrimitiveFieldsGuideTab : InspectorTab {
 private object ComposeFieldsGuideTab : InspectorTab {
     override val title: String = "Guide"
     override val icon: @Composable () -> Painter = { ColorPainter(MaterialTheme.colorScheme.tertiary) }
-    override val content: @Composable (PreviewLabState) -> Unit = { _ ->
+
+    @Composable
+    override fun ContentContext.Content() {
         SelectionContainer {
             Column(
                 modifier = Modifier

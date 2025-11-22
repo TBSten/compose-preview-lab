@@ -21,16 +21,19 @@ import org.jetbrains.compose.resources.painterResource
  * To create a custom tab, implement this interface with your own tab content:
  *
  * ```kt
- * object CustomTab(
- *     override val title: String = "Custom",
- *     override val icon: @Composable () -> Painter = { painterResource(Res.drawable.icon_custom) },
- *     override val content: @Composable (state: PreviewLabState) -> Unit = { state ->
- *         // Your custom tab content
+ * object CustomTab : InspectorTab {
+ *     override val title = "Custom"
+ *     override val icon: @Composable () -> Painter = { painterResource(Res.drawable.icon_custom) }
+ *
+ *     @Composable
+ *     override fun ContentContext.Content() {
+ *         // Your custom tab content can access state via the ContentContext
  *         Column {
  *             Text("Custom Tab Content")
+ *             Text("Field count: ${state.scope.fields.size}")
  *         }
  *     }
- * ) : InspectorTab
+ * }
  * ```
  *
  * Then pass it to PreviewLab via the `additionalTabs` parameter:
@@ -39,7 +42,7 @@ import org.jetbrains.compose.resources.painterResource
  * @Preview
  * @Composable
  * fun MyPreview() = PreviewLab(
- *     additionalTabs = listOf(CustomTab())
+ *     additionalTabs = listOf(CustomTab)
  * ) {
  *     MyComponent()
  * }
@@ -52,14 +55,25 @@ interface InspectorTab {
     val title: String
 
     /**
-     * The icon to display for the tab
+     * The icon to display for the tab.
+     * If null, the tab will be displayed without an icon.
      */
-    val icon: @Composable () -> Painter
+    val icon: (@Composable () -> Painter)? get() = null
 
     /**
-     * The content to display when the tab is selected
+     * The content to display when the tab is selected.
+     * Implement this composable function within [ContentContext] receiver scope to access
+     * the PreviewLabState via [ContentContext.state].
      */
-    val content: @Composable (state: PreviewLabState) -> Unit
+    @Composable
+    fun ContentContext.Content()
+
+    /**
+     * Context providing access to PreviewLabState for tab content.
+     *
+     * @property state The current PreviewLabState, providing access to fields, events, and other preview state
+     */
+    class ContentContext(val state: PreviewLabState)
 
     /**
      * Built-in Fields tab that displays all interactive fields.
@@ -67,7 +81,9 @@ interface InspectorTab {
     data object Fields : InspectorTab {
         override val title: String = "Fields"
         override val icon: @Composable () -> Painter = { painterResource(Res.drawable.icon_edit) }
-        override val content: @Composable (state: PreviewLabState) -> Unit = { state ->
+
+        @Composable
+        override fun ContentContext.Content() {
             FieldListSection(
                 fields = state.scope.fields,
             )
@@ -80,7 +96,9 @@ interface InspectorTab {
     data object Events : InspectorTab {
         override val title: String = "Events"
         override val icon: @Composable () -> Painter = { painterResource(Res.drawable.icon_history) }
-        override val content: @Composable (state: PreviewLabState) -> Unit = { state ->
+
+        @Composable
+        override fun ContentContext.Content() {
             EventListSection(
                 events = state.scope.events,
                 selectedEvent = state.selectedEvent,
