@@ -22,7 +22,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -46,6 +45,7 @@ import compose_preview_lab_integration_test.app.generated.resources.theme
 import kotlinx.coroutines.isActive
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.PreviewLab
+import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.sample.theme.AppTheme
 import me.tbsten.compose.preview.lab.sample.theme.LocalThemeIsDark
 import org.jetbrains.compose.resources.Font
@@ -55,7 +55,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 // ref: https://terrakok.github.io/Compose-Multiplatform-Wizard/
 @Composable
-internal fun ComposeMultiplatformWizardDefaultUI() = AppTheme {
+internal fun ComposeMultiplatformWizardDefaultUI(isRotating: Boolean, onIsRotatingChange: (Boolean) -> Unit) = AppTheme {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -68,8 +68,6 @@ internal fun ComposeMultiplatformWizardDefaultUI() = AppTheme {
             fontFamily = FontFamily(Font(Res.font.IndieFlower_Regular)),
             style = MaterialTheme.typography.displayLarge,
         )
-
-        var isRotating by remember { mutableStateOf(false) }
 
         val rotate = remember { Animatable(0f) }
         val target = 360f
@@ -100,7 +98,7 @@ internal fun ComposeMultiplatformWizardDefaultUI() = AppTheme {
             modifier = Modifier
                 .padding(horizontal = 8.dp, vertical = 4.dp)
                 .widthIn(min = 200.dp),
-            onClick = { isRotating = !isRotating },
+            onClick = { onIsRotatingChange(!isRotating) },
             content = {
                 Icon(
                     painter = painterResource(Res.drawable.ic_rotate_right),
@@ -149,5 +147,10 @@ internal fun ComposeMultiplatformWizardDefaultUI() = AppTheme {
 @Preview
 @Composable
 private fun ComposeMultiplatformWizardDefaultUIPreview() = PreviewLab {
-    ComposeMultiplatformWizardDefaultUI()
+    var isRotating by fieldState { BooleanField("is", false) }
+
+    ComposeMultiplatformWizardDefaultUI(
+        isRotating = isRotating,
+        onIsRotatingChange = { isRotating = it },
+    )
 }
