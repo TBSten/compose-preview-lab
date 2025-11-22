@@ -507,15 +507,13 @@ open class PreviewLab(
 
     @Composable
     private fun Providers(state: PreviewLabState, toaster: ToasterState, content: @Composable () -> Unit) {
-        DisableSelection {
-            contentRoot {
-                PreviewLabTheme {
-                    CompositionLocalProvider(
-                        LocalPreviewLabState provides state,
-                        LocalToaster provides toaster,
-                    ) {
-                        content()
-                    }
+        contentRoot {
+            PreviewLabTheme {
+                CompositionLocalProvider(
+                    LocalPreviewLabState provides state,
+                    LocalToaster provides toaster,
+                ) {
+                    content()
                 }
             }
         }
