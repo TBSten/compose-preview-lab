@@ -27,14 +27,14 @@ import androidx.compose.ui.unit.dp
  *
  * @param modifier Modifier to be applied to the Column
  * @param verticalSpacing Vertical spacing between child elements (default: 32.dp)
- * @param horizontalPadding Horizontal padding of the Column (default: 24.dp)
+ * @param contentPadding Horizontal padding of the Column (default: 24.dp)
  * @param content The composable content of the page
  */
 @Composable
 fun DocPage(
     modifier: Modifier = Modifier,
     verticalSpacing: Dp = 32.dp,
-    horizontalPadding: Dp = 24.dp,
+    contentPadding: Dp = 24.dp,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val isDark = isSystemInDarkTheme()
@@ -49,7 +49,7 @@ fun DocPage(
                     .fillMaxWidth()
                     .background(backgroundGradient)
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = horizontalPadding),
+                    .padding(contentPadding),
                 verticalArrangement = Arrangement.spacedBy(verticalSpacing),
                 content = content,
             )

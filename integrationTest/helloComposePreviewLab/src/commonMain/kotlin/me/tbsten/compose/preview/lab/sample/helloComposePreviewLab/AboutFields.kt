@@ -53,15 +53,12 @@ import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.DocPage
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.IconBox
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.KotlinCodeBlock
-import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.createCodeBlockGradient
+import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.createCodeBlockColor
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun AboutFields() {
-    DocPage(
-        horizontalPadding = 16.dp,
-        verticalSpacing = 16.dp,
-    ) {
+    DocPage {
         AboutSection()
 
         FirstDemoSection()
@@ -143,7 +140,7 @@ private fun ComparisonTable() {
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                createCodeBlockGradient(),
+                createCodeBlockColor(),
                 RoundedCornerShape(12.dp),
             )
             .padding(20.dp),
@@ -423,7 +420,7 @@ private object PrimitiveFieldsGuideTab : InspectorTab {
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            createCodeBlockGradient(),
+                            createCodeBlockColor(),
                             RoundedCornerShape(8.dp),
                         ),
                 ) {
@@ -521,7 +518,7 @@ private object ComposeFieldsGuideTab : InspectorTab {
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            createCodeBlockGradient(),
+                            createCodeBlockColor(),
                             RoundedCornerShape(8.dp),
                         ),
                 ) {
@@ -560,7 +557,7 @@ private object ComposeFieldsGuideTab : InspectorTab {
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            createCodeBlockGradient(),
+                            createCodeBlockColor(),
                             RoundedCornerShape(8.dp),
                         ),
                 ) {
@@ -592,7 +589,7 @@ private object ComposeFieldsGuideTab : InspectorTab {
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            createCodeBlockGradient(),
+                            createCodeBlockColor(),
                             RoundedCornerShape(8.dp),
                         ),
                 ) {
@@ -723,7 +720,7 @@ private fun FieldCategoryDemo(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            createCodeBlockGradient(),
+                            createCodeBlockColor(),
                             RoundedCornerShape(8.dp),
                         ),
                 ) {
@@ -1151,7 +1148,7 @@ private fun Step(number: String, title: String, description: String, code: Strin
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        createCodeBlockGradient(),
+                        createCodeBlockColor(),
                         RoundedCornerShape(8.dp),
                     ),
             ) {
