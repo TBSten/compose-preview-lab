@@ -58,6 +58,7 @@ import androidx.compose.ui.unit.dp
 import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.Res
 import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.cover
 import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.icon_add_notes
+import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.icon_check
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.LocalPreviewLabGalleryNavigator
@@ -182,7 +183,7 @@ private fun QuickSummarySection() = Column(
 ) {
     SectionHeadingText(
         text = "Quick Summary",
-        iconBox = { IconBox(color = MaterialTheme.colorScheme.primary, label = "✓") },
+        iconBox = { IconBox(color = MaterialTheme.colorScheme.primary, icon = painterResource(Res.drawable.icon_check)) },
     )
 
     Card(

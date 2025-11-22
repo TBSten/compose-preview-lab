@@ -30,6 +30,9 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.Res
+import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.icon_check
+import org.jetbrains.compose.resources.painterResource
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.LocalPreviewLabGalleryNavigator
@@ -291,7 +294,7 @@ private fun FeaturesSection() {
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         SectionTitle(
-            icon = { IconBox(color = Color(0xFF4CAF50), label = "✓") },
+            icon = { IconBox(color = Color(0xFF4CAF50), icon = painterResource(Res.drawable.icon_check)) },
             text = "Key Features",
         )
 

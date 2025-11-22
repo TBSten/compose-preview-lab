@@ -28,6 +28,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
+import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.Res
+import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.icon_check
+import org.jetbrains.compose.resources.painterResource
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontFamily
@@ -147,7 +150,7 @@ private fun ComparisonTable() {
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         ComparisonRow(
-            icon = { IconBox(color = MaterialTheme.colorScheme.primary, label = "✓") },
+            icon = { IconBox(color = MaterialTheme.colorScheme.primary, icon = painterResource(Res.drawable.icon_check)) },
             title = "With Fields",
             description = "Change values dynamically via UI controls • Single preview • Easy to test edge cases",
         )
