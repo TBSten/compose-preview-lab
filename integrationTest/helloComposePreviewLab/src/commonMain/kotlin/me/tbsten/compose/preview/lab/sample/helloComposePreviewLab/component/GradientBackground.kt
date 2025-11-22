@@ -1,35 +1,29 @@
 package me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component
 
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 /**
- * Creates a vertical gradient background brush based on the theme mode.
+ * Creates a vertical gradient background brush based on the Material Theme colors.
  *
  * @param isDark Whether the current theme is dark mode
  * @return A vertical gradient brush suitable for the current theme
  */
-fun createBackgroundGradient(isDark: Boolean): Brush = if (isDark) {
-    Brush.verticalGradient(
-        colors = listOf(
-            Color(0xFF1A1A2E),
-            Color(0xFF16213E),
-            Color(0xFF0F3460),
-        ),
-    )
-} else {
-    Brush.verticalGradient(
-        colors = listOf(
-            Color(0xFFF8F9FA),
-            Color(0xFFE8EAF6),
-            Color(0xFFE3F2FD),
-        ),
-    )
-}
+@Composable
+fun createBackgroundGradient(isDark: Boolean): Brush = Brush.verticalGradient(
+    colors = listOf(
+        MaterialTheme.colorScheme.surface,
+        MaterialTheme.colorScheme.surfaceVariant,
+        MaterialTheme.colorScheme.primaryContainer,
+    ),
+)
 
 /**
- * Creates a linear gradient brush for code block backgrounds.
+ * Creates a color for code block backgrounds using Material Theme.
  *
- * @return A linear gradient brush from grey to lavender
+ * @return A color from Material Theme color scheme
  */
-fun createCodeBlockColor() = Color.White
+@Composable
+fun createCodeBlockColor() = MaterialTheme.colorScheme.surface

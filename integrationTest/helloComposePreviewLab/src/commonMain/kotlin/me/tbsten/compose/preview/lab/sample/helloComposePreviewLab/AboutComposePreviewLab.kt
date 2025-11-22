@@ -11,6 +11,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -147,7 +148,7 @@ private fun CoverSection() = Column(
             } else {
                 Box(
                     Modifier
-                        .background(Color(0xffa3a3a3))
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
                         .aspectRatio(391f / 220)
                         .fillMaxWidth(),
                 )
@@ -183,7 +184,7 @@ private fun QuickSummarySection() = Column(
 ) {
     SectionHeadingText(
         text = "Quick Summary",
-        iconBox = { IconBox(color = Color(0xFF4CAF50), label = "✓") },
+        iconBox = { IconBox(color = MaterialTheme.colorScheme.primary, label = "✓") },
     )
 
     Card(
@@ -194,11 +195,11 @@ private fun QuickSummarySection() = Column(
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             FeatureBullet(
-                icon = { IconBox(color = Color(0xFF2196F3), label = "P") },
+                icon = { IconBox(color = MaterialTheme.colorScheme.secondary, label = "P") },
                 text = "Collect and display @Preview!",
             )
             FeatureBullet(
-                icon = { IconBox(color = Color(0xFFFF5722), label = "G") },
+                icon = { IconBox(color = MaterialTheme.colorScheme.tertiary, label = "G") },
                 text = "Turn @Preview into a powerful Playground with just a little code!",
             )
         }
@@ -226,7 +227,7 @@ private fun BeforeAfterSection() = Column(
 ) {
     SectionHeadingText(
         text = "What is Compose Preview Lab ?",
-        iconBox = { IconBox(color = Color(0xFF2196F3), label = "?") },
+        iconBox = { IconBox(color = MaterialTheme.colorScheme.secondary, label = "?") },
     )
 
     val windowWidth =
@@ -242,13 +243,10 @@ private fun BeforeAfterSection() = Column(
     val before = remember {
         movableContentOf {
             BeforeAfterCodeSection(
-                textColor = Color(0xFFD32F2F),
-                backgroundGradient = Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFFFFEBEE),
-                        Color(0xFFFFCDD2),
-                    ),
-                ),
+                labelColor = MaterialTheme.colorScheme.onErrorContainer,
+                labelBackgroundColor = MaterialTheme.colorScheme.errorContainer,
+                codeBackgroundColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f),
+                contentBorderColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f),
                 label = "before",
                 code = """
                     @Preview
@@ -279,13 +277,10 @@ private fun BeforeAfterSection() = Column(
             // TODO highlight PreviewLab { }, fieldValue { }, onEvent
 
             BeforeAfterCodeSection(
-                textColor = Color(0xFF1B5E20),
-                backgroundGradient = Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFFE8F5E9),
-                        Color(0xFFC8E6C9),
-                    ),
-                ),
+                labelColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                labelBackgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
+                codeBackgroundColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.3f),
+                contentBorderColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.3f),
                 label = "after",
                 code = """
                     @Preview
@@ -385,8 +380,10 @@ private fun SectionHeadingText(text: String, modifier: Modifier = Modifier, icon
 
 @Composable
 private fun BeforeAfterCodeSection(
-    textColor: Color,
-    backgroundGradient: Brush,
+    labelColor: Color,
+    labelBackgroundColor: Color,
+    codeBackgroundColor: Color,
+    contentBorderColor: Color,
     label: String,
     code: String,
     content: @Composable () -> Unit,
@@ -398,18 +395,18 @@ private fun BeforeAfterCodeSection(
     ) {
         Text(
             text = label,
-            color = textColor,
+            color = labelColor,
+            style = MaterialTheme.typography.labelLarge,
             textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .background(backgroundGradient, shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+                .background(labelBackgroundColor, shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
                 .fillMaxWidth()
                 .padding(vertical = 8.dp, horizontal = 12.dp),
         )
 
         Box(
             modifier = Modifier
-                .background(backgroundGradient)
+                .background(codeBackgroundColor)
                 .padding(16.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(4.dp)),
@@ -421,14 +418,7 @@ private fun BeforeAfterCodeSection(
 
         Box(
             modifier = Modifier
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            Color.White.copy(alpha = 0.3f),
-                            Color.White.copy(alpha = 0.1f),
-                        ),
-                    ),
-                )
+                .border(4.dp, contentBorderColor)
                 .padding(4.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)),
@@ -471,7 +461,7 @@ internal object CustomizedInfoTab : InspectorTab {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp)),
+                        .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp)),
                 ) {
                     KotlinCodeBlock(
                         code = """
@@ -518,7 +508,7 @@ private fun NextActionSection() = Column(
 ) {
     SectionHeadingText(
         text = "Next Steps",
-        iconBox = { IconBox(color = Color(0xFF9C27B0), label = "→") },
+        iconBox = { IconBox(color = MaterialTheme.colorScheme.primary, label = "→") },
     )
 
     Text(

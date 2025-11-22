@@ -78,7 +78,7 @@ private fun AboutSection() {
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         SectionTitle(
-            icon = { IconBox(color = Color(0xFF2196F3), label = "F") },
+            icon = { IconBox(color = MaterialTheme.colorScheme.primary, label = "F") },
             text = "About Fields",
         )
 
@@ -90,7 +90,7 @@ private fun AboutSection() {
         Spacer(modifier = Modifier.height(8.dp))
 
         SectionTitle(
-            icon = { IconBox(color = Color(0xFFFF9800), label = "?") },
+            icon = { IconBox(color = MaterialTheme.colorScheme.secondary, label = "?") },
             text = "Why use Fields instead of PreviewParameterProvider?",
             style = MaterialTheme.typography.titleMedium,
         )
@@ -147,7 +147,7 @@ private fun ComparisonTable() {
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         ComparisonRow(
-            icon = { IconBox(color = Color(0xFF4CAF50), label = "✓") },
+            icon = { IconBox(color = MaterialTheme.colorScheme.primary, label = "✓") },
             title = "With Fields",
             description = "Change values dynamically via UI controls • Single preview • Easy to test edge cases",
         )
@@ -155,7 +155,7 @@ private fun ComparisonTable() {
         HorizontalDivider()
 
         ComparisonRow(
-            icon = { IconBox(color = Color(0xFFFF9800), label = "!") },
+            icon = { IconBox(color = MaterialTheme.colorScheme.secondary, label = "!") },
             title = "PreviewParameterProvider",
             description = "Multiple static previews • Increases cognitive load • Harder to test specific combinations",
         )
@@ -296,7 +296,7 @@ private fun FirstDemoItemList(
 
 private object FirstDemoFieldGuideTab : InspectorTab {
     override val title: String = "Guide"
-    override val icon: @Composable () -> Painter = { ColorPainter(Color(0xFF6200EE)) }
+    override val icon: @Composable () -> Painter = { ColorPainter(MaterialTheme.colorScheme.primary) }
     override val content: @Composable (PreviewLabState) -> Unit = { _ ->
         SelectionContainer {
             Column(
@@ -307,7 +307,7 @@ private object FirstDemoFieldGuideTab : InspectorTab {
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 SectionTitle(
-                    icon = { IconBox(color = Color(0xFF9C27B0), label = "G") },
+                    icon = { IconBox(color = MaterialTheme.colorScheme.primary, label = "G") },
                     text = "How to Use Fields",
                     style = MaterialTheme.typography.titleLarge,
                 )
@@ -387,7 +387,7 @@ private object FirstDemoFieldGuideTab : InspectorTab {
 
 private object PrimitiveFieldsGuideTab : InspectorTab {
     override val title: String = "Guide"
-    override val icon: @Composable () -> Painter = { ColorPainter(Color(0xFF4CAF50)) }
+    override val icon: @Composable () -> Painter = { ColorPainter(MaterialTheme.colorScheme.secondary) }
     override val content: @Composable (PreviewLabState) -> Unit = { _ ->
         SelectionContainer {
             Column(
@@ -485,7 +485,7 @@ private object PrimitiveFieldsGuideTab : InspectorTab {
 
 private object ComposeFieldsGuideTab : InspectorTab {
     override val title: String = "Guide"
-    override val icon: @Composable () -> Painter = { ColorPainter(Color(0xFF2196F3)) }
+    override val icon: @Composable () -> Painter = { ColorPainter(MaterialTheme.colorScheme.tertiary) }
     override val content: @Composable (PreviewLabState) -> Unit = { _ ->
         SelectionContainer {
             Column(
@@ -619,7 +619,7 @@ private fun CommonlyUsedFieldsSection() {
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         SectionTitle(
-            icon = { IconBox(color = Color(0xFF4CAF50), label = "F") },
+            icon = { IconBox(color = MaterialTheme.colorScheme.primary, label = "F") },
             text = "Commonly Used Fields",
         )
 
@@ -658,12 +658,12 @@ private fun CommonlyUsedFieldsSection() {
             guideTab = ComposeFieldsGuideTab,
             codeSnippet = """
                 val colorValue: Color = fieldValue {
-                  ColorField("colorField", initialValue = Color(0xFF2196F3))
+                  ColorField("colorField", initialValue = MaterialTheme.colorScheme.primary)
                 }
                 val modifierValue: Modifier = fieldValue {
                     ModifierField("modifierField") {
                         choice(Modifier, label = "None", isDefault = true)
-                        choice(Modifier.background(Color(0xFFFFEB3B)), label = "Yellow")
+                        choice(Modifier.background(MaterialTheme.colorScheme.tertiary), label = "Yellow")
                     }
                 }
             """.trimIndent(),
@@ -789,7 +789,8 @@ private fun PreviewLabScope.PrimitiveFieldsDemo() {
 
 @Composable
 private fun PreviewLabScope.ComposeFieldsDemo() {
-    val colorValue = fieldValue { ColorField("colorField", initialValue = Color(0xFF2196F3)) }
+    val primaryColor = MaterialTheme.colorScheme.primary
+    val colorValue = fieldValue { ColorField("colorField", initialValue = primaryColor) }
     val dpValue = fieldValue { DpField("dpField", initialValue = 16.dp) }
     val modifierValue = fieldValue {
         ModifierField("modifierField")
@@ -980,7 +981,7 @@ private fun CustomizeFieldSection() {
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         SectionTitle(
-            icon = { IconBox(color = Color(0xFF9C27B0), label = "C") },
+            icon = { IconBox(color = MaterialTheme.colorScheme.primary, label = "C") },
             text = "Customize Field",
         )
 
@@ -1036,7 +1037,7 @@ private fun MoreInformationSection() {
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         SectionTitle(
-            icon = { IconBox(color = Color(0xFF2196F3), label = "i") },
+            icon = { IconBox(color = MaterialTheme.colorScheme.secondary, label = "i") },
             text = "More Information",
         )
 
