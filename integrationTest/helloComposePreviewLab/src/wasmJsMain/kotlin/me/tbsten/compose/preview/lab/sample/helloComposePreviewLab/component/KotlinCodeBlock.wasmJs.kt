@@ -14,7 +14,7 @@ import androidx.compose.ui.text.TextStyle
 // FIXME KodeView は wasmJs をサポートしていない
 //  ライブラリで wasmJs が対応されたら commonMain で KodeView を呼び出すようにする
 @Composable
-internal actual fun KotlinCodeBlock(code: String, modifier: Modifier, style: TextStyle, contentPadding: PaddingValues) {
+internal actual fun KotlinCodeBlock(code: String, modifier: Modifier, style: TextStyle, contentPadding: PaddingValues,) {
     Surface(
         modifier = modifier,
         color = Color.Transparent,
