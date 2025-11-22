@@ -58,6 +58,7 @@ import androidx.compose.ui.unit.dp
 import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.Res
 import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.cover
 import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.icon_add_notes
+import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.icon_arrow_right_alt
 import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.icon_check
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
@@ -513,7 +514,7 @@ private fun NextActionSection() = Column(
 ) {
     SectionHeadingText(
         text = "Next Steps",
-        iconBox = { IconBox(color = MaterialTheme.colorScheme.primary, label = "→") },
+        iconBox = { IconBox(color = MaterialTheme.colorScheme.primary, icon = painterResource(Res.drawable.icon_arrow_right_alt)) },
     )
 
     Text(
@@ -551,17 +552,10 @@ private fun NextActionSection() = Column(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            Box(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(50))
-                    .padding(12.dp),
-            ) {
-                Text(
-                    text = "→",
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
-            }
+            IconBox(
+                color = MaterialTheme.colorScheme.primaryContainer,
+                icon = painterResource(Res.drawable.icon_arrow_right_alt),
+            )
         }
     }
 
@@ -593,17 +587,10 @@ private fun NextActionSection() = Column(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            Box(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(50))
-                    .padding(12.dp),
-            ) {
-                Text(
-                    text = "→",
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
-            }
+            IconBox(
+                color = MaterialTheme.colorScheme.primaryContainer,
+                icon = painterResource(Res.drawable.icon_arrow_right_alt),
+            )
         }
     }
 }
