@@ -408,8 +408,42 @@ private fun generateBaseFieldCreator(
         }
     }
 
-    // 5. Map primitive types to field types
-    val fieldType = when (qualifiedTypeName) {
+    // 5. Try to map primitive types to field types
+    val primitiveFieldType = getPrimitiveFieldType(qualifiedTypeName, imports)
+    val fieldType = if (primitiveFieldType != null) {
+        primitiveFieldType
+    } else {
+        // Check if the type has generic parameters (e.g., List<String>, Map<String, Int>)
+        if (paramType.arguments.isNotEmpty()) {
+            logger.error(
+                "Generic types are not supported: $qualifiedTypeName for property $paramName. " +
+                    "Please use a non-generic type or create a custom wrapper type.",
+                null
+            )
+            imports.add("me.tbsten.compose.preview.lab.field.StringField")
+            return "StringField(label = \"$paramName\", initialValue = \"\")"
+        }
+
+        // 6. Fallback: check if there's a known field type for this type
+        val potentialFieldType = findKnownFieldType(qualifiedTypeName, paramName, imports)
+        if (potentialFieldType != null) {
+            return potentialFieldType
+        }
+
+        logger.warn("Unsupported type $qualifiedTypeName for property $paramName. Falling back to StringField.")
+        imports.add("me.tbsten.compose.preview.lab.field.StringField")
+        "StringField"
+    }
+
+    return "$fieldType(label = \"$paramName\", initialValue = initialValue.$paramName)"
+}
+
+/**
+ * Maps a qualified type name to its corresponding field type.
+ * Returns null if the type is not a recognized primitive type.
+ */
+private fun getPrimitiveFieldType(qualifiedTypeName: String?, imports: MutableSet<String>): String? {
+    return when (qualifiedTypeName) {
         "kotlin.String" -> {
             imports.add("me.tbsten.compose.preview.lab.field.StringField")
             "StringField"
@@ -438,31 +472,8 @@ private fun generateBaseFieldCreator(
             imports.add("me.tbsten.compose.preview.lab.field.ByteField")
             "ByteField"
         }
-        else -> {
-            // Check if the type has generic parameters (e.g., List<String>, Map<String, Int>)
-            if (paramType.arguments.isNotEmpty()) {
-                logger.error(
-                    "Generic types are not supported: $qualifiedTypeName for property $paramName. " +
-                        "Please use a non-generic type or create a custom wrapper type.",
-                    null
-                )
-                imports.add("me.tbsten.compose.preview.lab.field.StringField")
-                return "StringField(label = \"$paramName\", initialValue = \"\")"
-            }
-
-            // 6. Fallback: check if there's a known field type for this type
-            val potentialFieldType = findKnownFieldType(qualifiedTypeName, paramName, imports)
-            if (potentialFieldType != null) {
-                return potentialFieldType
-            }
-
-            logger.warn("Unsupported type $qualifiedTypeName for property $paramName. Falling back to StringField.")
-            imports.add("me.tbsten.compose.preview.lab.field.StringField")
-            "StringField"
-        }
+        else -> null
     }
-
-    return "$fieldType(label = \"$paramName\", initialValue = initialValue.$paramName)"
 }
 
 /**
@@ -478,40 +489,10 @@ private fun generateFieldCreatorPattern(
     val qualifiedTypeName = paramType.declaration.qualifiedName?.asString()
 
     // Map primitive types to field types
-    val fieldType = when (qualifiedTypeName) {
-        "kotlin.String" -> {
-            imports.add("me.tbsten.compose.preview.lab.field.StringField")
-            "StringField"
-        }
-        "kotlin.Int" -> {
-            imports.add("me.tbsten.compose.preview.lab.field.IntField")
-            "IntField"
-        }
-        "kotlin.Long" -> {
-            imports.add("me.tbsten.compose.preview.lab.field.LongField")
-            "LongField"
-        }
-        "kotlin.Float" -> {
-            imports.add("me.tbsten.compose.preview.lab.field.FloatField")
-            "FloatField"
-        }
-        "kotlin.Double" -> {
-            imports.add("me.tbsten.compose.preview.lab.field.DoubleField")
-            "DoubleField"
-        }
-        "kotlin.Boolean" -> {
-            imports.add("me.tbsten.compose.preview.lab.field.BooleanField")
-            "BooleanField"
-        }
-        "kotlin.Byte" -> {
-            imports.add("me.tbsten.compose.preview.lab.field.ByteField")
-            "ByteField"
-        }
-        else -> {
-            logger.warn("Unsupported underlying type $qualifiedTypeName for value class. Falling back to StringField.")
-            imports.add("me.tbsten.compose.preview.lab.field.StringField")
-            "StringField"
-        }
+    val fieldType = getPrimitiveFieldType(qualifiedTypeName, imports) ?: run {
+        logger.warn("Unsupported underlying type $qualifiedTypeName for value class. Falling back to StringField.")
+        imports.add("me.tbsten.compose.preview.lab.field.StringField")
+        "StringField"
     }
 
     return "$fieldType(label = \"$paramName\""
