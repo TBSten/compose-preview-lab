@@ -7,6 +7,7 @@ import androidx.compose.foundation.gestures.draggable2D
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.selection.DisableSelection
@@ -603,7 +604,7 @@ private fun ContentSection(
                 scaleX = state.contentScale
                 scaleY = state.contentScale
                 transformOrigin = TransformOrigin(0f, 0f)
-            },
+            }.fillMaxSize(),
     ) {
         Box(
             modifier = Modifier
