@@ -213,7 +213,7 @@ import me.tbsten.compose.preview.lab.util.toDpOffset
  *   )
  *   ```
  *
- * @param isHeaderShow
+ * @param defaultIsHeaderShow
  *   Controls whether the PreviewLab header is visible. When set to false, hides the header
  *   controls (scale, inspector panel toggle, etc.) to provide a cleaner preview view.
  *   Defaults to true.
@@ -231,7 +231,7 @@ import me.tbsten.compose.preview.lab.util.toDpOffset
  *   }
  *   ```
  *
- * @param additionalTabs
+ * @param defaultAdditionalTabs
  *   List of custom tabs to add to the inspector panel alongside the default Fields and Events tabs.
  *   Useful for adding preview-specific debugging tools, documentation, or custom controls that will
  *   be available across all previews using this PreviewLab instance.
@@ -284,8 +284,8 @@ open class PreviewLab(
         { rememberSaveable(saver = PreviewLabState.Saver) { PreviewLabState() } },
     private val defaultScreenSizes: List<ScreenSize> = ScreenSize.SmartphoneAndDesktops,
     private val contentRoot: @Composable (content: @Composable () -> Unit) -> Unit = { it() },
-    private val isHeaderShow: Boolean = true,
-    private val additionalTabs: List<InspectorTab> = emptyList(),
+    private val defaultIsHeaderShow: @Composable () -> Boolean = { LocalDefaultIsHeaderShow.current },
+    private val defaultAdditionalTabs: @Composable () -> List<InspectorTab> = { emptyList() },
     @Suppress("unused") disableTrailingLambda: Nothing? = null,
 ) {
     /**
@@ -320,8 +320,8 @@ open class PreviewLab(
         maxWidth: Dp,
         maxHeight: Dp,
         modifier: Modifier = Modifier,
-        isHeaderShow: Boolean = this.isHeaderShow,
-        additionalTabs: List<InspectorTab> = this.additionalTabs,
+        isHeaderShow: Boolean = this.defaultIsHeaderShow(),
+        additionalTabs: List<InspectorTab> = this.defaultAdditionalTabs(),
         content: @Composable PreviewLabScope.() -> Unit,
     ) = invoke(
         state = state,
@@ -469,8 +469,8 @@ open class PreviewLab(
         state: PreviewLabState = LocalPreviewLabState.current ?: defaultState(),
         screenSizes: List<ScreenSize> = defaultScreenSizes,
         modifier: Modifier = Modifier,
-        isHeaderShow: Boolean = this.isHeaderShow,
-        additionalTabs: List<InspectorTab> = this.additionalTabs,
+        isHeaderShow: Boolean = this.defaultIsHeaderShow(),
+        additionalTabs: List<InspectorTab> = this.defaultAdditionalTabs(),
         content: @Composable PreviewLabScope.() -> Unit,
     ) {
         val toaster = rememberToasterState().also { toaster ->
@@ -647,3 +647,5 @@ private fun ContentSection(
         }
     }
 }
+
+val LocalDefaultIsHeaderShow = compositionLocalOf { true }
