@@ -61,7 +61,7 @@ import org.jetbrains.compose.resources.painterResource
  * @param openFileHandler By specifying OpenFileHandler, you can display a "Source Code" button that displays the source code corresponding to the Preview.
  * @param featuredFileList Map of group names to file paths for organizing previews into featured categories. Files matching these paths will be grouped under their respective category names in the preview list.
  *
- * @see CollectedPreview
+ * @see PreviewLabPreview
  * @see OpenFileHandler
  */
 @Composable

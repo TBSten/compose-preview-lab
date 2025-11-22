@@ -15,7 +15,7 @@ import androidx.compose.runtime.setValue
  * @see PreviewLabGallery
  */
 @Stable
-class PreviewLabGalleryState(initialSelectedPreview: Pair<String, CollectedPreview>? = null) {
+class PreviewLabGalleryState(initialSelectedPreview: Pair<String, PreviewLabPreview>? = null) {
     internal var selectedPreview: SelectedPreview? by mutableStateOf(
         initialSelectedPreview
             ?.let(SelectedPreview::from),
@@ -130,7 +130,7 @@ internal class SelectedPreview(val groupName: String, val preview: PreviewLabPre
     }
 
     companion object {
-        fun from(preview: Pair<String, CollectedPreview>) = SelectedPreview(
+        fun from(preview: Pair<String, PreviewLabPreview>) = SelectedPreview(
             groupName = preview.first,
             preview = preview.second,
         )

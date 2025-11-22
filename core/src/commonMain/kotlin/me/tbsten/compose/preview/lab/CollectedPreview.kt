@@ -43,6 +43,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  * @property startLineNumber The starting line number of Preview.
  * @property code The source code of Preview.
  * @property content The content of Preview. You can display the content of Preview by calling invoke().
+ *
+ * @see CollectedPreview
  */
 interface PreviewLabPreview {
     val id: String
