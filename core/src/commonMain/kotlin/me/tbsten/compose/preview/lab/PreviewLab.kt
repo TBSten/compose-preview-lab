@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
@@ -506,13 +507,15 @@ open class PreviewLab(
 
     @Composable
     private fun Providers(state: PreviewLabState, toaster: ToasterState, content: @Composable () -> Unit) {
-        contentRoot {
-            PreviewLabTheme {
-                CompositionLocalProvider(
-                    LocalPreviewLabState provides state,
-                    LocalToaster provides toaster,
-                ) {
-                    content()
+        DisableSelection {
+            contentRoot {
+                PreviewLabTheme {
+                    CompositionLocalProvider(
+                        LocalPreviewLabState provides state,
+                        LocalToaster provides toaster,
+                    ) {
+                        content()
+                    }
                 }
             }
         }
