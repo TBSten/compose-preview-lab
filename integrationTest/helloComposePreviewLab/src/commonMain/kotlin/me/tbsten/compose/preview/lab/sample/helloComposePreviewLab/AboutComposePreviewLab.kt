@@ -569,6 +569,48 @@ private fun NextActionSection() = Column(
             }
         }
     }
+
+    Card(
+        onClick = { previewLabGalleryNavigator.navigateOr("AboutEvents") { } },
+        modifier = Modifier
+            .fillMaxWidth(),
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(20.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Text(
+                    text = "Learn About Events",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+                Text(
+                    text = "Record and visualize user interactions in your Previews without complex testing infrastructure",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(50))
+                    .padding(12.dp),
+            ) {
+                Text(
+                    text = "→",
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+            }
+        }
+    }
 }
 
 @ComposePreviewLabOption(displayName = "1: About Compose Preview Lab", id = "AboutComposePreviewLab")
