@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -41,7 +42,6 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.graphics.painter.Painter
 import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.event.withEvent
 import me.tbsten.compose.preview.lab.field.BooleanField
@@ -500,10 +500,10 @@ enum class PreviewsForUiDebug(
         "Custom Inspector Tab Example",
         content = {
             PreviewLab(
-                additionalTabs = listOf(DebugInfoTab())
+                additionalTabs = listOf(DebugInfoTab()),
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
                 ) {
                     Text(
                         text = "Custom Inspector Tab Demo",
@@ -522,7 +522,7 @@ enum class PreviewsForUiDebug(
 
                     Button(
                         enabled = fieldValue { BooleanField("enabled", true) },
-                        onClick = { onEvent("button clicked") }
+                        onClick = { onEvent("button clicked") },
                     ) {
                         Text("Click Me")
                     }
@@ -645,13 +645,15 @@ private data class DebugInfoTab(
         // Using a simple colored box as icon instead of material icon
         androidx.compose.ui.graphics.painter.ColorPainter(Color.Green)
     },
-    override val content: @Composable (state: PreviewLabState) -> Unit = { state ->
+) : InspectorTab {
+    @Composable
+    override fun InspectorTab.ContentContext.Content() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Text(
                 text = "Custom Debug Tab",
@@ -673,7 +675,7 @@ private data class DebugInfoTab(
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp))
                     .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text(
                     text = "You can display:",
@@ -697,9 +699,9 @@ private data class DebugInfoTab(
 
             Text(
                 text = "Create your own InspectorTab by implementing the interface with:\n" +
-                      "• title: Display name for the tab\n" +
-                      "• icon: Composable icon painter\n" +
-                      "• content: Your custom UI",
+                    "• title: Display name for the tab\n" +
+                    "• icon: Composable icon painter\n" +
+                    "• content: Your custom UI",
                 style = MaterialTheme.typography.bodyMedium,
             )
 
@@ -707,10 +709,10 @@ private data class DebugInfoTab(
 
             Button(
                 onClick = { },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Text("Example Action Button")
             }
         }
     }
-) : InspectorTab
+}
