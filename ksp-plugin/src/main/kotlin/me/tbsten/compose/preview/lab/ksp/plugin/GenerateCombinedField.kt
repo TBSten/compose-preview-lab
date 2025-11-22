@@ -118,7 +118,7 @@ private fun generateCombinedFieldForClass(
     }
 
     if (properties.size > 10) {
-        logger.error("@GenerateCombinedField supports up to 10 properties", classDeclaration)
+        logger.error("@GenerateCombinedField supports up to 10 properties, but found ${properties.size}", classDeclaration)
         return
     }
 
