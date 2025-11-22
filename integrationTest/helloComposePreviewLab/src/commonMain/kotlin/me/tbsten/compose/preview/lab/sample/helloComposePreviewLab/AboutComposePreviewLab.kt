@@ -45,7 +45,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
@@ -63,7 +62,6 @@ import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.LocalPreviewLabGalleryNavigator
 import me.tbsten.compose.preview.lab.PreviewLab
-import me.tbsten.compose.preview.lab.PreviewLabState
 import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.ColorField
@@ -431,7 +429,9 @@ private fun BeforeAfterCodeSection(
 internal object CustomizedInfoTab : InspectorTab {
     override val title: String = "About"
     override val icon: @Composable (() -> Painter) = { painterResource(Res.drawable.icon_add_notes) }
-    override val content: @Composable ((state: PreviewLabState) -> Unit) = { _ ->
+
+    @Composable
+    override fun InspectorTab.ContentContext.Content() {
         SelectionContainer {
             Column(
                 modifier = Modifier

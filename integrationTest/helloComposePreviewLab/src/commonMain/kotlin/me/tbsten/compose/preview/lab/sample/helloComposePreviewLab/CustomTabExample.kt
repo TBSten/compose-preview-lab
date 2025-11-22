@@ -35,7 +35,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 object InfoTab : InspectorTab {
     override val title: String = "Info"
     override val icon: @Composable () -> Painter = { painterResource(Res.drawable.cover) }
-    override val content: @Composable (state: PreviewLabState) -> Unit = { state ->
+
+    @Composable
+    override fun InspectorTab.ContentContext.Content() {
         InfoTabContent(state)
     }
 }

@@ -35,7 +35,6 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.LocalPreviewLabGalleryNavigator
 import me.tbsten.compose.preview.lab.PreviewLab
 import me.tbsten.compose.preview.lab.PreviewLabScope
-import me.tbsten.compose.preview.lab.PreviewLabState
 import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.DocPage
@@ -131,7 +130,7 @@ private fun TryItYourselfSection() {
                 modifier = Modifier
                     .padding(40.dp)
                     .shadow(8.dp)
-                    .height(350.dp),
+                    .height(600.dp),
             ) {
                 FirstDemoContent()
             }
@@ -177,7 +176,9 @@ private fun PreviewLabScope.FirstDemoContent() {
 private object FirstDemoGuideTab : InspectorTab {
     override val title: String = "Guide"
     override val icon: @Composable () -> Painter = { ColorPainter(Color(0xFFFF6B6B)) }
-    override val content: @Composable (PreviewLabState) -> Unit = { _ ->
+
+    @Composable
+    override fun InspectorTab.ContentContext.Content() {
         Column(
             modifier = Modifier
                 .fillMaxSize()

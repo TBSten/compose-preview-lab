@@ -32,6 +32,7 @@ import me.tbsten.compose.preview.lab.component.Divider
 import me.tbsten.compose.preview.lab.component.SimpleModal
 import me.tbsten.compose.preview.lab.component.TabPager
 import me.tbsten.compose.preview.lab.component.adaptive
+import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab.ContentContext
 import me.tbsten.compose.preview.lab.core.generated.resources.Res
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_code
 import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
@@ -76,12 +77,14 @@ internal fun InspectorsPane(
                         .sizeIn(maxWidth = maxWidth / 3, maxHeight = maxHeight * 2 / 3),
                 ) {
                     allTabs.forEachIndexed { index, tab ->
-                        CommonIconButton(
-                            variant = IconButtonVariant.PrimaryElevated,
-                            painter = tab.icon(),
-                            contentDescription = tab.title,
-                            onClick = { state.selectedTabIndex = index },
-                        )
+                        tab.icon?.let { icon ->
+                            CommonIconButton(
+                                variant = IconButtonVariant.PrimaryElevated,
+                                painter = icon(),
+                                contentDescription = tab.title,
+                                onClick = { state.selectedTabIndex = index },
+                            )
+                        }
 
                         SimpleModal(
                             isVisible = state.selectedTabIndex == index,
@@ -93,7 +96,9 @@ internal fun InspectorsPane(
                                     .background(PreviewLabTheme.colors.background, shape = RoundedCornerShape(8.dp))
                                     .heightIn(min = 200.dp),
                             ) {
-                                tab.content(state)
+                                with(tab) {
+                                    ContentContext(state = state).Content()
+                                }
                             }
                         }
                     }
@@ -153,7 +158,9 @@ internal fun InspectorsPane(
                             },
                         modifier = Modifier.weight(1f),
                     ) { tab ->
-                        tab.content(state)
+                        with(tab) {
+                            ContentContext(state = state).Content()
+                        }
                     }
 
                     val startLineNumber = LocalPreviewLabPreview.current?.startLineNumber
