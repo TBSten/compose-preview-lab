@@ -439,6 +439,17 @@ private fun generateBaseFieldCreator(
             "ByteField"
         }
         else -> {
+            // Check if the type has generic parameters (e.g., List<String>, Map<String, Int>)
+            if (paramType.arguments.isNotEmpty()) {
+                logger.error(
+                    "Generic types are not supported: $qualifiedTypeName for property $paramName. " +
+                        "Please use a non-generic type or create a custom wrapper type.",
+                    null
+                )
+                imports.add("me.tbsten.compose.preview.lab.field.StringField")
+                return "StringField(label = \"$paramName\", initialValue = \"\")"
+            }
+
             // 6. Fallback: check if there's a known field type for this type
             val potentialFieldType = findKnownFieldType(qualifiedTypeName, paramName, imports)
             if (potentialFieldType != null) {
