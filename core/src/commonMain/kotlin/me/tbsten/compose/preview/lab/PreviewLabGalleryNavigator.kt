@@ -3,10 +3,22 @@ package me.tbsten.compose.preview.lab
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
+import kotlin.js.ExperimentalJsExport
+import me.tbsten.compose.preview.lab.util.JsOnlyExport
 
+@OptIn(ExperimentalJsExport::class)
+@JsOnlyExport
 interface PreviewLabGalleryNavigator {
     fun navigate(id: String)
     fun back()
+}
+
+@OptIn(ExperimentalJsExport::class)
+@JsOnlyExport
+object NoOpPreviewLabGalleryNavigator : PreviewLabGalleryNavigator {
+    override fun navigate(id: String) {}
+
+    override fun back() {}
 }
 
 inline fun PreviewLabGalleryNavigator?.navigateOr(id: String, fallback: () -> Unit) = if (this != null) {

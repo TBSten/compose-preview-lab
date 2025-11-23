@@ -4,7 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.util.JsOnlyExport
 
 /**
  * interface, which determines the behavior when opening source code, etc.
@@ -18,10 +21,13 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
  *
  * @param T Type of value that must be configured in the Composable function.
  */
+@OptIn(ExperimentalJsExport::class)
+@JsOnlyExport
 interface OpenFileHandler<T> {
     /**
      * If there is data that needs to be prepared in the Composable function, specify it here.
      */
+    @JsExport.Ignore
     @Composable
     fun configure(): T
 
@@ -30,7 +36,10 @@ interface OpenFileHandler<T> {
      *
      * @param params A class that contains values and file information set in [configure].
      */
+    @JsExport.Ignore
     fun openFile(params: Params<T>)
+
+    @JsExport.Ignore
     class Params<T> internal constructor(val configuredValue: T, val filePathInProject: String, val startLineNumber: Int?)
 }
 

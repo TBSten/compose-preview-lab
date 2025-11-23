@@ -1,6 +1,9 @@
 package me.tbsten.compose.preview.lab
 
 import androidx.compose.runtime.Composable
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import me.tbsten.compose.preview.lab.util.JsOnlyExport
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
@@ -46,6 +49,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  *
  * @see CollectedPreview
  */
+@OptIn(ExperimentalJsExport::class)
+@JsExport
 interface PreviewLabPreview {
     val id: String
     val displayName: String
@@ -55,7 +60,8 @@ interface PreviewLabPreview {
     val content: @Composable () -> Unit
 }
 
-@OptIn(InternalComposePreviewLabApi::class)
+@OptIn(InternalComposePreviewLabApi::class, ExperimentalJsExport::class)
+@JsOnlyExport
 data class CollectedPreview(
     override val id: String,
     override val displayName: String = id,

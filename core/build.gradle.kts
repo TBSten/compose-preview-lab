@@ -50,6 +50,7 @@ kotlin {
         }
     }
 
+    applyDefaultHierarchyTemplate()
     sourceSets {
         commonMain.dependencies {
             api(projects.annotation)
@@ -74,6 +75,18 @@ kotlin {
         }
         jsMain.dependencies {
             implementation(compose.html.core)
+        }
+
+        val otherJsMain by creating {
+            dependsOn(commonMain.get())
+        }
+        listOf(
+            androidMain,
+            iosMain,
+            jvmMain,
+            wasmJsMain,
+        ).forEach {
+            it.get().dependsOn(otherJsMain)
         }
     }
 }

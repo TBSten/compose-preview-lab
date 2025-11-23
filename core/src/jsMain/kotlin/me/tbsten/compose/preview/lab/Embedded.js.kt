@@ -24,6 +24,7 @@ actual fun List<PreviewLabPreview>.findEmbedded(isEmbeddedQueryName: String, pre
 typealias DisposePreviewLabPreviewElements = () -> Unit
 
 @OptIn(ExperimentalJsExport::class, ExperimentalComposeUiApi::class)
+@ExperimentalComposePreviewLabApi
 @JsExport
 fun renderPreviewLabPreview(
     rootElement: Element,

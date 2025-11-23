@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import kotlin.js.ExperimentalJsExport
-import kotlin.js.JsExport
+import me.tbsten.compose.preview.lab.util.JsOnlyExport
 
 /**
  * State holder for [PreviewLabGallery].
@@ -17,7 +17,7 @@ import kotlin.js.JsExport
  * @see PreviewLabGallery
  */
 @OptIn(ExperimentalJsExport::class)
-@JsExport
+@JsOnlyExport
 @Stable
 class PreviewLabGalleryState(initialSelectedPreview: Pair<String, PreviewLabPreview>? = null) {
     internal var selectedPreview: SelectedPreview? by mutableStateOf(

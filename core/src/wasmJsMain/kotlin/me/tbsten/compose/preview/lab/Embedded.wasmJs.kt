@@ -7,6 +7,7 @@ import kotlinx.browser.document
 import kotlinx.browser.window
 import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
+import me.tbsten.compose.preview.lab.util.JsOnlyExport
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.url.URLSearchParams
@@ -24,7 +25,8 @@ actual fun List<PreviewLabPreview>.findEmbedded(isEmbeddedQueryName: String, pre
 typealias DisposePreviewLabPreviewElements = () -> Unit
 
 @OptIn(ExperimentalJsExport::class, ExperimentalComposeUiApi::class)
-@JsExport
+@ExperimentalComposePreviewLabApi
+@JsOnlyExport
 fun renderPreviewLabPreview(
     rootElement: Element,
     preview: PreviewLabPreview,
