@@ -5,11 +5,8 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.snapshotFlow
 import io.github.takahirom.rin.rememberRetained
 import kotlin.time.ExperimentalTime
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import me.tbsten.compose.preview.lab.event.PreviewLabEvent
 import me.tbsten.compose.preview.lab.field.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.PreviewLabField
@@ -26,16 +23,6 @@ class PreviewLabScope internal constructor() {
     @InternalComposePreviewLabApi
     val fields = mutableStateListOf<PreviewLabField<*>>()
     internal val events = mutableStateListOf<PreviewLabEvent>()
-
-    init {
-        println("PreviewLabScope.init")
-        GlobalScope.launch {
-            snapshotFlow { fields }
-                .collect {
-                    println("PreviewLabScope.fields changed: ${it.map { it.value }}")
-                }
-        }
-    }
 
     internal var onEffectHandler: (Effect) -> Unit = {}
 
