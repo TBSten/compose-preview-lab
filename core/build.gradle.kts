@@ -24,13 +24,19 @@ kotlin {
     jvm()
 
     js {
+        outputModuleName = "compose-previewl-lab"
         browser()
         binaries.executable()
+        binaries.library()
+        generateTypeScriptDefinitions()
     }
 
     wasmJs {
+        outputModuleName = "compose-previewl-lab"
         browser()
         binaries.executable()
+        binaries.library()
+        generateTypeScriptDefinitions()
     }
 
     listOf(

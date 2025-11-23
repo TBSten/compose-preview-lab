@@ -26,12 +26,24 @@ kotlin {
     js {
         browser()
         binaries.executable()
+        binaries.library()
+        generateTypeScriptDefinitions()
+
+        compilerOptions {
+            target = "es2015"
+        }
     }
 
     @Suppress("OPT_IN_USAGE")
     wasmJs {
         browser()
         binaries.executable()
+        binaries.library()
+        generateTypeScriptDefinitions()
+
+        compilerOptions {
+            target = "es2015"
+        }
     }
 
     listOf(

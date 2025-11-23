@@ -5,6 +5,11 @@ import me.tbsten.compose.preview.lab.EmbeddedPreviewOrGallery
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.sample.rememberPreviewLabGalleryState
 
+@OptIn(ExperimentalJsExport::class, ExperimentalWasmJsInterop::class)
+@JsExport
+val appPreviewList = (app.PreviewList + uiLib.PreviewList + helloComposePreviewLab.PreviewList)
+    .toJsArray()
+
 @OptIn(ExperimentalComposePreviewLabApi::class, ExperimentalComposeUiApi::class)
 fun main() {
     ComposeViewport(document.body!!) {
