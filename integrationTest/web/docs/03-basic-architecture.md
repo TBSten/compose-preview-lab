@@ -8,9 +8,9 @@ import EmbeddedPreviewLab from "@site/src/components/EmbeddedPreviewLab"
 
 Compose Preview Lab は @Preview アノテーションを基盤として、Preview の手動テストを効率的に行えるようにするために以下に示す3つのコンポーネントから成っています。
 
-- **Build Tooling** ... Gradle Plugin, KSP Plugin をセットアップすることで Preview を収集するなどの機能を提供します。
-- **PreviewLabGallery** ... Preview のリストを一覧表示する Composable。
-- **PreviewLab** ... Preview を PreviewLab で囲むことで Field, Event などの Preview をインタラクティブに強化する機能を追加する Composable。
+- [**Build Tooling**](#build-tooling) ... Gradle Plugin, KSP Plugin をセットアップすることで Preview を収集するなどの機能を提供します。
+- [**PreviewLabGallery**](#previewlabgallery) ... Preview のリストを一覧表示する Composable。
+- [**PreviewLab**](#previewlab) ... Preview を PreviewLab で囲むことで Field, Event などの Preview をインタラクティブに強化する機能を追加する Composable。
 
 これら3つのコンポーネントは完全に分離されて設計されているため、特定のコンポーネントを部分的に利用する/利用しないを柔軟に切り替えることができます。
 
@@ -78,3 +78,4 @@ Preview ごとに PreviewLab を囲う必要があります。
 - Build Tooling のセットアップ方法を [Install](./install) のドキュメントで学習してください。
 - PreviewLab の基本機能である [Field](./04-guides/02-fields/index.md), [Event](./04-guides/03-events.md) についてそれぞれのドキュメントで学習してください。
 - PreviewLab のオプションを [PreviewLab の KDoc](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab/-preview-lab/index.html#182811969%2FFunctions%2F-2011752812) を参照して学習してください。
+- [Tutorials](./tutorials) の中から気になるもの・あなたの状況に合うものを選択して、あなたのアプリで Compose Preview Lab を活用し初めてください！

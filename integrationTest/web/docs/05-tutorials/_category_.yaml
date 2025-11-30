@@ -1,7 +1,7 @@
 label: Tutorials
 position: 4
 link:
-  type: generated-index
-  description: Follow step-by-step tutorials to master Compose Preview Lab.
+  type: doc
+  id: tutorials/index
 collapsed: false
 

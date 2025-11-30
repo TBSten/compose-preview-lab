@@ -1,7 +1,6 @@
 label: Guides
 position: 3
 link:
-  type: generated-index
-  description: Learn how to use Compose Preview Lab effectively in your projects.
+  type: doc
+  id: guides/index
 collapsed: false
-
