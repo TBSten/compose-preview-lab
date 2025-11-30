@@ -1,6 +1,11 @@
 package me.tbsten.compose.preview.lab.component
 
+import io.kotest.property.Arb
+import io.kotest.property.arbitrary.list
+import io.kotest.property.arbitrary.string
+import io.kotest.property.forAll
 import kotlin.test.Test
+import kotlinx.coroutines.test.runTest
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import me.tbsten.compose.preview.lab.CollectedPreview
@@ -101,6 +106,31 @@ class PreviewListTreeTest {
             ),
         )
     }
+
+    @Test
+    fun `toTree should contain all previews`() = runTest {
+        forAll(Arb.list(Arb.string(1..20), 1..50)) { displayNames ->
+            val previews = displayNames.map { previewForTest(it) }
+            val tree = previews.toTree()
+            val previewsInTree = tree.collectAllPreviews()
+            previewsInTree.size == previews.size &&
+                previewsInTree.map { it.displayName }.toSet() == previews.map { it.displayName }.toSet()
+        }
+    }
+
+    @Test
+    fun `collapse should preserve all previews`() = runTest {
+        forAll(Arb.list(Arb.string(1..20), 1..50)) { displayNames ->
+            val previews = displayNames.map { previewForTest(it) }
+            val tree = previews.toTree()
+            val collapsedTree = tree.collapse()
+            val previewsBeforeCollapse = tree.collectAllPreviews()
+            val previewsAfterCollapse = collapsedTree.collectAllPreviews()
+            previewsBeforeCollapse.size == previewsAfterCollapse.size &&
+                previewsBeforeCollapse.map { it.displayName }.toSet() ==
+                previewsAfterCollapse.map { it.displayName }.toSet()
+        }
+    }
 }
 
 private fun previewForTest(displayName: String): PreviewLabPreview = CollectedPreview(
@@ -108,3 +138,12 @@ private fun previewForTest(displayName: String): PreviewLabPreview = CollectedPr
     displayName,
     "src/commonMain/kotlin/${displayName.replace(".", "/")}.kt",
 ) { }
+
+private fun List<PreviewTreeNode>.collectAllPreviews(): List<PreviewLabPreview> {
+    return flatMap { node ->
+        when (node) {
+            is PreviewTreeNode.Preview -> listOf(node.preview)
+            is PreviewTreeNode.Group -> node.children.collectAllPreviews()
+        }
+    }
+}
