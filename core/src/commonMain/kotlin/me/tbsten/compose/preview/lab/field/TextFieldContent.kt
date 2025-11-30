@@ -9,7 +9,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.github.takahirom.rin.rememberRetained
 import me.tbsten.compose.preview.lab.ui.components.Text
 import me.tbsten.compose.preview.lab.ui.components.textfield.OutlinedTextField
 
@@ -31,7 +30,7 @@ fun <Value> MutablePreviewLabField<Value>.TextFieldContent(
     suffix: (@Composable () -> Unit)? = null,
     placeholder: (@Composable () -> Unit)? = null,
 ) {
-    var textFieldText by rememberRetained(value.toString()) { mutableStateOf(toString(value)) }
+    var textFieldText by remember(value.toString()) { mutableStateOf(toString(value)) }
     var isValid by remember {
         mutableStateOf(true)
     }
