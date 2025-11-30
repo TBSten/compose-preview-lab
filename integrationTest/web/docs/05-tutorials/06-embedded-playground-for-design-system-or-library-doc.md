@@ -91,7 +91,7 @@ object DesignTab : InspectorTab {
 @Preview
 @Composable
 fun ButtonWithDesignTabPreview() = PreviewLab(
-    additionalTabs = listOf(DesignTab),
+    inspectorTabs = InspectorTab.defaults + listOf(DesignTab),
 ) {
     // Playground 用のボタンコンポーネント
 }

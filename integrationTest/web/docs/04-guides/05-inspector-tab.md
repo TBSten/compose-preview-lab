@@ -40,13 +40,23 @@ object CustomTab : InspectorTab {
 }
 ```
 
-`PreviewLab` の `additionalTabs` パラメータに渡します：
+`PreviewLab` の `inspectorTabs` パラメータに渡します：
 
 ```kt
+// デフォルトタブ + カスタムタブ
 @Preview
 @Composable
 fun MyPreview() = PreviewLab(
-    additionalTabs = listOf(CustomTab)
+    inspectorTabs = InspectorTab.defaults + listOf(CustomTab)
+) {
+    MyComponent()
+}
+
+// カスタムタブのみ（デフォルトタブなし）
+@Preview
+@Composable
+fun MyPreview() = PreviewLab(
+    inspectorTabs = listOf(CustomTab1, CustomTab2)
 ) {
     MyComponent()
 }
@@ -163,5 +173,5 @@ PreviewLab には以下の組み込みタブが用意されています：
 - `InspectorTab.Fields` - すべてのインタラクティブフィールドを表示
 - `InspectorTab.Events` - すべてのログイベントを表示
 
-これらはデフォルトで表示されますが、`additionalTabs` と組み合わせて使用することもできます。
+これらはデフォルトで表示されますが、`inspectorTabs = listOf(CustomTab)` のように指定することでカスタムタブのみを表示することもできます。
 
