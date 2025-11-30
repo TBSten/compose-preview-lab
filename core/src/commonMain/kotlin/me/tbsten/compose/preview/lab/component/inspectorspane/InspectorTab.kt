@@ -36,13 +36,23 @@ import org.jetbrains.compose.resources.painterResource
  * }
  * ```
  *
- * Then pass it to PreviewLab via the `additionalTabs` parameter:
+ * Then pass it to PreviewLab via the `inspectorTabs` parameter:
  *
  * ```kt
+ * // Default tabs (Fields, Events) + custom tab
  * @Preview
  * @Composable
  * fun MyPreview() = PreviewLab(
- *     additionalTabs = listOf(CustomTab)
+ *     inspectorTabs = InspectorTab.defaults + listOf(CustomTab)
+ * ) {
+ *     MyComponent()
+ * }
+ *
+ * // Custom tabs only (no default tabs)
+ * @Preview
+ * @Composable
+ * fun MyPreview() = PreviewLab(
+ *     inspectorTabs = listOf(CustomTab)
  * ) {
  *     MyComponent()
  * }

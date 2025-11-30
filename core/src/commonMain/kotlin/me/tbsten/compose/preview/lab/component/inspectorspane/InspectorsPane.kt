@@ -51,7 +51,7 @@ import org.jetbrains.compose.resources.painterResource
 internal fun InspectorsPane(
     state: PreviewLabState,
     isVisible: Boolean,
-    additionalTabs: List<InspectorTab> = emptyList(),
+    inspectorTabs: List<InspectorTab> = InspectorTab.defaults,
     content: @Composable () -> Unit,
 ) {
     if (!isVisible) {
@@ -59,11 +59,7 @@ internal fun InspectorsPane(
         return
     }
 
-    val allTabs by remember {
-        derivedStateOf {
-            InspectorTab.defaults + additionalTabs
-        }
-    }
+    val allTabs = inspectorTabs
 
     adaptive(
         small = {
