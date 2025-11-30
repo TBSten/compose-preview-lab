@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
+import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.sample.component.previewLab
 import me.tbsten.compose.preview.lab.sample.component.rememberCodeTab
 import me.tbsten.compose.preview.lab.sample.lib.MyTextField
