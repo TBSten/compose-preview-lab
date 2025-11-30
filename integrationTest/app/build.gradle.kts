@@ -25,8 +25,8 @@ kotlin {
 
     js {
         browser()
-        binaries.executable()
         binaries.library()
+        binaries.executable()
         generateTypeScriptDefinitions()
 
         compilerOptions {
@@ -166,4 +166,24 @@ tasks.register<ComposeHotRun>("runHot") {
 
 composePreviewLab {
     generateFeaturedFiles = true
+}
+
+val cleanPreviewLabGallery by tasks.registering(Delete::class) {
+    delete(layout.buildDirectory.dir("compose-preview-lab-gallery"))
+}
+
+val buildDevelopmentPreviewLabGallery by tasks.registering(Copy::class) {
+    dependsOn("jsBrowserDevelopmentExecutableDistribution")
+    dependsOn(cleanPreviewLabGallery)
+
+    from(layout.buildDirectory.dir("dist/js/developmentExecutable"))
+    into(layout.buildDirectory.dir("web-static-content/compose-preview-lab-gallery"))
+}
+
+val buildProductionPreviewLabGallery by tasks.registering(Copy::class) {
+    dependsOn("jsBrowserDistribution")
+    dependsOn(cleanPreviewLabGallery)
+
+    from(layout.buildDirectory.dir("dist/js/productionExecutable"))
+    into(layout.buildDirectory.dir("web-static-content/compose-preview-lab-gallery"))
 }
