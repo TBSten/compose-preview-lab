@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.transform
+import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.sample.component.previewLab
 import me.tbsten.compose.preview.lab.sample.component.rememberCodeTab
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -16,7 +17,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @ComposePreviewLabOption(id = "FieldTransform")
 @Composable
 private fun FieldTransform() = previewLab(
-    additionalTabs = listOf(
+    inspectorTabs = InspectorTab.defaults + listOf(
         rememberCodeTab(
             code = """
                 fieldValue {

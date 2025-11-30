@@ -14,6 +14,7 @@ import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.CombinedField3
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.splitedOf
+import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.sample.component.previewLab
 import me.tbsten.compose.preview.lab.sample.component.rememberCodeTab
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -22,7 +23,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @ComposePreviewLabOption(id = "FieldCombined")
 @Composable
 private fun FieldCombined() = previewLab(
-    additionalTabs = listOf(
+    inspectorTabs = InspectorTab.defaults + listOf(
         rememberCodeTab(
             code = """
                 fieldValue {

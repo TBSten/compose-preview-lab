@@ -194,7 +194,7 @@ private fun FirstDemoSection(modifier: Modifier = Modifier) {
         LocalOpenFileHandler provides null,
     ) {
         PreviewLab(
-            additionalTabs = listOf(FirstDemoFieldGuideTab),
+            inspectorTabs = InspectorTab.defaults + listOf(FirstDemoFieldGuideTab),
             isHeaderShow = false,
             modifier = modifier
                 .padding(40.dp)
@@ -754,7 +754,7 @@ private fun FieldCategoryDemo(
             LocalOpenFileHandler provides null,
         ) {
             PreviewLab(
-                additionalTabs = listOf(guideTab),
+                inspectorTabs = InspectorTab.defaults + listOf(guideTab),
                 isHeaderShow = false,
                 modifier = Modifier
                     .fillMaxWidth()
