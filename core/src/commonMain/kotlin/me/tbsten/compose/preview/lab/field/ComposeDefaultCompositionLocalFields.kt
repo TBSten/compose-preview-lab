@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import me.tbsten.compose.preview.lab.PreviewLabScope
 
 /**
- * Provides default Compose composition local fields for [PreviewLab].
+ * Provides default Compose composition local fields for [PreviewLab][me.tbsten.compose.preview.lab.PreviewLab].
  *
  * This function creates interactive fields for commonly used composition locals like:
  * - [LocalDensity] with customizable density and font scale

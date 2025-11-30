@@ -32,9 +32,8 @@ fun renderPreviewLabPreview(
     openFileHandler: OpenFileHandler<out Any?>? = null,
     navigator: PreviewLabGalleryNavigator = NoOpPreviewLabGalleryNavigator,
 ): DisposePreviewLabPreviewElements {
-    val containerElement = (document.createElement("div") as HTMLDivElement).apply {
-        appendChild(rootElement)
-    }
+    val containerElement = (document.createElement("div") as HTMLDivElement)
+    rootElement.appendChild(containerElement)
 
     ComposeViewport(containerElement) {
         CompositionLocalProvider(

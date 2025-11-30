@@ -77,6 +77,8 @@ interface InspectorTab {
 
     /**
      * Built-in Fields tab that displays all interactive fields.
+     *
+     * @see InspectorTab
      */
     data object Fields : InspectorTab {
         override val title: String = "Fields"
@@ -92,6 +94,8 @@ interface InspectorTab {
 
     /**
      * Built-in Events tab that displays all logged events.
+     *
+     * @see InspectorTab
      */
     data object Events : InspectorTab {
         override val title: String = "Events"
