@@ -59,7 +59,8 @@ kotlin {
     applyDefaultHierarchyTemplate()
     sourceSets {
         commonMain.dependencies {
-            api(projects.core)
+            implementation(projects.core)
+            implementation(projects.annotation)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.ui)
@@ -94,5 +95,5 @@ publishConvention {
     artifactId = "testing"
     description =
         "Testing utilities for Compose Preview Lab. " +
-        "Provides TestPreviewLab composable and field access helpers for UI testing."
+            "Provides TestPreviewLab composable and field access helpers for UI testing."
 }

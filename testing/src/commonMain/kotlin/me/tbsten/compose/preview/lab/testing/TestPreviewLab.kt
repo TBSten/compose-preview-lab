@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.LocalPreviewLabState
 import me.tbsten.compose.preview.lab.PreviewLabState
 import me.tbsten.compose.preview.lab.field.MutablePreviewLabField
@@ -20,11 +21,6 @@ import me.tbsten.compose.preview.lab.field.MutablePreviewLabField
  * This function sets up all required CompositionLocals (ViewModelStoreOwner, LifecycleOwner, and PreviewLabState)
  * needed for PreviewLab components to work correctly in tests.
  *
- * @param state The PreviewLabState instance to provide to the content
- * @param viewModelStoreOwner The ViewModelStoreOwner to provide. Defaults to a test instance if not in a Compose context
- * @param lifecycleOwner The LifecycleOwner to provide. Defaults to a test instance if not in a Compose context
- * @param block The composable content to test
- *
  * Example usage:
  * ```kotlin
  * @Test
@@ -32,17 +28,25 @@ import me.tbsten.compose.preview.lab.field.MutablePreviewLabField
  *     val state = PreviewLabState()
  *     setContent {
  *         TestPreviewLab(state) {
- *             PreviewsForUiDebug.Fields.content()
+ *             SomePreview()
  *         }
  *     }
  *
  *     val intField = state.field<Int>("intValue")
  *     intField.value = 42
  *     awaitIdle()
+ *
  *     onNodeWithText("intValue: 42").assertIsDisplayed()
  * }
  * ```
+ *
+ * @param state The PreviewLabState instance to provide to the content
+ * @param viewModelStoreOwner The ViewModelStoreOwner to provide. Defaults to a test instance if not in a Compose context
+ * @param lifecycleOwner The LifecycleOwner to provide. Defaults to a test instance if not in a Compose context
+ * @param block The composable content to test
  */
+@ExperimentalComposePreviewLabApi
+@Suppress("VisibleForTests")
 @Composable
 fun TestPreviewLab(
     state: PreviewLabState,
@@ -97,6 +101,7 @@ private fun defaultTestLifecycleOwner() = runCatching {
  * }
  * ```
  */
+@ExperimentalComposePreviewLabApi
 inline fun <reified Value> PreviewLabState.fieldOrNull(label: String): MutablePreviewLabField<Value>? =
     scope.fields.find { it.label == label } as? MutablePreviewLabField<Value>
 
@@ -114,6 +119,7 @@ inline fun <reified Value> PreviewLabState.fieldOrNull(label: String): MutablePr
  * intField.value = 42
  * ```
  */
+@ExperimentalComposePreviewLabApi
 inline fun <reified Value> PreviewLabState.field(label: String): MutablePreviewLabField<Value> =
     fieldOrNull<Value>(label = label)
         ?: error("Can not find update target field: label=$label")
