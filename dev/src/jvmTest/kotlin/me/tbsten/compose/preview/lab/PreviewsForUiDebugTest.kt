@@ -1,12 +1,25 @@
+@file:OptIn(ExperimentalComposePreviewLabApi::class)
+
 package me.tbsten.compose.preview.lab
 
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.isDisplayed
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runDesktopComposeUiTest
+import io.kotest.property.Arb
+import io.kotest.property.arbitrary.boolean
+import io.kotest.property.arbitrary.filterNot
+import io.kotest.property.arbitrary.float
+import io.kotest.property.arbitrary.int
+import io.kotest.property.arbitrary.string
+import io.kotest.property.forAll
 import kotlin.test.Test
+import me.tbsten.compose.preview.lab.testing.TestPreviewLab
+import me.tbsten.compose.preview.lab.testing.field
 
 /**
  * Tests for PreviewsForUiDebug previews.
@@ -26,101 +39,102 @@ class PreviewsForUiDebugTest {
 
     @Test
     fun `IntField should update preview when value changes`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
+        forAll(Arb.int()) { intFieldValue ->
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
 
-        // Get the IntField
-        val intField = state.field<Int>("intValue")
+            // Get the IntField
+            val intField = state.field<Int>("intValue")
 
-        // Change the value
-        intField.value = 42
+            // Change the value
+            intField.value = intFieldValue
 
-        awaitIdle()
+            awaitIdle()
 
-        // Verify the preview updated
-        onNodeWithText("intValue: 42")
-            .assertIsDisplayed()
+            // Verify the preview updated
+            onNodeWithText("intValue: $intFieldValue")
+                .isDisplayed()
+        }
     }
 
     @Test
     fun `StringField should update preview when value changes`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
+        forAll(Arb.string()) { stringFieldValue ->
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
 
-        // Get the StringField
-        val stringField = state.field<String>("stringValue")
+            // Get the StringField
+            val stringField = state.field<String>("stringValue")
 
-        // Change the value
-        stringField.value = "Hello World"
+            // Change the value
+            stringField.value = stringFieldValue
 
-        awaitIdle()
+            awaitIdle()
 
-        // Verify the preview updated
-        onNodeWithText("stringValue: Hello World")
-            .assertIsDisplayed()
+            // Verify the preview updated
+            onNodeWithText("stringValue: $stringFieldValue")
+                .isDisplayed()
+        }
     }
 
     @Test
     fun `BooleanField should toggle preview when value changes`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
+        forAll(Arb.boolean()) { boolFieldValue ->
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
 
-        // Get the BooleanField
-        val boolField = state.field<Boolean>("booleanValue")
+            // Get the BooleanField
+            val boolField = state.field<Boolean>("booleanValue")
 
-        // Verify initial state (false)
-        onNodeWithText("booleanValue: false")
-            .assertExists()
+            // Change the value
+            boolField.value = boolFieldValue
 
-        // Change the value to true
-        boolField.value = true
+            awaitIdle()
 
-        awaitIdle()
-
-        // Verify the preview updated to true
-        onNodeWithText("booleanValue: true")
-            .assertExists()
-
-        // Toggle back to false
-        boolField.value = false
-
-        awaitIdle()
-
-        // Verify the preview updated back to false
-        onNodeWithText("booleanValue: false")
-            .assertExists()
+            // Verify the preview updated
+            onNodeWithText("booleanValue: $boolFieldValue")
+                .isDisplayed()
+        }
     }
 
     @Test
     fun `FloatField should update preview when value changes`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
+        // Exclude NaN and Infinity values that can cause issues with text matching
+        forAll(Arb.float().filterNot { it.isNaN() || it.isInfinite() }) { floatFieldValue ->
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
 
-        // Get the FloatField
-        val floatField = state.field<Float>("floatField")
+            // Get the FloatField
+            val floatField = state.field<Float>("floatField")
 
-        // Change the value
-        floatField.value = 3.14f
+            // Change the value
+            floatField.value = floatFieldValue
 
-        awaitIdle()
+            awaitIdle()
 
-        // Verify the preview updated
-        onNodeWithText("floatField: 3.14")
-            .assertIsDisplayed()
+            // Verify the preview updated (there are 2 floatField items in the UI, so use onAllNodes)
+            onAllNodesWithText("floatField: $floatFieldValue")
+                .fetchSemanticsNodes()
+                .isNotEmpty()
+        }
     }
 
     @Test
     fun `Events preview should show toast after call onEvent()`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Events.content() } }
+        // Only test first few items that are visible without scrolling
+        forAll(Arb.int(0..3)) { itemIndex ->
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.Events.content() } }
 
-        onNodeWithTag("item:0")
-            .performClick()
+            onNodeWithTag("item:$itemIndex")
+                .performClick()
 
-        awaitIdle()
+            awaitIdle()
 
-        onNodeWithTag("Click item 0")
-            .assertExists()
+            onNodeWithTag("Click item $itemIndex")
+                .assertExists()
+            true
+        }
     }
 
     @Test
