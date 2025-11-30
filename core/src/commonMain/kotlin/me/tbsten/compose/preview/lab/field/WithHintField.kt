@@ -142,6 +142,8 @@ class WithHintField<Value> internal constructor(
     transform = { it },
     reverse = { it },
 ) {
+    override fun arbValues(): Sequence<Value> =
+        (baseField.arbValues() + choices.values.asSequence()).distinct()
     /**
      * Finds the deepest non-WithHintField base field by traversing nested WithHintField instances.
      */
