@@ -12,6 +12,8 @@ import io.kotest.property.arbitrary.filterNot
 import io.kotest.property.arbitrary.float
 import io.kotest.property.arbitrary.int
 import io.kotest.property.arbitrary.string
+import io.kotest.property.checkAll
+import io.kotest.property.exhaustive.exhaustive
 import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
@@ -24,6 +26,17 @@ import me.tbsten.compose.preview.lab.testing.field
  */
 @OptIn(ExperimentalTestApi::class)
 class FieldsTest {
+    @Test
+    fun `Can render all Previews without error`() = runDesktopComposeUiTest {
+        checkAll(
+            (app.PreviewList + uiLib.PreviewList + helloComposePreviewLab.PreviewList).exhaustive(),
+        ) { preview ->
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { preview.content() } }
+
+            awaitIdle()
+        }
+    }
 
     @Test
     fun `IntField should update Counter when value changes`() = runDesktopComposeUiTest {
