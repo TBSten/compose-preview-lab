@@ -17,9 +17,7 @@ class WrapField<Value>(
     }
 }
 
-fun <Value> MutablePreviewLabField<Value>.wrap(
-    content: @Composable (@Composable () -> Unit) -> Unit,
-) = WrapField(
+fun <Value> MutablePreviewLabField<Value>.wrap(content: @Composable (@Composable () -> Unit) -> Unit,) = WrapField(
     baseField = this,
     content = content,
 )
