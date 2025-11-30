@@ -48,12 +48,19 @@ abstract interface <#A: me.tbsten.compose.preview.lab.field.modifier/ModifierFie
 }
 
 abstract interface me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab { // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab|null[0]
-    abstract val content // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.content|{}content[0]
-        abstract fun <get-content>(): kotlin/Function3<me.tbsten.compose.preview.lab/PreviewLabState, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit> // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.content.<get-content>|<get-content>(){}[0]
-    abstract val icon // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.icon|{}icon[0]
-        abstract fun <get-icon>(): kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, androidx.compose.ui.graphics.painter/Painter> // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.icon.<get-icon>|<get-icon>(){}[0]
     abstract val title // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.title|{}title[0]
         abstract fun <get-title>(): kotlin/String // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.title.<get-title>|<get-title>(){}[0]
+    open val icon // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.icon|{}icon[0]
+        open fun <get-icon>(): kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, androidx.compose.ui.graphics.painter/Painter>? // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.icon.<get-icon>|<get-icon>(){}[0]
+
+    abstract fun (me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.ContentContext).Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Content|Content@me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab.ContentContext(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+
+    final class ContentContext { // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.ContentContext|null[0]
+        constructor <init>(me.tbsten.compose.preview.lab/PreviewLabState) // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.ContentContext.<init>|<init>(me.tbsten.compose.preview.lab.PreviewLabState){}[0]
+
+        final val state // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.ContentContext.state|{}state[0]
+            final fun <get-state>(): me.tbsten.compose.preview.lab/PreviewLabState // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.ContentContext.state.<get-state>|<get-state>(){}[0]
+    }
 
     final object Companion { // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Companion|null[0]
         final val defaults // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Companion.defaults|{}defaults[0]
@@ -61,26 +68,24 @@ abstract interface me.tbsten.compose.preview.lab.component.inspectorspane/Inspec
     }
 
     final object Events : me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab { // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Events|null[0]
-        final val content // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Events.content|{}content[0]
-            final fun <get-content>(): kotlin/Function3<me.tbsten.compose.preview.lab/PreviewLabState, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit> // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Events.content.<get-content>|<get-content>(){}[0]
         final val icon // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Events.icon|{}icon[0]
             final fun <get-icon>(): kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, androidx.compose.ui.graphics.painter/Painter> // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Events.icon.<get-icon>|<get-icon>(){}[0]
         final val title // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Events.title|{}title[0]
             final fun <get-title>(): kotlin/String // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Events.title.<get-title>|<get-title>(){}[0]
 
+        final fun (me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.ContentContext).Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Events.Content|Content@me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab.ContentContext(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
         final fun equals(kotlin/Any?): kotlin/Boolean // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Events.equals|equals(kotlin.Any?){}[0]
         final fun hashCode(): kotlin/Int // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Events.hashCode|hashCode(){}[0]
         final fun toString(): kotlin/String // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Events.toString|toString(){}[0]
     }
 
     final object Fields : me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab { // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Fields|null[0]
-        final val content // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Fields.content|{}content[0]
-            final fun <get-content>(): kotlin/Function3<me.tbsten.compose.preview.lab/PreviewLabState, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit> // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Fields.content.<get-content>|<get-content>(){}[0]
         final val icon // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Fields.icon|{}icon[0]
             final fun <get-icon>(): kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, androidx.compose.ui.graphics.painter/Painter> // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Fields.icon.<get-icon>|<get-icon>(){}[0]
         final val title // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Fields.title|{}title[0]
             final fun <get-title>(): kotlin/String // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Fields.title.<get-title>|<get-title>(){}[0]
 
+        final fun (me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.ContentContext).Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Fields.Content|Content@me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab.ContentContext(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
         final fun equals(kotlin/Any?): kotlin/Boolean // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Fields.equals|equals(kotlin.Any?){}[0]
         final fun hashCode(): kotlin/Int // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Fields.hashCode|hashCode(){}[0]
         final fun toString(): kotlin/String // me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab.Fields.toString|toString(){}[0]
@@ -1327,7 +1332,7 @@ final class me.tbsten.compose.preview.lab/CollectedPreview : me.tbsten.compose.p
 }
 
 final class me.tbsten.compose.preview.lab/PreviewLabGalleryState { // me.tbsten.compose.preview.lab/PreviewLabGalleryState|null[0]
-    constructor <init>(kotlin/Pair<kotlin/String, me.tbsten.compose.preview.lab/CollectedPreview>? = ...) // me.tbsten.compose.preview.lab/PreviewLabGalleryState.<init>|<init>(kotlin.Pair<kotlin.String,me.tbsten.compose.preview.lab.CollectedPreview>?){}[0]
+    constructor <init>(kotlin/Pair<kotlin/String, me.tbsten.compose.preview.lab/PreviewLabPreview>? = ...) // me.tbsten.compose.preview.lab/PreviewLabGalleryState.<init>|<init>(kotlin.Pair<kotlin.String,me.tbsten.compose.preview.lab.PreviewLabPreview>?){}[0]
 
     final var query // me.tbsten.compose.preview.lab/PreviewLabGalleryState.query|{}query[0]
         final fun <get-query>(): kotlin/String // me.tbsten.compose.preview.lab/PreviewLabGalleryState.query.<get-query>|<get-query>(){}[0]
@@ -1355,6 +1360,19 @@ final class me.tbsten.compose.preview.lab/PreviewLabState { // me.tbsten.compose
 
     final val scope // me.tbsten.compose.preview.lab/PreviewLabState.scope|{}scope[0]
         final fun <get-scope>(): me.tbsten.compose.preview.lab/PreviewLabScope // me.tbsten.compose.preview.lab/PreviewLabState.scope.<get-scope>|<get-scope>(){}[0]
+
+    final var contentOffset // me.tbsten.compose.preview.lab/PreviewLabState.contentOffset|{}contentOffset[0]
+        final fun <get-contentOffset>(): androidx.compose.ui.geometry/Offset // me.tbsten.compose.preview.lab/PreviewLabState.contentOffset.<get-contentOffset>|<get-contentOffset>(){}[0]
+        final fun <set-contentOffset>(androidx.compose.ui.geometry/Offset) // me.tbsten.compose.preview.lab/PreviewLabState.contentOffset.<set-contentOffset>|<set-contentOffset>(androidx.compose.ui.geometry.Offset){}[0]
+    final var contentScale // me.tbsten.compose.preview.lab/PreviewLabState.contentScale|{}contentScale[0]
+        final fun <get-contentScale>(): kotlin/Float // me.tbsten.compose.preview.lab/PreviewLabState.contentScale.<get-contentScale>|<get-contentScale>(){}[0]
+        final fun <set-contentScale>(kotlin/Float) // me.tbsten.compose.preview.lab/PreviewLabState.contentScale.<set-contentScale>|<set-contentScale>(kotlin.Float){}[0]
+    final var isInspectorPanelVisible // me.tbsten.compose.preview.lab/PreviewLabState.isInspectorPanelVisible|{}isInspectorPanelVisible[0]
+        final fun <get-isInspectorPanelVisible>(): kotlin/Boolean // me.tbsten.compose.preview.lab/PreviewLabState.isInspectorPanelVisible.<get-isInspectorPanelVisible>|<get-isInspectorPanelVisible>(){}[0]
+        final fun <set-isInspectorPanelVisible>(kotlin/Boolean) // me.tbsten.compose.preview.lab/PreviewLabState.isInspectorPanelVisible.<set-isInspectorPanelVisible>|<set-isInspectorPanelVisible>(kotlin.Boolean){}[0]
+    final var selectedTabIndex // me.tbsten.compose.preview.lab/PreviewLabState.selectedTabIndex|{}selectedTabIndex[0]
+        final fun <get-selectedTabIndex>(): kotlin/Int? // me.tbsten.compose.preview.lab/PreviewLabState.selectedTabIndex.<get-selectedTabIndex>|<get-selectedTabIndex>(){}[0]
+        final fun <set-selectedTabIndex>(kotlin/Int?) // me.tbsten.compose.preview.lab/PreviewLabState.selectedTabIndex.<set-selectedTabIndex>|<set-selectedTabIndex>(kotlin.Int?){}[0]
 
     final object Companion { // me.tbsten.compose.preview.lab/PreviewLabState.Companion|null[0]
         final val Saver // me.tbsten.compose.preview.lab/PreviewLabState.Companion.Saver|{}Saver[0]
@@ -1522,7 +1540,7 @@ open class me.tbsten.compose.preview.lab.openfilehandler/UrlOpenFileHandler : me
 }
 
 open class me.tbsten.compose.preview.lab/PreviewLab { // me.tbsten.compose.preview.lab/PreviewLab|null[0]
-    constructor <init>(kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, me.tbsten.compose.preview.lab/PreviewLabState> = ..., kotlin.collections/List<me.tbsten.compose.preview.lab.field/ScreenSize> = ..., kotlin/Function3<kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit> = ..., kotlin/Boolean = ..., kotlin/Nothing? = ...) // me.tbsten.compose.preview.lab/PreviewLab.<init>|<init>(kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,me.tbsten.compose.preview.lab.PreviewLabState>;kotlin.collections.List<me.tbsten.compose.preview.lab.field.ScreenSize>;kotlin.Function3<kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>;kotlin.Boolean;kotlin.Nothing?){}[0]
+    constructor <init>(kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, me.tbsten.compose.preview.lab/PreviewLabState> = ..., kotlin.collections/List<me.tbsten.compose.preview.lab.field/ScreenSize> = ..., kotlin/Function3<kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit> = ..., kotlin/Boolean = ..., kotlin.collections/List<me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab> = ..., kotlin/Nothing? = ...) // me.tbsten.compose.preview.lab/PreviewLab.<init>|<init>(kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,me.tbsten.compose.preview.lab.PreviewLabState>;kotlin.collections.List<me.tbsten.compose.preview.lab.field.ScreenSize>;kotlin.Function3<kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>;kotlin.Boolean;kotlin.collections.List<me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab>;kotlin.Nothing?){}[0]
 
     final fun invoke(me.tbsten.compose.preview.lab/PreviewLabState?, androidx.compose.ui.unit/Dp, androidx.compose.ui.unit/Dp, androidx.compose.ui/Modifier?, kotlin/Boolean, kotlin.collections/List<me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab>?, kotlin/Function3<me.tbsten.compose.preview.lab/PreviewLabScope, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // me.tbsten.compose.preview.lab/PreviewLab.invoke|invoke(me.tbsten.compose.preview.lab.PreviewLabState?;androidx.compose.ui.unit.Dp;androidx.compose.ui.unit.Dp;androidx.compose.ui.Modifier?;kotlin.Boolean;kotlin.collections.List<me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab>?;kotlin.Function3<me.tbsten.compose.preview.lab.PreviewLabScope,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
     open fun invoke(me.tbsten.compose.preview.lab/PreviewLabState, kotlin.collections/List<me.tbsten.compose.preview.lab.field/ScreenSize>, androidx.compose.ui/Modifier, kotlin/Boolean, kotlin.collections/List<me.tbsten.compose.preview.lab.component.inspectorspane/InspectorTab>, kotlin/Function3<me.tbsten.compose.preview.lab/PreviewLabScope, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab/PreviewLab.invoke|invoke(me.tbsten.compose.preview.lab.PreviewLabState;kotlin.collections.List<me.tbsten.compose.preview.lab.field.ScreenSize>;androidx.compose.ui.Modifier;kotlin.Boolean;kotlin.collections.List<me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab>;kotlin.Function3<me.tbsten.compose.preview.lab.PreviewLabScope,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
@@ -1560,6 +1578,7 @@ final object me.tbsten.compose.preview.lab.field.modifier/ModifierBuilderDefault
         final fun <get-modifierFieldValueFactories>(): kotlin.collections/List<me.tbsten.compose.preview.lab.field.modifier/ModifierFieldValueFactory<*>> // me.tbsten.compose.preview.lab.field.modifier/ModifierBuilderDefaults.modifierFieldValueFactories.<get-modifierFieldValueFactories>|<get-modifierFieldValueFactories>(){}[0]
 }
 
+final val me.tbsten.compose.preview.lab.component.inspectorspane/me_tbsten_compose_preview_lab_component_inspectorspane_InspectorTab_ContentContext$stableprop // me.tbsten.compose.preview.lab.component.inspectorspane/me_tbsten_compose_preview_lab_component_inspectorspane_InspectorTab_ContentContext$stableprop|#static{}me_tbsten_compose_preview_lab_component_inspectorspane_InspectorTab_ContentContext$stableprop[0]
 final val me.tbsten.compose.preview.lab.component.inspectorspane/me_tbsten_compose_preview_lab_component_inspectorspane_InspectorTab_Events$stableprop // me.tbsten.compose.preview.lab.component.inspectorspane/me_tbsten_compose_preview_lab_component_inspectorspane_InspectorTab_Events$stableprop|#static{}me_tbsten_compose_preview_lab_component_inspectorspane_InspectorTab_Events$stableprop[0]
 final val me.tbsten.compose.preview.lab.component.inspectorspane/me_tbsten_compose_preview_lab_component_inspectorspane_InspectorTab_Fields$stableprop // me.tbsten.compose.preview.lab.component.inspectorspane/me_tbsten_compose_preview_lab_component_inspectorspane_InspectorTab_Fields$stableprop|#static{}me_tbsten_compose_preview_lab_component_inspectorspane_InspectorTab_Fields$stableprop[0]
 final val me.tbsten.compose.preview.lab.component/me_tbsten_compose_preview_lab_component_AnchorAlignmentOffsetPosition_Horizontal$stableprop // me.tbsten.compose.preview.lab.component/me_tbsten_compose_preview_lab_component_AnchorAlignmentOffsetPosition_Horizontal$stableprop|#static{}me_tbsten_compose_preview_lab_component_AnchorAlignmentOffsetPosition_Horizontal$stableprop[0]
@@ -1767,6 +1786,7 @@ final fun <#A: kotlin/Any?> (me.tbsten.compose.preview.lab/PreviewLabScope).me.t
 final fun <#A: kotlin/Any?> (org.jetbrains.compose.ui.tooling.preview/PreviewParameterProvider<#A>).me.tbsten.compose.preview.lab.field/toField(kotlin/String, kotlin/Function1<#A, kotlin/String> = ..., me.tbsten.compose.preview.lab.field/SelectableField.Type = ...): me.tbsten.compose.preview.lab.field/SelectableField<#A> // me.tbsten.compose.preview.lab.field/toField|toField@org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider<0:0>(kotlin.String;kotlin.Function1<0:0,kotlin.String>;me.tbsten.compose.preview.lab.field.SelectableField.Type){0§<kotlin.Any?>}[0]
 final fun <#A: kotlin/Any?> me.tbsten.compose.preview.lab.field/SelectableField(kotlin/String, kotlin.collections/Map<kotlin/String, #A>, me.tbsten.compose.preview.lab.field/SelectableField.Type = ..., #A = ...): me.tbsten.compose.preview.lab.field/SelectableField<#A> // me.tbsten.compose.preview.lab.field/SelectableField|SelectableField(kotlin.String;kotlin.collections.Map<kotlin.String,0:0>;me.tbsten.compose.preview.lab.field.SelectableField.Type;0:0){0§<kotlin.Any?>}[0]
 final fun <#A: kotlin/Any?> me.tbsten.compose.preview.lab.field/SelectableField(kotlin/String, me.tbsten.compose.preview.lab.field/SelectableField.Type = ..., kotlin/Function1<me.tbsten.compose.preview.lab.field/SelectableField.Builder<#A>, kotlin/Unit>): me.tbsten.compose.preview.lab.field/SelectableField<#A> // me.tbsten.compose.preview.lab.field/SelectableField|SelectableField(kotlin.String;me.tbsten.compose.preview.lab.field.SelectableField.Type;kotlin.Function1<me.tbsten.compose.preview.lab.field.SelectableField.Builder<0:0>,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final fun me.tbsten.compose.preview.lab.component.inspectorspane/me_tbsten_compose_preview_lab_component_inspectorspane_InspectorTab_ContentContext$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.component.inspectorspane/me_tbsten_compose_preview_lab_component_inspectorspane_InspectorTab_ContentContext$stableprop_getter|me_tbsten_compose_preview_lab_component_inspectorspane_InspectorTab_ContentContext$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.component.inspectorspane/me_tbsten_compose_preview_lab_component_inspectorspane_InspectorTab_Events$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.component.inspectorspane/me_tbsten_compose_preview_lab_component_inspectorspane_InspectorTab_Events$stableprop_getter|me_tbsten_compose_preview_lab_component_inspectorspane_InspectorTab_Events$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.component.inspectorspane/me_tbsten_compose_preview_lab_component_inspectorspane_InspectorTab_Fields$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.component.inspectorspane/me_tbsten_compose_preview_lab_component_inspectorspane_InspectorTab_Fields$stableprop_getter|me_tbsten_compose_preview_lab_component_inspectorspane_InspectorTab_Fields$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.component/me_tbsten_compose_preview_lab_component_AnchorAlignmentOffsetPosition_Horizontal$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.component/me_tbsten_compose_preview_lab_component_AnchorAlignmentOffsetPosition_Horizontal$stableprop_getter|me_tbsten_compose_preview_lab_component_AnchorAlignmentOffsetPosition_Horizontal$stableprop_getter(){}[0]
