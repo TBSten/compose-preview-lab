@@ -24,7 +24,7 @@ import dev.snipme.highlights.model.SyntaxLanguage
 import generateAnnotatedString
 
 @Composable
-internal actual fun KotlinCodeBlock(code: String, modifier: Modifier, style: TextStyle, contentPadding: PaddingValues,) {
+actual fun KotlinCodeBlock(code: String, modifier: Modifier, style: TextStyle, contentPadding: PaddingValues,) {
     val highlights by remember(code) {
         mutableStateOf(
             Highlights

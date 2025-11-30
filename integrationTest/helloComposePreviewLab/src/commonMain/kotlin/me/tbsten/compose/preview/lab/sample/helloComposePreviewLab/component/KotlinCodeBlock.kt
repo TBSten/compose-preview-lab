@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 
 @Composable
-internal expect fun KotlinCodeBlock(
+expect fun KotlinCodeBlock(
     code: String,
     modifier: Modifier = Modifier,
     style: TextStyle = LocalTextStyle.current,

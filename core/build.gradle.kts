@@ -24,13 +24,27 @@ kotlin {
     jvm()
 
     js {
+        outputModuleName = "compose-previewl-lab"
         browser()
         binaries.executable()
+        binaries.library()
+        generateTypeScriptDefinitions()
+
+        compilerOptions {
+            target = "es2015"
+        }
     }
 
     wasmJs {
+        outputModuleName = "compose-previewl-lab"
         browser()
         binaries.executable()
+        binaries.library()
+        generateTypeScriptDefinitions()
+
+        compilerOptions {
+            target = "es2015"
+        }
     }
 
     listOf(
@@ -44,6 +58,7 @@ kotlin {
         }
     }
 
+    applyDefaultHierarchyTemplate()
     sourceSets {
         commonMain.dependencies {
             api(projects.annotation)
@@ -68,6 +83,18 @@ kotlin {
         }
         jsMain.dependencies {
             implementation(compose.html.core)
+        }
+
+        val otherJsMain by creating {
+            dependsOn(commonMain.get())
+        }
+        listOf(
+            androidMain,
+            iosMain,
+            jvmMain,
+            wasmJsMain,
+        ).forEach {
+            it.get().dependsOn(otherJsMain)
         }
     }
 }

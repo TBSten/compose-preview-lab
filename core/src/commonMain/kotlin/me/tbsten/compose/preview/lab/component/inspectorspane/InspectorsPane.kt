@@ -19,6 +19,8 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -57,8 +59,10 @@ internal fun InspectorsPane(
         return
     }
 
-    val allTabs = remember(additionalTabs) {
-        InspectorTab.defaults + additionalTabs
+    val allTabs by remember {
+        derivedStateOf {
+            InspectorTab.defaults + additionalTabs
+        }
     }
 
     adaptive(

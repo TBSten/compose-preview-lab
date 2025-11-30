@@ -1,10 +1,10 @@
 package me.tbsten.compose.preview.lab
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.rememberUpdatedState
-import io.github.takahirom.rin.RetainedObserver
 import io.github.takahirom.rin.rememberRetained
 import kotlin.time.ExperimentalTime
 import me.tbsten.compose.preview.lab.event.PreviewLabEvent
@@ -50,15 +50,10 @@ class PreviewLabScope internal constructor() {
         builder: FieldBuilderScope.() -> MutablePreviewLabField<Value>,
     ): MutableState<Value> {
         val field = rememberRetained(key = key) { builder(FieldBuilderScope()) }
-        rememberRetained {
-            object : RetainedObserver {
-                override fun onRemembered() {
-                    fields.add(field)
-                }
-
-                override fun onForgotten() {
-                    fields.remove(field)
-                }
+        DisposableEffect(Unit) {
+            fields.add(field)
+            onDispose {
+                fields.remove(field)
             }
         }
         return field
@@ -81,15 +76,10 @@ class PreviewLabScope internal constructor() {
     @Composable
     fun <Value> fieldValue(key: String? = null, builder: FieldBuilderScope.() -> PreviewLabField<out Value>): Value {
         val field = rememberRetained(key = key) { builder(FieldBuilderScope()) }
-        rememberRetained {
-            object : RetainedObserver {
-                override fun onRemembered() {
-                    fields.add(field)
-                }
-
-                override fun onForgotten() {
-                    fields.remove(field)
-                }
+        DisposableEffect(Unit) {
+            fields.add(field)
+            onDispose {
+                fields.remove(field)
             }
         }
         return field.value
