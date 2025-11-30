@@ -17,5 +17,6 @@ Pods/
 *yarn.lock
 .claude/settings.local.json
 integrationTest/.claude/settings.local.json
+integrationTest/web/.claude/settings.local.json
 
 .local/
