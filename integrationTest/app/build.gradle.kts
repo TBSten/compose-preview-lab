@@ -81,6 +81,8 @@ kotlin {
         jvmTest.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(compose.desktop.uiTestJUnit4)
+            implementation("me.tbsten.compose.preview.lab:testing:${libs.versions.composePreviewLab.get()}")
+            implementation(libs.kotestProperty)
         }
 
         androidMain.dependencies {
