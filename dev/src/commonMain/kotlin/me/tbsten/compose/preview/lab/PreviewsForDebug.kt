@@ -500,7 +500,7 @@ enum class PreviewsForUiDebug(
         "Custom Inspector Tab Example",
         content = {
             PreviewLab(
-                additionalTabs = listOf(DebugInfoTab()),
+                inspectorTabs = InspectorTab.defaults + listOf(DebugInfoTab()),
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp),

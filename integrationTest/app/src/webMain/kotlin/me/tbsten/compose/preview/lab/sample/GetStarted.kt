@@ -4,6 +4,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
+import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.ColorField
 import me.tbsten.compose.preview.lab.field.ModifierField
@@ -20,7 +21,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @ComposePreviewLabOption(id = "GetStarted")
 @Composable
 private fun GetStartedPreview() = previewLab(
-    additionalTabs = listOf(
+    inspectorTabs = InspectorTab.defaults + listOf(
         rememberCodeTab(
             code = """
                 PreviewLab {

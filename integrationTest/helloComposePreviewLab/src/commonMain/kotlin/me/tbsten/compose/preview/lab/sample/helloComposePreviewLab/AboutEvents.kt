@@ -128,7 +128,7 @@ private fun TryItYourselfSection() {
             LocalOpenFileHandler provides null,
         ) {
             PreviewLab(
-                additionalTabs = listOf(FirstDemoGuideTab),
+                inspectorTabs = InspectorTab.defaults + listOf(FirstDemoGuideTab),
                 isHeaderShow = false,
                 modifier = Modifier
                     .padding(40.dp)

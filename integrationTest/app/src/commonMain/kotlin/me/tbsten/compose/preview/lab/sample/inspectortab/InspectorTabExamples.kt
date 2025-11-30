@@ -28,7 +28,7 @@ internal object DocsTab : InspectorTab {
 @ComposePreviewLabOption(id = "InspectorTabDocsExample")
 @Composable
 internal fun InspectorTabDocsExample() = PreviewLab(
-    additionalTabs = listOf(DocsTab)
+    inspectorTabs = InspectorTab.defaults + listOf(DocsTab)
 ) {
     val text = fieldValue { StringField("text", "Hello") }
     Button(onClick = {}) {
@@ -53,7 +53,7 @@ internal object UsageTab : InspectorTab {
 @ComposePreviewLabOption(id = "InspectorTabUsageExample")
 @Composable
 internal fun InspectorTabUsageExample() = PreviewLab(
-    additionalTabs = listOf(UsageTab)
+    inspectorTabs = InspectorTab.defaults + listOf(UsageTab)
 ) {
     val text = fieldValue { StringField("text", "Hello") }
     Button(onClick = {}) {
@@ -78,7 +78,7 @@ internal object DesignTab : InspectorTab {
 @ComposePreviewLabOption(id = "InspectorTabDesignExample")
 @Composable
 internal fun InspectorTabDesignExample() = PreviewLab(
-    additionalTabs = listOf(DesignTab)
+    inspectorTabs = InspectorTab.defaults + listOf(DesignTab)
 ) {
     val text = fieldValue { StringField("text", "Hello") }
     Button(onClick = {}) {
@@ -103,7 +103,7 @@ internal object DebugTab : InspectorTab {
 @ComposePreviewLabOption(id = "InspectorTabDebugExample")
 @Composable
 internal fun InspectorTabDebugExample() = PreviewLab(
-    additionalTabs = listOf(DebugTab)
+    inspectorTabs = InspectorTab.defaults + listOf(DebugTab)
 ) {
     val text = fieldValue { StringField("text", "Hello") }
     Button(onClick = {}) {

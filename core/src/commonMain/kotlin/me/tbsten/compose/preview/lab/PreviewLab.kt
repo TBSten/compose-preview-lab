@@ -231,31 +231,28 @@ import me.tbsten.compose.preview.lab.util.toDpOffset
  *   }
  *   ```
  *
- * @param defaultAdditionalTabs
- *   List of custom tabs to add to the inspector panel alongside the default Fields and Events tabs.
- *   Useful for adding preview-specific debugging tools, documentation, or custom controls that will
- *   be available across all previews using this PreviewLab instance.
+ * @param defaultInspectorTabs
+ *   List of tabs to display in the inspector panel.
+ *   Defaults to [InspectorTab.defaults] which shows the built-in Fields and Events tabs.
  *
  *   Usage examples:
  *   ```kt
- *   // Default - no additional tabs
- *   PreviewLab() // Only Fields and Events tabs
+ *   // Default - Fields and Events tabs only
+ *   PreviewLab() // Uses InspectorTab.defaults
  *
- *   // Add custom debug tab to all previews
+ *   // Add custom tabs alongside default tabs
  *   val myPreviewLab = PreviewLab(
- *     additionalTabs = listOf(
- *       object : InspectorTab {
- *         override val title = "Debug"
- *         override val icon: @Composable () -> Painter = { painterResource(Res.drawable.icon_debug) }
- *         @Composable
- *         override fun ContentContext.Content() {
- *           Column {
- *             Text("Debug Information")
- *             Text("Fields: ${state.scope.fields.size}")
- *           }
- *         }
- *       }
- *     )
+ *     defaultInspectorTabs = { InspectorTab.defaults + listOf(DebugTab) }
+ *   )
+ *
+ *   // Only custom tabs (no default Fields/Events)
+ *   val customOnlyPreviewLab = PreviewLab(
+ *     defaultInspectorTabs = { listOf(CustomTab1, CustomTab2) }
+ *   )
+ *
+ *   // No tabs at all
+ *   val noTabsPreviewLab = PreviewLab(
+ *     defaultInspectorTabs = { emptyList() }
  *   )
  *   ```
  *
@@ -285,7 +282,7 @@ open class PreviewLab(
     private val defaultScreenSizes: List<ScreenSize> = ScreenSize.SmartphoneAndDesktops,
     private val contentRoot: @Composable (content: @Composable () -> Unit) -> Unit = { it() },
     private val defaultIsHeaderShow: @Composable () -> Boolean = { LocalDefaultIsHeaderShow.current },
-    private val defaultAdditionalTabs: @Composable () -> List<InspectorTab> = { emptyList() },
+    private val defaultInspectorTabs: @Composable () -> List<InspectorTab> = { InspectorTab.defaults },
     @Suppress("unused") disableTrailingLambda: Nothing? = null,
 ) {
     /**
@@ -321,14 +318,14 @@ open class PreviewLab(
         maxHeight: Dp,
         modifier: Modifier = Modifier,
         isHeaderShow: Boolean = this.defaultIsHeaderShow(),
-        additionalTabs: List<InspectorTab> = this.defaultAdditionalTabs(),
+        inspectorTabs: List<InspectorTab> = this.defaultInspectorTabs(),
         content: @Composable PreviewLabScope.() -> Unit,
     ) = invoke(
         state = state,
         screenSizes = listOf(ScreenSize(maxWidth, maxHeight)),
         modifier = modifier,
         isHeaderShow = isHeaderShow,
-        additionalTabs = additionalTabs,
+        inspectorTabs = inspectorTabs,
         content = content,
     )
 
@@ -426,26 +423,19 @@ open class PreviewLab(
      *   Defaults to the PreviewLab instance's configured value. When false, hides header controls
      *   to provide a cleaner preview view.
      *
-     * @param additionalTabs
-     *   List of custom tabs to add to the inspector panel alongside the default Fields and Events tabs.
-     *   Useful for adding preview-specific debugging tools, documentation, or custom controls.
-     *   Defaults to the PreviewLab instance's configured tabs, or an empty list if not configured.
+     * @param inspectorTabs
+     *   List of tabs to display in the inspector panel.
+     *   Defaults to the PreviewLab instance's configured tabs, or [InspectorTab.defaults] if not configured.
      *
      *   Example usage:
      *   ```kt
-     *   object DebugTab : InspectorTab {
-     *       override val title = "Debug"
-     *       override val icon: @Composable () -> Painter = { painterResource(Res.drawable.icon_debug) }
-     *       @Composable
-     *       override fun ContentContext.Content() {
-     *           Column {
-     *               Text("Debug Information")
-     *               Text("Fields: ${state.scope.fields.size}")
-     *           }
-     *       }
+     *   // Default tabs plus custom tab
+     *   PreviewLab(inspectorTabs = InspectorTab.defaults + listOf(DebugTab)) {
+     *       MyComponent()
      *   }
      *
-     *   PreviewLab(additionalTabs = listOf(DebugTab)) {
+     *   // Only custom tabs (no default Fields/Events)
+     *   PreviewLab(inspectorTabs = listOf(CustomTab)) {
      *       MyComponent()
      *   }
      *   ```
@@ -470,7 +460,7 @@ open class PreviewLab(
         screenSizes: List<ScreenSize> = defaultScreenSizes,
         modifier: Modifier = Modifier,
         isHeaderShow: Boolean = this.defaultIsHeaderShow(),
-        additionalTabs: List<InspectorTab> = this.defaultAdditionalTabs(),
+        inspectorTabs: List<InspectorTab> = this.defaultInspectorTabs(),
         content: @Composable PreviewLabScope.() -> Unit,
     ) {
         val toaster = rememberToasterState().also { toaster ->
@@ -509,7 +499,7 @@ open class PreviewLab(
                         InspectorsPane(
                             state = state,
                             isVisible = state.isInspectorPanelVisible,
-                            additionalTabs = additionalTabs,
+                            inspectorTabs = inspectorTabs,
                         ) {
                             ContentSection(
                                 state = state,

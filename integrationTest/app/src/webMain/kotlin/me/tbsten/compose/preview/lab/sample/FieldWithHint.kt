@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
+import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.field.ColorField
 import me.tbsten.compose.preview.lab.field.IntField
 import me.tbsten.compose.preview.lab.field.StringField
@@ -36,7 +37,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @ComposePreviewLabOption(id = "FieldWithHint")
 @Composable
 private fun FieldWithHint() = previewLab(
-    additionalTabs = listOf(
+    inspectorTabs = InspectorTab.defaults + listOf(
         rememberCodeTab(
             code = """
                 // Provide commonly used string hints with StringField

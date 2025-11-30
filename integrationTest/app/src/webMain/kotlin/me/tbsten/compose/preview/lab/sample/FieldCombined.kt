@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
+import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.CombinedField3
 import me.tbsten.compose.preview.lab.field.StringField
@@ -22,7 +23,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @ComposePreviewLabOption(id = "FieldCombined")
 @Composable
 private fun FieldCombined() = previewLab(
-    additionalTabs = listOf(
+    inspectorTabs = InspectorTab.defaults + listOf(
         rememberCodeTab(
             code = """
                 fieldValue {

@@ -286,7 +286,7 @@ private fun BeforeAfterSection() = Column(
                     @Preview
                     @Composable
                     private fun MyButtonPreview() = PreviewLab(
-                        additionalTabs = listOf(MyCustomTab()) // ← Custom tab!
+                        inspectorTabs = InspectorTab.defaults + listOf(MyCustomTab()) // ← Custom tab!
                     ) {
                         MyButton(
                             text = fieldValue { StringField("text", "Click Me !") },
@@ -302,7 +302,7 @@ private fun BeforeAfterSection() = Column(
                     ) {
                         PreviewLab(
                             isHeaderShow = false,
-                            additionalTabs = listOf(CustomizedInfoTab),
+                            inspectorTabs = InspectorTab.defaults + listOf(CustomizedInfoTab),
                             modifier = Modifier.height(450.dp),
                         ) {
                             val defaultButtonColor = MaterialTheme.colorScheme.primary

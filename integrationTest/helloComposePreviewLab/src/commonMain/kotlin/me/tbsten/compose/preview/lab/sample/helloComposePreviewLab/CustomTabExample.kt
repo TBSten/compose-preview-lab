@@ -108,7 +108,7 @@ private fun InfoTabContent(state: PreviewLabState) {
 @Preview
 @Composable
 private fun CustomTabExamplePreview() = PreviewLab(
-    additionalTabs = listOf(InfoTab, InfoTab),
+    inspectorTabs = InspectorTab.defaults + listOf(InfoTab, InfoTab),
 ) {
     Column(
         modifier = Modifier.padding(16.dp),
