@@ -15,7 +15,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
     androidTarget {
         // https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
         instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
@@ -136,6 +136,6 @@ publishConvention {
     artifactId = "core"
     description =
         "A component catalog library that collects and lists @Preview. \n" +
-        "By providing APIs such as Field, Event, etc., it provides not only display but also interactive preview.\n" +
-        "core provides runtime APIs such as annotations and gallery UI needed to collect Previews."
+            "By providing APIs such as Field, Event, etc., it provides not only display but also interactive preview.\n" +
+            "core provides runtime APIs such as annotations and gallery UI needed to collect Previews."
 }
