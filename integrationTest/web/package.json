@@ -1,7 +1,12 @@
 {
-  "name": "web",
+  "name": "compose-preview-lab-docs",
   "version": "0.0.0",
   "private": true,
+  "description": "Documentation site for Compose Preview Lab - turns @Preview into an interactive Component Playground",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TBSten/compose-preview-lab.git"
+  },
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
@@ -17,11 +22,13 @@
   "dependencies": {
     "@docusaurus/core": "3.9.2",
     "@docusaurus/preset-classic": "3.9.2",
+    "@docusaurus/theme-mermaid": "^3.9.2",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-intersection-observer": "^10.0.0"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.9.2",
