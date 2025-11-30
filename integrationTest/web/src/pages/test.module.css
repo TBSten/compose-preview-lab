@@ -1,0 +1,867 @@
+/* ... (Existing Styles) */
+
+/* Layout Option 11: Feature Stream (ストリームライン) */
+.testStream {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.testStreamLine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, var(--neon-accent), transparent);
+  transform: translateX(-50%);
+}
+
+.testStreamItem {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 50%;
+  position: relative;
+  margin-bottom: 4rem;
+  text-align: right;
+}
+
+.testStreamItemRight {
+  justify-content: flex-start;
+  padding-right: 0;
+  padding-left: 50%;
+  text-align: left;
+}
+
+.testStreamContent {
+  padding: 0 2rem;
+  max-width: 300px;
+}
+
+.testStreamIcon {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  background: var(--card-bg);
+  border: 2px solid var(--neon-accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  font-size: 1.2rem;
+  box-shadow: 0 0 15px var(--neon-accent);
+}
+
+@media screen and (max-width: 768px) {
+  .testStreamLine {
+    left: 20px;
+  }
+  .testStreamItem {
+    justify-content: flex-start;
+    padding-right: 0;
+    padding-left: 60px;
+    text-align: left;
+  }
+  .testStreamItemRight {
+    padding-left: 60px;
+  }
+  .testStreamIcon {
+    left: 20px;
+  }
+}
+
+/* Layout Option 12: Neon HUD (ネオンHUD) */
+.testHudGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.testHudItem {
+  position: relative;
+  padding: 2px; /* Space for border */
+}
+
+.testHudFrame {
+  position: relative;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(147, 51, 234, 0.3);
+}
+
+.testHudCornerTopLeft,
+.testHudCornerTopRight,
+.testHudCornerBottomLeft,
+.testHudCornerBottomRight {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--neon-accent);
+  transition: all 0.3s ease;
+}
+
+.testHudCornerTopLeft { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+.testHudCornerTopRight { top: -1px; right: -1px; border-left: none; border-bottom: none; }
+.testHudCornerBottomLeft { bottom: -1px; left: -1px; border-right: none; border-top: none; }
+.testHudCornerBottomRight { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
+.testHudItem:hover .testHudCornerTopLeft { top: -5px; left: -5px; }
+.testHudItem:hover .testHudCornerTopRight { top: -5px; right: -5px; }
+.testHudItem:hover .testHudCornerBottomLeft { bottom: -5px; left: -5px; }
+.testHudItem:hover .testHudCornerBottomRight { bottom: -5px; right: -5px; }
+
+.testHudContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.testHudIcon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--neon-accent);
+}
+
+.testHudData {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: var(--neon-accent);
+  margin-bottom: 0.5rem;
+  opacity: 0.8;
+}
+
+@media screen and (max-width: 768px) {
+  .testHudGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Layout Option 13: Giant Typography (タイポグラフィ) */
+.testTypoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.testTypoItem {
+  position: relative;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.testTypoBg {
+  position: absolute;
+  font-size: 12rem;
+  font-weight: 900;
+  color: var(--ifm-color-primary);
+  opacity: 0.05;
+  line-height: 1;
+  transition: all 0.5s ease;
+}
+
+.testTypoItem:hover .testTypoBg {
+  opacity: 0.1;
+  transform: scale(1.1);
+}
+
+.testTypoContent {
+  position: relative;
+  z-index: 10;
+}
+
+.testTypoContent h3 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  .testTypoGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .testTypoItem {
+    height: 200px;
+  }
+  .testTypoBg {
+    font-size: 8rem;
+  }
+}
+
+/* Layout Option 14: Hover Expand (伸縮リスト) */
+.testExpandList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.testExpandItem {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.testExpandHeader {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  cursor: pointer;
+}
+
+.testExpandNumber {
+  font-family: monospace;
+  font-size: 1.2rem;
+  color: var(--neon-accent);
+  margin-right: 2rem;
+  opacity: 0.6;
+}
+
+.testExpandHeader h3 {
+  margin: 0;
+  flex-grow: 1;
+  text-align: left;
+}
+
+.testExpandIcon {
+  font-size: 1.5rem;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.testExpandBody {
+  height: 0;
+  padding: 0 2rem;
+  opacity: 0;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.testExpandItem:hover {
+  background: linear-gradient(90deg, rgba(147, 51, 234, 0.05), transparent);
+  border-color: var(--neon-accent);
+}
+
+.testExpandItem:hover .testExpandBody {
+  height: auto;
+  padding-bottom: 1.5rem;
+  opacity: 1;
+}
+
+.testExpandItem:hover .testExpandIcon {
+  opacity: 1;
+  transform: rotate(15deg);
+  color: var(--neon-accent);
+}
+
+/* Layout Option 15: Code Terminal (コードターミナル) */
+.testTerminal {
+  background: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  max-width: 800px;
+  margin: 0 auto;
+  overflow: hidden;
+  text-align: left;
+  font-family: 'Fira Code', monospace;
+}
+
+.testTerminalHeader {
+  background: #2d2d2d;
+  padding: 0.8rem 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.testTerminalButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.testTerminalButtonRed,
+.testTerminalButtonYellow,
+.testTerminalButtonGreen {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.testTerminalButtonRed { background: #ff5f56; }
+.testTerminalButtonYellow { background: #ffbd2e; }
+.testTerminalButtonGreen { background: #27c93f; }
+
+.testTerminalTitle {
+  margin-left: 1rem;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.testTerminalBody {
+  padding: 2rem;
+  color: #d4d4d4;
+  line-height: 1.6;
+}
+
+.testTerminalBlock {
+  margin: 1.5rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid #333;
+  transition: all 0.3s ease;
+}
+
+.testTerminalBlock:hover {
+  border-left-color: var(--neon-accent);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.testCodeKeyword { color: #569cd6; }
+.testCodeFunction { color: #dcdcaa; }
+.testCodeString { color: #ce9178; }
+.testCodeComment { color: #6a9955; font-style: italic; }
+.testCodeCall { color: #4ec9b0; }
+.testCodeAnnotation { color: #dcdcaa; }
+
+.testTerminalCursor {
+  display: inline-block;
+  width: 10px;
+  height: 1.2em;
+  background: #d4d4d4;
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Layout Option 16: Glass Stack (ガラススタック) */
+.testStackContainer {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  height: 400px;
+  margin: 0 auto;
+  perspective: 1000px;
+}
+
+.testStackCard {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-origin: bottom center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.testStackCard1 { z-index: 4; transform: scale(1) translateY(0); background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(238, 90, 111, 0.1)); }
+.testStackCard2 { z-index: 3; transform: scale(0.95) translateY(20px); background: linear-gradient(135deg, rgba(254, 202, 87, 0.1), rgba(255, 159, 243, 0.1)); }
+.testStackCard3 { z-index: 2; transform: scale(0.9) translateY(40px); background: linear-gradient(135deg, rgba(72, 219, 251, 0.1), rgba(10, 189, 227, 0.1)); }
+.testStackCard4 { z-index: 1; transform: scale(0.85) translateY(60px); background: linear-gradient(135deg, rgba(162, 155, 254, 0.1), rgba(108, 92, 231, 0.1)); }
+
+.testStackContainer:hover .testStackCard1 { transform: scale(1) translateY(-120px); z-index: 4; }
+.testStackContainer:hover .testStackCard2 { transform: scale(1) translateY(-40px); z-index: 5; }
+.testStackContainer:hover .testStackCard3 { transform: scale(1) translateY(40px); z-index: 6; }
+.testStackContainer:hover .testStackCard4 { transform: scale(1) translateY(120px); z-index: 7; }
+
+.testStackCard:hover {
+  background: var(--card-bg);
+  border-color: var(--neon-accent);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+.testStackIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  .testStackContainer {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .testStackCard {
+    position: static;
+    height: auto;
+    transform: none !important;
+  }
+}
+
+/* Layout Option 17: Hexagon Hive (ヘキサゴンハイヴ) */
+.testHiveGrid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.testHiveItem {
+  width: 300px;
+  height: 260px;
+  margin-bottom: -50px;
+}
+
+.testHiveItem:nth-child(even) {
+  margin-top: 130px;
+}
+
+.testHiveHex {
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: var(--card-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.testHiveHex::before {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px; right: 2px; bottom: 2px;
+  background: var(--card-bg);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  z-index: 1;
+}
+
+.testHiveHex::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(45deg, var(--neon-accent), var(--ifm-color-primary));
+  z-index: 0;
+  opacity: 0.3;
+}
+
+.testHiveContent {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem;
+}
+
+.testHiveIcon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.testHiveItem:hover .testHiveHex {
+  transform: scale(1.05);
+}
+
+.testHiveItem:hover .testHiveHex::after {
+  opacity: 1;
+}
+
+.testHiveItem:hover .testHiveIcon {
+  transform: scale(1.2);
+}
+
+@media screen and (max-width: 768px) {
+  .testHiveGrid {
+    flex-direction: column;
+    align-items: center;
+  }
+  .testHiveItem {
+    margin-bottom: 0;
+    margin-top: 0 !important;
+    height: 300px;
+  }
+}
+
+/* Layout Option 18: Elastic Split (エラスティックスプリット) */
+.testSplitContainer {
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  height: 400px;
+  margin: 0 auto;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+}
+
+.testSplitItem {
+  flex: 1;
+  position: relative;
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem;
+  overflow: hidden;
+}
+
+.testSplitBg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  opacity: 0.1;
+  transition: opacity 0.5s ease;
+}
+
+.testSplitContent {
+  position: relative;
+  z-index: 2;
+  transform: translateY(20px);
+  transition: transform 0.5s ease;
+}
+
+.testSplitIcon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.testSplitItem h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
+}
+
+.testSplitItem p {
+  font-size: 0.9rem;
+  opacity: 0;
+  max-height: 0;
+  transition: all 0.5s ease;
+}
+
+.testSplitItem:hover {
+  flex: 2.5;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.testSplitItem:hover .testSplitBg {
+  opacity: 0.2;
+}
+
+.testSplitItem:hover .testSplitContent {
+  transform: translateY(0);
+}
+
+.testSplitItem:hover p {
+  opacity: 1;
+  max-height: 100px;
+}
+
+@media screen and (max-width: 768px) {
+  .testSplitContainer {
+    flex-direction: column;
+    height: auto;
+  }
+  .testSplitItem {
+    height: 150px;
+  }
+  .testSplitItem:hover {
+    flex: none;
+    height: 200px;
+  }
+  .testSplitItem p {
+    opacity: 1;
+    max-height: none;
+  }
+}
+
+/* Layout Option 19: Orbital System (オービタルシステム) */
+.testOrbitSystem {
+  position: relative;
+  width: 600px;
+  height: 600px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.testOrbitCore {
+  width: 120px;
+  height: 120px;
+  background: var(--card-bg);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 50px rgba(147, 51, 234, 0.3);
+  z-index: 10;
+  border: 2px solid var(--neon-accent);
+}
+
+.testOrbitLogo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: linear-gradient(45deg, var(--neon-accent), var(--ifm-color-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.testOrbitRing {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  animation: orbitRotate 20s linear infinite;
+}
+
+.testOrbitPlanet {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(5px);
+  animation: orbitCounterRotate 20s linear infinite;
+  transition: all 0.3s ease;
+}
+
+.testOrbitPlanet:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px var(--neon-accent);
+  border-color: var(--neon-accent);
+  z-index: 20;
+}
+
+.testOrbitPlanet1 { top: 0; left: 50%; margin-top: -70px; margin-left: -70px; }
+.testOrbitPlanet2 { top: 50%; right: 0; margin-top: -70px; margin-right: -70px; }
+.testOrbitPlanet3 { bottom: 0; left: 50%; margin-bottom: -70px; margin-left: -70px; }
+.testOrbitPlanet4 { top: 50%; left: 0; margin-top: -70px; margin-left: -70px; }
+
+.testOrbitIcon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.testOrbitLabel {
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+@keyframes orbitRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes orbitCounterRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+.testOrbitSystem:hover .testOrbitRing,
+.testOrbitSystem:hover .testOrbitPlanet {
+  animation-play-state: paused;
+}
+
+@media screen and (max-width: 768px) {
+  .testOrbitSystem {
+    width: 100%;
+    height: auto;
+    min-height: auto;
+    padding: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .testOrbitCore {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    margin: 0;
+    z-index: 10;
+    flex-shrink: 0;
+  }
+  
+  .testOrbitLogo {
+    font-size: 1.5rem;
+  }
+  
+  .testOrbitRing {
+    position: static;
+    width: 100%;
+    height: auto;
+    border: none;
+    animation: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .testOrbitPlanet {
+    position: static;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    padding: 1.5rem;
+    border-radius: 16px;
+    margin: 0;
+    animation: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+  }
+  
+  .testOrbitPlanet1,
+  .testOrbitPlanet2,
+  .testOrbitPlanet3,
+  .testOrbitPlanet4 {
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    margin: 0;
+  }
+  
+  .testOrbitIcon {
+    font-size: 2rem;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+  
+  .testOrbitLabel {
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: left;
+  }
+  
+  .testOrbitPlanet:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border-color: var(--neon-accent);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .testOrbitCore {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .testOrbitLogo {
+    font-size: 1.2rem;
+  }
+  
+  .testOrbitPlanet {
+    padding: 1.2rem;
+    max-width: 100%;
+  }
+  
+  .testOrbitIcon {
+    font-size: 1.5rem;
+  }
+  
+  .testOrbitLabel {
+    font-size: 0.9rem;
+  }
+}
+
+/* Layout Option 20: Architectural Lines (アーキテクチュアルライン) */
+.testArchList {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.testArchItem {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 2rem;
+  padding: 2rem 0;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.testArchLine {
+  grid-column: 1 / -1;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  width: 100%;
+  position: absolute;
+  top: 0;
+}
+
+.testArchMeta {
+  font-family: monospace;
+  font-size: 1.2rem;
+  color: var(--neon-accent);
+  opacity: 0.5;
+  padding-top: 0.5rem;
+}
+
+.testArchContent {
+  text-align: left;
+}
+
+.testArchContent h3 {
+  font-size: 2rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.testArchContent p {
+  font-size: 1.1rem;
+  opacity: 0.7;
+  max-width: 500px;
+}
+
+.testArchItem:hover {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03));
+}
+
+.testArchItem:hover .testArchLine {
+  background: var(--neon-accent);
+  box-shadow: 0 0 10px var(--neon-accent);
+}
+
+.testArchItem:hover .testArchMeta {
+  opacity: 1;
+  transform: translateX(5px);
+}
+
+@media screen and (max-width: 768px) {
+  .testArchContent h3 {
+    font-size: 1.5rem;
+  }
+}

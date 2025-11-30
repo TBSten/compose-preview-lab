@@ -29,6 +29,10 @@ kotlin {
         binaries.executable()
         binaries.library()
         generateTypeScriptDefinitions()
+
+        compilerOptions {
+            target = "es2015"
+        }
     }
 
     wasmJs {
@@ -37,6 +41,10 @@ kotlin {
         binaries.executable()
         binaries.library()
         generateTypeScriptDefinitions()
+
+        compilerOptions {
+            target = "es2015"
+        }
     }
 
     listOf(

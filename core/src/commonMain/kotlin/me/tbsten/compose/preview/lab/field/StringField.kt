@@ -67,3 +67,15 @@ class StringField(
         )
     }
 }
+
+fun MutablePreviewLabField<String>.withTextHint() =
+    withHint(
+        "Empty" to "",
+        "Short" to "Hello !",
+        "Body" to """
+            Compose Preview Lab turns @Preview into an interactive Component Playground.
+            You can pass parameters to components, enabling more than just static snapshots—making manual testing easier and helping new developers understand components faster.
+            Compose Multiplatform is supported.
+        """.trimIndent(),
+        "Long" to "Very " + "Long ".repeat(100) + "Text",
+    )
