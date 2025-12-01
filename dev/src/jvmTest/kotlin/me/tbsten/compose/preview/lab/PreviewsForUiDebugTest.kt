@@ -45,7 +45,6 @@ class PreviewsForUiDebugTest {
         val intField = state.field<Int>("intValue")
 
         forAll(Arb.int().plusEdgecases(intField.testValues())) { intFieldValue ->
-            println("intFieldValue: $intFieldValue")
             intField.value = intFieldValue
             awaitIdle()
 
@@ -62,7 +61,6 @@ class PreviewsForUiDebugTest {
         val stringField = state.field<String>("stringValue")
 
         forAll(Arb.string().plusEdgecases(stringField.testValues())) { stringFieldValue ->
-            println("stringFieldValue: $stringFieldValue")
             stringField.value = stringFieldValue
             awaitIdle()
 
@@ -79,7 +77,6 @@ class PreviewsForUiDebugTest {
         val boolField = state.field<Boolean>("booleanValue")
 
         forAll(Arb.boolean().plusEdgecases(boolField.testValues())) { boolFieldValue ->
-            println("boolFieldValue: $boolFieldValue")
             boolField.value = boolFieldValue
             awaitIdle()
 
@@ -96,7 +93,6 @@ class PreviewsForUiDebugTest {
         val floatField = state.field<Float>("floatField")
 
         forAll(Arb.float().plusEdgecases(floatField.testValues())) { floatFieldValue ->
-            println("floatFieldValue: $floatFieldValue")
             floatField.value = floatFieldValue
             awaitIdle()
 
