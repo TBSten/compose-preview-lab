@@ -139,11 +139,9 @@ private fun previewForTest(displayName: String): PreviewLabPreview = CollectedPr
     "src/commonMain/kotlin/${displayName.replace(".", "/")}.kt",
 ) { }
 
-private fun List<PreviewTreeNode>.collectAllPreviews(): List<PreviewLabPreview> {
-    return flatMap { node ->
-        when (node) {
-            is PreviewTreeNode.Preview -> listOf(node.preview)
-            is PreviewTreeNode.Group -> node.children.collectAllPreviews()
-        }
+private fun List<PreviewTreeNode>.collectAllPreviews(): List<PreviewLabPreview> = flatMap { node ->
+    when (node) {
+        is PreviewTreeNode.Preview -> listOf(node.preview)
+        is PreviewTreeNode.Group -> node.children.collectAllPreviews()
     }
 }

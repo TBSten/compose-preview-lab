@@ -66,6 +66,7 @@ kotlin {
             implementation(compose.ui)
             implementation(libs.androidxLifecycleViewmodel)
             implementation(libs.androidxLifecycleRuntimeCompose)
+            api(libs.kotestProperty)
         }
     }
 }
@@ -95,5 +96,5 @@ publishConvention {
     artifactId = "testing"
     description =
         "Testing utilities for Compose Preview Lab. " +
-            "Provides TestPreviewLab composable and field access helpers for UI testing."
+        "Provides TestPreviewLab composable and field access helpers for UI testing."
 }
