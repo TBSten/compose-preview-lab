@@ -31,8 +31,6 @@ open class TransformField<BaseValue, TransformedValue>(
     label = label,
     initialValue = initialValue,
 ) {
-    override fun arbValues(): Sequence<TransformedValue> = baseField.arbValues().map(transform)
-
     override var value: TransformedValue
         get() = transform(baseField.value)
         set(value) {

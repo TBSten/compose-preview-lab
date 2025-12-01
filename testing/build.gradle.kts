@@ -66,7 +66,6 @@ kotlin {
             implementation(compose.ui)
             implementation(libs.androidxLifecycleViewmodel)
             implementation(libs.androidxLifecycleRuntimeCompose)
-            api(libs.kotestProperty)
         }
     }
 }

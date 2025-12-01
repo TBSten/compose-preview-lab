@@ -69,25 +69,6 @@ open class CombinedField<Base, Value>(
     label = label,
     initialValue = combine(fields.map { it.value }),
 ) {
-    override fun arbValues(): Sequence<Value> = sequence {
-        val fieldArbValues = fields.map { it.arbValues().toList() }
-        yieldAll(cartesianProduct(fieldArbValues).map { combine(it) })
-    }
-
-    private fun cartesianProduct(lists: List<List<Base>>): Sequence<List<Base>> = sequence {
-        if (lists.isEmpty()) {
-            yield(emptyList())
-        } else {
-            val head = lists.first()
-            val tail = lists.drop(1)
-            for (element in head) {
-                for (rest in cartesianProduct(tail)) {
-                    yield(listOf(element) + rest)
-                }
-            }
-        }
-    }
-
     private val _value by derivedStateOf {
         combine(fields.map { it.value })
     }

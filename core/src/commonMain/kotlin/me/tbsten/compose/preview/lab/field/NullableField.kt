@@ -90,8 +90,6 @@ class NullableField<Value : Any> internal constructor(private val baseField: Pre
         label = baseField.label,
         initialValue = initialValue,
     ) {
-    override fun arbValues(): Sequence<Value?> = sequenceOf(null) + baseField.arbValues()
-
     private var isNull by mutableStateOf(initialValue == null)
     override var value: Value? = initialValue
         get() = if (isNull) null else baseField.value

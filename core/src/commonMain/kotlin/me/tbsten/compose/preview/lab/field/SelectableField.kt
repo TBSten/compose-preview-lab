@@ -77,7 +77,6 @@ open class SelectableField<Value>(
     label = label,
     initialValue = initialValue,
 ) {
-    override fun arbValues(): Sequence<Value> = choices.asSequence()
     class Builder<Value> internal constructor() {
         internal val choices = mutableListOf<Pair<String, Value>>()
         internal var defaultValue: Value? = null

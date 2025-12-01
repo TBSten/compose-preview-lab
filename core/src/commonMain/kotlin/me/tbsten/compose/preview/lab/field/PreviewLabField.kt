@@ -21,8 +21,6 @@ interface PreviewLabField<Value> {
     val initialValue: Value
     val value: Value
 
-    fun arbValues(): Sequence<Value> = sequenceOf(initialValue)
-
     /**
      * Composable, which displays the entire UI for this Field.
      * If you want to customize the UI, you can override this method in your PreviewLabField to customize the UI.

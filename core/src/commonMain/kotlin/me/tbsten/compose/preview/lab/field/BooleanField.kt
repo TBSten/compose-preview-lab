@@ -42,8 +42,6 @@ open class BooleanField(label: String, initialValue: Boolean) :
         label = label,
         initialValue = initialValue,
     ) {
-    override fun arbValues(): Sequence<Boolean> = sequenceOf(true, false)
-
     @Composable
     override fun Content() {
         BooleanSwitch(
