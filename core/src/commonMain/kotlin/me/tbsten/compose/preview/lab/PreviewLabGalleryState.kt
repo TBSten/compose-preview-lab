@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import kotlin.js.ExperimentalJsExport
 import me.tbsten.compose.preview.lab.util.JsOnlyExport
+import me.tbsten.compose.preview.lab.util.JsOnlyExportIgnore
 
 /**
  * State holder for [PreviewLabGallery].
@@ -19,7 +20,7 @@ import me.tbsten.compose.preview.lab.util.JsOnlyExport
 @OptIn(ExperimentalJsExport::class)
 @JsOnlyExport
 @Stable
-class PreviewLabGalleryState(initialSelectedPreview: Pair<String, PreviewLabPreview>? = null) {
+class PreviewLabGalleryState @JsOnlyExportIgnore constructor(initialSelectedPreview: Pair<String, PreviewLabPreview>? = null) {
     internal var selectedPreview: SelectedPreview? by mutableStateOf(
         initialSelectedPreview
             ?.let(SelectedPreview::from),
@@ -54,6 +55,7 @@ class PreviewLabGalleryState(initialSelectedPreview: Pair<String, PreviewLabPrev
     /**
      * Select Preview.
      */
+    @JsOnlyExportIgnore
     fun select(groupName: String, preview: PreviewLabPreview) {
         val newSelectedPreview = SelectedPreview(groupName, preview)
         if (selectedPreview == newSelectedPreview) {
@@ -82,6 +84,7 @@ class PreviewLabGalleryState(initialSelectedPreview: Pair<String, PreviewLabPrev
      * @param groupName Group name the Preview belongs to
      * @param newPreview Preview to add to the compare panel
      */
+    @JsOnlyExportIgnore
     fun addToComparePanel(groupName: String, newPreview: PreviewLabPreview) {
         val newPanelTitle = run {
             val baseTitle = newPreview.displayName

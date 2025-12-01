@@ -3,6 +3,7 @@ package me.tbsten.compose.preview.lab
 import androidx.compose.runtime.Composable
 import kotlin.js.ExperimentalJsExport
 import me.tbsten.compose.preview.lab.util.JsOnlyExport
+import me.tbsten.compose.preview.lab.util.JsOnlyExportIgnore
 
 /**
  * Have [@Preview][me.tbsten.compose.preview.lab.previewlist.PreviewTreeNode.Preview] information collected by gradle plugin. It can be used to display the Preview catalog by passing it to PreviewLabGallery.
@@ -58,7 +59,7 @@ interface PreviewLabPreview {
 
 @OptIn(InternalComposePreviewLabApi::class, ExperimentalJsExport::class)
 @JsOnlyExport
-data class CollectedPreview(
+data class CollectedPreview @JsOnlyExportIgnore constructor(
     override val id: String,
     override val displayName: String = id,
     override val filePath: String? = null,

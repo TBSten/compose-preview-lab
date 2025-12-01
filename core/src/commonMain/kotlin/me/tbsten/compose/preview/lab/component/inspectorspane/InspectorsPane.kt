@@ -19,7 +19,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -112,6 +111,7 @@ internal fun InspectorsPane(
                             painter = painterResource(Res.drawable.icon_code),
                             contentDescription = "Show source code",
                             onClick = {
+                                @Suppress("UNCHECKED_CAST")
                                 (openHandler as OpenFileHandler<in Any?>).openFile(
                                     OpenFileHandler.Params(
                                         configuredValue = configuredValue,
@@ -171,6 +171,7 @@ internal fun InspectorsPane(
                         Button(
                             variant = ButtonVariant.PrimaryOutlined,
                             onClick = {
+                                @Suppress("UNCHECKED_CAST")
                                 (openHandler as OpenFileHandler<in Any?>).openFile(
                                     OpenFileHandler.Params(
                                         configuredValue = configuredValue,
