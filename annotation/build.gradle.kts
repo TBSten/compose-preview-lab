@@ -72,6 +72,6 @@ publishConvention {
     artifactId = "annotation"
     description =
         "A component catalog library that collects and lists @Preview. \n" +
-        "By providing APIs such as Field, Event, etc., it provides not only display but also interactive preview.\n" +
-        "annotation provides annotations used in runtime and tooling"
+            "By providing APIs such as Field, Event, etc., it provides not only display but also interactive preview.\n" +
+            "annotation provides annotations used in runtime and tooling"
 }
