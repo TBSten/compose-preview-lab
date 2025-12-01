@@ -57,6 +57,11 @@ class StringField(
     label = label,
     initialValue = initialValue,
 ) {
+    override fun testValues(): List<String> =
+        super.testValues() +
+            listOf(initialValue, "")
+                .toSet().toList()
+
     @Composable
     override fun Content() {
         TextFieldContent<String>(

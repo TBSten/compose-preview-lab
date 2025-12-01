@@ -20,6 +20,7 @@ interface PreviewLabField<Value> {
     val label: String
     val initialValue: Value
     val value: Value
+    fun testValues(): List<Value> = listOf(initialValue)
 
     /**
      * Composable, which displays the entire UI for this Field.

@@ -90,9 +90,21 @@ class NullableField<Value : Any> internal constructor(private val baseField: Pre
         label = baseField.label,
         initialValue = initialValue,
     ) {
+    override fun testValues(): List<Value?> = super.testValues() + listOf(null) + baseField.testValues()
+
     private var isNull by mutableStateOf(initialValue == null)
-    override var value: Value? = initialValue
+    override var value: Value?
         get() = if (isNull) null else baseField.value
+        set(newValue) {
+            if (newValue == null) {
+                isNull = true
+            } else {
+                isNull = false
+                if (baseField is MutablePreviewLabField) {
+                    baseField.value = newValue
+                }
+            }
+        }
 
     @Composable
     override fun Content() {
