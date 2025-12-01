@@ -27,12 +27,12 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
       - name: Build Dokka Documentation
-        run: ./gradlew :core:dokkaGeneratePublicationHtml --no-configuration-cache
+        run: ./gradlew :dokkaDocs:dokkaGenerate
       - name: Publish to Github Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./core/build/dokka/html
+          publish_dir: ./dokkaDocs/build/dokka/html
           destination_dir: dokka/${{ github.event.release.tag_name }}/
           keep_files: true
 
