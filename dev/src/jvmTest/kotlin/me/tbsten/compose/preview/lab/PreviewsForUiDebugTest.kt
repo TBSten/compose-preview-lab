@@ -39,10 +39,10 @@ class PreviewsForUiDebugTest {
 
     @Test
     fun `IntField should update preview when value changes`() = runDesktopComposeUiTest {
-        forAll(Arb.int()) { intFieldValue ->
-            val state = PreviewLabState()
-            setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
 
+        forAll(Arb.int()) { intFieldValue ->
             // Get the IntField
             val intField = state.field<Int>("intValue")
 
@@ -59,10 +59,10 @@ class PreviewsForUiDebugTest {
 
     @Test
     fun `StringField should update preview when value changes`() = runDesktopComposeUiTest {
-        forAll(Arb.string()) { stringFieldValue ->
-            val state = PreviewLabState()
-            setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
 
+        forAll(Arb.string()) { stringFieldValue ->
             // Get the StringField
             val stringField = state.field<String>("stringValue")
 
@@ -79,10 +79,10 @@ class PreviewsForUiDebugTest {
 
     @Test
     fun `BooleanField should toggle preview when value changes`() = runDesktopComposeUiTest {
-        forAll(Arb.boolean()) { boolFieldValue ->
-            val state = PreviewLabState()
-            setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
 
+        forAll(Arb.boolean()) { boolFieldValue ->
             // Get the BooleanField
             val boolField = state.field<Boolean>("booleanValue")
 
@@ -99,11 +99,11 @@ class PreviewsForUiDebugTest {
 
     @Test
     fun `FloatField should update preview when value changes`() = runDesktopComposeUiTest {
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
+
         // Exclude NaN and Infinity values that can cause issues with text matching
         forAll(Arb.float().filterNot { it.isNaN() || it.isInfinite() }) { floatFieldValue ->
-            val state = PreviewLabState()
-            setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
-
             // Get the FloatField
             val floatField = state.field<Float>("floatField")
 
@@ -121,11 +121,11 @@ class PreviewsForUiDebugTest {
 
     @Test
     fun `Events preview should show toast after call onEvent()`() = runDesktopComposeUiTest {
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Events.content() } }
+
         // Only test first few items that are visible without scrolling
         forAll(Arb.int(0..3)) { itemIndex ->
-            val state = PreviewLabState()
-            setContent { TestPreviewLab(state) { PreviewsForUiDebug.Events.content() } }
-
             onNodeWithTag("item:$itemIndex")
                 .performClick()
 
