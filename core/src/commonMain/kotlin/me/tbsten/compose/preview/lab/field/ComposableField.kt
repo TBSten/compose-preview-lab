@@ -95,8 +95,7 @@ open class ComposableField(
     initialValue = { },
 ) {
     private var fieldValue by mutableStateOf(initialValue)
-    override fun testValues(): List<@Composable (() -> Unit)> =
-        super.testValues() + choices.map { { it.invoke() } }
+    override fun testValues(): List<@Composable (() -> Unit)> = super.testValues() + choices.map { { it.invoke() } }
 
     override var value: @Composable () -> Unit
         get() = { fieldValue() }
