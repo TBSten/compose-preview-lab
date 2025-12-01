@@ -68,6 +68,8 @@ open class PublishConventionExtension {
     var artifactId: String? = null
     var artifactName: String? = artifactId
         get() = field ?: artifactId
+    var dokkaModuleName: String? = null
+        get() = field ?: artifactId
 
     var version: String? = null
     lateinit var description: String
