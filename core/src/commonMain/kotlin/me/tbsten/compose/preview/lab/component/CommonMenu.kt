@@ -104,45 +104,45 @@ private fun DropdownMenuContent(
     val scaleAnimationSpec = tween<Float>(durationMillis = 150)
     val alphaAnimationSpec = tween<Float>(durationMillis = 100)
     val scale by
-    transition.animateFloat(transitionSpec = { scaleAnimationSpec }) { expanded ->
-        if (expanded) ExpandedScaleTarget else ClosedScaleTarget
-    }
+        transition.animateFloat(transitionSpec = { scaleAnimationSpec }) { expanded ->
+            if (expanded) ExpandedScaleTarget else ClosedScaleTarget
+        }
 
     val alpha by
-    transition.animateFloat(transitionSpec = { alphaAnimationSpec }) { expanded ->
-        if (expanded) ExpandedAlphaTarget else ClosedAlphaTarget
-    }
+        transition.animateFloat(transitionSpec = { alphaAnimationSpec }) { expanded ->
+            if (expanded) ExpandedAlphaTarget else ClosedAlphaTarget
+        }
 
     val isInspecting = LocalInspectionMode.current
     Surface(
         modifier =
-            Modifier.graphicsLayer {
-                scaleX =
-                    if (!isInspecting) {
-                        scale
-                    } else if (expandedState.targetState) {
-                        ExpandedScaleTarget
-                    } else {
-                        ClosedScaleTarget
-                    }
-                scaleY =
-                    if (!isInspecting) {
-                        scale
-                    } else if (expandedState.targetState) {
-                        ExpandedScaleTarget
-                    } else {
-                        ClosedScaleTarget
-                    }
-                this.alpha =
-                    if (!isInspecting) {
-                        alpha
-                    } else if (expandedState.targetState) {
-                        ExpandedAlphaTarget
-                    } else {
-                        ClosedAlphaTarget
-                    }
-                transformOrigin = transformOriginState.value
-            },
+        Modifier.graphicsLayer {
+            scaleX =
+                if (!isInspecting) {
+                    scale
+                } else if (expandedState.targetState) {
+                    ExpandedScaleTarget
+                } else {
+                    ClosedScaleTarget
+                }
+            scaleY =
+                if (!isInspecting) {
+                    scale
+                } else if (expandedState.targetState) {
+                    ExpandedScaleTarget
+                } else {
+                    ClosedScaleTarget
+                }
+            this.alpha =
+                if (!isInspecting) {
+                    alpha
+                } else if (expandedState.targetState) {
+                    ExpandedAlphaTarget
+                } else {
+                    ClosedAlphaTarget
+                }
+            transformOrigin = transformOriginState.value
+        },
         shape = shape,
         color = containerColor,
         shadowElevation = shadowElevation,
@@ -150,10 +150,10 @@ private fun DropdownMenuContent(
     ) {
         Column(
             modifier =
-                modifier
-                    .padding(vertical = 8.dp)
-                    .width(200.dp)
-                    .verticalScroll(scrollState),
+            modifier
+                .padding(vertical = 8.dp)
+                .width(200.dp)
+                .verticalScroll(scrollState),
         ) {
             val menuScope = CommonMenuScope(this)
 
