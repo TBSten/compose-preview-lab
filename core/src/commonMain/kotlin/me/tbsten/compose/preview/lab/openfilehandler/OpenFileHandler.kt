@@ -83,6 +83,9 @@ open class UrlOpenFileHandler(private val baseUrl: String) : OpenFileHandler<Uri
     }
 }
 
+/**
+ * **This is an internal annotation for Compose Preview Lab. Don't use this api manually.**
+ */
 @InternalComposePreviewLabApi
 val LocalOpenFileHandler = compositionLocalOf<OpenFileHandler<out Any?>?> { null }
 

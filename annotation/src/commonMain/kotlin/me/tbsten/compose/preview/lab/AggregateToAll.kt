@@ -1,6 +1,8 @@
 package me.tbsten.compose.preview.lab
 
 /**
+ * **This is an internal annotation for Compose Preview Lab. Don't use this api manually.**
+ *
  * Marks a module to aggregate its previews into the PreviewAllList
  *
  * When applied to a module, this annotation instructs the KSP plugin to include

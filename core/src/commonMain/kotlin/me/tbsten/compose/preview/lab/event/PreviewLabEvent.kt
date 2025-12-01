@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
+import me.tbsten.compose.preview.lab.PreviewLabScope
 
 /**
  * Represents an event that occurred during preview interaction
