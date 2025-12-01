@@ -7,6 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.runDesktopComposeUiTest
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.int
+import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
@@ -18,13 +19,13 @@ import me.tbsten.compose.preview.lab.testing.field
 class IntFieldTest {
     @Test
     fun `IntField should update Counter when value changes`() = runDesktopComposeUiTest {
-        forAll(Arb.int()) { intValue ->
-            val state = PreviewLabState()
-            setContent { TestPreviewLab(state) { IntFieldExample() } }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { IntFieldExample() } }
 
-            val countField = state.field<Int>("Count")
+        val countField = state.field<Int>("Count")
+
+        forAll(Arb.int().plusEdgecases(countField.testValues())) { intValue ->
             countField.value = intValue
-
             awaitIdle()
 
             onNodeWithText("Count: $intValue")

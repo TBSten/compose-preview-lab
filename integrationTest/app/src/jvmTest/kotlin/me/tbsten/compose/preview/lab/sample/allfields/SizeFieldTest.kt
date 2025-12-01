@@ -8,6 +8,7 @@ import androidx.compose.ui.test.runDesktopComposeUiTest
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.float
 import io.kotest.property.arbitrary.map
+import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
@@ -19,15 +20,13 @@ import me.tbsten.compose.preview.lab.testing.field
 class SizeFieldTest {
     @Test
     fun `SizeField should update canvas size when value changes`() = runDesktopComposeUiTest {
-        forAll(
-            Arb.float(10f..200f).map { Size(it, it) }
-        ) { size ->
-            val state = PreviewLabState()
-            setContent { TestPreviewLab(state) { SizeFieldExample() } }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { SizeFieldExample() } }
 
-            val canvasField = state.field<Size>("Canvas")
+        val canvasField = state.field<Size>("Canvas")
+
+        forAll(Arb.float(10f..200f).map { Size(it, it) }.plusEdgecases(canvasField.testValues())) { size ->
             canvasField.value = size
-
             awaitIdle()
             true
         }

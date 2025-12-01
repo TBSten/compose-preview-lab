@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.float
 import io.kotest.property.arbitrary.map
+import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
@@ -20,15 +21,13 @@ import me.tbsten.compose.preview.lab.testing.field
 class DpOffsetFieldTest {
     @Test
     fun `DpOffsetField should update offset when value changes`() = runDesktopComposeUiTest {
-        forAll(
-            Arb.float(-50f..50f).map { DpOffset(it.dp, it.dp) }
-        ) { offset ->
-            val state = PreviewLabState()
-            setContent { TestPreviewLab(state) { DpOffsetFieldExample() } }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { DpOffsetFieldExample() } }
 
-            val offsetField = state.field<DpOffset>("Offset")
+        val offsetField = state.field<DpOffset>("Offset")
+
+        forAll(Arb.float(-50f..50f).map { DpOffset(it.dp, it.dp) }.plusEdgecases(offsetField.testValues())) { offset ->
             offsetField.value = offset
-
             awaitIdle()
             true
         }

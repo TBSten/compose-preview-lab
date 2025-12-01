@@ -3,10 +3,12 @@
 package me.tbsten.compose.preview.lab.sample.allfields
 
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.runDesktopComposeUiTest
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.byte
+import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
@@ -18,18 +20,17 @@ import me.tbsten.compose.preview.lab.testing.field
 class ByteFieldTest {
     @Test
     fun `ByteField should update flag when value changes`() = runDesktopComposeUiTest {
-        forAll(Arb.byte()) { byteValue ->
-            val state = PreviewLabState()
-            setContent { TestPreviewLab(state) { ByteFieldExample() } }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { ByteFieldExample() } }
 
-            val flagField = state.field<Byte>("Flag")
+        val flagField = state.field<Byte>("Flag")
+
+        forAll(Arb.byte().plusEdgecases(flagField.testValues())) { byteValue ->
             flagField.value = byteValue
-
             awaitIdle()
 
             onNodeWithText("Flag: $byteValue")
-                .assertExists()
-            true
+                .isDisplayed()
         }
     }
 }

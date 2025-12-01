@@ -3,10 +3,12 @@
 package me.tbsten.compose.preview.lab.sample.allfields
 
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.runDesktopComposeUiTest
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.int
+import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
@@ -18,18 +20,17 @@ import me.tbsten.compose.preview.lab.testing.field
 class TransformFieldTest {
     @Test
     fun `TransformField should transform string to int`() = runDesktopComposeUiTest {
-        forAll(Arb.int()) { intValue ->
-            val state = PreviewLabState()
-            setContent { TestPreviewLab(state) { TransformFieldExample() } }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { TransformFieldExample() } }
 
-            val numberField = state.field<Int>("number")
+        val numberField = state.field<Int>("number")
+
+        forAll(Arb.int().plusEdgecases(numberField.testValues())) { intValue ->
             numberField.value = intValue
-
             awaitIdle()
 
             onNodeWithText("intValue: $intValue")
-                .assertExists()
-            true
+                .isDisplayed()
         }
     }
 }

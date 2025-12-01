@@ -8,6 +8,7 @@ import androidx.compose.ui.test.runDesktopComposeUiTest
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.double
 import io.kotest.property.arbitrary.filterNot
+import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
@@ -19,13 +20,13 @@ import me.tbsten.compose.preview.lab.testing.field
 class DoubleFieldTest {
     @Test
     fun `DoubleField should update price when value changes`() = runDesktopComposeUiTest {
-        forAll(Arb.double().filterNot { it.isNaN() || it.isInfinite() }) { doubleValue ->
-            val state = PreviewLabState()
-            setContent { TestPreviewLab(state) { DoubleFieldExample() } }
+        val state = PreviewLabState()
+        setContent { TestPreviewLab(state) { DoubleFieldExample() } }
 
-            val priceField = state.field<Double>("Price")
+        val priceField = state.field<Double>("Price")
+
+        forAll(Arb.double().filterNot { it.isNaN() || it.isInfinite() }.plusEdgecases(priceField.testValues())) { doubleValue ->
             priceField.value = doubleValue
-
             awaitIdle()
 
             onAllNodesWithText("Price: $$doubleValue")
