@@ -281,6 +281,7 @@ public class me/tbsten/compose/preview/lab/field/BooleanField : me/tbsten/compos
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;Z)V
 	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun testValues ()Ljava/util/List;
 }
 
 public class me/tbsten/compose/preview/lab/field/ByteField : me/tbsten/compose/preview/lab/field/NumberField {
@@ -301,6 +302,7 @@ public class me/tbsten/compose/preview/lab/field/CombinedField : me/tbsten/compo
 	public fun Content (Landroidx/compose/runtime/Composer;I)V
 	public fun getValue ()Ljava/lang/Object;
 	public fun setValue (Ljava/lang/Object;)V
+	public fun testValues ()Ljava/util/List;
 }
 
 public class me/tbsten/compose/preview/lab/field/CombinedField10 : me/tbsten/compose/preview/lab/field/CombinedField {
@@ -379,6 +381,7 @@ public class me/tbsten/compose/preview/lab/field/ComposableField : me/tbsten/com
 	public fun getValue ()Lkotlin/jvm/functions/Function2;
 	public synthetic fun setValue (Ljava/lang/Object;)V
 	protected fun setValue (Lkotlin/jvm/functions/Function2;)V
+	public fun testValues ()Ljava/util/List;
 }
 
 public final class me/tbsten/compose/preview/lab/field/ComposableFieldKt {
@@ -484,12 +487,6 @@ public final class me/tbsten/compose/preview/lab/field/ComposableSingletons$Scre
 	public final fun getLambda$-824285285$core ()Lkotlin/jvm/functions/Function2;
 }
 
-public final class me/tbsten/compose/preview/lab/field/ComposableSingletons$WrapFieldKt {
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/ComposableSingletons$WrapFieldKt;
-	public fun <init> ()V
-	public final fun getLambda$-1478142559$core ()Lkotlin/jvm/functions/Function3;
-}
-
 public final class me/tbsten/compose/preview/lab/field/ComposeDefaultCompositionLocalFieldsKt {
 	public static final fun provideDefaultCompositionLocalFields (Lme/tbsten/compose/preview/lab/PreviewLabScope;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)[Landroidx/compose/runtime/ProvidedValue;
 	public static final fun withBasicFontScalesHint (Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;
@@ -537,6 +534,7 @@ public abstract class me/tbsten/compose/preview/lab/field/ImmutablePreviewLabFie
 	public fun getLabel ()Ljava/lang/String;
 	public fun getValue ()Ljava/lang/Object;
 	protected fun setValue (Ljava/lang/Object;)V
+	public fun testValues ()Ljava/util/List;
 }
 
 public class me/tbsten/compose/preview/lab/field/IntField : me/tbsten/compose/preview/lab/field/NumberField {
@@ -578,6 +576,18 @@ public abstract class me/tbsten/compose/preview/lab/field/MutablePreviewLabField
 	public fun getLabel ()Ljava/lang/String;
 	public fun getValue ()Ljava/lang/Object;
 	public fun setValue (Ljava/lang/Object;)V
+	public fun testValues ()Ljava/util/List;
+}
+
+public final class me/tbsten/compose/preview/lab/field/MutableWithTestValuesField : me/tbsten/compose/preview/lab/field/MutablePreviewLabField {
+	public static final field $stable I
+	public fun <init> (Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;[Ljava/lang/Object;)V
+	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun View (Landroidx/compose/runtime/Composer;I)V
+	public final fun getBaseField ()Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;
+	public fun getValue ()Ljava/lang/Object;
+	public fun setValue (Ljava/lang/Object;)V
+	public fun testValues ()Ljava/util/List;
 }
 
 public final class me/tbsten/compose/preview/lab/field/NullableField : me/tbsten/compose/preview/lab/field/MutablePreviewLabField {
@@ -585,6 +595,7 @@ public final class me/tbsten/compose/preview/lab/field/NullableField : me/tbsten
 	public fun Content (Landroidx/compose/runtime/Composer;I)V
 	public fun getValue ()Ljava/lang/Object;
 	public fun setValue (Ljava/lang/Object;)V
+	public fun testValues ()Ljava/util/List;
 }
 
 public final class me/tbsten/compose/preview/lab/field/NullableFieldKt {
@@ -644,10 +655,12 @@ public abstract interface class me/tbsten/compose/preview/lab/field/PreviewLabFi
 	public abstract fun getInitialValue ()Ljava/lang/Object;
 	public abstract fun getLabel ()Ljava/lang/String;
 	public abstract fun getValue ()Ljava/lang/Object;
+	public fun testValues ()Ljava/util/List;
 }
 
 public final class me/tbsten/compose/preview/lab/field/PreviewLabField$DefaultImpls {
 	public static fun View (Lme/tbsten/compose/preview/lab/field/PreviewLabField;Landroidx/compose/runtime/Composer;I)V
+	public static fun testValues (Lme/tbsten/compose/preview/lab/field/PreviewLabField;)Ljava/util/List;
 }
 
 public final class me/tbsten/compose/preview/lab/field/ScreenSize {
@@ -688,6 +701,7 @@ public class me/tbsten/compose/preview/lab/field/ScreenSizeField : me/tbsten/com
 	public fun <init> (Ljava/lang/String;Ljava/util/List;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Lme/tbsten/compose/preview/lab/field/ScreenSize;)V
 	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Lme/tbsten/compose/preview/lab/field/ScreenSize;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun testValues ()Ljava/util/List;
 }
 
 public class me/tbsten/compose/preview/lab/field/SelectableField : me/tbsten/compose/preview/lab/field/MutablePreviewLabField {
@@ -696,6 +710,7 @@ public class me/tbsten/compose/preview/lab/field/SelectableField : me/tbsten/com
 	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Ljava/lang/Object;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun Content (Landroidx/compose/runtime/Composer;I)V
 	public final fun getChoices ()Ljava/util/List;
+	public fun testValues ()Ljava/util/List;
 }
 
 public final class me/tbsten/compose/preview/lab/field/SelectableField$Builder {
@@ -935,6 +950,7 @@ public final class me/tbsten/compose/preview/lab/field/StringField : me/tbsten/c
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;)V
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun testValues ()Ljava/util/List;
 }
 
 public final class me/tbsten/compose/preview/lab/field/StringFieldKt {
@@ -952,6 +968,7 @@ public class me/tbsten/compose/preview/lab/field/TransformField : me/tbsten/comp
 	public fun Content (Landroidx/compose/runtime/Composer;I)V
 	public fun getValue ()Ljava/lang/Object;
 	public fun setValue (Ljava/lang/Object;)V
+	public fun testValues ()Ljava/util/List;
 }
 
 public final class me/tbsten/compose/preview/lab/field/TransformFieldKt {
@@ -962,10 +979,28 @@ public final class me/tbsten/compose/preview/lab/field/TransformFieldKt {
 public final class me/tbsten/compose/preview/lab/field/WithHintField : me/tbsten/compose/preview/lab/field/TransformField {
 	public static final field $stable I
 	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun testValues ()Ljava/util/List;
 }
 
 public final class me/tbsten/compose/preview/lab/field/WithHintFieldKt {
 	public static final fun withHint (Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;[Lkotlin/Pair;)Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;
+}
+
+public final class me/tbsten/compose/preview/lab/field/WithTestValuesField : me/tbsten/compose/preview/lab/field/PreviewLabField {
+	public static final field $stable I
+	public fun <init> (Lme/tbsten/compose/preview/lab/field/PreviewLabField;[Ljava/lang/Object;)V
+	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun View (Landroidx/compose/runtime/Composer;I)V
+	public final fun getBaseField ()Lme/tbsten/compose/preview/lab/field/PreviewLabField;
+	public fun getInitialValue ()Ljava/lang/Object;
+	public fun getLabel ()Ljava/lang/String;
+	public fun getValue ()Ljava/lang/Object;
+	public fun testValues ()Ljava/util/List;
+}
+
+public final class me/tbsten/compose/preview/lab/field/WithTestValuesKt {
+	public static final fun withTestValues (Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;[Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/MutableWithTestValuesField;
+	public static final fun withTestValues (Lme/tbsten/compose/preview/lab/field/PreviewLabField;[Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/WithTestValuesField;
 }
 
 public final class me/tbsten/compose/preview/lab/field/WrapField : me/tbsten/compose/preview/lab/field/MutablePreviewLabField {
@@ -977,7 +1012,6 @@ public final class me/tbsten/compose/preview/lab/field/WrapField : me/tbsten/com
 }
 
 public final class me/tbsten/compose/preview/lab/field/WrapFieldKt {
-	public static final fun Test (Lme/tbsten/compose/preview/lab/PreviewLabScope;Landroidx/compose/runtime/Composer;I)V
 	public static final fun wrap (Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function3;)Lme/tbsten/compose/preview/lab/field/WrapField;
 }
 
