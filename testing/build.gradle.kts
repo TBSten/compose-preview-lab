@@ -96,5 +96,5 @@ publishConvention {
     artifactId = "testing"
     description =
         "Testing utilities for Compose Preview Lab. " +
-            "Provides TestPreviewLab composable and field access helpers for UI testing."
+        "Provides TestPreviewLab composable and field access helpers for UI testing."
 }
