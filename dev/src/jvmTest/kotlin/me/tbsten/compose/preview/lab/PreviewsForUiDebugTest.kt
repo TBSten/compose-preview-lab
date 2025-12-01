@@ -12,9 +12,9 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runDesktopComposeUiTest
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.boolean
-import io.kotest.property.arbitrary.filterNot
 import io.kotest.property.arbitrary.float
 import io.kotest.property.arbitrary.int
+import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.arbitrary.string
 import io.kotest.property.forAll
 import kotlin.test.Test
@@ -42,16 +42,14 @@ class PreviewsForUiDebugTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
 
-        forAll(Arb.int()) { intFieldValue ->
-            // Get the IntField
-            val intField = state.field<Int>("intValue")
+        val intField = state.field<Int>("intValue")
 
-            // Change the value
+        forAll(Arb.int().plusEdgecases(intField.testValues())) { intFieldValue ->
+            println("intFieldValue: $intFieldValue")
             intField.value = intFieldValue
-
             awaitIdle()
 
-            // Verify the preview updated
+            // Verify
             onNodeWithText("intValue: $intFieldValue")
                 .isDisplayed()
         }
@@ -61,17 +59,14 @@ class PreviewsForUiDebugTest {
     fun `StringField should update preview when value changes`() = runDesktopComposeUiTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
+        val stringField = state.field<String>("stringValue")
 
-        forAll(Arb.string()) { stringFieldValue ->
-            // Get the StringField
-            val stringField = state.field<String>("stringValue")
-
-            // Change the value
+        forAll(Arb.string().plusEdgecases(stringField.testValues())) { stringFieldValue ->
+            println("stringFieldValue: $stringFieldValue")
             stringField.value = stringFieldValue
-
             awaitIdle()
 
-            // Verify the preview updated
+            // Verify
             onNodeWithText("stringValue: $stringFieldValue")
                 .isDisplayed()
         }
@@ -81,17 +76,14 @@ class PreviewsForUiDebugTest {
     fun `BooleanField should toggle preview when value changes`() = runDesktopComposeUiTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
+        val boolField = state.field<Boolean>("booleanValue")
 
-        forAll(Arb.boolean()) { boolFieldValue ->
-            // Get the BooleanField
-            val boolField = state.field<Boolean>("booleanValue")
-
-            // Change the value
+        forAll(Arb.boolean().plusEdgecases(boolField.testValues())) { boolFieldValue ->
+            println("boolFieldValue: $boolFieldValue")
             boolField.value = boolFieldValue
-
             awaitIdle()
 
-            // Verify the preview updated
+            // Verify
             onNodeWithText("booleanValue: $boolFieldValue")
                 .isDisplayed()
         }
@@ -101,18 +93,14 @@ class PreviewsForUiDebugTest {
     fun `FloatField should update preview when value changes`() = runDesktopComposeUiTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
+        val floatField = state.field<Float>("floatField")
 
-        // Exclude NaN and Infinity values that can cause issues with text matching
-        forAll(Arb.float().filterNot { it.isNaN() || it.isInfinite() }) { floatFieldValue ->
-            // Get the FloatField
-            val floatField = state.field<Float>("floatField")
-
-            // Change the value
+        forAll(Arb.float().plusEdgecases(floatField.testValues())) { floatFieldValue ->
+            println("floatFieldValue: $floatFieldValue")
             floatField.value = floatFieldValue
-
             awaitIdle()
 
-            // Verify the preview updated (there are 2 floatField items in the UI, so use onAllNodes)
+            // Verify
             onAllNodesWithText("floatField: $floatFieldValue")
                 .fetchSemanticsNodes()
                 .isNotEmpty()
