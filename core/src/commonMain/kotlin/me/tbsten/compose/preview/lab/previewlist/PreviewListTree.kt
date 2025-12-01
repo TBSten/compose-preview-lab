@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.github.takahirom.rin.rememberRetained
 import me.tbsten.compose.preview.lab.PreviewLabPreview
 
 @Composable
@@ -18,7 +18,7 @@ internal fun PreviewListTree(
     onAddToComparePanel: (PreviewLabPreview) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val tree = rememberRetained(key = "$previews") {
+    val tree = remember(key1 = "$previews") {
         previews
             .toTree()
             .collapse()

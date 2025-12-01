@@ -5,7 +5,7 @@ import me.tbsten.compose.preview.lab.sample.rememberPreviewLabGalleryState
 
 fun main(): Unit = application {
     PreviewLabGalleryWindows(
-        previewList = uiLib.PreviewList + helloComposePreviewLab.PreviewList,
+        previewList = app.PreviewList + uiLib.PreviewList + helloComposePreviewLab.PreviewList,
         featuredFileList = app.FeaturedFileList,
         openFileHandler = UrlOpenFileHandler(
             baseUrl = "https://github.com/TBSten/compose-preview-lab/blob/main/integrationTest/",

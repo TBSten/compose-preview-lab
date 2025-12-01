@@ -142,6 +142,9 @@ class WithHintField<Value> internal constructor(
     transform = { it },
     reverse = { it },
 ) {
+    override fun testValues(): List<Value> = super.testValues() +
+        (baseField.testValues() + choices.values).distinct()
+
     /**
      * Finds the deepest non-WithHintField base field by traversing nested WithHintField instances.
      */

@@ -41,6 +41,7 @@ include(":core")
 include(":annotation")
 include(":ksp-plugin")
 include(":gradle-plugin")
+include(":testing")
 // include(":intellij-plugin")
 
 // for dev

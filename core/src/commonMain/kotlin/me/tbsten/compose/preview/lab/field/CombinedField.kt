@@ -69,6 +69,16 @@ open class CombinedField<Base, Value>(
     label = label,
     initialValue = combine(fields.map { it.value }),
 ) {
+    override fun testValues(): List<Value> =
+        super.testValues() + cartesianProduct(fields.map { it.testValues() }).map { combine(it) }
+
+    private fun <T> cartesianProduct(lists: List<List<T>>): List<List<T>> {
+        if (lists.isEmpty()) return listOf(emptyList())
+        return lists.fold(listOf(emptyList())) { acc, list ->
+            acc.flatMap { existing -> list.map { existing + it } }
+        }
+    }
+
     private val _value by derivedStateOf {
         combine(fields.map { it.value })
     }
@@ -76,9 +86,9 @@ open class CombinedField<Base, Value>(
     override var value: Value
         get() = _value
         set(value) {
-            split(value).forEachIndexed { index, value ->
-                @Suppress("CAST_NEVER_SUCCEEDS")
-                fields[index].value = value as Nothing
+            split(value).forEachIndexed { index, splitValue ->
+                @Suppress("UNCHECKED_CAST")
+                (fields[index] as MutablePreviewLabField<Any?>).value = splitValue
             }
         }
 

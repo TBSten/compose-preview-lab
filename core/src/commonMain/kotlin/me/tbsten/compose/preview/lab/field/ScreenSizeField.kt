@@ -59,6 +59,8 @@ open class ScreenSizeField(
     type = type,
     initialValue = initialValue,
 ) {
+    override fun testValues(): List<ScreenSize> = super.testValues() + sizes
+
     @Composable
     override fun Content() {
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {

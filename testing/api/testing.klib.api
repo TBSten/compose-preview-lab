@@ -1,0 +1,11 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <me.tbsten.compose.preview.lab:testing>
+final fun me.tbsten.compose.preview.lab.testing/TestPreviewLab(me.tbsten.compose.preview.lab/PreviewLabState, androidx.lifecycle/ViewModelStoreOwner?, androidx.lifecycle/LifecycleOwner?, kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // me.tbsten.compose.preview.lab.testing/TestPreviewLab|TestPreviewLab(me.tbsten.compose.preview.lab.PreviewLabState;androidx.lifecycle.ViewModelStoreOwner?;androidx.lifecycle.LifecycleOwner?;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final inline fun <#A: reified kotlin/Any?> (me.tbsten.compose.preview.lab/PreviewLabState).me.tbsten.compose.preview.lab.testing/field(kotlin/String): me.tbsten.compose.preview.lab.field/MutablePreviewLabField<#A> // me.tbsten.compose.preview.lab.testing/field|field@me.tbsten.compose.preview.lab.PreviewLabState(kotlin.String){0§<kotlin.Any?>}[0]
+final inline fun <#A: reified kotlin/Any?> (me.tbsten.compose.preview.lab/PreviewLabState).me.tbsten.compose.preview.lab.testing/fieldOrNull(kotlin/String): me.tbsten.compose.preview.lab.field/MutablePreviewLabField<#A>? // me.tbsten.compose.preview.lab.testing/fieldOrNull|fieldOrNull@me.tbsten.compose.preview.lab.PreviewLabState(kotlin.String){0§<kotlin.Any?>}[0]

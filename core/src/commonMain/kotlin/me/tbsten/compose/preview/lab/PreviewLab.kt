@@ -91,7 +91,7 @@ import me.tbsten.compose.preview.lab.util.toDpOffset
  * ```kt
  * val myPreviewLab = PreviewLab(
  *   defaultScreenSizes = ScreenSize.AllPresets,
- *   defaultState = { rememberRetained { PreviewLabState() } }
+ *   defaultState = { remember { PreviewLabState() } }
  * )
  *
  * @Composable
@@ -134,7 +134,7 @@ import me.tbsten.compose.preview.lab.util.toDpOffset
  *
  *   // Custom retained state (requires Rin library)
  *   PreviewLab(
- *     defaultState = { rememberRetained { PreviewLabState() } }
+ *     defaultState = { remember { PreviewLabState() } }
  *   )
  *   ```
  *

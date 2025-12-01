@@ -14,7 +14,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
     androidTarget {
         // https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
         @Suppress("OPT_IN_USAGE")
@@ -81,6 +81,8 @@ kotlin {
         jvmTest.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(compose.desktop.uiTestJUnit4)
+            implementation("me.tbsten.compose.preview.lab:testing:${libs.versions.composePreviewLab.get()}")
+            implementation(libs.kotestProperty)
         }
 
         androidMain.dependencies {

@@ -42,6 +42,8 @@ open class BooleanField(label: String, initialValue: Boolean) :
         label = label,
         initialValue = initialValue,
     ) {
+    override fun testValues(): List<Boolean> = super.testValues() + listOf(true, false)
+
     @Composable
     override fun Content() {
         BooleanSwitch(

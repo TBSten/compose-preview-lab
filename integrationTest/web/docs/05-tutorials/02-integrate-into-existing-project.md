@@ -134,8 +134,8 @@ val buildDevelopmentPreviewLabGallery by tasks.registering(Copy::class) {
 3. Pull Request 単位でプレビュー URL を発行し、レビュー担当者がブラウザで UI カタログを確認できるようにする
 
 :::tip 関連ドキュメント
-- [Build Settings](../04-guides/06-build-settings.md) – `composePreviewLab` の詳細な設定  
-- [Featured Files](../04-guides/07-featured-files.md) – 重要な Preview をグループ化する方法  
-- [UI カタログで Review 体験を向上する](./improve-ui-review-by-ui-catalog.md) – PR レビューとの統合例  
+- [Build Settings](../guides/build-settings) – `composePreviewLab` の詳細な設定  
+- [Featured Files](../guides/featured-files) – 重要な Preview をグループ化する方法  
+- [UI カタログで Review 体験を向上する](./improve-ui-review-by-ui-catalog) – PR レビューとの統合例  
 :::
 

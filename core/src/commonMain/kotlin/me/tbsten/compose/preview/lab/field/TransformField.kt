@@ -31,6 +31,8 @@ open class TransformField<BaseValue, TransformedValue>(
     label = label,
     initialValue = initialValue,
 ) {
+    override fun testValues(): List<TransformedValue> = super.testValues() + baseField.testValues().map(transform)
+
     override var value: TransformedValue
         get() = transform(baseField.value)
         set(value) {
