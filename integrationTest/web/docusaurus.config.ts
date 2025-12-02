@@ -72,7 +72,7 @@ const config: Config = {
           label: 'Docs',
         },
         {
-          href: 'https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/compose-preview-lab/compose-preview-lab-gallery/',
+          href: 'https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/compose-preview-lab-gallery/',
           label: 'Online Sample',
           position: 'left',
         },
