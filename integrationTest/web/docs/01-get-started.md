@@ -32,7 +32,7 @@ Compose Preview Lab を活用することで以下のようなことが可能に
 Compose Preview Lab を学習するおすすめのロードマップを以下に示します。
 
 1. **Online Sample**
-    - [Web 上で実際に触ることのできるサンプル](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/) があります。まずはこれに触れてみてください！
+    - [Web 上で実際に触ることのできるサンプル](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/compose-preview-lab-gallery/) があります。まずはこれに触れてみてください！
 2. **Compose Preview Lab の中核機能を学ぶ**
     - まだ理解していない場合は Compose Preview Lab の主要な概念について以下のドキュメントを参考にして学びましょう。
     - [Basic Architecture](./basic-architecture)

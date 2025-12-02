@@ -72,7 +72,7 @@ const config: Config = {
           label: 'Docs',
         },
         {
-          href: 'https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/',
+          href: './compose-preview-lab-gallery/',
           label: 'Online Sample',
           position: 'left',
         },
@@ -96,7 +96,7 @@ const config: Config = {
           items: [
             {
               label: 'Sample',
-              href: 'https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/',
+              href: 'https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/compose-preview-lab-gallery/',
             },
             {
               label: 'DeepWiki',
