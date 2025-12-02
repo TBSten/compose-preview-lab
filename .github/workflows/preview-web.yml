@@ -5,7 +5,8 @@ on:
       - main
 
 jobs:
-  deploy-to-web:
+  deploy-web-documentation:
+    name: Deploy Web Documentation
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -21,16 +22,22 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
+      - name: Setup npm
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "npm"
+      - name: Setup safe-chain
+        run: |
+          npm i -g @aikidosec/safe-chain
+          safe-chain setup-ci
 
-      - run: mkdir ./public
+      - run: mkdir -p ./public
 
       - name: Build publish wasmJs contents
-        run: cd integrationTest && ./gradlew :app:wasmJsBrowserDistribution
-      - run: cp -r ./integrationTest/app/build/dist/wasmJs/productionExecutable ./public/wasmJs
-
-      - name: Build publish js contents
-        run: cd integrationTest && ./gradlew :app:jsBrowserDistribution
-      - run: cp -r ./integrationTest/app/build/dist/js/productionExecutable ./public/js
+        run: cd integrationTest && ./gradlew :app:buildProductionPreviewLabGallery
+      - run: cd integrationTest/web && npm ci && npm run build
+      - run: cp -r ./integrationTest/web/build ./public/js
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
