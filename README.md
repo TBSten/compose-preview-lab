@@ -9,7 +9,7 @@
  |
 <a href="./README.ja.md">日本語</a>
  |
-<a href="https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/compose-preview-lab/compose-preview-lab-gallery/">Sample</a>
+<a href="https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/compose-preview-lab-gallery/">Sample</a>
  |
 <a href="https://deepwiki.com/TBSten/compose-preview-lab">DeepWiki</a>
 </p>
@@ -26,7 +26,7 @@ Compose Multiplatform is supported.
 
 ## Try online
 
-- [Online Sample](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/compose-preview-lab/compose-preview-lab-gallery/)
+- [Online Sample](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/compose-preview-lab-gallery/)
 
 ## Setup
 
@@ -186,5 +186,5 @@ The table below shows the differences between the two.
 
 ### For those who contribute to development
 
-- [Online Sample](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/compose-preview-lab/compose-preview-lab-gallery/)
+- [Online Sample](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/compose-preview-lab-gallery/)
 - [WIP] [Contribution Guide](https://github.com/TBSten/compose-preview-lab/blob/main/docs/contribute-guide.md)

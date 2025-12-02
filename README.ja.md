@@ -9,7 +9,7 @@
  |
 <a href="./README.ja.md">日本語</a>
  |
-<a href="https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/compose-preview-lab/compose-preview-lab-gallery/">Sample</a>
+<a href="https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/compose-preview-lab-gallery/">Sample</a>
  |
 <a href="https://deepwiki.com/TBSten/compose-preview-lab">DeepWiki</a>
 </p>
@@ -24,7 +24,7 @@ Compose Multiplatformに対応しています。
 
 ## Try online
 
-- [Online Sample](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/compose-preview-lab/compose-preview-lab-gallery/)
+- [Online Sample](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/compose-preview-lab-gallery/)
 
 ## セットアップ
 
@@ -178,5 +178,5 @@ Compose Preview Labと類似したソリューションとして、Jetbrainsに�
 
 ### 開発に貢献する方へ
 
-- [Online Sample](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/compose-preview-lab/compose-preview-lab-gallery/)
+- [Online Sample](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/compose-preview-lab-gallery/)
 - [WIP] [コントリビューションガイド](https://github.com/TBSten/compose-preview-lab/blob/main/docs/contribute-guide.md)
