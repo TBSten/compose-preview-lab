@@ -24,7 +24,7 @@ Compose Preview Lab の UI カタログ機能を使うと、Pull Request と連�
 
 ## 1. UI カタログを PR と紐付ける
 
-まずは、[UI カタログを構築する](./preview-ui-catalog.md) で説明したように、`PreviewList` を使ったギャラリーを用意します。
+まずは、[UI カタログを構築する](./preview-ui-catalog) で説明したように、`PreviewList` を使ったギャラリーを用意します。
 
 ```kt title="Desktop / Web エントリ例"
 fun main() = previewLabApplication(
@@ -121,7 +121,7 @@ fun ReviewNotesPreview() = PreviewLab {
 
 ## 関連ドキュメント
 
-- [Preview を収集して UI カタログを構築する](./preview-ui-catalog.md)  
+- [Preview を収集して UI カタログを構築する](./preview-ui-catalog)  
 - [Featured Files](../04-guides/07-featured-files.md)  
 - [Events](../04-guides/03-events.md)  
 

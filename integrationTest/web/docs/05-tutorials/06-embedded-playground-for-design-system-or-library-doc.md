@@ -47,8 +47,8 @@ export default function EmbeddedPreviewLab({ previewId }: { previewId: string })
   return (
     <iframe
       src={url}
-      loading=\"lazy\"
-      className=\"embeddedPreviewLabIframe\"
+      loading="lazy"
+      className="embeddedPreviewLabIframe"
     />
   );
 }
@@ -63,7 +63,7 @@ import EmbeddedPreviewLab from '@site/src/components/EmbeddedPreviewLab';
 
 `MyButton` は プライマリ / セカンダリ / テキストボタン などのバリエーションを持つボタンコンポーネントです。
 
-<EmbeddedPreviewLab previewId=\"ButtonVariantsPreview\" />
+<EmbeddedPreviewLab previewId="ButtonVariantsPreview" />
 ```
 
 :::tip previewId の決め方

@@ -65,7 +65,7 @@ kotlin {
                 implementation(compose.components.uiToolingPreview)
 
                 // ✅ Compose Preview Lab 本体
-                implementation(\"me.tbsten.compose.preview.lab:core:<compose-preview-lab-version>\")
+                implementation("me.tbsten.compose.preview.lab:core:<compose-preview-lab-version>")
             }
         }
     }
@@ -73,12 +73,12 @@ kotlin {
 
 dependencies {
     // ✅ Compose Preview Lab KSP プラグイン
-    val composePreviewLabKsp = \"me.tbsten.compose.preview.lab:ksp-plugin:<compose-preview-lab-version>\"
-    add(\"kspCommonMainMetadata\", composePreviewLabKsp)
-    add(\"kspAndroid\", composePreviewLabKsp)
-    add(\"kspJvm\", composePreviewLabKsp)
-    add(\"kspJs\", composePreviewLabksp)
-    add(\"kspWasmJs\", composePreviewLabksp)
+    val composePreviewLabKsp = "me.tbsten.compose.preview.lab:ksp-plugin:<compose-preview-lab-version>"
+    add("kspCommonMainMetadata", composePreviewLabKsp)
+    add("kspAndroid", composePreviewLabKsp)
+    add("kspJvm", composePreviewLabKsp)
+    add("kspJs", composePreviewLabksp)
+    add("kspWasmJs", composePreviewLabksp)
 }
 ```
 
@@ -117,14 +117,14 @@ Kotlin Multiplatform を利用していない純粋な Android プロジェク�
 
 ```kotlin title="app/build.gradle.kts"
 plugins {
-    id(\"com.android.application\")
-    kotlin(\"android\")
+    id("com.android.application")
+    kotlin("android")
 
     // KSP
-    id(\"com.google.devtools.ksp\") version \"<ksp-version>\"
+    id("com.google.devtools.ksp") version "<ksp-version>"
 
     // Compose Preview Lab Gradle プラグイン
-    id(\"me.tbsten.compose.preview.lab\") version \"<compose-preview-lab-version>\"
+    id("me.tbsten.compose.preview.lab") version "<compose-preview-lab-version>"
 }
 
 android {
@@ -132,14 +132,14 @@ android {
 }
 
 dependencies {
-    implementation(\"androidx.compose.ui:ui:<compose-version>\")
-    implementation(\"androidx.compose.material3:material3:<version>\")
+    implementation("androidx.compose.ui:ui:<compose-version>")
+    implementation("androidx.compose.material3:material3:<version>")
 
     // ✅ Compose Preview Lab 本体
-    implementation(\"me.tbsten.compose.preview.lab:core:<compose-preview-lab-version>\")
+    implementation("me.tbsten.compose.preview.lab:core:<compose-preview-lab-version>")
 
     // ✅ KSP プラグイン
-    ksp(\"me.tbsten.compose.preview.lab:ksp-plugin:<compose-preview-lab-version>\")
+    ksp("me.tbsten.compose.preview.lab:ksp-plugin:<compose-preview-lab-version>")
 }
 ```
 
@@ -152,14 +152,14 @@ Android プロジェクト単体でも利用できますが、ブラウザ上で
 
 インストールが完了したら、`@Preview` を `PreviewLab` でラップして実際に動かしてみましょう。
 
-```kotlin title=\"MyButtonPreview.kt\"
+```kotlin title="MyButtonPreview.kt"
 @Preview
 @Composable
 fun MyButtonPreview() = PreviewLab {
-    val text = fieldValue { StringField(\"text\", \"Click Me\") }
+    val text = fieldValue { StringField("text", "Click Me") }
     MyButton(
         text = text,
-        onClick = { onEvent(\"MyButton.onClick\") }
+        onClick = { onEvent("MyButton.onClick") }
     )
 }
 ```

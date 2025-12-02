@@ -131,7 +131,7 @@ fun LoginFormPreview() = PreviewLab {
 ```
 
 :::tip ベストプラクティス
-- 意味のあるイベント名を付ける（\"onClick\" ではなく、\"LoginButton clicked\" など）  
+- 意味のあるイベント名を付ける（"onClick" ではなく、"LoginButton clicked" など）  
 - 重要なパラメータは `description` に含めて、後から動作を再現しやすくする  
 - すべての主要なユーザー操作（クリック、スクロール、フォーム送信など）に `onEvent` / `withEvent` を仕込んでおく  
 - `PreviewLabState` と UI テスト（`runDesktopComposeUiTest` など）を組み合わせて、イベントが期待どおりに発火しているか自動テストで検証する  
