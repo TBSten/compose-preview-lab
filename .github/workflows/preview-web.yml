@@ -27,6 +27,7 @@ jobs:
         with:
           node-version: "22"
           cache: "npm"
+          cache-dependency-path: ./integrationTest/web/package-lock.json
       - name: Setup safe-chain
         run: |
           npm i -g @aikidosec/safe-chain
