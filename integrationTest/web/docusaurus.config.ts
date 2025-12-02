@@ -72,7 +72,7 @@ const config: Config = {
           label: 'Docs',
         },
         {
-          href: './compose-preview-lab-gallery/',
+          href: 'compose-preview-lab-gallery/',
           label: 'Online Sample',
           position: 'left',
         },
