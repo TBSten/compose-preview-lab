@@ -109,7 +109,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Compose Preview Lab. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} TBSten`,
     },
     prism: {
       theme: prismThemes.github,

@@ -109,7 +109,7 @@ fun MyScreenPreview() = PreviewLab {
 Compose Preview Lab の強みの 1 つは、**Web 上の UI カタログ** を簡単に構築できることです。  
 `integrationTest/app` では、次のようなタスクで JS ビルド成果物を `compose-preview-lab-gallery` にコピーしています。
 
-```kotlin title="integrationTest/app/build.gradle.kts 抜粋"
+```kotlin title="integrationTest/app/build.gradle.kts"
 val cleanPreviewLabGallery by tasks.registering(Delete::class) {
     delete(layout.buildDirectory.dir("compose-preview-lab-gallery"))
 }
