@@ -1,6 +1,6 @@
 ---
-title: VRT (Visual Regression Testing)（構想）
-sidebar_position: 5
+title: "【WIP】 VRT (Visual Regression Testing)（構想）"
+sidebar_position: 3
 ---
 
 :::warning
@@ -21,7 +21,7 @@ Visual Regression Testing（ビジュアルリグレッションテスト）に�
 :::
 
 現時点では VRT 専用の API はまだありませんが、  
-`PreviewList` と Compose UI のスクリーンショット取得機能を組み合わせることで、  
+`testValues()` と Compose UI のスクリーンショット取得機能を組み合わせることで、  
 将来的に自動化された VRT ワークフローを構築できる余地があります。
 
 関連 Issue:  
