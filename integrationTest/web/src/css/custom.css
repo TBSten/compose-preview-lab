@@ -37,12 +37,15 @@
   --ifm-color-primary-lighter: #d8b4fe;
   --ifm-color-primary-lightest: #f3e8ff;
   --docusaurus-highlighted-code-line-bg: rgba(162, 0, 255, 0.4);
+
+  --ifm-navbar-background-color: #140520;
 }
 
 [data-theme='light'] {
   /* Light Mode Background Tint */
   --ifm-background-color: #faf5ff; /* Light purple tint background */
   --ifm-background-surface-color: #ffffff;
+  --ifm-navbar-background-color: #faf5ff;
 
   /* Homepage Design Variables for Light Mode */
   --hero-gradient: linear-gradient(180deg, #f3e8ff 0%, #faf5ff 100%); /* Stronger purple gradient */
