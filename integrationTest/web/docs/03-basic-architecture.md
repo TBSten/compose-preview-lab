@@ -77,5 +77,4 @@ Preview ごとに PreviewLab を囲う必要があります。
 
 - Build Tooling のセットアップ方法を [Install](./install) のドキュメントで学習してください。
 - PreviewLab の基本機能である [Field](./04-guides/02-fields/index.md), [Event](./04-guides/03-events.md) についてそれぞれのドキュメントで学習してください。
-- PreviewLab のオプションを [PreviewLab の KDoc](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab/-preview-lab/index.html#182811969%2FFunctions%2F-2011752812) を参照して学習してください。
 - [Tutorials](./tutorials) の中から気になるもの・あなたの状況に合うものを選択して、あなたのアプリで Compose Preview Lab を活用し初めてください！
