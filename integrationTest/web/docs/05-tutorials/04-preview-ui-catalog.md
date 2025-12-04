@@ -92,7 +92,7 @@ fun App() {
 
 ## 4. Featured Files で重要な Preview をグループ化
 
-多数の Preview がある場合は、[Featured Files](../04-guides/07-featured-files.md) を使ってグループ化すると便利です。
+多数の Preview がある場合は、[Featured Files](../guides/featured-files) を使ってグループ化すると便利です。
 
 ```text
 .composepreviewlab/featured/

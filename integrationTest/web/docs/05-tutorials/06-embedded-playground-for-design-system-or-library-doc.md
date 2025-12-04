@@ -111,7 +111,7 @@ fun ButtonWithDesignTabPreview() = PreviewLab(
 
 ## 5. 関連ドキュメント
 
-- [Inspector Tab](../04-guides/05-inspector-tab.md) – カスタムタブの追加方法  
-- [Fields](../04-guides/02-fields/index.md) – Playground で Props を操作可能にするための仕組み  
-- [Featured Files](../04-guides/07-featured-files.md) – デモ用 Preview をグループ化する  
+- [Inspector Tab](../guides/inspector-tab) – カスタムタブの追加方法  
+- [Fields](../guides/fields/index) – Playground で Props を操作可能にするための仕組み  
+- [Featured Files](../guides/featured-files) – デモ用 Preview をグループ化する  
 

@@ -132,8 +132,8 @@ fun main() = previewLabApplication(
 ## 5. 次のステップ
 
 - さらに多くのコンポーネントに `PreviewLab` を適用し、Field と Events を増やす  
-- [All Fields](../04-guides/02-fields/02-all-fields.md) で利用可能な Field の一覧を確認する  
-- [Featured Files](../04-guides/07-featured-files.md) を使って重要な Preview をグループ化する  
+- [All Fields](../guides/fields/all-fields) で利用可能な Field の一覧を確認する  
+- [Featured Files](../guides/featured-files) を使って重要な Preview をグループ化する  
 - [UI カタログを構築する](./preview-ui-catalog) チュートリアルに進む  
 
 
