@@ -61,7 +61,7 @@ fun previewLabApplication(
 ) {
     ComposeViewport(rootElement) {
         PreviewLabGallery(
-            previewList = previewList,
+            previewList = previewList.sortedBy { it.displayName },
             featuredFileList = featuredFileList,
             openFileHandler = openFileHandler,
             state = state,
