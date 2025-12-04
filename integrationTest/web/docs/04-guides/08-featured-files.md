@@ -1,6 +1,6 @@
 ---
 title: Featured Files
-sidebar_position: 7
+sidebar_position: 8
 ---
 
 :::warning
@@ -199,6 +199,7 @@ data object FeaturedFileList : Map<String, List<String>> by mapOf(
 
 ## 次のステップ
 
-- [Fields](./02-fields/index.md) で Preview をインタラクティブにする
-- [Events](./03-events.md) でイベントハンドリングを学ぶ
+- [Fields](./02-fields/index) で Preview をインタラクティブにする
+- [Events](./03-events) でイベントハンドリングを学ぶ
+- [Collect Preview](./04-collect-preview) で PreviewList の自動生成について詳しく学ぶ
 

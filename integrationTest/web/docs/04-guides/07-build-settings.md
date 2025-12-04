@@ -1,6 +1,6 @@
 ---
 title: Build Settings
-sidebar_position: 6
+sidebar_position: 7
 ---
 
 :::warning
@@ -92,7 +92,7 @@ composePreviewLab {
 ## 5. generateFeaturedFiles
 
 `.composepreviewlab/featured/` ディレクトリから **FeaturedFileList** を生成するかどうかを制御します。  
-詳しくは [Featured Files](./07-featured-files.md) を参照してください。
+詳しくは [Featured Files](./featured-files) を参照してください。
 
 ```kotlin
 composePreviewLab {
