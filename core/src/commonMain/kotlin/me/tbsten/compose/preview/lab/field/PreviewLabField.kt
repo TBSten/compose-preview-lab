@@ -5,6 +5,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 
+fun defaultValueCode(label: String) = "/* TODO Set $label value here */"
+
 /**
  * Field class specified in PreviewLabScope.field/fieldValue.
  * In reality, it may be better to use the value property, getValue method, and setValue method to implement MutableState.
@@ -20,6 +22,7 @@ interface PreviewLabField<Value> {
     val label: String
     val initialValue: Value
     val value: Value
+    fun valueCode(): String = defaultValueCode(label)
     fun testValues(): List<Value> = listOf(initialValue)
 
     /**
