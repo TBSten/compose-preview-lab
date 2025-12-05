@@ -6,8 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import me.tbsten.compose.preview.lab.PreviewLabGallery
+import me.tbsten.compose.preview.lab.PreviewLabGalleryState
 
 class AppActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,10 +17,13 @@ class AppActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PreviewLabGallery(
-                state = rememberPreviewLabGalleryState(
-                    initialGroupName = app.FeaturedFileList.hello_compose_preview_lab.first(),
-                    initialPreview = helloComposePreviewLab.PreviewList.AboutComposePreviewLab,
-                ),
+                state = remember {
+                    PreviewLabGalleryState(
+                        initialSelectedPreview =
+                            app.FeaturedFileList.hello_compose_preview_lab.first() to
+                                helloComposePreviewLab.PreviewList.AboutComposePreviewLab,
+                    )
+                },
                 previewList = app.PreviewList + uiLib.PreviewList + helloComposePreviewLab.PreviewList,
                 featuredFileList = app.FeaturedFileList,
                 modifier = Modifier

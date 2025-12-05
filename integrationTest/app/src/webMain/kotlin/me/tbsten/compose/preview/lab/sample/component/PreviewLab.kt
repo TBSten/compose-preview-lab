@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.PreviewLab
 import me.tbsten.compose.preview.lab.field.ScreenSize
 
-internal val previewLab = PreviewLab(
+val previewLab = PreviewLab(
     defaultScreenSizes = listOf(ScreenSize(320.dp, 400.dp)) + ScreenSize.SmartphoneAndDesktops,
     contentRoot = { content ->
         Column(Modifier.padding(16.dp)) {
