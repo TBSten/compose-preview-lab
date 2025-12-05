@@ -138,7 +138,19 @@ interface InspectorTab {
 
             SelectionContainer {
                 Text(
-                    text = code ?: "No code",
+                    text = if (code != null) {
+                        state.scope.fields.fold(code) { code, field ->
+                            val valueCode = field.valueCode()
+                            code
+                                .replace(
+                                    Regex("""fieldValue.*?\{.*?"${field.label}".*?}"""),
+                                ) {
+                                    valueCode
+                                }
+                        }
+                    } else {
+                        "No code"
+                    },
                     modifier = Modifier
                         .horizontalScroll(rememberScrollState())
                         .padding(12.dp),
