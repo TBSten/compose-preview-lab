@@ -3,10 +3,6 @@ on:
   release:
     types: [ released, prereleased ]
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version to release.'
-        required: true
 
 jobs:
   publish-dokka:
@@ -26,6 +22,9 @@ jobs:
           java-version: '17'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
+      - name: Resolve version from Gradle
+        id: get_version
+        run: echo "version=$(./gradlew -q logVersion)" >> "$GITHUB_OUTPUT"
       - name: Build Dokka Documentation
         run: ./gradlew :dokkaDocs:dokkaGenerate
       - name: Publish to Github Pages
@@ -33,7 +32,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dokkaDocs/build/dokka/html
-          destination_dir: dokka/${{ github.event.release.tag_name }}/
+          destination_dir: dokka/${{ steps.get_version.outputs.version }}/
           keep_files: true
 
   publish-libraries:
