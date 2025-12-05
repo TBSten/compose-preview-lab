@@ -27,11 +27,13 @@ open class TransformField<BaseValue, TransformedValue>(
     private val reverse: (TransformedValue) -> BaseValue,
     label: String = baseField.label,
     initialValue: TransformedValue = transform(baseField.value),
+    private val valueCode: (TransformedValue) -> String = { defaultValueCode(label) },
 ) : MutablePreviewLabField<TransformedValue>(
     label = label,
     initialValue = initialValue,
 ) {
     override fun testValues(): List<TransformedValue> = super.testValues() + baseField.testValues().map(transform)
+    override fun valueCode(): String = valueCode(value)
 
     override var value: TransformedValue
         get() = transform(baseField.value)

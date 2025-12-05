@@ -106,6 +106,8 @@ class NullableField<Value : Any> internal constructor(private val baseField: Pre
             }
         }
 
+    override fun valueCode(): String = if (value == null) "null" else baseField.valueCode()
+
     @Composable
     override fun Content() {
 //        val baseFieldContent = remember { movableContentOf { baseField.Content() } }

@@ -142,6 +142,8 @@ class WithHintField<Value> internal constructor(
     transform = { it },
     reverse = { it },
 ) {
+    override fun valueCode(): String = baseField.valueCode()
+
     override fun testValues(): List<Value> = super.testValues() +
         (baseField.testValues() + choices.values).distinct()
 

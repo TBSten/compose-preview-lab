@@ -63,10 +63,13 @@ abstract class NumberField<Num : Number>(
     private val fromString: (String) -> Num,
     private val toString: (Num) -> String = { it.toString() },
     private val inputType: InputType = InputType.TextField(),
+    private val valueCode: (Num) -> String,
 ) : MutablePreviewLabField<Num>(
     label = label,
     initialValue = initialValue,
 ) {
+    override fun valueCode(): String = valueCode.invoke(value)
+
     @Composable
     override fun Content() = when (inputType) {
         is InputType.TextField -> TextFieldContent(
@@ -160,6 +163,7 @@ open class IntField(label: String, initialValue: Int, inputType: InputType = Inp
         fromString = { it.toInt() },
         toString = { it.toString() },
         inputType = inputType,
+        valueCode = { "$it" },
     )
 
 /**
@@ -216,6 +220,7 @@ open class LongField(label: String, initialValue: Long, inputType: InputType = I
         fromString = { it.toLong() },
         toString = { it.toString() },
         inputType = inputType,
+        valueCode = { "${it}L" },
     )
 
 /**
@@ -271,6 +276,7 @@ open class ByteField(label: String, initialValue: Byte, inputType: InputType = I
         fromString = { it.toByte() },
         toString = { it.toString() },
         inputType = inputType,
+        valueCode = { "$it" },
     )
 
 /**
@@ -328,6 +334,7 @@ open class DoubleField(label: String, initialValue: Double, inputType: InputType
         fromString = { it.toDouble() },
         toString = { it.toString() },
         inputType = inputType,
+        valueCode = { "${it}d" },
     )
 
 /**
@@ -384,4 +391,5 @@ open class FloatField(label: String, initialValue: Float, inputType: InputType =
         fromString = { it.toFloat() },
         toString = { it.toString() },
         inputType = inputType,
+        valueCode = { "${it}f" },
     )

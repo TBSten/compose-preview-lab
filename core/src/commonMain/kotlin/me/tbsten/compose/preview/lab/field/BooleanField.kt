@@ -43,6 +43,7 @@ open class BooleanField(label: String, initialValue: Boolean) :
         initialValue = initialValue,
     ) {
     override fun testValues(): List<Boolean> = super.testValues() + listOf(true, false)
+    override fun valueCode(): String = "$value"
 
     @Composable
     override fun Content() {

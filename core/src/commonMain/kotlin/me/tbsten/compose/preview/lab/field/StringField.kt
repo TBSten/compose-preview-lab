@@ -61,6 +61,8 @@ class StringField(
         listOf(initialValue, "")
             .toSet().toList()
 
+    override fun valueCode(): String = """"$value""""
+
     @Composable
     override fun Content() {
         TextFieldContent<String>(

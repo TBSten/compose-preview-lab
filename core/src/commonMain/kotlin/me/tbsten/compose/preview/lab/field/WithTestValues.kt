@@ -15,7 +15,8 @@ class MutableWithTestValuesField<Value>(
     initialValue = baseField.initialValue,
 ) {
     override var value: Value by baseField::value
-    override fun testValues(): List<Value> = super.testValues() + additionalTestValues
+    override fun testValues(): List<Value> = baseField.testValues() + additionalTestValues
+    override fun valueCode(): String = baseField.valueCode()
 
     @Composable
     override fun View() = baseField.View()
