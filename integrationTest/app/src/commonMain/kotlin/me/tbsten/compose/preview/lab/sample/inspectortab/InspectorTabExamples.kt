@@ -19,7 +19,7 @@ internal object DocsTab : InspectorTab {
     @Composable
     override fun InspectorTab.ContentContext.Content() {
         Column {
-            Text("このコンポーネントの詳細なドキュメントをここに表示できます。")
+            Text("You can display detailed documentation for this component here.")
         }
     }
 }
@@ -44,7 +44,7 @@ internal object UsageTab : InspectorTab {
     @Composable
     override fun InspectorTab.ContentContext.Content() {
         Column {
-            Text("サンプルコードや利用例をここに掲載します。")
+            Text("You can show sample code and usage examples here.")
         }
     }
 }
@@ -69,7 +69,7 @@ internal object DesignTab : InspectorTab {
     @Composable
     override fun InspectorTab.ContentContext.Content() {
         Column {
-            Text("デザインガイドラインをここに記載します。配色やレイアウトルールなど。")
+            Text("You can describe design guidelines here, such as color schemes and layout rules.")
         }
     }
 }
@@ -94,7 +94,7 @@ internal object DebugTab : InspectorTab {
     @Composable
     override fun InspectorTab.ContentContext.Content() {
         Column {
-            Text("デバッグ用の情報やログ、状態などを表示します。")
+            Text("You can display debug information, logs, and state here.")
         }
     }
 }

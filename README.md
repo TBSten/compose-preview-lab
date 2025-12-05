@@ -10,7 +10,9 @@
 <a href="./README.ja.md">日本語</a>
  |
 <a href="https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/compose-preview-lab-gallery/">Sample</a>
- |
+|
+<a href="https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/">Documentation</a>
+|
 <a href="https://deepwiki.com/TBSten/compose-preview-lab">DeepWiki</a>
 </p>
 
