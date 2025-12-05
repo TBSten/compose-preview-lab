@@ -58,7 +58,7 @@ fun previewLabApplication(
     rootElement: HTMLElement = document.body!!,
 ) {
     ComposeViewport(rootElement) {
-        PreviewLabGallery(
+        EmbeddedPreviewOrGallery(
             previewList = previewList,
             featuredFileList = featuredFileList,
             openFileHandler = openFileHandler,

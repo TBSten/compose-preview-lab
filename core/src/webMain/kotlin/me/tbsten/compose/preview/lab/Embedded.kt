@@ -8,29 +8,40 @@ import kotlin.js.ExperimentalWasmJsInterop
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 
 @OptIn(ExperimentalWasmJsInterop::class)
-expect fun List<PreviewLabPreview>.findEmbedded(
-    isEmbeddedQueryName: String = "iframe",
+expect fun List<PreviewLabPreview>.findBySearchParam(previewIdQueryName: String = "previewId"): PreviewLabPreview?
+
+expect fun isEmbedded(isEmbeddedSearchParamName: String = "iframe"): Boolean
+
+fun initialSelectedPreviewFromSearchParam(
+    previewList: List<PreviewLabPreview>,
     previewIdQueryName: String = "previewId",
-): PreviewLabPreview?
+    groupName: String = "all",
+) = previewList.findBySearchParam(previewIdQueryName = previewIdQueryName)
+    ?.let { groupName to it }
 
 @Composable
 fun EmbeddedPreviewOrGallery(
     previewList: List<PreviewLabPreview>,
     modifier: Modifier = Modifier,
-    isEmbeddedQueryName: String = "iframe",
+    isEmbeddedSearchParamName: String = "iframe",
     previewIdQueryName: String = "previewId",
-    state: PreviewLabGalleryState = remember { PreviewLabGalleryState() },
+    state: PreviewLabGalleryState = remember {
+        PreviewLabGalleryState(
+            initialSelectedPreview = initialSelectedPreviewFromSearchParam(previewList, previewIdQueryName),
+        )
+    },
     openFileHandler: OpenFileHandler<out Any?>? = null,
     featuredFileList: Map<String, List<String>> = emptyMap(),
 ) {
-    previewList.findEmbedded(isEmbeddedQueryName = isEmbeddedQueryName, previewIdQueryName = previewIdQueryName)
-        ?.let { selectedPreview ->
-            CompositionLocalProvider(
-                LocalDefaultIsHeaderShow provides false,
-            ) {
-                selectedPreview.content()
-            }
-        } ?: run {
+    val selectedPreview = state.selectedPreview
+
+    if (isEmbedded(isEmbeddedSearchParamName) && selectedPreview != null) {
+        CompositionLocalProvider(
+            LocalDefaultIsHeaderShow provides false,
+        ) {
+            selectedPreview.preview.content()
+        }
+    } else {
         PreviewLabGallery(
             previewList = previewList,
             modifier = modifier,
