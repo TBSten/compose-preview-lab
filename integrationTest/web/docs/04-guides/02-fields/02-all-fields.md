@@ -605,6 +605,12 @@ PreviewLab {
  previewId="WithHintFieldExample"
 />
 
+### [WithValueCodeField](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-with-value-code-field/index.html) / `.withValueCode()`
+
+任意の Field に対して、Inspector の Code タブに表示されるコード表現だけを差し替えるユーティリティです。UI や値の型はそのままに、コードスニペットを自分のプロジェクトの API 形式に合わせたいときに使用します。
+
+詳細は [Enhance Fields](./enhance-fields#fieldwithvaluecode-code-タブに出力されるコードをカスタマイズ) を参照してください。
+
 ## 3. Compose Value Fields
 
 Compose 固有の値型（Dp、Sp、Color、Offset、Size、Modifier、Composable など）に対応するフィールドです。Compose UI の構築に特化した型を扱います。

@@ -45,6 +45,7 @@ internal fun copyPreview(context: CopyPreviewContext, preview: ValidPreview, cod
         baseFile = preview.previewFun.containingFile
             ?: throw IllegalStateException("Preview containing file is null"),
         startLineNumber = startLineNumber,
+        code = null,
         placeholderedDisplayName = preview.placeholderedDisplayName,
         placeholderedId = preview.placeholderedId,
     )
@@ -112,7 +113,9 @@ internal fun copyPreview(context: CopyPreviewContext, preview: ValidPreview, cod
             writer.appendLine("import androidx.compose.runtime.Composable")
         }
         writer.appendLine()
-        writer.appendLine("// base: ${copied.baseName}")
+        writer.appendLine("/**")
+        writer.appendLine(" * base: [${copied.baseName}]")
+        writer.appendLine(" */")
         writer.appendLine("@Composable")
         writer.appendLine("internal fun ${copied.copyName}() {")
         writer.appendLine(previewBody)
@@ -120,7 +123,9 @@ internal fun copyPreview(context: CopyPreviewContext, preview: ValidPreview, cod
         writer.appendLine()
     }
 
-    return copied
+    return copied.copy(
+        code = previewBody,
+    )
 }
 
 internal data class CopiedPreview(
@@ -128,6 +133,7 @@ internal data class CopiedPreview(
     val baseName: String,
     val baseFile: KSFile,
     val startLineNumber: Int?,
+    val code: String?,
     val placeholderedDisplayName: String,
     val placeholderedId: String,
 ) {

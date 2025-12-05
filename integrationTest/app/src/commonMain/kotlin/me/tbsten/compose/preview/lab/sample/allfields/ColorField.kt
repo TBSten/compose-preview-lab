@@ -10,6 +10,8 @@ import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.PreviewLab
 import me.tbsten.compose.preview.lab.field.ColorField
+import me.tbsten.compose.preview.lab.field.withHint
+import me.tbsten.compose.preview.lab.field.withPredefinedColorHint
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
@@ -19,6 +21,6 @@ internal fun ColorFieldExample() = PreviewLab {
     Box(
         modifier = Modifier
             .size(100.dp)
-            .background(fieldValue { ColorField("Background", Color.Blue) })
+            .background(fieldValue { ColorField("Background", Color.Blue).withPredefinedColorHint() })
     )
 }

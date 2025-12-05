@@ -1,4 +1,5 @@
 import kotlinx.validation.ExperimentalBCVApi
+import org.gradle.kotlin.dsl.registering
 
 plugins {
     alias(libs.plugins.multiplatform).apply(false)
@@ -25,4 +26,11 @@ apiValidation {
     ignoredProjects.add(
         projects.dev.name,
     )
+}
+
+val logVersion by tasks.registering {
+    val version = libs.versions.composePreviewLab
+    doLast {
+        println(version.get())
+    }
 }

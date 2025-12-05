@@ -17,7 +17,7 @@ Inspector Tab は、PreviewLab のインスペクターパネルにカスタム�
 
 ## 概要
 
-PreviewLab にはデフォルトで `Fields` と `Events` の2つのタブが用意されていますが、`InspectorTab` インターフェースを実装することで、独自のタブを追加できます。
+PreviewLab にはデフォルトで `Fields`、`Events`、`Code` の3つのタブが用意されていますが、`InspectorTab` インターフェースを実装することで、独自のタブを追加できます。`InspectorTab.defaults` には `Fields`、`Events`、`Code` が含まれています。
 
 ## 基本的な使い方
 
@@ -172,6 +172,49 @@ PreviewLab には以下の組み込みタブが用意されています：
 
 - `InspectorTab.Fields` - すべてのインタラクティブフィールドを表示
 - `InspectorTab.Events` - すべてのログイベントを表示
+- `InspectorTab.Code` - 現在の Preview の Kotlin コードスニペットを表示
 
 これらはデフォルトで表示されますが、`inspectorTabs = listOf(CustomTab)` のように指定することでカスタムタブのみを表示することもできます。
+
+### InspectorTab.Code
+
+`InspectorTab.Code` は、現在表示中の Preview の Kotlin コードスニペットを表示する組み込みタブです。各 `fieldValue { ... }` 呼び出しが、その Field の `valueCode()` メソッドが返すコードに置き換えられた形で表示されます。
+
+これにより、PreviewLab で設定した現在の値を、そのままコピー&ペーストできる Kotlin コードとして確認できます。
+
+```kt
+@Preview
+@Composable
+fun MyPreview() = PreviewLab(
+    // Code タブも含めてデフォルトタブを使用
+    inspectorTabs = InspectorTab.defaults
+) {
+    MyComponent(
+        text = fieldValue { StringField("text", "Hello") },
+        enabled = fieldValue { BooleanField("enabled", true) },
+    )
+}
+```
+
+Code タブを開くと、上記の Preview は以下のようなコードとして表示されます：
+
+```kt
+MyComponent(
+    text = "Hello",
+    enabled = true,
+)
+```
+
+#### Code タブの動作について
+
+Code タブは、`LocalPreviewLabPreview.current?.code` に保存されている元のコードを基に、各 Field の `label` を手がかりに `fieldValue { ... }` 呼び出しを検索して、その Field の `valueCode()` が返すコードに置き換えます。
+
+各 Field の `valueCode()` をカスタマイズすることで、Code タブに表示されるコードスニペットを自分のプロジェクトの API 形式に合わせることができます。詳細は [Field.withValueCode()](../02-fields/enhance-fields#fieldwithvaluecode-code-タブに出力されるコードをカスタマイズ) を参照してください。
+
+:::note 制限事項
+
+- Field の `label` が重複している場合、期待通りに置換されない可能性があります。
+- 複雑なカスタムパターンでは、100% 正確に元のコードを再現するものではなく、「コピー&ペースト用のたたき台」として使用することを想定しています。
+
+:::
 

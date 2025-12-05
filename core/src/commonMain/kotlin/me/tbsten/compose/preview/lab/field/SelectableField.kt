@@ -73,11 +73,13 @@ open class SelectableField<Value>(
     private val choiceLabel: (Value) -> String = { it.toString() },
     private val type: Type = DROPDOWN,
     initialValue: Value = choices[0],
+    private val valueCode: (Value) -> String = { defaultValueCode(label) },
 ) : MutablePreviewLabField<Value>(
     label = label,
     initialValue = initialValue,
 ) {
     override fun testValues(): List<Value> = super.testValues() + choices
+    override fun valueCode(): String = valueCode.invoke(value)
 
     class Builder<Value> internal constructor() {
         internal val choices = mutableListOf<Pair<String, Value>>()

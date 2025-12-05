@@ -240,6 +240,67 @@ CombinedField の自動生成機能も検討しています。
  previewId="FieldTransform"
 />
 
+## Field.withValueCode(): Code タブに出力されるコードをカスタマイズ
+
+`withValueCode()` を使用すると、Inspector の Code タブに表示される Kotlin コード表現を、UI や値の型とは独立してカスタマイズできます。
+
+例えば、`ColorField` の値を Code タブでは `Color(0xFF6200EE)` ではなく `MyTheme.colors.primary` のような表現で出力したい場合に便利です。
+
+### 基本的な使い方
+
+`PreviewLabField` には `valueCode(): String` メソッドがあり、現在の値を Kotlin コードとして表現します。多くのビルトイン Field では、適切なコード表現が自動的に生成されますが、拡張関数 `withValueCode { value -> "..." }` を使用することで、出力だけを差し替えることができます。
+
+```kt
+val text = fieldValue {
+    StringField("text", "Hello")
+        // highlight-start
+        .withValueCode { value -> """"prefix-$value"""" }
+        // highlight-end
+}
+```
+
+この例では、Code タブには `"prefix-Hello"` と表示されます。
+
+### カスタム型での使用例
+
+`SelectableField` など、任意の型の Field に対して、Code タブでの表現をカスタマイズできます：
+
+```kt
+enum class Theme { Light, Dark, System }
+
+val theme = fieldValue {
+    SelectableField(
+        label = "theme",
+        choices = listOf(Theme.Light, Theme.Dark, Theme.System)
+    )
+        // highlight-start
+        .withValueCode { value -> "Theme.${value.name}" }
+        // highlight-end
+}
+```
+
+Code タブでは `Theme.Light` のように表示されます。
+
+### ラッパー Field との組み合わせ
+
+`.withHint()`, `.nullable()`, `.withTestValues()` などのラッパー Field は、ベース Field の `valueCode()` を尊重します。そのため、まずベース Field で `withValueCode {}` を呼び出してから、他のラッパーを適用するのが推奨パターンです：
+
+```kt
+val fontSize = fieldValue {
+    SpField(label = "Font Size", initialValue = 16.sp)
+        // highlight-start
+        .withValueCode { value -> "TextUnit(${value.value}.sp)" }
+        // highlight-end
+        .withHint(
+            "Small" to 12.sp,
+            "Medium" to 16.sp,
+            "Large" to 20.sp,
+        )
+}
+```
+
+詳細については、[Inspector Tab](../06-inspector-tab#inspector-tabcode) の Code タブの説明も参照してください。
+
 ## 不十分ですか？
 
 より高度なカスタマイズが必要な場合、[フィールドを独自で作成する](./all-fields) ことができます。

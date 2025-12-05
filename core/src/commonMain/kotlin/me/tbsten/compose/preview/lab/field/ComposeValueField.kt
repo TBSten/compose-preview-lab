@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.DpSize
@@ -90,6 +91,7 @@ class DpField(label: String, initialValue: Dp) :
         ),
         transform = { it.dp },
         reverse = { it.value },
+        valueCode = { "${it.value}.dp" },
     )
 
 /**
@@ -158,6 +160,7 @@ class SpField(label: String, initialValue: TextUnit) :
         ),
         transform = { it.sp },
         reverse = { it.value },
+        valueCode = { "${it.value}.sp" },
     )
 
 /**
@@ -213,6 +216,8 @@ class OffsetField(label: String, initialValue: Offset) :
         label = label,
         initialValue = initialValue,
     ) {
+    override fun valueCode(): String = "Offset(x = ${floatValueCode(value.x)}, y = ${floatValueCode(value.y)})"
+
     @Composable
     override fun Content() {
         Row(
@@ -300,6 +305,8 @@ class DpOffsetField(label: String, initialValue: DpOffset) :
         label = label,
         initialValue = initialValue,
     ) {
+    override fun valueCode(): String = "DpOffset(x = ${value.x.value}.dp, y = ${value.y.value}.dp)"
+
     @Composable
     override fun Content() {
         Row(
@@ -374,6 +381,8 @@ class SizeField(label: String, initialValue: Size) :
         label = label,
         initialValue = initialValue,
     ) {
+    override fun valueCode(): String = "Size(width = ${floatValueCode(value.width)}, height = ${floatValueCode(value.height)})"
+
     @Composable
     override fun Content() {
         Row(
@@ -460,6 +469,8 @@ class DpSizeField(label: String, initialValue: DpSize) :
         label = label,
         initialValue = initialValue,
     ) {
+    override fun valueCode(): String = "DpSize(width = ${value.width.value}.dp, height = ${value.height.value}.dp)"
+
     @Composable
     override fun Content() {
         Row(
@@ -552,6 +563,22 @@ class ColorField(label: String, initialValue: Color) :
         label = label,
         initialValue = initialValue,
     ) {
+    override fun testValues(): List<Color> = predefinedColorNames.keys.toList()
+
+    override fun valueCode(): String {
+        val color: Color = this.value
+        val predefinedName = predefinedColorNames[color]
+        if (predefinedName != null) return predefinedName
+
+        val argb = color.toArgb()
+        val hex = argb.toUInt().toString(16).uppercase().padStart(8, '0')
+        return if (color.alpha == 1f) {
+            "Color(0xFF${hex.substring(2)})"
+        } else {
+            "Color(0x$hex)"
+        }
+    }
+
     @Composable
     override fun Content() {
         CommonColorPicker(
@@ -563,4 +590,74 @@ class ColorField(label: String, initialValue: Color) :
                 .aspectRatio(3f / 2f),
         )
     }
+
+    companion object {
+        /**
+         * A map of predefined Compose [Color] constants to their Kotlin code representations.
+         *
+         * Used by [ColorField.valueCode] to output readable color names (e.g., `Color.Red`)
+         * instead of hex values when the selected color matches a predefined constant.
+         *
+         * Also used by [withPredefinedColorHint] to provide quick-select hints for common colors.
+         *
+         * Includes the following colors:
+         * - Primary: Red, Green, Blue, Black, White
+         * - Secondary: Cyan, Magenta, Yellow
+         * - Grays: Gray, DarkGray, LightGray
+         * - Special: Transparent, Unspecified
+         */
+        val predefinedColorNames = mapOf(
+            Color.Red to "Color.Red",
+            Color.Green to "Color.Green",
+            Color.Blue to "Color.Blue",
+            Color.Black to "Color.Black",
+            Color.White to "Color.White",
+            Color.Cyan to "Color.Cyan",
+            Color.Magenta to "Color.Magenta",
+            Color.Yellow to "Color.Yellow",
+            Color.Gray to "Color.Gray",
+            Color.DarkGray to "Color.DarkGray",
+            Color.LightGray to "Color.LightGray",
+            Color.Transparent to "Color.Transparent",
+            Color.Unspecified to "Color.Unspecified",
+        )
+    }
 }
+
+/**
+ * Adds predefined color hints to a Color field for quick selection.
+ *
+ * Wraps the field with hint buttons for all colors in [ColorField.predefinedColorNames],
+ * allowing users to quickly select common colors like `Color.Red`, `Color.Blue`, etc.
+ *
+ * # Usage
+ *
+ * ```kotlin
+ * @Preview
+ * @Composable
+ * fun ColorPreview() = PreviewLab {
+ *     val backgroundColor = fieldValue {
+ *         ColorField("Background", Color.White).withPredefinedColorHint()
+ *     }
+ *
+ *     Box(
+ *         modifier = Modifier
+ *             .size(100.dp)
+ *             .background(backgroundColor)
+ *     )
+ * }
+ * ```
+ *
+ * The hints appear as clickable buttons below the color picker, labeled with the color names
+ * (e.g., "Color.Red", "Color.Blue"). Clicking a hint sets the field to that color value.
+ *
+ * @return A new field wrapped with predefined color hints
+ * @see ColorField
+ * @see ColorField.predefinedColorNames
+ * @see withHint
+ */
+fun MutablePreviewLabField<Color>.withPredefinedColorHint() = withHint(
+    *ColorField.predefinedColorNames
+        .map { (color, name) -> name to color }
+        .toTypedArray()
+)
