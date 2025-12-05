@@ -305,7 +305,7 @@ class DpOffsetField(label: String, initialValue: DpOffset) :
         label = label,
         initialValue = initialValue,
     ) {
-    override fun valueCode(): String = "DpOffset(x = ${value.x}.dp, y = ${value.y}.dp)"
+    override fun valueCode(): String = "DpOffset(x = ${value.x.value}.dp, y = ${value.y.value}.dp)"
 
     @Composable
     override fun Content() {
@@ -469,7 +469,7 @@ class DpSizeField(label: String, initialValue: DpSize) :
         label = label,
         initialValue = initialValue,
     ) {
-    override fun valueCode(): String = "DpSize(width = ${value.width}.dp, height = ${value.height}.dp)"
+    override fun valueCode(): String = "DpSize(width = ${value.width.value}.dp, height = ${value.height.value}.dp)"
 
     @Composable
     override fun Content() {
