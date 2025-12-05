@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
 import me.tbsten.compose.preview.lab.PreviewLabState
 import me.tbsten.compose.preview.lab.component.EventListSection
@@ -129,6 +130,7 @@ interface InspectorTab {
         }
     }
 
+    @ExperimentalComposePreviewLabApi
     data object Code : InspectorTab {
         override val title: String = "Code"
 
@@ -163,6 +165,6 @@ interface InspectorTab {
         /**
          * Default built-in tabs: Fields and Events
          */
-        val defaults: List<InspectorTab> = listOf(Fields, Events, Code)
+        val defaults: List<InspectorTab> = listOf(Fields, Events)
     }
 }
