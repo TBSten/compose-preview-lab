@@ -118,3 +118,10 @@
         transform: rotate(360deg);
     }
 }
+
+.embeddedPreviewLabTitle {
+    width: 100%;
+    text-align: end;
+    padding-top: 0.5rem;
+    padding-inline: 0.5rem;
+}

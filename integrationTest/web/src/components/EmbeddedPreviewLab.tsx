@@ -2,6 +2,7 @@ import { ComponentProps, CSSProperties, useState } from "react";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './EmbeddedPreviewLab.module.css';
 import clsx from "clsx";
+import Link from "@docusaurus/Link";
 
 const iframeSizeStyleMap = {
     small: styles.embeddedPreviewLabIframeSmall,
@@ -18,6 +19,7 @@ const shadowStyleMap = {
 
 export default function EmbeddedPreviewLab({
     previewId,
+    title,
     size = "medium",
     shadow = "none",
     noPadding = false,
@@ -25,6 +27,7 @@ export default function EmbeddedPreviewLab({
     iframeOptions = {},
 }: {
     previewId: string | null,
+    title?: string,
     size: keyof typeof iframeSizeStyleMap,
     shadow?: keyof typeof shadowStyleMap,
     noPadding?: boolean,
@@ -32,37 +35,48 @@ export default function EmbeddedPreviewLab({
     iframeOptions?: ComponentProps<"iframe">,
 }) {
     const [isLoading, setIsLoading] = useState(true);
-    
+
     let url = "compose-preview-lab-gallery/?iframe"
     if (previewId != null) {
         url += `&previewId=${previewId}`
     }
 
     const iframeSrc = useBaseUrl(url)
-    
+    const titleLinkSrc = useBaseUrl(`compose-preview-lab-gallery/?previewId=${previewId}`)
+
     const handleLoad = () => {
         setIsLoading(false);
     };
-    
+
     return (
-        <div className={clsx(!noPadding && styles.embeddedPreviewLabContainer, styles.embeddedPreviewLabWrapper)}>
-            {isLoading && (
-                <div className={styles.loadingIndicator}>
-                    <div className={styles.spinner} />
-                </div>
-            )}
-            <iframe
-                className={clsx(
-                    styles.embeddedPreviewLabIframe,
-                    iframeSizeStyleMap[size],
-                    shadowStyleMap[shadow],
-                    isLoading && styles.embeddedPreviewLabIframeLoading,
+        <div>
+            <div className={clsx(!noPadding && styles.embeddedPreviewLabContainer, styles.embeddedPreviewLabWrapper)}>
+                {isLoading && (
+                    <div className={styles.loadingIndicator}>
+                        <div className={styles.spinner} />
+                    </div>
                 )}
-                src={iframeSrc}
-                onLoad={handleLoad}
-                loading={lazy ? "lazy" : "eager"}
-                {...iframeOptions}
-            />
+                <iframe
+                    className={clsx(
+                        styles.embeddedPreviewLabIframe,
+                        iframeSizeStyleMap[size],
+                        shadowStyleMap[shadow],
+                        isLoading && styles.embeddedPreviewLabIframeLoading,
+                    )}
+                    src={iframeSrc}
+                    onLoad={handleLoad}
+                    loading={lazy ? "lazy" : "eager"}
+                    {...iframeOptions}
+                />
+
+                {title && (
+                    <div className={styles.embeddedPreviewLabTitle}>
+                        <Link to={titleLinkSrc} target="_blank">
+                            {title}
+                        </Link>
+                    </div>
+                )}
+            </div>
         </div>
     )
 }

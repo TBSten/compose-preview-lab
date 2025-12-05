@@ -15,6 +15,7 @@ import EmbeddedPreviewLab from '@site/src/components/EmbeddedPreviewLab';
 
 <EmbeddedPreviewLab
   previewId="GetStarted"
+  title="Get Started"
 />
 
 ## Compose Preview Lab を活用する実用的なアイデア
