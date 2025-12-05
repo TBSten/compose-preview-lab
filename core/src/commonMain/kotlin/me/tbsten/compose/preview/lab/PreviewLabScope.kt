@@ -3,7 +3,6 @@ package me.tbsten.compose.preview.lab
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import kotlin.time.ExperimentalTime
@@ -18,12 +17,9 @@ import me.tbsten.compose.preview.lab.field.PreviewLabField
  * @see PreviewLabEvent
  */
 @OptIn(ExperimentalTime::class)
-class PreviewLabScope internal constructor() {
-    // TODO move to State
-    @InternalComposePreviewLabApi
-    val fields = mutableStateListOf<PreviewLabField<*>>()
-    internal val events = mutableStateListOf<PreviewLabEvent>()
-
+class PreviewLabScope internal constructor(
+    private val state: PreviewLabState,
+) {
     internal var onEffectHandler: (Effect) -> Unit = {}
 
     // field methods
@@ -51,9 +47,9 @@ class PreviewLabScope internal constructor() {
     ): MutableState<Value> {
         val field = remember(key1 = key) { builder(FieldBuilderScope()) }
         DisposableEffect(Unit) {
-            fields.add(field)
+            state.fields.add(field)
             onDispose {
-                fields.remove(field)
+                state.fields.remove(field)
             }
         }
         return field
@@ -77,9 +73,9 @@ class PreviewLabScope internal constructor() {
     fun <Value> fieldValue(key: String? = null, builder: FieldBuilderScope.() -> PreviewLabField<out Value>): Value {
         val field = remember(key1 = key) { builder(FieldBuilderScope()) }
         DisposableEffect(Unit) {
-            fields.add(field)
+            state.fields.add(field)
             onDispose {
-                fields.remove(field)
+                state.fields.remove(field)
             }
         }
         return field.value
@@ -104,7 +100,7 @@ class PreviewLabScope internal constructor() {
      */
     fun onEvent(title: String, description: String? = null) {
         val event = PreviewLabEvent(title = title, description = description)
-        events.add(event)
+        state.events.add(event)
         onEffectHandler.invoke(Effect.ShowEventToast(event = event))
     }
 

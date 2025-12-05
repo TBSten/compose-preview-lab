@@ -104,7 +104,7 @@ private fun defaultTestLifecycleOwner() = runCatching {
 @Suppress("UNCHECKED_CAST")
 @ExperimentalComposePreviewLabApi
 inline fun <reified Value> PreviewLabState.fieldOrNull(label: String): MutablePreviewLabField<Value>? =
-    scope.fields.find { it.label == label } as? MutablePreviewLabField<Value>
+    fields.find { it.label == label } as? MutablePreviewLabField<Value>
 
 /**
  * Finds a mutable field by its label in the PreviewLabState, throwing an error if not found.

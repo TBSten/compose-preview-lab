@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
+import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabScope
 
 /**
@@ -37,7 +38,8 @@ import me.tbsten.compose.preview.lab.PreviewLabScope
  */
 @Immutable
 @OptIn(ExperimentalTime::class)
-internal data class PreviewLabEvent(
+@ExperimentalComposePreviewLabApi
+data class PreviewLabEvent(
     val title: String,
     val description: String? = null,
     val createAt: Instant = Clock.System.now(),

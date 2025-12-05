@@ -106,7 +106,7 @@ interface InspectorTab {
         @Composable
         override fun ContentContext.Content() {
             FieldListSection(
-                fields = state.scope.fields,
+                fields = state.fields,
             )
         }
     }
@@ -123,9 +123,9 @@ interface InspectorTab {
         @Composable
         override fun ContentContext.Content() {
             EventListSection(
-                events = state.scope.events,
+                events = state.events,
                 selectedEvent = state.selectedEvent,
-                onClear = { state.scope.events.clear() },
+                onClear = { state.events.clear() },
             )
         }
     }
@@ -141,7 +141,7 @@ interface InspectorTab {
             SelectionContainer {
                 Text(
                     text = if (code != null) {
-                        state.scope.fields.fold(code) { acc, field ->
+                        state.fields.fold(code) { acc, field ->
                             val valueCode = field.valueCode()
                             val escapedLabel = Regex.escape(field.label)
                             acc.replace(
