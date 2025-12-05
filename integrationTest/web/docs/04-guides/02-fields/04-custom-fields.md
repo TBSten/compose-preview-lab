@@ -203,5 +203,5 @@ val fontSize = fieldValue {
 
 ## 次のステップ
 
-- [Field の使用例](./05-field-examples) - 様々な Preview シナリオでの Field の使い方
+- [Field の使用例](./field-examples) - 様々な Preview シナリオでの Field の使い方
 

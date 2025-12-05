@@ -417,5 +417,5 @@ fun CustomLayoutPreview() = PreviewLab {
 - **サイズ**: `DpField`, `DpSizeField` でサイズを調整
 - **選択肢**: `SelectableField` や `EnumField` で選択肢から選ぶ
 
-詳細は [All Fields](./02-all-fields) を参照してください。
+詳細は [All Fields](./all-fields) を参照してください。
 

@@ -21,7 +21,7 @@ PreviewLabGallery(
 
 - previewList 引数にはに自動生成された PreviewList または手動で設定した PreviewLabPreview のインスタンスを指定してください。
 
-ただしいくつかのプラットフォームでは PreviewLabGallery をラップし、[次セクション](#プラットフォームごとの-previewlabgallery) で説明するプラットフォームでは通常そちらを利用することが推奨されます。
+ただしいくつかのプラットフォームでは PreviewLabGallery をラップし、[次セクション](#プラットフォームに最適化された-previewlabgallery) で説明するプラットフォームでは通常そちらを利用することが推奨されます。
 
 ## プラットフォームに最適化された PreviewLabGallery
 

@@ -122,6 +122,6 @@ fun ReviewNotesPreview() = PreviewLab {
 ## 関連ドキュメント
 
 - [Preview を収集して UI カタログを構築する](./preview-ui-catalog)  
-- [Featured Files](../guides/0-featured-files)  
+- [Featured Files](../guides/featured-files)  
 - [Events](../guides/events)  
 

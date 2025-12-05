@@ -199,7 +199,7 @@ data object FeaturedFileList : Map<String, List<String>> by mapOf(
 
 ## 次のステップ
 
-- [Fields](./02-fields/index) で Preview をインタラクティブにする
-- [Events](./03-events) でイベントハンドリングを学ぶ
-- [Collect Preview](./04-collect-preview) で PreviewList の自動生成について詳しく学ぶ
+- [Fields](./fields/all-fields) で Preview をインタラクティブにする
+- [Events](./events) でイベントハンドリングを学ぶ
+- [Collect Preview](./collect-preview) で PreviewList の自動生成について詳しく学ぶ
 

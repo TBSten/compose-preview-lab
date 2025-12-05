@@ -169,7 +169,7 @@ composePreviewLab {
 }
 ```
 
-詳細は [Build Settings](./07-build-settings) を参照してください。
+詳細は [Build Settings](./build-settings) を参照してください。
 
 ### URL が正しく生成されない
 
@@ -180,7 +180,7 @@ composePreviewLab {
 
 ## 関連リンク
 
-- [PreviewLabGallery](./05-preview-lab-gallery) - `openFileHandler` の使用方法
-- [Collect Preview](./04-collect-preview) - ファイルパス情報の生成方法
-- [Build Settings](./07-build-settings) - `projectRootPath` の設定
+- [PreviewLabGallery](./preview-lab-gallery) - `openFileHandler` の使用方法
+- [Collect Preview](./collect-preview) - ファイルパス情報の生成方法
+- [Build Settings](./build-settings) - `projectRootPath` の設定
 
