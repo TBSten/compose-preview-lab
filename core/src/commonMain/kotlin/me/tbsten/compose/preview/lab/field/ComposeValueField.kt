@@ -1,6 +1,5 @@
 package me.tbsten.compose.preview.lab.field
 
-import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -594,6 +593,20 @@ class ColorField(label: String, initialValue: Color) :
     }
 
     companion object {
+        /**
+         * A map of predefined Compose [Color] constants to their Kotlin code representations.
+         *
+         * Used by [ColorField.valueCode] to output readable color names (e.g., `Color.Red`)
+         * instead of hex values when the selected color matches a predefined constant.
+         *
+         * Also used by [withPredefinedColorHint] to provide quick-select hints for common colors.
+         *
+         * Includes the following colors:
+         * - Primary: Red, Green, Blue, Black, White
+         * - Secondary: Cyan, Magenta, Yellow
+         * - Grays: Gray, DarkGray, LightGray
+         * - Special: Transparent, Unspecified
+         */
         val predefinedColorNames = mapOf(
             Color.Red to "Color.Red",
             Color.Green to "Color.Green",
@@ -612,6 +625,38 @@ class ColorField(label: String, initialValue: Color) :
     }
 }
 
+/**
+ * Adds predefined color hints to a Color field for quick selection.
+ *
+ * Wraps the field with hint buttons for all colors in [ColorField.predefinedColorNames],
+ * allowing users to quickly select common colors like `Color.Red`, `Color.Blue`, etc.
+ *
+ * # Usage
+ *
+ * ```kotlin
+ * @Preview
+ * @Composable
+ * fun ColorPreview() = PreviewLab {
+ *     val backgroundColor = fieldValue {
+ *         ColorField("Background", Color.White).withPredefinedColorHint()
+ *     }
+ *
+ *     Box(
+ *         modifier = Modifier
+ *             .size(100.dp)
+ *             .background(backgroundColor)
+ *     )
+ * }
+ * ```
+ *
+ * The hints appear as clickable buttons below the color picker, labeled with the color names
+ * (e.g., "Color.Red", "Color.Blue"). Clicking a hint sets the field to that color value.
+ *
+ * @return A new field wrapped with predefined color hints
+ * @see ColorField
+ * @see ColorField.predefinedColorNames
+ * @see withHint
+ */
 fun MutablePreviewLabField<Color>.withPredefinedColorHint() = withHint(
     *ColorField.predefinedColorNames
         .map { (color, name) -> name to color }

@@ -5,6 +5,15 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 
+/**
+ * Returns a default placeholder code string for fields that don't have a custom [PreviewLabField.valueCode] implementation.
+ *
+ * This function generates a TODO comment indicating that the value needs to be set manually.
+ * Used as the default implementation for [PreviewLabField.valueCode].
+ *
+ * @param label The field label to include in the placeholder message
+ * @return A placeholder string like `/* TODO Set Label value here */`
+ */
 fun defaultValueCode(label: String) = "/* TODO Set $label value here */"
 
 /**
@@ -22,7 +31,67 @@ interface PreviewLabField<Value> {
     val label: String
     val initialValue: Value
     val value: Value
+
+    /**
+     * Returns a Kotlin code string representing the current value of this field.
+     *
+     * This method is used by the Code tab in the Inspector pane to generate copy-pastable
+     * Kotlin code that reproduces the current preview state. The returned string should be
+     * valid Kotlin code that can be directly inserted into source files.
+     *
+     * # Built-in implementations
+     *
+     * Most built-in field types provide appropriate implementations:
+     * - [BooleanField]: `"true"` or `"false"`
+     * - [StringField]: `"\"Hello\""`
+     * - [IntField]: `"42"`
+     * - [FloatField]: `"3.14f"`
+     * - [DpField]: `"16.dp"`
+     * - [ColorField]: `"Color.Red"` or `"Color(0xFFFF0000)"`
+     *
+     * # Custom implementation
+     *
+     * When creating a custom field, override this method to provide appropriate code generation:
+     *
+     * ```kotlin
+     * class MyCustomField(label: String, initialValue: MyType) :
+     *     MutablePreviewLabField<MyType>(label, initialValue) {
+     *
+     *     override fun valueCode(): String {
+     *         return "MyType(param = ${value.param})"
+     *     }
+     *
+     *     @Composable
+     *     override fun Content() { /* ... */ }
+     * }
+     * ```
+     *
+     * # Using withValueCode
+     *
+     * For existing fields, use [withValueCode] to customize the code output without creating a new class:
+     *
+     * ```kotlin
+     * val fontWeight = fieldValue {
+     *     SelectableField(
+     *         label = "Font Weight",
+     *         choices = listOf(FontWeight.Normal, FontWeight.Bold),
+     *         choiceLabel = { it.toString() },
+     *     ).withValueCode { weight ->
+     *         when (weight) {
+     *             FontWeight.Normal -> "FontWeight.Normal"
+     *             FontWeight.Bold -> "FontWeight.Bold"
+     *             else -> "FontWeight(${weight.weight})"
+     *         }
+     *     }
+     * }
+     * ```
+     *
+     * @return A valid Kotlin code string representing the current value
+     * @see withValueCode
+     * @see defaultValueCode
+     */
     fun valueCode(): String = defaultValueCode(label)
+
     fun testValues(): List<Value> = listOf(initialValue)
 
     /**
