@@ -39,8 +39,4 @@ import me.tbsten.compose.preview.lab.PreviewLabScope
 @Immutable
 @OptIn(ExperimentalTime::class)
 @ExperimentalComposePreviewLabApi
-data class PreviewLabEvent(
-    val title: String,
-    val description: String? = null,
-    val createAt: Instant = Clock.System.now(),
-)
+data class PreviewLabEvent(val title: String, val description: String? = null, val createAt: Instant = Clock.System.now(),)
