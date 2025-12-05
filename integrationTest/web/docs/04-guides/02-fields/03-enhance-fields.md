@@ -299,7 +299,7 @@ val fontSize = fieldValue {
 }
 ```
 
-詳細については、[Inspector Tab](../06-inspector-tab#inspector-tabcode) の Code タブの説明も参照してください。
+詳細については、[Inspector Tab](../inspector-tab#inspector-tabcode) の Code タブの説明も参照してください。
 
 ## 不十分ですか？
 

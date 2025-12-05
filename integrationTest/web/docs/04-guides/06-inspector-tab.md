@@ -209,7 +209,7 @@ MyComponent(
 
 Code タブは、`LocalPreviewLabPreview.current?.code` に保存されている元のコードを基に、各 Field の `label` を手がかりに `fieldValue { ... }` 呼び出しを検索して、その Field の `valueCode()` が返すコードに置き換えます。
 
-各 Field の `valueCode()` をカスタマイズすることで、Code タブに表示されるコードスニペットを自分のプロジェクトの API 形式に合わせることができます。詳細は [Field.withValueCode()](../02-fields/enhance-fields#fieldwithvaluecode-code-タブに出力されるコードをカスタマイズ) を参照してください。
+各 Field の `valueCode()` をカスタマイズすることで、Code タブに表示されるコードスニペットを自分のプロジェクトの API 形式に合わせることができます。詳細は [Field.withValueCode()](./fields/enhance-fields) を参照してください。
 
 :::note 制限事項
 

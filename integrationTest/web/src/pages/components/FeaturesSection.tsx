@@ -94,7 +94,7 @@ export default function FeaturesSection() {
           <div className={styles.stickyColumn}>
              <div className={styles.previewWrapper}>
                 <EmbeddedPreviewLab 
-                    previewId={FEATURES[activeIndex].previewId} 
+                    previewId={null} 
                     size="large" 
                     noPadding
                     lazy={false}
