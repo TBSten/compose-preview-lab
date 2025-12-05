@@ -615,6 +615,25 @@ final class me.tbsten.compose.preview.lab.component/TransformableTextFieldSlotSc
         final fun <get-isError>(): kotlin/Boolean // me.tbsten.compose.preview.lab.component/TransformableTextFieldSlotScope.isError.<get-isError>|<get-isError>(){}[0]
 }
 
+final class me.tbsten.compose.preview.lab.event/PreviewLabEvent { // me.tbsten.compose.preview.lab.event/PreviewLabEvent|null[0]
+    constructor <init>(kotlin/String, kotlin/String? = ..., kotlin.time/Instant = ...) // me.tbsten.compose.preview.lab.event/PreviewLabEvent.<init>|<init>(kotlin.String;kotlin.String?;kotlin.time.Instant){}[0]
+
+    final val createAt // me.tbsten.compose.preview.lab.event/PreviewLabEvent.createAt|{}createAt[0]
+        final fun <get-createAt>(): kotlin.time/Instant // me.tbsten.compose.preview.lab.event/PreviewLabEvent.createAt.<get-createAt>|<get-createAt>(){}[0]
+    final val description // me.tbsten.compose.preview.lab.event/PreviewLabEvent.description|{}description[0]
+        final fun <get-description>(): kotlin/String? // me.tbsten.compose.preview.lab.event/PreviewLabEvent.description.<get-description>|<get-description>(){}[0]
+    final val title // me.tbsten.compose.preview.lab.event/PreviewLabEvent.title|{}title[0]
+        final fun <get-title>(): kotlin/String // me.tbsten.compose.preview.lab.event/PreviewLabEvent.title.<get-title>|<get-title>(){}[0]
+
+    final fun component1(): kotlin/String // me.tbsten.compose.preview.lab.event/PreviewLabEvent.component1|component1(){}[0]
+    final fun component2(): kotlin/String? // me.tbsten.compose.preview.lab.event/PreviewLabEvent.component2|component2(){}[0]
+    final fun component3(): kotlin.time/Instant // me.tbsten.compose.preview.lab.event/PreviewLabEvent.component3|component3(){}[0]
+    final fun copy(kotlin/String = ..., kotlin/String? = ..., kotlin.time/Instant = ...): me.tbsten.compose.preview.lab.event/PreviewLabEvent // me.tbsten.compose.preview.lab.event/PreviewLabEvent.copy|copy(kotlin.String;kotlin.String?;kotlin.time.Instant){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // me.tbsten.compose.preview.lab.event/PreviewLabEvent.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // me.tbsten.compose.preview.lab.event/PreviewLabEvent.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // me.tbsten.compose.preview.lab.event/PreviewLabEvent.toString|toString(){}[0]
+}
+
 final class me.tbsten.compose.preview.lab.field.modifier/AlphaModifierFieldValue : me.tbsten.compose.preview.lab.field.modifier/ModifierFieldValue { // me.tbsten.compose.preview.lab.field.modifier/AlphaModifierFieldValue|null[0]
     constructor <init>(kotlin/Float) // me.tbsten.compose.preview.lab.field.modifier/AlphaModifierFieldValue.<init>|<init>(kotlin.Float){}[0]
 
@@ -1432,9 +1451,6 @@ final class me.tbsten.compose.preview.lab/PreviewLabGalleryState { // me.tbsten.
 }
 
 final class me.tbsten.compose.preview.lab/PreviewLabScope { // me.tbsten.compose.preview.lab/PreviewLabScope|null[0]
-    final val fields // me.tbsten.compose.preview.lab/PreviewLabScope.fields|{}fields[0]
-        final fun <get-fields>(): androidx.compose.runtime.snapshots/SnapshotStateList<me.tbsten.compose.preview.lab.field/PreviewLabField<*>> // me.tbsten.compose.preview.lab/PreviewLabScope.fields.<get-fields>|<get-fields>(){}[0]
-
     final fun <#A1: kotlin/Any?> fieldState(kotlin/String?, kotlin/Function1<me.tbsten.compose.preview.lab/PreviewLabScope.FieldBuilderScope, me.tbsten.compose.preview.lab.field/MutablePreviewLabField<#A1>>, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int): androidx.compose.runtime/MutableState<#A1> // me.tbsten.compose.preview.lab/PreviewLabScope.fieldState|fieldState(kotlin.String?;kotlin.Function1<me.tbsten.compose.preview.lab.PreviewLabScope.FieldBuilderScope,me.tbsten.compose.preview.lab.field.MutablePreviewLabField<0:0>>;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){0§<kotlin.Any?>}[0]
     final fun <#A1: kotlin/Any?> fieldValue(kotlin/String?, kotlin/Function1<me.tbsten.compose.preview.lab/PreviewLabScope.FieldBuilderScope, me.tbsten.compose.preview.lab.field/PreviewLabField<out #A1>>, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int): #A1 // me.tbsten.compose.preview.lab/PreviewLabScope.fieldValue|fieldValue(kotlin.String?;kotlin.Function1<me.tbsten.compose.preview.lab.PreviewLabScope.FieldBuilderScope,me.tbsten.compose.preview.lab.field.PreviewLabField<out|0:0>>;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){0§<kotlin.Any?>}[0]
     final fun onEvent(kotlin/String, kotlin/String? = ...) // me.tbsten.compose.preview.lab/PreviewLabScope.onEvent|onEvent(kotlin.String;kotlin.String?){}[0]
@@ -1445,6 +1461,10 @@ final class me.tbsten.compose.preview.lab/PreviewLabScope { // me.tbsten.compose
 final class me.tbsten.compose.preview.lab/PreviewLabState { // me.tbsten.compose.preview.lab/PreviewLabState|null[0]
     constructor <init>() // me.tbsten.compose.preview.lab/PreviewLabState.<init>|<init>(){}[0]
 
+    final val events // me.tbsten.compose.preview.lab/PreviewLabState.events|{}events[0]
+        final fun <get-events>(): androidx.compose.runtime.snapshots/SnapshotStateList<me.tbsten.compose.preview.lab.event/PreviewLabEvent> // me.tbsten.compose.preview.lab/PreviewLabState.events.<get-events>|<get-events>(){}[0]
+    final val fields // me.tbsten.compose.preview.lab/PreviewLabState.fields|{}fields[0]
+        final fun <get-fields>(): androidx.compose.runtime.snapshots/SnapshotStateList<me.tbsten.compose.preview.lab.field/PreviewLabField<*>> // me.tbsten.compose.preview.lab/PreviewLabState.fields.<get-fields>|<get-fields>(){}[0]
     final val scope // me.tbsten.compose.preview.lab/PreviewLabState.scope|{}scope[0]
         final fun <get-scope>(): me.tbsten.compose.preview.lab/PreviewLabScope // me.tbsten.compose.preview.lab/PreviewLabState.scope.<get-scope>|<get-scope>(){}[0]
 
@@ -1697,6 +1717,7 @@ final val me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compo
 final val me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_font$stableprop // me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_font$stableprop|#static{}me_tbsten_compose_preview_lab_core_generated_resources_Res_font$stableprop[0]
 final val me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_plurals$stableprop // me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_plurals$stableprop|#static{}me_tbsten_compose_preview_lab_core_generated_resources_Res_plurals$stableprop[0]
 final val me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_string$stableprop // me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_string$stableprop|#static{}me_tbsten_compose_preview_lab_core_generated_resources_Res_string$stableprop[0]
+final val me.tbsten.compose.preview.lab.event/me_tbsten_compose_preview_lab_event_PreviewLabEvent$stableprop // me.tbsten.compose.preview.lab.event/me_tbsten_compose_preview_lab_event_PreviewLabEvent$stableprop|#static{}me_tbsten_compose_preview_lab_event_PreviewLabEvent$stableprop[0]
 final val me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_AlphaModifierFieldValue$stableprop // me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_AlphaModifierFieldValue$stableprop|#static{}me_tbsten_compose_preview_lab_field_modifier_AlphaModifierFieldValue$stableprop[0]
 final val me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_AlphaModifierFieldValue_Factory$stableprop // me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_AlphaModifierFieldValue_Factory$stableprop|#static{}me_tbsten_compose_preview_lab_field_modifier_AlphaModifierFieldValue_Factory$stableprop[0]
 final val me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_AnimateContentSizeModifierFieldValue$stableprop // me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_AnimateContentSizeModifierFieldValue$stableprop|#static{}me_tbsten_compose_preview_lab_field_modifier_AnimateContentSizeModifierFieldValue$stableprop[0]
@@ -1919,6 +1940,7 @@ final fun me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compo
 final fun me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_font$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_font$stableprop_getter|me_tbsten_compose_preview_lab_core_generated_resources_Res_font$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_plurals$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_plurals$stableprop_getter|me_tbsten_compose_preview_lab_core_generated_resources_Res_plurals$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_string$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_string$stableprop_getter|me_tbsten_compose_preview_lab_core_generated_resources_Res_string$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.event/me_tbsten_compose_preview_lab_event_PreviewLabEvent$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.event/me_tbsten_compose_preview_lab_event_PreviewLabEvent$stableprop_getter|me_tbsten_compose_preview_lab_event_PreviewLabEvent$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_AlphaModifierFieldValue$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_AlphaModifierFieldValue$stableprop_getter|me_tbsten_compose_preview_lab_field_modifier_AlphaModifierFieldValue$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_AlphaModifierFieldValue_Factory$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_AlphaModifierFieldValue_Factory$stableprop_getter|me_tbsten_compose_preview_lab_field_modifier_AlphaModifierFieldValue_Factory$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_AnimateContentSizeModifierFieldValue$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_AnimateContentSizeModifierFieldValue$stableprop_getter|me_tbsten_compose_preview_lab_field_modifier_AnimateContentSizeModifierFieldValue$stableprop_getter(){}[0]
