@@ -50,23 +50,38 @@ export default function QuickLinksSection() {
           Explore guides to master Compose Preview Lab.
         </p>
         <div className={styles.grid}>
-          <Link to="/docs/get-started" className={clsx(styles.card, styles.linkCard)}>
+          <Link
+            to="/docs/get-started"
+            className={clsx(styles.card, styles.linkCard)}
+            data-index="01">
             <Heading as="h3">Get Started</Heading>
             <p>Start your journey with Compose Preview Lab.</p>
           </Link>
-          <Link to="/docs/install" className={clsx(styles.card, styles.linkCard)}>
+          <Link
+            to="/docs/install"
+            className={clsx(styles.card, styles.linkCard)}
+            data-index="02">
             <Heading as="h3">Installation</Heading>
             <p>Step-by-step guide to set up in your project.</p>
           </Link>
-          <Link to="/docs/guides/fields" className={clsx(styles.card, styles.linkCard)}>
+          <Link
+            to="/docs/guides/fields"
+            className={clsx(styles.card, styles.linkCard)}
+            data-index="03">
             <Heading as="h3">Fields System</Heading>
             <p>Learn about the powerful Field API.</p>
           </Link>
-          <Link to="/docs/guides/events" className={clsx(styles.card, styles.linkCard)}>
+          <Link
+            to="/docs/guides/events"
+            className={clsx(styles.card, styles.linkCard)}
+            data-index="04">
             <Heading as="h3">Events System</Heading>
             <p>Visualize and debug component events.</p>
           </Link>
-          <Link to="/docs/guides/featured-files" className={clsx(styles.card, styles.linkCard)}>
+          <Link
+            to="/docs/guides/featured-files"
+            className={clsx(styles.card, styles.linkCard)}
+            data-index="05">
             <Heading as="h3">Preview Gallery</Heading>
             <p>Organize and browse your previews.</p>
           </Link>
