@@ -72,7 +72,7 @@
 
 /* Footer Copyright */
 :global(.footer__copyright) {
-  opacity: 0.8 !important;
+  opacity: 0.97 !important;
   transition: opacity 0.3s ease !important;
 }
 
