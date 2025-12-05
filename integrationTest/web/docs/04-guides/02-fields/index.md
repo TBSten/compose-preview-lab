@@ -148,6 +148,8 @@ private fun MyTextFieldPreview() = PreviewLab {
 
 ![field](./field.png)
 
+`PreviewLabField` には、現在の値を Kotlin コードとして表現する `valueCode()` メソッドがあり、これは Inspector の Code タブで使用されます。多くのビルトイン Field では、適切なコード表現（`"文字列"`, `123`, `Color(0xFF...)`, `16.dp` など）が自動的に生成されるため、通常は意識する必要はありません。詳細なカスタマイズ方法については、[Enhance Fields](./enhance-fields#fieldwithvaluecode-code-タブに出力されるコードをカスタマイズ) を参照してください。
+
 ### ビルトインの Field
 
 Compose Preview Lab には、多くのビルトイン Field が用意されています。
