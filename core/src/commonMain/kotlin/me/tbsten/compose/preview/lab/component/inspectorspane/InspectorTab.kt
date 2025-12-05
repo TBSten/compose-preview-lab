@@ -1,13 +1,21 @@
 package me.tbsten.compose.preview.lab.component.inspectorspane
 
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
 import me.tbsten.compose.preview.lab.PreviewLabState
 import me.tbsten.compose.preview.lab.component.EventListSection
 import me.tbsten.compose.preview.lab.component.FieldListSection
 import me.tbsten.compose.preview.lab.core.generated.resources.Res
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_edit
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_history
+import me.tbsten.compose.preview.lab.ui.components.Text
 import org.jetbrains.compose.resources.painterResource
 
 /**
@@ -121,10 +129,28 @@ interface InspectorTab {
         }
     }
 
+    data object Code : InspectorTab {
+        override val title: String = "Code"
+
+        @Composable
+        override fun ContentContext.Content() {
+            val code = LocalPreviewLabPreview.current?.code
+
+            SelectionContainer {
+                Text(
+                    text = code ?: "No code",
+                    modifier = Modifier
+                        .horizontalScroll(rememberScrollState())
+                        .padding(12.dp),
+                )
+            }
+        }
+    }
+
     companion object {
         /**
          * Default built-in tabs: Fields and Events
          */
-        val defaults: List<InspectorTab> = listOf(Fields, Events)
+        val defaults: List<InspectorTab> = listOf(Fields, Events, Code)
     }
 }
