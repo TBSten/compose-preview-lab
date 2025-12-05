@@ -2,6 +2,20 @@ package me.tbsten.compose.preview.lab.field
 
 import androidx.compose.runtime.Composable
 
+internal fun floatValueCode(value: Float): String = when {
+    value.isNaN() -> "Float.NaN"
+    value == Float.POSITIVE_INFINITY -> "Float.POSITIVE_INFINITY"
+    value == Float.NEGATIVE_INFINITY -> "Float.NEGATIVE_INFINITY"
+    else -> "${value}f"
+}
+
+private fun doubleValueCode(value: Double): String = when {
+    value.isNaN() -> "Double.NaN"
+    value == Double.POSITIVE_INFINITY -> "Double.POSITIVE_INFINITY"
+    value == Double.NEGATIVE_INFINITY -> "Double.NEGATIVE_INFINITY"
+    else -> "$value"
+}
+
 /**
  * Abstract class of Field that handles numeric types.
  *
@@ -334,7 +348,7 @@ open class DoubleField(label: String, initialValue: Double, inputType: InputType
         fromString = { it.toDouble() },
         toString = { it.toString() },
         inputType = inputType,
-        valueCode = { "${it}d" },
+        valueCode = { doubleValueCode(it) },
     )
 
 /**
@@ -391,5 +405,5 @@ open class FloatField(label: String, initialValue: Float, inputType: InputType =
         fromString = { it.toFloat() },
         toString = { it.toString() },
         inputType = inputType,
-        valueCode = { "${it}f" },
+        valueCode = { floatValueCode(it) },
     )

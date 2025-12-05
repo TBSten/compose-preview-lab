@@ -216,7 +216,7 @@ class OffsetField(label: String, initialValue: Offset) :
         label = label,
         initialValue = initialValue,
     ) {
-    override fun valueCode(): String = "Offset(x = ${value.x}f, y = ${value.y}f)"
+    override fun valueCode(): String = "Offset(x = ${floatValueCode(value.x)}, y = ${floatValueCode(value.y)})"
 
     @Composable
     override fun Content() {
@@ -381,7 +381,7 @@ class SizeField(label: String, initialValue: Size) :
         label = label,
         initialValue = initialValue,
     ) {
-    override fun valueCode(): String = "Size(width = ${value.width}f, height = ${value.height}f)"
+    override fun valueCode(): String = "Size(width = ${floatValueCode(value.width)}, height = ${floatValueCode(value.height)})"
 
     @Composable
     override fun Content() {
@@ -566,7 +566,6 @@ class ColorField(label: String, initialValue: Color) :
     override fun testValues(): List<Color> = predefinedColorNames.keys.toList()
 
     override fun valueCode(): String {
-        // TODO テストコードを用意
         val color: Color = this.value
         val predefinedName = predefinedColorNames[color]
         if (predefinedName != null) return predefinedName

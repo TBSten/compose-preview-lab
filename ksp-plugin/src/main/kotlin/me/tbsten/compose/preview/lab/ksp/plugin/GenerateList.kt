@@ -48,6 +48,7 @@ internal fun generateList(
             it.appendLine(
                 "        code = ${
                     preview.code
+                        ?.replace("\\", "\\\\")
                         ?.replace("\n", "\\n")
                         ?.replace("\"", "\\\"")
                         ?.replace("$", "\\$")

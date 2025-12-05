@@ -139,14 +139,14 @@ interface InspectorTab {
             SelectionContainer {
                 Text(
                     text = if (code != null) {
-                        state.scope.fields.fold(code) { code, field ->
+                        state.scope.fields.fold(code) { acc, field ->
                             val valueCode = field.valueCode()
-                            code
-                                .replace(
-                                    Regex("""fieldValue.*?\{.*?"${field.label}".*?}"""),
-                                ) {
-                                    valueCode
-                                }
+                            val escapedLabel = Regex.escape(field.label)
+                            acc.replace(
+                                Regex("""fieldValue\s*\{[^}]*?"$escapedLabel"[^}]*?}"""),
+                            ) {
+                                valueCode
+                            }
                         }
                     } else {
                         "No code"

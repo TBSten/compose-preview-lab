@@ -61,7 +61,16 @@ class StringField(
         listOf(initialValue, "")
             .toSet().toList()
 
-    override fun valueCode(): String = """"$value""""
+    override fun valueCode(): String {
+        val escaped = value
+            .replace("\\", "\\\\")
+            .replace("\"", "\\\"")
+            .replace("\n", "\\n")
+            .replace("\r", "\\r")
+            .replace("\t", "\\t")
+            .replace("$", "\\$")
+        return "\"$escaped\""
+    }
 
     @Composable
     override fun Content() {
