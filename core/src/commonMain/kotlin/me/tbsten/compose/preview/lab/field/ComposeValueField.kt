@@ -1,5 +1,6 @@
 package me.tbsten.compose.preview.lab.field
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -10,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.DpSize
@@ -90,6 +92,7 @@ class DpField(label: String, initialValue: Dp) :
         ),
         transform = { it.dp },
         reverse = { it.value },
+        valueCode = { "${it.value}.dp" },
     )
 
 /**
@@ -158,6 +161,7 @@ class SpField(label: String, initialValue: TextUnit) :
         ),
         transform = { it.sp },
         reverse = { it.value },
+        valueCode = { "${it.value}.sp" },
     )
 
 /**
@@ -213,6 +217,8 @@ class OffsetField(label: String, initialValue: Offset) :
         label = label,
         initialValue = initialValue,
     ) {
+    override fun valueCode(): String = "Offset(x = ${value.x}f, y = ${value.y}f)"
+
     @Composable
     override fun Content() {
         Row(
@@ -300,6 +306,8 @@ class DpOffsetField(label: String, initialValue: DpOffset) :
         label = label,
         initialValue = initialValue,
     ) {
+    override fun valueCode(): String = "DpOffset(x = ${value.x}.dp, y = ${value.y}.dp)"
+
     @Composable
     override fun Content() {
         Row(
@@ -374,6 +382,8 @@ class SizeField(label: String, initialValue: Size) :
         label = label,
         initialValue = initialValue,
     ) {
+    override fun valueCode(): String = "Size(width = ${value.width}f, height = ${value.height}f)"
+
     @Composable
     override fun Content() {
         Row(
@@ -460,6 +470,8 @@ class DpSizeField(label: String, initialValue: DpSize) :
         label = label,
         initialValue = initialValue,
     ) {
+    override fun valueCode(): String = "DpSize(width = ${value.width}.dp, height = ${value.height}.dp)"
+
     @Composable
     override fun Content() {
         Row(
@@ -552,6 +564,23 @@ class ColorField(label: String, initialValue: Color) :
         label = label,
         initialValue = initialValue,
     ) {
+    override fun testValues(): List<Color> = predefinedColorNames.keys.toList()
+
+    override fun valueCode(): String {
+        // TODO テストコードを用意
+        val color: Color = this.value
+        val predefinedName = predefinedColorNames[color]
+        if (predefinedName != null) return predefinedName
+
+        val argb = color.toArgb()
+        val hex = argb.toUInt().toString(16).uppercase().padStart(8, '0')
+        return if (color.alpha == 1f) {
+            "Color(0xFF${hex.substring(2)})"
+        } else {
+            "Color(0x$hex)"
+        }
+    }
+
     @Composable
     override fun Content() {
         CommonColorPicker(
@@ -563,4 +592,28 @@ class ColorField(label: String, initialValue: Color) :
                 .aspectRatio(3f / 2f),
         )
     }
+
+    companion object {
+        val predefinedColorNames = mapOf(
+            Color.Red to "Color.Red",
+            Color.Green to "Color.Green",
+            Color.Blue to "Color.Blue",
+            Color.Black to "Color.Black",
+            Color.White to "Color.White",
+            Color.Cyan to "Color.Cyan",
+            Color.Magenta to "Color.Magenta",
+            Color.Yellow to "Color.Yellow",
+            Color.Gray to "Color.Gray",
+            Color.DarkGray to "Color.DarkGray",
+            Color.LightGray to "Color.LightGray",
+            Color.Transparent to "Color.Transparent",
+            Color.Unspecified to "Color.Unspecified",
+        )
+    }
 }
+
+fun MutablePreviewLabField<Color>.withPredefinedColorHint() = withHint(
+    *ColorField.predefinedColorNames
+        .map { (color, name) -> name to color }
+        .toTypedArray()
+)
