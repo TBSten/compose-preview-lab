@@ -6,6 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
+import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLab
 import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.field.StringField
@@ -93,6 +94,7 @@ internal object DebugTab : InspectorTab {
 
     @Composable
     override fun InspectorTab.ContentContext.Content() {
+        state.fields
         Column {
             Text("You can display debug information, logs, and state here.")
         }
@@ -104,6 +106,19 @@ internal object DebugTab : InspectorTab {
 @Composable
 internal fun InspectorTabDebugExample() = PreviewLab(
     inspectorTabs = InspectorTab.defaults + listOf(DebugTab)
+) {
+    val text = fieldValue { StringField("text", "Hello") }
+    Button(onClick = {}) {
+        Text(text)
+    }
+}
+
+// Code Tab
+@Preview
+@ComposePreviewLabOption(id = "InspectorTabCodeExample")
+@Composable
+internal fun InspectorTabCodeExample() = PreviewLab(
+    inspectorTabs = InspectorTab.defaults + @OptIn(ExperimentalComposePreviewLabApi::class) InspectorTab.Code,
 ) {
     val text = fieldValue { StringField("text", "Hello") }
     Button(onClick = {}) {
