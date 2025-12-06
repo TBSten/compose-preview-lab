@@ -135,4 +135,4 @@ inline fun <reified Value> PreviewLabState.fieldOrNull(label: String): MutablePr
 @ExperimentalComposePreviewLabApi
 inline fun <reified Value> PreviewLabState.field(label: String): MutablePreviewLabField<Value> =
     fieldOrNull<Value>(label = label)
-        ?: error("Can not find update target field: label=$label type=${Value::class.qualifiedName}")
+        ?: error("Can not find update target field: label=$label")
