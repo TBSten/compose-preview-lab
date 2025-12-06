@@ -10,6 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.DpOffset
 import me.tbsten.compose.preview.lab.event.PreviewLabEvent
+import me.tbsten.compose.preview.lab.field.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.PreviewLabField
 
 /**
@@ -96,3 +97,42 @@ class PreviewLabState {
         )
     }
 }
+
+/**
+ * Finds a mutable field by its label in the PreviewLabState.
+ *
+ * @param Value The type of the field's value
+ * @param label The label of the field to find
+ * @return The field if found and matches the type, null otherwise
+ *
+ * Example:
+ * ```kotlin
+ * val intField = state.fieldOrNull<Int>("intValue")
+ * if (intField != null) {
+ *     intField.value = 42
+ * }
+ * ```
+ */
+@Suppress("UNCHECKED_CAST")
+@ExperimentalComposePreviewLabApi
+inline fun <reified Value> PreviewLabState.fieldOrNull(label: String): MutablePreviewLabField<Value>? =
+    fields.find { it.label == label } as? MutablePreviewLabField<Value>
+
+/**
+ * Finds a mutable field by its label in the PreviewLabState, throwing an error if not found.
+ *
+ * @param Value The type of the field's value
+ * @param label The label of the field to find
+ * @return The field if found and matches the type
+ * @throws IllegalStateException if the field is not found
+ *
+ * Example:
+ * ```kotlin
+ * val intField = state.field<Int>("intValue")
+ * intField.value = 42
+ * ```
+ */
+@ExperimentalComposePreviewLabApi
+inline fun <reified Value> PreviewLabState.field(label: String): MutablePreviewLabField<Value> =
+    fieldOrNull<Value>(label = label)
+        ?: error("Can not find update target field: label=$label type=${Value::class.qualifiedName}")

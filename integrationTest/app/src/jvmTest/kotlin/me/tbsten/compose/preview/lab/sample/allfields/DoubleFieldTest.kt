@@ -14,7 +14,7 @@ import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabState
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
-import me.tbsten.compose.preview.lab.testing.field
+import me.tbsten.compose.preview.lab.field
 
 @OptIn(ExperimentalTestApi::class)
 class DoubleFieldTest {
