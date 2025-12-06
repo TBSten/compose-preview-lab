@@ -5,36 +5,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish-dokka:
-    name: Release dokka documentation
-    runs-on: ubuntu-latest
-    concurrency:
-      group: "pages"
-    permissions:
-      contents: write
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: Setup Java for Gradle
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
-      - name: Resolve version from Gradle
-        id: get_version
-        run: echo "version=$(./gradlew -q logVersion)" >> "$GITHUB_OUTPUT"
-      - name: Build Dokka Documentation
-        run: ./gradlew :dokkaDocs:dokkaGenerate
-      - name: Publish to Github Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dokkaDocs/build/dokka/html
-          destination_dir: dokka/${{ steps.get_version.outputs.version }}/
-          keep_files: true
-
   publish-libraries:
     name: Release build and publish
     runs-on: macOS-latest
