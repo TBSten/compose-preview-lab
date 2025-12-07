@@ -1,6 +1,3 @@
-import React from 'react'
-
 export default function ComposePreviewLabVersion() {
-  // TODO バージョンを libs.versions.toml から取得
-  return "0.1.0-dev08"
+  return <img alt="Maven Central Version" src="https://img.shields.io/maven-central/v/me.tbsten.compose.preview.lab/core" />
 }
