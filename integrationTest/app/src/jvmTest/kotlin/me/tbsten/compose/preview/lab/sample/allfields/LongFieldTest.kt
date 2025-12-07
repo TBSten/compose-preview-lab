@@ -12,8 +12,8 @@ import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabState
-import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 import me.tbsten.compose.preview.lab.field
+import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
 class LongFieldTest {
@@ -22,7 +22,7 @@ class LongFieldTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { LongFieldExample() } }
 
-        val timestampField = state.field<Long>("Timestamp")
+        val timestampField by state.field<Long>("Timestamp")
 
         forAll(Arb.long().plusEdgecases(timestampField.testValues())) { longValue ->
             timestampField.value = longValue

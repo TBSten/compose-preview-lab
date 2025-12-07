@@ -14,8 +14,8 @@ import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabState
-import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 import me.tbsten.compose.preview.lab.field
+import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
 class SpFieldTest {
@@ -24,7 +24,7 @@ class SpFieldTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { SpFieldExample() } }
 
-        val fontSizeField = state.field<TextUnit>("Font Size")
+        val fontSizeField by state.field<TextUnit>("Font Size")
 
         forAll(Arb.float(8f..48f).map { it.sp }.plusEdgecases(fontSizeField.testValues())) { spValue ->
             fontSizeField.value = spValue

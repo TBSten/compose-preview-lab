@@ -18,8 +18,8 @@ import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabState
-import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 import me.tbsten.compose.preview.lab.field
+import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 /**
  * Property-based tests for Field components in integrationTest/app.
@@ -44,7 +44,7 @@ class FieldsTest {
             val state = PreviewLabState()
             setContent { TestPreviewLab(state) { IntFieldExample() } }
 
-            val countField = state.field<Int>("Count")
+            val countField by state.field<Int>("Count")
             countField.value = intValue
 
             awaitIdle()
@@ -62,7 +62,7 @@ class FieldsTest {
             val state = PreviewLabState()
             setContent { TestPreviewLab(state) { StringFieldExample() } }
 
-            val textField = state.field<String>("text")
+            val textField by state.field<String>("text")
             textField.value = stringValue
 
             awaitIdle()
@@ -80,7 +80,7 @@ class FieldsTest {
             val state = PreviewLabState()
             setContent { TestPreviewLab(state) { BooleanFieldExample() } }
 
-            val enabledField = state.field<Boolean>("enabled")
+            val enabledField by state.field<Boolean>("enabled")
             enabledField.value = boolValue
 
             awaitIdle()
@@ -94,7 +94,7 @@ class FieldsTest {
             val state = PreviewLabState()
             setContent { TestPreviewLab(state) { FloatFieldExample() } }
 
-            val alphaField = state.field<Float>("Alpha")
+            val alphaField by state.field<Float>("Alpha")
             alphaField.value = floatValue
 
             awaitIdle()

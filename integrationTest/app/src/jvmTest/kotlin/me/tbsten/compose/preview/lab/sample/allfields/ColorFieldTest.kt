@@ -12,8 +12,8 @@ import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabState
-import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 import me.tbsten.compose.preview.lab.field
+import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
 class ColorFieldTest {
@@ -22,7 +22,7 @@ class ColorFieldTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { ColorFieldExample() } }
 
-        val backgroundField = state.field<Color>("Background")
+        val backgroundField by state.field<Color>("Background")
         val testColors = listOf(Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.Magenta)
 
         forAll(Arb.of(testColors).plusEdgecases(backgroundField.testValues())) { color ->

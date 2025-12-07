@@ -14,8 +14,8 @@ import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabState
-import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 import me.tbsten.compose.preview.lab.field
+import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
 class DpSizeFieldTest {
@@ -24,7 +24,7 @@ class DpSizeFieldTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { DpSizeFieldExample() } }
 
-        val buttonSizeField = state.field<DpSize>("Button Size")
+        val buttonSizeField by state.field<DpSize>("Button Size")
 
         forAll(Arb.float(50f..200f).map { DpSize(it.dp, (it / 2).dp) }.plusEdgecases(buttonSizeField.testValues())) { size ->
             buttonSizeField.value = size

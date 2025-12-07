@@ -12,8 +12,8 @@ import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabState
-import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 import me.tbsten.compose.preview.lab.field
+import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
 class StringFieldTest {
@@ -22,7 +22,7 @@ class StringFieldTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { StringFieldExample() } }
 
-        val textField = state.field<String>("text")
+        val textField by state.field<String>("text")
 
         forAll(Arb.string(1..50).plusEdgecases(textField.testValues())) { stringValue ->
             textField.value = stringValue

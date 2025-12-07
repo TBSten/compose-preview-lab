@@ -13,8 +13,8 @@ import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabState
-import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 import me.tbsten.compose.preview.lab.field
+import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
 class TransformFieldTest {
@@ -23,7 +23,7 @@ class TransformFieldTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { TransformFieldExample() } }
 
-        val numberField = state.field<Int>("number")
+        val numberField by state.field<Int>("number")
 
         forAll(Arb.int().plusEdgecases(numberField.testValues())) { intValue ->
             numberField.value = intValue

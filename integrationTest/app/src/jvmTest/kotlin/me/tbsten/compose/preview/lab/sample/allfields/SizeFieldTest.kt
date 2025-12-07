@@ -13,8 +13,8 @@ import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabState
-import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 import me.tbsten.compose.preview.lab.field
+import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
 class SizeFieldTest {
@@ -23,7 +23,7 @@ class SizeFieldTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { SizeFieldExample() } }
 
-        val canvasField = state.field<Size>("Canvas")
+        val canvasField by state.field<Size>("Canvas")
 
         forAll(Arb.float(10f..200f).map { Size(it, it) }.plusEdgecases(canvasField.testValues())) { size ->
             canvasField.value = size

@@ -12,8 +12,8 @@ import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabState
-import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 import me.tbsten.compose.preview.lab.field
+import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
 class IntFieldTest {
@@ -22,7 +22,7 @@ class IntFieldTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { IntFieldExample() } }
 
-        val countField = state.field<Int>("Count")
+        val countField by state.field<Int>("Count")
 
         forAll(Arb.int().plusEdgecases(countField.testValues())) { intValue ->
             countField.value = intValue

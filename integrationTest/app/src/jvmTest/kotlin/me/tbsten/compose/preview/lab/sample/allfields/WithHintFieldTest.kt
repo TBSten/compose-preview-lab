@@ -14,8 +14,8 @@ import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabState
-import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 import me.tbsten.compose.preview.lab.field
+import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
 class WithHintFieldTest {
@@ -24,7 +24,7 @@ class WithHintFieldTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { WithHintFieldExample() } }
 
-        val fontSizeField = state.field<TextUnit>("Font Size")
+        val fontSizeField by state.field<TextUnit>("Font Size")
 
         forAll(Arb.float(8f..32f).map { it.sp }.plusEdgecases(fontSizeField.testValues())) { fontSize ->
             fontSizeField.value = fontSize

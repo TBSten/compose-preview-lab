@@ -14,8 +14,8 @@ import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabState
-import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 import me.tbsten.compose.preview.lab.field
+import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
 class DpOffsetFieldTest {
@@ -24,7 +24,7 @@ class DpOffsetFieldTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { DpOffsetFieldExample() } }
 
-        val offsetField = state.field<DpOffset>("Offset")
+        val offsetField by state.field<DpOffset>("Offset")
 
         forAll(Arb.float(-50f..50f).map { DpOffset(it.dp, it.dp) }.plusEdgecases(offsetField.testValues())) { offset ->
             offsetField.value = offset

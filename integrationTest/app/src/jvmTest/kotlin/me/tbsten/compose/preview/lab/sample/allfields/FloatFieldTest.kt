@@ -12,8 +12,8 @@ import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabState
-import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 import me.tbsten.compose.preview.lab.field
+import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
 class FloatFieldTest {
@@ -22,7 +22,7 @@ class FloatFieldTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { FloatFieldExample() } }
 
-        val alphaField = state.field<Float>("Alpha")
+        val alphaField by state.field<Float>("Alpha")
 
         forAll(Arb.float(0f..1f).filterNot { it.isNaN() }.plusEdgecases(alphaField.testValues())) { floatValue ->
             alphaField.value = floatValue

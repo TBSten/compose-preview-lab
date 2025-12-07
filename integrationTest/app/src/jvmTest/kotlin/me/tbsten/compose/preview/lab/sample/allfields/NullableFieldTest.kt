@@ -13,8 +13,8 @@ import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabState
-import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 import me.tbsten.compose.preview.lab.field
+import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
 class NullableFieldTest {
@@ -23,7 +23,7 @@ class NullableFieldTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { NullableFieldExample() } }
 
-        val userNameField = state.field<String?>("User Name")
+        val userNameField by state.field<String?>("User Name")
 
         forAll(Arb.string(1..20).orNull().plusEdgecases(userNameField.testValues())) { userName ->
             userNameField.value = userName

@@ -13,8 +13,8 @@ import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabState
-import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 import me.tbsten.compose.preview.lab.field
+import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
 class ByteFieldTest {
@@ -23,7 +23,7 @@ class ByteFieldTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { ByteFieldExample() } }
 
-        val flagField = state.field<Byte>("Flag")
+        val flagField by state.field<Byte>("Flag")
 
         forAll(Arb.byte().plusEdgecases(flagField.testValues())) { byteValue ->
             flagField.value = byteValue

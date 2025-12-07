@@ -11,8 +11,8 @@ import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabState
-import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 import me.tbsten.compose.preview.lab.field
+import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
 class CombinedFieldTest {
@@ -21,7 +21,7 @@ class CombinedFieldTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { CombinedFieldExample() } }
 
-        val paddingField = state.field<CombinedFieldPadding>("Padding")
+        val paddingField by state.field<CombinedFieldPadding>("Padding")
 
         forAll(Arb.of(paddingField.testValues()).plusEdgecases(paddingField.testValues())) { padding ->
             paddingField.value = padding

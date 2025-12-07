@@ -41,7 +41,7 @@ class PreviewsForUiDebugTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
 
-        val intField = state.field<Int>("intValue")
+        val intField by state.field<Int>("intValue")
 
         forAll(Arb.int().plusEdgecases(intField.testValues())) { intFieldValue ->
             intField.value = intFieldValue
@@ -57,7 +57,7 @@ class PreviewsForUiDebugTest {
     fun `StringField should update preview when value changes`() = runDesktopComposeUiTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
-        val stringField = state.field<String>("stringValue")
+        val stringField by state.field<String>("stringValue")
 
         forAll(Arb.string().plusEdgecases(stringField.testValues())) { stringFieldValue ->
             stringField.value = stringFieldValue
@@ -73,7 +73,7 @@ class PreviewsForUiDebugTest {
     fun `BooleanField should toggle preview when value changes`() = runDesktopComposeUiTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
-        val boolField = state.field<Boolean>("booleanValue")
+        val boolField by state.field<Boolean>("booleanValue")
 
         forAll(Arb.boolean().plusEdgecases(boolField.testValues())) { boolFieldValue ->
             boolField.value = boolFieldValue
@@ -89,7 +89,7 @@ class PreviewsForUiDebugTest {
     fun `FloatField should update preview when value changes`() = runDesktopComposeUiTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
-        val floatField = state.field<Float>("floatField")
+        val floatField by state.field<Float>("floatField")
 
         forAll(Arb.float().plusEdgecases(floatField.testValues())) { floatFieldValue ->
             floatField.value = floatFieldValue

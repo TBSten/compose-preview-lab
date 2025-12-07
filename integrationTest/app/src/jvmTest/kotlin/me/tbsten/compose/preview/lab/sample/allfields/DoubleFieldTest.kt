@@ -13,8 +13,8 @@ import io.kotest.property.forAll
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabState
-import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 import me.tbsten.compose.preview.lab.field
+import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
 class DoubleFieldTest {
@@ -23,7 +23,7 @@ class DoubleFieldTest {
         val state = PreviewLabState()
         setContent { TestPreviewLab(state) { DoubleFieldExample() } }
 
-        val priceField = state.field<Double>("Price")
+        val priceField by state.field<Double>("Price")
 
         forAll(Arb.double().filterNot { it.isNaN() || it.isInfinite() }.plusEdgecases(priceField.testValues())) { doubleValue ->
             priceField.value = doubleValue
