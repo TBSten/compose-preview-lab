@@ -60,7 +60,8 @@ dependencies {
 Compose Preview Lab を使ったテストは基本的に以下のステップでテストを記述することが推奨されています。
 
 1. PreviewLabState をインスタンス化する。
-2. `TestPreviewLab(state)` で state を PreviewLab に登録する。これにより、Preview 内で定義した Field や 呼び出された Event が PreviewLabState 内に保持されます。
+2. `TestPreviewLab(state)` で state を PreviewLab に登録する。これにより、Preview 内で定義した Field や 呼び出された Event が
+   PreviewLabState 内に保持されます。
 3. `PreviewLabState.field<フィールドの型>(ラベル)` を使って Field を取得する。
 4. `Field.value` を使って Field の値を取得したり、Field の値を更新する。
 
@@ -82,7 +83,7 @@ composeRule.setContent {
 }
 
 // 3. `PreviewLabState.field<フィールドの型>(ラベル)` を使って Field を取得
-val textField: PreviewLabField<String> = state.field<String>("text")
+val textField: PreviewLabField<String> by state.field<String>("text")
 
 // 4. `Field.value` を利用する
 assertEquals("Click Me!", textField.value)

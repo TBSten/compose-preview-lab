@@ -11,10 +11,11 @@ import ComposePreviewLabVersion from "@site/src/components/ComposePreviewLabVers
 
 PreviewLab は Property-based testing との相性が良く、Field の `testValues()` API を使って効率的にテストを記述できます。
 
-このページでは kotest property と Compose Preview Lab を組み合わせて Property-based testing を実装する方法を紹介しまうs。 
+このページでは kotest property と Compose Preview Lab を組み合わせて Property-based testing を実装する方法を紹介しまうs。
 
 - Compose Preview Lab を使ったテストについては [Basic](./basic) を確認してください。
-- Property-based testing については [kotest のドキュメント](https://kotest.io/docs/proptest/property-based-testing.html) を参照してください。
+- Property-based testing については [kotest のドキュメント](https://kotest.io/docs/proptest/property-based-testing.html)
+  を参照してください。
 
 ## セットアップ
 
@@ -70,7 +71,6 @@ dependencies {
   </TabItem>
 </Tabs>
 
-
 ## testValues() API
 
 各 Field は `testValues()` メソッドを持っており、テストに有用な値のリストを返します。
@@ -85,14 +85,14 @@ interface PreviewLabField<Value> {
 
 ### 各 Field の testValues() の挙動
 
-| Field | testValues() の内容 |
-|-------|---------------------|
-| デフォルト | `[initialValue]` |
-| `BooleanField` | `[true, false]` |
-| `SelectableField` | 選択可能なすべてのオプション |
-| `EnumField` | すべての enum 値 |
-| `NullableField` | `baseField.testValues() + [null]` |
-| `CombinedField` | サブフィールドの testValues() の直積 (全ての組み合わせ) |
+| Field             | testValues() の内容                     |
+|-------------------|--------------------------------------|
+| デフォルト             | `[initialValue]`                     |
+| `BooleanField`    | `[true, false]`                      |
+| `SelectableField` | 選択可能なすべてのオプション                       |
+| `EnumField`       | すべての enum 値                          |
+| `NullableField`   | `baseField.testValues() + [null]`    |
+| `CombinedField`   | サブフィールドの testValues() の直積 (全ての組み合わせ) |
 
 - NullableField など、他のフィールドと組み合わせるタイプの Field は、ベースとなるフィールドの testValues() と自身の仕様を組み合わせて値を返します。
 - 被りがある場合は重複しないように自動で取り除かれます。
@@ -106,14 +106,14 @@ val str: String? =
     }
 
 // Test
-val strField = state.field<String?>("str")
+val strField by state.field<String?>("str")
 strField.testValues() // will be: ["a", "b", "c", null]
 ```
 
-
 ## kotest-property との連携
 
-[kotest-property](https://kotest.io/docs/proptest/property-based-testing.html) の Arb/Exhansive と組み合わせることで、ランダムな値と `testValues()` のエッジケースを両方テストできます。
+[kotest-property](https://kotest.io/docs/proptest/property-based-testing.html) の Arb/Exhansive と組み合わせることで、ランダムな値と
+`testValues()` のエッジケースを両方テストできます。
 
 ```kotlin
 import io.kotest.property.Arb
@@ -126,7 +126,7 @@ fun `IntField should update preview when value changes`() = runDesktopComposeUiT
     val state = PreviewLabState()
     setContent { TestPreviewLab(state) { MyPreview() } }
 
-    val countField = state.field<Int>("Count")
+    val countField by state.field<Int>("Count")
 
     // highlight-start
     // ランダムな int 値 + testValues() のエッジケースをテスト
@@ -142,13 +142,12 @@ fun `IntField should update preview when value changes`() = runDesktopComposeUiT
 }
 ```
 
-
 ### 様々な Field のテスト例
 
 #### BooleanField
 
 ```kotlin
-val enabledField = state.field<Boolean>("Enabled")
+val enabledField by state.field<Boolean>("Enabled")
 
 forAll(Arb.boolean().plusEdgecases(enabledField.testValues())) { boolValue ->
     enabledField.value = boolValue
@@ -160,7 +159,7 @@ forAll(Arb.boolean().plusEdgecases(enabledField.testValues())) { boolValue ->
 #### SelectableField / EnumField
 
 ```kotlin
-val themeField = state.field<Theme>("Theme")
+val themeField by state.field<Theme>("Theme")
 
 // testValues() にはすべての選択肢が含まれる
 forAll(Arb.of(themeField.testValues()).plusEdgecases(themeField.testValues())) { theme ->
@@ -173,7 +172,7 @@ forAll(Arb.of(themeField.testValues()).plusEdgecases(themeField.testValues())) {
 #### NullableField
 
 ```kotlin
-val userNameField = state.field<String?>("User Name")
+val userNameField by state.field<String?>("User Name")
 
 forAll(Arb.string(1..20).orNull().plusEdgecases(userNameField.testValues())) { userName ->
     userNameField.value = userName

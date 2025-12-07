@@ -68,8 +68,8 @@ internal object DebugTab : InspectorTab {
 
             Button(
                 onClick = {
-                    val textField: MutablePreviewLabField<String> = state.field<String>(label = "text")
-                    val sizeField: MutablePreviewLabField<DpSize> = state.field<DpSize>(label = "size")
+                    val textField: MutablePreviewLabField<String> by state.field<String>(label = "text")
+                    val sizeField: MutablePreviewLabField<DpSize> by state.field<DpSize>(label = "size")
 
                     textField.value = "very ".repeat(50) + "text"
                     sizeField.value = DpSize(300.dp, 300.dp)

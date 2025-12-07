@@ -13,7 +13,8 @@ Inspector Tab は、PreviewLab で 右側に表示されるインスペクター
 
 ## 概要
 
-PreviewLab のインスペクターパネルには、コンポーネントの状態を確認・操作するためのタブが用意されています。デフォルトでは `Fields`、`Events`、`Code` の3つのタブが含まれており、`InspectorTab` インターフェースを実装することで独自のタブを追加できます。
+PreviewLab のインスペクターパネルには、コンポーネントの状態を確認・操作するためのタブが用意されています。デフォルトでは `Fields`、
+`Events`、`Code` の3つのタブが含まれており、`InspectorTab` インターフェースを実装することで独自のタブを追加できます。
 
 ## ビルトインタブ
 
@@ -41,7 +42,8 @@ Field の詳細は [Event](./events/) のドキュメントを参照してくだ
 
 ### InspectorTab.Code
 
-現在表示中の Preview の Kotlin コードスニペットを表示するタブです。各 `fieldValue { ... }` 呼び出しが、その Field の `valueCode()` メソッドが返すコードに置き換えられた形で表示されます。
+現在表示中の Preview の Kotlin コードスニペットを表示するタブです。各 `fieldValue { ... }` 呼び出しが、その Field の `valueCode()`
+メソッドが返すコードに置き換えられた形で表示されます。
 
 これにより、PreviewLab で設定した現在の値を、そのままコピー&ペーストできる Kotlin コードとして確認できます。
 
@@ -53,7 +55,8 @@ import inspectorTabCode from "./img/inspector-tab-code.png"
 
 現在 Code タブは 現在開発中の機能で デフォルトでは表示されないよう構成されています。
 
-利用したい場合は 以下のように ExperimentalComposePreviewLabApi を OptIn して PreviewLab.inspectorTabs 引数に Code タブを指定する必要があります。
+利用したい場合は 以下のように ExperimentalComposePreviewLabApi を OptIn して PreviewLab.inspectorTabs 引数に Code
+タブを指定する必要があります。
 
 ```kt
 @OptIn(ExperimentalComposePreviewLabApi::class)
@@ -69,14 +72,17 @@ PreviewLab(
 <details>
 <summary>Code タブの動作について</summary>
 
-Code タブは、`PreviewLabPreview.code` に保存されている元のコードを基に、各 Field の `label` と `fieldValue { ... }` 呼び出しを検索して、その Field の `valueCode()` が返すコードに置き換えます。
+Code タブは、`PreviewLabPreview.code` に保存されている元のコードを基に、各 Field の `label` と `fieldValue { ... }` 呼び出しを検索して、その
+Field の `valueCode()` が返すコードに置き換えます。
 
-各 Field の `valueCode()` をカスタマイズすることで、Code タブに表示されるコードスニペットを自分のプロジェクトの API 形式に合わせることができます。詳細は [Field.withValueCode()](./fields/enhance-fields) を参照してください。
+各 Field の `valueCode()` をカスタマイズすることで、Code タブに表示されるコードスニペットを自分のプロジェクトの API
+形式に合わせることができます。詳細は [Field.withValueCode()](./fields/enhance-fields) を参照してください。
 
 :::note 制限事項
 
 - Field の `label` が重複している場合、期待通りに置換されない可能性があります。
-- 複雑なカスタムパターンでは、100% 正確に元のコードを再現するものではなく、「コピー&ペースト用のたたき台」として使用することを想定しています。例えば一部の Field では元のコードの再現が確実にはできないため、代わりに TODO コメントが挿入されます。
+- 複雑なカスタムパターンでは、100% 正確に元のコードを再現するものではなく、「コピー&ペースト用のたたき台」として使用することを想定しています。例えば一部の
+  Field では元のコードの再現が確実にはできないため、代わりに TODO コメントが挿入されます。
 
 :::
 
@@ -159,8 +165,8 @@ object DebugTab : InspectorTab {
 
             Button(
                 onClick = {
-                    val textField: MutablePreviewLabField<String> = state.field<String>(label = "text")
-                    val sizeField: MutablePreviewLabField<DpSize> = state.field<DpSize>(label = "size")
+                    val textField: MutablePreviewLabField<String> by state.field<String>(label = "text")
+                    val sizeField: MutablePreviewLabField<DpSize> by state.field<DpSize>(label = "size")
 
                     textField.value = "very ".repeat(50) + "text"
                     sizeField.value = DpSize(300.dp, 300.dp)
@@ -176,7 +182,6 @@ object DebugTab : InspectorTab {
 <EmbeddedPreviewLab previewId="InspectorTabDebugExample" />
 
 </details>
-
 
 ### InspectorTab インターフェース
 
@@ -211,10 +216,12 @@ object CustomTab : InspectorTab {
 
 `InspectorTab.ContentContext.Content()` メソッド内では以下の情報にアクセスすることができます。
 
-- `state` ... [PreviewLabState](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab/-preview-lab-state/index.html?query=class%20PreviewLabState) の情報にアクセスできます。
-  - `fields` ... 登録されているフィールドの一覧を取得します。
-  - `field()` ... Field の型とラベルを指定して 特定のフィールドを取得します。
-  - `events` ... onEvent 呼び出しにより発生したイベントのリストを取得します。
+-
+`state` ... [PreviewLabState](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab/-preview-lab-state/index.html?query=class%20PreviewLabState)
+の情報にアクセスできます。
+    - `fields` ... 登録されているフィールドの一覧を取得します。
+    - `field()` ... Field の型とラベルを指定して 特定のフィールドを取得します。
+    - `events` ... onEvent 呼び出しにより発生したイベントのリストを取得します。
 
 ```kt
 @Composable
