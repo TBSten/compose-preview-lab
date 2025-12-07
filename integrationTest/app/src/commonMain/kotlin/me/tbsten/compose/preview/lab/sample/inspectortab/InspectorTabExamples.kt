@@ -1,17 +1,25 @@
 package me.tbsten.compose.preview.lab.sample.inspectortab
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLab
 import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
+import me.tbsten.compose.preview.lab.field
+import me.tbsten.compose.preview.lab.field.DpSizeField
+import me.tbsten.compose.preview.lab.field.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.StringField
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -35,61 +43,11 @@ internal fun InspectorTabDocsExample() = PreviewLab(
     inspectorTabs = InspectorTab.defaults + DocsTab,
 ) {
     LaunchedEffect(Unit) {
-        delay(0.25.seconds)
+        delay(0.1.seconds)
         @OptIn(ExperimentalComposePreviewLabApi::class)
         state.selectedTabIndex = 2
     }
 
-    val text = fieldValue { StringField("text", "Hello") }
-    Button(onClick = {}) {
-        Text(text)
-    }
-}
-
-// Usage Tab
-internal object UsageTab : InspectorTab {
-    override val title = "Usage"
-    override val icon: (@Composable () -> Painter)? = null
-
-    @Composable
-    override fun InspectorTab.ContentContext.Content() {
-        Column {
-            Text("You can show sample code and usage examples here.")
-        }
-    }
-}
-
-@Preview
-@ComposePreviewLabOption(id = "InspectorTabUsageExample")
-@Composable
-internal fun InspectorTabUsageExample() = PreviewLab(
-    inspectorTabs = InspectorTab.defaults + listOf(UsageTab),
-) {
-    val text = fieldValue { StringField("text", "Hello") }
-    Button(onClick = {}) {
-        Text(text)
-    }
-}
-
-// Design Tab
-internal object DesignTab : InspectorTab {
-    override val title = "Design"
-    override val icon: (@Composable () -> Painter)? = null
-
-    @Composable
-    override fun InspectorTab.ContentContext.Content() {
-        Column {
-            Text("You can describe design guidelines here, such as color schemes and layout rules.")
-        }
-    }
-}
-
-@Preview
-@ComposePreviewLabOption(id = "InspectorTabDesignExample")
-@Composable
-internal fun InspectorTabDesignExample() = PreviewLab(
-    inspectorTabs = InspectorTab.defaults + listOf(DesignTab),
-) {
     val text = fieldValue { StringField("text", "Hello") }
     Button(onClick = {}) {
         Text(text)
@@ -101,10 +59,24 @@ internal object DebugTab : InspectorTab {
     override val title = "Debug"
     override val icon: (@Composable () -> Painter)? = null
 
+    @OptIn(ExperimentalComposePreviewLabApi::class)
     @Composable
     override fun InspectorTab.ContentContext.Content() {
-        Column {
-            Text("You can display debug information, logs, and state here.")
+        Column(modifier = Modifier.padding(8.dp)) {
+            val allFields = state.fields
+            Text("Field count: ${allFields.size}")
+
+            Button(
+                onClick = {
+                    val textField: MutablePreviewLabField<String> = state.field<String>(label = "text")
+                    val sizeField: MutablePreviewLabField<DpSize> = state.field<DpSize>(label = "size")
+
+                    textField.value = "very ".repeat(50) + "text"
+                    sizeField.value = DpSize(300.dp, 300.dp)
+                },
+            ) {
+                Text("Set field value to large content pattern")
+            }
         }
     }
 }
@@ -113,10 +85,20 @@ internal object DebugTab : InspectorTab {
 @ComposePreviewLabOption(id = "InspectorTabDebugExample")
 @Composable
 internal fun InspectorTabDebugExample() = PreviewLab(
-    inspectorTabs = InspectorTab.defaults + listOf(DebugTab),
+    inspectorTabs = InspectorTab.defaults + DebugTab,
 ) {
+    LaunchedEffect(Unit) {
+        delay(0.1.seconds)
+        @OptIn(ExperimentalComposePreviewLabApi::class)
+        state.selectedTabIndex = 2
+    }
+
     val text = fieldValue { StringField("text", "Hello") }
-    Button(onClick = {}) {
+    Button(
+        onClick = {},
+        modifier = Modifier
+            .size(fieldValue { DpSizeField("size", DpSize(100.dp, 80.dp)) }),
+    ) {
         Text(text)
     }
 }
