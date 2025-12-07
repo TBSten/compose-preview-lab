@@ -1,5 +1,5 @@
 ---
-title: "[TODO] テストコードの自動生成（構想）"
+title: "[TODO] テストコードの自動生成"
 sidebar_position: 4
 ---
 
@@ -9,7 +9,7 @@ sidebar_position: 4
 
 :::
 
-# テストコードの自動生成（構想）
+# テストコードの自動生成
 
 現在、Compose Preview Lab では **テストコード自動生成** 機能はまだ実装されていませんが、  
 次のような方向性が Issue で議論されています。

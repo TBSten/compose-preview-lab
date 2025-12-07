@@ -1,5 +1,5 @@
 ---
-title: "[TODO] VRT (Visual Regression Testing)（構想）"
+title: "[TODO] VRT (Visual Regression Testing)"
 sidebar_position: 3
 ---
 
@@ -9,11 +9,11 @@ sidebar_position: 3
 
 :::
 
-# VRT (Visual Regression Testing)（構想）
+# VRT (Visual Regression Testing)
 
 Visual Regression Testing（ビジュアルリグレッションテスト）においても、PreviewLab は有用な基盤になり得ます。
 
-:::info 典型的な VRT フロー（構想）
+:::info 典型的な VRT フロー
 1. PreviewLabGallery から全 Preview を一括レンダリング  
 2. 各 Preview のスクリーンショットを取得  
 3. 以前のスナップショットと比較し、差分が一定以上あれば失敗とする  
