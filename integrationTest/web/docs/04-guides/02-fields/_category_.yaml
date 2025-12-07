@@ -1,5 +1,4 @@
 label: Fields
 position: 2
 link:
-  type: doc
-  id: guides/fields/index
+  type: generated-index
