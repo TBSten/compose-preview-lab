@@ -1,5 +1,5 @@
 ---
-title: "【WIP】 テストコードの自動生成（構想）"
+title: "[TODO] テストコードの自動生成（構想）"
 sidebar_position: 4
 ---
 

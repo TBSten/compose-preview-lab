@@ -1,5 +1,5 @@
 ---
-title: 新規プロジェクトで Compose Preview Lab を導入する
+title: "[TODO] 新規プロジェクトで Compose Preview Lab を導入する"
 sidebar_position: 3
 ---
 

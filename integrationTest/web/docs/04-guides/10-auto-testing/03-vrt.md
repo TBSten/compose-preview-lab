@@ -1,5 +1,5 @@
 ---
-title: "【WIP】 VRT (Visual Regression Testing)（構想）"
+title: "[TODO] VRT (Visual Regression Testing)（構想）"
 sidebar_position: 3
 ---
 

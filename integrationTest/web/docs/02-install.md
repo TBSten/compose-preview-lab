@@ -1,5 +1,5 @@
 ---
-title: Install
+title: "[TODO] Install"
 sidebar_position: 2
 ---
 
