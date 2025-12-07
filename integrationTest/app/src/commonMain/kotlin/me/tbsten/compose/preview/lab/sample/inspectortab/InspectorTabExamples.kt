@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.painter.Painter
+import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.delay
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLab
@@ -29,8 +32,14 @@ internal object DocsTab : InspectorTab {
 @ComposePreviewLabOption(id = "InspectorTabDocsExample")
 @Composable
 internal fun InspectorTabDocsExample() = PreviewLab(
-    inspectorTabs = InspectorTab.defaults + listOf(DocsTab)
+    inspectorTabs = InspectorTab.defaults + DocsTab,
 ) {
+    LaunchedEffect(Unit) {
+        delay(0.25.seconds)
+        @OptIn(ExperimentalComposePreviewLabApi::class)
+        state.selectedTabIndex = 2
+    }
+
     val text = fieldValue { StringField("text", "Hello") }
     Button(onClick = {}) {
         Text(text)
@@ -54,7 +63,7 @@ internal object UsageTab : InspectorTab {
 @ComposePreviewLabOption(id = "InspectorTabUsageExample")
 @Composable
 internal fun InspectorTabUsageExample() = PreviewLab(
-    inspectorTabs = InspectorTab.defaults + listOf(UsageTab)
+    inspectorTabs = InspectorTab.defaults + listOf(UsageTab),
 ) {
     val text = fieldValue { StringField("text", "Hello") }
     Button(onClick = {}) {
@@ -79,7 +88,7 @@ internal object DesignTab : InspectorTab {
 @ComposePreviewLabOption(id = "InspectorTabDesignExample")
 @Composable
 internal fun InspectorTabDesignExample() = PreviewLab(
-    inspectorTabs = InspectorTab.defaults + listOf(DesignTab)
+    inspectorTabs = InspectorTab.defaults + listOf(DesignTab),
 ) {
     val text = fieldValue { StringField("text", "Hello") }
     Button(onClick = {}) {
@@ -94,7 +103,6 @@ internal object DebugTab : InspectorTab {
 
     @Composable
     override fun InspectorTab.ContentContext.Content() {
-        state.fields
         Column {
             Text("You can display debug information, logs, and state here.")
         }
@@ -105,7 +113,7 @@ internal object DebugTab : InspectorTab {
 @ComposePreviewLabOption(id = "InspectorTabDebugExample")
 @Composable
 internal fun InspectorTabDebugExample() = PreviewLab(
-    inspectorTabs = InspectorTab.defaults + listOf(DebugTab)
+    inspectorTabs = InspectorTab.defaults + listOf(DebugTab),
 ) {
     val text = fieldValue { StringField("text", "Hello") }
     Button(onClick = {}) {
