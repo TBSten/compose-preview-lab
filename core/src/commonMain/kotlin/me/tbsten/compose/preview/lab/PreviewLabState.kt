@@ -129,7 +129,7 @@ inline fun <reified Value> PreviewLabState.fieldOrNull(label: String): Lazy<Muta
  *
  * Example:
  * ```kotlin
- * val intField = state.field<Int>("intValue")
+ * val intField by state.field<Int>("intValue")
  * intField.value = 42
  * ```
  */

@@ -31,7 +31,7 @@ import me.tbsten.compose.preview.lab.PreviewLabState
  *         }
  *     }
  *
- *     val intField = state.field<Int>("intValue")
+ *     val intField by state.field<Int>("intValue")
  *     intField.value = 42
  *     awaitIdle()
  *
