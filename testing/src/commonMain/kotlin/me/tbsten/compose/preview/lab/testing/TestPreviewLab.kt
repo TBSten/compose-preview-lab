@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
-import me.tbsten.compose.preview.lab.LocalPreviewLabState
+import me.tbsten.compose.preview.lab.LocalEnforcePreviewLabState
 import me.tbsten.compose.preview.lab.PreviewLabState
 
 /**
@@ -56,7 +56,7 @@ fun TestPreviewLab(
     CompositionLocalProvider(
         LocalViewModelStoreOwner provides viewModelStoreOwner,
         LocalLifecycleOwner provides lifecycleOwner,
-        LocalPreviewLabState provides state,
+        LocalEnforcePreviewLabState provides state,
     ) {
         block()
     }

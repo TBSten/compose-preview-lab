@@ -313,7 +313,7 @@ open class PreviewLab(
      */
     @Composable
     operator fun invoke(
-        state: PreviewLabState = LocalPreviewLabState.current ?: defaultState(),
+        state: PreviewLabState = defaultState(),
         maxWidth: Dp,
         maxHeight: Dp,
         modifier: Modifier = Modifier,
@@ -456,13 +456,15 @@ open class PreviewLab(
      */
     @Composable
     open operator fun invoke(
-        state: PreviewLabState = LocalPreviewLabState.current ?: defaultState(),
+        state: PreviewLabState = defaultState(),
         screenSizes: List<ScreenSize> = defaultScreenSizes,
         modifier: Modifier = Modifier,
         isHeaderShow: Boolean = this.defaultIsHeaderShow(),
         inspectorTabs: List<InspectorTab> = this.defaultInspectorTabs(),
         content: @Composable PreviewLabScope.() -> Unit,
     ) {
+        val state = LocalEnforcePreviewLabState.current ?: state
+
         val toaster = rememberToasterState().also { toaster ->
             state.scope.HandleEffect { event ->
                 when (event) {
@@ -533,7 +535,7 @@ open class PreviewLab(
             contentRoot {
                 PreviewLabTheme {
                     CompositionLocalProvider(
-                        LocalPreviewLabState provides state,
+                        LocalEnforcePreviewLabState provides state,
                         LocalToaster provides toaster,
                     ) {
                         content()
@@ -566,7 +568,7 @@ open class PreviewLab(
 }
 
 @VisibleForTesting
-val LocalPreviewLabState = compositionLocalOf<PreviewLabState?> { null }
+val LocalEnforcePreviewLabState = compositionLocalOf<PreviewLabState?> { null }
 internal val LocalToaster = compositionLocalOf<ToasterState> { error("No ToasterState") }
 
 @Composable
