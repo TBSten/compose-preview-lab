@@ -17,7 +17,7 @@ import me.tbsten.compose.preview.lab.field.PreviewLabField
  * @see PreviewLabEvent
  */
 @OptIn(ExperimentalTime::class)
-class PreviewLabScope internal constructor(private val state: PreviewLabState,) {
+class PreviewLabScope internal constructor(val state: PreviewLabState) {
     internal var onEffectHandler: (Effect) -> Unit = {}
 
     // field methods

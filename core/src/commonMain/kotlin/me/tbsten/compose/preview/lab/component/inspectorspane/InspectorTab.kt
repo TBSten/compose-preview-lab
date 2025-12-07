@@ -88,11 +88,14 @@ interface InspectorTab {
     fun ContentContext.Content()
 
     /**
-     * Context providing access to PreviewLabState for tab content.
+     * Context providing access to [PreviewLabState] for tab content.
      *
-     * @property state The current PreviewLabState, providing access to fields, events, and other preview state
+     * @property state The current [PreviewLabState], providing access to fields, events, and other preview state
      */
-    class ContentContext(val state: PreviewLabState)
+    class ContentContext(
+        val state: PreviewLabState,
+        val inspectorTabs: List<InspectorTab>,
+    )
 
     /**
      * Built-in Fields tab that displays all interactive fields.

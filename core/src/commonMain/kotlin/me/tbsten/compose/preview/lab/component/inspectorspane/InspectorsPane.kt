@@ -31,7 +31,6 @@ import me.tbsten.compose.preview.lab.component.Divider
 import me.tbsten.compose.preview.lab.component.SimpleModal
 import me.tbsten.compose.preview.lab.component.TabPager
 import me.tbsten.compose.preview.lab.component.adaptive
-import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab.ContentContext
 import me.tbsten.compose.preview.lab.core.generated.resources.Res
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_code
 import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
@@ -94,7 +93,10 @@ internal fun InspectorsPane(
                                     .heightIn(min = 200.dp),
                             ) {
                                 with(tab) {
-                                    ContentContext(state = state).Content()
+                                    InspectorTab.ContentContext(
+                                        state = state,
+                                        inspectorTabs = allTabs,
+                                    ).Content()
                                 }
                             }
                         }
@@ -157,7 +159,10 @@ internal fun InspectorsPane(
                         modifier = Modifier.weight(1f),
                     ) { tab ->
                         with(tab) {
-                            ContentContext(state = state).Content()
+                            InspectorTab.ContentContext(
+                                state = state,
+                                inspectorTabs = allTabs,
+                            ).Content()
                         }
                     }
 
