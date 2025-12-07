@@ -216,12 +216,11 @@ object CustomTab : InspectorTab {
 
 `InspectorTab.ContentContext.Content()` メソッド内では以下の情報にアクセスすることができます。
 
--
-`state` ... [PreviewLabState](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab/-preview-lab-state/index.html?query=class%20PreviewLabState)
-の情報にアクセスできます。
-    - `fields` ... 登録されているフィールドの一覧を取得します。
-    - `field()` ... Field の型とラベルを指定して 特定のフィールドを取得します。
-    - `events` ... onEvent 呼び出しにより発生したイベントのリストを取得します。
+- `state` ... [PreviewLabState](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab/-preview-lab-state/index.html?query=class%20PreviewLabState) の情報にアクセスできます。
+  - `fields` ... 登録されているフィールドの一覧を取得します。
+  - `field()` ... Field の型とラベルを指定して 特定のフィールドを取得します。
+  - `events` ... onEvent 呼び出しにより発生したイベントのリストを取得します。
+- `inspectorTabs` ... 現在表示されているタブの一覧 (`List<InspectorTab>`) を取得します。
 
 ```kt
 @Composable
@@ -230,7 +229,11 @@ override fun InspectorTab.ContentContext.Content() {
     Text("Fields count: ${state.fields.size}")
 
     // text フィールドの値を更新する
-    state.field<String>("text").value = "..."
+    val textField by state.field<String>("text")
+    textField.value = "..."
+
+    // 現在のタブ一覧を取得する
+    val tabs = inspectorTabs
 }
 ```
 
@@ -246,5 +249,26 @@ fun MyPreview() = PreviewLab(
     inspectorTabs = InspectorTab.defaults + CustomTab,
 ) {
     MyComponent()
+}
+```
+
+### Preview コンテンツ内から state にアクセスする
+
+`PreviewLabScope` には `state` プロパティが公開されており、Preview のコンテンツ内から `PreviewLabState` にアクセスできます。これにより、選択中のタブの変更など、プログラムから Inspector の状態を制御できます。
+
+```kt
+@Preview
+@Composable
+fun MyPreview() = PreviewLab(
+    inspectorTabs = InspectorTab.defaults + CustomTab,
+) {
+    // Preview コンテンツ内から state にアクセス
+    LaunchedEffect(Unit) {
+        @OptIn(ExperimentalComposePreviewLabApi::class)
+        state.selectedTabIndex = 2  // 3番目のタブを選択
+    }
+
+    val text = fieldValue { StringField("text", "Hello") }
+    Text(text)
 }
 ```
