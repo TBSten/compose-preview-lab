@@ -115,8 +115,9 @@ class PreviewLabState {
  */
 @Suppress("UNCHECKED_CAST")
 @ExperimentalComposePreviewLabApi
-inline fun <reified Value> PreviewLabState.fieldOrNull(label: String): MutablePreviewLabField<Value>? =
+inline fun <reified Value> PreviewLabState.fieldOrNull(label: String): Lazy<MutablePreviewLabField<Value>?> = lazy {
     fields.find { it.label == label } as? MutablePreviewLabField<Value>
+}
 
 /**
  * Finds a mutable field by its label in the PreviewLabState, throwing an error if not found.
@@ -133,6 +134,7 @@ inline fun <reified Value> PreviewLabState.fieldOrNull(label: String): MutablePr
  * ```
  */
 @ExperimentalComposePreviewLabApi
-inline fun <reified Value> PreviewLabState.field(label: String): MutablePreviewLabField<Value> =
-    fieldOrNull<Value>(label = label)
+inline fun <reified Value> PreviewLabState.field(label: String): Lazy<MutablePreviewLabField<Value>> = lazy {
+    fieldOrNull<Value>(label = label).value
         ?: error("Can not find update target field: label=$label")
+}
