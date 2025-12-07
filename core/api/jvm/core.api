@@ -100,7 +100,7 @@ public final class me/tbsten/compose/preview/lab/PreviewLabGalleryState {
 
 public final class me/tbsten/compose/preview/lab/PreviewLabKt {
 	public static final fun getLocalDefaultIsHeaderShow ()Landroidx/compose/runtime/ProvidableCompositionLocal;
-	public static final fun getLocalPreviewLabState ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalEnforcePreviewLabState ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 }
 
 public abstract interface class me/tbsten/compose/preview/lab/PreviewLabPreview {
@@ -116,6 +116,7 @@ public final class me/tbsten/compose/preview/lab/PreviewLabScope {
 	public static final field $stable I
 	public final fun fieldState (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/MutableState;
 	public final fun fieldValue (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Ljava/lang/Object;
+	public final fun getState ()Lme/tbsten/compose/preview/lab/PreviewLabState;
 	public final fun onEvent (Ljava/lang/String;Ljava/lang/String;)V
 	public static synthetic fun onEvent$default (Lme/tbsten/compose/preview/lab/PreviewLabScope;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)V
 }
@@ -243,7 +244,8 @@ public final class me/tbsten/compose/preview/lab/component/inspectorspane/Inspec
 
 public final class me/tbsten/compose/preview/lab/component/inspectorspane/InspectorTab$ContentContext {
 	public static final field $stable I
-	public fun <init> (Lme/tbsten/compose/preview/lab/PreviewLabState;)V
+	public fun <init> (Lme/tbsten/compose/preview/lab/PreviewLabState;Ljava/util/List;)V
+	public final fun getInspectorTabs ()Ljava/util/List;
 	public final fun getState ()Lme/tbsten/compose/preview/lab/PreviewLabState;
 }
 
