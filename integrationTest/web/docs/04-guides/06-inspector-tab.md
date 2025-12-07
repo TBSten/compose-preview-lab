@@ -157,19 +157,23 @@ object DebugTab : InspectorTab {
             val allFields = state.fields
             Text("Field の数: ${allFields.size}")
 
-            val textField: MutablePreviewLabField<String> = state.field<String>(label = "text")
-            val sizeField: MutablePreviewLabField<DpSize> = state.field<DpSize>(label = "size")
+            Button(
+                onClick = {
+                    val textField: MutablePreviewLabField<String> = state.field<String>(label = "text")
+                    val sizeField: MutablePreviewLabField<DpSize> = state.field<DpSize>(label = "size")
 
-            Button(onClick = {
-                textField.value = "very ".repeat(50) + "text"
-                sizeField.value = DpSize(300.dp)
-            }) {
+                    textField.value = "very ".repeat(50) + "text"
+                    sizeField.value = DpSize(300.dp, 300.dp)
+                },
+            ) {
                 Text("Set field value to large content pattern")
             }
         }
     }
 }
 ```
+
+<EmbeddedPreviewLab previewId="InspectorTabDebugExample" />
 
 </details>
 
