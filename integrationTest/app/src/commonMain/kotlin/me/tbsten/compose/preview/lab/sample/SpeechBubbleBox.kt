@@ -1,6 +1,7 @@
 package me.tbsten.compose.preview.lab.sample
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -21,10 +22,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,23 +45,49 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
+import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.drop
 import me.tbsten.compose.preview.lab.field.MutablePreviewLabField
+import me.tbsten.compose.preview.lab.field.WrapRange
 import me.tbsten.compose.preview.lab.field.wrap
 
-fun <Value> MutablePreviewLabField<Value>.speechBubble(visible: Boolean, bubbleText: String, onClose: (() -> Unit)?) =
-    wrap { content ->
-        var isClosed by remember { mutableStateOf(false) }
-
-        SpeechBubbleBox(
-            bubbleText = bubbleText,
-            visible = visible && isClosed.not(),
-            onClose = {
-                isClosed = true
-                onClose?.invoke()
-            },
-            content = content,
-        )
+/**
+ * Observes value changes of a [State] and invokes [onValueChange] when the value changes.
+ *
+ * @param state The state to observe
+ * @param onValueChange Callback invoked when the value changes (excludes initial value)
+ */
+@Composable
+fun <T> OnValueChange(state: State<T>, onValueChange: (T) -> Unit) {
+    LaunchedEffect(Unit) {
+        snapshotFlow { state.value }
+            .drop(1)
+            .collect { onValueChange(it) }
     }
+}
+
+fun <Value> MutablePreviewLabField<Value>.speechBubble(
+    visible: @Composable () -> Boolean,
+    bubbleText: String,
+    alignment: Alignment = Alignment.TopCenter,
+    onClose: (() -> Unit)? = null,
+) = wrap(wrapRange = WrapRange.Full) { content ->
+    var isClosed by remember { mutableStateOf(false) }
+
+    SpeechBubbleBox(
+        bubbleText = bubbleText,
+        visible = visible() && isClosed.not(),
+        alignment = alignment,
+        onClose = onClose?.let {
+            {
+                isClosed = true
+                onClose.invoke()
+            }
+        },
+        content = content,
+    )
+}
 
 @Composable
 internal fun SpeechBubbleBox(
@@ -82,10 +112,14 @@ internal fun SpeechBubbleBox(
     onClose: (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
-    val tailAlignment = when (alignment) {
-        Alignment.TopStart, Alignment.TopCenter, Alignment.TopEnd -> TailAlignment.Bottom
-        Alignment.BottomStart, Alignment.BottomCenter, Alignment.BottomEnd -> TailAlignment.Top
-        else -> TailAlignment.Bottom
+    val tailPosition = when (alignment) {
+        Alignment.TopStart -> TailPosition.BottomStart
+        Alignment.TopCenter -> TailPosition.BottomCenter
+        Alignment.TopEnd -> TailPosition.BottomEnd
+        Alignment.BottomStart -> TailPosition.TopStart
+        Alignment.BottomCenter -> TailPosition.TopCenter
+        Alignment.BottomEnd -> TailPosition.TopEnd
+        else -> TailPosition.BottomCenter
     }
 
     val transformOrigin = when (alignment) {
@@ -103,9 +137,10 @@ internal fun SpeechBubbleBox(
     val interactionSource = remember { MutableInteractionSource() }
     val isHovered by interactionSource.collectIsHoveredAsState()
 
-    val hoverOffsetY = when (tailAlignment) {
-        TailAlignment.Bottom -> (-4).dp
-        TailAlignment.Top -> 4.dp
+    val hoverOffsetY = when {
+        tailPosition.isBottom -> (-4).dp
+        tailPosition.isTop -> 4.dp
+        else -> 0.dp
     }
 
     val popupPositionProvider = remember(alignment) {
@@ -119,12 +154,17 @@ internal fun SpeechBubbleBox(
             popupPositionProvider = popupPositionProvider,
         ) {
             AnimatedVisibility(
-                visible = visible,
+                visibleState = remember { MutableTransitionState(false) }.apply {
+                    LaunchedEffect(this, visible) {
+                        delay(0.25.seconds)
+                        targetState = visible
+                    }
+                },
                 enter = fadeIn() + scaleIn(transformOrigin = transformOrigin),
                 exit = fadeOut() + scaleOut(transformOrigin = transformOrigin),
             ) {
                 SpeechBubble(
-                    tailAlignment = tailAlignment,
+                    tailPosition = tailPosition,
                     interactionSource = interactionSource,
                     isHovered = isHovered,
                     hoverOffsetY = hoverOffsetY,
@@ -165,15 +205,23 @@ private class SpeechBubblePositionProvider(private val alignment: Alignment) : P
     }
 }
 
-private enum class TailAlignment {
-    Top,
-    Bottom,
+private enum class TailPosition {
+    TopStart,
+    TopCenter,
+    TopEnd,
+    BottomStart,
+    BottomCenter,
+    BottomEnd,
+    ;
+
+    val isTop: Boolean get() = this == TopStart || this == TopCenter || this == TopEnd
+    val isBottom: Boolean get() = this == BottomStart || this == BottomCenter || this == BottomEnd
 }
 
 @Composable
 private fun SpeechBubble(
     modifier: Modifier = Modifier,
-    tailAlignment: TailAlignment = TailAlignment.Bottom,
+    tailPosition: TailPosition = TailPosition.BottomCenter,
     backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     isHovered: Boolean = false,
@@ -181,7 +229,7 @@ private fun SpeechBubble(
     onClose: (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
-    val bubbleShape = remember(tailAlignment) { createBubbleShape(tailAlignment) }
+    val bubbleShape = remember(tailPosition) { createBubbleShape(tailPosition) }
     val animatedOffsetY by animateDpAsState(
         targetValue = if (isHovered) hoverOffsetY else 0.dp,
         label = "hoverOffset",
@@ -201,8 +249,8 @@ private fun SpeechBubble(
             .padding(
                 start = 12.dp,
                 end = if (onClose != null) 4.dp else 12.dp,
-                top = if (tailAlignment == TailAlignment.Top) 16.dp else 8.dp,
-                bottom = if (tailAlignment == TailAlignment.Bottom) 16.dp else 8.dp,
+                top = if (tailPosition.isTop) 16.dp else 8.dp,
+                bottom = if (tailPosition.isBottom) 16.dp else 8.dp,
             ),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -222,15 +270,22 @@ private fun SpeechBubble(
     }
 }
 
-private fun createBubbleShape(tailAlignment: TailAlignment): Shape = GenericShape { size: Size, _: LayoutDirection ->
+private fun createBubbleShape(tailPosition: TailPosition): Shape = GenericShape { size: Size, _: LayoutDirection ->
     val width = size.width
     val height = size.height
     val cornerRadius = 12f
     val tailWidth = 16f
     val tailHeight = 10f
 
-    when (tailAlignment) {
-        TailAlignment.Bottom -> {
+    // しっぽのX座標を計算
+    val tailCenterX = when (tailPosition) {
+        TailPosition.TopStart, TailPosition.BottomStart -> cornerRadius + tailWidth / 2 + 8f
+        TailPosition.TopCenter, TailPosition.BottomCenter -> width / 2
+        TailPosition.TopEnd, TailPosition.BottomEnd -> width - cornerRadius - tailWidth / 2 - 8f
+    }
+
+    when {
+        tailPosition.isBottom -> {
             // 左上から開始
             moveTo(cornerRadius, 0f)
             // 上辺
@@ -242,10 +297,10 @@ private fun createBubbleShape(tailAlignment: TailAlignment): Shape = GenericShap
             // 右下角
             quadraticTo(width, height - tailHeight, width - cornerRadius, height - tailHeight)
             // 下辺（しっぽの右側まで）
-            lineTo(width / 2 + tailWidth / 2, height - tailHeight)
+            lineTo(tailCenterX + tailWidth / 2, height - tailHeight)
             // しっぽ
-            lineTo(width / 2, height)
-            lineTo(width / 2 - tailWidth / 2, height - tailHeight)
+            lineTo(tailCenterX, height)
+            lineTo(tailCenterX - tailWidth / 2, height - tailHeight)
             // 下辺（しっぽの左側から）
             lineTo(cornerRadius, height - tailHeight)
             // 左下角
@@ -256,14 +311,14 @@ private fun createBubbleShape(tailAlignment: TailAlignment): Shape = GenericShap
             quadraticTo(0f, 0f, cornerRadius, 0f)
             close()
         }
-        TailAlignment.Top -> {
+        tailPosition.isTop -> {
             // 左上から開始（しっぽの分オフセット）
             moveTo(cornerRadius, tailHeight)
             // 上辺（しっぽの左側まで）
-            lineTo(width / 2 - tailWidth / 2, tailHeight)
+            lineTo(tailCenterX - tailWidth / 2, tailHeight)
             // しっぽ
-            lineTo(width / 2, 0f)
-            lineTo(width / 2 + tailWidth / 2, tailHeight)
+            lineTo(tailCenterX, 0f)
+            lineTo(tailCenterX + tailWidth / 2, tailHeight)
             // 上辺（しっぽの右側から）
             lineTo(width - cornerRadius, tailHeight)
             // 右上角
