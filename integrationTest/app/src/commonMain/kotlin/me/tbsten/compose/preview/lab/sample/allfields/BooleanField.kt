@@ -30,7 +30,7 @@ internal fun BooleanFieldExample() = PreviewLab {
     val enabled = fieldState {
         BooleanField("enabled", true)
             .speechBubble(
-                bubbleText = "1. Please toggle switch",
+                bubbleText = "1. Toggle the switch",
                 alignment = Alignment.BottomStart,
                 visible = { step == BooleanFieldExampleSteps.ToggleSwitch },
             )
