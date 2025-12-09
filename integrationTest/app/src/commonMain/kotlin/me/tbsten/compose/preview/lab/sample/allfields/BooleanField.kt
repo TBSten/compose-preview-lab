@@ -41,7 +41,7 @@ internal fun BooleanFieldExample() = PreviewLab {
     }
 
     SpeechBubbleBox(
-        bubbleText = "2. You can change button ui!",
+        bubbleText = "2. Button UI changed!",
         visible = step == BooleanFieldExampleSteps.SeeButtonState,
         alignment = Alignment.BottomCenter,
     ) {
