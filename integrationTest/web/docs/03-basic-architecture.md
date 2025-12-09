@@ -50,7 +50,7 @@ PreviewLabGallery を使わずに 独自の PreviewLabGallery を実装するこ
 
 ## PreviewLab
 
-各 Preview を PreviewLab で囲うことで [Field](./04-guides/02-fields/index.md), [Event](./04-guides/03-events.md) などの機能を Preview に追加することができます。
+各 Preview を PreviewLab で囲うことで [Field](./guides/fields/overview), [Event](./guides/events) などの機能を Preview に追加することができます。
 
 ```kt
 // highlight-next-line
@@ -76,5 +76,5 @@ Preview ごとに PreviewLab を囲う必要があります。
 ## Next Actions
 
 - Build Tooling のセットアップ方法を [Install](./install) のドキュメントで学習してください。
-- PreviewLab の基本機能である [Field](./04-guides/02-fields/index.md), [Event](./04-guides/03-events.md) についてそれぞれのドキュメントで学習してください。
+- PreviewLab の基本機能である [Field](./guides/fields/overview), [Event](./guides/events) についてそれぞれのドキュメントで学習してください。
 - [Tutorials](./tutorials) の中から気になるもの・あなたの状況に合うものを選択して、あなたのアプリで Compose Preview Lab を活用し初めてください！

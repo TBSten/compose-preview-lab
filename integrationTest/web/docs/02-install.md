@@ -170,7 +170,7 @@ fun MyButtonPreview() = PreviewLab {
 
 :::tip 次のステップ
 - [Basic Architecture](./basic-architecture) で PreviewLab の内部構造を理解する  
-- [Fields](./04-guides/02-fields/index.md) で Field の使い方を学ぶ  
-- [Events](./04-guides/03-events.md) でイベントログ機能を試す  
+- [Fields](./guides/fields/overview) で Field の使い方を学ぶ  
+- [Events](./guides/events) でイベントログ機能を試す  
 :::
 

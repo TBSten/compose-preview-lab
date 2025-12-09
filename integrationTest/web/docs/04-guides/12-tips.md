@@ -1,5 +1,5 @@
 ---
-title: [TODO] Tips
+title: "[TODO] Tips"
 sidebar_position: 12
 ---
 

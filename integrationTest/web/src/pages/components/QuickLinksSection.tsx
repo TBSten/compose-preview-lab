@@ -65,7 +65,7 @@ export default function QuickLinksSection() {
             <p>Step-by-step guide to set up in your project.</p>
           </Link>
           <Link
-            to="/docs/guides/fields"
+            to="/docs/guides/fields/overview"
             className={clsx(styles.card, styles.linkCard)}
             data-index="03">
             <Heading as="h3">Fields System</Heading>

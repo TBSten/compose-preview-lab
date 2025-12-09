@@ -1,5 +1,5 @@
 ---
-title: [TODO] Recommended App Architecture
+title: "[TODO] Recommended App Architecture"
 sidebar_position: 11
 ---
 

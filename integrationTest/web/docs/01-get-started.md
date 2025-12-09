@@ -37,7 +37,7 @@ Compose Preview Lab を学習するおすすめのロードマップを以下に
 2. **Compose Preview Lab の中核機能を学ぶ**
     - まだ理解していない場合は Compose Preview Lab の主要な概念について以下のドキュメントを参考にして学びましょう。
     - [Basic Architecture](./basic-architecture)
-    - [Fields](./04-guides/02-fields/index.md)
+    - [Fields](./guides/fields/overview)
     - [Events](./04-guides/03-events.md)
 3. **あなたのアプリでCompose Preview Lab を利用する**
     - あなたが実際に開発しているアプリでも、学習用のサンプルアプリでも構いません。実際に利用してその利便性を感じてください。
