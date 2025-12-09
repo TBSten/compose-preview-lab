@@ -277,7 +277,7 @@ private fun createBubbleShape(tailPosition: TailPosition): Shape = GenericShape 
     val tailWidth = 16f
     val tailHeight = 10f
 
-    // しっぽのX座標を計算
+    // Calculate the X coordinate of the tail
     val tailCenterX = when (tailPosition) {
         TailPosition.TopStart, TailPosition.BottomStart -> cornerRadius + tailWidth / 2 + 8f
         TailPosition.TopCenter, TailPosition.BottomCenter -> width / 2
@@ -286,54 +286,54 @@ private fun createBubbleShape(tailPosition: TailPosition): Shape = GenericShape 
 
     when {
         tailPosition.isBottom -> {
-            // 左上から開始
+            // Start from top-left
             moveTo(cornerRadius, 0f)
-            // 上辺
+            // Top edge
             lineTo(width - cornerRadius, 0f)
-            // 右上角
+            // Top-right corner
             quadraticTo(width, 0f, width, cornerRadius)
-            // 右辺
+            // Right edge
             lineTo(width, height - tailHeight - cornerRadius)
-            // 右下角
+            // Bottom-right corner
             quadraticTo(width, height - tailHeight, width - cornerRadius, height - tailHeight)
-            // 下辺（しっぽの右側まで）
+            // Bottom edge (up to right side of tail)
             lineTo(tailCenterX + tailWidth / 2, height - tailHeight)
-            // しっぽ
+            // Tail
             lineTo(tailCenterX, height)
             lineTo(tailCenterX - tailWidth / 2, height - tailHeight)
-            // 下辺（しっぽの左側から）
+            // Bottom edge (from left side of tail)
             lineTo(cornerRadius, height - tailHeight)
-            // 左下角
+            // Bottom-left corner
             quadraticTo(0f, height - tailHeight, 0f, height - tailHeight - cornerRadius)
-            // 左辺
+            // Left edge
             lineTo(0f, cornerRadius)
-            // 左上角
+            // Top-left corner
             quadraticTo(0f, 0f, cornerRadius, 0f)
             close()
         }
         tailPosition.isTop -> {
-            // 左上から開始（しっぽの分オフセット）
+            // Start from top-left (offset by tail height)
             moveTo(cornerRadius, tailHeight)
-            // 上辺（しっぽの左側まで）
+            // Top edge (up to left side of tail)
             lineTo(tailCenterX - tailWidth / 2, tailHeight)
-            // しっぽ
+            // Tail
             lineTo(tailCenterX, 0f)
             lineTo(tailCenterX + tailWidth / 2, tailHeight)
-            // 上辺（しっぽの右側から）
+            // Top edge (from right side of tail)
             lineTo(width - cornerRadius, tailHeight)
-            // 右上角
+            // Top-right corner
             quadraticTo(width, tailHeight, width, tailHeight + cornerRadius)
-            // 右辺
+            // Right edge
             lineTo(width, height - cornerRadius)
-            // 右下角
+            // Bottom-right corner
             quadraticTo(width, height, width - cornerRadius, height)
-            // 下辺
+            // Bottom edge
             lineTo(cornerRadius, height)
-            // 左下角
+            // Bottom-left corner
             quadraticTo(0f, height, 0f, height - cornerRadius)
-            // 左辺
+            // Left edge
             lineTo(0f, tailHeight + cornerRadius)
-            // 左上角
+            // Top-left corner
             quadraticTo(0f, tailHeight, cornerRadius, tailHeight)
             close()
         }
