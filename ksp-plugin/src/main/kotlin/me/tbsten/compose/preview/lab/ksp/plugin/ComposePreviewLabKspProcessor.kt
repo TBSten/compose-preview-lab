@@ -96,6 +96,13 @@ internal class ComposePreviewLabKspProcessor(
                 )
             }
         }
+
+        generateCombinedFields(
+            resolver = resolver,
+            codeGenerator = codeGenerator,
+            logger = logger,
+        )
+
         return emptyList()
     }
 }

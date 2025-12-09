@@ -459,7 +459,9 @@ enum class PreviewsForUiDebug(
                         },
                     )
 
-                    HorizontalDivider()
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 20.dp),
+                    )
 
                     Scaffold(
                         topBar = fieldValue {

@@ -6,6 +6,10 @@
 // - Show declarations: true
 
 // Library unique name: <me.tbsten.compose.preview.lab:core>
+open annotation class me.tbsten.compose.preview.lab.generatecombinedfield/GenerateCombinedField : kotlin/Annotation { // me.tbsten.compose.preview.lab.generatecombinedfield/GenerateCombinedField|null[0]
+    constructor <init>() // me.tbsten.compose.preview.lab.generatecombinedfield/GenerateCombinedField.<init>|<init>(){}[0]
+}
+
 abstract interface <#A: kotlin/Any?> me.tbsten.compose.preview.lab.component/Transformer { // me.tbsten.compose.preview.lab.component/Transformer|null[0]
     abstract fun fromString(kotlin/String): #A // me.tbsten.compose.preview.lab.component/Transformer.fromString|fromString(kotlin.String){}[0]
     abstract fun toString(#A): kotlin/String // me.tbsten.compose.preview.lab.component/Transformer.toString|toString(1:0){}[0]
