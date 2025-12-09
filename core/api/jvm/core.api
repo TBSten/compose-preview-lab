@@ -578,6 +578,7 @@ public abstract class me/tbsten/compose/preview/lab/field/ImmutablePreviewLabFie
 	public fun getInitialValue ()Ljava/lang/Object;
 	public fun getLabel ()Ljava/lang/String;
 	public fun getValue ()Ljava/lang/Object;
+	public fun getValueFlow ()Lkotlinx/coroutines/flow/Flow;
 	protected fun setValue (Ljava/lang/Object;)V
 	public fun testValues ()Ljava/util/List;
 	public fun valueCode ()Ljava/lang/String;
@@ -621,6 +622,7 @@ public abstract class me/tbsten/compose/preview/lab/field/MutablePreviewLabField
 	public fun getInitialValue ()Ljava/lang/Object;
 	public fun getLabel ()Ljava/lang/String;
 	public fun getValue ()Ljava/lang/Object;
+	public fun getValueFlow ()Lkotlinx/coroutines/flow/Flow;
 	public fun setValue (Ljava/lang/Object;)V
 	public fun testValues ()Ljava/util/List;
 	public fun valueCode ()Ljava/lang/String;
@@ -706,6 +708,7 @@ public abstract interface class me/tbsten/compose/preview/lab/field/PreviewLabFi
 	public abstract fun getInitialValue ()Ljava/lang/Object;
 	public abstract fun getLabel ()Ljava/lang/String;
 	public abstract fun getValue ()Ljava/lang/Object;
+	public abstract fun getValueFlow ()Lkotlinx/coroutines/flow/Flow;
 	public fun testValues ()Ljava/util/List;
 	public fun valueCode ()Ljava/lang/String;
 }
@@ -1057,6 +1060,7 @@ public final class me/tbsten/compose/preview/lab/field/WithTestValuesField : me/
 	public fun getInitialValue ()Ljava/lang/Object;
 	public fun getLabel ()Ljava/lang/String;
 	public fun getValue ()Ljava/lang/Object;
+	public fun getValueFlow ()Lkotlinx/coroutines/flow/Flow;
 	public fun testValues ()Ljava/util/List;
 	public fun valueCode ()Ljava/lang/String;
 }
@@ -1083,14 +1087,25 @@ public final class me/tbsten/compose/preview/lab/field/WithValueCodeFieldKt {
 
 public final class me/tbsten/compose/preview/lab/field/WrapField : me/tbsten/compose/preview/lab/field/MutablePreviewLabField {
 	public static final field $stable I
-	public fun <init> (Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function3;)V
+	public fun <init> (Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/WrapRange;Lkotlin/jvm/functions/Function3;)V
+	public synthetic fun <init> (Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/WrapRange;Lkotlin/jvm/functions/Function3;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun View (Landroidx/compose/runtime/Composer;I)V
 	public fun getValue ()Ljava/lang/Object;
 	public fun setValue (Ljava/lang/Object;)V
 }
 
 public final class me/tbsten/compose/preview/lab/field/WrapFieldKt {
-	public static final fun wrap (Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lkotlin/jvm/functions/Function3;)Lme/tbsten/compose/preview/lab/field/WrapField;
+	public static final fun wrap (Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/WrapRange;Lkotlin/jvm/functions/Function3;)Lme/tbsten/compose/preview/lab/field/WrapField;
+	public static synthetic fun wrap$default (Lme/tbsten/compose/preview/lab/field/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/field/WrapRange;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/WrapField;
+}
+
+public final class me/tbsten/compose/preview/lab/field/WrapRange : java/lang/Enum {
+	public static final field Full Lme/tbsten/compose/preview/lab/field/WrapRange;
+	public static final field OnlyContent Lme/tbsten/compose/preview/lab/field/WrapRange;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lme/tbsten/compose/preview/lab/field/WrapRange;
+	public static fun values ()[Lme/tbsten/compose/preview/lab/field/WrapRange;
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/AlphaModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {
