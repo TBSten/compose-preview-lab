@@ -4,6 +4,7 @@ sidebar_position: 5
 ---
 
 import EmbeddedPreviewLab from '@site/src/components/EmbeddedPreviewLab';
+import KDocLink from '@site/src/components/KDocLink';
 
 # PreviewLabGallery
 
@@ -70,7 +71,7 @@ fun PreviewLabGallery(
 ) = ...
 ```
 
-[PreviewLabGallery の KDoc](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab/-preview-lab-gallery.html) もご覧ください。
+<KDocLink path="core/me.tbsten.compose.preview.lab/-preview-lab-gallery.html">PreviewLabGallery の KDoc</KDocLink> もご覧ください。
 
 ### `previewList`
 
@@ -120,7 +121,7 @@ PreviewLabGallery(
 )
 ```
 
-PreviewLabPreview については [PreviewLabPreview の KDoc](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab/-preview-lab-preview.html?query=fun%20PreviewLabPreview(id:%20String,%20displayName:%20String%20=%20id,%20filePath:%20String?%20=%20null,%20startLineNumber:%20Int?%20=%20null,%20code:%20String?%20=%20null,%20content:%20()%20-%3E%20Unit):%20PreviewLabPreview) を参照してください。
+PreviewLabPreview については <KDocLink path="core/me.tbsten.compose.preview.lab/-preview-lab-preview.html?query=fun%20PreviewLabPreview(id:%20String,%20displayName:%20String%20=%20id,%20filePath:%20String?%20=%20null,%20startLineNumber:%20Int?%20=%20null,%20code:%20String?%20=%20null,%20content:%20()%20-%3E%20Unit):%20PreviewLabPreview">PreviewLabPreview の KDoc</KDocLink> を参照してください。
 
 </details>
 
@@ -130,7 +131,7 @@ PreviewLabPreview については [PreviewLabPreview の KDoc](https://tbsten.gi
 PreviewLabGallery の状態は PreviewLabGalleryState に格納されています。
 この state を手動で管理したい場合、 state 引数に PreviewLabGalleryState のインスタンスをします。
 
-PreviewLabGalleryState の詳しい機能については [PreviewLabGalleryState の KDoc](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab/-preview-lab-gallery-state/index.html) を参照してください。
+PreviewLabGalleryState の詳しい機能については <KDocLink path="core/me.tbsten.compose.preview.lab/-preview-lab-gallery-state/index.html">PreviewLabGalleryState の KDoc</KDocLink> を参照してください。
 
 <details>
 <summary>最初に Preview を表示する</summary>

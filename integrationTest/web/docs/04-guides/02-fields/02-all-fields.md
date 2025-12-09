@@ -4,6 +4,7 @@ sidebar_position: 2
 ---
 
 import EmbeddedPreviewLab from '@site/src/components/EmbeddedPreviewLab';
+import KDocLink from '@site/src/components/KDocLink';
 
 # All Fields Reference
 
@@ -11,7 +12,7 @@ import EmbeddedPreviewLab from '@site/src/components/EmbeddedPreviewLab';
 
 Kotlin の基本的なプリミティブ型（String、Boolean、数値型など）に対応するフィールドです。最も基本的で頻繁に使用されるフィールド群です。
 
-### [StringField](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-string-field/index.html)
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-string-field/index.html">StringField</KDocLink>
 
 <table>
     <tr>
@@ -24,7 +25,7 @@ Kotlin の基本的なプリミティブ型（String、Boolean、数値型など
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-string-field/index.html">StringField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-string-field/index.html">StringField</KDocLink> </td>
     </tr>
 </table>
 
@@ -101,7 +102,7 @@ PreviewLab {
 
 </details>
 
-### [BooleanField](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-boolean-field/index.html)
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-boolean-field/index.html">BooleanField</KDocLink>
 
 <table>
     <tr>
@@ -114,7 +115,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-boolean-field/index.html">BooleanField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-boolean-field/index.html">BooleanField</KDocLink> </td>
     </tr>
 </table>
 
@@ -148,31 +149,31 @@ Kotlin の数値型（Int、Long、Byte、Double、Float）に対応するフィ
         <td> IntField </td>
         <td> `kotlin.Int` </td>
         <td> ⭐⭐⭐ </td>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-int-field/index.html">IntField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-int-field/index.html">IntField</KDocLink> </td>
     </tr>
     <tr>
         <td> LongField </td>
         <td> `kotlin.Long` </td>
         <td> ⭐⭐ </td>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-long-field/index.html">LongField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-long-field/index.html">LongField</KDocLink> </td>
     </tr>
     <tr>
         <td> ByteField </td>
         <td> `kotlin.Byte` </td>
         <td> ⭐ </td>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-byte-field/index.html">ByteField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-byte-field/index.html">ByteField</KDocLink> </td>
     </tr>
     <tr>
         <td> DoubleField </td>
         <td> `kotlin.Double` </td>
         <td> ⭐⭐ </td>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-double-field/index.html">DoubleField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-double-field/index.html">DoubleField</KDocLink> </td>
     </tr>
     <tr>
         <td> FloatField </td>
         <td> `kotlin.Float` </td>
         <td> ⭐⭐ </td>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-float-field/index.html">FloatField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-float-field/index.html">FloatField</KDocLink> </td>
     </tr>
 </table>
 
@@ -225,7 +226,7 @@ PreviewLab {
 
 既存のフィールドを拡張・強化するためのフィールドです。選択肢から選ぶフィールド、複数のフィールドを組み合わせるフィールド、既存のフィールドを拡張するユーティリティフィールドが含まれます。詳細は [Enhance Fields](./enhance-fields) を参照してください。
 
-### [SelectableField](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-selectable-field/index.html)
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-selectable-field/index.html">SelectableField</KDocLink>
 
 <table>
     <tr>
@@ -238,7 +239,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-selectable-field/index.html">SelectableField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-selectable-field/index.html">SelectableField</KDocLink> </td>
     </tr>
 </table>
 
@@ -346,7 +347,7 @@ PreviewLab {
 
 </details>
 
-### [EnumField](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-enum-field.html)
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-enum-field.html">EnumField</KDocLink>
 
 <table>
     <tr>
@@ -359,7 +360,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-enum-field.html">EnumField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-enum-field.html">EnumField</KDocLink> </td>
     </tr>
 </table>
 
@@ -382,7 +383,7 @@ PreviewLab {
  previewId="EnumFieldExample"
 />
 
-### [CombinedField](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-combined-field/index.html)
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-combined-field/index.html">CombinedField</KDocLink>
 
 <table>
     <tr>
@@ -395,7 +396,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-combined-field/index.html">CombinedField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-combined-field/index.html">CombinedField</KDocLink> </td>
     </tr>
 </table>
 
@@ -492,7 +493,7 @@ PreviewLab {
 
 </details>
 
-### [NullableField](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-nullable-field/index.html)
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-nullable-field/index.html">NullableField</KDocLink>
 
 <table>
     <tr>
@@ -505,7 +506,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-nullable-field/index.html">NullableField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-nullable-field/index.html">NullableField</KDocLink> </td>
     </tr>
 </table>
 
@@ -526,7 +527,7 @@ PreviewLab {
  previewId="NullableFieldExample"
 />
 
-### [TransformField](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-transform-field/index.html)
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-transform-field/index.html">TransformField</KDocLink>
 
 <table>
     <tr>
@@ -539,7 +540,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-transform-field/index.html">TransformField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-transform-field/index.html">TransformField</KDocLink> </td>
     </tr>
 </table>
 
@@ -563,7 +564,7 @@ PreviewLab {
  previewId="TransformFieldExample"
 />
 
-### [WithHintField](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-with-hint-field/index.html)
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-with-hint-field/index.html">WithHintField</KDocLink>
 
 <table>
     <tr>
@@ -576,7 +577,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-with-hint-field/index.html">WithHintField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-with-hint-field/index.html">WithHintField</KDocLink> </td>
     </tr>
 </table>
 
@@ -605,7 +606,7 @@ PreviewLab {
  previewId="WithHintFieldExample"
 />
 
-### [WithValueCodeField](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-with-value-code-field/index.html) / `.withValueCode()`
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-with-value-code-field/index.html">WithValueCodeField</KDocLink> / `.withValueCode()`
 
 任意の Field に対して、Inspector の Code タブに表示されるコード表現だけを差し替えるユーティリティです。UI や値の型はそのままに、コードスニペットを自分のプロジェクトの API 形式に合わせたいときに使用します。
 
@@ -615,7 +616,7 @@ PreviewLab {
 
 Compose 固有の値型（Dp、Sp、Color、Offset、Size、Modifier、Composable など）に対応するフィールドです。Compose UI の構築に特化した型を扱います。
 
-### [DpField](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-dp-field/index.html)
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-dp-field/index.html">DpField</KDocLink>
 
 <table>
     <tr>
@@ -628,7 +629,7 @@ Compose 固有の値型（Dp、Sp、Color、Offset、Size、Modifier、Composabl
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-dp-field/index.html">DpField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-dp-field/index.html">DpField</KDocLink> </td>
     </tr>
 </table>
 
@@ -650,7 +651,7 @@ PreviewLab {
  previewId="DpFieldExample"
 />
 
-### [SpField](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-sp-field/index.html)
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-sp-field/index.html">SpField</KDocLink>
 
 <table>
     <tr>
@@ -663,7 +664,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-sp-field/index.html">SpField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-sp-field/index.html">SpField</KDocLink> </td>
     </tr>
 </table>
 
@@ -683,7 +684,7 @@ PreviewLab {
  previewId="SpFieldExample"
 />
 
-### [ColorField](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-color-field/index.html)
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-color-field/index.html">ColorField</KDocLink>
 
 <table>
     <tr>
@@ -696,7 +697,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-color-field/index.html">ColorField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-color-field/index.html">ColorField</KDocLink> </td>
     </tr>
 </table>
 
@@ -717,7 +718,7 @@ PreviewLab {
  previewId="ColorFieldExample"
 />
 
-### [OffsetField](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-offset-field/index.html)
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-offset-field/index.html">OffsetField</KDocLink>
 
 <table>
     <tr>
@@ -730,7 +731,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-offset-field/index.html">OffsetField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-offset-field/index.html">OffsetField</KDocLink> </td>
     </tr>
 </table>
 
@@ -755,7 +756,7 @@ PreviewLab {
  previewId="OffsetFieldExample"
 />
 
-### [DpOffsetField](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-dp-offset-field/index.html)
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-dp-offset-field/index.html">DpOffsetField</KDocLink>
 
 <table>
     <tr>
@@ -768,7 +769,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-dp-offset-field/index.html">DpOffsetField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-dp-offset-field/index.html">DpOffsetField</KDocLink> </td>
     </tr>
 </table>
 
@@ -789,7 +790,7 @@ PreviewLab {
  previewId="DpOffsetFieldExample"
 />
 
-### [SizeField](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-size-field/index.html)
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-size-field/index.html">SizeField</KDocLink>
 
 <table>
     <tr>
@@ -802,7 +803,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-size-field/index.html">SizeField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-size-field/index.html">SizeField</KDocLink> </td>
     </tr>
 </table>
 
@@ -824,7 +825,7 @@ PreviewLab {
  previewId="SizeFieldExample"
 />
 
-### [DpSizeField](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-dp-size-field/index.html)
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-dp-size-field/index.html">DpSizeField</KDocLink>
 
 <table>
     <tr>
@@ -837,7 +838,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-dp-size-field/index.html">DpSizeField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-dp-size-field/index.html">DpSizeField</KDocLink> </td>
     </tr>
 </table>
 
@@ -860,7 +861,7 @@ PreviewLab {
  previewId="DpSizeFieldExample"
 />
 
-### [ModifierField](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-modifier-field/index.html)
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-modifier-field/index.html">ModifierField</KDocLink>
 
 <table>
     <tr>
@@ -873,7 +874,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-modifier-field/index.html">ModifierField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-modifier-field/index.html">ModifierField</KDocLink> </td>
     </tr>
 </table>
 
@@ -923,7 +924,7 @@ PreviewLab {
 
 </details>
 
-### [ComposableField](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-composable-field/index.html)
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-composable-field/index.html">ComposableField</KDocLink>
 
 <table>
     <tr>
@@ -936,7 +937,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <a href="https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab.field/-composable-field/index.html">ComposableField</a> </td>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-composable-field/index.html">ComposableField</KDocLink> </td>
     </tr>
 </table>
 

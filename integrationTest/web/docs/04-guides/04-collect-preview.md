@@ -3,6 +3,8 @@ title: Collect Preview
 sidebar_position: 4
 ---
 
+import KDocLink from '@site/src/components/KDocLink';
+
 # Collect Preview
 
 Compose Preview Lab は、KSP (Kotlin Symbol Processing) プラグインを使用してプロジェクト内の `@Preview` アノテーションを自動的に収集し、`PreviewList` を生成します。
@@ -186,7 +188,7 @@ app.PreviewList.MyButtonPreview.id
 app.PreviewList.MyButtonPreview.content() 
 ```
 
-取得できる情報については [`PreviewLabPreview` の KDoc](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab/-preview-lab-preview/index.html) を参照してください。
+取得できる情報については <KDocLink path="core/me.tbsten.compose.preview.lab/-preview-lab-preview/index.html">`PreviewLabPreview` の KDoc</KDocLink> を参照してください。
 
 ## `@ComposePreviewLabOption`
 
@@ -236,7 +238,7 @@ import dotHierarchySample from './dot-hierarchy-sample.png';
 </details>
 
 
-詳しくは [`ComposePreviewLabOption` の KDoc](https://tbsten.github.io/compose-preview-lab/dokka/annotation/me.tbsten.compose.preview.lab/-compose-preview-lab-option/index.html) も参照してください。
+詳しくは <KDocLink path="annotation/me.tbsten.compose.preview.lab/-compose-preview-lab-option/index.html">`ComposePreviewLabOption` の KDoc</KDocLink> も参照してください。
 
 ## マルチモジュールと `PreviewAllList`
 
