@@ -4,6 +4,7 @@ sidebar_position: 6
 ---
 
 import EmbeddedPreviewLab from "@site/src/components/EmbeddedPreviewLab";
+import KDocLink from '@site/src/components/KDocLink';
 
 # Inspector Tab
 
@@ -216,7 +217,7 @@ object CustomTab : InspectorTab {
 
 `InspectorTab.ContentContext.Content()` メソッド内では以下の情報にアクセスすることができます。
 
-- `state` ... PreviewLabState の情報にアクセスできます。詳しくは [PreviewLabState の KDoc](https://tbsten.github.io/compose-preview-lab/dokka/core/me.tbsten.compose.preview.lab/-preview-lab-state/index.html?query=class%20PreviewLabState) を参照してください。
+- `state` ... PreviewLabState の情報にアクセスできます。詳しくは <KDocLink path="core/me.tbsten.compose.preview.lab/-preview-lab-state/index.html?query=class%20PreviewLabState">PreviewLabState の KDoc</KDocLink> を参照してください。
   - `fields` ... 登録されているフィールドの一覧を取得します。
   - `field()` ... Field の型とラベルを指定して 特定のフィールドを取得します。
   - `events` ... onEvent 呼び出しにより発生したイベントのリストを取得します。

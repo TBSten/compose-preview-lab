@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     concurrency:
       group: "pages"
+      cancel-in-progress: false
     permissions:
       contents: write
     steps:
@@ -41,7 +42,8 @@ jobs:
     permissions:
       contents: write
     concurrency:
-      group: pages-deploy
+      group: "pages"
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
       - name: Setup Java for Gradle
