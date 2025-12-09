@@ -10,15 +10,12 @@ export default function KDocLink({
     path: string,
 }) {
     const baseUrl = `https://tbsten.github.io/compose-preview-lab/dokka/${composePreviewLabVersion}`
+    const href = baseUrl.replace(/\/+$/, '') + '/' + path.replace(/^\/+/, '');
 
     return (
         <Link
             {...linkProps}
-            to={
-                baseUrl.replace(/\/+$/, '') + 
-                '/' + 
-                path.replace(/^\/+/, '')
-            }
+            to={href}
         >
             {linkProps.children}
         </Link>
