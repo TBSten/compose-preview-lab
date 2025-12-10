@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshotFlow
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Returns a default placeholder code string for fields that don't have a custom [PreviewLabField.valueCode] implementation.
@@ -31,6 +33,7 @@ interface PreviewLabField<Value> {
     val label: String
     val initialValue: Value
     val value: Value
+    val valueFlow: Flow<Value>
 
     /**
      * Returns a Kotlin code string representing the current value of this field.
@@ -156,6 +159,8 @@ abstract class ImmutablePreviewLabField<Value> private constructor(
         protected set(newValue) {
             state.value = newValue
         }
+
+    override val valueFlow: Flow<Value> = snapshotFlow { state.value }
 }
 
 /**
@@ -171,6 +176,9 @@ abstract class MutablePreviewLabField<Value> private constructor(
     state: MutableState<Value>,
 ) : PreviewLabField<Value>,
     MutableState<Value> by state {
+
+    override val valueFlow: Flow<Value> = snapshotFlow { state.value }
+
     constructor(
         label: String,
         initialValue: Value,
