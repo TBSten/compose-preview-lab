@@ -176,7 +176,7 @@ public final class me/tbsten/compose/preview/lab/component/FloatTransformer : me
 }
 
 public final class me/tbsten/compose/preview/lab/component/NoSelectedPreviewKt {
-	public static final fun NoSelectedPreview (Ljava/util/Map;Lkotlin/jvm/functions/Function2;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewListGrid (Ljava/util/Map;Lkotlin/jvm/functions/Function2;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/runtime/Composer;II)V
 	public static final fun getLocalIsInPreviewLabGalleryCardBody ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 }
 

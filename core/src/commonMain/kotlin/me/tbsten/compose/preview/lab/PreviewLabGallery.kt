@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.component.CommonIconButton
 import me.tbsten.compose.preview.lab.component.Divider
-import me.tbsten.compose.preview.lab.component.NoSelectedPreview
+import me.tbsten.compose.preview.lab.component.PreviewListGrid
 import me.tbsten.compose.preview.lab.component.adaptive
 import me.tbsten.compose.preview.lab.core.generated.resources.Res
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_remove
@@ -68,7 +68,7 @@ fun PreviewLabGallery(
     openFileHandler: OpenFileHandler<out Any?>? = null,
     featuredFileList: Map<String, List<String>> = emptyMap(),
     noSelectedContents: @Composable (Map<String, List<PreviewLabPreview>>) -> Unit = { groupedPreviews ->
-        NoSelectedPreview(
+        PreviewListGrid(
             groupedPreviewList = groupedPreviews,
             onPreviewClick = { group, preview -> state.select(group, preview) },
             contentPadding = PaddingValues(adaptive(12.dp, 20.dp)),
