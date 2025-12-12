@@ -6,9 +6,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.transform
+import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.sample.component.previewLab
 import me.tbsten.compose.preview.lab.sample.component.rememberCodeTab
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -17,9 +17,10 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @ComposePreviewLabOption(id = "FieldTransform")
 @Composable
 private fun FieldTransform() = previewLab(
-    inspectorTabs = InspectorTab.defaults + listOf(
-        rememberCodeTab(
-            code = """
+    inspectorTabs = InspectorTab.defaults +
+        listOf(
+            rememberCodeTab(
+                code = """
                 fieldValue {
                     StringField("numberString", "0")
                         .transform(
@@ -27,9 +28,9 @@ private fun FieldTransform() = previewLab(
                             reverse = { it.toString() },
                         )
                 }
-            """.trimIndent(),
+                """.trimIndent(),
+            ),
         ),
-    ),
 ) {
     val numberString: Int? =
         fieldValue {

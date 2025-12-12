@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import me.tbsten.compose.preview.lab.PreviewLabGallery
-import me.tbsten.compose.preview.lab.PreviewLabGalleryState
+import app.FeaturedFileList
+import helloComposePreviewLab.PreviewList
+import me.tbsten.compose.preview.lab.gallery.PreviewLabGallery
+import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
 
 class AppActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,12 +22,12 @@ class AppActivity : ComponentActivity() {
                 state = remember {
                     PreviewLabGalleryState(
                         initialSelectedPreview =
-                            app.FeaturedFileList.hello_compose_preview_lab.first() to
-                                helloComposePreviewLab.PreviewList.AboutComposePreviewLab,
+                            FeaturedFileList.hello_compose_preview_lab.first() to
+                                PreviewList.AboutComposePreviewLab,
                     )
                 },
-                previewList = app.PreviewList + uiLib.PreviewList + helloComposePreviewLab.PreviewList,
-                featuredFileList = app.FeaturedFileList,
+                previewList = app.PreviewList + uiLib.PreviewList + PreviewList,
+                featuredFileList = FeaturedFileList,
                 modifier = Modifier
                     .systemBarsPadding()
                     .displayCutoutPadding(),

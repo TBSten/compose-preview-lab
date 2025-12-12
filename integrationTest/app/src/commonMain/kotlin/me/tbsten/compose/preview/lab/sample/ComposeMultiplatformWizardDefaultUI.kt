@@ -44,7 +44,7 @@ import compose_preview_lab_integration_test.app.generated.resources.stop
 import compose_preview_lab_integration_test.app.generated.resources.theme
 import kotlinx.coroutines.isActive
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.PreviewLab
+import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.sample.theme.AppTheme
 import me.tbsten.compose.preview.lab.sample.theme.LocalThemeIsDark

@@ -15,12 +15,12 @@ import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
-import me.tbsten.compose.preview.lab.PreviewLab
-import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
-import me.tbsten.compose.preview.lab.field
 import me.tbsten.compose.preview.lab.field.DpSizeField
-import me.tbsten.compose.preview.lab.field.MutablePreviewLabField
+import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.StringField
+import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.previewlab.field
+import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 // Docs Tab
@@ -108,7 +108,14 @@ internal fun InspectorTabDebugExample() = PreviewLab(
 @ComposePreviewLabOption(id = "InspectorTabCodeExample")
 @Composable
 internal fun InspectorTabCodeExample() = PreviewLab(
-    inspectorTabs = InspectorTab.defaults + @OptIn(ExperimentalComposePreviewLabApi::class) InspectorTab.Code,
+    inspectorTabs = InspectorTab.defaults +
+        @OptIn(ExperimentalComposePreviewLabApi::class)
+        InspectorTab
+
+
+
+            .
+            Code,
 ) {
     val text = fieldValue { StringField("text", "Hello") }
     Button(onClick = {}) {
