@@ -17,9 +17,11 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.tbsten.compose.preview.lab.component.colorpicker.CommonColorPicker
+import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.NumberField.InputType
+import me.tbsten.compose.preview.lab.field.component.TextFieldContent
 import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.colorpicker.CommonColorPicker
 
 /**
  * Field for editing Compose density-independent pixel (Dp) values
@@ -209,7 +211,7 @@ class SpField(label: String, initialValue: TextUnit) :
  * @param label Display label for the field
  * @param initialValue Starting Offset value
  * @see DpOffsetField
- * @see MutablePreviewLabField
+ * @see me.tbsten.compose.preview.lab.MutablePreviewLabField
  */
 class OffsetField(label: String, initialValue: Offset) :
     MutablePreviewLabField<Offset>(
@@ -659,5 +661,5 @@ class ColorField(label: String, initialValue: Color) :
 fun MutablePreviewLabField<Color>.withPredefinedColorHint() = withHint(
     *ColorField.predefinedColorNames
         .map { (color, name) -> name to color }
-        .toTypedArray()
+        .toTypedArray(),
 )

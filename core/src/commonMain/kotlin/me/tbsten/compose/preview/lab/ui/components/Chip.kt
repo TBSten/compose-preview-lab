@@ -27,6 +27,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.ChipDefaults.ChipIconHorizontalPadding
 import me.tbsten.compose.preview.lab.ui.components.ChipDefaults.ChipIconSize
@@ -35,7 +36,8 @@ import me.tbsten.compose.preview.lab.ui.foundation.ButtonElevation
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-internal fun Chip(
+@InternalComposePreviewLabApi
+fun Chip(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     selected: Boolean = false,
@@ -62,7 +64,8 @@ internal fun Chip(
 }
 
 @Composable
-internal fun ElevatedChip(
+@InternalComposePreviewLabApi
+ fun ElevatedChip(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     selected: Boolean = false,
@@ -89,7 +92,8 @@ internal fun ElevatedChip(
 }
 
 @Composable
-internal fun OutlinedChip(
+@InternalComposePreviewLabApi
+ fun OutlinedChip(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     selected: Boolean = false,
@@ -116,7 +120,8 @@ internal fun OutlinedChip(
 }
 
 @Composable
-private fun ChipComponent(
+@InternalComposePreviewLabApi
+ fun ChipComponent(
     modifier: Modifier,
     enabled: Boolean = true,
     selected: Boolean = false,
@@ -164,7 +169,8 @@ private fun ChipComponent(
 }
 
 @Composable
-private fun DefaultChipComponent(
+@InternalComposePreviewLabApi
+ fun DefaultChipComponent(
     modifier: Modifier = Modifier,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
@@ -177,9 +183,9 @@ private fun DefaultChipComponent(
         leadingIcon?.let { icon ->
             Box(
                 modifier =
-                Modifier
-                    .padding(end = ChipIconHorizontalPadding)
-                    .requiredSize(ChipIconSize),
+                    Modifier
+                        .padding(end = ChipIconHorizontalPadding)
+                        .requiredSize(ChipIconSize),
             ) {
                 icon.invoke()
             }
@@ -190,9 +196,9 @@ private fun DefaultChipComponent(
         trailingIcon?.let { icon ->
             Box(
                 modifier =
-                Modifier
-                    .padding(start = ChipIconHorizontalPadding)
-                    .requiredSize(ChipIconSize),
+                    Modifier
+                        .padding(start = ChipIconHorizontalPadding)
+                        .requiredSize(ChipIconSize),
             ) {
                 icon.invoke()
             }
@@ -200,7 +206,8 @@ private fun DefaultChipComponent(
     }
 }
 
-internal object ChipDefaults {
+@InternalComposePreviewLabApi
+ object ChipDefaults {
     private val ChipPaddingHorizontal = 6.dp
     private val ChipPaddingVertical = 6.dp
     val ChipRectShape = RoundedCornerShape(12)
@@ -228,14 +235,14 @@ internal object ChipDefaults {
     @Composable
     fun primaryFilled(shape: Shape) = ChipStyle(
         colors =
-        ChipColors(
-            containerColor = PreviewLabTheme.colors.surface,
-            contentColor = PreviewLabTheme.colors.onSurface,
-            selectedContainerColor = PreviewLabTheme.colors.primary,
-            selectedContentColor = PreviewLabTheme.colors.onPrimary,
-            disabledContainerColor = PreviewLabTheme.colors.disabled,
-            disabledContentColor = PreviewLabTheme.colors.onDisabled,
-        ),
+            ChipColors(
+                containerColor = PreviewLabTheme.colors.surface,
+                contentColor = PreviewLabTheme.colors.onSurface,
+                selectedContainerColor = PreviewLabTheme.colors.primary,
+                selectedContentColor = PreviewLabTheme.colors.onPrimary,
+                disabledContainerColor = PreviewLabTheme.colors.disabled,
+                disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            ),
         shape = shape,
         elevation = null,
         contentPadding = contentPadding,
@@ -244,14 +251,14 @@ internal object ChipDefaults {
     @Composable
     fun primaryElevated(shape: Shape) = ChipStyle(
         colors =
-        ChipColors(
-            containerColor = PreviewLabTheme.colors.surface,
-            contentColor = PreviewLabTheme.colors.onSurface,
-            selectedContainerColor = PreviewLabTheme.colors.primary,
-            selectedContentColor = PreviewLabTheme.colors.onPrimary,
-            disabledContainerColor = PreviewLabTheme.colors.disabled,
-            disabledContentColor = PreviewLabTheme.colors.onDisabled,
-        ),
+            ChipColors(
+                containerColor = PreviewLabTheme.colors.surface,
+                contentColor = PreviewLabTheme.colors.onSurface,
+                selectedContainerColor = PreviewLabTheme.colors.primary,
+                selectedContentColor = PreviewLabTheme.colors.onPrimary,
+                disabledContainerColor = PreviewLabTheme.colors.disabled,
+                disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            ),
         shape = shape,
         elevation = chipElevation(),
         contentPadding = contentPadding,
@@ -260,17 +267,17 @@ internal object ChipDefaults {
     @Composable
     fun primaryOutlined(shape: Shape) = ChipStyle(
         colors =
-        ChipColors(
-            containerColor = PreviewLabTheme.colors.transparent,
-            contentColor = PreviewLabTheme.colors.primary,
-            outlineColor = PreviewLabTheme.colors.primary,
-            selectedContainerColor = PreviewLabTheme.colors.primary,
-            selectedOutlineColor = PreviewLabTheme.colors.primary,
-            selectedContentColor = PreviewLabTheme.colors.onPrimary,
-            disabledContainerColor = PreviewLabTheme.colors.transparent,
-            disabledContentColor = PreviewLabTheme.colors.onDisabled,
-            disabledOutlineColor = PreviewLabTheme.colors.disabled,
-        ),
+            ChipColors(
+                containerColor = PreviewLabTheme.colors.transparent,
+                contentColor = PreviewLabTheme.colors.primary,
+                outlineColor = PreviewLabTheme.colors.primary,
+                selectedContainerColor = PreviewLabTheme.colors.primary,
+                selectedOutlineColor = PreviewLabTheme.colors.primary,
+                selectedContentColor = PreviewLabTheme.colors.onPrimary,
+                disabledContainerColor = PreviewLabTheme.colors.transparent,
+                disabledContentColor = PreviewLabTheme.colors.onDisabled,
+                disabledOutlineColor = PreviewLabTheme.colors.disabled,
+            ),
         shape = shape,
         elevation = null,
         contentPadding = contentPadding,
@@ -278,7 +285,8 @@ internal object ChipDefaults {
 }
 
 @Immutable
-internal data class ChipColors(
+@InternalComposePreviewLabApi
+data class ChipColors(
     val containerColor: Color,
     val contentColor: Color,
     val outlineColor: Color? = null,
@@ -292,36 +300,37 @@ internal data class ChipColors(
     @Composable
     internal fun containerColor(enabled: Boolean, selected: Boolean) = rememberUpdatedState(
         newValue =
-        when {
-            !enabled -> disabledContainerColor
-            selected -> selectedContainerColor
-            else -> containerColor
-        },
+            when {
+                !enabled -> disabledContainerColor
+                selected -> selectedContainerColor
+                else -> containerColor
+            },
     )
 
     @Composable
     internal fun contentColor(enabled: Boolean, selected: Boolean) = rememberUpdatedState(
         newValue =
-        when {
-            !enabled -> disabledContentColor
-            selected -> selectedContentColor
-            else -> contentColor
-        },
+            when {
+                !enabled -> disabledContentColor
+                selected -> selectedContentColor
+                else -> contentColor
+            },
     )
 
     @Composable
     fun borderColor(enabled: Boolean, selected: Boolean) = rememberUpdatedState(
         newValue =
-        when {
-            !enabled -> disabledOutlineColor
-            selected -> selectedOutlineColor
-            else -> outlineColor
-        },
+            when {
+                !enabled -> disabledOutlineColor
+                selected -> selectedOutlineColor
+                else -> outlineColor
+            },
     )
 }
 
 @Immutable
-internal data class ChipStyle(
+@InternalComposePreviewLabApi
+data class ChipStyle(
     val colors: ChipColors,
     val shape: Shape,
     val elevation: ButtonElevation? = null,
@@ -488,15 +497,15 @@ private fun DummyIconForChipPreview() {
         drawLine(
             color = Color.Black,
             start =
-            Offset(
-                center.width - diagonalRadius,
-                center.height - diagonalRadius,
-            ),
+                Offset(
+                    center.width - diagonalRadius,
+                    center.height - diagonalRadius,
+                ),
             end =
-            Offset(
-                center.width + diagonalRadius,
-                center.height + diagonalRadius,
-            ),
+                Offset(
+                    center.width + diagonalRadius,
+                    center.height + diagonalRadius,
+                ),
             strokeWidth = strokeWidth,
             cap = cap,
         )
@@ -504,15 +513,15 @@ private fun DummyIconForChipPreview() {
         drawLine(
             color = Color.Black,
             start =
-            Offset(
-                center.width - diagonalRadius,
-                center.height + diagonalRadius,
-            ),
+                Offset(
+                    center.width - diagonalRadius,
+                    center.height + diagonalRadius,
+                ),
             end =
-            Offset(
-                center.width + diagonalRadius,
-                center.height - diagonalRadius,
-            ),
+                Offset(
+                    center.width + diagonalRadius,
+                    center.height - diagonalRadius,
+                ),
             strokeWidth = strokeWidth,
             cap = cap,
         )

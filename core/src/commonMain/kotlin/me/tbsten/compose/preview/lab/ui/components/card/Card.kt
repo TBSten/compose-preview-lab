@@ -24,13 +24,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalTypography
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Surface
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-internal fun Card(
+@InternalComposePreviewLabApi
+fun Card(
     modifier: Modifier = Modifier,
     shape: Shape = CardDefaults.Shape,
     colors: CardColors = CardDefaults.cardColors(),
@@ -44,10 +46,10 @@ internal fun Card(
         color = colors.containerColor(enabled = true).value,
         contentColor = colors.contentColor(enabled = true).value,
         shadowElevation =
-        elevation.shadowElevation(
-            enabled = true,
-            interactionSource = null,
-        ).value,
+            elevation.shadowElevation(
+                enabled = true,
+                interactionSource = null,
+            ).value,
         border = border,
     ) {
         Column(content = content)
@@ -55,7 +57,8 @@ internal fun Card(
 }
 
 @Composable
-internal fun Card(
+@InternalComposePreviewLabApi
+fun Card(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -82,7 +85,8 @@ internal fun Card(
 }
 
 @Composable
-internal fun ElevatedCard(
+@InternalComposePreviewLabApi
+fun ElevatedCard(
     modifier: Modifier = Modifier,
     shape: Shape = CardDefaults.ElevatedShape,
     colors: CardColors = CardDefaults.elevatedCardColors(),
@@ -98,7 +102,8 @@ internal fun ElevatedCard(
 )
 
 @Composable
-internal fun ElevatedCard(
+@InternalComposePreviewLabApi
+fun ElevatedCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -120,7 +125,8 @@ internal fun ElevatedCard(
 )
 
 @Composable
-internal fun OutlinedCard(
+@InternalComposePreviewLabApi
+fun OutlinedCard(
     modifier: Modifier = Modifier,
     shape: Shape = CardDefaults.OutlinedShape,
     colors: CardColors = CardDefaults.outlinedCardColors(),
@@ -137,7 +143,8 @@ internal fun OutlinedCard(
 )
 
 @Composable
-internal fun OutlinedCard(
+@InternalComposePreviewLabApi
+fun OutlinedCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -159,7 +166,8 @@ internal fun OutlinedCard(
     content = content,
 )
 
-internal object CardDefaults {
+@InternalComposePreviewLabApi
+object CardDefaults {
     val Shape: Shape @Composable get() = RoundedCornerShape(12.0.dp)
     val ElevatedShape: Shape @Composable get() = Shape
     val OutlinedShape: Shape @Composable get() = Shape
@@ -272,24 +280,27 @@ internal object CardDefaults {
 
 @ConsistentCopyVisibility
 @Immutable
-internal data class CardColors internal constructor(
+@InternalComposePreviewLabApi
+data class CardColors @InternalComposePreviewLabApi
+constructor(
     private val containerColor: Color,
     private val contentColor: Color,
     private val disabledContainerColor: Color,
     private val disabledContentColor: Color,
 ) {
     @Composable
-    internal fun containerColor(enabled: Boolean): State<Color> =
+    @InternalComposePreviewLabApi
+    fun containerColor(enabled: Boolean): State<Color> =
         rememberUpdatedState(if (enabled) containerColor else disabledContainerColor)
 
     @Composable
-    internal fun contentColor(enabled: Boolean): State<Color> =
-        rememberUpdatedState(if (enabled) contentColor else disabledContentColor)
+    @InternalComposePreviewLabApi
+    fun contentColor(enabled: Boolean): State<Color> = rememberUpdatedState(if (enabled) contentColor else disabledContentColor)
 }
 
 @Composable
 @Preview
-internal fun CardComponentSampleInTheme() {
+private fun CardComponentSampleInTheme() {
     PreviewLabTheme {
         CardComponentSample()
     }
@@ -305,10 +316,10 @@ private fun CardComponentSample() {
 
     Column(
         modifier =
-        Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState()),
+            Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(24.dp),
     ) {
         Column {
@@ -343,12 +354,12 @@ private fun CardComponentSample() {
                 onClick = { },
                 enabled = false,
                 colors =
-                CardDefaults.cardColors(
-                    containerColor = Color(0xFFBDBDBD),
-                    contentColor = Color(0xFF9E9E9E),
-                    disabledContainerColor = Color(0xFFEEEEEE),
-                    disabledContentColor = Color(0xFFBDBDBD),
-                ),
+                    CardDefaults.cardColors(
+                        containerColor = Color(0xFFBDBDBD),
+                        contentColor = Color(0xFF9E9E9E),
+                        disabledContainerColor = Color(0xFFEEEEEE),
+                        disabledContentColor = Color(0xFFBDBDBD),
+                    ),
             ) {}
         }
 
@@ -357,10 +368,10 @@ private fun CardComponentSample() {
             Card(
                 modifier = cardModifier,
                 colors =
-                CardDefaults.cardColors(
-                    containerColor = Color(0xFFECEFF1),
-                    contentColor = Color(0xFF607D8B),
-                ),
+                    CardDefaults.cardColors(
+                        containerColor = Color(0xFFECEFF1),
+                        contentColor = Color(0xFF607D8B),
+                    ),
             ) {}
         }
 
@@ -370,16 +381,16 @@ private fun CardComponentSample() {
                 modifier = cardModifier,
                 onClick = { /* Handle click */ },
                 elevation =
-                CardDefaults.outlinedCardElevation(
-                    defaultElevation = 0.dp,
-                    hoveredElevation = 4.dp,
-                ),
+                    CardDefaults.outlinedCardElevation(
+                        defaultElevation = 0.dp,
+                        hoveredElevation = 4.dp,
+                    ),
                 border = BorderStroke(1.dp, Color(0xFFBDBDBD)),
                 colors =
-                CardDefaults.outlinedCardColors(
-                    containerColor = Color(0xFFE0E0E0),
-                    contentColor = Color(0xFF616161),
-                ),
+                    CardDefaults.outlinedCardColors(
+                        containerColor = Color(0xFFE0E0E0),
+                        contentColor = Color(0xFF616161),
+                    ),
             ) {}
         }
 
@@ -390,10 +401,10 @@ private fun CardComponentSample() {
                 modifier = cardModifier,
                 onClick = { /* Handle click */ },
                 colors =
-                CardDefaults.cardColors(
-                    containerColor = Color(0xFFECEFF1),
-                    contentColor = Color(0xFF455A64),
-                ),
+                    CardDefaults.cardColors(
+                        containerColor = Color(0xFFECEFF1),
+                        contentColor = Color(0xFF455A64),
+                    ),
                 enabled = true,
             ) {}
         }

@@ -34,8 +34,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import kotlin.math.roundToInt
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.SwitchDefaults.RippleRadius
 import me.tbsten.compose.preview.lab.ui.components.SwitchDefaults.SwitchHeight
 import me.tbsten.compose.preview.lab.ui.components.SwitchDefaults.SwitchWidth
@@ -45,13 +49,11 @@ import me.tbsten.compose.preview.lab.ui.components.SwitchDefaults.TrackBorderWid
 import me.tbsten.compose.preview.lab.ui.components.SwitchDefaults.TrackShape
 import me.tbsten.compose.preview.lab.ui.components.SwitchDefaults.UncheckedThumbSize
 import me.tbsten.compose.preview.lab.ui.foundation.ripple
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import kotlin.math.roundToInt
 
 @Composable
-internal fun Switch(
+@InternalComposePreviewLabApi
+fun Switch(
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)?,
     modifier: Modifier = Modifier,
@@ -113,17 +115,17 @@ private fun SwitchComponent(
 
     Box(
         modifier =
-        modifier
-            .size(SwitchWidth, SwitchHeight)
-            .background(
-                color = colors.trackColor(enabled, checked),
-                shape = TrackShape,
-            )
-            .border(
-                width = TrackBorderWidth,
-                color = borderColor,
-                shape = TrackShape,
-            ),
+            modifier
+                .size(SwitchWidth, SwitchHeight)
+                .background(
+                    color = colors.trackColor(enabled, checked),
+                    shape = TrackShape,
+                )
+                .border(
+                    width = TrackBorderWidth,
+                    color = borderColor,
+                    shape = TrackShape,
+                ),
     ) {
         val checkedThumbSize = UncheckedThumbSize + ThumbSizeStateOffset * thumbPosition
         val uncheckedThumbSize =
@@ -134,36 +136,36 @@ private fun SwitchComponent(
 
         Box(
             modifier =
-            Modifier
-                .align(Alignment.CenterStart)
-                .sizeIn(minWidth = thumbSize, minHeight = thumbSize)
-                .offset {
-                    val trackWidth = SwitchWidth.toPx()
-                    val currentThumbSize = thumbSize.toPx()
-                    val maxThumbSize = ThumbSize.toPx()
-                    val padding = verticalPadding.toPx()
+                Modifier
+                    .align(Alignment.CenterStart)
+                    .sizeIn(minWidth = thumbSize, minHeight = thumbSize)
+                    .offset {
+                        val trackWidth = SwitchWidth.toPx()
+                        val currentThumbSize = thumbSize.toPx()
+                        val maxThumbSize = ThumbSize.toPx()
+                        val padding = verticalPadding.toPx()
 
-                    val totalMovableDistance = trackWidth - maxThumbSize - (padding * 2)
-                    val sizeDifference = (maxThumbSize - currentThumbSize) / 2
+                        val totalMovableDistance = trackWidth - maxThumbSize - (padding * 2)
+                        val sizeDifference = (maxThumbSize - currentThumbSize) / 2
 
-                    IntOffset(
-                        x = (padding + sizeDifference + (totalMovableDistance * thumbPosition)).roundToInt(),
-                        y = 0,
-                    )
-                }
-                .drawBehind {
-                    drawCircle(
-                        color = colors.thumbColor(enabled, checked),
-                    )
-                }
-                .indication(
-                    interactionSource = interactionSource,
-                    indication =
-                    ripple(
-                        bounded = false,
-                        radius = RippleRadius,
+                        IntOffset(
+                            x = (padding + sizeDifference + (totalMovableDistance * thumbPosition)).roundToInt(),
+                            y = 0,
+                        )
+                    }
+                    .drawBehind {
+                        drawCircle(
+                            color = colors.thumbColor(enabled, checked),
+                        )
+                    }
+                    .indication(
+                        interactionSource = interactionSource,
+                        indication =
+                            ripple(
+                                bounded = false,
+                                radius = RippleRadius,
+                            ),
                     ),
-                ),
             contentAlignment = Alignment.Center,
         ) {
             if (thumbContent != null) {
@@ -177,7 +179,8 @@ private fun SwitchComponent(
     }
 }
 
-internal object SwitchDefaults {
+@InternalComposePreviewLabApi
+object SwitchDefaults {
     val ThumbSize = 16.dp
     val UncheckedThumbSize = 12.dp
     val ThumbSizeStateOffset = ThumbSize - UncheckedThumbSize
@@ -226,7 +229,8 @@ internal object SwitchDefaults {
 }
 
 @Stable
-internal class SwitchColors(
+@InternalComposePreviewLabApi
+class SwitchColors(
     private val checkedThumbColor: Color,
     private val checkedTrackColor: Color,
     private val checkedBorderColor: Color,
@@ -278,7 +282,7 @@ internal class SwitchColors(
 }
 
 @Stable
-private class SwitchAnimationState(initialChecked: Boolean, initialPressed: Boolean,) {
+private class SwitchAnimationState(initialChecked: Boolean, initialPressed: Boolean) {
     var checked by mutableStateOf(initialChecked)
     var pressed by mutableStateOf(initialPressed)
 
@@ -291,7 +295,7 @@ private class SwitchAnimationState(initialChecked: Boolean, initialPressed: Bool
             easing = FastOutSlowInEasing,
         )
 
-    suspend fun animateTo(targetChecked: Boolean, targetPressed: Boolean, scope: CoroutineScope,) {
+    suspend fun animateTo(targetChecked: Boolean, targetPressed: Boolean, scope: CoroutineScope) {
         checked = targetChecked
         pressed = targetPressed
 

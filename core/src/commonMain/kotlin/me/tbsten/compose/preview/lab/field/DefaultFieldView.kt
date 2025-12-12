@@ -5,16 +5,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.PreviewLabField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Text
 
 /**
- * Default UI implementation of [PreviewLabField.View]. Display a label and draw the content below it.
+ * Default UI implementation of [me.tbsten.compose.preview.lab.PreviewLabField.View]. Display a label and draw the content below it.
  *
- * Use [PreviewLabField.Content] to customize the UI of the field.
- * [PreviewLabField.View] only if you want to customize the UI, including the part that displays the label, using this Composable.
+ * Use [me.tbsten.compose.preview.lab.PreviewLabField.Content] to customize the UI of the field.
+ * [me.tbsten.compose.preview.lab.PreviewLabField.View] only if you want to customize the UI, including the part that displays the label, using this Composable.
  *
- * @see PreviewLabField
+ * @see me.tbsten.compose.preview.lab.PreviewLabField
  */
 @Composable
 fun <Value> PreviewLabField<Value>.DefaultFieldView(

@@ -32,15 +32,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.component.CommonMenu
-import me.tbsten.compose.preview.lab.component.SelectButton
-import me.tbsten.compose.preview.lab.component.TransformableTextField
-import me.tbsten.compose.preview.lab.component.Transformer
-import me.tbsten.compose.preview.lab.component.colorpicker.CommonColorPicker
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.CommonMenu
+import me.tbsten.compose.preview.lab.ui.components.SelectButton
 import me.tbsten.compose.preview.lab.ui.components.Surface
 import me.tbsten.compose.preview.lab.ui.components.Text
-import me.tbsten.compose.preview.lab.util.thenIfNotNull
+import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
+import me.tbsten.compose.preview.lab.ui.components.Transformer
+import me.tbsten.compose.preview.lab.ui.components.colorpicker.CommonColorPicker
+import me.tbsten.compose.preview.lab.ui.util.thenIfNotNull
 
 @Composable
 internal fun DefaultModifierFieldValueBuilder(
@@ -95,10 +96,12 @@ internal fun DefaultModifierFieldValueBuilder(
     }
 }
 
-class DefaultModifierFieldValueBuilderMenuScope internal constructor()
+@InternalComposePreviewLabApi
+class DefaultModifierFieldValueBuilderMenuScope
 
 @Composable
-internal fun DefaultModifierFieldValueBuilderMenuScope.DefaultMenu(
+@InternalComposePreviewLabApi
+fun DefaultModifierFieldValueBuilderMenuScope.DefaultMenu(
     content: @Composable DefaultModifierFieldValueBuilderDefaultMenuScope.() -> Unit,
 ) {
     Column(

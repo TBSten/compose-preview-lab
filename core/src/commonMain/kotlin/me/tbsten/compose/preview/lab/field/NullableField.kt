@@ -13,6 +13,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import me.tbsten.compose.preview.lab.MutablePreviewLabField
+import me.tbsten.compose.preview.lab.PreviewLabField
 import me.tbsten.compose.preview.lab.ui.components.Checkbox
 import me.tbsten.compose.preview.lab.ui.components.Text
 

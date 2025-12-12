@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.ImmutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.modifier.ModifierBuilder
 import me.tbsten.compose.preview.lab.field.modifier.ModifierBuilderState
 import me.tbsten.compose.preview.lab.field.modifier.ModifierFieldValue

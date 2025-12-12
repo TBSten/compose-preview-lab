@@ -28,12 +28,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlin.math.roundToInt
-import me.tbsten.compose.preview.lab.component.DpTransformer
-import me.tbsten.compose.preview.lab.component.NullableDpTransformer
-import me.tbsten.compose.preview.lab.component.TransformableTextField
-import me.tbsten.compose.preview.lab.component.colorpicker.CommonColorPicker
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.DpTransformer
+import me.tbsten.compose.preview.lab.ui.components.NullableDpTransformer
 import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
+import me.tbsten.compose.preview.lab.ui.components.colorpicker.CommonColorPicker
 
 /**
  * A modifier field value that applies a border to a component.

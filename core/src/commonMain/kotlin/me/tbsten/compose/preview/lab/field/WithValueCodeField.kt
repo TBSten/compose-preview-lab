@@ -1,9 +1,10 @@
 package me.tbsten.compose.preview.lab.field
 
 import androidx.compose.runtime.Composable
+import me.tbsten.compose.preview.lab.MutablePreviewLabField
 
 /**
- * Wraps this field with a custom [PreviewLabField.valueCode] implementation.
+ * Wraps this field with a custom [me.tbsten.compose.preview.lab.PreviewLabField.valueCode] implementation.
  *
  * Use this extension function to customize how the field's current value is converted to
  * Kotlin code in the Inspector's Code tab, without creating a new field class.
@@ -40,7 +41,7 @@ import androidx.compose.runtime.Composable
  *
  * @param valueCode A function that converts the current value to a Kotlin code string
  * @return A new field with the custom valueCode implementation
- * @see PreviewLabField.valueCode
+ * @see me.tbsten.compose.preview.lab.PreviewLabField.valueCode
  * @see WithValueCodeField
  */
 fun <Value> MutablePreviewLabField<Value>.withValueCode(valueCode: (Value) -> String) = WithValueCodeField(
@@ -60,7 +61,7 @@ fun <Value> MutablePreviewLabField<Value>.withValueCode(valueCode: (Value) -> St
  * @param baseField The underlying field to wrap
  * @param valueCode A function that converts the current value to a Kotlin code string
  * @see withValueCode
- * @see PreviewLabField.valueCode
+ * @see me.tbsten.compose.preview.lab.PreviewLabField.valueCode
  */
 class WithValueCodeField<Value>(
     private val baseField: MutablePreviewLabField<Value>,

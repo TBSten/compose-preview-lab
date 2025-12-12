@@ -17,10 +17,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Dp
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.foundation.animateElevation
 
 @Immutable
-internal class CardElevation internal constructor(
+@InternalComposePreviewLabApi
+class CardElevation @InternalComposePreviewLabApi constructor(
     private val defaultElevation: Dp,
     private val pressedElevation: Dp,
     private val focusedElevation: Dp,
@@ -29,7 +31,7 @@ internal class CardElevation internal constructor(
     private val disabledElevation: Dp,
 ) {
     @Composable
-    internal fun shadowElevation(enabled: Boolean, interactionSource: InteractionSource?,): State<Dp> {
+    fun shadowElevation(enabled: Boolean, interactionSource: InteractionSource?): State<Dp> {
         if (interactionSource == null) {
             return remember { mutableStateOf(defaultElevation) }
         }
@@ -37,7 +39,7 @@ internal class CardElevation internal constructor(
     }
 
     @Composable
-    private fun animateElevation(enabled: Boolean, interactionSource: InteractionSource,): State<Dp> {
+    private fun animateElevation(enabled: Boolean, interactionSource: InteractionSource): State<Dp> {
         val interactions = remember { mutableStateListOf<Interaction>() }
         LaunchedEffect(interactionSource) {
             interactionSource.interactions.collect { interaction ->

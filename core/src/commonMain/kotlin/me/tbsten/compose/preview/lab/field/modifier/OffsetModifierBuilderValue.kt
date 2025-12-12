@@ -15,11 +15,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.component.DpTransformer
-import me.tbsten.compose.preview.lab.component.NullableDpTransformer
-import me.tbsten.compose.preview.lab.component.TransformableTextField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.DpTransformer
+import me.tbsten.compose.preview.lab.ui.components.NullableDpTransformer
 import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
 
 /**
  * ModifierFieldValue that applies positional offset to a composable.

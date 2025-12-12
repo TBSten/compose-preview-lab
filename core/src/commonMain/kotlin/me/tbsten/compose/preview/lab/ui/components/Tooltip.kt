@@ -57,13 +57,15 @@ import androidx.compose.ui.window.PopupPositionProvider
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeout
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.TooltipDefaults.SpacingBetweenTooltipAndAnchor
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun TooltipBox(
+@InternalComposePreviewLabApi
+fun TooltipBox(
     modifier: Modifier = Modifier,
     positionProvider: PopupPositionProvider = rememberTooltipPositionProvider(),
     tooltip: @Composable TooltipScope.() -> Unit,
@@ -98,7 +100,8 @@ internal fun TooltipBox(
 }
 
 @Composable
-internal fun TooltipBox(
+@InternalComposePreviewLabApi
+fun TooltipBox(
     tooltip: String,
     modifier: Modifier = Modifier,
     positionProvider: PopupPositionProvider = rememberTooltipPositionProvider(),
@@ -117,7 +120,8 @@ internal fun TooltipBox(
 )
 
 @Composable
-internal fun TooltipScope.Tooltip(
+@InternalComposePreviewLabApi
+fun TooltipScope.Tooltip(
     modifier: Modifier = Modifier,
     caretSize: DpSize = TooltipDefaults.CaretSize,
     maxWidth: Dp = TooltipDefaults.MaxWidth,
@@ -153,30 +157,33 @@ internal fun TooltipScope.Tooltip(
     ) {
         Box(
             modifier =
-            Modifier
-                .sizeIn(
-                    minWidth = TooltipDefaults.MinWidth,
-                    maxWidth = maxWidth,
-                    minHeight = TooltipDefaults.MinHeight,
-                )
-                .padding(TooltipDefaults.ContentPadding),
+                Modifier
+                    .sizeIn(
+                        minWidth = TooltipDefaults.MinWidth,
+                        maxWidth = maxWidth,
+                        minHeight = TooltipDefaults.MinHeight,
+                    )
+                    .padding(TooltipDefaults.ContentPadding),
         ) {
             content()
         }
     }
 }
 
-internal sealed interface TooltipScope {
+@InternalComposePreviewLabApi
+sealed interface TooltipScope {
     fun Modifier.drawCaret(draw: CacheDrawScope.(LayoutCoordinates?) -> DrawResult): Modifier
 }
 
-internal class DefaultTooltipScope(val getAnchorBounds: () -> LayoutCoordinates?) : TooltipScope {
+@InternalComposePreviewLabApi
+class DefaultTooltipScope(val getAnchorBounds: () -> LayoutCoordinates?) : TooltipScope {
     override fun Modifier.drawCaret(draw: CacheDrawScope.(LayoutCoordinates?) -> DrawResult): Modifier =
         this.drawWithCache { draw(getAnchorBounds()) }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-internal interface TooltipState : BasicTooltipState {
+@InternalComposePreviewLabApi
+interface TooltipState : BasicTooltipState {
     val transition: MutableTransitionState<Boolean>
 }
 
@@ -225,7 +232,8 @@ private class TooltipStateImpl(
     }
 }
 
-internal object TooltipDefaults {
+@InternalComposePreviewLabApi
+object TooltipDefaults {
     val CaretSize = DpSize(12.dp, 6.dp)
     val MaxWidth = 300.dp
     val ShadowElevation = 4.dp
@@ -240,7 +248,8 @@ internal object TooltipDefaults {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun rememberTooltipState(
+@InternalComposePreviewLabApi
+fun rememberTooltipState(
     initialIsVisible: Boolean = false,
     isPersistent: Boolean = false,
     mutatorMutex: MutatorMutex = BasicTooltipDefaults.GlobalMutatorMutex,
@@ -253,7 +262,8 @@ internal fun rememberTooltipState(
 }
 
 @Composable
-internal fun rememberTooltipPositionProvider(
+@InternalComposePreviewLabApi
+fun rememberTooltipPositionProvider(
     spacingBetweenTooltipAndAnchor: Dp = TooltipDefaults.SpacingBetweenTooltipAndAnchor,
 ): PopupPositionProvider {
     val tooltipAnchorSpacing =
@@ -283,12 +293,13 @@ internal fun rememberTooltipPositionProvider(
     }
 }
 
-internal fun Modifier.animateTooltip(transition: Transition<Boolean>): Modifier = composed(
+@InternalComposePreviewLabApi
+fun Modifier.animateTooltip(transition: Transition<Boolean>): Modifier = composed(
     inspectorInfo =
-    debugInspectorInfo {
-        name = "animateTooltip"
-        properties["transition"] = transition
-    },
+        debugInspectorInfo {
+            name = "animateTooltip"
+            properties["transition"] = transition
+        },
 ) {
     val inOutScaleAnimationSpec = tween<Float>(durationMillis = 100, easing = FastOutLinearInEasing)
     val inOutAlphaAnimationSpec = tween<Float>(durationMillis = 50, easing = FastOutSlowInEasing)
@@ -417,9 +428,9 @@ private fun PlainTooltipWithCaret() {
         ) {
             Box(
                 modifier =
-                Modifier
-                    .size(40.dp)
-                    .background(Color.Blue),
+                    Modifier
+                        .size(40.dp)
+                        .background(Color.Blue),
             )
         }
     }

@@ -36,12 +36,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.foundation.ProvideContentColorTextStyle
 
 @Composable
-internal fun CommonDecorationBox(
+@InternalComposePreviewLabApi
+fun CommonDecorationBox(
     value: String,
     innerTextField: @Composable () -> Unit,
     visualTransformation: VisualTransformation,
@@ -271,14 +273,14 @@ internal fun Modifier.containerOutline(
     shape: Shape,
 ) = composed(
     inspectorInfo =
-    debugInspectorInfo {
-        name = "indicatorLine"
-        properties["enabled"] = enabled
-        properties["isError"] = isError
-        properties["interactionSource"] = interactionSource
-        properties["colors"] = colors
-        properties["borderThickness"] = borderThickness
-    },
+        debugInspectorInfo {
+            name = "indicatorLine"
+            properties["enabled"] = enabled
+            properties["isError"] = isError
+            properties["interactionSource"] = interactionSource
+            properties["colors"] = colors
+            properties["borderThickness"] = borderThickness
+        },
 ) {
     val indicatorColor = colors.containerOutlineColor(enabled, isError, interactionSource)
 

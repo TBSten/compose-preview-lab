@@ -57,9 +57,11 @@ import me.tbsten.compose.preview.lab.ui.foundation.ripple
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.floor
 import kotlin.math.max
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @Composable
-internal fun Checkbox(
+@InternalComposePreviewLabApi
+fun Checkbox(
     modifier: Modifier = Modifier,
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)? = null,
@@ -70,11 +72,11 @@ internal fun Checkbox(
     TriStateCheckbox(
         state = ToggleableState(checked),
         onClick =
-        if (onCheckedChange != null) {
-            { onCheckedChange(!checked) }
-        } else {
-            null
-        },
+            if (onCheckedChange != null) {
+                { onCheckedChange(!checked) }
+            } else {
+                null
+            },
         modifier = modifier,
         enabled = enabled,
         colors = colors,
@@ -83,7 +85,8 @@ internal fun Checkbox(
 }
 
 @Composable
-internal fun TriStateCheckbox(
+@InternalComposePreviewLabApi
+fun TriStateCheckbox(
     state: ToggleableState,
     onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
@@ -102,10 +105,10 @@ internal fun TriStateCheckbox(
                     role = Role.Checkbox,
                     interactionSource = interactionSource,
                     indication =
-                    ripple(
-                        bounded = false,
-                        radius = MinimumInteractiveSize / 2,
-                    ),
+                        ripple(
+                            bounded = false,
+                            radius = MinimumInteractiveSize / 2,
+                        ),
                 )
         } else {
             Modifier
@@ -114,15 +117,15 @@ internal fun TriStateCheckbox(
         enabled = enabled,
         value = state,
         modifier =
-        modifier
-            .then(toggleableModifier)
-            .padding(CheckboxDefaultPadding),
+            modifier
+                .then(toggleableModifier)
+                .padding(CheckboxDefaultPadding),
         colors = colors,
     )
 }
 
 @Composable
-private fun CheckboxComponent(enabled: Boolean, value: ToggleableState, modifier: Modifier, colors: CheckboxColors,) {
+private fun CheckboxComponent(enabled: Boolean, value: ToggleableState, modifier: Modifier, colors: CheckboxColors) {
     val transition = updateTransition(value, label = "checkbox")
     val checkDrawFraction =
         transition.animateFloat(
@@ -182,7 +185,7 @@ private fun CheckboxComponent(enabled: Boolean, value: ToggleableState, modifier
     }
 }
 
-private fun DrawScope.drawBox(boxColor: Color, borderColor: Color, radius: Float, strokeWidth: Float,) {
+private fun DrawScope.drawBox(boxColor: Color, borderColor: Color, radius: Float, strokeWidth: Float) {
     val halfStrokeWidth = strokeWidth / 2.0f
     val stroke = Stroke(strokeWidth)
     val checkboxSize = size.width
@@ -256,16 +259,17 @@ private class CheckDrawingCache(
     val pathToDraw: Path = Path(),
 )
 
-internal object CheckboxDefaults {
-    internal const val BoxInDuration = 50
-    internal const val BoxOutDuration = 100
-    internal const val CheckAnimationDuration = 100
+@InternalComposePreviewLabApi
+object CheckboxDefaults {
+    const val BoxInDuration = 50
+    const val BoxOutDuration = 100
+    const val CheckAnimationDuration = 100
 
-    internal val CheckboxDefaultPadding = 2.dp
-    internal val CheckboxSize = 20.dp
-    internal val StrokeWidth = 2.dp
-    internal val RadiusSize = 4.dp
-    internal val MinimumInteractiveSize = 44.dp
+    val CheckboxDefaultPadding = 2.dp
+    val CheckboxSize = 20.dp
+    val StrokeWidth = 2.dp
+    val RadiusSize = 4.dp
+    val MinimumInteractiveSize = 44.dp
 
     @Composable
     fun colors() = CheckboxColors(
@@ -285,7 +289,8 @@ internal object CheckboxDefaults {
 }
 
 @Immutable
-internal data class CheckboxColors(
+@InternalComposePreviewLabApi
+data class CheckboxColors(
     val checkedCheckmarkColor: Color,
     val uncheckedCheckmarkColor: Color,
     val checkedBoxColor: Color,
@@ -300,14 +305,14 @@ internal data class CheckboxColors(
     val disabledIndeterminateBorderColor: Color,
 ) {
     @Composable
-    internal fun checkmarkColor(state: ToggleableState): Color = if (state == ToggleableState.Off) {
+    fun checkmarkColor(state: ToggleableState): Color = if (state == ToggleableState.Off) {
         uncheckedCheckmarkColor
     } else {
         checkedCheckmarkColor
     }
 
     @Composable
-    internal fun boxColor(enabled: Boolean, state: ToggleableState): State<Color> {
+    fun boxColor(enabled: Boolean, state: ToggleableState): State<Color> {
         val target =
             if (enabled) {
                 when (state) {
@@ -331,7 +336,7 @@ internal data class CheckboxColors(
     }
 
     @Composable
-    internal fun borderColor(enabled: Boolean, state: ToggleableState): State<Color> {
+    fun borderColor(enabled: Boolean, state: ToggleableState): State<Color> {
         val target =
             if (enabled) {
                 when (state) {
@@ -361,10 +366,10 @@ private fun CheckboxPreview() {
     PreviewLabTheme {
         Column(
             modifier =
-            Modifier
-                .fillMaxSize()
-                .background(Color.White)
-                .padding(16.dp),
+                Modifier
+                    .fillMaxSize()
+                    .background(Color.White)
+                    .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             var isChecked by remember { mutableStateOf(false) }
@@ -461,9 +466,9 @@ private fun CheckboxPreview() {
                 items.forEach { item ->
                     Row(
                         modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {

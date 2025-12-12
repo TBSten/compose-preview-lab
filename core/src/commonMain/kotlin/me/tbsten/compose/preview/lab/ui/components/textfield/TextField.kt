@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.CommonDecorationBox
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.FocusedOutlineThickness
@@ -44,7 +45,8 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.base.UnfocusedOutli
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.containerOutline
 
 @Composable
-internal fun TextField(
+@InternalComposePreviewLabApi
+fun TextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -80,12 +82,12 @@ internal fun TextField(
     CompositionLocalProvider(LocalTextSelectionColors provides colors.selectionColors) {
         BasicTextField(
             modifier =
-            modifier
-                .defaultMinSize(
-                    minWidth = TextFieldDefaults.MinWidth,
-                    minHeight = TextFieldDefaults.MinHeight,
-                )
-                .fillMaxWidth(),
+                modifier
+                    .defaultMinSize(
+                        minWidth = TextFieldDefaults.MinWidth,
+                        minHeight = TextFieldDefaults.MinHeight,
+                    )
+                    .fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
             enabled = enabled,
@@ -124,7 +126,8 @@ internal fun TextField(
 }
 
 @Composable
-internal fun TextField(
+@InternalComposePreviewLabApi
+fun TextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier,
@@ -160,11 +163,11 @@ internal fun TextField(
     CompositionLocalProvider(LocalTextSelectionColors provides colors.selectionColors) {
         BasicTextField(
             modifier =
-            modifier
-                .defaultMinSize(
-                    minHeight = TextFieldDefaults.MinHeight,
-                )
-                .fillMaxWidth(),
+                modifier
+                    .defaultMinSize(
+                        minHeight = TextFieldDefaults.MinHeight,
+                    )
+                    .fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
             enabled = enabled,
@@ -203,7 +206,8 @@ internal fun TextField(
 }
 
 @Immutable
-internal object TextFieldDefaults {
+@InternalComposePreviewLabApi
+object TextFieldDefaults {
     val MinWidth = TextFieldMinWidth
     val MinHeight = TextFieldMinHeight
     val Shape: Shape = RoundedCornerShape(8.dp)
