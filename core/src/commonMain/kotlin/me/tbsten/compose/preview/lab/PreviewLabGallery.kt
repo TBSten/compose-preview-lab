@@ -3,6 +3,7 @@ package me.tbsten.compose.preview.lab
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -66,6 +67,13 @@ fun PreviewLabGallery(
     state: PreviewLabGalleryState = remember { PreviewLabGalleryState() },
     openFileHandler: OpenFileHandler<out Any?>? = null,
     featuredFileList: Map<String, List<String>> = emptyMap(),
+    noSelectedContents: @Composable (Map<String, List<PreviewLabPreview>>) -> Unit = { groupedPreviews ->
+        NoSelectedPreview(
+            groupedPreviewList = groupedPreviews,
+            onPreviewClick = { group, preview -> state.select(group, preview) },
+            contentPadding = PaddingValues(adaptive(12.dp, 20.dp)),
+        )
+    },
 ) = PreviewLabTheme {
     val groupedPreviews by remember(previewList, featuredFileList) {
         derivedStateOf {
@@ -164,10 +172,7 @@ fun PreviewLabGallery(
                 // selected contents
                 val selectedPreviews = state.selectedPreviews
                 if (selectedPreviews.isEmpty()) {
-                    NoSelectedPreview(
-                        groupedPreviewList = groupedPreviews,
-                        onPreviewClick = { group, preview -> state.select(group, preview) },
-                    )
+                    noSelectedContents(groupedPreviews)
                 } else {
                     Row(Modifier.zIndex(-1f)) {
                         selectedPreviews.forEachIndexed { selectedPreviewIndex, selectedPreview ->

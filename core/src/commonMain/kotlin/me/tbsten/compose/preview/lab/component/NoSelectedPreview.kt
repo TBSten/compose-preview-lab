@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -19,6 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -46,9 +50,10 @@ import me.tbsten.compose.preview.lab.ui.components.card.OutlinedCard
 val LocalIsInPreviewLabGalleryCardBody = compositionLocalOf { false }
 
 @Composable
-internal fun NoSelectedPreview(
+fun NoSelectedPreview(
     groupedPreviewList: Map<String, List<PreviewLabPreview>>,
     onPreviewClick: (String, PreviewLabPreview) -> Unit,
+    contentPadding: PaddingValues = PaddingValues.Zero,
 ) = SelectionContainer {
     val columnWidth = 200.dp
     val maxColumn = 5
@@ -58,7 +63,7 @@ internal fun NoSelectedPreview(
         columns = GridCells.Adaptive(columnWidth).max(columnWidth * maxColumn + itemSpacing * (maxColumn - 1)),
         horizontalArrangement = Arrangement.spacedBy(itemSpacing, Alignment.CenterHorizontally),
         verticalArrangement = Arrangement.spacedBy(itemSpacing),
-        contentPadding = PaddingValues(adaptive(12.dp, 20.dp)),
+        contentPadding = contentPadding,
     ) {
         previewListGrid(
             key = "previewList",
@@ -155,28 +160,47 @@ private fun PreviewListGridCard(preview: PreviewLabPreview, onClick: () -> Unit)
 @Composable
 private fun PreviewLabGalleryCardBody(preview: PreviewLabPreview, modifier: Modifier = Modifier) {
     val scale = adaptive(small = 0.3f, medium = 0.4f)
+    val aspectRatio = 16f / 9f
 
     Box(modifier = modifier) {
         Layout(
             content = {
                 Box(
-                    Modifier
+                    modifier = Modifier
                         .graphicsLayer {
                             scaleX = scale
                             scaleY = scale
                             transformOrigin = TransformOrigin(0f, 0f)
                         },
                 ) {
-                    CompositionLocalProvider(
-                        LocalIsInPreviewLabGalleryCardBody provides true,
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(aspectRatio),
                     ) {
-                        preview.content()
+                        CompositionLocalProvider(
+                            LocalIsInPreviewLabGalleryCardBody provides true,
+                        ) {
+                            preview.content()
+                        }
                     }
+
+                    // overlay for disable all events
+                    Box(
+                        modifier = Modifier
+                            .pointerInput(Unit) {
+                                awaitPointerEventScope {
+                                    while (true) {
+                                        awaitPointerEvent(PointerEventPass.Final).changes.forEach { it.consume() }
+                                    }
+                                }
+                            }.fillMaxSize(),
+                    )
                 }
             },
             measurePolicy = { measurables, constraints ->
                 val measurable = measurables.single()
-                val aspectRatio = 16f / 9f
                 val placeable = measurable.measure(
                     constraints.copy(
                         maxWidth = (constraints.maxWidth / scale).roundToInt(),
