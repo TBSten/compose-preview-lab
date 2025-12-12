@@ -105,64 +105,10 @@ fun PreviewLabGallery(
                     small = {},
                     medium = {
                         Row(Modifier.width(200.dp)) {
-                            LazyColumn {
-                                stickyHeader {
-                                    SearchBar(
-                                        query = state.query,
-                                        onQueryChange = state::onQueryChange,
-                                        modifier = Modifier
-                                            .background(background),
-                                    )
-                                    HorizontalDivider()
-                                }
-
-                                groupedPreviews.entries.forEachIndexed { index, (groupName, previews) ->
-                                    val filteredPreviews = previews.filterByQuery(state.query)
-
-                                    item {
-                                        SelectionContainer {
-                                            Text(
-                                                text = buildAnnotatedString {
-                                                    append(groupName)
-                                                    withStyle(PreviewLabTheme.typography.label3.toSpanStyle()) {
-                                                        append(" ")
-                                                        append("(")
-                                                        append("${filteredPreviews.size}")
-                                                        append(")")
-                                                    }
-                                                },
-                                                color = PreviewLabTheme.colors.textSecondary,
-                                                style = PreviewLabTheme.typography.label2,
-                                                fontWeight = FontWeight.Bold,
-                                                modifier = Modifier
-                                                    .background(PreviewLabTheme.colors.background)
-                                                    .padding(4.dp)
-                                                    .fillMaxWidth(),
-                                            )
-                                        }
-                                    }
-                                    item {
-                                        PreviewListTree(
-                                            previews = filteredPreviews,
-                                            canAddToComparePanel = state.canAddToComparePanel,
-                                            isSelected = {
-                                                groupName == state.selectedPreview?.groupName &&
-                                                    it == state.selectedPreview?.preview
-                                            },
-                                            onSelect = {
-                                                state.select(groupName, it)
-                                            },
-                                            onAddToComparePanel = {
-                                                state.addToComparePanel(groupName, it)
-                                            },
-                                        )
-                                    }
-
-                                    if (index != groupedPreviews.entries.size - 1) {
-                                        item { HorizontalDivider() }
-                                    }
-                                }
-                            }
+                            Sidebar(
+                                groupedPreviews = groupedPreviews,
+                                state = state,
+                            )
 
                             Divider(color = PreviewLabTheme.colors.outline, modifier = Modifier.zIndex(9999f).fillMaxHeight())
                         }
@@ -176,25 +122,12 @@ fun PreviewLabGallery(
                 } else {
                     Row(Modifier.zIndex(-1f)) {
                         selectedPreviews.forEachIndexed { selectedPreviewIndex, selectedPreview ->
-                            Column(Modifier.weight(1f)) {
-                                SelectedPreviewTitleHeader(
-                                    selectedPreview = selectedPreview,
-                                    onRemoveClick = {
-                                        // TODO refactor so that only calling unselect() is needed
-                                        if (selectedPreviewIndex == 0) {
-                                            state.unselect()
-                                        } else {
-                                            state.removeFromComparePanel(selectedPreviewIndex)
-                                        }
-                                    },
-                                )
-
-                                CompositionLocalProvider(
-                                    LocalPreviewLabPreview provides selectedPreview.preview,
-                                ) {
-                                    selectedPreview.preview.content()
-                                }
-                            }
+                            Sidebar(
+                                index = selectedPreviewIndex,
+                                selectedPreview = selectedPreview,
+                                state = state,
+                                modifier = Modifier.weight(1f),
+                            )
 
                             if (selectedPreviewIndex != selectedPreviews.lastIndex) {
                                 Divider()
@@ -203,6 +136,96 @@ fun PreviewLabGallery(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun Sidebar(groupedPreviews: Map<String, List<PreviewLabPreview>>, state: PreviewLabGalleryState) {
+    LazyColumn {
+        stickyHeader {
+            SearchBar(
+                query = state.query,
+                onQueryChange = state::onQueryChange,
+                modifier = Modifier
+                    .background(PreviewLabTheme.colors.background),
+            )
+            HorizontalDivider()
+        }
+
+        groupedPreviews.entries.forEachIndexed { index, (groupName, previews) ->
+            val filteredPreviews = previews.filterByQuery(state.query)
+
+            item {
+                SelectionContainer {
+                    Text(
+                        text = buildAnnotatedString {
+                            append(groupName)
+                            withStyle(PreviewLabTheme.typography.label3.toSpanStyle()) {
+                                append(" ")
+                                append("(")
+                                append("${filteredPreviews.size}")
+                                append(")")
+                            }
+                        },
+                        color = PreviewLabTheme.colors.textSecondary,
+                        style = PreviewLabTheme.typography.label2,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .background(PreviewLabTheme.colors.background)
+                            .padding(4.dp)
+                            .fillMaxWidth(),
+                    )
+                }
+            }
+            item {
+                PreviewListTree(
+                    previews = filteredPreviews,
+                    canAddToComparePanel = state.canAddToComparePanel,
+                    isSelected = {
+                        groupName == state.selectedPreview?.groupName &&
+                            it == state.selectedPreview?.preview
+                    },
+                    onSelect = {
+                        state.select(groupName, it)
+                    },
+                    onAddToComparePanel = {
+                        state.addToComparePanel(groupName, it)
+                    },
+                )
+            }
+
+            if (index != groupedPreviews.entries.size - 1) {
+                item { HorizontalDivider() }
+            }
+        }
+    }
+}
+
+@Composable
+private fun Sidebar(
+    index: Int,
+    selectedPreview: SelectedPreview,
+    state: PreviewLabGalleryState,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier) {
+        SelectedPreviewTitleHeader(
+            selectedPreview = selectedPreview,
+            onRemoveClick = {
+                // TODO refactor so that only calling unselect() is needed
+                if (index == 0) {
+                    state.unselect()
+                } else {
+                    state.removeFromComparePanel(index)
+                }
+            },
+        )
+
+        CompositionLocalProvider(
+            LocalPreviewLabPreview provides selectedPreview.preview,
+        ) {
+            selectedPreview.preview.content()
         }
     }
 }
