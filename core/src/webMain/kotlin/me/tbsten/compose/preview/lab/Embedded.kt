@@ -15,7 +15,7 @@ expect fun isEmbedded(isEmbeddedSearchParamName: String = "iframe"): Boolean
 fun initialSelectedPreviewFromSearchParam(
     previewList: List<PreviewLabPreview>,
     previewIdQueryName: String = "previewId",
-    groupName: String = "all",
+    groupName: String = AllGroupName,
 ) = previewList.findBySearchParam(previewIdQueryName = previewIdQueryName)
     ?.let { groupName to it }
 

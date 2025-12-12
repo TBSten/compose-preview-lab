@@ -79,8 +79,6 @@ class PreviewLabState {
         val Saver = mapSaver(
             save = {
                 mapOf(
-                    "contentRootOffsetInAppRoot?.x" to it.contentRootOffsetInAppRoot?.x,
-                    "contentRootOffsetInAppRoot?.y" to it.contentRootOffsetInAppRoot?.y,
                     "contentOffset.x" to it.contentOffset.x,
                     "contentOffset.y" to it.contentOffset.y,
                     "contentScale" to it.contentScale,
@@ -89,9 +87,9 @@ class PreviewLabState {
             },
             restore = {
                 PreviewLabState().apply {
-                    contentOffset = it["contentOffset"] as Offset
+                    contentOffset = Offset(it["contentOffset.x"] as Float, it["contentOffset.y"] as Float)
                     contentScale = it["contentScale"] as Float
-                    selectedTabIndex = it["selectedTabIndex"] as Int
+                    selectedTabIndex = it["selectedTabIndex"] as Int?
                 }
             },
         )

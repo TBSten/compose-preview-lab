@@ -84,11 +84,11 @@ fun PreviewLabPreview(
     startLineNumber: Int? = null,
     code: String? = null,
     content: @Composable () -> Unit,
-): PreviewLabPreview = PreviewLabPreview(
-    id = id,
-    displayName = displayName,
-    filePath = filePath,
-    startLineNumber = startLineNumber,
-    code = code,
-    content = content,
-)
+): PreviewLabPreview = object : PreviewLabPreview {
+    override val id: String = id
+    override val displayName: String = displayName
+    override val filePath: String? = filePath
+    override val startLineNumber: Int? = startLineNumber
+    override val code: String? = code
+    override val content: @Composable (() -> Unit) = content
+}

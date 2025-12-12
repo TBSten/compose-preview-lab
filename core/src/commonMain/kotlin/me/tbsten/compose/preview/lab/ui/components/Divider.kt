@@ -51,5 +51,5 @@ internal fun VerticalDivider(
 
 internal object DividerDefaults {
     val Thickness: Dp = 1.dp
-    val color: Color @Composable get() = PreviewLabTheme.colors.surface
+    val color: Color @Composable get() = PreviewLabTheme.colors.outline
 }

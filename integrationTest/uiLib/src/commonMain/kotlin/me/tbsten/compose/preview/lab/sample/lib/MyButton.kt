@@ -26,12 +26,12 @@ fun MyButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun MyButtonPreview() = customizedPreviewLab {
-    val PreviewLabGalleryNavigator = LocalPreviewLabGalleryNavigator.current
+    val previewLabGalleryNavigator = LocalPreviewLabGalleryNavigator.current
 
     MyButton(
         text = fieldValue { StringField("MyButton.text", "Click Me") },
         onClick = {
-            PreviewLabGalleryNavigator.navigateOr(
+            previewLabGalleryNavigator.navigateOr(
                 id = "MyTextFieldPreview",
                 fallback = { onEvent("MyButton.onClick") },
             )
