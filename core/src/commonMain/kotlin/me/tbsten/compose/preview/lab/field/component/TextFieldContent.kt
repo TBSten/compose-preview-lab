@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.field
+package me.tbsten.compose.preview.lab.field.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.ui.components.Text
 import me.tbsten.compose.preview.lab.ui.components.textfield.OutlinedTextField
 
