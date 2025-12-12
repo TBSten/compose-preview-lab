@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
-    <title>initialSelectedPreviewFromSearchParam</title>
+    <title>PreviewListGrid</title>
 <link href="../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../";</script>
     <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
@@ -43,7 +43,7 @@
         </div>
         <div class="navigation-controls">
         <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
-                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":core/webMain">web</button>
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":core/commonMain">common</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
                 <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
@@ -54,9 +54,9 @@
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":core/webMain" data-filter=":core/webMain">
+                                <input type="checkbox" class="checkbox--input" id=":core/commonMain" data-filter=":core/commonMain">
                                 <span class="checkbox--icon"></span>
-                                web
+                                common
                             </label>
                         </li>
                 </ul>
@@ -90,14 +90,12 @@
         </nav>
         <div id="resizer" class="resizer" data-item-type="BAR"></div>
         <div id="main" data-item-type="SECTION" role="main">
-<div class="main-content" data-page-type="member" id="content" pageids="core::me.tbsten.compose.preview.lab//initialSelectedPreviewFromSearchParam/#kotlin.collections.List[me.tbsten.compose.preview.lab.PreviewLabPreview]#kotlin.String#kotlin.String/PointingToDeclaration//291893472">
-  <div class="breadcrumbs"><a href="../index.html">core</a><span class="delimiter">/</span><a href="index.html">me.tbsten.compose.preview.lab</a><span class="delimiter">/</span><span class="current">initialSelectedPreviewFromSearchParam</span></div>
+<div class="main-content" data-page-type="member" id="content" pageids="core::me.tbsten.compose.preview.lab.component//PreviewListGrid/#kotlin.collections.Map[kotlin.String,kotlin.collections.List[me.tbsten.compose.preview.lab.PreviewLabPreview]]#kotlin.Function2[kotlin.String,me.tbsten.compose.preview.lab.PreviewLabPreview,kotlin.Unit]#androidx.compose.foundation.layout.PaddingValues/PointingToDeclaration//1239919082">
+  <div class="breadcrumbs"><a href="../index.html">core</a><span class="delimiter">/</span><a href="index.html">me.tbsten.compose.preview.lab.component</a><span class="delimiter">/</span><span class="current">PreviewListGrid</span></div>
   <div class="cover ">
-    <h1 class="cover"><span>initial</span><wbr><span>Selected</span><wbr><span>Preview</span><wbr><span>From</span><wbr><span>Search</span><wbr><span><span>Param</span></span></h1>
+    <h1 class="cover"><span>Preview</span><wbr><span>List</span><wbr><span><span>Grid</span></span></h1>
   </div>
-  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":core/webMain" data-filterable-set=":core/webMain" data-active="" data-toggle=":core/webMain">web</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":core/webMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="initial-selected-preview-from-search-param.html"><span class="token function">initialSelectedPreviewFromSearchParam</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">previewList<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">previewIdQueryName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">"previewId"</span><span class="token punctuation">, </span></span><span class="parameter ">groupName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>AllGroupName</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token operator">&gt;</span><span class="token operator">?</span></div></div>  </div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="-preview-list-grid.html"><span class="token function">PreviewListGrid</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">groupedPreviewList<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../me.tbsten.compose.preview.lab/-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">onPreviewClick<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="../me.tbsten.compose.preview.lab/-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter ">contentPadding<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/PaddingValues.html">PaddingValues</a><span class="token operator"> = </span>PaddingValues.Zero</span></span><span class="token punctuation">)</span></div></div></div>
 </div>
     <div class="footer">
         <div class="footer--container">
