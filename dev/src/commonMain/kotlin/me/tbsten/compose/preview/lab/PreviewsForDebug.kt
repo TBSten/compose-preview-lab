@@ -54,6 +54,7 @@ import me.tbsten.compose.preview.lab.field.FloatField
 import me.tbsten.compose.preview.lab.field.IntField
 import me.tbsten.compose.preview.lab.field.ModifierField
 import me.tbsten.compose.preview.lab.field.SelectableField
+import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.field.SpField
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.combined
@@ -287,7 +288,7 @@ enum class PreviewsForUiDebug(
         "ScreenSize",
         content = {
             PreviewLab(
-                screenSizes = ScreenSize.AllPresets,
+                screenSizes = me.tbsten.compose.preview.lab.field.ScreenSize.AllPresets,
             ) {
                 Box(
                     modifier = Modifier
