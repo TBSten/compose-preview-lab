@@ -30,6 +30,7 @@ import com.dokar.sonner.TextToastAction
 import com.dokar.sonner.Toaster
 import com.dokar.sonner.ToasterState
 import com.dokar.sonner.rememberToasterState
+import me.tbsten.compose.preview.lab.component.LocalIsInPreviewLabGalleryCardBody
 import me.tbsten.compose.preview.lab.component.header.PreviewLabHeader
 import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorsPane
@@ -319,6 +320,7 @@ open class PreviewLab(
         modifier: Modifier = Modifier,
         isHeaderShow: Boolean = this.defaultIsHeaderShow(),
         inspectorTabs: List<InspectorTab> = this.defaultInspectorTabs(),
+        isInPreviewLabGalleryCardBody: Boolean = LocalIsInPreviewLabGalleryCardBody.current,
         content: @Composable PreviewLabScope.() -> Unit,
     ) = invoke(
         state = state,
@@ -461,8 +463,14 @@ open class PreviewLab(
         modifier: Modifier = Modifier,
         isHeaderShow: Boolean = this.defaultIsHeaderShow(),
         inspectorTabs: List<InspectorTab> = this.defaultInspectorTabs(),
+        isInPreviewLabGalleryCardBody: Boolean = LocalIsInPreviewLabGalleryCardBody.current,
         content: @Composable PreviewLabScope.() -> Unit,
     ) {
+        if (isInPreviewLabGalleryCardBody) {
+            content(state.scope)
+            return
+        }
+
         val state = LocalEnforcePreviewLabState.current ?: state
 
         val toaster = rememberToasterState().also { toaster ->

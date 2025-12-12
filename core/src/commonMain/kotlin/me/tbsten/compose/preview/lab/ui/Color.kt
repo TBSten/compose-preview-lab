@@ -1,9 +1,30 @@
 package me.tbsten.compose.preview.lab.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 internal val Black: Color = Color(0xFF000000)
 internal val Gray900: Color = Color(0xFF282828)
@@ -150,4 +171,204 @@ internal fun Colors.contentColorFor(backgroundColor: Color): Color = when (backg
     disabled -> onDisabled
     background -> onBackground
     else -> Color.Unspecified
+}
+
+@Preview
+@Composable
+private fun LightColorsPreview() {
+    ColorsPreview(colors = LightColors, title = "Light Colors")
+}
+
+@Preview
+@Composable
+private fun DarkColorsPreview() {
+    ColorsPreview(colors = DarkColors, title = "Dark Colors")
+}
+
+@Composable
+private fun ColorsPreview(colors: Colors, title: String) {
+    val colorItems = listOf(
+        "primary" to colors.primary,
+        "onPrimary" to colors.onPrimary,
+        "secondary" to colors.secondary,
+        "onSecondary" to colors.onSecondary,
+        "tertiary" to colors.tertiary,
+        "onTertiary" to colors.onTertiary,
+        "error" to colors.error,
+        "onError" to colors.onError,
+        "success" to colors.success,
+        "onSuccess" to colors.onSuccess,
+        "disabled" to colors.disabled,
+        "onDisabled" to colors.onDisabled,
+        "surface" to colors.surface,
+        "onSurface" to colors.onSurface,
+        "background" to colors.background,
+        "onBackground" to colors.onBackground,
+        "outline" to colors.outline,
+        "text" to colors.text,
+        "textSecondary" to colors.textSecondary,
+        "textDisabled" to colors.textDisabled,
+        "scrim" to colors.scrim,
+        "elevation" to colors.elevation,
+    )
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colors.background)
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        BasicText(
+            text = title,
+            style = TextStyle(fontSize = 20.sp, color = colors.text),
+        )
+        colorItems.chunked(2).forEach { rowItems ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                rowItems.forEach { (name, color) ->
+                    Box(modifier = Modifier.weight(1f)) {
+                        ColorSwatch(name = name, color = color, textColor = colors.text)
+                    }
+                }
+                if (rowItems.size == 1) {
+                    Box(modifier = Modifier.weight(1f))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ColorSwatch(name: String, color: Color, textColor: Color) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+            modifier = Modifier
+                .size(32.dp)
+                .background(color)
+                .border(1.dp, Gray500),
+        )
+        BasicText(
+            text = name,
+            style = TextStyle(fontSize = 12.sp, color = textColor),
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PrimitiveColorsPreview() {
+    val grayColors = listOf(
+        "Black" to Black,
+        "Gray900" to Gray900,
+        "Gray800" to Gray800,
+        "Gray700" to Gray700,
+        "Gray600" to Gray600,
+        "Gray500" to Gray500,
+        "Gray400" to Gray400,
+        "Gray300" to Gray300,
+        "Gray200" to Gray200,
+        "Gray100" to Gray100,
+        "Gray50" to Gray50,
+        "White" to White,
+    )
+    val redColors = listOf(
+        "Red900" to Red900,
+        "Red800" to Red800,
+        "Red700" to Red700,
+        "Red600" to Red600,
+        "Red500" to Red500,
+        "Red400" to Red400,
+        "Red300" to Red300,
+        "Red200" to Red200,
+        "Red100" to Red100,
+        "Red50" to Red50,
+    )
+    val blueColors = listOf(
+        "Blue900" to Blue900,
+        "Blue800" to Blue800,
+        "Blue700" to Blue700,
+        "Blue600" to Blue600,
+        "Blue500" to Blue500,
+        "Blue400" to Blue400,
+        "Blue300" to Blue300,
+        "Blue200" to Blue200,
+        "Blue100" to Blue100,
+        "Blue50" to Blue50,
+    )
+    val greenColors = listOf(
+        "Green950" to Green950,
+        "Green900" to Green900,
+        "Green800" to Green800,
+        "Green700" to Green700,
+        "Green600" to Green600,
+        "Green500" to Green500,
+        "Green400" to Green400,
+        "Green300" to Green300,
+        "Green200" to Green200,
+        "Green100" to Green100,
+        "Green50" to Green50,
+    )
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        BasicText(
+            text = "Primitive Colors",
+            style = TextStyle(fontSize = 20.sp),
+        )
+        PrimitiveColorSection(title = "Gray", colors = grayColors)
+        PrimitiveColorSection(title = "Red", colors = redColors)
+        PrimitiveColorSection(title = "Blue", colors = blueColors)
+        PrimitiveColorSection(title = "Green", colors = greenColors)
+    }
+}
+
+@Composable
+private fun PrimitiveColorSection(title: String, colors: List<Pair<String, Color>>) {
+    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+        BasicText(
+            text = title,
+            style = TextStyle(fontSize = 14.sp),
+        )
+        colors.chunked(2).forEach { rowItems ->
+            Row(
+                modifier = Modifier.fillMaxWidth().height(24.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                rowItems.forEach { (name, color) ->
+                    Row(
+                        modifier = Modifier.weight(1f),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(24.dp)
+                                .background(color)
+                                .border(1.dp, Gray500),
+                        )
+                        BasicText(
+                            text = name,
+                            style = TextStyle(fontSize = 10.sp),
+                        )
+                    }
+                }
+                if (rowItems.size == 1) {
+                    Box(modifier = Modifier.weight(1f))
+                }
+            }
+        }
+    }
 }

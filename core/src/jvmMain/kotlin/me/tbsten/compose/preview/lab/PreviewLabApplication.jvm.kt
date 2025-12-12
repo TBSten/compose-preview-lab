@@ -1,5 +1,6 @@
 package me.tbsten.compose.preview.lab
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.painter.Painter
@@ -11,6 +12,8 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.rememberWindowState
 import java.util.Collections.emptyMap
+import me.tbsten.compose.preview.lab.component.PreviewListGrid
+import me.tbsten.compose.preview.lab.component.adaptive
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 
 /**
@@ -74,6 +77,13 @@ fun ApplicationScope.PreviewLabGalleryWindows(
     openFileHandler: OpenFileHandler<out Any?>? = null,
     featuredFileList: Map<String, List<String>> = emptyMap(),
     state: PreviewLabGalleryState = remember { PreviewLabGalleryState() },
+    noSelectedContents: @Composable (Map<String, List<PreviewLabPreview>>) -> Unit = { groupedPreviews ->
+        PreviewListGrid(
+            groupedPreviewList = groupedPreviews,
+            onPreviewClick = { group, preview -> state.select(group, preview) },
+            contentPadding = PaddingValues(adaptive(12.dp, 20.dp)),
+        )
+    },
     // Window arguments
     // TODO: Review appropriate default values
     windowState: WindowState = rememberWindowState(size = DpSize(1000.dp, 800.dp)),
@@ -110,6 +120,7 @@ fun ApplicationScope.PreviewLabGalleryWindows(
             featuredFileList = featuredFileList,
             openFileHandler = openFileHandler,
             state = state,
+            noSelectedContents = noSelectedContents,
         )
     }
 }

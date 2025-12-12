@@ -1,10 +1,14 @@
 package me.tbsten.compose.preview.lab
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import kotlin.js.ExperimentalWasmJsInterop
+import me.tbsten.compose.preview.lab.component.PreviewListGrid
+import me.tbsten.compose.preview.lab.component.adaptive
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 
 @OptIn(ExperimentalWasmJsInterop::class)
@@ -15,7 +19,7 @@ expect fun isEmbedded(isEmbeddedSearchParamName: String = "iframe"): Boolean
 fun initialSelectedPreviewFromSearchParam(
     previewList: List<PreviewLabPreview>,
     previewIdQueryName: String = "previewId",
-    groupName: String = "all",
+    groupName: String = AllGroupName,
 ) = previewList.findBySearchParam(previewIdQueryName = previewIdQueryName)
     ?.let { groupName to it }
 
@@ -32,6 +36,13 @@ fun EmbeddedPreviewOrGallery(
     },
     openFileHandler: OpenFileHandler<out Any?>? = null,
     featuredFileList: Map<String, List<String>> = emptyMap(),
+    noSelectedContents: @Composable (Map<String, List<PreviewLabPreview>>) -> Unit = { groupedPreviews ->
+        PreviewListGrid(
+            groupedPreviewList = groupedPreviews,
+            onPreviewClick = { group, preview -> state.select(group, preview) },
+            contentPadding = PaddingValues(adaptive(12.dp, 20.dp)),
+        )
+    },
 ) {
     val selectedPreview = state.selectedPreview
 
@@ -48,6 +59,7 @@ fun EmbeddedPreviewOrGallery(
             state = state,
             openFileHandler = openFileHandler,
             featuredFileList = featuredFileList,
+            noSelectedContents = noSelectedContents,
         )
     }
 }

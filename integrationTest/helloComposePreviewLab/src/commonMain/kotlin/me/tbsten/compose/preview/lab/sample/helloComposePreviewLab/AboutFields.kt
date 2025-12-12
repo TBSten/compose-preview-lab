@@ -1,8 +1,11 @@
+@file:Suppress("ktlint:standard:max-line-length")
+
 package me.tbsten.compose.preview.lab.sample.helloComposePreviewLab
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -11,7 +14,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,15 +34,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.ColorPainter
-import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.Res
-import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.icon_check
-import org.jetbrains.compose.resources.painterResource
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.Res
+import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.icon_check
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.LocalPreviewLabGalleryNavigator
@@ -57,6 +66,7 @@ import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.Doc
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.IconBox
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.KotlinCodeBlock
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.createCodeBlockColor
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -196,6 +206,7 @@ private fun FirstDemoSection(modifier: Modifier = Modifier) {
         PreviewLab(
             inspectorTabs = InspectorTab.defaults + listOf(FirstDemoFieldGuideTab),
             isHeaderShow = false,
+            isInPreviewLabGalleryCardBody = false,
             modifier = modifier
                 .padding(40.dp)
                 .shadow(8.dp)
@@ -756,6 +767,7 @@ private fun FieldCategoryDemo(
             PreviewLab(
                 inspectorTabs = InspectorTab.defaults + listOf(guideTab),
                 isHeaderShow = false,
+                isInPreviewLabGalleryCardBody = false,
                 modifier = Modifier
                     .fillMaxWidth()
                     .shadow(4.dp, RoundedCornerShape(8.dp))
