@@ -50,7 +50,7 @@ import me.tbsten.compose.preview.lab.ui.components.card.OutlinedCard
 val LocalIsInPreviewLabGalleryCardBody = compositionLocalOf { false }
 
 @Composable
-fun NoSelectedPreview(
+fun PreviewListGrid(
     groupedPreviewList: Map<String, List<PreviewLabPreview>>,
     onPreviewClick: (String, PreviewLabPreview) -> Unit,
     contentPadding: PaddingValues = PaddingValues.Zero,
@@ -103,7 +103,7 @@ private fun LazyGridScope.previewListGrid(
             }
         }
 
-        items(previewList, key = { Triple(key, "$groupName:item", it) }) { preview ->
+        items(previewList, key = { Triple(key, "$groupName:item", it.id) }) { preview ->
             PreviewListGridCard(
                 preview = preview,
                 onClick = { onPreviewClick(groupName, preview) },

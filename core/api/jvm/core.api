@@ -29,8 +29,8 @@ public final class me/tbsten/compose/preview/lab/CollectedPreviewKt {
 public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabGalleryKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabGalleryKt;
 	public fun <init> ()V
-	public final fun getLambda$-1065897295$core ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$626984291$core ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1175409949$core ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$227255601$core ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabKt {
@@ -71,7 +71,7 @@ public final class me/tbsten/compose/preview/lab/PreviewLabApplication_jvmKt {
 
 public final class me/tbsten/compose/preview/lab/PreviewLabGalleryKt {
 	public static final field AllGroupName Ljava/lang/String;
-	public static final fun PreviewLabGallery (Ljava/util/List;Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/PreviewLabGalleryState;Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler;Ljava/util/Map;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabGallery (Ljava/util/List;Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/PreviewLabGalleryState;Lme/tbsten/compose/preview/lab/openfilehandler/OpenFileHandler;Ljava/util/Map;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public abstract interface class me/tbsten/compose/preview/lab/PreviewLabGalleryNavigator {
@@ -176,6 +176,7 @@ public final class me/tbsten/compose/preview/lab/component/FloatTransformer : me
 }
 
 public final class me/tbsten/compose/preview/lab/component/NoSelectedPreviewKt {
+	public static final fun NoSelectedPreview (Ljava/util/Map;Lkotlin/jvm/functions/Function2;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/runtime/Composer;II)V
 	public static final fun getLocalIsInPreviewLabGalleryCardBody ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 }
 
