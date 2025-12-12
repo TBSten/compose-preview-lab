@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.field
+package me.tbsten.compose.preview.lab
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -6,6 +6,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshotFlow
 import kotlinx.coroutines.flow.Flow
+import me.tbsten.compose.preview.lab.field.DefaultFieldView
 
 /**
  * Returns a default placeholder code string for fields that don't have a custom [PreviewLabField.valueCode] implementation.
@@ -45,12 +46,12 @@ interface PreviewLabField<Value> {
      * # Built-in implementations
      *
      * Most built-in field types provide appropriate implementations:
-     * - [BooleanField]: `"true"` or `"false"`
-     * - [StringField]: `"\"Hello\""`
-     * - [IntField]: `"42"`
-     * - [FloatField]: `"3.14f"`
-     * - [DpField]: `"16.dp"`
-     * - [ColorField]: `"Color.Red"` or `"Color(0xFFFF0000)"`
+     * - [me.tbsten.compose.preview.lab.field.BooleanField]: `"true"` or `"false"`
+     * - [me.tbsten.compose.preview.lab.field.StringField]: `"\"Hello\""`
+     * - [me.tbsten.compose.preview.lab.field.IntField]: `"42"`
+     * - [me.tbsten.compose.preview.lab.field.FloatField]: `"3.14f"`
+     * - [me.tbsten.compose.preview.lab.field.DpField]: `"16.dp"`
+     * - [me.tbsten.compose.preview.lab.field.ColorField]: `"Color.Red"` or `"Color(0xFFFF0000)"`
      *
      * # Custom implementation
      *
@@ -71,7 +72,7 @@ interface PreviewLabField<Value> {
      *
      * # Using withValueCode
      *
-     * For existing fields, use [withValueCode] to customize the code output without creating a new class:
+     * For existing fields, use [me.tbsten.compose.preview.lab.field.withValueCode] to customize the code output without creating a new class:
      *
      * ```kotlin
      * val fontWeight = fieldValue {
@@ -90,7 +91,7 @@ interface PreviewLabField<Value> {
      * ```
      *
      * @return A valid Kotlin code string representing the current value
-     * @see withValueCode
+     * @see me.tbsten.compose.preview.lab.field.withValueCode
      * @see defaultValueCode
      */
     fun valueCode(): String = defaultValueCode(label)

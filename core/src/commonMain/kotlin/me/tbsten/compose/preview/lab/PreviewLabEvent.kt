@@ -1,11 +1,9 @@
-package me.tbsten.compose.preview.lab.event
+package me.tbsten.compose.preview.lab
 
 import androidx.compose.runtime.Immutable
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
-import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
-import me.tbsten.compose.preview.lab.PreviewLabScope
 
 /**
  * Represents an event that occurred during preview interaction
@@ -34,9 +32,9 @@ import me.tbsten.compose.preview.lab.PreviewLabScope
  * @param title Brief event description displayed in the events list
  * @param description Detailed event information (optional)
  * @param createAt Timestamp when the event occurred (auto-generated)
- * @see PreviewLabScope.onEvent
+ * @see me.tbsten.compose.preview.lab.previewlab.PreviewLabScope.onEvent
  */
 @Immutable
 @OptIn(ExperimentalTime::class)
 @ExperimentalComposePreviewLabApi
-data class PreviewLabEvent(val title: String, val description: String? = null, val createAt: Instant = Clock.System.now(),)
+data class PreviewLabEvent(val title: String, val description: String? = null, val createAt: Instant = Clock.System.now())
