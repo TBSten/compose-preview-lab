@@ -30,7 +30,7 @@ public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLab
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabGalleryKt;
 	public fun <init> ()V
 	public final fun getLambda$-1175409949$core_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$227255601$core_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-826022829$core_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/ComposableSingletons$PreviewLabKt {
