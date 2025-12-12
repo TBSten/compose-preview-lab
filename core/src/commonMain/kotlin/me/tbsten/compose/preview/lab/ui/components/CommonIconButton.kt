@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.component
+package me.tbsten.compose.preview.lab.ui.components
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -7,14 +7,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
-import me.tbsten.compose.preview.lab.ui.components.Icon
-import me.tbsten.compose.preview.lab.ui.components.IconButton
-import me.tbsten.compose.preview.lab.ui.components.IconButtonVariant
-import me.tbsten.compose.preview.lab.ui.components.TooltipBox
 
 @Composable
-internal fun CommonIconButton(
+@InternalComposePreviewLabApi
+fun CommonIconButton(
     imageVector: ImageVector,
     contentDescription: String? = null,
     onClick: () -> Unit,
@@ -67,7 +65,8 @@ private fun IconButtonContent(
 }
 
 @Composable
-internal fun CommonIconButton(
+@InternalComposePreviewLabApi
+fun CommonIconButton(
     painter: Painter,
     contentDescription: String? = null,
     onClick: () -> Unit,
@@ -102,7 +101,8 @@ internal fun CommonIconButton(
 }
 
 @Composable
-private fun IconButtonContent(
+@InternalComposePreviewLabApi
+fun IconButtonContent(
     painter: Painter,
     contentDescription: String? = null,
     onClick: () -> Unit,

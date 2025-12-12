@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.component.colorpicker
+package me.tbsten.compose.preview.lab.ui.components.colorpicker
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -28,60 +28,62 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import kotlin.math.max
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @Composable
-internal fun HueSlider(selectedColor: Color, onColorSelected: (Color) -> Unit, modifier: Modifier = Modifier) {
-    val initialSelectedHue = remember { selectedColor }
-    var sliderSize by remember { mutableStateOf(Size.Zero) }
+@InternalComposePreviewLabApi
+internal fun AlphaSlider(selectedColor: Color, onColorSelected: (Color) -> Unit, modifier: Modifier = Modifier) {
+    val initialSelectedColor = remember { selectedColor }
+    var sliderSize by remember { mutableStateOf<Size?>(null) }
     var thumbPositionY by remember { mutableStateOf(0f) }
     val thumbHeightPx = with(LocalDensity.current) { 8.dp.toPx() }
     val thumbColor = colorPickerThumbColor()
     val updateColor by rememberUpdatedState(onColorSelected)
 
-    fun onThumbPositionChange(newOffset: Offset) {
-        val start = thumbHeightPx / 2
-        val end = sliderSize.height - thumbHeightPx / 2
-        val y = newOffset.y.coerceIn(start..end)
-        val newPosition = y - start
+    val onThumbPositionChange by rememberUpdatedState { newOffset: Offset ->
+        sliderSize?.let { sliderSize ->
+            val start = thumbHeightPx / 2
+            val end = sliderSize.height - thumbHeightPx / 2
+            val y = newOffset.y.coerceIn(start..max(end, start))
+            val newPosition = y - start
 
-        // calculate hue value based on new position value
-        val hueDegreeAtPosition =
-            (newPosition / (sliderSize.height - thumbHeightPx) * 360f).coerceIn(0f, 360f)
-        val newColor = hueDegreeToColor(hueDegreeAtPosition)
+            val alpha = (y - start) / (end - start)
+            val newColor = selectedColor.copy(alpha = alpha)
 
-        thumbPositionY = newPosition
-        updateColor(newColor)
+            thumbPositionY = newPosition
+            updateColor(newColor)
+        }
     }
 
-    LaunchedEffect(sliderSize, initialSelectedHue) {
-        if (!sliderSize.isEmpty()) {
-            val deg = initialSelectedHue.toHueDegree()
-            thumbPositionY = (deg / 360f) * (sliderSize.height - thumbHeightPx)
+    LaunchedEffect(sliderSize, initialSelectedColor) {
+        sliderSize?.let { sliderSize ->
+            onThumbPositionChange(Offset(x = 0f, y = sliderSize.height))
         }
     }
 
     Box(
         modifier =
-        modifier
-            .fillMaxHeight()
-            .onSizeChanged { sliderSize = it.toSize() }
-            .pointerInput(Unit) { detectTapGestures(onTap = ::onThumbPositionChange) }
-            .pointerInput(Unit) {
-                detectDragGestures { change, _ -> onThumbPositionChange(change.position) }
-            },
+            modifier
+                .fillMaxHeight()
+                .onSizeChanged { sliderSize = it.toSize() }
+                .pointerInput(Unit) { detectTapGestures(onTap = { onThumbPositionChange(it) }) }
+                .pointerInput(Unit) {
+                    detectDragGestures { change, _ -> onThumbPositionChange(change.position) }
+                },
     ) {
         // color track
         Canvas(
             modifier =
-            Modifier.fillMaxSize()
-                .padding(horizontal = 4.dp)
-                .clip(RoundedCornerShape(4.dp)),
+                Modifier.fillMaxSize()
+                    .padding(horizontal = 4.dp)
+                    .clip(RoundedCornerShape(4.dp)),
         ) {
-            drawRect(Brush.verticalGradient(Color.colorList))
+            drawRect(Brush.Companion.verticalGradient(listOf(Color.Transparent, selectedColor.copy(alpha = 1f))))
         }
 
         // draw thumb only when we know the size
-        if (!sliderSize.isEmpty()) {
+        sliderSize?.let { sliderSize ->
             Canvas(modifier = Modifier.fillMaxSize()) {
                 drawRoundRect(
                     color = thumbColor,
@@ -96,8 +98,4 @@ internal fun HueSlider(selectedColor: Color, onColorSelected: (Color) -> Unit, m
             }
         }
     }
-}
-
-private val Color.Companion.colorList by lazy {
-    IntArray(360) { it }.map { deg -> hueDegreeToColor(deg.toFloat()) }
 }

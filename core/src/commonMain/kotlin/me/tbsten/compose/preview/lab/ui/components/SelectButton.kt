@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.component
+package me.tbsten.compose.preview.lab.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,18 +13,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.core.generated.resources.Res
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_check
 import me.tbsten.compose.preview.lab.ui.LocalTextStyle
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Button
-import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
-import me.tbsten.compose.preview.lab.ui.components.Icon
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.adaptive
 import org.jetbrains.compose.resources.imageResource
 
 @Composable
-internal fun <V> SelectButton(
+@InternalComposePreviewLabApi
+fun <V> SelectButton(
     choices: List<V>,
     currentIndex: Int,
     onSelect: (Int) -> Unit,
@@ -41,7 +40,8 @@ internal fun <V> SelectButton(
 )
 
 @Composable
-internal fun <V> SelectButton(
+@InternalComposePreviewLabApi
+fun <V> SelectButton(
     value: V,
     choices: List<V>,
     onSelect: (V) -> Unit,

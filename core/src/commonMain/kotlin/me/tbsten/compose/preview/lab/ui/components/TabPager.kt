@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.component
+package me.tbsten.compose.preview.lab.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.pager.HorizontalPager
@@ -8,10 +8,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.launch
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @Composable
-internal fun <T> TabPager(
+@InternalComposePreviewLabApi
+ fun <T> TabPager(
     tabs: List<T>,
     title: (T) -> String,
     pagerState: PagerState,

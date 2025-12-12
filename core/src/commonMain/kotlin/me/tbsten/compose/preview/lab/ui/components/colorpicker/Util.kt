@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.component.colorpicker
+package me.tbsten.compose.preview.lab.ui.components.colorpicker
 
 import androidx.compose.ui.graphics.Color
 import kotlin.math.abs

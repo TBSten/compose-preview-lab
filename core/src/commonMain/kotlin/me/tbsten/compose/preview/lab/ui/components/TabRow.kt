@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.component
+package me.tbsten.compose.preview.lab.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -12,13 +12,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
 import me.tbsten.compose.preview.lab.ui.LocalTextStyle
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.util.thenIf
+import me.tbsten.compose.preview.lab.ui.util.thenIf
 
 @Composable
-internal fun TabRow(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+@InternalComposePreviewLabApi
+ fun TabRow(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     Column {
         Row(
             modifier = modifier
@@ -31,7 +33,8 @@ internal fun TabRow(modifier: Modifier = Modifier, content: @Composable () -> Un
 }
 
 @Composable
-internal fun Tab(selected: Boolean, onClick: () -> Unit, text: @Composable () -> Unit) {
+@InternalComposePreviewLabApi
+ fun Tab(selected: Boolean, onClick: () -> Unit, text: @Composable () -> Unit) {
     Row(
         modifier = Modifier
             .clickable(onClick = onClick)

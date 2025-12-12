@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.component.colorpicker
+package me.tbsten.compose.preview.lab.ui.components.colorpicker
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -62,13 +62,13 @@ internal fun HSVPicker(selectedColor: Color, onColorSelected: (Color) -> Unit, m
 
     Canvas(
         modifier =
-        modifier
-            .fillMaxSize()
-            .onSizeChanged { rectSize = it }
-            .pointerInput(Unit) { detectTapGestures { updatePosition(it) } }
-            .pointerInput(Unit) {
-                detectDragGestures { change, _ -> updatePosition(change.position) }
-            },
+            modifier
+                .fillMaxSize()
+                .onSizeChanged { rectSize = it }
+                .pointerInput(Unit) { detectTapGestures { updatePosition(it) } }
+                .pointerInput(Unit) {
+                    detectDragGestures { change, _ -> updatePosition(change.position) }
+                },
     ) {
         val cornerRadius = 4.dp.toPx()
 

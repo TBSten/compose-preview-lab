@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.component
+package me.tbsten.compose.preview.lab.ui.components
 
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloat
@@ -42,11 +42,12 @@ import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
 import kotlin.math.max
 import kotlin.math.min
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Surface
 
 @Composable
-internal fun CommonMenu(expanded: Boolean, onDismissRequest: () -> Unit, content: @Composable CommonMenuScope.() -> Unit) {
+@InternalComposePreviewLabApi
+fun CommonMenu(expanded: Boolean, onDismissRequest: () -> Unit, content: @Composable CommonMenuScope.() -> Unit) {
     val expandedState = remember { MutableTransitionState(false) }
     expandedState.targetState = expanded
 
@@ -77,7 +78,8 @@ internal fun CommonMenu(expanded: Boolean, onDismissRequest: () -> Unit, content
     }
 }
 
-internal class CommonMenuScope(columnScope: ColumnScope) : ColumnScope by columnScope
+@InternalComposePreviewLabApi
+class CommonMenuScope(columnScope: ColumnScope) : ColumnScope by columnScope
 
 // copy from androidx.compose.material3.DropdownMenu
 
@@ -116,33 +118,33 @@ private fun DropdownMenuContent(
     val isInspecting = LocalInspectionMode.current
     Surface(
         modifier =
-        Modifier.graphicsLayer {
-            scaleX =
-                if (!isInspecting) {
-                    scale
-                } else if (expandedState.targetState) {
-                    ExpandedScaleTarget
-                } else {
-                    ClosedScaleTarget
-                }
-            scaleY =
-                if (!isInspecting) {
-                    scale
-                } else if (expandedState.targetState) {
-                    ExpandedScaleTarget
-                } else {
-                    ClosedScaleTarget
-                }
-            this.alpha =
-                if (!isInspecting) {
-                    alpha
-                } else if (expandedState.targetState) {
-                    ExpandedAlphaTarget
-                } else {
-                    ClosedAlphaTarget
-                }
-            transformOrigin = transformOriginState.value
-        },
+            Modifier.graphicsLayer {
+                scaleX =
+                    if (!isInspecting) {
+                        scale
+                    } else if (expandedState.targetState) {
+                        ExpandedScaleTarget
+                    } else {
+                        ClosedScaleTarget
+                    }
+                scaleY =
+                    if (!isInspecting) {
+                        scale
+                    } else if (expandedState.targetState) {
+                        ExpandedScaleTarget
+                    } else {
+                        ClosedScaleTarget
+                    }
+                this.alpha =
+                    if (!isInspecting) {
+                        alpha
+                    } else if (expandedState.targetState) {
+                        ExpandedAlphaTarget
+                    } else {
+                        ClosedAlphaTarget
+                    }
+                transformOrigin = transformOriginState.value
+            },
         shape = shape,
         color = containerColor,
         shadowElevation = shadowElevation,
@@ -150,10 +152,10 @@ private fun DropdownMenuContent(
     ) {
         Column(
             modifier =
-            modifier
-                .padding(vertical = 8.dp)
-                .width(200.dp)
-                .verticalScroll(scrollState),
+                modifier
+                    .padding(vertical = 8.dp)
+                    .width(200.dp)
+                    .verticalScroll(scrollState),
         ) {
             val menuScope = CommonMenuScope(this)
 
@@ -162,7 +164,7 @@ private fun DropdownMenuContent(
     }
 }
 
-internal fun calculateTransformOrigin(anchorBounds: IntRect, menuBounds: IntRect): TransformOrigin {
+private fun calculateTransformOrigin(anchorBounds: IntRect, menuBounds: IntRect): TransformOrigin {
     val pivotX =
         when {
             menuBounds.left >= anchorBounds.right -> 0f
@@ -204,7 +206,8 @@ internal val MenuVerticalMargin = 48.dp
  * for each direction individually.
  */
 @Stable
-internal object MenuPosition {
+@InternalComposePreviewLabApi
+object MenuPosition {
     /**
      * An interface to calculate the vertical position of a menu with respect to its anchor and
      * window. The returned y-coordinate is relative to the window.

@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.component
+package me.tbsten.compose.preview.lab.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,10 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Button
-import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
-import me.tbsten.compose.preview.lab.ui.components.Text
 
 private const val SelectedBorderWidth = 12
 
@@ -28,7 +26,8 @@ private const val SelectedBorderWidth = 12
  * @param modifier Modifier to apply to the item
  */
 @Composable
-internal fun CommonListItem(
+@InternalComposePreviewLabApi
+fun CommonListItem(
     title: String,
     isSelected: Boolean,
     onSelect: (() -> Unit)? = null,
@@ -60,7 +59,8 @@ internal fun CommonListItem(
  * @param leadingContent Optional composable content to display before the title
  */
 @Composable
-internal fun CommonListItem(
+@InternalComposePreviewLabApi
+fun CommonListItem(
     title: String,
     isSelected: Boolean,
     onSelect: (() -> Unit)? = null,
@@ -93,7 +93,8 @@ internal fun CommonListItem(
  * @param content Composable content to display within the list item
  */
 @Composable
-internal fun CommonListItem(
+@InternalComposePreviewLabApi
+fun CommonListItem(
     isSelected: Boolean,
     onSelect: (() -> Unit)? = null,
     modifier: Modifier = Modifier,

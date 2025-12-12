@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.component
+package me.tbsten.compose.preview.lab.ui.components
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.RowScope
@@ -6,12 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import me.tbsten.compose.preview.lab.ui.components.DividerDefaults
-import me.tbsten.compose.preview.lab.ui.components.HorizontalDivider
-import me.tbsten.compose.preview.lab.ui.components.VerticalDivider
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @Composable
-internal fun ColumnScope.Divider(
+@InternalComposePreviewLabApi
+fun ColumnScope.Divider(
     modifier: Modifier = Modifier,
     thickness: Dp = DividerDefaults.Thickness,
     color: Color = DividerDefaults.color,
@@ -22,7 +21,8 @@ internal fun ColumnScope.Divider(
 )
 
 @Composable
-internal fun RowScope.Divider(
+@InternalComposePreviewLabApi
+fun RowScope.Divider(
     modifier: Modifier = Modifier,
     thickness: Dp = DividerDefaults.Thickness,
     color: Color = DividerDefaults.color,
