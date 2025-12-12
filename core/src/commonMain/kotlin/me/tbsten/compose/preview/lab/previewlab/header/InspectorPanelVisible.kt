@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.component.header
+package me.tbsten.compose.preview.lab.previewlab.header
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

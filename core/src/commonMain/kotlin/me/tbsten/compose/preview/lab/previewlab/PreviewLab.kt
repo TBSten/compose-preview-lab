@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab
+package me.tbsten.compose.preview.lab.previewlab
 
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.background
@@ -30,14 +30,14 @@ import com.dokar.sonner.TextToastAction
 import com.dokar.sonner.Toaster
 import com.dokar.sonner.ToasterState
 import com.dokar.sonner.rememberToasterState
-import me.tbsten.compose.preview.lab.component.LocalIsInPreviewLabGalleryCardBody
-import me.tbsten.compose.preview.lab.component.header.PreviewLabHeader
-import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
-import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorsPane
 import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.field.ScreenSizeField
+import me.tbsten.compose.preview.lab.gallery.LocalIsInPreviewLabGalleryCardBody
+import me.tbsten.compose.preview.lab.previewlab.header.PreviewLabHeader
+import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
+import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorsPane
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.util.toDpOffset
+import me.tbsten.compose.preview.lab.ui.util.toDpOffset
 
 /**
  * PreviewLab is a powerful preview environment for Compose UI components that enables interactive development and testing.

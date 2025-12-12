@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.component.inspectorspane
+package me.tbsten.compose.preview.lab.previewlab.inspectorspane
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,22 +24,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.collectLatest
-import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
-import me.tbsten.compose.preview.lab.PreviewLabState
-import me.tbsten.compose.preview.lab.component.CommonIconButton
-import me.tbsten.compose.preview.lab.component.Divider
-import me.tbsten.compose.preview.lab.component.SimpleModal
-import me.tbsten.compose.preview.lab.component.TabPager
-import me.tbsten.compose.preview.lab.component.adaptive
 import me.tbsten.compose.preview.lab.core.generated.resources.Res
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_code
+import me.tbsten.compose.preview.lab.gallery.LocalPreviewLabPreview
 import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
+import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.adaptive
 import me.tbsten.compose.preview.lab.ui.components.Button
 import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.CommonIconButton
+import me.tbsten.compose.preview.lab.ui.components.Divider
 import me.tbsten.compose.preview.lab.ui.components.Icon
 import me.tbsten.compose.preview.lab.ui.components.IconButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.SimpleModal
+import me.tbsten.compose.preview.lab.ui.components.TabPager
 import me.tbsten.compose.preview.lab.ui.components.Text
 import org.jetbrains.compose.resources.painterResource
 

@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.component
+package me.tbsten.compose.preview.lab.previewlab.inspectorspane
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,7 +8,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.field.PreviewLabField
+import me.tbsten.compose.preview.lab.PreviewLabField
+import me.tbsten.compose.preview.lab.ui.components.Divider
 
 @Composable
 internal fun FieldListSection(fields: List<PreviewLabField<*>>, modifier: Modifier = Modifier) {

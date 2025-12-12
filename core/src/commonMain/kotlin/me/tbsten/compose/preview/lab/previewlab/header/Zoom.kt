@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.component.header
+package me.tbsten.compose.preview.lab.previewlab.header
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,12 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.component.CommonIconButton
 import me.tbsten.compose.preview.lab.core.generated.resources.Res
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_refresh
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_zoom_in
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_zoom_out
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.CommonIconButton
 import me.tbsten.compose.preview.lab.ui.components.Text
 import org.jetbrains.compose.resources.painterResource
 

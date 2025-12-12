@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab
+package me.tbsten.compose.preview.lab.previewlab
 
 import androidx.compose.foundation.gestures.Draggable2DState
 import androidx.compose.runtime.Stable
@@ -9,9 +9,11 @@ import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.DpOffset
-import me.tbsten.compose.preview.lab.event.PreviewLabEvent
-import me.tbsten.compose.preview.lab.field.MutablePreviewLabField
-import me.tbsten.compose.preview.lab.field.PreviewLabField
+import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.MutablePreviewLabField
+import me.tbsten.compose.preview.lab.PreviewLabEvent
+import me.tbsten.compose.preview.lab.PreviewLabField
 
 /**
  * Class that holds the state of [PreviewLab].
@@ -71,7 +73,8 @@ class PreviewLabState {
      * If there is a selected tab in the inspector tabs, this removes the selection
      * and returns to a state where no tab is selected.
      */
-    internal fun deselectTab() {
+    @ExperimentalComposePreviewLabApi
+    fun deselectTab() {
         selectedTabIndex = null
     }
 

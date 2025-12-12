@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab
+package me.tbsten.compose.preview.lab.previewlab
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -6,9 +6,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import kotlin.time.ExperimentalTime
-import me.tbsten.compose.preview.lab.event.PreviewLabEvent
-import me.tbsten.compose.preview.lab.field.MutablePreviewLabField
-import me.tbsten.compose.preview.lab.field.PreviewLabField
+import me.tbsten.compose.preview.lab.MutablePreviewLabField
+import me.tbsten.compose.preview.lab.PreviewLabEvent
+import me.tbsten.compose.preview.lab.PreviewLabField
 
 /**
  * The scope of the [PreviewLab], which provides methods to create fields, handle events, and manage layout nodes.
