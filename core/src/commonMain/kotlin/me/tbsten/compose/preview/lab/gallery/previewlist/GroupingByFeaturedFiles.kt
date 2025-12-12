@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.previewlist
+package me.tbsten.compose.preview.lab.gallery.previewlist
 
 import me.tbsten.compose.preview.lab.PreviewLabPreview
 

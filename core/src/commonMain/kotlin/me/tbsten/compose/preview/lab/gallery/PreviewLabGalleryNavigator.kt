@@ -1,8 +1,9 @@
-package me.tbsten.compose.preview.lab
+package me.tbsten.compose.preview.lab.gallery
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
+import me.tbsten.compose.preview.lab.PreviewLabPreview
 import kotlin.js.ExperimentalJsExport
 import me.tbsten.compose.preview.lab.util.JsOnlyExport
 

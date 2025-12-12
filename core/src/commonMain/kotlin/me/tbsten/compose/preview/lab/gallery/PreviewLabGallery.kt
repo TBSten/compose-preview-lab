@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab
+package me.tbsten.compose.preview.lab.gallery
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -25,19 +25,20 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import me.tbsten.compose.preview.lab.component.CommonIconButton
-import me.tbsten.compose.preview.lab.component.Divider
-import me.tbsten.compose.preview.lab.component.PreviewListGrid
-import me.tbsten.compose.preview.lab.component.adaptive
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.PreviewLabPreview
 import me.tbsten.compose.preview.lab.core.generated.resources.Res
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_remove
+import me.tbsten.compose.preview.lab.gallery.previewlist.PreviewListTree
+import me.tbsten.compose.preview.lab.gallery.previewlist.SearchBar
+import me.tbsten.compose.preview.lab.gallery.previewlist.filterByQuery
+import me.tbsten.compose.preview.lab.gallery.previewlist.groupingByFeaturedFiles
 import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
-import me.tbsten.compose.preview.lab.previewlist.PreviewListTree
-import me.tbsten.compose.preview.lab.previewlist.SearchBar
-import me.tbsten.compose.preview.lab.previewlist.filterByQuery
-import me.tbsten.compose.preview.lab.previewlist.groupingByFeaturedFiles
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.adaptive
+import me.tbsten.compose.preview.lab.ui.components.CommonIconButton
+import me.tbsten.compose.preview.lab.ui.components.Divider
 import me.tbsten.compose.preview.lab.ui.components.HorizontalDivider
 import me.tbsten.compose.preview.lab.ui.components.Text
 import org.jetbrains.compose.resources.painterResource
@@ -57,7 +58,7 @@ const val AllGroupName = "all"
  * @param openFileHandler By specifying OpenFileHandler, you can display a "Source Code" button that displays the source code corresponding to the Preview.
  * @param featuredFileList Map of group names to file paths for organizing previews into featured categories. Files matching these paths will be grouped under their respective category names in the preview list.
  *
- * @see PreviewLabPreview
+ * @see me.tbsten.compose.preview.lab.PreviewLabPreview
  * @see OpenFileHandler
  */
 @Composable
@@ -230,7 +231,8 @@ private fun Sidebar(
     }
 }
 
-internal val LocalPreviewLabPreview = compositionLocalOf<PreviewLabPreview?> { null }
+@InternalComposePreviewLabApi
+val LocalPreviewLabPreview = compositionLocalOf<PreviewLabPreview?> { null }
 
 @Composable
 private fun SelectedPreviewTitleHeader(selectedPreview: SelectedPreview, onRemoveClick: () -> Unit) = Column {

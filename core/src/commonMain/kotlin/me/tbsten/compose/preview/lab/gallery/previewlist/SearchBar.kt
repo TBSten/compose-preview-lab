@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.previewlist
+package me.tbsten.compose.preview.lab.gallery.previewlist
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable

@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab
+package me.tbsten.compose.preview.lab.gallery
 
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
@@ -7,6 +7,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import kotlin.js.ExperimentalJsExport
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.PreviewLabPreview
 import me.tbsten.compose.preview.lab.util.JsOnlyExport
 import me.tbsten.compose.preview.lab.util.JsOnlyExportIgnore
 
@@ -29,7 +31,8 @@ class PreviewLabGalleryState @JsOnlyExportIgnore constructor(initialSelectedPrev
 
     internal var comparePanelPreviews = mutableStateListOf<SelectedPreview>()
 
-    internal val selectedPreviews: List<SelectedPreview> by derivedStateOf {
+    @InternalComposePreviewLabApi
+    val selectedPreviews: List<SelectedPreview> by derivedStateOf {
         selectedPreview?.let { selectedPreview ->
             listOf(selectedPreview) + comparePanelPreviews
         } ?: emptyList()
@@ -38,7 +41,7 @@ class PreviewLabGalleryState @JsOnlyExportIgnore constructor(initialSelectedPrev
     internal val canAddToComparePanel by derivedStateOf { selectedPreviews.isNotEmpty() }
 
     var query by mutableStateOf("")
-        private set
+        @InternalComposePreviewLabApi set
 
     /**
      * Changes the search query
@@ -117,7 +120,8 @@ class PreviewLabGalleryState @JsOnlyExportIgnore constructor(initialSelectedPrev
     }
 }
 
-internal class SelectedPreview(val groupName: String, val preview: PreviewLabPreview, val title: String = preview.displayName) {
+@InternalComposePreviewLabApi
+class SelectedPreview(val groupName: String, val preview: PreviewLabPreview, val title: String = preview.displayName) {
     override fun toString(): String = "SelectedPreview(groupName='$groupName', preview=$preview)"
 
     override fun equals(other: Any?): Boolean {

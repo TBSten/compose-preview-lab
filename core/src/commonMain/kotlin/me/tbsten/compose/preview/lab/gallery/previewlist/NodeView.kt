@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.previewlist
+package me.tbsten.compose.preview.lab.gallery.previewlist
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
@@ -23,14 +23,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.component.CommonIconButton
-import me.tbsten.compose.preview.lab.component.CommonListItem
-import me.tbsten.compose.preview.lab.component.CommonMenu
 import me.tbsten.compose.preview.lab.core.generated.resources.Res
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_more_vert
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Button
 import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.CommonIconButton
+import me.tbsten.compose.preview.lab.ui.components.CommonListItem
+import me.tbsten.compose.preview.lab.ui.components.CommonMenu
 import me.tbsten.compose.preview.lab.ui.components.Text
 import org.jetbrains.compose.resources.painterResource
 

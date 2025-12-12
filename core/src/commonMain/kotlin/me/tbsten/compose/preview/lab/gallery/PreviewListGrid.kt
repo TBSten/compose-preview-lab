@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.component
+package me.tbsten.compose.preview.lab.gallery
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,6 +37,7 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 import me.tbsten.compose.preview.lab.PreviewLabPreview
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.adaptive
 import me.tbsten.compose.preview.lab.ui.components.HorizontalDivider
 import me.tbsten.compose.preview.lab.ui.components.Text
 import me.tbsten.compose.preview.lab.ui.components.card.CardDefaults
