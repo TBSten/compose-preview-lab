@@ -5,14 +5,14 @@ import io.kotest.property.arbitrary.list
 import io.kotest.property.arbitrary.string
 import io.kotest.property.forAll
 import kotlin.test.Test
-import kotlinx.coroutines.test.runTest
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlinx.coroutines.test.runTest
 import me.tbsten.compose.preview.lab.CollectedPreview
 import me.tbsten.compose.preview.lab.PreviewLabPreview
-import me.tbsten.compose.preview.lab.previewlist.PreviewTreeNode
-import me.tbsten.compose.preview.lab.previewlist.collapse
-import me.tbsten.compose.preview.lab.previewlist.toTree
+import me.tbsten.compose.preview.lab.gallery.previewlist.PreviewTreeNode
+import me.tbsten.compose.preview.lab.gallery.previewlist.collapse
+import me.tbsten.compose.preview.lab.gallery.previewlist.toTree
 
 class PreviewListTreeTest {
     @Test

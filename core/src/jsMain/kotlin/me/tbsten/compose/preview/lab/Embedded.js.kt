@@ -5,6 +5,9 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
 import kotlinx.browser.document
 import kotlinx.browser.window
+import me.tbsten.compose.preview.lab.gallery.LocalPreviewLabGalleryNavigator
+import me.tbsten.compose.preview.lab.gallery.NoOpPreviewLabGalleryNavigator
+import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryNavigator
 import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 import org.w3c.dom.Element

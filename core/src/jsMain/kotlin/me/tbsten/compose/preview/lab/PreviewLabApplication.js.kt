@@ -3,6 +3,7 @@ package me.tbsten.compose.preview.lab
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
 import kotlinx.browser.document
+import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
 import org.w3c.dom.HTMLElement
 
@@ -47,7 +48,7 @@ import org.w3c.dom.HTMLElement
  * @param openFileHandler Handler for opening source files (optional)
  * @param state PreviewLabGalleryState for managing gallery state
  * @param rootElement HTML element to mount the application (defaults to document.body)
- * @see PreviewLabGallery
+ * @see me.tbsten.compose.preview.lab.gallery.PreviewLabGallery
  * @see CollectedPreview
  * @see OpenFileHandler
  */
