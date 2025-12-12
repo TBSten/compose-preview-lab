@@ -114,7 +114,6 @@ internal fun SpeechBubbleBox(
     content: @Composable () -> Unit,
 ) {
     if (LocalIsInPreviewLabGalleryCardBody.current) {
-        println("LocalIsInPreviewLabGalleryCardBody == true, skip SpeechBubbleBox")
         content()
         return
     }
