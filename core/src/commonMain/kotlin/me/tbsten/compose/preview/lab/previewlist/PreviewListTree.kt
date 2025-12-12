@@ -122,7 +122,7 @@ private fun List<PreviewLabPreview>.toPreviewTree(): PreviewTree = toTree().coll
  * F
  * ```
  */
-private fun List<PreviewLabPreview>.toTree(): PreviewTree {
+internal fun List<PreviewLabPreview>.toTree(): PreviewTree {
     val tree = PreviewTreeNode.Group(
         groupName = "<root>",
         children = mutableListOf(),
@@ -178,7 +178,7 @@ private fun PreviewTreeNode.Group.findOrCreateChildGroup(segmentName: String): P
  * F
  * ```
  */
-private fun PreviewTree.collapse(): PreviewTree {
+internal fun PreviewTree.collapse(): PreviewTree {
     forEach { it.collapseNode() }
     return this
 }
