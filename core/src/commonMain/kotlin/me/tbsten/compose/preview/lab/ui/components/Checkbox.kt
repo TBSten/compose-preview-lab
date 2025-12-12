@@ -72,11 +72,11 @@ fun Checkbox(
     TriStateCheckbox(
         state = ToggleableState(checked),
         onClick =
-            if (onCheckedChange != null) {
-                { onCheckedChange(!checked) }
-            } else {
-                null
-            },
+        if (onCheckedChange != null) {
+            { onCheckedChange(!checked) }
+        } else {
+            null
+        },
         modifier = modifier,
         enabled = enabled,
         colors = colors,
@@ -105,10 +105,10 @@ fun TriStateCheckbox(
                     role = Role.Checkbox,
                     interactionSource = interactionSource,
                     indication =
-                        ripple(
-                            bounded = false,
-                            radius = MinimumInteractiveSize / 2,
-                        ),
+                    ripple(
+                        bounded = false,
+                        radius = MinimumInteractiveSize / 2,
+                    ),
                 )
         } else {
             Modifier
@@ -117,9 +117,9 @@ fun TriStateCheckbox(
         enabled = enabled,
         value = state,
         modifier =
-            modifier
-                .then(toggleableModifier)
-                .padding(CheckboxDefaultPadding),
+        modifier
+            .then(toggleableModifier)
+            .padding(CheckboxDefaultPadding),
         colors = colors,
     )
 }
@@ -366,10 +366,10 @@ private fun CheckboxPreview() {
     PreviewLabTheme {
         Column(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(Color.White)
-                    .padding(16.dp),
+            Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             var isChecked by remember { mutableStateOf(false) }
@@ -466,9 +466,9 @@ private fun CheckboxPreview() {
                 items.forEach { item ->
                     Row(
                         modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 4.dp),
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {

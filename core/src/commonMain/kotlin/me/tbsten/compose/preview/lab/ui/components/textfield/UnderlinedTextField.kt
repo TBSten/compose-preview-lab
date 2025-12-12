@@ -77,11 +77,11 @@ fun UnderlinedTextField(
     CompositionLocalProvider(LocalTextSelectionColors provides colors.selectionColors) {
         BasicTextField(
             modifier =
-                modifier
-                    .defaultMinSize(
-                        minHeight = UnderlinedTextFieldDefaults.MinHeight,
-                    )
-                    .fillMaxWidth(),
+            modifier
+                .defaultMinSize(
+                    minHeight = UnderlinedTextFieldDefaults.MinHeight,
+                )
+                .fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
             enabled = enabled,
@@ -155,11 +155,11 @@ fun UnderlinedTextField(
     CompositionLocalProvider(LocalTextSelectionColors provides colors.selectionColors) {
         BasicTextField(
             modifier =
-                modifier
-                    .defaultMinSize(
-                        minHeight = UnderlinedTextFieldDefaults.MinHeight,
-                    )
-                    .fillMaxWidth(),
+            modifier
+                .defaultMinSize(
+                    minHeight = UnderlinedTextFieldDefaults.MinHeight,
+                )
+                .fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
             enabled = enabled,

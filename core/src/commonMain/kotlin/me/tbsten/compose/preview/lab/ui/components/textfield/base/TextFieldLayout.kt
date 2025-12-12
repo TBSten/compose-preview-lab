@@ -74,10 +74,10 @@ fun TextFieldLayout(
             if (leading != null) {
                 Box(
                     modifier =
-                        Modifier
-                            .layoutId(LeadingId)
-                            .padding(leadingIconPaddingValues)
-                            .then(IconDefaultSizeModifier),
+                    Modifier
+                        .layoutId(LeadingId)
+                        .padding(leadingIconPaddingValues)
+                        .then(IconDefaultSizeModifier),
                     contentAlignment = Alignment.Center,
                 ) {
                     leading()
@@ -86,10 +86,10 @@ fun TextFieldLayout(
             if (trailing != null) {
                 Box(
                     modifier =
-                        Modifier
-                            .layoutId(TrailingId)
-                            .padding(trailingIconPaddingValues)
-                            .then(IconDefaultSizeModifier),
+                    Modifier
+                        .layoutId(TrailingId)
+                        .padding(trailingIconPaddingValues)
+                        .then(IconDefaultSizeModifier),
                     contentAlignment = Alignment.Center,
                 ) {
                     trailing()
@@ -155,9 +155,9 @@ fun TextFieldLayout(
             }
             Box(
                 modifier =
-                    Modifier
-                        .layoutId(TextFieldId)
-                        .then(textPadding),
+                Modifier
+                    .layoutId(TextFieldId)
+                    .then(textPadding),
                 propagateMinConstraints = true,
             ) {
                 textField()

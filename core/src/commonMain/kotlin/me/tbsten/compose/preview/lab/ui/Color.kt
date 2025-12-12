@@ -29,88 +29,130 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @InternalComposePreviewLabApi
 val Black: Color = Color(0xFF000000)
+
 @InternalComposePreviewLabApi
 val Gray900: Color = Color(0xFF282828)
+
 @InternalComposePreviewLabApi
 val Gray800: Color = Color(0xFF4b4b4b)
+
 @InternalComposePreviewLabApi
 val Gray700: Color = Color(0xFF5e5e5e)
+
 @InternalComposePreviewLabApi
 val Gray600: Color = Color(0xFF727272)
+
 @InternalComposePreviewLabApi
 val Gray500: Color = Color(0xFF868686)
+
 @InternalComposePreviewLabApi
 val Gray400: Color = Color(0xFFC7C7C7)
+
 @InternalComposePreviewLabApi
 val Gray300: Color = Color(0xFFDFDFDF)
+
 @InternalComposePreviewLabApi
 val Gray200: Color = Color(0xFFE2E2E2)
+
 @InternalComposePreviewLabApi
 val Gray100: Color = Color(0xFFF7F7F7)
+
 @InternalComposePreviewLabApi
 val Gray50: Color = Color(0xFFFFFFFF)
+
 @InternalComposePreviewLabApi
 val White: Color = Color(0xFFFFFFFF)
+
 @InternalComposePreviewLabApi
 val Red900: Color = Color(0xFF520810)
+
 @InternalComposePreviewLabApi
 val Red800: Color = Color(0xFF950f22)
+
 @InternalComposePreviewLabApi
 val Red700: Color = Color(0xFFbb032a)
+
 @InternalComposePreviewLabApi
 val Red600: Color = Color(0xFFde1135)
+
 @InternalComposePreviewLabApi
 val Red500: Color = Color(0xFFf83446)
+
 @InternalComposePreviewLabApi
 val Red400: Color = Color(0xFFfc7f79)
+
 @InternalComposePreviewLabApi
 val Red300: Color = Color(0xFFffb2ab)
+
 @InternalComposePreviewLabApi
 val Red200: Color = Color(0xFFffd2cd)
+
 @InternalComposePreviewLabApi
 val Red100: Color = Color(0xFFffe1de)
+
 @InternalComposePreviewLabApi
 val Red50: Color = Color(0xFFfff0ee)
+
 @InternalComposePreviewLabApi
 val Blue900: Color = Color(0xFF276EF1)
+
 @InternalComposePreviewLabApi
 val Blue800: Color = Color(0xFF3F7EF2)
+
 @InternalComposePreviewLabApi
 val Blue700: Color = Color(0xFF578EF4)
+
 @InternalComposePreviewLabApi
 val Blue600: Color = Color(0xFF6F9EF5)
+
 @InternalComposePreviewLabApi
 val Blue500: Color = Color(0xFF87AEF7)
+
 @InternalComposePreviewLabApi
 val Blue400: Color = Color(0xFF9FBFF8)
+
 @InternalComposePreviewLabApi
 val Blue300: Color = Color(0xFFB7CEFA)
+
 @InternalComposePreviewLabApi
 val Blue200: Color = Color(0xFFCFDEFB)
+
 @InternalComposePreviewLabApi
 val Blue100: Color = Color(0xFFE7EEFD)
+
 @InternalComposePreviewLabApi
 val Blue50: Color = Color(0xFFFFFFFF)
+
 @InternalComposePreviewLabApi
 val Green950: Color = Color(0xFF0B4627)
+
 @InternalComposePreviewLabApi
 val Green900: Color = Color(0xFF16643B)
+
 @InternalComposePreviewLabApi
 val Green800: Color = Color(0xFF1A7544)
+
 @InternalComposePreviewLabApi
 val Green700: Color = Color(0xFF178C4E)
+
 @InternalComposePreviewLabApi
 val Green600: Color = Color(0xFF1DAF61)
+
 @InternalComposePreviewLabApi
 val Green500: Color = Color(0xFF1FC16B)
+
 @InternalComposePreviewLabApi
 val Green400: Color = Color(0xFF3EE089)
+
 @InternalComposePreviewLabApi
 val Green300: Color = Color(0xFF84EBB4)
+
 @InternalComposePreviewLabApi
 val Green200: Color = Color(0xFFC2F5DA)
+
 @InternalComposePreviewLabApi
 val Green100: Color = Color(0xFFD0FBE9)
+
 @InternalComposePreviewLabApi
 val Green50: Color = Color(0xFFE0FAEC)
 
@@ -206,8 +248,10 @@ val DarkColors =
 
 @InternalComposePreviewLabApi
 val LocalColors = staticCompositionLocalOf { LightColors }
+
 @InternalComposePreviewLabApi
 val LocalContentColor = compositionLocalOf { Color.Black }
+
 @InternalComposePreviewLabApi
 val LocalContentAlpha = compositionLocalOf { 1f }
 

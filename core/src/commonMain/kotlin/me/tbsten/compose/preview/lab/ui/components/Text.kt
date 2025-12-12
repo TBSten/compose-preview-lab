@@ -73,7 +73,7 @@ fun Text(
 
 @Composable
 @InternalComposePreviewLabApi
- fun Text(
+fun Text(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
     color: Color = LocalContentColor.current,
@@ -122,7 +122,7 @@ fun Text(
 
 @Composable
 @InternalComposePreviewLabApi
- fun SelectableText(
+fun SelectableText(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
     color: Color = LocalContentColor.current,
@@ -171,9 +171,9 @@ private fun TypographySample() {
 
     Column(
         modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(16.dp),
+        Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(

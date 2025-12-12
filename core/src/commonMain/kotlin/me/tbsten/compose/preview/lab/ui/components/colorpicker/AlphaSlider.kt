@@ -64,20 +64,20 @@ internal fun AlphaSlider(selectedColor: Color, onColorSelected: (Color) -> Unit,
 
     Box(
         modifier =
-            modifier
-                .fillMaxHeight()
-                .onSizeChanged { sliderSize = it.toSize() }
-                .pointerInput(Unit) { detectTapGestures(onTap = { onThumbPositionChange(it) }) }
-                .pointerInput(Unit) {
-                    detectDragGestures { change, _ -> onThumbPositionChange(change.position) }
-                },
+        modifier
+            .fillMaxHeight()
+            .onSizeChanged { sliderSize = it.toSize() }
+            .pointerInput(Unit) { detectTapGestures(onTap = { onThumbPositionChange(it) }) }
+            .pointerInput(Unit) {
+                detectDragGestures { change, _ -> onThumbPositionChange(change.position) }
+            },
     ) {
         // color track
         Canvas(
             modifier =
-                Modifier.fillMaxSize()
-                    .padding(horizontal = 4.dp)
-                    .clip(RoundedCornerShape(4.dp)),
+            Modifier.fillMaxSize()
+                .padding(horizontal = 4.dp)
+                .clip(RoundedCornerShape(4.dp)),
         ) {
             drawRect(Brush.Companion.verticalGradient(listOf(Color.Transparent, selectedColor.copy(alpha = 1f))))
         }

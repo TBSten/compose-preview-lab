@@ -118,33 +118,33 @@ private fun DropdownMenuContent(
     val isInspecting = LocalInspectionMode.current
     Surface(
         modifier =
-            Modifier.graphicsLayer {
-                scaleX =
-                    if (!isInspecting) {
-                        scale
-                    } else if (expandedState.targetState) {
-                        ExpandedScaleTarget
-                    } else {
-                        ClosedScaleTarget
-                    }
-                scaleY =
-                    if (!isInspecting) {
-                        scale
-                    } else if (expandedState.targetState) {
-                        ExpandedScaleTarget
-                    } else {
-                        ClosedScaleTarget
-                    }
-                this.alpha =
-                    if (!isInspecting) {
-                        alpha
-                    } else if (expandedState.targetState) {
-                        ExpandedAlphaTarget
-                    } else {
-                        ClosedAlphaTarget
-                    }
-                transformOrigin = transformOriginState.value
-            },
+        Modifier.graphicsLayer {
+            scaleX =
+                if (!isInspecting) {
+                    scale
+                } else if (expandedState.targetState) {
+                    ExpandedScaleTarget
+                } else {
+                    ClosedScaleTarget
+                }
+            scaleY =
+                if (!isInspecting) {
+                    scale
+                } else if (expandedState.targetState) {
+                    ExpandedScaleTarget
+                } else {
+                    ClosedScaleTarget
+                }
+            this.alpha =
+                if (!isInspecting) {
+                    alpha
+                } else if (expandedState.targetState) {
+                    ExpandedAlphaTarget
+                } else {
+                    ClosedAlphaTarget
+                }
+            transformOrigin = transformOriginState.value
+        },
         shape = shape,
         color = containerColor,
         shadowElevation = shadowElevation,
@@ -152,10 +152,10 @@ private fun DropdownMenuContent(
     ) {
         Column(
             modifier =
-                modifier
-                    .padding(vertical = 8.dp)
-                    .width(200.dp)
-                    .verticalScroll(scrollState),
+            modifier
+                .padding(vertical = 8.dp)
+                .width(200.dp)
+                .verticalScroll(scrollState),
         ) {
             val menuScope = CommonMenuScope(this)
 

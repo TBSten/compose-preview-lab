@@ -12,7 +12,7 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @Composable
 @InternalComposePreviewLabApi
- fun <T> TabPager(
+fun <T> TabPager(
     tabs: List<T>,
     title: (T) -> String,
     pagerState: PagerState,

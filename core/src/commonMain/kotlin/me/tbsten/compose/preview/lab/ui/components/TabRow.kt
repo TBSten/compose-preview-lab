@@ -20,7 +20,7 @@ import me.tbsten.compose.preview.lab.ui.util.thenIf
 
 @Composable
 @InternalComposePreviewLabApi
- fun TabRow(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+fun TabRow(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     Column {
         Row(
             modifier = modifier
@@ -34,7 +34,7 @@ import me.tbsten.compose.preview.lab.ui.util.thenIf
 
 @Composable
 @InternalComposePreviewLabApi
- fun Tab(selected: Boolean, onClick: () -> Unit, text: @Composable () -> Unit) {
+fun Tab(selected: Boolean, onClick: () -> Unit, text: @Composable () -> Unit) {
     Row(
         modifier = Modifier
             .clickable(onClick = onClick)

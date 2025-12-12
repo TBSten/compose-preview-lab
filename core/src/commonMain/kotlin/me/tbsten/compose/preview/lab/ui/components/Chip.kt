@@ -65,7 +65,7 @@ fun Chip(
 
 @Composable
 @InternalComposePreviewLabApi
- fun ElevatedChip(
+fun ElevatedChip(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     selected: Boolean = false,
@@ -93,7 +93,7 @@ fun Chip(
 
 @Composable
 @InternalComposePreviewLabApi
- fun OutlinedChip(
+fun OutlinedChip(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     selected: Boolean = false,
@@ -121,7 +121,7 @@ fun Chip(
 
 @Composable
 @InternalComposePreviewLabApi
- fun ChipComponent(
+fun ChipComponent(
     modifier: Modifier,
     enabled: Boolean = true,
     selected: Boolean = false,
@@ -170,7 +170,7 @@ fun Chip(
 
 @Composable
 @InternalComposePreviewLabApi
- fun DefaultChipComponent(
+fun DefaultChipComponent(
     modifier: Modifier = Modifier,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
@@ -183,9 +183,9 @@ fun Chip(
         leadingIcon?.let { icon ->
             Box(
                 modifier =
-                    Modifier
-                        .padding(end = ChipIconHorizontalPadding)
-                        .requiredSize(ChipIconSize),
+                Modifier
+                    .padding(end = ChipIconHorizontalPadding)
+                    .requiredSize(ChipIconSize),
             ) {
                 icon.invoke()
             }
@@ -196,9 +196,9 @@ fun Chip(
         trailingIcon?.let { icon ->
             Box(
                 modifier =
-                    Modifier
-                        .padding(start = ChipIconHorizontalPadding)
-                        .requiredSize(ChipIconSize),
+                Modifier
+                    .padding(start = ChipIconHorizontalPadding)
+                    .requiredSize(ChipIconSize),
             ) {
                 icon.invoke()
             }
@@ -207,7 +207,7 @@ fun Chip(
 }
 
 @InternalComposePreviewLabApi
- object ChipDefaults {
+object ChipDefaults {
     private val ChipPaddingHorizontal = 6.dp
     private val ChipPaddingVertical = 6.dp
     val ChipRectShape = RoundedCornerShape(12)
@@ -235,14 +235,14 @@ fun Chip(
     @Composable
     fun primaryFilled(shape: Shape) = ChipStyle(
         colors =
-            ChipColors(
-                containerColor = PreviewLabTheme.colors.surface,
-                contentColor = PreviewLabTheme.colors.onSurface,
-                selectedContainerColor = PreviewLabTheme.colors.primary,
-                selectedContentColor = PreviewLabTheme.colors.onPrimary,
-                disabledContainerColor = PreviewLabTheme.colors.disabled,
-                disabledContentColor = PreviewLabTheme.colors.onDisabled,
-            ),
+        ChipColors(
+            containerColor = PreviewLabTheme.colors.surface,
+            contentColor = PreviewLabTheme.colors.onSurface,
+            selectedContainerColor = PreviewLabTheme.colors.primary,
+            selectedContentColor = PreviewLabTheme.colors.onPrimary,
+            disabledContainerColor = PreviewLabTheme.colors.disabled,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+        ),
         shape = shape,
         elevation = null,
         contentPadding = contentPadding,
@@ -251,14 +251,14 @@ fun Chip(
     @Composable
     fun primaryElevated(shape: Shape) = ChipStyle(
         colors =
-            ChipColors(
-                containerColor = PreviewLabTheme.colors.surface,
-                contentColor = PreviewLabTheme.colors.onSurface,
-                selectedContainerColor = PreviewLabTheme.colors.primary,
-                selectedContentColor = PreviewLabTheme.colors.onPrimary,
-                disabledContainerColor = PreviewLabTheme.colors.disabled,
-                disabledContentColor = PreviewLabTheme.colors.onDisabled,
-            ),
+        ChipColors(
+            containerColor = PreviewLabTheme.colors.surface,
+            contentColor = PreviewLabTheme.colors.onSurface,
+            selectedContainerColor = PreviewLabTheme.colors.primary,
+            selectedContentColor = PreviewLabTheme.colors.onPrimary,
+            disabledContainerColor = PreviewLabTheme.colors.disabled,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+        ),
         shape = shape,
         elevation = chipElevation(),
         contentPadding = contentPadding,
@@ -267,17 +267,17 @@ fun Chip(
     @Composable
     fun primaryOutlined(shape: Shape) = ChipStyle(
         colors =
-            ChipColors(
-                containerColor = PreviewLabTheme.colors.transparent,
-                contentColor = PreviewLabTheme.colors.primary,
-                outlineColor = PreviewLabTheme.colors.primary,
-                selectedContainerColor = PreviewLabTheme.colors.primary,
-                selectedOutlineColor = PreviewLabTheme.colors.primary,
-                selectedContentColor = PreviewLabTheme.colors.onPrimary,
-                disabledContainerColor = PreviewLabTheme.colors.transparent,
-                disabledContentColor = PreviewLabTheme.colors.onDisabled,
-                disabledOutlineColor = PreviewLabTheme.colors.disabled,
-            ),
+        ChipColors(
+            containerColor = PreviewLabTheme.colors.transparent,
+            contentColor = PreviewLabTheme.colors.primary,
+            outlineColor = PreviewLabTheme.colors.primary,
+            selectedContainerColor = PreviewLabTheme.colors.primary,
+            selectedOutlineColor = PreviewLabTheme.colors.primary,
+            selectedContentColor = PreviewLabTheme.colors.onPrimary,
+            disabledContainerColor = PreviewLabTheme.colors.transparent,
+            disabledContentColor = PreviewLabTheme.colors.onDisabled,
+            disabledOutlineColor = PreviewLabTheme.colors.disabled,
+        ),
         shape = shape,
         elevation = null,
         contentPadding = contentPadding,
@@ -300,31 +300,31 @@ data class ChipColors(
     @Composable
     internal fun containerColor(enabled: Boolean, selected: Boolean) = rememberUpdatedState(
         newValue =
-            when {
-                !enabled -> disabledContainerColor
-                selected -> selectedContainerColor
-                else -> containerColor
-            },
+        when {
+            !enabled -> disabledContainerColor
+            selected -> selectedContainerColor
+            else -> containerColor
+        },
     )
 
     @Composable
     internal fun contentColor(enabled: Boolean, selected: Boolean) = rememberUpdatedState(
         newValue =
-            when {
-                !enabled -> disabledContentColor
-                selected -> selectedContentColor
-                else -> contentColor
-            },
+        when {
+            !enabled -> disabledContentColor
+            selected -> selectedContentColor
+            else -> contentColor
+        },
     )
 
     @Composable
     fun borderColor(enabled: Boolean, selected: Boolean) = rememberUpdatedState(
         newValue =
-            when {
-                !enabled -> disabledOutlineColor
-                selected -> selectedOutlineColor
-                else -> outlineColor
-            },
+        when {
+            !enabled -> disabledOutlineColor
+            selected -> selectedOutlineColor
+            else -> outlineColor
+        },
     )
 }
 
@@ -497,15 +497,15 @@ private fun DummyIconForChipPreview() {
         drawLine(
             color = Color.Black,
             start =
-                Offset(
-                    center.width - diagonalRadius,
-                    center.height - diagonalRadius,
-                ),
+            Offset(
+                center.width - diagonalRadius,
+                center.height - diagonalRadius,
+            ),
             end =
-                Offset(
-                    center.width + diagonalRadius,
-                    center.height + diagonalRadius,
-                ),
+            Offset(
+                center.width + diagonalRadius,
+                center.height + diagonalRadius,
+            ),
             strokeWidth = strokeWidth,
             cap = cap,
         )
@@ -513,15 +513,15 @@ private fun DummyIconForChipPreview() {
         drawLine(
             color = Color.Black,
             start =
-                Offset(
-                    center.width - diagonalRadius,
-                    center.height + diagonalRadius,
-                ),
+            Offset(
+                center.width - diagonalRadius,
+                center.height + diagonalRadius,
+            ),
             end =
-                Offset(
-                    center.width + diagonalRadius,
-                    center.height - diagonalRadius,
-                ),
+            Offset(
+                center.width + diagonalRadius,
+                center.height - diagonalRadius,
+            ),
             strokeWidth = strokeWidth,
             cap = cap,
         )

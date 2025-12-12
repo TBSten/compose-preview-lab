@@ -273,14 +273,14 @@ internal fun Modifier.containerOutline(
     shape: Shape,
 ) = composed(
     inspectorInfo =
-        debugInspectorInfo {
-            name = "indicatorLine"
-            properties["enabled"] = enabled
-            properties["isError"] = isError
-            properties["interactionSource"] = interactionSource
-            properties["colors"] = colors
-            properties["borderThickness"] = borderThickness
-        },
+    debugInspectorInfo {
+        name = "indicatorLine"
+        properties["enabled"] = enabled
+        properties["isError"] = isError
+        properties["interactionSource"] = interactionSource
+        properties["colors"] = colors
+        properties["borderThickness"] = borderThickness
+    },
 ) {
     val indicatorColor = colors.containerOutlineColor(enabled, isError, interactionSource)
 

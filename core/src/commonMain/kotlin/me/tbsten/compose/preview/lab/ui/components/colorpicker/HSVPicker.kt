@@ -62,13 +62,13 @@ internal fun HSVPicker(selectedColor: Color, onColorSelected: (Color) -> Unit, m
 
     Canvas(
         modifier =
-            modifier
-                .fillMaxSize()
-                .onSizeChanged { rectSize = it }
-                .pointerInput(Unit) { detectTapGestures { updatePosition(it) } }
-                .pointerInput(Unit) {
-                    detectDragGestures { change, _ -> updatePosition(change.position) }
-                },
+        modifier
+            .fillMaxSize()
+            .onSizeChanged { rectSize = it }
+            .pointerInput(Unit) { detectTapGestures { updatePosition(it) } }
+            .pointerInput(Unit) {
+                detectDragGestures { change, _ -> updatePosition(change.position) }
+            },
     ) {
         val cornerRadius = 4.dp.toPx()
 

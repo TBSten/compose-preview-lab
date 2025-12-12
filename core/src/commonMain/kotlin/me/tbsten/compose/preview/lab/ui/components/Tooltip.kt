@@ -157,13 +157,13 @@ fun TooltipScope.Tooltip(
     ) {
         Box(
             modifier =
-                Modifier
-                    .sizeIn(
-                        minWidth = TooltipDefaults.MinWidth,
-                        maxWidth = maxWidth,
-                        minHeight = TooltipDefaults.MinHeight,
-                    )
-                    .padding(TooltipDefaults.ContentPadding),
+            Modifier
+                .sizeIn(
+                    minWidth = TooltipDefaults.MinWidth,
+                    maxWidth = maxWidth,
+                    minHeight = TooltipDefaults.MinHeight,
+                )
+                .padding(TooltipDefaults.ContentPadding),
         ) {
             content()
         }
@@ -296,10 +296,10 @@ fun rememberTooltipPositionProvider(
 @InternalComposePreviewLabApi
 fun Modifier.animateTooltip(transition: Transition<Boolean>): Modifier = composed(
     inspectorInfo =
-        debugInspectorInfo {
-            name = "animateTooltip"
-            properties["transition"] = transition
-        },
+    debugInspectorInfo {
+        name = "animateTooltip"
+        properties["transition"] = transition
+    },
 ) {
     val inOutScaleAnimationSpec = tween<Float>(durationMillis = 100, easing = FastOutLinearInEasing)
     val inOutAlphaAnimationSpec = tween<Float>(durationMillis = 50, easing = FastOutSlowInEasing)
@@ -428,9 +428,9 @@ private fun PlainTooltipWithCaret() {
         ) {
             Box(
                 modifier =
-                    Modifier
-                        .size(40.dp)
-                        .background(Color.Blue),
+                Modifier
+                    .size(40.dp)
+                    .background(Color.Blue),
             )
         }
     }

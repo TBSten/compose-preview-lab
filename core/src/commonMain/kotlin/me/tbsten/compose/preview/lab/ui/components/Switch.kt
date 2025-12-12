@@ -115,17 +115,17 @@ private fun SwitchComponent(
 
     Box(
         modifier =
-            modifier
-                .size(SwitchWidth, SwitchHeight)
-                .background(
-                    color = colors.trackColor(enabled, checked),
-                    shape = TrackShape,
-                )
-                .border(
-                    width = TrackBorderWidth,
-                    color = borderColor,
-                    shape = TrackShape,
-                ),
+        modifier
+            .size(SwitchWidth, SwitchHeight)
+            .background(
+                color = colors.trackColor(enabled, checked),
+                shape = TrackShape,
+            )
+            .border(
+                width = TrackBorderWidth,
+                color = borderColor,
+                shape = TrackShape,
+            ),
     ) {
         val checkedThumbSize = UncheckedThumbSize + ThumbSizeStateOffset * thumbPosition
         val uncheckedThumbSize =
@@ -136,36 +136,36 @@ private fun SwitchComponent(
 
         Box(
             modifier =
-                Modifier
-                    .align(Alignment.CenterStart)
-                    .sizeIn(minWidth = thumbSize, minHeight = thumbSize)
-                    .offset {
-                        val trackWidth = SwitchWidth.toPx()
-                        val currentThumbSize = thumbSize.toPx()
-                        val maxThumbSize = ThumbSize.toPx()
-                        val padding = verticalPadding.toPx()
+            Modifier
+                .align(Alignment.CenterStart)
+                .sizeIn(minWidth = thumbSize, minHeight = thumbSize)
+                .offset {
+                    val trackWidth = SwitchWidth.toPx()
+                    val currentThumbSize = thumbSize.toPx()
+                    val maxThumbSize = ThumbSize.toPx()
+                    val padding = verticalPadding.toPx()
 
-                        val totalMovableDistance = trackWidth - maxThumbSize - (padding * 2)
-                        val sizeDifference = (maxThumbSize - currentThumbSize) / 2
+                    val totalMovableDistance = trackWidth - maxThumbSize - (padding * 2)
+                    val sizeDifference = (maxThumbSize - currentThumbSize) / 2
 
-                        IntOffset(
-                            x = (padding + sizeDifference + (totalMovableDistance * thumbPosition)).roundToInt(),
-                            y = 0,
-                        )
-                    }
-                    .drawBehind {
-                        drawCircle(
-                            color = colors.thumbColor(enabled, checked),
-                        )
-                    }
-                    .indication(
-                        interactionSource = interactionSource,
-                        indication =
-                            ripple(
-                                bounded = false,
-                                radius = RippleRadius,
-                            ),
+                    IntOffset(
+                        x = (padding + sizeDifference + (totalMovableDistance * thumbPosition)).roundToInt(),
+                        y = 0,
+                    )
+                }
+                .drawBehind {
+                    drawCircle(
+                        color = colors.thumbColor(enabled, checked),
+                    )
+                }
+                .indication(
+                    interactionSource = interactionSource,
+                    indication =
+                    ripple(
+                        bounded = false,
+                        radius = RippleRadius,
                     ),
+                ),
             contentAlignment = Alignment.Center,
         ) {
             if (thumbContent != null) {

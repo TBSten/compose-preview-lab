@@ -62,20 +62,20 @@ internal fun HueSlider(selectedColor: Color, onColorSelected: (Color) -> Unit, m
 
     Box(
         modifier =
-            modifier
-                .fillMaxHeight()
-                .onSizeChanged { sliderSize = it.toSize() }
-                .pointerInput(Unit) { detectTapGestures(onTap = ::onThumbPositionChange) }
-                .pointerInput(Unit) {
-                    detectDragGestures { change, _ -> onThumbPositionChange(change.position) }
-                },
+        modifier
+            .fillMaxHeight()
+            .onSizeChanged { sliderSize = it.toSize() }
+            .pointerInput(Unit) { detectTapGestures(onTap = ::onThumbPositionChange) }
+            .pointerInput(Unit) {
+                detectDragGestures { change, _ -> onThumbPositionChange(change.position) }
+            },
     ) {
         // color track
         Canvas(
             modifier =
-                Modifier.fillMaxSize()
-                    .padding(horizontal = 4.dp)
-                    .clip(RoundedCornerShape(4.dp)),
+            Modifier.fillMaxSize()
+                .padding(horizontal = 4.dp)
+                .clip(RoundedCornerShape(4.dp)),
         ) {
             drawRect(Brush.verticalGradient(Color.colorList))
         }

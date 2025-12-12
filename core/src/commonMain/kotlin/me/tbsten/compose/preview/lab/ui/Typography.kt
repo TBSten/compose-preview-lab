@@ -151,6 +151,7 @@ fun provideTypography(): Typography {
 
 @InternalComposePreviewLabApi
 val LocalTypography = staticCompositionLocalOf { defaultTypography }
+
 @InternalComposePreviewLabApi
 val LocalTextStyle = compositionLocalOf(structuralEqualityPolicy()) { TextStyle.Default }
 
