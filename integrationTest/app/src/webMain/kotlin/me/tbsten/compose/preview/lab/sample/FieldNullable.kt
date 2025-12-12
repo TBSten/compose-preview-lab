@@ -26,11 +26,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.field.ColorField
 import me.tbsten.compose.preview.lab.field.IntField
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.nullable
+import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.sample.component.previewLab
 import me.tbsten.compose.preview.lab.sample.component.rememberCodeTab
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -39,9 +39,10 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @ComposePreviewLabOption(id = "FieldNullable")
 @Composable
 private fun FieldNullable() = previewLab(
-    inspectorTabs = InspectorTab.defaults + listOf(
-        rememberCodeTab(
-            code = """
+    inspectorTabs = InspectorTab.defaults +
+        listOf(
+            rememberCodeTab(
+                code = """
                 // Make StringField nullable for optional bio
                 val bio: String? = fieldValue {
                     StringField("bio", "I love coding!")
@@ -59,9 +60,9 @@ private fun FieldNullable() = previewLab(
                     ColorField("customColor", Color.Blue)
                         .nullable(initialValue = null)
                 }
-            """.trimIndent(),
+                """.trimIndent(),
+            ),
         ),
-    ),
 ) {
     // StringField.nullable() - Optional bio text
     val bio: String? = fieldValue {

@@ -23,14 +23,16 @@ import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.contentColorFor
 import me.tbsten.compose.preview.lab.ui.foundation.ripple
 
 @Composable
 @NonRestartableComposable
-internal fun Surface(
+@InternalComposePreviewLabApi
+fun Surface(
     modifier: Modifier = Modifier,
     shape: Shape = RectangleShape,
     color: Color = PreviewLabTheme.colors.surface,
@@ -64,7 +66,8 @@ internal fun Surface(
 
 @Composable
 @NonRestartableComposable
-internal fun Surface(
+@InternalComposePreviewLabApi
+fun Surface(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -103,7 +106,8 @@ internal fun Surface(
 
 @Composable
 @NonRestartableComposable
-internal fun Surface(
+@InternalComposePreviewLabApi
+fun Surface(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -144,7 +148,8 @@ internal fun Surface(
 
 @Composable
 @NonRestartableComposable
-internal fun Surface(
+@InternalComposePreviewLabApi
+fun Surface(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -184,7 +189,7 @@ internal fun Surface(
 }
 
 @Composable
-private fun Modifier.surface(shape: Shape, backgroundColor: Color, border: BorderStroke?, shadowElevation: Dp,) = this
+private fun Modifier.surface(shape: Shape, backgroundColor: Color, border: BorderStroke?, shadowElevation: Dp) = this
     .shadow(
         ambientColor = PreviewLabTheme.colors.elevation,
         spotColor = PreviewLabTheme.colors.elevation,

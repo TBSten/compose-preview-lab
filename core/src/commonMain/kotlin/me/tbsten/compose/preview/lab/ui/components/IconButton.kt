@@ -32,14 +32,16 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.contentColorFor
 import me.tbsten.compose.preview.lab.ui.foundation.ButtonElevation
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-internal fun IconButton(
+@InternalComposePreviewLabApi
+fun IconButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     loading: Boolean = false,
@@ -107,7 +109,8 @@ private fun IconButtonComponent(
     }
 }
 
-internal enum class IconButtonVariant {
+@InternalComposePreviewLabApi
+enum class IconButtonVariant {
     Primary,
     PrimaryOutlined,
     PrimaryElevated,
@@ -123,7 +126,8 @@ internal enum class IconButtonVariant {
     Ghost,
 }
 
-internal object IconButtonDefaults {
+@InternalComposePreviewLabApi
+object IconButtonDefaults {
     val ButtonSize = 44.dp
     val ButtonPadding = PaddingValues(4.dp)
     val ButtonSquareShape = RoundedCornerShape(12.dp)
@@ -339,7 +343,8 @@ internal object IconButtonDefaults {
 }
 
 @Immutable
-internal data class IconButtonColors(
+@InternalComposePreviewLabApi
+data class IconButtonColors(
     val containerColor: Color,
     val contentColor: Color,
     val borderColor: Color? = null,
@@ -358,7 +363,8 @@ internal data class IconButtonColors(
 }
 
 @Immutable
-internal data class IconButtonStyle(val colors: IconButtonColors, val shape: Shape, val elevation: ButtonElevation? = null,)
+@InternalComposePreviewLabApi
+data class IconButtonStyle(val colors: IconButtonColors, val shape: Shape, val elevation: ButtonElevation? = null)
 
 @Composable
 @Preview
@@ -461,7 +467,7 @@ private fun GhostIconButtonPreview() {
                     contentAlignment = Alignment.Center,
                 ) {
                     CompositionLocalProvider(
-                        LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.background)
+                        LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.background),
                     ) {
                         IconButton(variant = IconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
@@ -474,7 +480,7 @@ private fun GhostIconButtonPreview() {
                     contentAlignment = Alignment.Center,
                 ) {
                     CompositionLocalProvider(
-                        LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.primary)
+                        LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.primary),
                     ) {
                         IconButton(variant = IconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
@@ -487,7 +493,7 @@ private fun GhostIconButtonPreview() {
                     contentAlignment = Alignment.Center,
                 ) {
                     CompositionLocalProvider(
-                        LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.secondary)
+                        LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.secondary),
                     ) {
                         IconButton(variant = IconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
@@ -500,7 +506,7 @@ private fun GhostIconButtonPreview() {
                     contentAlignment = Alignment.Center,
                 ) {
                     CompositionLocalProvider(
-                        LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.tertiary)
+                        LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.tertiary),
                     ) {
                         IconButton(variant = IconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
@@ -513,7 +519,7 @@ private fun GhostIconButtonPreview() {
                     contentAlignment = Alignment.Center,
                 ) {
                     CompositionLocalProvider(
-                        LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.surface)
+                        LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.surface),
                     ) {
                         IconButton(variant = IconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()

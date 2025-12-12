@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import me.tbsten.compose.preview.lab.PreviewLabGallery
-import me.tbsten.compose.preview.lab.PreviewLabGalleryState
+import me.tbsten.compose.preview.lab.gallery.PreviewLabGallery
+import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
 import me.tbsten.compose.preview.lab.previewsForUiDebug
 
 class AppActivity : ComponentActivity() {

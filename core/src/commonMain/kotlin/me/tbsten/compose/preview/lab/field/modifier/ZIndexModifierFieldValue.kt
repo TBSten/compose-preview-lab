@@ -14,11 +14,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import me.tbsten.compose.preview.lab.component.FloatTransformer
-import me.tbsten.compose.preview.lab.component.NullableFloatTransformer
-import me.tbsten.compose.preview.lab.component.TransformableTextField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.FloatTransformer
+import me.tbsten.compose.preview.lab.ui.components.NullableFloatTransformer
 import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
 
 /**
  * ModifierFieldValue that controls the layering order (Z-index) of a composable.

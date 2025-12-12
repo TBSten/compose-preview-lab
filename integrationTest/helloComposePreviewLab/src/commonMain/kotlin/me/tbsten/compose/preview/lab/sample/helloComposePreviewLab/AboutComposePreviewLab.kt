@@ -44,7 +44,6 @@ import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
@@ -62,14 +61,14 @@ import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.res
 import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.icon_check
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
-import me.tbsten.compose.preview.lab.LocalPreviewLabGalleryNavigator
-import me.tbsten.compose.preview.lab.PreviewLab
-import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.ColorField
 import me.tbsten.compose.preview.lab.field.StringField
-import me.tbsten.compose.preview.lab.navigateOr
+import me.tbsten.compose.preview.lab.gallery.LocalPreviewLabGalleryNavigator
+import me.tbsten.compose.preview.lab.gallery.navigateOr
 import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
+import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.DocPage
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.IconBox
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.KotlinCodeBlock
@@ -514,7 +513,12 @@ private fun NextActionSection() = Column(
 ) {
     SectionHeadingText(
         text = "Next Steps",
-        iconBox = { IconBox(color = MaterialTheme.colorScheme.primary, icon = painterResource(Res.drawable.icon_arrow_right_alt)) },
+        iconBox = {
+            IconBox(
+                color = MaterialTheme.colorScheme.primary,
+                icon = painterResource(Res.drawable.icon_arrow_right_alt),
+            )
+        },
     )
 
     Text(

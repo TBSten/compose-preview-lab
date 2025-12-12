@@ -48,10 +48,10 @@ import androidx.compose.ui.window.PopupPositionProvider
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.drop
-import me.tbsten.compose.preview.lab.component.LocalIsInPreviewLabGalleryCardBody
-import me.tbsten.compose.preview.lab.field.MutablePreviewLabField
+import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.WrapRange
 import me.tbsten.compose.preview.lab.field.wrap
+import me.tbsten.compose.preview.lab.gallery.LocalIsInPreviewLabGalleryCardBody
 
 /**
  * Observes value changes of a [State] and invokes [onValueChange] when the value changes.

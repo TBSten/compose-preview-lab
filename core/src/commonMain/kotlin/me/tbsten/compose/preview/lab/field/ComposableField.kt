@@ -18,12 +18,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.component.SelectButton
+import me.tbsten.compose.preview.lab.ImmutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.SelectableField.Type
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.DROPDOWN
 import me.tbsten.compose.preview.lab.ui.LocalTextStyle
-import me.tbsten.compose.preview.lab.util.thenIf
-import me.tbsten.compose.preview.lab.util.thenIfNotNull
+import me.tbsten.compose.preview.lab.ui.components.SelectButton
+import me.tbsten.compose.preview.lab.ui.util.thenIf
+import me.tbsten.compose.preview.lab.ui.util.thenIfNotNull
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 /**

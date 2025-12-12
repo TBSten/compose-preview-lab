@@ -2,7 +2,7 @@ package me.tbsten.compose.preview.lab.event
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import me.tbsten.compose.preview.lab.PreviewLabScope
+import me.tbsten.compose.preview.lab.previewlab.PreviewLabScope
 
 /**
  * An effect that calls onEvent to record an event when a value changes.

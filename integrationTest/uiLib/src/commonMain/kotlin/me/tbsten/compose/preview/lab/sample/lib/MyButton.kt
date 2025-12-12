@@ -7,9 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.LocalPreviewLabGalleryNavigator
+import me.tbsten.compose.preview.lab.gallery.LocalPreviewLabGalleryNavigator
 import me.tbsten.compose.preview.lab.field.StringField
-import me.tbsten.compose.preview.lab.navigateOr
+import me.tbsten.compose.preview.lab.gallery.navigateOr
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable

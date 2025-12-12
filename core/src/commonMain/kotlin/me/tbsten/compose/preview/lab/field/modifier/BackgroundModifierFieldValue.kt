@@ -27,7 +27,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlin.math.roundToInt
-import me.tbsten.compose.preview.lab.component.colorpicker.CommonColorPicker
+import me.tbsten.compose.preview.lab.ui.components.colorpicker.CommonColorPicker
 
 /**
  * A modifier field value that applies a background color to a component.

@@ -6,10 +6,11 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
-import me.tbsten.compose.preview.lab.PreviewLabScope
+import me.tbsten.compose.preview.lab.MutablePreviewLabField
+import me.tbsten.compose.preview.lab.previewlab.PreviewLabScope
 
 /**
- * Provides default Compose composition local fields for [PreviewLab][me.tbsten.compose.preview.lab.PreviewLab].
+ * Provides default Compose composition local fields for [PreviewLab][me.tbsten.compose.preview.lab.previewlab.PreviewLab].
  *
  * This function creates interactive fields for commonly used composition locals like:
  * - [LocalDensity] with customizable density and font scale

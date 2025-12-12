@@ -8,9 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.component.animated
+import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.ui.Gray50
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.animation.animated
 import me.tbsten.compose.preview.lab.ui.components.Surface
 import me.tbsten.compose.preview.lab.ui.components.Text
 
@@ -35,7 +36,7 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  *
  * @param label label of the field.
  * @param initialValue initial value of the field.
- * @see MutablePreviewLabField
+ * @see me.tbsten.compose.preview.lab.MutablePreviewLabField
  */
 open class BooleanField(label: String, initialValue: Boolean) :
     MutablePreviewLabField<Boolean>(

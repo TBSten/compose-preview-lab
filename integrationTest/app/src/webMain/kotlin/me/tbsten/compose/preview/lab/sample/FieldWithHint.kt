@@ -24,11 +24,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.field.ColorField
 import me.tbsten.compose.preview.lab.field.IntField
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.withHint
+import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.sample.component.previewLab
 import me.tbsten.compose.preview.lab.sample.component.rememberCodeTab
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -37,9 +37,10 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @ComposePreviewLabOption(id = "FieldWithHint")
 @Composable
 private fun FieldWithHint() = previewLab(
-    inspectorTabs = InspectorTab.defaults + listOf(
-        rememberCodeTab(
-            code = """
+    inspectorTabs = InspectorTab.defaults +
+        listOf(
+            rememberCodeTab(
+                code = """
                 // Provide commonly used string hints with StringField
                 val email = fieldValue {
                     StringField("email", "user@example.com")
@@ -71,9 +72,9 @@ private fun FieldWithHint() = previewLab(
                             "Error" to Color(0xFFF44336),
                         )
                 }
-            """.trimIndent(),
+                """.trimIndent(),
+            ),
         ),
-    ),
 ) {
     // StringField with hint - email address hints
     var email by fieldState {

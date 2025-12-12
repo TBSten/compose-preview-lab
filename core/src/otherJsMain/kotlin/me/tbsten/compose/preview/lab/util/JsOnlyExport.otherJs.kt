@@ -2,6 +2,10 @@
 
 package me.tbsten.compose.preview.lab.util
 
-internal actual annotation class JsOnlyExport
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
-internal actual annotation class JsOnlyExportIgnore
+@InternalComposePreviewLabApi
+actual annotation class JsOnlyExport
+
+@InternalComposePreviewLabApi
+actual annotation class JsOnlyExportIgnore

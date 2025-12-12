@@ -1,10 +1,12 @@
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
+import app.FeaturedFileList
+import helloComposePreviewLab.PreviewList
 import kotlinx.browser.document
 import me.tbsten.compose.preview.lab.EmbeddedPreviewOrGallery
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
-import me.tbsten.compose.preview.lab.PreviewLabGalleryState
+import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
 import me.tbsten.compose.preview.lab.initialSelectedPreviewFromSearchParam
 
 @OptIn(ExperimentalComposePreviewLabApi::class, ExperimentalComposeUiApi::class, ExperimentalWasmJsInterop::class)
@@ -20,8 +22,8 @@ fun main() {
                     initialSelectedPreview =
                         initialSelectedPreviewFromSearchParam(previewList.toList())
                             ?: (
-                                app.FeaturedFileList.hello_compose_preview_lab.first() to
-                                    helloComposePreviewLab.PreviewList.AboutComposePreviewLab
+                                FeaturedFileList.hello_compose_preview_lab.first() to
+                                    PreviewList.AboutComposePreviewLab
                                 ),
                 )
             },

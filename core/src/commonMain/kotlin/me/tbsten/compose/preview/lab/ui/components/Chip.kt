@@ -27,6 +27,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.ChipDefaults.ChipIconHorizontalPadding
 import me.tbsten.compose.preview.lab.ui.components.ChipDefaults.ChipIconSize
@@ -35,7 +36,8 @@ import me.tbsten.compose.preview.lab.ui.foundation.ButtonElevation
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-internal fun Chip(
+@InternalComposePreviewLabApi
+fun Chip(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     selected: Boolean = false,
@@ -62,7 +64,8 @@ internal fun Chip(
 }
 
 @Composable
-internal fun ElevatedChip(
+@InternalComposePreviewLabApi
+fun ElevatedChip(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     selected: Boolean = false,
@@ -89,7 +92,8 @@ internal fun ElevatedChip(
 }
 
 @Composable
-internal fun OutlinedChip(
+@InternalComposePreviewLabApi
+fun OutlinedChip(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     selected: Boolean = false,
@@ -116,7 +120,8 @@ internal fun OutlinedChip(
 }
 
 @Composable
-private fun ChipComponent(
+@InternalComposePreviewLabApi
+fun ChipComponent(
     modifier: Modifier,
     enabled: Boolean = true,
     selected: Boolean = false,
@@ -164,7 +169,8 @@ private fun ChipComponent(
 }
 
 @Composable
-private fun DefaultChipComponent(
+@InternalComposePreviewLabApi
+fun DefaultChipComponent(
     modifier: Modifier = Modifier,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
@@ -200,7 +206,8 @@ private fun DefaultChipComponent(
     }
 }
 
-internal object ChipDefaults {
+@InternalComposePreviewLabApi
+object ChipDefaults {
     private val ChipPaddingHorizontal = 6.dp
     private val ChipPaddingVertical = 6.dp
     val ChipRectShape = RoundedCornerShape(12)
@@ -278,7 +285,8 @@ internal object ChipDefaults {
 }
 
 @Immutable
-internal data class ChipColors(
+@InternalComposePreviewLabApi
+data class ChipColors(
     val containerColor: Color,
     val contentColor: Color,
     val outlineColor: Color? = null,
@@ -321,7 +329,8 @@ internal data class ChipColors(
 }
 
 @Immutable
-internal data class ChipStyle(
+@InternalComposePreviewLabApi
+data class ChipStyle(
     val colors: ChipColors,
     val shape: Shape,
     val elevation: ButtonElevation? = null,

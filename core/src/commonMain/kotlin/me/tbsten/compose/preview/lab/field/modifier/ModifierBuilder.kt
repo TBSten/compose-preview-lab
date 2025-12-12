@@ -17,18 +17,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.dokar.sonner.rememberToasterState
-import me.tbsten.compose.preview.lab.component.CommonIconButton
-import me.tbsten.compose.preview.lab.component.CommonListItem
-import me.tbsten.compose.preview.lab.component.CommonMenu
-import me.tbsten.compose.preview.lab.component.Divider
-import me.tbsten.compose.preview.lab.component.SimpleModal
 import me.tbsten.compose.preview.lab.core.generated.resources.Res
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_add
 import me.tbsten.compose.preview.lab.core.generated.resources.icon_remove
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Button
 import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.CommonIconButton
+import me.tbsten.compose.preview.lab.ui.components.CommonListItem
+import me.tbsten.compose.preview.lab.ui.components.CommonMenu
+import me.tbsten.compose.preview.lab.ui.components.Divider
 import me.tbsten.compose.preview.lab.ui.components.Icon
+import me.tbsten.compose.preview.lab.ui.components.SimpleModal
 import me.tbsten.compose.preview.lab.ui.components.Text
 import org.jetbrains.compose.resources.painterResource
 

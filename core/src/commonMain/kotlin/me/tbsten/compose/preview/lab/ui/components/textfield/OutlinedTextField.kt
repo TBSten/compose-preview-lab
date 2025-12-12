@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.CommonDecorationBox
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.FocusedOutlineThickness
@@ -43,7 +44,8 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.base.UnfocusedOutli
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.containerOutline
 
 @Composable
-internal fun OutlinedTextField(
+@InternalComposePreviewLabApi
+fun OutlinedTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -120,7 +122,8 @@ internal fun OutlinedTextField(
 }
 
 @Composable
-internal fun OutlinedTextField(
+@InternalComposePreviewLabApi
+fun OutlinedTextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier,
@@ -199,7 +202,8 @@ internal fun OutlinedTextField(
 }
 
 @Immutable
-internal object OutlinedTextFieldDefaults {
+@InternalComposePreviewLabApi
+object OutlinedTextFieldDefaults {
     val MinHeight = TextFieldMinHeight
     val Shape: Shape = RoundedCornerShape(8.dp)
 
@@ -241,7 +245,7 @@ internal object OutlinedTextFieldDefaults {
     ): PaddingValues = PaddingValues(start, top, end, bottom)
 
     @Composable
-    fun containerBorderThickness(interactionSource: InteractionSource,): Dp {
+    fun containerBorderThickness(interactionSource: InteractionSource): Dp {
         val focused by interactionSource.collectIsFocusedAsState()
 
         return if (focused) FocusedOutlineThickness else UnfocusedOutlineThickness

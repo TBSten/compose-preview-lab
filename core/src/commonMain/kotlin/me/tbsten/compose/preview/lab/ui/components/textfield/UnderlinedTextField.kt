@@ -27,6 +27,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.CommonDecorationBox
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.FocusedOutlineThickness
@@ -40,7 +41,8 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.base.UnfocusedOutli
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.containerUnderline
 
 @Composable
-internal fun UnderlinedTextField(
+@InternalComposePreviewLabApi
+fun UnderlinedTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -117,7 +119,8 @@ internal fun UnderlinedTextField(
 }
 
 @Composable
-internal fun UnderlinedTextField(
+@InternalComposePreviewLabApi
+fun UnderlinedTextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier,
@@ -194,7 +197,8 @@ internal fun UnderlinedTextField(
 }
 
 @Immutable
-internal object UnderlinedTextFieldDefaults {
+@InternalComposePreviewLabApi
+object UnderlinedTextFieldDefaults {
     val MinHeight = TextFieldMinHeight
 
     private fun contentPadding(
@@ -204,7 +208,7 @@ internal object UnderlinedTextFieldDefaults {
         bottom: Dp = TextFieldVerticalPadding,
     ): PaddingValues = PaddingValues(start, top, end, bottom)
 
-    private fun labelPadding(start: Dp = 0.dp, top: Dp = 0.dp, end: Dp = 0.dp, bottom: Dp = 0.dp,): PaddingValues =
+    private fun labelPadding(start: Dp = 0.dp, top: Dp = 0.dp, end: Dp = 0.dp, bottom: Dp = 0.dp): PaddingValues =
         PaddingValues(start, top, end, bottom)
 
     private fun supportingTextPadding(
@@ -231,7 +235,7 @@ internal object UnderlinedTextFieldDefaults {
     ): PaddingValues = PaddingValues(start, top, end, bottom)
 
     @Composable
-    fun containerBorderThickness(interactionSource: InteractionSource,): Dp {
+    fun containerBorderThickness(interactionSource: InteractionSource): Dp {
         val focused by interactionSource.collectIsFocusedAsState()
 
         return if (focused) FocusedOutlineThickness else UnfocusedOutlineThickness

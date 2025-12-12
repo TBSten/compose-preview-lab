@@ -1,6 +1,8 @@
 package me.tbsten.compose.preview.lab.field
 
 import androidx.compose.runtime.Composable
+import me.tbsten.compose.preview.lab.MutablePreviewLabField
+import me.tbsten.compose.preview.lab.field.component.TextFieldContent
 
 internal fun floatValueCode(value: Float): String = when {
     value.isNaN() -> "Float.NaN"
@@ -9,7 +11,7 @@ internal fun floatValueCode(value: Float): String = when {
     else -> "${value}f"
 }
 
-private fun doubleValueCode(value: Double): String = when {
+internal fun doubleValueCode(value: Double): String = when {
     value.isNaN() -> "Double.NaN"
     value == Double.POSITIVE_INFINITY -> "Double.POSITIVE_INFINITY"
     value == Double.NEGATIVE_INFINITY -> "Double.NEGATIVE_INFINITY"

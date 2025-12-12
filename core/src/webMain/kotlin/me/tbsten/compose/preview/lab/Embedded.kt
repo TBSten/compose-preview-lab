@@ -7,9 +7,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlin.js.ExperimentalWasmJsInterop
-import me.tbsten.compose.preview.lab.component.PreviewListGrid
-import me.tbsten.compose.preview.lab.component.adaptive
+import me.tbsten.compose.preview.lab.gallery.AllGroupName
+import me.tbsten.compose.preview.lab.gallery.PreviewLabGallery
+import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
+import me.tbsten.compose.preview.lab.gallery.PreviewListGrid
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
+import me.tbsten.compose.preview.lab.previewlab.LocalDefaultIsHeaderShow
+import me.tbsten.compose.preview.lab.ui.adaptive
 
 @OptIn(ExperimentalWasmJsInterop::class)
 expect fun List<PreviewLabPreview>.findBySearchParam(previewIdQueryName: String = "previewId"): PreviewLabPreview?

@@ -24,13 +24,15 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.foundation.ButtonElevation
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-internal fun Button(
+@InternalComposePreviewLabApi
+fun Button(
     modifier: Modifier = Modifier,
     text: String? = null,
     isEnabled: Boolean = true,
@@ -59,7 +61,7 @@ internal fun Button(
 }
 
 @Composable
-internal fun ButtonComponent(
+private fun ButtonComponent(
     text: String? = null,
     modifier: Modifier,
     enabled: Boolean = true,
@@ -153,7 +155,8 @@ private fun DefaultButtonContent(
     }
 }
 
-internal enum class ButtonVariant {
+@InternalComposePreviewLabApi
+enum class ButtonVariant {
     Primary,
     PrimaryOutlined,
     PrimaryElevated,
@@ -170,7 +173,8 @@ internal enum class ButtonVariant {
 }
 
 @Composable
-internal fun buttonStyleFor(variant: ButtonVariant, isSelected: Boolean): ButtonStyle = when (variant) {
+@InternalComposePreviewLabApi
+fun buttonStyleFor(variant: ButtonVariant, isSelected: Boolean): ButtonStyle = when (variant) {
     ButtonVariant.Primary -> ButtonDefaults.primaryFilled(isSelected = isSelected)
     ButtonVariant.PrimaryOutlined -> ButtonDefaults.primaryOutlined(isSelected = isSelected)
     ButtonVariant.PrimaryElevated -> ButtonDefaults.primaryElevated(isSelected = isSelected)
@@ -186,9 +190,13 @@ internal fun buttonStyleFor(variant: ButtonVariant, isSelected: Boolean): Button
     ButtonVariant.Ghost -> ButtonDefaults.ghost(isSelected = isSelected)
 }
 
-internal object ButtonDefaults {
-    internal val MinHeight = 44.dp
-    internal val OutlineHeight = 1.dp
+@InternalComposePreviewLabApi
+object ButtonDefaults {
+    @InternalComposePreviewLabApi
+    val MinHeight = 44.dp
+
+    @InternalComposePreviewLabApi
+    val OutlineHeight = 1.dp
     private val ButtonHorizontalPadding = 16.dp
     private val ButtonVerticalPadding = 8.dp
     private val ButtonShape = RoundedCornerShape(12)
@@ -438,7 +446,8 @@ internal object ButtonDefaults {
 }
 
 @Immutable
-internal data class ButtonColors(
+@InternalComposePreviewLabApi
+data class ButtonColors(
     val containerColor: Color,
     val contentColor: Color,
     val borderColor: Color? = null,
@@ -447,19 +456,19 @@ internal data class ButtonColors(
     val disabledBorderColor: Color? = null,
 ) {
     @Composable
-    internal fun containerColor(enabled: Boolean) =
+    fun containerColor(enabled: Boolean) =
         rememberUpdatedState(newValue = if (enabled) containerColor else disabledContainerColor)
 
     @Composable
-    internal fun contentColor(enabled: Boolean) =
-        rememberUpdatedState(newValue = if (enabled) contentColor else disabledContentColor)
+    fun contentColor(enabled: Boolean) = rememberUpdatedState(newValue = if (enabled) contentColor else disabledContentColor)
 
     @Composable
     fun borderColor(enabled: Boolean) = rememberUpdatedState(newValue = if (enabled) borderColor else disabledBorderColor)
 }
 
 @Immutable
-internal data class ButtonStyle(
+@InternalComposePreviewLabApi
+data class ButtonStyle(
     val colors: ButtonColors,
     val shape: Shape,
     val elevation: ButtonElevation? = null,
@@ -468,7 +477,7 @@ internal data class ButtonStyle(
 
 @Composable
 @Preview
-internal fun ButtonPreview() {
+private fun ButtonPreview() {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         PrimaryButtonPreview()
         SecondaryButtonPreview()
@@ -478,7 +487,7 @@ internal fun ButtonPreview() {
 
 @Composable
 @Preview
-internal fun PrimaryButtonPreview() {
+private fun PrimaryButtonPreview() {
     PreviewLabTheme {
         Column(
             modifier =

@@ -1,9 +1,10 @@
 package me.tbsten.compose.preview.lab.field
 
 import androidx.compose.runtime.Composable
+import me.tbsten.compose.preview.lab.MutablePreviewLabField
 
 /**
- * A field that wraps another [MutablePreviewLabField] with additional composable content.
+ * A field that wraps another [me.tbsten.compose.preview.lab.MutablePreviewLabField] with additional composable content.
  *
  * This class allows you to add decorations or modifications around an existing field's UI
  * without changing its underlying behavior. The wrapping can be applied to either
@@ -18,7 +19,7 @@ import androidx.compose.runtime.Composable
  * @see wrap Extension function to create a WrapField easily
  * @see WrapRange Enum defining the wrapping scope
  */
-class WrapField<Value>(
+class WrapField<Value> internal constructor(
     private val baseField: MutablePreviewLabField<Value>,
     private val wrapRange: WrapRange = WrapRange.OnlyContent,
     private val content: @Composable (@Composable () -> Unit) -> Unit,

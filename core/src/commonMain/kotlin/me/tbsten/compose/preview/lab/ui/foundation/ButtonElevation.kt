@@ -15,9 +15,11 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Dp
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @Stable
-internal class ButtonElevation internal constructor(
+@InternalComposePreviewLabApi
+class ButtonElevation(
     private val defaultElevation: Dp,
     private val pressedElevation: Dp,
     private val focusedElevation: Dp,
@@ -25,11 +27,11 @@ internal class ButtonElevation internal constructor(
     private val disabledElevation: Dp,
 ) {
     @Composable
-    internal fun shadowElevation(enabled: Boolean, interactionSource: InteractionSource,): State<Dp> =
+    internal fun shadowElevation(enabled: Boolean, interactionSource: InteractionSource): State<Dp> =
         animateElevation(enabled = enabled, interactionSource = interactionSource)
 
     @Composable
-    private fun animateElevation(enabled: Boolean, interactionSource: InteractionSource,): State<Dp> {
+    private fun animateElevation(enabled: Boolean, interactionSource: InteractionSource): State<Dp> {
         val interactions = remember { mutableStateListOf<Interaction>() }
         LaunchedEffect(interactionSource) {
             interactionSource.interactions.collect { interaction ->

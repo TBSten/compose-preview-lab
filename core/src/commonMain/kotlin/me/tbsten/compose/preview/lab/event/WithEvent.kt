@@ -1,6 +1,6 @@
 package me.tbsten.compose.preview.lab.event
 
-import me.tbsten.compose.preview.lab.PreviewLabScope
+import me.tbsten.compose.preview.lab.previewlab.PreviewLabScope
 
 /**
  * Create a function to record events. This is simply a short-hand for the onEvent call.

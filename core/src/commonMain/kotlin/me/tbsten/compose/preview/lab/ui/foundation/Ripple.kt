@@ -18,15 +18,13 @@ import androidx.compose.ui.node.ObserverModifierNode
 import androidx.compose.ui.node.currentValueOf
 import androidx.compose.ui.node.observeReads
 import androidx.compose.ui.unit.Dp
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
 import me.tbsten.compose.preview.lab.ui.foundation.RippleDefaults.RippleAlpha
 
 @Stable
-internal fun ripple(
-    bounded: Boolean = true,
-    radius: Dp = Dp.Unspecified,
-    color: Color = Color.Unspecified,
-): IndicationNodeFactory {
+@InternalComposePreviewLabApi
+fun ripple(bounded: Boolean = true, radius: Dp = Dp.Unspecified, color: Color = Color.Unspecified): IndicationNodeFactory {
     return if (radius == Dp.Unspecified && color == Color.Unspecified) {
         if (bounded) return DefaultBoundedRipple else DefaultUnboundedRipple
     } else {
@@ -35,11 +33,13 @@ internal fun ripple(
 }
 
 @Stable
-internal fun ripple(color: ColorProducer, bounded: Boolean = true, radius: Dp = Dp.Unspecified): IndicationNodeFactory =
+@InternalComposePreviewLabApi
+fun ripple(color: ColorProducer, bounded: Boolean = true, radius: Dp = Dp.Unspecified): IndicationNodeFactory =
     RippleNodeFactory(bounded, radius, color)
 
 /** Default values used by [ripple]. */
-internal object RippleDefaults {
+@InternalComposePreviewLabApi
+object RippleDefaults {
     /**
      * Represents the default [RippleAlpha] that will be used for a ripple to indicate different
      * states.
@@ -53,13 +53,15 @@ internal object RippleDefaults {
         )
 }
 
-internal val LocalRippleConfiguration: ProvidableCompositionLocal<RippleConfiguration?> =
+@InternalComposePreviewLabApi
+val LocalRippleConfiguration: ProvidableCompositionLocal<RippleConfiguration?> =
     compositionLocalOf {
         RippleConfiguration()
     }
 
 @Immutable
-internal class RippleConfiguration(val color: Color = Color.Unspecified, val rippleAlpha: RippleAlpha? = null) {
+@InternalComposePreviewLabApi
+class RippleConfiguration(val color: Color = Color.Unspecified, val rippleAlpha: RippleAlpha? = null) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is RippleConfiguration) return false

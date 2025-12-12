@@ -23,13 +23,15 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
 import me.tbsten.compose.preview.lab.ui.LocalTextStyle
 import me.tbsten.compose.preview.lab.ui.LocalTypography
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-internal fun Text(
+@InternalComposePreviewLabApi
+fun Text(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = LocalContentColor.current,
@@ -70,7 +72,8 @@ internal fun Text(
 }
 
 @Composable
-internal fun Text(
+@InternalComposePreviewLabApi
+fun Text(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
     color: Color = LocalContentColor.current,
@@ -118,7 +121,8 @@ internal fun Text(
 }
 
 @Composable
-internal fun SelectableText(
+@InternalComposePreviewLabApi
+fun SelectableText(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
     color: Color = LocalContentColor.current,

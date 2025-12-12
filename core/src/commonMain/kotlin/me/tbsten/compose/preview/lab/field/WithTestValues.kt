@@ -1,8 +1,10 @@
 package me.tbsten.compose.preview.lab.field
 
 import androidx.compose.runtime.Composable
+import me.tbsten.compose.preview.lab.MutablePreviewLabField
+import me.tbsten.compose.preview.lab.PreviewLabField
 
-class WithTestValuesField<Value>(val baseField: PreviewLabField<Value>, private vararg val additionalTestValues: Value,) :
+class WithTestValuesField<Value>(val baseField: PreviewLabField<Value>, private vararg val additionalTestValues: Value) :
     PreviewLabField<Value> by baseField {
     override fun testValues(): List<Value> = super.testValues() + additionalTestValues
 }

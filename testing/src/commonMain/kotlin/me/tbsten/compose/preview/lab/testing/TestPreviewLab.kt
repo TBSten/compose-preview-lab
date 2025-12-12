@@ -11,8 +11,8 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
-import me.tbsten.compose.preview.lab.LocalEnforcePreviewLabState
-import me.tbsten.compose.preview.lab.PreviewLabState
+import me.tbsten.compose.preview.lab.previewlab.LocalEnforcePreviewLabState
+import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 
 /**
  * Test helper composable that provides the necessary environment for testing PreviewLab components.

@@ -12,9 +12,11 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.rememberWindowState
 import java.util.Collections.emptyMap
-import me.tbsten.compose.preview.lab.component.PreviewListGrid
-import me.tbsten.compose.preview.lab.component.adaptive
+import me.tbsten.compose.preview.lab.gallery.PreviewLabGallery
+import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
+import me.tbsten.compose.preview.lab.gallery.PreviewListGrid
 import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
+import me.tbsten.compose.preview.lab.ui.adaptive
 
 /**
  * Creates a desktop window application for previewing Compose components
@@ -67,7 +69,7 @@ import me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler
  * @param alwaysOnTop Whether the window should stay on top of other windows
  * @param onPreviewKeyEvent Callback for preview key events
  * @param onKeyEvent Callback for key events
- * @see PreviewLabGallery
+ * @see me.tbsten.compose.preview.lab.gallery.PreviewLabGallery
  * @see CollectedPreview
  * @see OpenFileHandler
  */
