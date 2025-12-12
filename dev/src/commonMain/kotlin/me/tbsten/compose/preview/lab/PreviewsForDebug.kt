@@ -42,7 +42,6 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.event.withEvent
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.ColorField
@@ -64,6 +63,8 @@ import me.tbsten.compose.preview.lab.field.nullable
 import me.tbsten.compose.preview.lab.field.provideDefaultCompositionLocalFields
 import me.tbsten.compose.preview.lab.field.splitedOf
 import me.tbsten.compose.preview.lab.field.withHint
+import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 
 enum class PreviewsForUiDebug(
     override val id: String,
@@ -286,7 +287,7 @@ enum class PreviewsForUiDebug(
         "ScreenSize",
         content = {
             PreviewLab(
-                screenSizes = me.tbsten.compose.preview.lab.field.ScreenSize.AllPresets,
+                screenSizes = ScreenSize.AllPresets,
             ) {
                 Box(
                     modifier = Modifier

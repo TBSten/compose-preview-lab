@@ -17,6 +17,8 @@ import io.kotest.property.arbitrary.int
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.arbitrary.string
 import io.kotest.property.forAll
+import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
+import me.tbsten.compose.preview.lab.previewlab.field
 import kotlin.test.Test
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
