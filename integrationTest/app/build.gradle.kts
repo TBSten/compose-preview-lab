@@ -1,6 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.reload.gradle.ComposeHotRun
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
@@ -158,10 +157,6 @@ composePreviewLab {
     generateFeaturedFiles = true
 }
 
-// https://github.com/JetBrains/compose-hot-reload
-composeCompiler {
-    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
-}
 tasks.register<ComposeHotRun>("runHot") {
     mainClass.set("MainKt")
 }
