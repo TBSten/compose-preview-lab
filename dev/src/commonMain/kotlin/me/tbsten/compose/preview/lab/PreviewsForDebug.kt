@@ -573,12 +573,6 @@ enum class PreviewsForUiDebug(
             }
         },
     ),
-    Test(
-        "Test",
-        "Test",
-        content = {
-        },
-    ),
 }
 
 val previewsForUiDebug = PreviewsForUiDebug.entries.toList()
