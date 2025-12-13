@@ -1898,17 +1898,25 @@ public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabKt {
 	public static final fun getLocalEnforcePreviewLabState ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 }
 
-public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabScope {
-	public static final field $stable I
-	public final fun fieldState (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/MutableState;
-	public final fun fieldValue (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Ljava/lang/Object;
-	public final fun getState ()Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;
-	public final fun onEvent (Ljava/lang/String;Ljava/lang/String;)V
+public abstract interface class me/tbsten/compose/preview/lab/previewlab/PreviewLabScope {
+	public abstract fun fieldState (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/MutableState;
+	public abstract fun fieldValue (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)Ljava/lang/Object;
+	public abstract fun onEvent (Ljava/lang/String;Ljava/lang/String;)V
+	public static synthetic fun onEvent$default (Lme/tbsten/compose/preview/lab/previewlab/PreviewLabScope;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)V
+}
+
+public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabScope$ComposeDefaultImpls {
+	public static final fun fieldState$default (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/previewlab/PreviewLabScope;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/MutableState;
+	public static final fun fieldValue$default (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/previewlab/PreviewLabScope;Landroidx/compose/runtime/Composer;II)Ljava/lang/Object;
+}
+
+public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabScope$DefaultImpls {
 	public static synthetic fun onEvent$default (Lme/tbsten/compose/preview/lab/previewlab/PreviewLabScope;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)V
 }
 
 public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabScope$FieldBuilderScope {
 	public static final field $stable I
+	public fun <init> ()V
 }
 
 public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabState {
@@ -1920,7 +1928,6 @@ public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabState {
 	public final fun getContentScale ()F
 	public final fun getEvents ()Landroidx/compose/runtime/snapshots/SnapshotStateList;
 	public final fun getFields ()Landroidx/compose/runtime/snapshots/SnapshotStateList;
-	public final fun getScope ()Lme/tbsten/compose/preview/lab/previewlab/PreviewLabScope;
 	public final fun getSelectedTabIndex ()Ljava/lang/Integer;
 	public final fun isInspectorPanelVisible ()Z
 	public final fun setContentOffset-k-4lQ0M (J)V
