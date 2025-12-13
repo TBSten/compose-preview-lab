@@ -10,7 +10,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.DpOffset
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.PreviewLabEvent
 import me.tbsten.compose.preview.lab.PreviewLabField
@@ -58,8 +57,7 @@ class PreviewLabState {
     var selectedTabIndex by mutableStateOf<Int?>(null)
     internal var selectedEvent by mutableStateOf<PreviewLabEvent?>(null)
 
-    @InternalComposePreviewLabApi
-    val scope: PreviewLabScope = PreviewLabScope(this)
+    internal val scope = PreviewLabStateScope(this)
 
     @ExperimentalComposePreviewLabApi
     val fields = mutableStateListOf<PreviewLabField<*>>()

@@ -476,7 +476,7 @@ open class PreviewLab(
         val toaster = rememberToasterState().also { toaster ->
             state.scope.HandleEffect { event ->
                 when (event) {
-                    is PreviewLabScope.Effect.ShowEventToast ->
+                    is PreviewLabStateScope.Effect.ShowEventToast ->
                         toaster.show(
                             message = event.event.title,
                             action = TextToastAction(
