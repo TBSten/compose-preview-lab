@@ -513,6 +513,10 @@ public class me/tbsten/compose/preview/lab/field/PolymorphicField : me/tbsten/co
 	public fun valueCode ()Ljava/lang/String;
 }
 
+public final class me/tbsten/compose/preview/lab/field/PolymorphicFieldKt {
+	public static final fun sameType (Ljava/util/List;)Lkotlin/jvm/functions/Function1;
+}
+
 public final class me/tbsten/compose/preview/lab/field/ScreenSize {
 	public static final field $stable I
 	public static final field Companion Lme/tbsten/compose/preview/lab/field/ScreenSize$Companion;
