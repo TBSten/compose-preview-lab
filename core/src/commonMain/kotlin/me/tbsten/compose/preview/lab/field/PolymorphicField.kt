@@ -41,6 +41,8 @@ open class PolymorphicField<Value>(
 
     override fun testValues(): List<Value> = fields.flatMap { it.testValues() }
 
+    override fun valueCode(): String = selectedField.valueCode()
+
     @Composable
     override fun Content() {
         Column {
@@ -58,11 +60,13 @@ open class PolymorphicField<Value>(
     }
 }
 
-class FixedField<Value>(label: String, value: Value) :
+class FixedField<Value>(label: String, value: Value, private val valueCodeProvider: (() -> String)? = null,) :
     ImmutablePreviewLabField<Value>(
         label = label,
         initialValue = value,
     ) {
+    override fun valueCode(): String = valueCodeProvider?.invoke() ?: value.toString()
+
     @Composable
     override fun Content() {
         // No editable UI for fixed values
