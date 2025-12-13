@@ -450,7 +450,30 @@ PreviewLab {
 <details>
 <summary><code>combined</code> 関数を使用する</summary>
 
-`combined` 関数を使用すると、より簡潔に記述できます（2〜10個のフィールドに対応）。
+`combined` 関数を使用すると、より簡潔に記述できます（1〜10個のフィールドに対応）。
+
+**1つのフィールドを変換する例：**
+
+```kt
+data class UserId(val value: String)
+
+PreviewLab {
+    val userId: UserId = fieldValue {
+        // highlight-start
+        combined(
+            label = "User ID",
+            field1 = StringField("ID", "user-001"),
+            combine = { id -> UserId(id) },
+            split = { splitedOf(it.value) }
+        )
+        // highlight-end
+    }
+
+    Text("User ID: ${userId.value}")
+}
+```
+
+**2つのフィールドを結合する例：**
 
 ```kt
 data class Padding(val horizontal: Dp, val vertical: Dp)
@@ -606,6 +629,105 @@ PreviewLab {
  previewId="WithHintFieldExample"
 />
 
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-polymorphic-field/index.html">PolymorphicField</KDocLink>
+
+<table>
+    <tr>
+        <th>対応する 型</th>
+        <td> 複数の型から選択可能な型 </td>
+    </tr>
+    <tr>
+        <th>利用頻度</th>
+        <td> ⭐⭐ </td>
+    </tr>
+    <tr>
+        <th>KDoc</th>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-polymorphic-field/index.html">PolymorphicField</KDocLink> </td>
+    </tr>
+</table>
+
+複数のフィールドから1つを選択して使用するフィールドです。値の型に応じて適切なフィールドが自動的に選択され、編集UIが切り替わります。sealed interface や sealed class など、継承階層があるクラスのField化に特に有用です。
+
+```kt
+sealed interface UiState {
+    data object Loading : UiState
+    data class Success(val data: String) : UiState
+    data class Error(val message: String) : UiState
+}
+
+PreviewLab {
+    val uiState: UiState = fieldValue {
+        // highlight-start
+        PolymorphicField(
+            label = "UI State",
+            initialValue = UiState.Loading,
+            fields = listOf(
+                FixedField("Loading", UiState.Loading),
+                combined(
+                    label = "Success",
+                    field1 = StringField("Data", "Sample data"),
+                    combine = { data -> UiState.Success(data) },
+                    split = { splitedOf(it.data) }
+                ),
+                combined(
+                    label = "Error",
+                    field1 = StringField("Message", "Something went wrong"),
+                    combine = { message -> UiState.Error(message) },
+                    split = { splitedOf(it.message) }
+                )
+            )
+        )
+        // highlight-end
+    }
+
+    // ...
+}
+```
+
+<EmbeddedPreviewLab 
+ previewId="PolymorphicFieldExample"
+/>
+
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-fixed-field/index.html">FixedField</KDocLink>
+
+<table>
+    <tr>
+        <th>対応する 型</th>
+        <td> 任意の型（固定値） </td>
+    </tr>
+    <tr>
+        <th>利用頻度</th>
+        <td> ⭐ </td>
+    </tr>
+    <tr>
+        <th>KDoc</th>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-fixed-field/index.html">FixedField</KDocLink> </td>
+    </tr>
+</table>
+
+編集不可の固定値を持つフィールドです。`PolymorphicField` 内で固定値の選択肢を提供する場合などに使用します。
+
+```kt
+PreviewLab {
+    val value = fieldValue {
+        PolymorphicField(
+            label = "Value",
+            initialValue = "dynamic",
+            fields = listOf(
+                // highlight-start
+                FixedField("Fixed", UiState.Initial),
+                FixedField("Stable", UiState.Stable),
+                // highlight-end
+            )
+        )
+    }
+}
+```
+
+<EmbeddedPreviewLab 
+ previewId="FixedFieldExample"
+/>
+
 ### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-with-value-code-field/index.html">WithValueCodeField</KDocLink> / `.withValueCode()`
 
 任意の Field に対して、Inspector の Code タブに表示されるコード表現だけを差し替えるユーティリティです。UI や値の型はそのままに、コードスニペットを自分のプロジェクトの API 形式に合わせたいときに使用します。
@@ -718,147 +840,90 @@ PreviewLab {
  previewId="ColorFieldExample"
 />
 
-### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-offset-field/index.html">OffsetField</KDocLink>
+### Offset / Size フィールド
+
+座標やサイズを編集するためのフィールドです。各座標や寸法を独立して編集できます。
 
 <table>
     <tr>
+        <th>フィールド</th>
         <th>対応する 型</th>
-        <td> `androidx.compose.ui.geometry.Offset` </td>
-    </tr>
-    <tr>
         <th>利用頻度</th>
-        <td> ⭐⭐ </td>
+        <th>KDoc</th>
     </tr>
     <tr>
-        <th>KDoc</th>
+        <td> OffsetField </td>
+        <td> `androidx.compose.ui.geometry.Offset` </td>
+        <td> ⭐⭐ </td>
         <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-offset-field/index.html">OffsetField</KDocLink> </td>
     </tr>
-</table>
-
-Compose の Offset 値（x, y 座標）を編集するためのフィールドです。各座標を独立して編集できます。
-
-```kt
-PreviewLab {
-    Box(
-        modifier = Modifier
-            .size(100.dp)
-            .graphicsLayer {
-                // highlight-next-line
-                val offset = fieldValue { OffsetField("Position", Offset(50f, 100f)) }
-                translationX = offset.x
-                translationY = offset.y
-            }
-    )
-}
-```
-
-<EmbeddedPreviewLab 
- previewId="OffsetFieldExample"
-/>
-
-### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-dp-offset-field/index.html">DpOffsetField</KDocLink>
-
-<table>
     <tr>
-        <th>対応する 型</th>
+        <td> DpOffsetField </td>
         <td> `androidx.compose.ui.unit.DpOffset` </td>
-    </tr>
-    <tr>
-        <th>利用頻度</th>
         <td> ⭐⭐ </td>
-    </tr>
-    <tr>
-        <th>KDoc</th>
         <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-dp-offset-field/index.html">DpOffsetField</KDocLink> </td>
     </tr>
-</table>
-
-Compose の DpOffset 値（Dp 単位の x, y 座標）を編集するためのフィールドです。
-
-```kt
-PreviewLab {
-    Text(
-        text = "Positioned Text",
-        modifier = Modifier
-            // highlight-next-line
-            .offset(fieldValue { DpOffsetField("Offset", DpOffset(16.dp, 8.dp)) }.x)
-    )
-}
-```
-
-<EmbeddedPreviewLab 
- previewId="DpOffsetFieldExample"
-/>
-
-### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-size-field/index.html">SizeField</KDocLink>
-
-<table>
     <tr>
-        <th>対応する 型</th>
+        <td> SizeField </td>
         <td> `androidx.compose.ui.geometry.Size` </td>
-    </tr>
-    <tr>
-        <th>利用頻度</th>
         <td> ⭐⭐ </td>
-    </tr>
-    <tr>
-        <th>KDoc</th>
         <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-size-field/index.html">SizeField</KDocLink> </td>
     </tr>
-</table>
-
-Compose の Size 値（幅、高さ）を編集するためのフィールドです。各寸法を独立して編集できます。
-
-```kt
-PreviewLab {
-    Canvas(
-        modifier = Modifier.size(200.dp)
-    ) {
-        // highlight-next-line
-        val canvasSize = fieldValue { SizeField("Canvas", Size(200f, 150f)) }
-        drawRect(Color.Blue, size = canvasSize)
-    }
-}
-```
-
-<EmbeddedPreviewLab 
- previewId="SizeFieldExample"
-/>
-
-### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-dp-size-field/index.html">DpSizeField</KDocLink>
-
-<table>
     <tr>
-        <th>対応する 型</th>
+        <td> DpSizeField </td>
         <td> `androidx.compose.ui.unit.DpSize` </td>
-    </tr>
-    <tr>
-        <th>利用頻度</th>
         <td> ⭐⭐ </td>
-    </tr>
-    <tr>
-        <th>KDoc</th>
         <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-dp-size-field/index.html">DpSizeField</KDocLink> </td>
     </tr>
 </table>
 
-Compose の DpSize 値（Dp 単位の幅、高さ）を編集するためのフィールドです。
-
 ```kt
 PreviewLab {
-    Button(
-        onClick = { },
-        modifier = Modifier
+    Column {
+        // OffsetField: Float 単位の座標
+        Box(
+            modifier = Modifier
+                .size(100.dp)
+                .graphicsLayer {
+                    // highlight-next-line
+                    val offset = fieldValue { OffsetField("Position", Offset(50f, 100f)) }
+                    translationX = offset.x
+                    translationY = offset.y
+                }
+        )
+
+        // DpOffsetField: Dp 単位の座標
+        Text(
+            text = "Positioned Text",
+            modifier = Modifier
+                // highlight-next-line
+                .offset(fieldValue { DpOffsetField("Text Offset", DpOffset(16.dp, 8.dp)) })
+        )
+
+        // SizeField: Float 単位のサイズ
+        Canvas(
+            modifier = Modifier.size(200.dp)
+        ) {
             // highlight-next-line
-            .size(fieldValue { DpSizeField("Button Size", DpSize(120.dp, 48.dp)) })
-    ) {
-        Text("Sized Button")
+            val canvasSize = fieldValue { SizeField("Canvas Size", Size(200f, 150f)) }
+            drawRect(Color.Blue, size = canvasSize)
+        }
+
+        // DpSizeField: Dp 単位のサイズ
+        Button(
+            onClick = { },
+            modifier = Modifier
+                // highlight-next-line
+                .size(fieldValue { DpSizeField("Button Size", DpSize(120.dp, 48.dp)) })
+        ) {
+            Text("Sized Button")
+        }
     }
 }
 ```
 
 <EmbeddedPreviewLab 
- previewId="DpSizeFieldExample"
+ previewId="OffsetAndSizeFieldExample"
 />
 
 ### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-modifier-field/index.html">ModifierField</KDocLink>

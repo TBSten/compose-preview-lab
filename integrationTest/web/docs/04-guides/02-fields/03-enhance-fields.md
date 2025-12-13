@@ -190,6 +190,23 @@ val timeout: Int? = fieldValue {
 複数の Field を合体して、1つの Field として扱うことができます。
 複数のプロパティを持つ data class に対応する、完全に操作可能な Field を簡単に作成することができます。
 
+**1つのフィールドを変換する例：**
+
+```kt
+data class UserId(val value: String)
+
+val userId: UserId = fieldValue {
+    combined(
+        label = "User ID",
+        field1 = StringField("ID", "user-001"),
+        combine = { id -> UserId(id) },
+        split = { splitedOf(it.value) }
+    )
+}
+```
+
+**複数のフィールドを結合する例：**
+
 ```kt
 data class MyUiState(
     val title: String,
@@ -218,7 +235,7 @@ val uiState = fieldValue {
 
 - `combine` は それぞれの Field の値 -> 合体した値に変換する関数です。それぞれの Field の値から現在の CombinedField の値を取得するために
 - `split` は 合体した値 -> それぞれの Field に分割する関数です。それぞれの編集 UI を表示する際に使用されます。
-- 標準では CombinedField2~10 まで用意されているため最大10個まで合体させることができます。11個以上の場合はライブラリの CombinedField 実装を参考に独自実装するか、型安全性が失われるものの任意の Field を合体させることができる CombinedField 合体する Field を List を受け取るバージョンの CombinedField を利用してください。
+- 標準では `combined` 関数が CombinedField1~10 まで用意されているため最大10個まで合体させることができます。11個以上の場合はライブラリの CombinedField 実装を参考に独自実装するか、型安全性が失われるものの任意の Field を合体させることができる CombinedField 合体する Field を List を受け取るバージョンの CombinedField を利用してください。
 
 :::warning
 CombinedField は深くネストさせたり、あまりに多い数のプロパティがあると編集 UI が非常に使いづらくなってしまいます。

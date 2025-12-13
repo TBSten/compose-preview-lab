@@ -18,6 +18,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -50,11 +51,12 @@ import me.tbsten.compose.preview.lab.field.ComposableFieldValue
 import me.tbsten.compose.preview.lab.field.DpOffsetField
 import me.tbsten.compose.preview.lab.field.DpSizeField
 import me.tbsten.compose.preview.lab.field.EnumField
+import me.tbsten.compose.preview.lab.field.FixedField
 import me.tbsten.compose.preview.lab.field.FloatField
 import me.tbsten.compose.preview.lab.field.IntField
 import me.tbsten.compose.preview.lab.field.ModifierField
+import me.tbsten.compose.preview.lab.field.PolymorphicField
 import me.tbsten.compose.preview.lab.field.SelectableField
-import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.field.SpField
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.combined
@@ -208,6 +210,37 @@ enum class PreviewsForUiDebug(
                                         }
                                     }",
                                 )
+                            }
+                            item {
+                                val state =
+                                    fieldValue {
+                                        PolymorphicField<MyState>(
+                                            label = "state",
+                                            initialValue = MyState.Loading,
+                                            fields = listOf(
+                                                FixedField("Loading", MyState.Loading),
+                                                combined(
+                                                    label = "Stable",
+                                                    field1 = StringField("data", "✅ Success !"),
+                                                    combine = { data -> MyState.Stable(data = data) },
+                                                    split = { splitedOf(it.data) },
+                                                ),
+                                                combined(
+                                                    label = "Error",
+                                                    field1 = StringField("message", "⚠️ オフラインです"),
+                                                    combine = { message -> MyState.Error(message = message) },
+                                                    split = { splitedOf(it.message) },
+                                                ),
+                                            ),
+                                        )
+                                    }
+
+                                Text("state: ${state::class.simpleName}")
+                                when (state) {
+                                    MyState.Loading -> CircularProgressIndicator()
+                                    is MyState.Stable -> Text("Stable: data = ${state.data}", color = Color.Green)
+                                    is MyState.Error -> Text("Error: message = ${state.message}", color = Color.Red)
+                                }
                             }
                             header("With Hint")
                             item {
@@ -565,6 +598,12 @@ private enum class MyEnum {
     G,
     H,
     I,
+}
+
+private sealed interface MyState {
+    data object Loading : MyState
+    data class Stable(val data: String) : MyState
+    data class Error(val message: String) : MyState
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

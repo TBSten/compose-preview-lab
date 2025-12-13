@@ -121,6 +121,85 @@ open class CombinedField<Base, Value>(
     }
 }
 
+// CombinedField1
+
+/**
+ * Data class that holds a single value split from a combined field.
+ *
+ * @param A Type of the value
+ * @param first The split value
+ */
+data class Splited1<A>(val first: A)
+
+/**
+ * Creates a [Splited1] instance containing a single value.
+ *
+ * @param A Type of the value
+ * @param first The value
+ * @return A new [Splited1] instance
+ */
+fun <A> splitedOf(first: A) = Splited1(first)
+
+open class CombinedField1<A, Value>(
+    label: String,
+    field1: MutablePreviewLabField<A>,
+    private val combine: (A) -> Value,
+    private val split: (Value) -> Splited1<A>,
+) : CombinedField<Any?, Value>(
+    label = label,
+    fields = listOf(field1),
+    combine = {
+        @Suppress("UNCHECKED_CAST")
+        combine(it[0] as A)
+    },
+    split = { v ->
+        val s = split(v)
+        listOf(s.first)
+    },
+)
+
+/**
+ * Creates a combined field from a single sub-field with transformation.
+ *
+ * # Usage
+ *
+ * ```kotlin
+ * // Wrapping a single field with transformation
+ * data class UserId(val value: String)
+ *
+ * @Preview
+ * @Composable
+ * fun UserIdFieldPreview() = PreviewLab {
+ *     val userId: UserId = fieldValue {
+ *         combined(
+ *             label = "User ID",
+ *             field1 = StringField("ID", "user-001"),
+ *             combine = { id -> UserId(id) },
+ *             split = { splitedOf(it.value) }
+ *         )
+ *     }
+ *
+ *     Text("User ID: ${userId.value}")
+ * }
+ * ```
+ *
+ * @param label Display label for the combined field
+ * @param field1 The sub-field
+ * @param combine Function to transform the field value into the composite value
+ * @param split Function to extract the field value from the composite value
+ */
+fun <A, Value> combined(
+    label: String,
+    field1: MutablePreviewLabField<A>,
+    combine: (A) -> Value,
+    split: (Value) -> Splited1<A>,
+) = CombinedField1(
+    label = label,
+    field1 = field1,
+    combine = combine,
+    split = split,
+)
+
 // CombinedField2
 
 /**
