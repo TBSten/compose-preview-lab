@@ -14,14 +14,16 @@ import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.PreviewLabField
 import me.tbsten.compose.preview.lab.ui.components.SelectButton
 
+fun <Value> sameType(fields: List<PreviewLabField<out Value>>): (Value) -> PreviewLabField<out Value> = { value: Value ->
+    fields.firstOrNull { it.value::class.isInstance(value) }
+        ?: error("No field found for value: $value")
+}
+
 open class PolymorphicField<Value>(
     label: String,
     initialValue: Value,
     private val fields: List<PreviewLabField<out Value>>,
-    private val valueToField: (Value) -> PreviewLabField<out Value> = { value ->
-        fields.firstOrNull { it.value::class.isInstance(value) }
-            ?: error("No field found for value: $value")
-    },
+    private val valueToField: (Value) -> PreviewLabField<out Value> = sameType(fields),
 ) : MutablePreviewLabField<Value>(
     label = label,
     initialValue = initialValue,
@@ -60,12 +62,12 @@ open class PolymorphicField<Value>(
     }
 }
 
-class FixedField<Value>(label: String, value: Value, private val valueCodeProvider: (() -> String)? = null,) :
+class FixedField<Value>(label: String, value: Value, private val valueCodeProvider: (() -> String)? = null) :
     ImmutablePreviewLabField<Value>(
         label = label,
         initialValue = value,
     ) {
-    override fun valueCode(): String = valueCodeProvider?.invoke() ?: value.toString()
+    override fun valueCode() = valueCodeProvider?.invoke() ?: super.valueCode()
 
     @Composable
     override fun Content() {
