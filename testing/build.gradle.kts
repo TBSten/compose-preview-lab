@@ -60,6 +60,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core)
+            implementation(projects.previewLab)
             implementation(projects.annotation)
             implementation(compose.runtime)
             implementation(compose.foundation)
