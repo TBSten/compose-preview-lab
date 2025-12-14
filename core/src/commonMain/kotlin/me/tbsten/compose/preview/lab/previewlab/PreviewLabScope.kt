@@ -18,6 +18,8 @@ import me.tbsten.compose.preview.lab.PreviewLabField
  */
 @OptIn(ExperimentalTime::class)
 interface PreviewLabScope {
+    val state: PreviewLabState
+
     // field methods
 
     /**
@@ -81,7 +83,7 @@ interface PreviewLabScope {
     class FieldBuilderScope
 }
 
-internal class PreviewLabStateScope(val state: PreviewLabState) : PreviewLabScope {
+internal class PreviewLabStateScope(override val state: PreviewLabState) : PreviewLabScope {
     internal var onEffectHandler: (Effect) -> Unit = {}
 
     // field methods
