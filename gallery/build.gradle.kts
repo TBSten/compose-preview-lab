@@ -88,11 +88,11 @@ kotlin {
 }
 
 android {
-    namespace = "me.tbsten.compose.preview.lab"
+    namespace = "me.tbsten.compose.preview.lab.gallery"
     compileSdk = 36
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -104,7 +104,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
         targetSdk = 36
 
         applicationId = "me.tbsten.compose.preview.lab.sample.androidApp"
