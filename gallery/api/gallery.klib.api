@@ -1,0 +1,101 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <me.tbsten.compose.preview.lab:gallery>
+abstract interface me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryNavigator { // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryNavigator|null[0]
+    abstract fun back() // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryNavigator.back|back(){}[0]
+    abstract fun navigate(kotlin/String) // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryNavigator.navigate|navigate(kotlin.String){}[0]
+}
+
+final class me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState { // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState|null[0]
+    constructor <init>(kotlin/Pair<kotlin/String, me.tbsten.compose.preview.lab/PreviewLabPreview>? = ...) // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.<init>|<init>(kotlin.Pair<kotlin.String,me.tbsten.compose.preview.lab.PreviewLabPreview>?){}[0]
+
+    final val selectedPreviews // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.selectedPreviews|{}selectedPreviews[0]
+        final fun <get-selectedPreviews>(): kotlin.collections/List<me.tbsten.compose.preview.lab.gallery/SelectedPreview> // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.selectedPreviews.<get-selectedPreviews>|<get-selectedPreviews>(){}[0]
+
+    final var query // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.query|{}query[0]
+        final fun <get-query>(): kotlin/String // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.query.<get-query>|<get-query>(){}[0]
+        final fun <set-query>(kotlin/String) // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.query.<set-query>|<set-query>(kotlin.String){}[0]
+
+    final fun addToComparePanel(kotlin/String, me.tbsten.compose.preview.lab/PreviewLabPreview) // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.addToComparePanel|addToComparePanel(kotlin.String;me.tbsten.compose.preview.lab.PreviewLabPreview){}[0]
+    final fun onQueryChange(kotlin/String) // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.onQueryChange|onQueryChange(kotlin.String){}[0]
+    final fun removeFromComparePanel(kotlin/Int) // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.removeFromComparePanel|removeFromComparePanel(kotlin.Int){}[0]
+    final fun select(kotlin/String, me.tbsten.compose.preview.lab/PreviewLabPreview) // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.select|select(kotlin.String;me.tbsten.compose.preview.lab.PreviewLabPreview){}[0]
+    final fun unselect() // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.unselect|unselect(){}[0]
+}
+
+final class me.tbsten.compose.preview.lab.gallery/SelectedPreview { // me.tbsten.compose.preview.lab.gallery/SelectedPreview|null[0]
+    constructor <init>(kotlin/String, me.tbsten.compose.preview.lab/PreviewLabPreview, kotlin/String = ...) // me.tbsten.compose.preview.lab.gallery/SelectedPreview.<init>|<init>(kotlin.String;me.tbsten.compose.preview.lab.PreviewLabPreview;kotlin.String){}[0]
+
+    final val groupName // me.tbsten.compose.preview.lab.gallery/SelectedPreview.groupName|{}groupName[0]
+        final fun <get-groupName>(): kotlin/String // me.tbsten.compose.preview.lab.gallery/SelectedPreview.groupName.<get-groupName>|<get-groupName>(){}[0]
+    final val preview // me.tbsten.compose.preview.lab.gallery/SelectedPreview.preview|{}preview[0]
+        final fun <get-preview>(): me.tbsten.compose.preview.lab/PreviewLabPreview // me.tbsten.compose.preview.lab.gallery/SelectedPreview.preview.<get-preview>|<get-preview>(){}[0]
+    final val title // me.tbsten.compose.preview.lab.gallery/SelectedPreview.title|{}title[0]
+        final fun <get-title>(): kotlin/String // me.tbsten.compose.preview.lab.gallery/SelectedPreview.title.<get-title>|<get-title>(){}[0]
+
+    final fun equals(kotlin/Any?): kotlin/Boolean // me.tbsten.compose.preview.lab.gallery/SelectedPreview.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // me.tbsten.compose.preview.lab.gallery/SelectedPreview.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // me.tbsten.compose.preview.lab.gallery/SelectedPreview.toString|toString(){}[0]
+
+    final object Companion { // me.tbsten.compose.preview.lab.gallery/SelectedPreview.Companion|null[0]
+        final fun from(kotlin/Pair<kotlin/String, me.tbsten.compose.preview.lab/PreviewLabPreview>): me.tbsten.compose.preview.lab.gallery/SelectedPreview // me.tbsten.compose.preview.lab.gallery/SelectedPreview.Companion.from|from(kotlin.Pair<kotlin.String,me.tbsten.compose.preview.lab.PreviewLabPreview>){}[0]
+    }
+}
+
+final object me.tbsten.compose.preview.lab.gallery/NoOpPreviewLabGalleryNavigator : me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryNavigator { // me.tbsten.compose.preview.lab.gallery/NoOpPreviewLabGalleryNavigator|null[0]
+    final fun back() // me.tbsten.compose.preview.lab.gallery/NoOpPreviewLabGalleryNavigator.back|back(){}[0]
+    final fun navigate(kotlin/String) // me.tbsten.compose.preview.lab.gallery/NoOpPreviewLabGalleryNavigator.navigate|navigate(kotlin.String){}[0]
+}
+
+final const val me.tbsten.compose.preview.lab.gallery/AllGroupName // me.tbsten.compose.preview.lab.gallery/AllGroupName|{}AllGroupName[0]
+    final fun <get-AllGroupName>(): kotlin/String // me.tbsten.compose.preview.lab.gallery/AllGroupName.<get-AllGroupName>|<get-AllGroupName>(){}[0]
+
+final val me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_array$stableprop // me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_array$stableprop|#static{}me_tbsten_compose_preview_lab_gallery_generated_resources_Res_array$stableprop[0]
+final val me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_drawable$stableprop // me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_drawable$stableprop|#static{}me_tbsten_compose_preview_lab_gallery_generated_resources_Res_drawable$stableprop[0]
+final val me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_font$stableprop // me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_font$stableprop|#static{}me_tbsten_compose_preview_lab_gallery_generated_resources_Res_font$stableprop[0]
+final val me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_plurals$stableprop // me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_plurals$stableprop|#static{}me_tbsten_compose_preview_lab_gallery_generated_resources_Res_plurals$stableprop[0]
+final val me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_string$stableprop // me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_string$stableprop|#static{}me_tbsten_compose_preview_lab_gallery_generated_resources_Res_string$stableprop[0]
+final val me.tbsten.compose.preview.lab.gallery.previewlist/me_tbsten_compose_preview_lab_gallery_previewlist_PreviewTreeNode_Group$stableprop // me.tbsten.compose.preview.lab.gallery.previewlist/me_tbsten_compose_preview_lab_gallery_previewlist_PreviewTreeNode_Group$stableprop|#static{}me_tbsten_compose_preview_lab_gallery_previewlist_PreviewTreeNode_Group$stableprop[0]
+final val me.tbsten.compose.preview.lab.gallery.previewlist/me_tbsten_compose_preview_lab_gallery_previewlist_PreviewTreeNode_Preview$stableprop // me.tbsten.compose.preview.lab.gallery.previewlist/me_tbsten_compose_preview_lab_gallery_previewlist_PreviewTreeNode_Preview$stableprop|#static{}me_tbsten_compose_preview_lab_gallery_previewlist_PreviewTreeNode_Preview$stableprop[0]
+final val me.tbsten.compose.preview.lab.gallery/LocalPreviewLabGalleryNavigator // me.tbsten.compose.preview.lab.gallery/LocalPreviewLabGalleryNavigator|{}LocalPreviewLabGalleryNavigator[0]
+    final fun <get-LocalPreviewLabGalleryNavigator>(): androidx.compose.runtime/ProvidableCompositionLocal<me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryNavigator?> // me.tbsten.compose.preview.lab.gallery/LocalPreviewLabGalleryNavigator.<get-LocalPreviewLabGalleryNavigator>|<get-LocalPreviewLabGalleryNavigator>(){}[0]
+final val me.tbsten.compose.preview.lab.gallery/me_tbsten_compose_preview_lab_gallery_NoOpPreviewLabGalleryNavigator$stableprop // me.tbsten.compose.preview.lab.gallery/me_tbsten_compose_preview_lab_gallery_NoOpPreviewLabGalleryNavigator$stableprop|#static{}me_tbsten_compose_preview_lab_gallery_NoOpPreviewLabGalleryNavigator$stableprop[0]
+final val me.tbsten.compose.preview.lab.gallery/me_tbsten_compose_preview_lab_gallery_PreviewLabGalleryState$stableprop // me.tbsten.compose.preview.lab.gallery/me_tbsten_compose_preview_lab_gallery_PreviewLabGalleryState$stableprop|#static{}me_tbsten_compose_preview_lab_gallery_PreviewLabGalleryState$stableprop[0]
+final val me.tbsten.compose.preview.lab.gallery/me_tbsten_compose_preview_lab_gallery_SelectedPreview$stableprop // me.tbsten.compose.preview.lab.gallery/me_tbsten_compose_preview_lab_gallery_SelectedPreview$stableprop|#static{}me_tbsten_compose_preview_lab_gallery_SelectedPreview$stableprop[0]
+
+final fun me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_array$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_array$stableprop_getter|me_tbsten_compose_preview_lab_gallery_generated_resources_Res_array$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_drawable$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_drawable$stableprop_getter|me_tbsten_compose_preview_lab_gallery_generated_resources_Res_drawable$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_font$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_font$stableprop_getter|me_tbsten_compose_preview_lab_gallery_generated_resources_Res_font$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_plurals$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_plurals$stableprop_getter|me_tbsten_compose_preview_lab_gallery_generated_resources_Res_plurals$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_string$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.gallery.generated.resources/me_tbsten_compose_preview_lab_gallery_generated_resources_Res_string$stableprop_getter|me_tbsten_compose_preview_lab_gallery_generated_resources_Res_string$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.gallery.previewlist/me_tbsten_compose_preview_lab_gallery_previewlist_PreviewTreeNode_Group$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.gallery.previewlist/me_tbsten_compose_preview_lab_gallery_previewlist_PreviewTreeNode_Group$stableprop_getter|me_tbsten_compose_preview_lab_gallery_previewlist_PreviewTreeNode_Group$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.gallery.previewlist/me_tbsten_compose_preview_lab_gallery_previewlist_PreviewTreeNode_Preview$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.gallery.previewlist/me_tbsten_compose_preview_lab_gallery_previewlist_PreviewTreeNode_Preview$stableprop_getter|me_tbsten_compose_preview_lab_gallery_previewlist_PreviewTreeNode_Preview$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.gallery/PreviewLabGallery(kotlin.collections/List<me.tbsten.compose.preview.lab/PreviewLabPreview>, androidx.compose.ui/Modifier?, me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState?, me.tbsten.compose.preview.lab.previewlab.openfilehandler/OpenFileHandler<out kotlin/Any?>?, kotlin.collections/Map<kotlin/String, kotlin.collections/List<kotlin/String>>?, kotlin/Function3<kotlin.collections/Map<kotlin/String, kotlin.collections/List<me.tbsten.compose.preview.lab/PreviewLabPreview>>, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // me.tbsten.compose.preview.lab.gallery/PreviewLabGallery|PreviewLabGallery(kotlin.collections.List<me.tbsten.compose.preview.lab.PreviewLabPreview>;androidx.compose.ui.Modifier?;me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState?;me.tbsten.compose.preview.lab.previewlab.openfilehandler.OpenFileHandler<out|kotlin.Any?>?;kotlin.collections.Map<kotlin.String,kotlin.collections.List<kotlin.String>>?;kotlin.Function3<kotlin.collections.Map<kotlin.String,kotlin.collections.List<me.tbsten.compose.preview.lab.PreviewLabPreview>>,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun me.tbsten.compose.preview.lab.gallery/PreviewListGrid(kotlin.collections/Map<kotlin/String, kotlin.collections/List<me.tbsten.compose.preview.lab/PreviewLabPreview>>, kotlin/Function2<kotlin/String, me.tbsten.compose.preview.lab/PreviewLabPreview, kotlin/Unit>, androidx.compose.foundation.layout/PaddingValues?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // me.tbsten.compose.preview.lab.gallery/PreviewListGrid|PreviewListGrid(kotlin.collections.Map<kotlin.String,kotlin.collections.List<me.tbsten.compose.preview.lab.PreviewLabPreview>>;kotlin.Function2<kotlin.String,me.tbsten.compose.preview.lab.PreviewLabPreview,kotlin.Unit>;androidx.compose.foundation.layout.PaddingValues?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun me.tbsten.compose.preview.lab.gallery/me_tbsten_compose_preview_lab_gallery_NoOpPreviewLabGalleryNavigator$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.gallery/me_tbsten_compose_preview_lab_gallery_NoOpPreviewLabGalleryNavigator$stableprop_getter|me_tbsten_compose_preview_lab_gallery_NoOpPreviewLabGalleryNavigator$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.gallery/me_tbsten_compose_preview_lab_gallery_PreviewLabGalleryState$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.gallery/me_tbsten_compose_preview_lab_gallery_PreviewLabGalleryState$stableprop_getter|me_tbsten_compose_preview_lab_gallery_PreviewLabGalleryState$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.gallery/me_tbsten_compose_preview_lab_gallery_SelectedPreview$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.gallery/me_tbsten_compose_preview_lab_gallery_SelectedPreview$stableprop_getter|me_tbsten_compose_preview_lab_gallery_SelectedPreview$stableprop_getter(){}[0]
+final inline fun (me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryNavigator?).me.tbsten.compose.preview.lab.gallery/navigateOr(kotlin/String, kotlin/Function0<kotlin/Unit>) // me.tbsten.compose.preview.lab.gallery/navigateOr|navigateOr@me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryNavigator?(kotlin.String;kotlin.Function0<kotlin.Unit>){}[0]
+
+// Targets: [js, wasmJs]
+final fun (kotlin.collections/List<me.tbsten.compose.preview.lab/PreviewLabPreview>).me.tbsten.compose.preview.lab/findBySearchParam(kotlin/String = ...): me.tbsten.compose.preview.lab/PreviewLabPreview? // me.tbsten.compose.preview.lab/findBySearchParam|findBySearchParam@kotlin.collections.List<me.tbsten.compose.preview.lab.PreviewLabPreview>(kotlin.String){}[0]
+
+// Targets: [js, wasmJs]
+final fun me.tbsten.compose.preview.lab/EmbeddedPreviewOrGallery(kotlin.collections/List<me.tbsten.compose.preview.lab/PreviewLabPreview>, androidx.compose.ui/Modifier?, kotlin/String?, kotlin/String?, me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState?, me.tbsten.compose.preview.lab.previewlab.openfilehandler/OpenFileHandler<out kotlin/Any?>?, kotlin.collections/Map<kotlin/String, kotlin.collections/List<kotlin/String>>?, kotlin/Function3<kotlin.collections/Map<kotlin/String, kotlin.collections/List<me.tbsten.compose.preview.lab/PreviewLabPreview>>, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // me.tbsten.compose.preview.lab/EmbeddedPreviewOrGallery|EmbeddedPreviewOrGallery(kotlin.collections.List<me.tbsten.compose.preview.lab.PreviewLabPreview>;androidx.compose.ui.Modifier?;kotlin.String?;kotlin.String?;me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState?;me.tbsten.compose.preview.lab.previewlab.openfilehandler.OpenFileHandler<out|kotlin.Any?>?;kotlin.collections.Map<kotlin.String,kotlin.collections.List<kotlin.String>>?;kotlin.Function3<kotlin.collections.Map<kotlin.String,kotlin.collections.List<me.tbsten.compose.preview.lab.PreviewLabPreview>>,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+
+// Targets: [js, wasmJs]
+final fun me.tbsten.compose.preview.lab/initialSelectedPreviewFromSearchParam(kotlin.collections/List<me.tbsten.compose.preview.lab/PreviewLabPreview>, kotlin/String = ..., kotlin/String = ...): kotlin/Pair<kotlin/String, me.tbsten.compose.preview.lab/PreviewLabPreview>? // me.tbsten.compose.preview.lab/initialSelectedPreviewFromSearchParam|initialSelectedPreviewFromSearchParam(kotlin.collections.List<me.tbsten.compose.preview.lab.PreviewLabPreview>;kotlin.String;kotlin.String){}[0]
+
+// Targets: [js, wasmJs]
+final fun me.tbsten.compose.preview.lab/isEmbedded(kotlin/String = ...): kotlin/Boolean // me.tbsten.compose.preview.lab/isEmbedded|isEmbedded(kotlin.String){}[0]
+
+// Targets: [js, wasmJs]
+final fun me.tbsten.compose.preview.lab/previewLabApplication(kotlin.collections/List<me.tbsten.compose.preview.lab/PreviewLabPreview>, kotlin.collections/Map<kotlin/String, kotlin.collections/List<kotlin/String>> = ..., me.tbsten.compose.preview.lab.previewlab.openfilehandler/OpenFileHandler<out kotlin/Any?>? = ..., me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState = ..., org.w3c.dom/HTMLElement = ...) // me.tbsten.compose.preview.lab/previewLabApplication|previewLabApplication(kotlin.collections.List<me.tbsten.compose.preview.lab.PreviewLabPreview>;kotlin.collections.Map<kotlin.String,kotlin.collections.List<kotlin.String>>;me.tbsten.compose.preview.lab.previewlab.openfilehandler.OpenFileHandler<out|kotlin.Any?>?;me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState;org.w3c.dom.HTMLElement){}[0]
+
+// Targets: [js, wasmJs]
+final fun me.tbsten.compose.preview.lab/renderPreviewLabPreview(org.w3c.dom/Element, me.tbsten.compose.preview.lab/PreviewLabPreview, me.tbsten.compose.preview.lab.previewlab.openfilehandler/OpenFileHandler<out kotlin/Any?>? = ..., me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryNavigator = ...): kotlin/Function0<kotlin/Unit> // me.tbsten.compose.preview.lab/renderPreviewLabPreview|renderPreviewLabPreview(org.w3c.dom.Element;me.tbsten.compose.preview.lab.PreviewLabPreview;me.tbsten.compose.preview.lab.previewlab.openfilehandler.OpenFileHandler<out|kotlin.Any?>?;me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryNavigator){}[0]

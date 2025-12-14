@@ -67,17 +67,11 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.ui)
             implementation(compose.components.uiToolingPreview)
-            implementation("org.jetbrains.compose.material:material-ripple:${libs.versions.compose.get()}")
-            implementation(libs.dokar3Sonner)
             // TODO migrate retain { } (compose runtime api)
             implementation("io.github.takahirom.rin:rin:0.3.0")
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
-        }
-        jvmTest.dependencies {
-            implementation(libs.kotestProperty)
-            implementation(libs.kotlinxCoroutinesTest)
         }
         androidMain.dependencies {
             implementation(compose.uiTooling)
@@ -108,7 +102,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

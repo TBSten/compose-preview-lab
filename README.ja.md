@@ -30,17 +30,17 @@ Compose Multiplatformに対応しています。
 
 ## セットアップ
 
-<details>
-<summary> [推奨] Compose Multiplatformプロジェクト</summary>
-
-Compose Preview Labで`@Preview`を収集したいすべてのモジュールに対して、以下の設定を行ってください。
-
 <a href="https://central.sonatype.com/artifact/me.tbsten.compose.preview.lab/core">
 <img src="https://img.shields.io/maven-central/v/me.tbsten.compose.preview.lab/core?label=compose-preview-lab" alt="Maven Central"/>
 </a>
 <a href="https://central.sonatype.com/artifact/com.google.devtools.ksp/symbol-processing-api">
 <img src="https://img.shields.io/maven-central/v/com.google.devtools.ksp/symbol-processing-api?label=ksp" alt="KSP Version"/>
 </a>
+
+<details>
+<summary> [推奨] Compose Multiplatformプロジェクト - Starterを使用した簡単セットアップ</summary>
+
+最も簡単な始め方です。`starter`モジュールはすべてのコアモジュール（core, field, ui, preview-lab, gallery）を単一の依存関係にバンドルしています。
 
 ```kts
 plugins {
@@ -53,8 +53,8 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            // ⭐️ Compose Preview Lab coreアーティファクトを追加
-            implementation("me.tbsten.compose.preview.lab:core:<compose-preview-lab-version>")
+            // ⭐️ Compose Preview Lab starterを追加（すべてのコアモジュールを含む）
+            implementation("me.tbsten.compose.preview.lab:starter:<compose-preview-lab-version>")
         }
     }
 }
@@ -79,6 +79,60 @@ dependencies {
 </details>
 
 <details>
+<summary> Compose Multiplatformプロジェクト - 個別モジュール</summary>
+
+依存関係をきめ細かく制御したい場合は、starterの代わりに個別のモジュールを追加できます。
+
+```kts
+plugins {
+    // ⭐️ @Previewを収集するためにKSPを追加
+    id("com.google.devtools.ksp") version "<ksp-version>"
+    // ⭐️ Compose Preview Lab Gradleプラグインを追加
+    id("me.tbsten.compose.preview.lab") version "<compose-preview-lab-version>"
+}
+
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            // ⭐️ 必要に応じて個別モジュールを追加
+            implementation("me.tbsten.compose.preview.lab:core:<compose-preview-lab-version>")
+            implementation("me.tbsten.compose.preview.lab:field:<compose-preview-lab-version>")
+            implementation("me.tbsten.compose.preview.lab:ui:<compose-preview-lab-version>")
+            implementation("me.tbsten.compose.preview.lab:preview-lab:<compose-preview-lab-version>")
+            implementation("me.tbsten.compose.preview.lab:gallery:<compose-preview-lab-version>")
+        }
+    }
+}
+
+dependencies {
+    // ⭐️ Compose Preview Lab KSPプラグインを追加
+    val composePreviewLabKspPlugin =
+        "me.tbsten.compose.preview.lab:ksp-plugin:<compose-preview-lab-version>"
+    add("kspCommonMainMetadata", composePreviewLabKspPlugin)
+    // 各プラットフォーム
+    add("kspAndroid", composePreviewLabKspPlugin)
+    add("kspJvm", composePreviewLabKspPlugin)
+    add("kspJs", composePreviewLabKspPlugin)
+    add("kspWasmJs", composePreviewLabKspPlugin)
+    // iOSターゲット（必要に応じて）
+    // add("kspIosX64", composePreviewLabKspPlugin)
+    // add("kspIosArm64", composePreviewLabKspPlugin)
+    // add("kspIosSimulatorArm64", composePreviewLabKspPlugin)
+}
+```
+
+**利用可能なモジュール:**
+| モジュール | 説明 |
+|--------|-------------|
+| `core` | コア型とインターフェース（CollectedPreview, PreviewLabPreviewなど） |
+| `field` | インタラクティブなパラメータ編集のためのField API（StringField, IntFieldなど） |
+| `ui` | PreviewLabで使用される共通UIコンポーネント |
+| `preview-lab` | FieldとEvent統合を持つPreviewLab Composable |
+| `gallery` | プレビュー一覧を表示するPreviewLabGallery |
+
+</details>
+
+<details>
 <summary> Androidプロジェクト </summary>
 
 > 🚨 警告
@@ -87,13 +141,6 @@ dependencies {
 > Webでのブラウジングができないなど機能が大幅に制限されており、Compose Preview Labの利点を実感しにくい可能性があります。
 > Android専用のプロジェクトであっても、Compose Multiplatformの使用を検討してください。
 > この概念はCompose Preview Labに限らず、今後Composeを使用するすべてのプロジェクトで標準となるべきだと考えています。
-
-<a href="https://central.sonatype.com/artifact/me.tbsten.compose.preview.lab/core">
-<img src="https://img.shields.io/maven-central/v/me.tbsten.compose.preview.lab/core?label=compose-preview-lab" alt="Maven Central"/>
-</a>
-<a href="https://central.sonatype.com/artifact/com.google.devtools.ksp/symbol-processing-api">
-<img src="https://img.shields.io/maven-central/v/com.google.devtools.ksp/symbol-processing-api?label=ksp" alt="KSP Version"/>
-</a>
 
 ```kts
 plugins {
@@ -104,7 +151,8 @@ plugins {
 }
 
 dependencies {
-    implementation("me.tbsten.compose.preview.lab:core:<compose-preview-lab-version>")
+    // ⭐️ 簡単セットアップにはstarterを使用（必要に応じて個別モジュールも可）
+    implementation("me.tbsten.compose.preview.lab:starter:<compose-preview-lab-version>")
     ksp("me.tbsten.compose.preview.lab:ksp-plugin:<compose-preview-lab-version>")
 }
 ```

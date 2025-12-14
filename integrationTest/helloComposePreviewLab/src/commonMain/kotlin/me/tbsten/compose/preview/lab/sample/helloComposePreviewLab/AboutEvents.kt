@@ -35,7 +35,7 @@ import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.res
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.gallery.LocalPreviewLabGalleryNavigator
-import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
+import me.tbsten.compose.preview.lab.previewlab.openfilehandler.LocalOpenFileHandler
 import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabScope
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab

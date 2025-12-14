@@ -33,7 +33,7 @@ private fun Project.configurePublish(publishConvention: PublishConventionExtensi
         mavenPublishing {
             publishToMavenCentral()
 
-            if (!(gradle.startParameter.taskNames.contains("publishToMavenLocal"))) {
+            if (!(gradle.startParameter.taskNames.any { it.contains("publishToMavenLocal") })) {
                 signAllPublications()
             }
 

@@ -14,6 +14,10 @@ dokka {
 
 dependencies {
     dokka(projects.core)
+    dokka(projects.field)
+    dokka(projects.gallery)
+    dokka(projects.previewLab)
+    dokka(projects.ui)
     dokka(projects.annotation)
     dokka(projects.testing)
 }
