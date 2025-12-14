@@ -484,13 +484,15 @@ enum class PreviewsForUiDebug(
                             )
                         },
                         content = {
-                            fieldValue {
-                                ComposableField(
-                                    label = "Button.content",
-                                    initialValue = ComposableFieldValue.SimpleText,
-                                )
-                            }
-                                .invoke()
+                            val buttonContent =
+                                fieldValue {
+                                    ComposableField(
+                                        label = "Button.content",
+                                        initialValue = ComposableFieldValue.SimpleText,
+                                    )
+                                }
+
+                            buttonContent()
                         },
                     )
 
@@ -517,12 +519,15 @@ enum class PreviewsForUiDebug(
                         },
                         content = { innerPadding ->
                             Box(modifier = Modifier.padding(innerPadding)) {
-                                fieldValue {
-                                    ComposableField(
-                                        label = "Scaffold.content",
-                                        initialValue = ComposableFieldValue.BodyText,
-                                    )
-                                }.invoke()
+                                val scaffoldContent =
+                                    fieldValue {
+                                        ComposableField(
+                                            label = "Scaffold.content",
+                                            initialValue = ComposableFieldValue.BodyText,
+                                        )
+                                    }
+
+                                scaffoldContent()
                             }
                         },
                     )
