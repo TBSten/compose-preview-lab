@@ -10,7 +10,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
     androidTarget {
         // https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
         @Suppress("OPT_IN_USAGE")
@@ -37,7 +37,7 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation("me.tbsten.compose.preview.lab:core:${libs.versions.composePreviewLab.get()}")
+            implementation("me.tbsten.compose.preview.lab:starter:${libs.versions.composePreviewLab.get()}")
         }
 
         jvmTest.dependencies {
@@ -52,7 +52,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

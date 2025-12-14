@@ -7,9 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.LocalPreviewLabGalleryNavigator
+import me.tbsten.compose.preview.lab.gallery.LocalPreviewLabGalleryNavigator
 import me.tbsten.compose.preview.lab.field.StringField
-import me.tbsten.compose.preview.lab.navigateOr
+import me.tbsten.compose.preview.lab.gallery.navigateOr
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -26,12 +26,12 @@ fun MyButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun MyButtonPreview() = customizedPreviewLab {
-    val PreviewLabGalleryNavigator = LocalPreviewLabGalleryNavigator.current
+    val previewLabGalleryNavigator = LocalPreviewLabGalleryNavigator.current
 
     MyButton(
         text = fieldValue { StringField("MyButton.text", "Click Me") },
         onClick = {
-            PreviewLabGalleryNavigator.navigateOr(
+            previewLabGalleryNavigator.navigateOr(
                 id = "MyTextFieldPreview",
                 fallback = { onEvent("MyButton.onClick") },
             )

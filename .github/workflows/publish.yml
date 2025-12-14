@@ -3,39 +3,8 @@ on:
   release:
     types: [ released, prereleased ]
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version to release.'
-        required: true
 
 jobs:
-  publish-dokka:
-    name: Release dokka documentation
-    runs-on: ubuntu-latest
-    concurrency:
-      group: "pages"
-    permissions:
-      contents: write
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: Setup Java for Gradle
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
-      - name: Build Dokka Documentation
-        run: ./gradlew :core:dokkaGeneratePublicationHtml --no-configuration-cache
-      - name: Publish to Github Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./core/build/dokka/html
-          destination_dir: dokka/${{ github.event.release.tag_name }}/
-          keep_files: true
-
   publish-libraries:
     name: Release build and publish
     runs-on: macOS-latest

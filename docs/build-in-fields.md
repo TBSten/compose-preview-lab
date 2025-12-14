@@ -50,6 +50,10 @@ This section introduces Fields that are useful when creating custom Fields or ex
 |----------------------------------------------------------------------------------------------------|
 | <img src="" width="250">                                                                           |
 
+| [.withValueCode()](core/src/commonMain/kotlin/me/tbsten/compose/preview/lab/field/WithValueCodeField.kt) |
+|----------------------------------------------------------------------------------------------------------|
+| <img src="" width="250">                                                                                 |
+
 | [combined()](core/src/commonMain/kotlin/me/tbsten/compose/preview/lab/field/CombinedField.kt) |
 |-----------------------------------------------------------------------------------------------|
 | <img src="" width="250">                                                                      |

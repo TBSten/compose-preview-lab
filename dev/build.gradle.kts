@@ -1,6 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.reload.gradle.ComposeHotRun
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
@@ -46,7 +45,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.core)
+            implementation(projects.starter)
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -58,6 +58,12 @@ kotlin {
         }
 
         commonTest.dependencies {
+            implementation(projects.testing)
+            implementation(kotlin("test"))
+            implementation(libs.kotestProperty)
+        }
+
+        commonTest.dependencies {
             implementation(kotlin("test"))
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
@@ -66,6 +72,7 @@ kotlin {
         }
 
         jvmTest.dependencies {
+            implementation(projects.testing)
             implementation(compose.desktop.currentOs)
             implementation(compose.desktop.uiTestJUnit4)
         }
@@ -90,7 +97,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
         targetSdk = 36
 
         applicationId = "me.tbsten.compose.preview.lab.dev.androidApp"
@@ -130,10 +137,6 @@ compose.desktop {
     }
 }
 
-// https://github.com/JetBrains/compose-hot-reload
-composeCompiler {
-    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
-}
 tasks.register<ComposeHotRun>("runHot") {
     mainClass.set("MainKt")
 }

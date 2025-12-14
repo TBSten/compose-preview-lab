@@ -38,9 +38,16 @@ plugins {
 
 includeBuild("./buildLogic")
 include(":core")
+include(":field")
+include(":gallery")
+include(":preview-lab")
+include(":ui")
+include(":starter")
 include(":annotation")
 include(":ksp-plugin")
 include(":gradle-plugin")
+include(":testing")
+include(":dokkaDocs")
 // include(":intellij-plugin")
 
 // for dev

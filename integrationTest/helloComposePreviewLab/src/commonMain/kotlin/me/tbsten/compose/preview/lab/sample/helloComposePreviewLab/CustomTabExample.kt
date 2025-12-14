@@ -18,11 +18,11 @@ import androidx.compose.ui.unit.dp
 import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.Res
 import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.cover
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.PreviewLab
-import me.tbsten.compose.preview.lab.PreviewLabState
-import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.StringField
+import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
+import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -35,7 +35,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 object InfoTab : InspectorTab {
     override val title: String = "Info"
     override val icon: @Composable () -> Painter = { painterResource(Res.drawable.cover) }
-    override val content: @Composable (state: PreviewLabState) -> Unit = { state ->
+
+    @Composable
+    override fun InspectorTab.ContentContext.Content() {
         InfoTabContent(state)
     }
 }
@@ -106,7 +108,7 @@ private fun InfoTabContent(state: PreviewLabState) {
 @Preview
 @Composable
 private fun CustomTabExamplePreview() = PreviewLab(
-    additionalTabs = listOf(InfoTab, InfoTab),
+    inspectorTabs = InspectorTab.defaults + listOf(InfoTab, InfoTab),
 ) {
     Column(
         modifier = Modifier.padding(16.dp),

@@ -33,7 +33,7 @@ private fun Project.configurePublish(publishConvention: PublishConventionExtensi
         mavenPublishing {
             publishToMavenCentral()
 
-            if (!(gradle.startParameter.taskNames.contains("publishToMavenLocal"))) {
+            if (!(gradle.startParameter.taskNames.any { it.contains("publishToMavenLocal") })) {
                 signAllPublications()
             }
 
@@ -67,6 +67,8 @@ open class PublishConventionExtension {
     var groupId: String? = null
     var artifactId: String? = null
     var artifactName: String? = artifactId
+        get() = field ?: artifactId
+    var dokkaModuleName: String? = null
         get() = field ?: artifactId
 
     var version: String? = null

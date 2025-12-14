@@ -1,0 +1,5 @@
+public final class me/tbsten/compose/preview/lab/starter/ComposePreviewLabStarter {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/starter/ComposePreviewLabStarter;
+}
+

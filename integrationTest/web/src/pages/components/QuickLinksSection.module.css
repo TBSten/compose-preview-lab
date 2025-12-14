@@ -1,0 +1,271 @@
+/* Sections */
+.section {
+  padding: var(--section-spacing) 0;
+  opacity: 0;
+  transform: translateY(30px);
+  will-change: opacity, transform;
+  text-align: center;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fadeIn {
+  animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.sectionTitle {
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 3rem;
+  font-weight: 800;
+  background: linear-gradient(to right, var(--ifm-color-primary-light), var(--ifm-color-primary-lightest));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+[data-theme='light'] .sectionTitle {
+  background: linear-gradient(to right, var(--ifm-color-primary-dark), var(--ifm-color-primary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sectionDescription {
+  font-size: 1.2rem;
+  margin-bottom: 3rem;
+  opacity: 0.8;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+/* Quick Links Section: Mosaic Layout (Large + Small Cards) */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 1.5rem;
+  padding: 0 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* First card spans 2 columns and 2 rows (large) */
+.card:first-child {
+  grid-column: span 2;
+  grid-row: span 2;
+  padding: 4rem 3rem;
+  background: linear-gradient(135deg, var(--card-bg), rgba(168, 85, 247, 0.1));
+}
+
+/* Remaining cards are smaller */
+.card:not(:first-child) {
+  padding: 2rem 1.5rem;
+}
+
+@keyframes borderPulse {
+  0% {
+    border-color: var(--neon-accent);
+    box-shadow: 0 0 6px rgba(168, 85, 247, 0.32);
+  }
+  50% {
+    border-color: var(--ifm-color-primary-light);
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.45);
+  }
+  100% {
+    border-color: var(--neon-accent);
+    box-shadow: 0 0 6px rgba(168, 85, 247, 0.32);
+  }
+}
+
+@keyframes borderPulseLight {
+  0% {
+    border-color: var(--neon-accent);
+    box-shadow: 0 4px 10px rgba(147, 51, 234, 0.12);
+  }
+  50% {
+    border-color: var(--ifm-color-primary);
+    box-shadow: 0 4px 16px rgba(147, 51, 234, 0.22);
+  }
+  100% {
+    border-color: var(--neon-accent);
+    box-shadow: 0 4px 10px rgba(147, 51, 234, 0.12);
+  }
+}
+
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  transition: all var(--transition-fast);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-decoration: none !important;
+  color: inherit !important;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Card index number in the bottom-right (e.g., 01, 02...) */
+.card::before {
+  content: attr(data-index);
+  position: absolute;
+  /* あえて大きく右下にはみ出させて、overflow: hidden でクリップする */
+  right: -1.5rem;
+  bottom: -4.0rem;
+  font-size: 8rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--ifm-color-primary-lightest);
+  opacity: 0.12;
+  pointer-events: none;
+  transform: rotate(-10deg) scale(1);
+  filter: blur(4px);
+  transition:
+    transform 0.35s cubic-bezier(0.19, 1, 0.22, 1),
+    opacity 0.35s ease-out,
+    filter 0.35s ease-out;
+}
+
+.card:first-child::before {
+  font-size: 10rem;
+  opacity: 0.1;
+}
+
+/* ホバー時は数字もぐわーっと大きく・くっきりさせる */
+.card:hover::before {
+  transform: rotate(-10deg) scale(1.18);
+  opacity: 0.18;
+  filter: blur(2px);
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(168, 85, 247, 0.1),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.card:hover::after {
+  opacity: 1;
+}
+
+.card:hover {
+  transform: translateY(-6px) scale(1.01);
+  /* パルスはループさせつつ、変化量はかなり小さめに */
+  animation: borderPulse 2.4s ease-in-out infinite;
+  border-color: var(--neon-accent);
+}
+
+[data-theme='light'] .card:hover {
+  animation: borderPulseLight 2.8s ease-in-out infinite;
+  transform: translateY(-3px) scale(1.005); /* さらに控えめに */
+}
+
+/* Ensure link-specific hover styles don't override card styles */
+a.card:hover {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--ifm-color-primary-lightest);
+  font-weight: 700;
+}
+
+/* Larger heading for first card */
+.card:first-child h3 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+[data-theme='light'] .card h3 {
+  color: var(--ifm-color-primary-dark);
+}
+
+.card p {
+  font-size: 1rem;
+  line-height: 1.6;
+  opacity: 0.8;
+  flex-grow: 1;
+  margin: 0;
+}
+
+/* Larger text for first card */
+.card:first-child p {
+  font-size: 1.2rem;
+}
+
+@media screen and (max-width: 996px) {
+  .section {
+    padding: 4rem 0;
+  }
+  
+  .sectionTitle {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+  }
+
+  .card:first-child {
+    grid-column: span 2;
+    grid-row: span 1;
+    padding: 3rem 2rem;
+  }
+
+  .card:first-child h3 {
+    font-size: 1.75rem;
+  }
+
+  .card:first-child p {
+    font-size: 1.1rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card:first-child {
+    grid-column: span 1;
+  }
+
+  .card {
+    padding: 2rem 1.5rem;
+  }
+
+  .card:first-child {
+    padding: 2.5rem 2rem;
+  }
+}

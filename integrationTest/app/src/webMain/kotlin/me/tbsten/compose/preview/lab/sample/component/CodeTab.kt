@@ -1,0 +1,50 @@
+package me.tbsten.compose.preview.lab.sample.component
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
+import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.KotlinCodeBlock
+import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.createCodeBlockColor
+
+class CodeTab(code: String, override val title: String = "Code") : InspectorTab {
+    internal var code by mutableStateOf(code)
+
+    @Composable
+    override fun InspectorTab.ContentContext.Content() {
+        Column(
+            modifier = Modifier
+                .padding(8.dp)
+                .background(createCodeBlockColor(), shape = RoundedCornerShape(8.dp))
+                .verticalScroll(rememberScrollState()),
+        ) {
+            SelectionContainer {
+                KotlinCodeBlock(
+                    code = code,
+                    contentPadding = PaddingValues(8.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+internal fun rememberCodeTab(code: String) = remember {
+    CodeTab(
+        code = code,
+    )
+}.apply { this.code = code }

@@ -31,7 +31,7 @@ internal fun generateList(
         it.appendLine()
         it.appendLine(
             "${if (publicPreviewList) "public" else "internal"} " +
-                "object PreviewList : List<CollectedPreview> by listOf(",
+                "object PreviewList : List<CollectedPreview> by (listOf<CollectedPreview>(",
         )
         previews.forEach { preview ->
             it.appendLine("    // ${preview.fullBaseName}")
@@ -45,10 +45,20 @@ internal fun generateList(
             }
             it.appendLine("        filePath = ${str(filePath)},")
             it.appendLine("        startLineNumber = ${preview.startLineNumber ?: "null"},")
+            it.appendLine(
+                "        code = ${
+                    preview.code
+                        ?.replace("\\", "\\\\")
+                        ?.replace("\n", "\\n")
+                        ?.replace("\"", "\\\"")
+                        ?.replace("$", "\\$")
+                        ?.let { "\"$it\"" }
+                },",
+            )
             it.appendLine("    ) { ${preview.fullCopyName}() },")
         }
-        it.appendLine(") {")
-        previews.forEachIndexed { index, preview ->
+        it.appendLine(").sortedBy { it.displayName }) {")
+        previews.sortedBy { it.displayName }.forEachIndexed { index, preview ->
             val escapedId = preview.id.replace("`", "\\`").replace(".", "_").replace(" ", "_")
             it.appendLine("    val `$escapedId` get() = this[$index]")
         }

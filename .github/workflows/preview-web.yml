@@ -5,12 +5,45 @@ on:
       - main
 
 jobs:
-  deploy-to-web:
+  publish-dokka:
+    name: Release dokka documentation
+    runs-on: ubuntu-latest
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
+    permissions:
+      contents: write
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Setup Java for Gradle
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+      - name: Resolve version from Gradle
+        id: get_version
+        run: echo "version=$(./gradlew -q logVersion)" >> "$GITHUB_OUTPUT"
+      - name: Build Dokka Documentation
+        run: ./gradlew :dokkaDocs:dokkaGenerate
+      - name: Publish to Github Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dokkaDocs/build/dokka/html
+          destination_dir: dokka/${{ steps.get_version.outputs.version }}/
+          keep_files: true
+
+  deploy-web-documentation:
+    name: Deploy Web Documentation
     runs-on: ubuntu-latest
     permissions:
       contents: write
     concurrency:
-      group: pages-deploy
+      group: "pages"
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
       - name: Setup Java for Gradle
@@ -21,16 +54,24 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
+      - name: Setup npm
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: ./integrationTest/web/package-lock.json
+      - name: Setup safe-chain
+        run: |
+          npm i -g @aikidosec/safe-chain
+          safe-chain setup-ci
 
-      - run: mkdir ./public
+      - run: mkdir -p ./public
 
       - name: Build publish wasmJs contents
-        run: cd integrationTest && ./gradlew :app:wasmJsBrowserDistribution
-      - run: cp -r ./integrationTest/app/build/dist/wasmJs/productionExecutable ./public/wasmJs
-
-      - name: Build publish js contents
-        run: cd integrationTest && ./gradlew :app:jsBrowserDistribution
-      - run: cp -r ./integrationTest/app/build/dist/js/productionExecutable ./public/js
+        run: cd integrationTest && ./gradlew :app:buildProductionPreviewLabGallery
+      - run: echo 'config.baseUrl = "/compose-preview-lab/integrationTest/main/js"' >> ./integrationTest/web/docusaurus.config.ts
+      - run: cd integrationTest/web && npm ci && npm run build
+      - run: cp -r ./integrationTest/web/build ./public/js
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4

@@ -34,5 +34,11 @@ annotation class ExperimentalComposePreviewLabApi
 @Suppress("ExperimentalAnnotationRetention")
 @RequiresOptIn(message = "This API is for internal. It could change in the future without notice.")
 @Retention(AnnotationRetention.BINARY)
-@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)
+@Target(
+    AnnotationTarget.CLASS,
+    AnnotationTarget.FUNCTION,
+    AnnotationTarget.PROPERTY,
+    AnnotationTarget.CONSTRUCTOR,
+    AnnotationTarget.PROPERTY_SETTER,
+)
 annotation class InternalComposePreviewLabApi

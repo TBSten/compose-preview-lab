@@ -18,6 +18,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -41,8 +43,6 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.graphics.painter.Painter
-import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.event.withEvent
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.ColorField
@@ -51,9 +51,11 @@ import me.tbsten.compose.preview.lab.field.ComposableFieldValue
 import me.tbsten.compose.preview.lab.field.DpOffsetField
 import me.tbsten.compose.preview.lab.field.DpSizeField
 import me.tbsten.compose.preview.lab.field.EnumField
+import me.tbsten.compose.preview.lab.field.FixedField
 import me.tbsten.compose.preview.lab.field.FloatField
 import me.tbsten.compose.preview.lab.field.IntField
 import me.tbsten.compose.preview.lab.field.ModifierField
+import me.tbsten.compose.preview.lab.field.PolymorphicField
 import me.tbsten.compose.preview.lab.field.SelectableField
 import me.tbsten.compose.preview.lab.field.SpField
 import me.tbsten.compose.preview.lab.field.StringField
@@ -64,6 +66,8 @@ import me.tbsten.compose.preview.lab.field.nullable
 import me.tbsten.compose.preview.lab.field.provideDefaultCompositionLocalFields
 import me.tbsten.compose.preview.lab.field.splitedOf
 import me.tbsten.compose.preview.lab.field.withHint
+import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 
 enum class PreviewsForUiDebug(
     override val id: String,
@@ -206,6 +210,37 @@ enum class PreviewsForUiDebug(
                                         }
                                     }",
                                 )
+                            }
+                            item {
+                                val state =
+                                    fieldValue {
+                                        PolymorphicField<MyState>(
+                                            label = "state",
+                                            initialValue = MyState.Loading,
+                                            fields = listOf(
+                                                FixedField("Loading", MyState.Loading),
+                                                combined(
+                                                    label = "Stable",
+                                                    field1 = StringField("data", "✅ Success !"),
+                                                    combine = { data -> MyState.Stable(data = data) },
+                                                    split = { splitedOf(it.data) },
+                                                ),
+                                                combined(
+                                                    label = "Error",
+                                                    field1 = StringField("message", "⚠️ オフラインです"),
+                                                    combine = { message -> MyState.Error(message = message) },
+                                                    split = { splitedOf(it.message) },
+                                                ),
+                                            ),
+                                        )
+                                    }
+
+                                Text("state: ${state::class.simpleName}")
+                                when (state) {
+                                    MyState.Loading -> CircularProgressIndicator()
+                                    is MyState.Stable -> Text("Stable: data = ${state.data}", color = Color.Green)
+                                    is MyState.Error -> Text("Error: message = ${state.message}", color = Color.Red)
+                                }
                             }
                             header("With Hint")
                             item {
@@ -449,13 +484,15 @@ enum class PreviewsForUiDebug(
                             )
                         },
                         content = {
-                            fieldValue {
-                                ComposableField(
-                                    label = "Button.content",
-                                    initialValue = ComposableFieldValue.SimpleText,
-                                )
-                            }
-                                .invoke()
+                            val buttonContent =
+                                fieldValue {
+                                    ComposableField(
+                                        label = "Button.content",
+                                        initialValue = ComposableFieldValue.SimpleText,
+                                    )
+                                }
+
+                            buttonContent()
                         },
                     )
 
@@ -484,12 +521,15 @@ enum class PreviewsForUiDebug(
                         },
                         content = { innerPadding ->
                             Box(modifier = Modifier.padding(innerPadding)) {
-                                fieldValue {
-                                    ComposableField(
-                                        label = "Scaffold.content",
-                                        initialValue = ComposableFieldValue.BodyText,
-                                    )
-                                }.invoke()
+                                val scaffoldContent =
+                                    fieldValue {
+                                        ComposableField(
+                                            label = "Scaffold.content",
+                                            initialValue = ComposableFieldValue.BodyText,
+                                        )
+                                    }
+
+                                scaffoldContent()
                             }
                         },
                     )
@@ -502,10 +542,10 @@ enum class PreviewsForUiDebug(
         "Custom Inspector Tab Example",
         content = {
             PreviewLab(
-                additionalTabs = listOf(DebugInfoTab())
+                inspectorTabs = InspectorTab.defaults + listOf(DebugInfoTab()),
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
                 ) {
                     Text(
                         text = "Custom Inspector Tab Demo",
@@ -524,7 +564,7 @@ enum class PreviewsForUiDebug(
 
                     Button(
                         enabled = fieldValue { BooleanField("enabled", true) },
-                        onClick = { onEvent("button clicked") }
+                        onClick = { onEvent("button clicked") },
                     ) {
                         Text("Click Me")
                     }
@@ -567,6 +607,12 @@ private enum class MyEnum {
     I,
 }
 
+private sealed interface MyState {
+    data object Loading : MyState
+    data class Stable(val data: String) : MyState
+    data class Error(val message: String) : MyState
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SampleScreen(
@@ -584,7 +630,6 @@ private fun SampleScreen(
         TopAppBar(
             title = { Text(title) },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White.copy(alpha = 0.8f)),
-//            modifier = Modifier.layoutLab("TopAppBar"),
         )
     },
     modifier = modifier,
@@ -597,7 +642,6 @@ private fun DefaultSampleScreenContent(paddingValues: PaddingValues, onListItemC
         contentPadding = paddingValues.plus(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
-//            .layoutLab("LazyColumn")
             .background(
                 Brush.linearGradient(
                     0f to Color.Green,
@@ -613,7 +657,6 @@ private fun DefaultSampleScreenContent(paddingValues: PaddingValues, onListItemC
                 onClick = { onListItemClick(count) },
                 modifier = Modifier
                     .testTag("item:$count")
-//                    .layoutLab("Item: $count")
                     .fillMaxWidth(),
             ) {
                 Text(
@@ -647,13 +690,15 @@ private data class DebugInfoTab(
         // Using a simple colored box as icon instead of material icon
         androidx.compose.ui.graphics.painter.ColorPainter(Color.Green)
     },
-    override val content: @Composable (state: PreviewLabState) -> Unit = { state ->
+) : InspectorTab {
+    @Composable
+    override fun InspectorTab.ContentContext.Content() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Text(
                 text = "Custom Debug Tab",
@@ -675,7 +720,7 @@ private data class DebugInfoTab(
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp))
                     .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text(
                     text = "You can display:",
@@ -699,9 +744,9 @@ private data class DebugInfoTab(
 
             Text(
                 text = "Create your own InspectorTab by implementing the interface with:\n" +
-                      "• title: Display name for the tab\n" +
-                      "• icon: Composable icon painter\n" +
-                      "• content: Your custom UI",
+                    "• title: Display name for the tab\n" +
+                    "• icon: Composable icon painter\n" +
+                    "• content: Your custom UI",
                 style = MaterialTheme.typography.bodyMedium,
             )
 
@@ -709,10 +754,10 @@ private data class DebugInfoTab(
 
             Button(
                 onClick = { },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Text("Example Action Button")
             }
         }
     }
-) : InspectorTab
+}

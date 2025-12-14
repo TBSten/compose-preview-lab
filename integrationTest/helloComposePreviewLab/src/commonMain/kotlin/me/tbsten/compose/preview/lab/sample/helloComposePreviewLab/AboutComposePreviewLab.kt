@@ -44,8 +44,6 @@ import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
@@ -59,17 +57,18 @@ import androidx.compose.ui.unit.dp
 import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.Res
 import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.cover
 import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.icon_add_notes
+import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.icon_arrow_right_alt
+import compose_preview_lab_integration_test.hellocomposepreviewlab.generated.resources.icon_check
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
-import me.tbsten.compose.preview.lab.LocalPreviewLabGalleryNavigator
-import me.tbsten.compose.preview.lab.PreviewLab
-import me.tbsten.compose.preview.lab.PreviewLabState
-import me.tbsten.compose.preview.lab.component.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.ColorField
 import me.tbsten.compose.preview.lab.field.StringField
-import me.tbsten.compose.preview.lab.navigateOr
-import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
+import me.tbsten.compose.preview.lab.gallery.LocalPreviewLabGalleryNavigator
+import me.tbsten.compose.preview.lab.gallery.navigateOr
+import me.tbsten.compose.preview.lab.previewlab.openfilehandler.LocalOpenFileHandler
+import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.DocPage
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.IconBox
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.KotlinCodeBlock
@@ -184,7 +183,7 @@ private fun QuickSummarySection() = Column(
 ) {
     SectionHeadingText(
         text = "Quick Summary",
-        iconBox = { IconBox(color = MaterialTheme.colorScheme.primary, label = "✓") },
+        iconBox = { IconBox(color = MaterialTheme.colorScheme.primary, icon = painterResource(Res.drawable.icon_check)) },
     )
 
     Card(
@@ -286,7 +285,7 @@ private fun BeforeAfterSection() = Column(
                     @Preview
                     @Composable
                     private fun MyButtonPreview() = PreviewLab(
-                        additionalTabs = listOf(MyCustomTab()) // ← Custom tab!
+                        inspectorTabs = InspectorTab.defaults + listOf(MyCustomTab()) // ← Custom tab!
                     ) {
                         MyButton(
                             text = fieldValue { StringField("text", "Click Me !") },
@@ -302,7 +301,7 @@ private fun BeforeAfterSection() = Column(
                     ) {
                         PreviewLab(
                             isHeaderShow = false,
-                            additionalTabs = listOf(CustomizedInfoTab),
+                            inspectorTabs = InspectorTab.defaults + listOf(CustomizedInfoTab),
                             modifier = Modifier.height(450.dp),
                         ) {
                             val defaultButtonColor = MaterialTheme.colorScheme.primary
@@ -389,41 +388,45 @@ private fun BeforeAfterCodeSection(
     content: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(2.dp),
+    Card(
         modifier = modifier,
+        elevation = androidx.compose.material3.CardDefaults.elevatedCardElevation(
+            defaultElevation = 4.dp,
+        ),
     ) {
-        Text(
-            text = label,
-            color = labelColor,
-            style = MaterialTheme.typography.labelLarge,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .background(labelBackgroundColor, shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
-                .fillMaxWidth()
-                .padding(vertical = 8.dp, horizontal = 12.dp),
-        )
-
-        Box(
-            modifier = Modifier
-                .background(codeBackgroundColor)
-                .padding(16.dp)
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(4.dp)),
+        Column(
+            verticalArrangement = Arrangement.spacedBy(0.dp),
         ) {
-            KotlinCodeBlock(
-                code = code,
+            Text(
+                text = label,
+                color = labelColor,
+                style = MaterialTheme.typography.labelLarge,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .background(labelBackgroundColor)
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp, horizontal = 12.dp),
             )
-        }
 
-        Box(
-            modifier = Modifier
-                .border(4.dp, contentBorderColor)
-                .padding(4.dp)
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)),
-        ) {
-            content()
+            Box(
+                modifier = Modifier
+                    .background(codeBackgroundColor)
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+            ) {
+                KotlinCodeBlock(
+                    code = code,
+                )
+            }
+
+            Box(
+                modifier = Modifier
+                    .border(4.dp, contentBorderColor)
+                    .padding(4.dp)
+                    .fillMaxWidth(),
+            ) {
+                content()
+            }
         }
     }
 }
@@ -431,7 +434,9 @@ private fun BeforeAfterCodeSection(
 internal object CustomizedInfoTab : InspectorTab {
     override val title: String = "About"
     override val icon: @Composable (() -> Painter) = { painterResource(Res.drawable.icon_add_notes) }
-    override val content: @Composable ((state: PreviewLabState) -> Unit) = { _ ->
+
+    @Composable
+    override fun InspectorTab.ContentContext.Content() {
         SelectionContainer {
             Column(
                 modifier = Modifier
@@ -508,7 +513,12 @@ private fun NextActionSection() = Column(
 ) {
     SectionHeadingText(
         text = "Next Steps",
-        iconBox = { IconBox(color = MaterialTheme.colorScheme.primary, label = "→") },
+        iconBox = {
+            IconBox(
+                color = MaterialTheme.colorScheme.primary,
+                icon = painterResource(Res.drawable.icon_arrow_right_alt),
+            )
+        },
     )
 
     Text(
@@ -546,17 +556,10 @@ private fun NextActionSection() = Column(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            Box(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(50))
-                    .padding(12.dp),
-            ) {
-                Text(
-                    text = "→",
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
-            }
+            IconBox(
+                color = MaterialTheme.colorScheme.primaryContainer,
+                icon = painterResource(Res.drawable.icon_arrow_right_alt),
+            )
         }
     }
 
@@ -588,17 +591,10 @@ private fun NextActionSection() = Column(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            Box(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(50))
-                    .padding(12.dp),
-            ) {
-                Text(
-                    text = "→",
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
-            }
+            IconBox(
+                color = MaterialTheme.colorScheme.primaryContainer,
+                icon = painterResource(Res.drawable.icon_arrow_right_alt),
+            )
         }
     }
 }

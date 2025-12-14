@@ -15,7 +15,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
     androidTarget {
         // https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
         instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
@@ -24,13 +24,27 @@ kotlin {
     jvm()
 
     js {
+        outputModuleName = "compose-previewl-lab"
         browser()
         binaries.executable()
+        binaries.library()
+        generateTypeScriptDefinitions()
+
+        compilerOptions {
+            target = "es2015"
+        }
     }
 
     wasmJs {
+        outputModuleName = "compose-previewl-lab"
         browser()
         binaries.executable()
+        binaries.library()
+        generateTypeScriptDefinitions()
+
+        compilerOptions {
+            target = "es2015"
+        }
     }
 
     listOf(
@@ -44,6 +58,7 @@ kotlin {
         }
     }
 
+    applyDefaultHierarchyTemplate()
     sourceSets {
         commonMain.dependencies {
             api(projects.annotation)
@@ -52,8 +67,6 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.ui)
             implementation(compose.components.uiToolingPreview)
-            implementation("org.jetbrains.compose.material:material-ripple:${libs.versions.compose.get()}")
-            implementation(libs.dokar3Sonner)
             // TODO migrate retain { } (compose runtime api)
             implementation("io.github.takahirom.rin:rin:0.3.0")
         }
@@ -69,6 +82,18 @@ kotlin {
         jsMain.dependencies {
             implementation(compose.html.core)
         }
+
+        val otherJsMain by creating {
+            dependsOn(commonMain.get())
+        }
+        listOf(
+            androidMain,
+            iosMain,
+            jvmMain,
+            wasmJsMain,
+        ).forEach {
+            it.get().dependsOn(otherJsMain)
+        }
     }
 }
 
@@ -77,7 +102,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
