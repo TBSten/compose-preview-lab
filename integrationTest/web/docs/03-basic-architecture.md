@@ -73,6 +73,25 @@ PreviewLab(/* オプションの設定 */) { // this: PreviewLabScope
 Preview ごとに PreviewLab を囲う必要があります。
 裏を返せば Preview ごとに PreviewLab の詳細設定が可能であるため、特定の Preview では PreviewLab を使用しないなどの選択を柔軟にとることができます。
 
+## モジュール構成
+
+Compose Preview Lab は以下のモジュールで構成されています。
+
+| モジュール | 説明 |
+|--------|-------------|
+| `starter` | すべてのコアモジュールをバンドルしたスターターモジュール。簡単にセットアップしたい場合はこれを使用してください。 |
+| `core` | コア型とインターフェース（CollectedPreview, PreviewLabPreview など） |
+| `field` | インタラクティブなパラメータ編集のための Field API（StringField, IntField など） |
+| `ui` | PreviewLab で使用される共通 UI コンポーネント |
+| `preview-lab` | Field と Event 統合を持つ PreviewLab Composable |
+| `gallery` | プレビュー一覧を表示する PreviewLabGallery |
+
+:::tip 簡単セットアップ
+ほとんどのユースケースでは `starter` モジュールを使用することをお勧めします。`starter` は上記のすべてのコアモジュール（core, field, ui, preview-lab, gallery）を含んでいるため、1つの依存関係を追加するだけで始められます。
+
+依存関係をきめ細かく制御したい場合や、特定のモジュールのみを使用したい場合は、個別のモジュールを追加することもできます。
+:::
+
 ## Next Actions
 
 - Build Tooling のセットアップ方法を [Install](./install) のドキュメントで学習してください。

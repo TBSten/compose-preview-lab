@@ -16,9 +16,9 @@ import EmbeddedPreviewLab from '@site/src/components/EmbeddedPreviewLab';
 Compose Preview Lab を既存のプロジェクトに導入するための手順を説明します。ここでは主に **Kotlin Multiplatform** と **Android 単体プロジェクト** の両方をカバーします。
 
 :::info インストールの全体像
-- Gradle プラグイン（`me.tbsten.compose.preview.lab`）を追加する  
-- KSP プラグインを有効化する  
-- `core` ライブラリと `ksp-plugin` を依存関係に追加する  
+- Gradle プラグイン（`me.tbsten.compose.preview.lab`）を追加する
+- KSP プラグインを有効化する
+- `starter` ライブラリ（または個別モジュール）と `ksp-plugin` を依存関係に追加する
 - 必要に応じて `composePreviewLab { ... }` で挙動をカスタマイズする
 :::
 
@@ -34,7 +34,9 @@ Compose Preview Lab を既存のプロジェクトに導入するための手順
 
 ## 2. Kotlin Multiplatform プロジェクトへの導入（推奨）
 
-`build.gradle.kts`（KMP モジュール）に以下を追加します。
+### 2-0. Starter を使用した簡単セットアップ（推奨）
+
+最も簡単な始め方です。`starter` モジュールはすべてのコアモジュール（core, field, ui, preview-lab, gallery）を単一の依存関係にバンドルしています。
 
 ```kotlin title="build.gradle.kts"
 plugins {
@@ -64,8 +66,8 @@ kotlin {
                 implementation(compose.material3)
                 implementation(compose.components.uiToolingPreview)
 
-                // ✅ Compose Preview Lab 本体
-                implementation("me.tbsten.compose.preview.lab:core:<compose-preview-lab-version>")
+                // ✅ Compose Preview Lab starter（すべてのコアモジュールを含む）
+                implementation("me.tbsten.compose.preview.lab:starter:<compose-preview-lab-version>")
             }
         }
     }
@@ -77,10 +79,41 @@ dependencies {
     add("kspCommonMainMetadata", composePreviewLabKsp)
     add("kspAndroid", composePreviewLabKsp)
     add("kspJvm", composePreviewLabKsp)
-    add("kspJs", composePreviewLabksp)
-    add("kspWasmJs", composePreviewLabksp)
+    add("kspJs", composePreviewLabKsp)
+    add("kspWasmJs", composePreviewLabKsp)
 }
 ```
+
+### 個別モジュールを使用する場合
+
+依存関係をきめ細かく制御したい場合は、starter の代わりに個別のモジュールを追加できます。
+
+```kotlin title="build.gradle.kts"
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                // ✅ 必要に応じて個別モジュールを追加
+                implementation("me.tbsten.compose.preview.lab:core:<compose-preview-lab-version>")
+                implementation("me.tbsten.compose.preview.lab:field:<compose-preview-lab-version>")
+                implementation("me.tbsten.compose.preview.lab:ui:<compose-preview-lab-version>")
+                implementation("me.tbsten.compose.preview.lab:preview-lab:<compose-preview-lab-version>")
+                implementation("me.tbsten.compose.preview.lab:gallery:<compose-preview-lab-version>")
+            }
+        }
+    }
+}
+```
+
+**利用可能なモジュール:**
+
+| モジュール | 説明 |
+|--------|-------------|
+| `core` | コア型とインターフェース（CollectedPreview, PreviewLabPreview など） |
+| `field` | インタラクティブなパラメータ編集のための Field API（StringField, IntField など） |
+| `ui` | PreviewLab で使用される共通 UI コンポーネント |
+| `preview-lab` | Field と Event 統合を持つ PreviewLab Composable |
+| `gallery` | プレビュー一覧を表示する PreviewLabGallery |
 
 ### 2-1. `composePreviewLab` の設定（任意）
 
@@ -135,8 +168,8 @@ dependencies {
     implementation("androidx.compose.ui:ui:<compose-version>")
     implementation("androidx.compose.material3:material3:<version>")
 
-    // ✅ Compose Preview Lab 本体
-    implementation("me.tbsten.compose.preview.lab:core:<compose-preview-lab-version>")
+    // ✅ Compose Preview Lab starter（すべてのコアモジュールを含む）
+    implementation("me.tbsten.compose.preview.lab:starter:<compose-preview-lab-version>")
 
     // ✅ KSP プラグイン
     ksp("me.tbsten.compose.preview.lab:ksp-plugin:<compose-preview-lab-version>")

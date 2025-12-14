@@ -32,18 +32,17 @@ Compose Multiplatform is supported.
 
 ## Setup
 
-<details>
-<summary> [Recommended] Compose Multiplatform Project</summary>
-
-Please set up the following for all modules for which you want to collect `@Preview` using Compose
-Preview Lab.
-
 <a href="https://central.sonatype.com/artifact/me.tbsten.compose.preview.lab/core">
 <img src="https://img.shields.io/maven-central/v/me.tbsten.compose.preview.lab/core?label=compose-preview-lab" alt="Maven Central"/>
 </a>
 <a href="https://central.sonatype.com/artifact/com.google.devtools.ksp/symbol-processing-api">
 <img src="https://img.shields.io/maven-central/v/com.google.devtools.ksp/symbol-processing-api?label=ksp" alt="KSP Version"/>
 </a>
+
+<details>
+<summary> [Recommended] Compose Multiplatform Project - Simple Setup with Starter</summary>
+
+The easiest way to get started. The `starter` module bundles all core modules (core, field, ui, preview-lab, gallery) into a single dependency.
 
 ```kts
 plugins {
@@ -56,8 +55,8 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            // ⭐️ Add Compose Preview Lab core artifact
-            implementation("me.tbsten.compose.preview.lab:core:<compose-preview-lab-version>")
+            // ⭐️ Add Compose Preview Lab starter (includes all core modules)
+            implementation("me.tbsten.compose.preview.lab:starter:<compose-preview-lab-version>")
         }
     }
 }
@@ -82,6 +81,60 @@ dependencies {
 </details>
 
 <details>
+<summary> Compose Multiplatform Project - Individual Modules</summary>
+
+If you need fine-grained control over dependencies, you can add individual modules instead of the starter.
+
+```kts
+plugins {
+    // ⭐️ Add KSP for collect `@Preview`
+    id("com.google.devtools.ksp") version "<ksp-version>"
+    // ⭐️ Add Compose Preview Lab Gradle plugin
+    id("me.tbsten.compose.preview.lab") version "<compose-preview-lab-version>"
+}
+
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            // ⭐️ Add individual modules as needed
+            implementation("me.tbsten.compose.preview.lab:core:<compose-preview-lab-version>")
+            implementation("me.tbsten.compose.preview.lab:field:<compose-preview-lab-version>")
+            implementation("me.tbsten.compose.preview.lab:ui:<compose-preview-lab-version>")
+            implementation("me.tbsten.compose.preview.lab:preview-lab:<compose-preview-lab-version>")
+            implementation("me.tbsten.compose.preview.lab:gallery:<compose-preview-lab-version>")
+        }
+    }
+}
+
+dependencies {
+    // ⭐️ Add Compose Preview Lab KSP plugin
+    val composePreviewLabKspPlugin =
+        "me.tbsten.compose.preview.lab:ksp-plugin:<compose-preview-lab-version>"
+    add("kspCommonMainMetadata", composePreviewLabKspPlugin)
+    // each platform
+    add("kspAndroid", composePreviewLabKspPlugin)
+    add("kspJvm", composePreviewLabKspPlugin)
+    add("kspJs", composePreviewLabKspPlugin)
+    add("kspWasmJs", composePreviewLabKspPlugin)
+    // iOS targets (if needed)
+    // add("kspIosX64", composePreviewLabKspPlugin)
+    // add("kspIosArm64", composePreviewLabKspPlugin)
+    // add("kspIosSimulatorArm64", composePreviewLabKspPlugin)
+}
+```
+
+**Available modules:**
+| Module | Description |
+|--------|-------------|
+| `core` | Core types and interfaces (CollectedPreview, PreviewLabPreview, etc.) |
+| `field` | Field API for interactive parameter editing (StringField, IntField, etc.) |
+| `ui` | Common UI components used by PreviewLab |
+| `preview-lab` | PreviewLab Composable with Field and Event integration |
+| `gallery` | PreviewLabGallery for displaying preview lists |
+
+</details>
+
+<details>
 <summary> Android Project </summary>
 
 > 🚨 WARNING
@@ -94,13 +147,6 @@ dependencies {
 > I believe that this concept is not limited to Compose Preview Lab, but should be the norm for all
 > projects using Compose in the future.
 
-<a href="https://central.sonatype.com/artifact/me.tbsten.compose.preview.lab/core">
-<img src="https://img.shields.io/maven-central/v/me.tbsten.compose.preview.lab/core?label=compose-preview-lab" alt="Maven Central"/>
-</a>
-<a href="https://central.sonatype.com/artifact/com.google.devtools.ksp/symbol-processing-api">
-<img src="https://img.shields.io/maven-central/v/com.google.devtools.ksp/symbol-processing-api?label=ksp" alt="KSP Version"/>
-</a>
-
 ```kts
 plugins {
     // ⭐️ add ksp for collect `@Preview`
@@ -110,7 +156,8 @@ plugins {
 }
 
 dependencies {
-    implementation("me.tbsten.compose.preview.lab:core:<compose-preview-lab-version>")
+    // ⭐️ Use starter for simple setup (or individual modules if needed)
+    implementation("me.tbsten.compose.preview.lab:starter:<compose-preview-lab-version>")
     ksp("me.tbsten.compose.preview.lab:ksp-plugin:<compose-preview-lab-version>")
 }
 ```
