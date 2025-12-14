@@ -1,20 +1,30 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
-$dokka.location:me.tbsten.compose.preview.lab//previewLabApplication/#kotlin.collections.List[me.tbsten.compose.preview.lab.PreviewLabPreview]#kotlin.collections.Map[kotlin.String,kotlin.collections.List[kotlin.String]]#me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler[kotlin.Any?]?#me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState#org.w3c.dom.HTMLElement/PointingToDeclaration/core/me.tbsten.compose.preview.lab/[wasm-js]preview-lab-application.html
-$dokka.location:me.tbsten.compose.preview.lab//renderPreviewLabPreview/#org.w3c.dom.Element#me.tbsten.compose.preview.lab.PreviewLabPreview#me.tbsten.compose.preview.lab.openfilehandler.OpenFileHandler[kotlin.Any?]?#me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryNavigator/PointingToDeclaration/core/me.tbsten.compose.preview.lab/[wasm-js]render-preview-lab-preview.html
+$dokka.location:me.tbsten.compose.preview.lab//previewLabApplication/#kotlin.collections.List[me.tbsten.compose.preview.lab.PreviewLabPreview]#kotlin.collections.Map[kotlin.String,kotlin.collections.List[kotlin.String]]#me.tbsten.compose.preview.lab.previewlab.openfilehandler.OpenFileHandler[kotlin.Any?]?#me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState#org.w3c.dom.HTMLElement/PointingToDeclaration/gallery/me.tbsten.compose.preview.lab/[wasm-js]preview-lab-application.html
+$dokka.location:me.tbsten.compose.preview.lab//renderPreviewLabPreview/#org.w3c.dom.Element#me.tbsten.compose.preview.lab.PreviewLabPreview#me.tbsten.compose.preview.lab.previewlab.openfilehandler.OpenFileHandler[kotlin.Any?]?#me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryNavigator/PointingToDeclaration/gallery/me.tbsten.compose.preview.lab/[wasm-js]render-preview-lab-preview.html
 module:annotation
 me.tbsten.compose.preview.lab
 me.tbsten.compose.preview.lab.internal
 module:core
 me.tbsten.compose.preview.lab
-me.tbsten.compose.preview.lab.event
+me.tbsten.compose.preview.lab.util
+module:field
+me.tbsten.compose.preview.lab
 me.tbsten.compose.preview.lab.field
 me.tbsten.compose.preview.lab.field.component
 me.tbsten.compose.preview.lab.field.modifier
+module:gallery
+me.tbsten.compose.preview.lab
 me.tbsten.compose.preview.lab.gallery
-me.tbsten.compose.preview.lab.openfilehandler
+module:preview-lab
+me.tbsten.compose.preview.lab.event
+me.tbsten.compose.preview.lab.field
 me.tbsten.compose.preview.lab.previewlab
 me.tbsten.compose.preview.lab.previewlab.inspectorspane
+me.tbsten.compose.preview.lab.previewlab.openfilehandler
+module:testing
+me.tbsten.compose.preview.lab.testing
+module:ui
 me.tbsten.compose.preview.lab.ui
 me.tbsten.compose.preview.lab.ui.animation
 me.tbsten.compose.preview.lab.ui.components
@@ -24,6 +34,3 @@ me.tbsten.compose.preview.lab.ui.components.textfield
 me.tbsten.compose.preview.lab.ui.components.textfield.base
 me.tbsten.compose.preview.lab.ui.foundation
 me.tbsten.compose.preview.lab.ui.util
-me.tbsten.compose.preview.lab.util
-module:testing
-me.tbsten.compose.preview.lab.testing
