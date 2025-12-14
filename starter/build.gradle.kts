@@ -1,7 +1,6 @@
-@file:OptIn(ExperimentalKotlinGradlePluginApi::class, ExperimentalWasmDsl::class)
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
 
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
@@ -22,43 +21,21 @@ kotlin {
     jvm()
 
     js {
-        outputModuleName = "compose-preview-lab-starter"
         browser()
-        binaries.executable()
-        binaries.library()
-        generateTypeScriptDefinitions()
-
-        compilerOptions {
-            target = "es2015"
-        }
     }
 
     wasmJs {
-        outputModuleName = "compose-preview-lab-starter"
         browser()
-        binaries.executable()
-        binaries.library()
-        generateTypeScriptDefinitions()
-
-        compilerOptions {
-            target = "es2015"
-        }
     }
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64(),
-    ).forEach {
-        it.binaries.framework {
-            baseName = "ComposePreviewLabStarter"
-            isStatic = true
-        }
-    }
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
 
     applyDefaultHierarchyTemplate()
     sourceSets {
         commonMain.dependencies {
+            implementation(compose.runtime)
             api(projects.core)
             api(projects.field)
             api(projects.ui)
