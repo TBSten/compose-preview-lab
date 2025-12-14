@@ -51,7 +51,7 @@ import kotlinx.coroutines.flow.drop
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.WrapRange
 import me.tbsten.compose.preview.lab.field.wrap
-import me.tbsten.compose.preview.lab.gallery.LocalIsInPreviewLabGalleryCardBody
+import me.tbsten.compose.preview.lab.LocalIsInPreviewLabGalleryCardBody
 
 /**
  * Observes value changes of a [State] and invokes [onValueChange] when the value changes.

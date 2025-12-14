@@ -37,7 +37,7 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation("me.tbsten.compose.preview.lab:core:${libs.versions.composePreviewLab.get()}")
+            implementation("me.tbsten.compose.preview.lab:starter:${libs.versions.composePreviewLab.get()}")
         }
     }
 }

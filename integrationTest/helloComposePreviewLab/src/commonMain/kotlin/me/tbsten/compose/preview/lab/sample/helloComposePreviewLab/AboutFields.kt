@@ -49,7 +49,7 @@ import me.tbsten.compose.preview.lab.field.ModifierField
 import me.tbsten.compose.preview.lab.field.SelectableField
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.gallery.LocalPreviewLabGalleryNavigator
-import me.tbsten.compose.preview.lab.openfilehandler.LocalOpenFileHandler
+import me.tbsten.compose.preview.lab.previewlab.openfilehandler.LocalOpenFileHandler
 import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabScope
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
