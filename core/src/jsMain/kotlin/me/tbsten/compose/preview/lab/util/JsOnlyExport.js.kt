@@ -3,7 +3,7 @@
 package me.tbsten.compose.preview.lab.util
 
 @OptIn(ExperimentalJsExport::class)
-internal actual typealias JsOnlyExport = JsExport
+actual typealias JsOnlyExport = JsExport
 
 @OptIn(ExperimentalJsExport::class)
-internal actual typealias JsOnlyExportIgnore = JsExport.Ignore
+actual typealias JsOnlyExportIgnore = JsExport.Ignore
