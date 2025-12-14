@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.openfilehandler
+package me.tbsten.compose.preview.lab.previewlab.openfilehandler
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
