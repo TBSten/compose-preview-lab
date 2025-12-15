@@ -1,6 +1,15 @@
 public abstract interface annotation class me/tbsten/compose/preview/lab/AggregateToAll : java/lang/annotation/Annotation {
 }
 
+public abstract interface annotation class me/tbsten/compose/preview/lab/AutoGenerateField : java/lang/annotation/Annotation {
+	public abstract fun autoLabelByTypeName ()Z
+	public abstract fun name ()Ljava/lang/String;
+}
+
+public abstract interface annotation class me/tbsten/compose/preview/lab/AutoGenerateField$Container : java/lang/annotation/Annotation {
+	public abstract fun value ()[Lme/tbsten/compose/preview/lab/AutoGenerateField;
+}
+
 public abstract interface annotation class me/tbsten/compose/preview/lab/ComposePreviewLabOption : java/lang/annotation/Annotation {
 	public abstract fun displayName ()Ljava/lang/String;
 	public abstract fun id ()Ljava/lang/String;
@@ -15,6 +24,7 @@ public abstract interface annotation class me/tbsten/compose/preview/lab/Interna
 
 public final class me/tbsten/compose/preview/lab/internal/KspArg {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/internal/KspArg;
+	public static final field generateAutoField Ljava/lang/String;
 	public static final field generatePreviewAllList Ljava/lang/String;
 	public static final field generatePreviewList Ljava/lang/String;
 	public static final field previewsListPackage Ljava/lang/String;
