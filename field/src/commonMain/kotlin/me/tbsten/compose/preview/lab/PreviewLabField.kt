@@ -5,6 +5,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshotFlow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import me.tbsten.compose.preview.lab.field.DefaultFieldView
 
@@ -35,6 +38,8 @@ interface PreviewLabField<Value> {
     val initialValue: Value
     val value: Value
     val valueFlow: Flow<Value>
+
+    val coroutineScope: CoroutineScope
 
     /**
      * Returns a Kotlin code string representing the current value of this field.
@@ -131,6 +136,10 @@ interface PreviewLabField<Value> {
      */
     @Composable
     fun Content()
+
+    fun onCleared() {
+        coroutineScope.cancel()
+    }
 }
 
 /**
@@ -162,6 +171,8 @@ abstract class ImmutablePreviewLabField<Value> private constructor(
         }
 
     override val valueFlow: Flow<Value> = snapshotFlow { state.value }
+
+    override val coroutineScope = CoroutineScope(SupervisorJob())
 }
 
 /**
@@ -179,6 +190,8 @@ abstract class MutablePreviewLabField<Value> private constructor(
     MutableState<Value> by state {
 
     override val valueFlow: Flow<Value> = snapshotFlow { state.value }
+
+    override val coroutineScope = CoroutineScope(SupervisorJob())
 
     constructor(
         label: String,

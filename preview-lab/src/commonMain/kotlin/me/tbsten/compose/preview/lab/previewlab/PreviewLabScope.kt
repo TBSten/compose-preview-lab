@@ -17,8 +17,8 @@ import me.tbsten.compose.preview.lab.PreviewLabField
  * @see PreviewLabEvent
  */
 @OptIn(ExperimentalTime::class)
-interface PreviewLabScope {
-    val state: PreviewLabState
+class PreviewLabScope(val state: PreviewLabState) {
+    private var onEffectHandler: (Effect) -> Unit = {}
 
     // field methods
 
@@ -42,7 +42,16 @@ interface PreviewLabScope {
     fun <Value> fieldState(
         key: String? = null,
         builder: FieldBuilderScope.() -> MutablePreviewLabField<Value>,
-    ): MutableState<Value>
+    ): MutableState<Value> {
+        val field = remember(key1 = key) { builder(PreviewLabScope.FieldBuilderScope()) }
+        DisposableEffect(Unit) {
+            state.fields.add(field)
+            onDispose {
+                state.fields.remove(field)
+            }
+        }
+        return field
+    }
 
     /**
      * Creates a field that can be used to store and observe state in the Preview Lab.
@@ -59,7 +68,16 @@ interface PreviewLabScope {
      * ```
      */
     @Composable
-    fun <Value> fieldValue(key: String? = null, builder: FieldBuilderScope.() -> PreviewLabField<out Value>): Value
+    fun <Value> fieldValue(key: String? = null, builder: FieldBuilderScope.() -> PreviewLabField<out Value>): Value {
+        val field = remember(key1 = key) { builder(PreviewLabScope.FieldBuilderScope()) }
+        DisposableEffect(Unit) {
+            state.fields.add(field)
+            onDispose {
+                state.fields.remove(field)
+            }
+        }
+        return field.value
+    }
 
     /**
      * Records an event in the Preview Lab.
@@ -78,48 +96,7 @@ interface PreviewLabScope {
      * @param title The title of the event. This is used for the toast display and also appears in the event list on the Events tab.
      * @param description It will not appear on the toast, but it will appear on the event tab. If you have a lot of information, use description instead of title to make the debug UI easier to read.
      */
-    fun onEvent(title: String, description: String? = null)
-
-    class FieldBuilderScope
-}
-
-internal class PreviewLabStateScope(override val state: PreviewLabState) : PreviewLabScope {
-    internal var onEffectHandler: (Effect) -> Unit = {}
-
-    // field methods
-
-    @Composable
-    override fun <Value> fieldState(
-        key: String?,
-        builder: PreviewLabScope.FieldBuilderScope.() -> MutablePreviewLabField<Value>,
-    ): MutableState<Value> {
-        val field = remember(key1 = key) { builder(PreviewLabScope.FieldBuilderScope()) }
-        DisposableEffect(Unit) {
-            state.fields.add(field)
-            onDispose {
-                state.fields.remove(field)
-            }
-        }
-        return field
-    }
-
-    @Composable
-    override fun <Value> fieldValue(
-        key: String?,
-        builder: PreviewLabScope.FieldBuilderScope.() -> PreviewLabField<out Value>,
-    ): Value {
-        val field = remember(key1 = key) { builder(PreviewLabScope.FieldBuilderScope()) }
-        DisposableEffect(Unit) {
-            state.fields.add(field)
-            onDispose {
-                state.fields.remove(field)
-            }
-        }
-        return field.value
-    }
-
-    @OptIn(ExperimentalTime::class)
-    override fun onEvent(title: String, description: String?) {
+    fun onEvent(title: String, description: String? = null) {
         val event = PreviewLabEvent(title = title, description = description)
         state.events.add(event)
         onEffectHandler.invoke(Effect.ShowEventToast(event = event))
@@ -133,4 +110,6 @@ internal class PreviewLabStateScope(override val state: PreviewLabState) : Previ
     internal sealed interface Effect {
         data class ShowEventToast(val event: PreviewLabEvent) : Effect
     }
+
+    class FieldBuilderScope
 }

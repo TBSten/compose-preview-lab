@@ -24,7 +24,7 @@ kotlin {
     jvm()
 
     js {
-        outputModuleName = "compose-previewl-lab"
+        outputModuleName = "compose-previewl-lab-ui"
         browser()
         binaries.executable()
         binaries.library()
@@ -36,7 +36,7 @@ kotlin {
     }
 
     wasmJs {
-        outputModuleName = "compose-previewl-lab"
+        outputModuleName = "compose-previewl-lab-ui"
         browser()
         binaries.executable()
         binaries.library()

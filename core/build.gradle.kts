@@ -24,7 +24,7 @@ kotlin {
     jvm()
 
     js {
-        outputModuleName = "compose-previewl-lab"
+        outputModuleName = "compose-previewl-lab-core"
         browser()
         binaries.executable()
         binaries.library()
