@@ -61,12 +61,12 @@ class CodeGenerator {
         }
     }
 
-    private fun generateForRequest(request: FieldGenerationRequest, visibility: String,) {
+    private fun generateForRequest(request: FieldGenerationRequest, visibility: String) {
         val typeName = request.targetType.declaration.simpleName.asString()
         val comment = """
-            |// ========================================
-            |// $typeName
-            |// ========================================
+            |/**
+            | * [$typeName]
+            | */
         """.trimMargin()
         generatedCode.appendLine(comment)
         generatedCode.appendLine()
@@ -108,7 +108,7 @@ class CodeGenerator {
         )
     }
 
-    private fun generateEnum(request: FieldGenerationRequest, classification: TypeClassification.Enum, visibility: String,) {
+    private fun generateEnum(request: FieldGenerationRequest, classification: TypeClassification.Enum, visibility: String) {
         val typeQualifiedName = classification.declaration.qualifiedName!!.asString()
         val typeSimpleName = classification.declaration.simpleName.asString()
         imports.add(typeQualifiedName)
@@ -209,7 +209,7 @@ class CodeGenerator {
         generatedCode.appendLine(")")
     }
 
-    private fun generateChildFieldFactory(prop: PropertyInfo, visibility: String,) {
+    private fun generateChildFieldFactory(prop: PropertyInfo, visibility: String) {
         val propTypeRef = getTypeReference(prop.type)
         val fieldType = getFieldType(prop.typeClassification)
         val fieldCreation = getFieldCreation(prop.typeClassification, prop.type)
@@ -298,7 +298,7 @@ class CodeGenerator {
         generatedCode.appendLine(")")
     }
 
-    private fun generateSealedChildFieldFactory(sub: SubclassInfo, parentTypeName: String, visibility: String,) {
+    private fun generateSealedChildFieldFactory(sub: SubclassInfo, parentTypeName: String, visibility: String) {
         val subFullType = "$parentTypeName.${sub.name}"
         val fieldType = getFieldType(sub.typeClassification)
         val subParamName = sub.name.replaceFirstChar { it.lowercase() }
