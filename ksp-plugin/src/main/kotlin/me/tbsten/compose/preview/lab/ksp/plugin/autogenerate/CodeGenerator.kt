@@ -159,7 +159,8 @@ class CodeGenerator {
         imports.add("me.tbsten.compose.preview.lab.field.splitedOf")
 
         // 1. ChildFieldFactories object
-        val factoriesObjectName = "${typeSimpleName}ChildFieldFactories"
+        // Use targetObject name prefix to avoid name collision when same type is used in multiple objects
+        val factoriesObjectName = "${targetObjectName}_${typeSimpleName}ChildFieldFactories"
         generatedCode.appendLine("${visibility}object $factoriesObjectName {")
         properties.forEach { prop ->
             generateChildFieldFactory(prop, visibility)
@@ -238,7 +239,8 @@ class CodeGenerator {
         imports.add("me.tbsten.compose.preview.lab.field.PolymorphicField")
 
         // 1. ChildFieldFactories object
-        val factoriesObjectName = "${typeSimpleName}ChildFieldFactories"
+        // Use targetObject name prefix to avoid name collision when same type is used in multiple objects
+        val factoriesObjectName = "${targetObjectName}_${typeSimpleName}ChildFieldFactories"
         generatedCode.appendLine("${visibility}object $factoriesObjectName {")
         subclasses.forEach { sub ->
             generateSealedChildFieldFactory(sub, typeSimpleName, visibility)
@@ -351,32 +353,37 @@ class CodeGenerator {
         return declaration.simpleName.asString()
     }
 
-    private fun getFieldCreation(classification: TypeClassification, type: KSType,): String = when (classification) {
+    private fun getFieldCreation(
+        classification: TypeClassification,
+        type: KSType,
+        labelExpr: String = "label",
+        initialValueExpr: String = "initialValue",
+    ): String = when (classification) {
         is TypeClassification.Primitive -> {
             imports.add("me.tbsten.compose.preview.lab.field.${classification.kind.fieldClassName}")
-            "${classification.kind.fieldClassName}(label, initialValue)"
+            "${classification.kind.fieldClassName}($labelExpr, $initialValueExpr)"
         }
         is TypeClassification.Enum -> {
             imports.add("me.tbsten.compose.preview.lab.field.enumField")
-            "enumField(label, initialValue)"
+            "enumField($labelExpr, $initialValueExpr)"
         }
         is TypeClassification.Object -> {
             imports.add("me.tbsten.compose.preview.lab.field.FixedField")
             val typeName = classification.declaration.simpleName.asString()
-            "FixedField(label, $typeName)"
+            "FixedField($labelExpr, $typeName)"
         }
         is TypeClassification.DataClass -> {
-            generateNestedDataClassField(classification)
+            generateNestedDataClassField(classification, initialValueExpr)
         }
         is TypeClassification.Sealed -> {
-            generateNestedSealedField(classification)
+            generateNestedSealedField(classification, initialValueExpr)
         }
         is TypeClassification.Unsupported -> {
-            "/* Unsupported type: ${classification.reason} */"
+            "TODO(\"Unsupported type: ${classification.reason}\")"
         }
     }
 
-    private fun getSealedSubclassFieldCreation(sub: SubclassInfo, parentTypeName: String,): String {
+    private fun getSealedSubclassFieldCreation(sub: SubclassInfo, parentTypeName: String): String {
         val subFullType = "$parentTypeName.${sub.name}"
 
         return when (val classification = sub.typeClassification) {
@@ -385,7 +392,7 @@ class CodeGenerator {
                 "FixedField(label, $subFullType)"
             }
             is TypeClassification.DataClass -> {
-                generateNestedDataClassFieldForSealed(classification, subFullType)
+                generateNestedDataClassFieldForSealed(classification, subFullType, "label")
             }
             else -> {
                 "/* Unsupported sealed subclass type */"
@@ -393,7 +400,11 @@ class CodeGenerator {
         }
     }
 
-    private fun generateNestedDataClassField(classification: TypeClassification.DataClass): String {
+    private fun generateNestedDataClassField(
+        classification: TypeClassification.DataClass,
+        parentInitialValueExpr: String,
+        labelExpr: String = "label",
+    ): String {
         val typeName = classification.declaration.simpleName.asString()
         val properties = classification.properties
         if (properties.isEmpty()) return "/* Empty data class */"
@@ -402,10 +413,10 @@ class CodeGenerator {
         imports.add("me.tbsten.compose.preview.lab.field.splitedOf")
 
         val fieldArgs = properties.mapIndexed { index, prop ->
-            val fieldCreation = getFieldCreation(prop.typeClassification, prop.type)
+            val propLabel = "\"${prop.name}\""
+            val propInitialValue = "$parentInitialValueExpr.${prop.name}"
+            val fieldCreation = getNestedFieldCreation(prop.typeClassification, prop.type, propLabel, propInitialValue)
             "field${index + 1} = $fieldCreation"
-                .replace("label", "\"${prop.name}\"")
-                .replace("initialValue", "initialValue.${prop.name}")
         }
 
         val combineParams = properties.joinToString(", ") { it.name }
@@ -414,7 +425,7 @@ class CodeGenerator {
 
         return buildString {
             append("combined(\n")
-            append("            label = label,\n")
+            append("            label = $labelExpr,\n")
             fieldArgs.forEach { append("            $it,\n") }
             append("            combine = { $combineParams -> $typeName($combineBody) },\n")
             append("            split = { splitedOf($splitBody) },\n")
@@ -422,9 +433,40 @@ class CodeGenerator {
         }
     }
 
+    private fun getNestedFieldCreation(
+        classification: TypeClassification,
+        type: KSType,
+        labelExpr: String,
+        initialValueExpr: String,
+    ): String = when (classification) {
+        is TypeClassification.Primitive -> {
+            imports.add("me.tbsten.compose.preview.lab.field.${classification.kind.fieldClassName}")
+            "${classification.kind.fieldClassName}($labelExpr, $initialValueExpr)"
+        }
+        is TypeClassification.Enum -> {
+            imports.add("me.tbsten.compose.preview.lab.field.enumField")
+            "enumField($labelExpr, $initialValueExpr)"
+        }
+        is TypeClassification.Object -> {
+            imports.add("me.tbsten.compose.preview.lab.field.FixedField")
+            val typeName = classification.declaration.simpleName.asString()
+            "FixedField($labelExpr, $typeName)"
+        }
+        is TypeClassification.DataClass -> {
+            generateNestedDataClassField(classification, initialValueExpr, labelExpr)
+        }
+        is TypeClassification.Sealed -> {
+            generateNestedSealedField(classification, initialValueExpr, labelExpr)
+        }
+        is TypeClassification.Unsupported -> {
+            "TODO(\"Unsupported type: ${classification.reason}\")"
+        }
+    }
+
     private fun generateNestedDataClassFieldForSealed(
         classification: TypeClassification.DataClass,
         subFullType: String,
+        labelExpr: String = "label",
     ): String {
         val properties = classification.properties
         if (properties.isEmpty()) return "/* Empty data class */"
@@ -433,10 +475,10 @@ class CodeGenerator {
         imports.add("me.tbsten.compose.preview.lab.field.splitedOf")
 
         val fieldArgs = properties.mapIndexed { index, prop ->
-            val fieldCreation = getFieldCreation(prop.typeClassification, prop.type)
+            val propLabel = "\"${prop.name}\""
+            val propInitialValue = "initialValue.${prop.name}"
+            val fieldCreation = getNestedFieldCreation(prop.typeClassification, prop.type, propLabel, propInitialValue)
             "field${index + 1} = $fieldCreation"
-                .replace("label", "\"${prop.name}\"")
-                .replace("initialValue", "initialValue.${prop.name}")
         }
 
         val combineParams = properties.joinToString(", ") { it.name }
@@ -445,7 +487,7 @@ class CodeGenerator {
 
         return buildString {
             append("combined(\n")
-            append("            label = label,\n")
+            append("            label = $labelExpr,\n")
             fieldArgs.forEach { append("            $it,\n") }
             append("            combine = { $combineParams -> $subFullType($combineBody) },\n")
             append("            split = { splitedOf($splitBody) },\n")
@@ -453,7 +495,11 @@ class CodeGenerator {
         }
     }
 
-    private fun generateNestedSealedField(classification: TypeClassification.Sealed): String {
+    private fun generateNestedSealedField(
+        classification: TypeClassification.Sealed,
+        parentInitialValueExpr: String,
+        labelExpr: String = "label",
+    ): String {
         // For nested sealed interfaces, generate PolymorphicField inline
         imports.add("me.tbsten.compose.preview.lab.field.PolymorphicField")
 
@@ -462,23 +508,107 @@ class CodeGenerator {
 
         val fieldsCode = subclasses.map { sub ->
             val subFullType = "$typeName.${sub.name}"
+            val subLabel = "\"${sub.name.replaceFirstChar { it.lowercase() }}\""
             when (sub.typeClassification) {
                 is TypeClassification.Object -> {
                     imports.add("me.tbsten.compose.preview.lab.field.FixedField")
-                    "FixedField(\"${sub.name.replaceFirstChar { it.lowercase() }}\", $subFullType)"
+                    "FixedField($subLabel, $subFullType)"
                 }
-                else -> "/* Complex subclass ${sub.name} */"
+                is TypeClassification.DataClass -> {
+                    // Generate combined field for data class subclass
+                    generateNestedDataClassFieldForSealedInline(
+                        sub.typeClassification,
+                        subFullType,
+                        subLabel,
+                    )
+                }
+                else -> "TODO(\"Complex subclass ${sub.name}\")"
             }
         }
 
         return buildString {
             append("PolymorphicField(\n")
-            append("            label = label,\n")
-            append("            initialValue = initialValue,\n")
+            append("            label = $labelExpr,\n")
+            append("            initialValue = $parentInitialValueExpr,\n")
             append("            fields = listOf(\n")
             fieldsCode.forEach { append("                $it,\n") }
             append("            ),\n")
             append("        )")
         }
+    }
+
+    private fun generateNestedDataClassFieldForSealedInline(
+        classification: TypeClassification.DataClass,
+        subFullType: String,
+        labelExpr: String,
+    ): String {
+        val properties = classification.properties
+        if (properties.isEmpty()) {
+            imports.add("me.tbsten.compose.preview.lab.field.FixedField")
+            return "FixedField($labelExpr, $subFullType)"
+        }
+
+        imports.add("me.tbsten.compose.preview.lab.field.combined")
+        imports.add("me.tbsten.compose.preview.lab.field.splitedOf")
+
+        // Note: For inline nested sealed, we use simple default values since we can't access parent's initialValue
+        val fieldArgs = properties.mapIndexed { index, prop ->
+            val propLabel = "\"${prop.name}\""
+            val defaultValue = getDefaultValueForType(prop.typeClassification)
+            "field${index + 1} = ${getSimpleFieldCreation(prop.typeClassification, propLabel, defaultValue)}"
+        }
+
+        val combineParams = properties.joinToString(", ") { it.name }
+        val combineBody = properties.joinToString(", ") { "${it.name} = ${it.name}" }
+        val splitBody = properties.joinToString(", ") { "it.${it.name}" }
+
+        return buildString {
+            append("combined(\n")
+            append("                label = $labelExpr,\n")
+            fieldArgs.forEach { append("                $it,\n") }
+            append("                combine = { $combineParams -> $subFullType($combineBody) },\n")
+            append("                split = { splitedOf($splitBody) },\n")
+            append("            )")
+        }
+    }
+
+    private fun getSimpleFieldCreation(
+        classification: TypeClassification,
+        labelExpr: String,
+        defaultValueExpr: String,
+    ): String = when (classification) {
+        is TypeClassification.Primitive -> {
+            imports.add("me.tbsten.compose.preview.lab.field.${classification.kind.fieldClassName}")
+            "${classification.kind.fieldClassName}($labelExpr, $defaultValueExpr)"
+        }
+        is TypeClassification.Enum -> {
+            imports.add("me.tbsten.compose.preview.lab.field.enumField")
+            "enumField($labelExpr, $defaultValueExpr)"
+        }
+        is TypeClassification.Object -> {
+            imports.add("me.tbsten.compose.preview.lab.field.FixedField")
+            val typeName = classification.declaration.simpleName.asString()
+            "FixedField($labelExpr, $typeName)"
+        }
+        else -> "TODO(\"Nested complex type\")"
+    }
+
+    private fun getDefaultValueForType(classification: TypeClassification): String = when (classification) {
+        is TypeClassification.Primitive -> when (classification.kind.qualifiedName) {
+            "kotlin.String" -> "\"\""
+            "kotlin.Int" -> "0"
+            "kotlin.Long" -> "0L"
+            "kotlin.Float" -> "0f"
+            "kotlin.Double" -> "0.0"
+            "kotlin.Boolean" -> "false"
+            "kotlin.Byte" -> "0"
+            else -> "TODO()"
+        }
+        is TypeClassification.Enum -> {
+            val firstEntry = classification.entries.firstOrNull() ?: "TODO()"
+            "${classification.declaration.simpleName.asString()}.$firstEntry"
+        }
+        is TypeClassification.Object -> classification.declaration.simpleName.asString()
+        else -> "TODO()"
     }
 }
