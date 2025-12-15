@@ -22,11 +22,13 @@ kotlin {
     jvm()
 
     js {
+        outputModuleName = "compose-preview-lab-annotation"
         browser()
         binaries.executable()
     }
 
     wasmJs {
+        outputModuleName = "compose-preview-lab-annotation"
         browser()
         binaries.executable()
     }

@@ -21,10 +21,12 @@ kotlin {
     jvm()
 
     js {
+        outputModuleName = "compose-previewl-lab-starter"
         browser()
     }
 
     wasmJs {
+        outputModuleName = "compose-previewl-lab-starter"
         browser()
     }
 
