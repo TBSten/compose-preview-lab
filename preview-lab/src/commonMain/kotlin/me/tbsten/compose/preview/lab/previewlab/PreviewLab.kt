@@ -314,10 +314,10 @@ open class PreviewLab(
      */
     @Composable
     operator fun invoke(
-        state: PreviewLabState = defaultState(),
         maxWidth: Dp,
         maxHeight: Dp,
         modifier: Modifier = Modifier,
+        state: PreviewLabState = defaultState(),
         isHeaderShow: Boolean = this.defaultIsHeaderShow(),
         inspectorTabs: List<InspectorTab> = this.defaultInspectorTabs(),
         isInPreviewLabGalleryCardBody: Boolean = LocalIsInPreviewLabGalleryCardBody.current,
@@ -458,9 +458,9 @@ open class PreviewLab(
      */
     @Composable
     open operator fun invoke(
+        modifier: Modifier = Modifier,
         state: PreviewLabState = defaultState(),
         screenSizes: List<ScreenSize> = defaultScreenSizes,
-        modifier: Modifier = Modifier,
         isHeaderShow: Boolean = this.defaultIsHeaderShow(),
         inspectorTabs: List<InspectorTab> = this.defaultInspectorTabs(),
         isInPreviewLabGalleryCardBody: Boolean = LocalIsInPreviewLabGalleryCardBody.current,

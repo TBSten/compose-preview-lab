@@ -23,8 +23,8 @@ internal fun PreviewLabHeader(
     scale: Float,
     onScaleChange: (Float) -> Unit,
     isInspectorPanelVisible: Boolean,
-    modifier: Modifier = Modifier,
     onIsInspectorPanelVisibleToggle: () -> Unit,
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
     Column(modifier = modifier.clip(RectangleShape)) {
