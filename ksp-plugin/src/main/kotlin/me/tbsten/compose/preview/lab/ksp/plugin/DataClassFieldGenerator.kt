@@ -103,7 +103,7 @@ private fun generateCombinedFieldCode(
     val fieldCount = properties.size
     val imports = mutableSetOf<String>()
 
-    imports.add("me.tbsten.compose.preview.lab.field.MutablePreviewLabField")
+    imports.add("me.tbsten.compose.preview.lab.MutablePreviewLabField")
     imports.add("me.tbsten.compose.preview.lab.field.CombinedField$fieldCount")
     imports.add("me.tbsten.compose.preview.lab.field.splitedOf")
 
@@ -295,8 +295,8 @@ private fun generateBaseFieldCreator(
                     ", initialValue = initialValue.$paramName.$propertyName" +
                     underlyingFieldCreatorPattern.substring(idx)
             } else {
-                // Fallback: just append
-                "$underlyingFieldCreatorPattern, initialValue = initialValue.$paramName.$propertyName"
+                // Fallback: just append with closing parenthesis
+                "$underlyingFieldCreatorPattern, initialValue = initialValue.$paramName.$propertyName)"
             }
 
             return "TransformField(" +
