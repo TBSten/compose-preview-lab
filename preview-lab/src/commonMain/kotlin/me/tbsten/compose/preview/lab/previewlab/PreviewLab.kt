@@ -30,9 +30,9 @@ import com.dokar.sonner.TextToastAction
 import com.dokar.sonner.Toaster
 import com.dokar.sonner.ToasterState
 import com.dokar.sonner.rememberToasterState
+import me.tbsten.compose.preview.lab.LocalIsInPreviewLabGalleryCardBody
 import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.field.ScreenSizeField
-import me.tbsten.compose.preview.lab.LocalIsInPreviewLabGalleryCardBody
 import me.tbsten.compose.preview.lab.previewlab.header.PreviewLabHeader
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorsPane
@@ -476,7 +476,7 @@ open class PreviewLab(
         val toaster = rememberToasterState().also { toaster ->
             state.scope.HandleEffect { event ->
                 when (event) {
-                    is PreviewLabStateScope.Effect.ShowEventToast ->
+                    is PreviewLabScope.Effect.ShowEventToast ->
                         toaster.show(
                             message = event.event.title,
                             action = TextToastAction(

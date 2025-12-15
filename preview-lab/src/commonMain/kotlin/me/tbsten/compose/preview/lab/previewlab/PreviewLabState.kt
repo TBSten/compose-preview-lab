@@ -57,7 +57,7 @@ class PreviewLabState {
     var selectedTabIndex by mutableStateOf<Int?>(null)
     internal var selectedEvent by mutableStateOf<PreviewLabEvent?>(null)
 
-    internal val scope = PreviewLabStateScope(this)
+    internal val scope = PreviewLabScope(this)
 
     @ExperimentalComposePreviewLabApi
     val fields = mutableStateListOf<PreviewLabField<*>>()
