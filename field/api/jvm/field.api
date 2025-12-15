@@ -2,10 +2,12 @@ public abstract class me/tbsten/compose/preview/lab/ImmutablePreviewLabField : a
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;Ljava/lang/Object;)V
 	public fun View (Landroidx/compose/runtime/Composer;I)V
+	public fun getCoroutineScope ()Lkotlinx/coroutines/CoroutineScope;
 	public fun getInitialValue ()Ljava/lang/Object;
 	public fun getLabel ()Ljava/lang/String;
 	public fun getValue ()Ljava/lang/Object;
 	public fun getValueFlow ()Lkotlinx/coroutines/flow/Flow;
+	public fun onCleared ()V
 	protected fun setValue (Ljava/lang/Object;)V
 	public fun testValues ()Ljava/util/List;
 	public fun valueCode ()Ljava/lang/String;
@@ -17,10 +19,12 @@ public abstract class me/tbsten/compose/preview/lab/MutablePreviewLabField : and
 	public fun View (Landroidx/compose/runtime/Composer;I)V
 	public fun component1 ()Ljava/lang/Object;
 	public fun component2 ()Lkotlin/jvm/functions/Function1;
+	public fun getCoroutineScope ()Lkotlinx/coroutines/CoroutineScope;
 	public fun getInitialValue ()Ljava/lang/Object;
 	public fun getLabel ()Ljava/lang/String;
 	public fun getValue ()Ljava/lang/Object;
 	public fun getValueFlow ()Lkotlinx/coroutines/flow/Flow;
+	public fun onCleared ()V
 	public fun setValue (Ljava/lang/Object;)V
 	public fun testValues ()Ljava/util/List;
 	public fun valueCode ()Ljava/lang/String;
@@ -29,16 +33,19 @@ public abstract class me/tbsten/compose/preview/lab/MutablePreviewLabField : and
 public abstract interface class me/tbsten/compose/preview/lab/PreviewLabField {
 	public abstract fun Content (Landroidx/compose/runtime/Composer;I)V
 	public fun View (Landroidx/compose/runtime/Composer;I)V
+	public abstract fun getCoroutineScope ()Lkotlinx/coroutines/CoroutineScope;
 	public abstract fun getInitialValue ()Ljava/lang/Object;
 	public abstract fun getLabel ()Ljava/lang/String;
 	public abstract fun getValue ()Ljava/lang/Object;
 	public abstract fun getValueFlow ()Lkotlinx/coroutines/flow/Flow;
+	public fun onCleared ()V
 	public fun testValues ()Ljava/util/List;
 	public fun valueCode ()Ljava/lang/String;
 }
 
 public final class me/tbsten/compose/preview/lab/PreviewLabField$DefaultImpls {
 	public static fun View (Lme/tbsten/compose/preview/lab/PreviewLabField;Landroidx/compose/runtime/Composer;I)V
+	public static fun onCleared (Lme/tbsten/compose/preview/lab/PreviewLabField;)V
 	public static fun testValues (Lme/tbsten/compose/preview/lab/PreviewLabField;)Ljava/util/List;
 	public static fun valueCode (Lme/tbsten/compose/preview/lab/PreviewLabField;)Ljava/lang/String;
 }
@@ -780,10 +787,12 @@ public final class me/tbsten/compose/preview/lab/field/WithTestValuesField : me/
 	public fun Content (Landroidx/compose/runtime/Composer;I)V
 	public fun View (Landroidx/compose/runtime/Composer;I)V
 	public final fun getBaseField ()Lme/tbsten/compose/preview/lab/PreviewLabField;
+	public fun getCoroutineScope ()Lkotlinx/coroutines/CoroutineScope;
 	public fun getInitialValue ()Ljava/lang/Object;
 	public fun getLabel ()Ljava/lang/String;
 	public fun getValue ()Ljava/lang/Object;
 	public fun getValueFlow ()Lkotlinx/coroutines/flow/Flow;
+	public fun onCleared ()V
 	public fun testValues ()Ljava/util/List;
 	public fun valueCode ()Ljava/lang/String;
 }

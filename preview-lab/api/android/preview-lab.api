@@ -53,20 +53,13 @@ public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabKt {
 	public static final fun getLocalEnforcePreviewLabState ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 }
 
-public abstract interface class me/tbsten/compose/preview/lab/previewlab/PreviewLabScope {
-	public abstract fun fieldState (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/MutableState;
-	public abstract fun fieldValue (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)Ljava/lang/Object;
-	public abstract fun getState ()Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;
-	public abstract fun onEvent (Ljava/lang/String;Ljava/lang/String;)V
-	public static synthetic fun onEvent$default (Lme/tbsten/compose/preview/lab/previewlab/PreviewLabScope;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)V
-}
-
-public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabScope$ComposeDefaultImpls {
-	public static final fun fieldState$default (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/previewlab/PreviewLabScope;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/MutableState;
-	public static final fun fieldValue$default (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/previewlab/PreviewLabScope;Landroidx/compose/runtime/Composer;II)Ljava/lang/Object;
-}
-
-public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabScope$DefaultImpls {
+public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabScope {
+	public static final field $stable I
+	public fun <init> (Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;)V
+	public final fun fieldState (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/MutableState;
+	public final fun fieldValue (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Ljava/lang/Object;
+	public final fun getState ()Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;
+	public final fun onEvent (Ljava/lang/String;Ljava/lang/String;)V
 	public static synthetic fun onEvent$default (Lme/tbsten/compose/preview/lab/previewlab/PreviewLabScope;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)V
 }
 
