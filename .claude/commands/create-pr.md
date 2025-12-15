@@ -36,17 +36,20 @@ color: green
 ### Step 1: 現在の状態の評価
 
 **実行手順**:
+
 1. `run_terminal_cmd` で `git status` を実行して現在の状態を確認
 2. `run_terminal_cmd` で `git branch` を実行して現在のブランチを確認
 3. `run_terminal_cmd` で `git log --oneline -10` を実行して最近のコミットを確認
 
 **確認すべき内容**:
+
 - コミット済みの変更があるか
 - ステージ済みの変更があるか
 - 未ステージの変更があるか
 - 現在のブランチ名
 
 **ツール使用例**:
+
 ```bash
 git status
 git branch
@@ -56,33 +59,39 @@ git log --oneline -10
 ### Step 2: ブランチ管理
 
 **実行手順**:
+
 1. 現在のブランチがmain/masterでないことを確認
 2. main/masterにいる場合:
-   - `run_terminal_cmd` で `git checkout -b feature/<feature-name>` を実行
-   - または関連するissueがある場合: `git checkout -b feature/issue-<issue-number>`
+    - `run_terminal_cmd` で `git checkout -b feature/<feature-name>` を実行
+    - または関連するissueがある場合: `git checkout -b feature/issue-<issue-number>`
 3. `run_terminal_cmd` で `git remote -v` を実行してリモートリポジトリを確認
 4. ブランチがリモートにプッシュされているか確認:
-   - `run_terminal_cmd` で `git branch -r` を実行
-   - プッシュされていない場合: `run_terminal_cmd` で `git push -u origin <branch-name>` を実行
+    - `run_terminal_cmd` で `git branch -r` を実行
+    - プッシュされていない場合: `run_terminal_cmd` で `git push -u origin <branch-name>` を実行
 
 **条件分岐**:
+
 - **main/masterにいる場合**: フィーチャーブランチを作成して切り替え
 - **フィーチャーブランチにいる場合**: そのまま続行
 - **リモートにプッシュされていない場合**: プッシュを実行
 
 ### Step 3: クリーンなコミット履歴の確保
 
+コミットを作成する。コミットはレビューしやすい、意味のある粒度で行うこと。
+
 **実行手順**:
+
 1. `run_terminal_cmd` で `git log --oneline main..HEAD` を実行してPRに含まれるコミットを確認
 2. コミット数を確認:
-   - **5個以上の場合**: スカッシュを検討
-   - **「fix typo」「wip」などのコミットがある場合**: スカッシュを検討
+    - **5個以上の場合**: スカッシュを検討
+    - **「fix typo」「wip」などのコミットがある場合**: スカッシュを検討
 3. 未コミットの変更がある場合:
-   - `run_terminal_cmd` で `git diff` を実行して変更内容を確認
-   - ユーザーにPRに含めるべきか確認
-   - 含める場合: 適切なコミットメッセージでコミット
+    - `run_terminal_cmd` で `git diff` を実行して変更内容を確認
+    - ユーザーにPRに含めるべきか確認
+    - 含める場合: 適切なコミットメッセージでコミット
 
 **コミット整理が必要な場合**:
+
 - `run_terminal_cmd` で `git rebase -i main` を実行してインタラクティブリベース
 - または `run_terminal_cmd` で `git reset --soft main` を実行してスカッシュ
 
@@ -91,21 +100,25 @@ git log --oneline -10
 **実行手順**:
 
 #### 4.1 変更内容の確認
+
 1. `run_terminal_cmd` で `git diff main...HEAD --stat` を実行して変更されたファイルを確認
 2. `run_terminal_cmd` で `git diff main...HEAD` を実行して変更内容を確認
 3. `read_file` で主要な変更ファイルを確認して変更内容を理解
 
 #### 4.2 Issue番号の特定
+
 1. ブランチ名からissue番号を抽出（`feature/issue-123` 形式の場合）
 2. コミットメッセージからissue番号を検索
 3. 変更内容から関連するissueを推測
 
 #### 4.3 PRタイトルの作成
+
 - コミットメッセージのスタイルを参考に作成
 - プレフィックスを含める: `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`
 - 50文字以内で簡潔に
 
 #### 4.4 PR説明の作成
+
 - テンプレートに従って作成（後述の「PR説明テンプレート」参照）
 - `read_file` で変更されたファイルを確認して詳細を記載
 
@@ -114,22 +127,25 @@ git log --oneline -10
 **実行手順**:
 
 #### 5.1 コードフォーマット
+
 1. `run_terminal_cmd` で `./gradlew ktlintFormat` を実行
 2. `run_terminal_cmd` で `git status` を実行してフォーマット変更を確認
 3. 変更がある場合:
-   - `run_terminal_cmd` で `git add .` を実行
-   - `run_terminal_cmd` で `git commit -m "style: format code"` を実行
+    - `run_terminal_cmd` で `git add .` を実行
+    - `run_terminal_cmd` で `git commit -m "style: format code"` を実行
 
 #### 5.2 テストの実行
+
 1. `run_terminal_cmd` で `./gradlew ktlintCheck` を実行してリントチェック
 2. `run_terminal_cmd` で `./gradlew jvmTest` を実行してJVMテスト
 3. `run_terminal_cmd` で `cd integrationTest && ./gradlew jvmTest` を実行して統合テスト
-4. **テストが失敗した場合**: 
-   - エラーメッセージを確認
-   - 問題を修正してから再実行
-   - **テストが失敗しているPRは作成しない**
+4. **テストが失敗した場合**:
+    - エラーメッセージを確認
+    - 問題を修正してから再実行
+    - **テストが失敗しているPRは作成しない**
 
 #### 5.3 その他のチェック
+
 1. `grep` でデバッグコード（`println`, `console.log` など）を検索
 2. `grep` でコメントアウトされたコードを検索
 3. 必要に応じてドキュメントの更新を確認
@@ -137,6 +153,7 @@ git log --oneline -10
 ### Step 6: プルリクエストの作成
 
 **実行手順**:
+
 1. ブランチがリモートにプッシュされていることを確認
 2. PR本文を作成（テンプレートに従って）
 3. `run_terminal_cmd` で以下のコマンドを実行:
@@ -149,6 +166,7 @@ git log --oneline -10
 4. **必ずDraft Pull Requestとして作成**（指定がない限り）
 
 **PR本文に含める必須項目**:
+
 - Summary（変更内容の要約）
 - Changes（具体的な変更内容）
 - Test plan（実施したテスト）
@@ -158,23 +176,25 @@ git log --oneline -10
 ### Step 7: プルリクエストへのコメント
 
 **実行手順**:
+
 1. PRが作成されたら、PR URLを取得
 2. 重要な実装箇所を特定:
-   - `read_file` で変更されたファイルを確認
-   - 特に複雑なロジックやテストケースを特定
+    - `read_file` で変更されたファイルを確認
+    - 特に複雑なロジックやテストケースを特定
 3. `run_terminal_cmd` で `gh pr comment <PR番号> --body "<コメント>"` を実行
 4. またはインラインコメント: `gh pr review <PR番号> --comment --body "<コメント>"`
 
 ### Step 8: 作成後の確認
 
 **実行手順**:
+
 1. PR URLをユーザーに提供
 2. 以下のチェックリストを確認:
-   - [ ] PRのタイトルが適切か
-   - [ ] PRの本文に必要な情報が含まれているか
-   - [ ] 関連するissueが正しくリンクされているか
-   - [ ] Claude Codeの署名が含まれているか
-   - [ ] CIが正常に実行されているか（GitHub Actionsのステータスを確認）
+    - [ ] PRのタイトルが適切か
+    - [ ] PRの本文に必要な情報が含まれているか
+    - [ ] 関連するissueが正しくリンクされているか
+    - [ ] Claude Codeの署名が含まれているか
+    - [ ] CIが正常に実行されているか（GitHub Actionsのステータスを確認）
 3. PR説明への調整が必要かユーザーに確認
 
 ## PR説明テンプレート
@@ -239,20 +259,23 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ## エラー処理とトラブルシューティング
 
 ### gitコマンドが失敗した場合
+
 1. エラーメッセージを詳細に確認
 2. `run_terminal_cmd` で `git status` を実行して現在の状態を確認
 3. 問題を診断:
-   - **リポジトリが初期化されていない**: `git init` を実行
-   - **リモートが設定されていない**: `git remote add origin <url>` を実行
-   - **認証エラー**: GitHub CLIの認証を確認（`gh auth status`）
+    - **リポジトリが初期化されていない**: `git init` を実行
+    - **リモートが設定されていない**: `git remote add origin <url>` を実行
+    - **認証エラー**: GitHub CLIの認証を確認（`gh auth status`）
 4. 明確な解決手順をユーザーに提供
 
 ### ユーザーが権限を持っていない場合
+
 1. `run_terminal_cmd` で `gh auth status` を実行して認証状態を確認
 2. 認証されていない場合: `run_terminal_cmd` で `gh auth login` を実行
 3. リポジトリへのアクセス権限がない場合: ユーザーにリポジトリのオーナーにアクセス要求を依頼
 
 ### マージコンフリクトがある場合
+
 1. `run_terminal_cmd` で `git fetch origin main` を実行して最新のmainを取得
 2. `run_terminal_cmd` で `git merge origin/main` を実行してコンフリクトを確認
 3. `run_terminal_cmd` で `git status` を実行してコンフリクトファイルを特定
@@ -261,12 +284,14 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 6. `run_terminal_cmd` で `git add .` と `git commit` を実行
 
 ### CI/CDが失敗している場合
+
 1. PR作成後、GitHub Actionsのステータスを確認
 2. 失敗しているジョブを特定
 3. `fix-ci` コマンドを使用してCI問題を修正することを提案
 4. または、エラーログを確認して問題を診断
 
 ### GitHub CLIがインストールされていない場合
+
 1. `run_terminal_cmd` で `gh --version` を実行して確認
 2. インストールされていない場合: インストール手順をユーザーに提供
 3. macOSの場合: `brew install gh`
