@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
-import me.tbsten.compose.preview.lab.PreviewLab
+import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
