@@ -87,6 +87,16 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
      */
     var generateFeaturedFiles: Boolean by objects.property<Boolean>()
         .convention(false)
+
+    /**
+     * Controls generation of PreviewLabField factory functions from @AutoGenerateField annotations
+     *
+     * When true (default), processes @AutoGenerateField<T> annotations and generates
+     * extension functions for creating PreviewLabField instances for the specified types.
+     * When false, no field factories are generated.
+     */
+    var generateAutoField: Boolean by objects.property<Boolean>()
+        .convention(true)
 }
 
 internal fun Project.applyToKspExtension(extension: ComposePreviewLabExtension) {
@@ -97,6 +107,7 @@ internal fun Project.applyToKspExtension(extension: ComposePreviewLabExtension) 
             arg(KspArg.projectRootPath, extension.projectRootPath)
             arg(KspArg.generatePreviewList, extension.generatePreviewList.toString())
             arg(KspArg.generatePreviewAllList, extension.generatePreviewAllList.toString())
+            arg(KspArg.generateAutoField, extension.generateAutoField.toString())
         }
     }
 }

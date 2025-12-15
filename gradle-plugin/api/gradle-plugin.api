@@ -1,11 +1,13 @@
 public abstract class me/tbsten/compose/preview/lab/ComposePreviewLabExtension {
 	public fun <init> (Lorg/gradle/api/model/ObjectFactory;Lorg/gradle/api/Project;)V
+	public final fun getGenerateAutoField ()Z
 	public final fun getGenerateFeaturedFiles ()Z
 	public final fun getGeneratePackage ()Ljava/lang/String;
 	public final fun getGeneratePreviewAllList ()Z
 	public final fun getGeneratePreviewList ()Z
 	public final fun getProjectRootPath ()Ljava/lang/String;
 	public final fun getPublicPreviewList ()Z
+	public final fun setGenerateAutoField (Z)V
 	public final fun setGenerateFeaturedFiles (Z)V
 	public final fun setGeneratePackage (Ljava/lang/String;)V
 	public final fun setGeneratePreviewAllList (Z)V
