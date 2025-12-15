@@ -1,20 +1,21 @@
 package me.tbsten.compose.preview.lab.ksp.plugin.autogenerate
 
+import com.google.devtools.ksp.processing.CodeGenerator as KspCodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.ClassKind
 import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.processing.CodeGenerator as KspCodeGenerator
+import me.tbsten.compose.preview.lab.AutoGenerateField
 
-private const val AutoGenerateFieldAnnotation =
-    "me.tbsten.compose.preview.lab.AutoGenerateField"
+private val AutoGenerateFieldAnnotation =
+    AutoGenerateField::class.qualifiedName!!
 
 /**
  * @AutoGenerateField アノテーションを処理し、Field ファクトリコードを生成する
  */
-class AutoGenerateFieldProcessor(private val kspCodeGenerator: KspCodeGenerator, private val logger: KSPLogger,) {
+class AutoGenerateFieldProcessor(private val kspCodeGenerator: KspCodeGenerator, private val logger: KSPLogger) {
     private val typeClassifier = TypeClassifier()
     private val codeGenerator = CodeGenerator()
 
