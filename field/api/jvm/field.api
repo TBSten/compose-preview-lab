@@ -68,6 +68,13 @@ public class me/tbsten/compose/preview/lab/field/ByteField : me/tbsten/compose/p
 	public synthetic fun <init> (Ljava/lang/String;BLme/tbsten/compose/preview/lab/field/NumberField$InputType;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 
+public final class me/tbsten/compose/preview/lab/field/ChildFieldScope {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Ljava/lang/Object;)V
+	public final fun getInitialValue ()Ljava/lang/Object;
+	public final fun getLabel ()Ljava/lang/String;
+}
+
 public final class me/tbsten/compose/preview/lab/field/ColorField : me/tbsten/compose/preview/lab/MutablePreviewLabField {
 	public static final field $stable I
 	public static final field Companion Lme/tbsten/compose/preview/lab/field/ColorField$Companion;
