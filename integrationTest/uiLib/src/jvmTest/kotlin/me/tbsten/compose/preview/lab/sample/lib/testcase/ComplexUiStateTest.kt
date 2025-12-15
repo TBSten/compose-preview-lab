@@ -1,6 +1,6 @@
 package me.tbsten.compose.preview.lab.sample.lib.testcase
 
-import me.tbsten.compose.preview.lab.field.MutablePreviewLabField
+import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
