@@ -1432,13 +1432,14 @@ open class <#A: kotlin/Any?, #B: kotlin/Any?> me.tbsten.compose.preview.lab.fiel
 }
 
 open class <#A: kotlin/Any?> me.tbsten.compose.preview.lab.field/PolymorphicField : me.tbsten.compose.preview.lab/MutablePreviewLabField<#A> { // me.tbsten.compose.preview.lab.field/PolymorphicField|null[0]
-    constructor <init>(kotlin/String, #A, kotlin.collections/List<me.tbsten.compose.preview.lab/PreviewLabField<out #A>>, kotlin/Function1<#A, me.tbsten.compose.preview.lab/PreviewLabField<out #A>> = ...) // me.tbsten.compose.preview.lab.field/PolymorphicField.<init>|<init>(kotlin.String;1:0;kotlin.collections.List<me.tbsten.compose.preview.lab.PreviewLabField<out|1:0>>;kotlin.Function1<1:0,me.tbsten.compose.preview.lab.PreviewLabField<out|1:0>>){}[0]
+    constructor <init>(kotlin/String, #A, kotlin.collections/List<me.tbsten.compose.preview.lab/PreviewLabField<out #A>>, kotlin/Function1<#A, me.tbsten.compose.preview.lab/PreviewLabField<out #A>> = ..., kotlinx.serialization/KSerializer<#A>? = ...) // me.tbsten.compose.preview.lab.field/PolymorphicField.<init>|<init>(kotlin.String;1:0;kotlin.collections.List<me.tbsten.compose.preview.lab.PreviewLabField<out|1:0>>;kotlin.Function1<1:0,me.tbsten.compose.preview.lab.PreviewLabField<out|1:0>>;kotlinx.serialization.KSerializer<1:0>?){}[0]
 
     open var value // me.tbsten.compose.preview.lab.field/PolymorphicField.value|{}value[0]
         open fun <get-value>(): #A // me.tbsten.compose.preview.lab.field/PolymorphicField.value.<get-value>|<get-value>(){}[0]
         open fun <set-value>(#A) // me.tbsten.compose.preview.lab.field/PolymorphicField.value.<set-value>|<set-value>(1:0){}[0]
 
     open fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/PolymorphicField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    open fun serializer(): kotlinx.serialization/KSerializer<#A>? // me.tbsten.compose.preview.lab.field/PolymorphicField.serializer|serializer(){}[0]
     open fun testValues(): kotlin.collections/List<#A> // me.tbsten.compose.preview.lab.field/PolymorphicField.testValues|testValues(){}[0]
     open fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/PolymorphicField.valueCode|valueCode(){}[0]
 }
@@ -1562,62 +1563,6 @@ final object me.tbsten.compose.preview.lab.field.modifier/ModifierBuilderDefault
         final fun <get-modifierFieldValueFactories>(): kotlin.collections/List<me.tbsten.compose.preview.lab.field.modifier/ModifierFieldValueFactory<*>> // me.tbsten.compose.preview.lab.field.modifier/ModifierBuilderDefaults.modifierFieldValueFactories.<get-modifierFieldValueFactories>|<get-modifierFieldValueFactories>(){}[0]
 }
 
-final object me.tbsten.compose.preview.lab.field.serializer/ColorSerializer : kotlinx.serialization/KSerializer<androidx.compose.ui.graphics/Color> { // me.tbsten.compose.preview.lab.field.serializer/ColorSerializer|null[0]
-    final val descriptor // me.tbsten.compose.preview.lab.field.serializer/ColorSerializer.descriptor|{}descriptor[0]
-        final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // me.tbsten.compose.preview.lab.field.serializer/ColorSerializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
-
-    final fun deserialize(kotlinx.serialization.encoding/Decoder): androidx.compose.ui.graphics/Color // me.tbsten.compose.preview.lab.field.serializer/ColorSerializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
-    final fun serialize(kotlinx.serialization.encoding/Encoder, androidx.compose.ui.graphics/Color) // me.tbsten.compose.preview.lab.field.serializer/ColorSerializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;androidx.compose.ui.graphics.Color){}[0]
-}
-
-final object me.tbsten.compose.preview.lab.field.serializer/DpOffsetSerializer : kotlinx.serialization/KSerializer<androidx.compose.ui.unit/DpOffset> { // me.tbsten.compose.preview.lab.field.serializer/DpOffsetSerializer|null[0]
-    final val descriptor // me.tbsten.compose.preview.lab.field.serializer/DpOffsetSerializer.descriptor|{}descriptor[0]
-        final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // me.tbsten.compose.preview.lab.field.serializer/DpOffsetSerializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
-
-    final fun deserialize(kotlinx.serialization.encoding/Decoder): androidx.compose.ui.unit/DpOffset // me.tbsten.compose.preview.lab.field.serializer/DpOffsetSerializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
-    final fun serialize(kotlinx.serialization.encoding/Encoder, androidx.compose.ui.unit/DpOffset) // me.tbsten.compose.preview.lab.field.serializer/DpOffsetSerializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;androidx.compose.ui.unit.DpOffset){}[0]
-}
-
-final object me.tbsten.compose.preview.lab.field.serializer/DpSerializer : kotlinx.serialization/KSerializer<androidx.compose.ui.unit/Dp> { // me.tbsten.compose.preview.lab.field.serializer/DpSerializer|null[0]
-    final val descriptor // me.tbsten.compose.preview.lab.field.serializer/DpSerializer.descriptor|{}descriptor[0]
-        final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // me.tbsten.compose.preview.lab.field.serializer/DpSerializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
-
-    final fun deserialize(kotlinx.serialization.encoding/Decoder): androidx.compose.ui.unit/Dp // me.tbsten.compose.preview.lab.field.serializer/DpSerializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
-    final fun serialize(kotlinx.serialization.encoding/Encoder, androidx.compose.ui.unit/Dp) // me.tbsten.compose.preview.lab.field.serializer/DpSerializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;androidx.compose.ui.unit.Dp){}[0]
-}
-
-final object me.tbsten.compose.preview.lab.field.serializer/DpSizeSerializer : kotlinx.serialization/KSerializer<androidx.compose.ui.unit/DpSize> { // me.tbsten.compose.preview.lab.field.serializer/DpSizeSerializer|null[0]
-    final val descriptor // me.tbsten.compose.preview.lab.field.serializer/DpSizeSerializer.descriptor|{}descriptor[0]
-        final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // me.tbsten.compose.preview.lab.field.serializer/DpSizeSerializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
-
-    final fun deserialize(kotlinx.serialization.encoding/Decoder): androidx.compose.ui.unit/DpSize // me.tbsten.compose.preview.lab.field.serializer/DpSizeSerializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
-    final fun serialize(kotlinx.serialization.encoding/Encoder, androidx.compose.ui.unit/DpSize) // me.tbsten.compose.preview.lab.field.serializer/DpSizeSerializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;androidx.compose.ui.unit.DpSize){}[0]
-}
-
-final object me.tbsten.compose.preview.lab.field.serializer/OffsetSerializer : kotlinx.serialization/KSerializer<androidx.compose.ui.geometry/Offset> { // me.tbsten.compose.preview.lab.field.serializer/OffsetSerializer|null[0]
-    final val descriptor // me.tbsten.compose.preview.lab.field.serializer/OffsetSerializer.descriptor|{}descriptor[0]
-        final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // me.tbsten.compose.preview.lab.field.serializer/OffsetSerializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
-
-    final fun deserialize(kotlinx.serialization.encoding/Decoder): androidx.compose.ui.geometry/Offset // me.tbsten.compose.preview.lab.field.serializer/OffsetSerializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
-    final fun serialize(kotlinx.serialization.encoding/Encoder, androidx.compose.ui.geometry/Offset) // me.tbsten.compose.preview.lab.field.serializer/OffsetSerializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;androidx.compose.ui.geometry.Offset){}[0]
-}
-
-final object me.tbsten.compose.preview.lab.field.serializer/SizeSerializer : kotlinx.serialization/KSerializer<androidx.compose.ui.geometry/Size> { // me.tbsten.compose.preview.lab.field.serializer/SizeSerializer|null[0]
-    final val descriptor // me.tbsten.compose.preview.lab.field.serializer/SizeSerializer.descriptor|{}descriptor[0]
-        final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // me.tbsten.compose.preview.lab.field.serializer/SizeSerializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
-
-    final fun deserialize(kotlinx.serialization.encoding/Decoder): androidx.compose.ui.geometry/Size // me.tbsten.compose.preview.lab.field.serializer/SizeSerializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
-    final fun serialize(kotlinx.serialization.encoding/Encoder, androidx.compose.ui.geometry/Size) // me.tbsten.compose.preview.lab.field.serializer/SizeSerializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;androidx.compose.ui.geometry.Size){}[0]
-}
-
-final object me.tbsten.compose.preview.lab.field.serializer/TextUnitSerializer : kotlinx.serialization/KSerializer<androidx.compose.ui.unit/TextUnit> { // me.tbsten.compose.preview.lab.field.serializer/TextUnitSerializer|null[0]
-    final val descriptor // me.tbsten.compose.preview.lab.field.serializer/TextUnitSerializer.descriptor|{}descriptor[0]
-        final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // me.tbsten.compose.preview.lab.field.serializer/TextUnitSerializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
-
-    final fun deserialize(kotlinx.serialization.encoding/Decoder): androidx.compose.ui.unit/TextUnit // me.tbsten.compose.preview.lab.field.serializer/TextUnitSerializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
-    final fun serialize(kotlinx.serialization.encoding/Encoder, androidx.compose.ui.unit/TextUnit) // me.tbsten.compose.preview.lab.field.serializer/TextUnitSerializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;androidx.compose.ui.unit.TextUnit){}[0]
-}
-
 final val me.tbsten.compose.preview.lab.field.generated.resources/me_tbsten_compose_preview_lab_field_generated_resources_Res_array$stableprop // me.tbsten.compose.preview.lab.field.generated.resources/me_tbsten_compose_preview_lab_field_generated_resources_Res_array$stableprop|#static{}me_tbsten_compose_preview_lab_field_generated_resources_Res_array$stableprop[0]
 final val me.tbsten.compose.preview.lab.field.generated.resources/me_tbsten_compose_preview_lab_field_generated_resources_Res_drawable$stableprop // me.tbsten.compose.preview.lab.field.generated.resources/me_tbsten_compose_preview_lab_field_generated_resources_Res_drawable$stableprop|#static{}me_tbsten_compose_preview_lab_field_generated_resources_Res_drawable$stableprop[0]
 final val me.tbsten.compose.preview.lab.field.generated.resources/me_tbsten_compose_preview_lab_field_generated_resources_Res_font$stableprop // me.tbsten.compose.preview.lab.field.generated.resources/me_tbsten_compose_preview_lab_field_generated_resources_Res_font$stableprop|#static{}me_tbsten_compose_preview_lab_field_generated_resources_Res_font$stableprop[0]
@@ -1672,13 +1617,6 @@ final val me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview
 final val me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_WrapContentWidthModifierFieldValue_Factory$stableprop // me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_WrapContentWidthModifierFieldValue_Factory$stableprop|#static{}me_tbsten_compose_preview_lab_field_modifier_WrapContentWidthModifierFieldValue_Factory$stableprop[0]
 final val me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_ZIndexModifierFieldValue$stableprop // me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_ZIndexModifierFieldValue$stableprop|#static{}me_tbsten_compose_preview_lab_field_modifier_ZIndexModifierFieldValue$stableprop[0]
 final val me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_ZIndexModifierFieldValue_Factory$stableprop // me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_ZIndexModifierFieldValue_Factory$stableprop|#static{}me_tbsten_compose_preview_lab_field_modifier_ZIndexModifierFieldValue_Factory$stableprop[0]
-final val me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_ColorSerializer$stableprop // me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_ColorSerializer$stableprop|#static{}me_tbsten_compose_preview_lab_field_serializer_ColorSerializer$stableprop[0]
-final val me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_DpOffsetSerializer$stableprop // me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_DpOffsetSerializer$stableprop|#static{}me_tbsten_compose_preview_lab_field_serializer_DpOffsetSerializer$stableprop[0]
-final val me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_DpSerializer$stableprop // me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_DpSerializer$stableprop|#static{}me_tbsten_compose_preview_lab_field_serializer_DpSerializer$stableprop[0]
-final val me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_DpSizeSerializer$stableprop // me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_DpSizeSerializer$stableprop|#static{}me_tbsten_compose_preview_lab_field_serializer_DpSizeSerializer$stableprop[0]
-final val me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_OffsetSerializer$stableprop // me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_OffsetSerializer$stableprop|#static{}me_tbsten_compose_preview_lab_field_serializer_OffsetSerializer$stableprop[0]
-final val me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_SizeSerializer$stableprop // me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_SizeSerializer$stableprop|#static{}me_tbsten_compose_preview_lab_field_serializer_SizeSerializer$stableprop[0]
-final val me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_TextUnitSerializer$stableprop // me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_TextUnitSerializer$stableprop|#static{}me_tbsten_compose_preview_lab_field_serializer_TextUnitSerializer$stableprop[0]
 final val me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_BooleanField$stableprop // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_BooleanField$stableprop|#static{}me_tbsten_compose_preview_lab_field_BooleanField$stableprop[0]
 final val me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_ByteField$stableprop // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_ByteField$stableprop|#static{}me_tbsten_compose_preview_lab_field_ByteField$stableprop[0]
 final val me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_ColorField$stableprop // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_ColorField$stableprop|#static{}me_tbsten_compose_preview_lab_field_ColorField$stableprop[0]
@@ -1868,13 +1806,6 @@ final fun me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview
 final fun me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_WrapContentWidthModifierFieldValue_Factory$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_WrapContentWidthModifierFieldValue_Factory$stableprop_getter|me_tbsten_compose_preview_lab_field_modifier_WrapContentWidthModifierFieldValue_Factory$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_ZIndexModifierFieldValue$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_ZIndexModifierFieldValue$stableprop_getter|me_tbsten_compose_preview_lab_field_modifier_ZIndexModifierFieldValue$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_ZIndexModifierFieldValue_Factory$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field.modifier/me_tbsten_compose_preview_lab_field_modifier_ZIndexModifierFieldValue_Factory$stableprop_getter|me_tbsten_compose_preview_lab_field_modifier_ZIndexModifierFieldValue_Factory$stableprop_getter(){}[0]
-final fun me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_ColorSerializer$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_ColorSerializer$stableprop_getter|me_tbsten_compose_preview_lab_field_serializer_ColorSerializer$stableprop_getter(){}[0]
-final fun me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_DpOffsetSerializer$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_DpOffsetSerializer$stableprop_getter|me_tbsten_compose_preview_lab_field_serializer_DpOffsetSerializer$stableprop_getter(){}[0]
-final fun me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_DpSerializer$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_DpSerializer$stableprop_getter|me_tbsten_compose_preview_lab_field_serializer_DpSerializer$stableprop_getter(){}[0]
-final fun me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_DpSizeSerializer$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_DpSizeSerializer$stableprop_getter|me_tbsten_compose_preview_lab_field_serializer_DpSizeSerializer$stableprop_getter(){}[0]
-final fun me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_OffsetSerializer$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_OffsetSerializer$stableprop_getter|me_tbsten_compose_preview_lab_field_serializer_OffsetSerializer$stableprop_getter(){}[0]
-final fun me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_SizeSerializer$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_SizeSerializer$stableprop_getter|me_tbsten_compose_preview_lab_field_serializer_SizeSerializer$stableprop_getter(){}[0]
-final fun me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_TextUnitSerializer$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field.serializer/me_tbsten_compose_preview_lab_field_serializer_TextUnitSerializer$stableprop_getter|me_tbsten_compose_preview_lab_field_serializer_TextUnitSerializer$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.field/ComposableFieldValue(kotlin/String, kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>): me.tbsten.compose.preview.lab.field/ComposableFieldValue // me.tbsten.compose.preview.lab.field/ComposableFieldValue|ComposableFieldValue(kotlin.String;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>){}[0]
 final fun me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_BooleanField$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_BooleanField$stableprop_getter|me_tbsten_compose_preview_lab_field_BooleanField$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_ByteField$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_ByteField$stableprop_getter|me_tbsten_compose_preview_lab_field_ByteField$stableprop_getter(){}[0]

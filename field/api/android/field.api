@@ -449,10 +449,11 @@ public final class me/tbsten/compose/preview/lab/field/OffsetField : me/tbsten/c
 
 public class me/tbsten/compose/preview/lab/field/PolymorphicField : me/tbsten/compose/preview/lab/MutablePreviewLabField {
 	public static final field $stable I
-	public fun <init> (Ljava/lang/String;Ljava/lang/Object;Ljava/util/List;Lkotlin/jvm/functions/Function1;)V
-	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Object;Ljava/util/List;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Object;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlinx/serialization/KSerializer;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Object;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlinx/serialization/KSerializer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun Content (Landroidx/compose/runtime/Composer;I)V
 	public fun getValue ()Ljava/lang/Object;
+	public fun serializer ()Lkotlinx/serialization/KSerializer;
 	public fun setValue (Ljava/lang/Object;)V
 	public fun testValues ()Ljava/util/List;
 	public fun valueCode ()Ljava/lang/String;
@@ -1689,75 +1690,5 @@ public final class me/tbsten/compose/preview/lab/field/modifier/ZIndexModifierFi
 
 public final class me/tbsten/compose/preview/lab/field/modifier/ZIndexModifierFieldValueKt {
 	public static final fun zIndex (Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;F)Lme/tbsten/compose/preview/lab/field/modifier/ModifierFieldValueList;
-}
-
-public final class me/tbsten/compose/preview/lab/field/serializer/ColorSerializer : kotlinx/serialization/KSerializer {
-	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/serializer/ColorSerializer;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public fun deserialize-vNxB06k (Lkotlinx/serialization/encoding/Decoder;)J
-	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	public fun serialize-4WTKRHQ (Lkotlinx/serialization/encoding/Encoder;J)V
-}
-
-public final class me/tbsten/compose/preview/lab/field/serializer/DpOffsetSerializer : kotlinx/serialization/KSerializer {
-	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/serializer/DpOffsetSerializer;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public fun deserialize-gVRvYmI (Lkotlinx/serialization/encoding/Decoder;)J
-	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	public fun serialize-BkVx2pU (Lkotlinx/serialization/encoding/Encoder;J)V
-}
-
-public final class me/tbsten/compose/preview/lab/field/serializer/DpSerializer : kotlinx/serialization/KSerializer {
-	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/serializer/DpSerializer;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public fun deserialize-u2uoSUM (Lkotlinx/serialization/encoding/Decoder;)F
-	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	public fun serialize-3ABfNKs (Lkotlinx/serialization/encoding/Encoder;F)V
-}
-
-public final class me/tbsten/compose/preview/lab/field/serializer/DpSizeSerializer : kotlinx/serialization/KSerializer {
-	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/serializer/DpSizeSerializer;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public fun deserialize-Gh9hcWk (Lkotlinx/serialization/encoding/Decoder;)J
-	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	public fun serialize-6HolHcs (Lkotlinx/serialization/encoding/Encoder;J)V
-}
-
-public final class me/tbsten/compose/preview/lab/field/serializer/OffsetSerializer : kotlinx/serialization/KSerializer {
-	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/serializer/OffsetSerializer;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public fun deserialize-tuRUvjQ (Lkotlinx/serialization/encoding/Decoder;)J
-	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	public fun serialize-Uv8p0NA (Lkotlinx/serialization/encoding/Encoder;J)V
-}
-
-public final class me/tbsten/compose/preview/lab/field/serializer/SizeSerializer : kotlinx/serialization/KSerializer {
-	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/serializer/SizeSerializer;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public fun deserialize-7Ah8Wj8 (Lkotlinx/serialization/encoding/Decoder;)J
-	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	public fun serialize-d16Qtg0 (Lkotlinx/serialization/encoding/Encoder;J)V
-}
-
-public final class me/tbsten/compose/preview/lab/field/serializer/TextUnitSerializer : kotlinx/serialization/KSerializer {
-	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/serializer/TextUnitSerializer;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public fun deserialize-kPz2Gy4 (Lkotlinx/serialization/encoding/Decoder;)J
-	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	public fun serialize-mpE4wyQ (Lkotlinx/serialization/encoding/Encoder;J)V
 }
 

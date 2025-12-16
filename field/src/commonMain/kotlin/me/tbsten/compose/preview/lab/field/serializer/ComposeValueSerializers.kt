@@ -26,15 +26,8 @@ import kotlinx.serialization.encoding.encodeStructure
  *
  * Serializes colors as their ARGB integer representation (ULong internally).
  * This allows any color value to be serialized and deserialized without loss.
- *
- * # Usage
- *
- * ```kotlin
- * val colorField = ColorField("Background", Color.Blue)
- * val serializer = colorField.serializer() // Returns ColorSerializer
- * ```
  */
-object ColorSerializer : KSerializer<Color> {
+internal object ColorSerializer : KSerializer<Color> {
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor("Color", PrimitiveKind.LONG)
 
@@ -49,15 +42,8 @@ object ColorSerializer : KSerializer<Color> {
  * Serializer for Compose [Dp] values.
  *
  * Serializes Dp as its underlying Float value.
- *
- * # Usage
- *
- * ```kotlin
- * val dpField = DpField("Padding", 16.dp)
- * val serializer = dpField.serializer() // Returns DpSerializer
- * ```
  */
-object DpSerializer : KSerializer<Dp> {
+internal object DpSerializer : KSerializer<Dp> {
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor("Dp", PrimitiveKind.FLOAT)
 
@@ -72,15 +58,8 @@ object DpSerializer : KSerializer<Dp> {
  * Serializer for Compose [TextUnit] (Sp) values.
  *
  * Serializes TextUnit as its underlying Float value (assumes Sp unit).
- *
- * # Usage
- *
- * ```kotlin
- * val spField = SpField("Font Size", 16.sp)
- * val serializer = spField.serializer() // Returns TextUnitSerializer
- * ```
  */
-object TextUnitSerializer : KSerializer<TextUnit> {
+internal object TextUnitSerializer : KSerializer<TextUnit> {
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor("TextUnit", PrimitiveKind.FLOAT)
 
@@ -95,15 +74,8 @@ object TextUnitSerializer : KSerializer<TextUnit> {
  * Serializer for Compose [Offset] values.
  *
  * Serializes Offset as a structure with x and y Float components.
- *
- * # Usage
- *
- * ```kotlin
- * val offsetField = OffsetField("Position", Offset(50f, 100f))
- * val serializer = offsetField.serializer() // Returns OffsetSerializer
- * ```
  */
-object OffsetSerializer : KSerializer<Offset> {
+internal object OffsetSerializer : KSerializer<Offset> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("Offset") {
         element<Float>("x")
         element<Float>("y")
@@ -135,15 +107,8 @@ object OffsetSerializer : KSerializer<Offset> {
  * Serializer for Compose [DpOffset] values.
  *
  * Serializes DpOffset as a structure with x and y Float components (in dp).
- *
- * # Usage
- *
- * ```kotlin
- * val dpOffsetField = DpOffsetField("Position", DpOffset(16.dp, 8.dp))
- * val serializer = dpOffsetField.serializer() // Returns DpOffsetSerializer
- * ```
  */
-object DpOffsetSerializer : KSerializer<DpOffset> {
+internal object DpOffsetSerializer : KSerializer<DpOffset> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("DpOffset") {
         element<Float>("x")
         element<Float>("y")
@@ -175,15 +140,8 @@ object DpOffsetSerializer : KSerializer<DpOffset> {
  * Serializer for Compose [Size] values.
  *
  * Serializes Size as a structure with width and height Float components.
- *
- * # Usage
- *
- * ```kotlin
- * val sizeField = SizeField("Canvas", Size(200f, 150f))
- * val serializer = sizeField.serializer() // Returns SizeSerializer
- * ```
  */
-object SizeSerializer : KSerializer<Size> {
+internal object SizeSerializer : KSerializer<Size> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("Size") {
         element<Float>("width")
         element<Float>("height")
@@ -215,15 +173,8 @@ object SizeSerializer : KSerializer<Size> {
  * Serializer for Compose [DpSize] values.
  *
  * Serializes DpSize as a structure with width and height Float components (in dp).
- *
- * # Usage
- *
- * ```kotlin
- * val dpSizeField = DpSizeField("Button Size", DpSize(120.dp, 48.dp))
- * val serializer = dpSizeField.serializer() // Returns DpSizeSerializer
- * ```
  */
-object DpSizeSerializer : KSerializer<DpSize> {
+internal object DpSizeSerializer : KSerializer<DpSize> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("DpSize") {
         element<Float>("width")
         element<Float>("height")
