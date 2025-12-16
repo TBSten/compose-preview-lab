@@ -318,6 +318,60 @@ val fontSize = fieldValue {
 
 詳細については、[Inspector Tab の Code タブの説明](../inspector-tab#inspectortabcode)も参照してください。
 
+## Field.withSerializer(): Field のシリアライザを設定する
+
+`withSerializer()` を使用すると、Field にカスタムシリアライザを設定できます。
+これにより、Field の値を JSON などの形式でシリアライズ/デシリアライズできるようになります。
+
+### 基本的な使い方
+
+```kt
+@Serializable
+enum class Theme { Light, Dark, System }
+
+val theme = fieldValue {
+    SelectableField(
+        label = "theme",
+        choices = Theme.entries,
+        choiceLabel = { it.name },
+    )
+        // highlight-next-line
+        .withSerializer(Theme.serializer())
+}
+```
+
+### いつ使うか
+
+- `SelectableField` でシリアライズ可能な enum や sealed class を使用する場合
+- デフォルトで `serializer()` が `null` を返す Field にシリアライザを設定したい場合
+- デフォルトのシリアライザとは異なるカスタムシリアライザを使用したい場合
+
+### ビルトイン Field のシリアライザ対応状況
+
+以下の Field はデフォルトでシリアライザを提供しています：
+
+| Field | Serializer |
+|-------|-----------|
+| `BooleanField` | `Boolean.serializer()` |
+| `StringField` | `String.serializer()` |
+| `IntField` | `Int.serializer()` |
+| `LongField` | `Long.serializer()` |
+| `ByteField` | `Byte.serializer()` |
+| `DoubleField` | `Double.serializer()` |
+| `FloatField` | `Float.serializer()` |
+| `NullableField` | ベース Field の nullable serializer |
+
+以下の Field はデフォルトで `null` を返します（シリアライズ不可）：
+
+- `SelectableField` - 任意の型を扱うため
+- `CombinedField` - 複合型のため
+- `PolymorphicField` - 多態性のため
+- `ColorField`, `DpField`, `SpField` など - Compose 固有の型のため
+
+:::tip
+`SelectableField` で enum を使用する場合は、`withSerializer()` を使用してシリアライザを設定することで、値の永続化や共有が可能になります。
+:::
+
 ## 不十分ですか？
 
 より高度なカスタマイズが必要な場合、[フィールドを独自で作成する](./all-fields) ことができます。

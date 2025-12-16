@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.serializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.ui.Gray50
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
@@ -45,6 +47,7 @@ open class BooleanField(label: String, initialValue: Boolean) :
     ) {
     override fun testValues(): List<Boolean> = super.testValues() + listOf(true, false)
     override fun valueCode(): String = "$value"
+    override fun serializer(): KSerializer<Boolean> = Boolean.serializer()
 
     @Composable
     override fun Content() {
