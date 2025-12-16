@@ -20,6 +20,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
+import me.tbsten.compose.preview.lab.field.ScreenSize
 
 /**
  * Serializer for Compose [Color] values.
@@ -199,5 +200,42 @@ internal object DpSizeSerializer : KSerializer<DpSize> {
             }
         }
         DpSize(width.dp, height.dp)
+    }
+}
+
+/**
+ * Serializer for [ScreenSize] values.
+ *
+ * Serializes ScreenSize as a structure with width, height (in dp) and label.
+ */
+internal object ScreenSizeSerializer : KSerializer<ScreenSize> {
+    override val descriptor: SerialDescriptor = buildClassSerialDescriptor("ScreenSize") {
+        element<Float>("width")
+        element<Float>("height")
+        element<String>("label")
+    }
+
+    override fun serialize(encoder: Encoder, value: ScreenSize) {
+        encoder.encodeStructure(descriptor) {
+            encodeFloatElement(descriptor, 0, value.width.value)
+            encodeFloatElement(descriptor, 1, value.height.value)
+            encodeStringElement(descriptor, 2, value.label)
+        }
+    }
+
+    override fun deserialize(decoder: Decoder): ScreenSize = decoder.decodeStructure(descriptor) {
+        var width = 0f
+        var height = 0f
+        var label = ""
+        while (true) {
+            when (val index = decodeElementIndex(descriptor)) {
+                0 -> width = decodeFloatElement(descriptor, 0)
+                1 -> height = decodeFloatElement(descriptor, 1)
+                2 -> label = decodeStringElement(descriptor, 2)
+                CompositeDecoder.DECODE_DONE -> break
+                else -> error("Unexpected index: $index")
+            }
+        }
+        ScreenSize(width.dp, height.dp, label)
     }
 }

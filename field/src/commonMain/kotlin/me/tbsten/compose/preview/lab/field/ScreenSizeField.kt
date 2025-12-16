@@ -8,7 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.field.ScreenSize.Companion.MediumSmartPhone
+import me.tbsten.compose.preview.lab.field.serializer.ScreenSizeSerializer
 import me.tbsten.compose.preview.lab.field.component.TextFieldContent
 import me.tbsten.compose.preview.lab.ui.components.SelectButton
 import me.tbsten.compose.preview.lab.ui.components.Text
@@ -61,6 +63,7 @@ open class ScreenSizeField(
     initialValue = initialValue,
 ) {
     override fun testValues(): List<ScreenSize> = super.testValues() + sizes
+    override fun serializer(): KSerializer<ScreenSize> = ScreenSizeSerializer
 
     @Composable
     override fun Content() {
