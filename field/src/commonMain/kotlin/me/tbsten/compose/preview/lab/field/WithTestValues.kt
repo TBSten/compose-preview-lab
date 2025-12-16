@@ -1,12 +1,14 @@
 package me.tbsten.compose.preview.lab.field
 
 import androidx.compose.runtime.Composable
+import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.PreviewLabField
 
 class WithTestValuesField<Value>(val baseField: PreviewLabField<Value>, private vararg val additionalTestValues: Value) :
     PreviewLabField<Value> by baseField {
     override fun testValues(): List<Value> = super.testValues() + additionalTestValues
+    override fun serializer(): KSerializer<Value>? = baseField.serializer()
 }
 
 class MutableWithTestValuesField<Value>(
@@ -19,6 +21,7 @@ class MutableWithTestValuesField<Value>(
     override var value: Value by baseField::value
     override fun testValues(): List<Value> = baseField.testValues() + additionalTestValues
     override fun valueCode(): String = baseField.valueCode()
+    override fun serializer(): KSerializer<Value>? = baseField.serializer()
 
     @Composable
     override fun View() = baseField.View()
