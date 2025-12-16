@@ -379,15 +379,14 @@ val theme = fieldValue {
 
 以下の Field はデフォルトで `null` を返します（シリアライズ不可）：
 
-- `SelectableField` - 任意の型を扱うため（`withSerializer()` で設定可能）
-- `PolymorphicField` - 多態性のため（コンストラクタで serializer を指定可能）
-- `CombinedField` - 複合型のため
-- `ComposableField` - Composable 関数はシリアライズ不可
-- `ModifierField` - Modifier はシリアライズ不可
+- `SelectableField`
+- `PolymorphicField`
+- `CombinedField`
+- `ComposableField`
+- `ModifierField`
 
-:::tip
-`SelectableField` で enum を使用する場合は、`.withSerializer()` を使用してシリアライザを設定することで、値の永続化や共有が可能になります。
-:::
+
+その場合 `SelectableField` で enum を使用する場合は、`.withSerializer()` を使用してシリアライザを設定することで、値の永続化や共有が可能になります。
 
 ## 不十分ですか？
 
