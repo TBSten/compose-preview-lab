@@ -245,9 +245,14 @@ public final class me/tbsten/compose/preview/lab/ui/components/ButtonDefaults {
 	public final fun destructiveFilled (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
 	public final fun destructiveGhost (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
 	public final fun destructiveOutlined (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
+	public final fun getButtonHorizontalPadding-D9Ej5fM ()F
+	public final fun getButtonVerticalPadding-D9Ej5fM ()F
 	public final fun getContentPadding ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun getElevatedShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
+	public final fun getFilledShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
 	public final fun getMinHeight-D9Ej5fM ()F
 	public final fun getOutlineHeight-D9Ej5fM ()F
+	public final fun getOutlinedShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
 	public final fun ghost (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
 	public final fun primaryElevated (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
 	public final fun primaryFilled (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;

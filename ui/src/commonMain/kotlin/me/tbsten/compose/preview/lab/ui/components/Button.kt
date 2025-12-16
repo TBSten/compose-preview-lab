@@ -197,8 +197,8 @@ object ButtonDefaults {
 
     @InternalComposePreviewLabApi
     val OutlineHeight = 1.dp
-    private val ButtonHorizontalPadding = 16.dp
-    private val ButtonVerticalPadding = 8.dp
+    val ButtonHorizontalPadding = 16.dp
+    val ButtonVerticalPadding = 8.dp
     private val ButtonShape = RoundedCornerShape(12)
 
     val contentPadding =
@@ -209,9 +209,9 @@ object ButtonDefaults {
             bottom = ButtonVerticalPadding,
         )
 
-    private val filledShape = ButtonShape
-    private val elevatedShape = ButtonShape
-    private val outlinedShape = ButtonShape
+    val filledShape = ButtonShape
+    val elevatedShape = ButtonShape
+    val outlinedShape = ButtonShape
 
     @Composable
     fun buttonElevation() = ButtonElevation(

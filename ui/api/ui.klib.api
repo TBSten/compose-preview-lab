@@ -649,12 +649,22 @@ final object me.tbsten.compose.preview.lab.ui.components.textfield/UnderlinedTex
 }
 
 final object me.tbsten.compose.preview.lab.ui.components/ButtonDefaults { // me.tbsten.compose.preview.lab.ui.components/ButtonDefaults|null[0]
+    final val ButtonHorizontalPadding // me.tbsten.compose.preview.lab.ui.components/ButtonDefaults.ButtonHorizontalPadding|{}ButtonHorizontalPadding[0]
+        final fun <get-ButtonHorizontalPadding>(): androidx.compose.ui.unit/Dp // me.tbsten.compose.preview.lab.ui.components/ButtonDefaults.ButtonHorizontalPadding.<get-ButtonHorizontalPadding>|<get-ButtonHorizontalPadding>(){}[0]
+    final val ButtonVerticalPadding // me.tbsten.compose.preview.lab.ui.components/ButtonDefaults.ButtonVerticalPadding|{}ButtonVerticalPadding[0]
+        final fun <get-ButtonVerticalPadding>(): androidx.compose.ui.unit/Dp // me.tbsten.compose.preview.lab.ui.components/ButtonDefaults.ButtonVerticalPadding.<get-ButtonVerticalPadding>|<get-ButtonVerticalPadding>(){}[0]
     final val MinHeight // me.tbsten.compose.preview.lab.ui.components/ButtonDefaults.MinHeight|{}MinHeight[0]
         final fun <get-MinHeight>(): androidx.compose.ui.unit/Dp // me.tbsten.compose.preview.lab.ui.components/ButtonDefaults.MinHeight.<get-MinHeight>|<get-MinHeight>(){}[0]
     final val OutlineHeight // me.tbsten.compose.preview.lab.ui.components/ButtonDefaults.OutlineHeight|{}OutlineHeight[0]
         final fun <get-OutlineHeight>(): androidx.compose.ui.unit/Dp // me.tbsten.compose.preview.lab.ui.components/ButtonDefaults.OutlineHeight.<get-OutlineHeight>|<get-OutlineHeight>(){}[0]
     final val contentPadding // me.tbsten.compose.preview.lab.ui.components/ButtonDefaults.contentPadding|{}contentPadding[0]
         final fun <get-contentPadding>(): androidx.compose.foundation.layout/PaddingValues // me.tbsten.compose.preview.lab.ui.components/ButtonDefaults.contentPadding.<get-contentPadding>|<get-contentPadding>(){}[0]
+    final val elevatedShape // me.tbsten.compose.preview.lab.ui.components/ButtonDefaults.elevatedShape|{}elevatedShape[0]
+        final fun <get-elevatedShape>(): androidx.compose.foundation.shape/RoundedCornerShape // me.tbsten.compose.preview.lab.ui.components/ButtonDefaults.elevatedShape.<get-elevatedShape>|<get-elevatedShape>(){}[0]
+    final val filledShape // me.tbsten.compose.preview.lab.ui.components/ButtonDefaults.filledShape|{}filledShape[0]
+        final fun <get-filledShape>(): androidx.compose.foundation.shape/RoundedCornerShape // me.tbsten.compose.preview.lab.ui.components/ButtonDefaults.filledShape.<get-filledShape>|<get-filledShape>(){}[0]
+    final val outlinedShape // me.tbsten.compose.preview.lab.ui.components/ButtonDefaults.outlinedShape|{}outlinedShape[0]
+        final fun <get-outlinedShape>(): androidx.compose.foundation.shape/RoundedCornerShape // me.tbsten.compose.preview.lab.ui.components/ButtonDefaults.outlinedShape.<get-outlinedShape>|<get-outlinedShape>(){}[0]
 
     final fun buttonElevation(androidx.compose.runtime/Composer?, kotlin/Int): me.tbsten.compose.preview.lab.ui.foundation/ButtonElevation // me.tbsten.compose.preview.lab.ui.components/ButtonDefaults.buttonElevation|buttonElevation(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
     final fun destructiveElevated(kotlin/Boolean, androidx.compose.runtime/Composer?, kotlin/Int): me.tbsten.compose.preview.lab.ui.components/ButtonStyle // me.tbsten.compose.preview.lab.ui.components/ButtonDefaults.destructiveElevated|destructiveElevated(kotlin.Boolean;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
