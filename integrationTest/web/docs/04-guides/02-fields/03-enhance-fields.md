@@ -386,7 +386,7 @@ val theme = fieldValue {
 - `ModifierField` - Modifier はシリアライズ不可
 
 :::tip
-`SelectableField` で enum を使用する場合は、`withSerializer()` を使用してシリアライザを設定することで、値の永続化や共有が可能になります。
+`SelectableField` で enum を使用する場合は、`.withSerializer()` を使用してシリアライザを設定することで、値の永続化や共有が可能になります。
 :::
 
 ## 不十分ですか？
