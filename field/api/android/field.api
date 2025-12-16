@@ -783,6 +783,7 @@ public class me/tbsten/compose/preview/lab/field/TransformField : me/tbsten/comp
 	public synthetic fun <init> (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun Content (Landroidx/compose/runtime/Composer;I)V
 	public fun getValue ()Ljava/lang/Object;
+	public fun serializer ()Lkotlinx/serialization/KSerializer;
 	public fun setValue (Ljava/lang/Object;)V
 	public fun testValues ()Ljava/util/List;
 	public fun valueCode ()Ljava/lang/String;

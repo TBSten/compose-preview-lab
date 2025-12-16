@@ -1,6 +1,10 @@
 package me.tbsten.compose.preview.lab.field
 
 import androidx.compose.runtime.Composable
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.defaultValueCode
 
@@ -36,6 +40,8 @@ open class TransformField<BaseValue, TransformedValue>(
 ) {
     override fun testValues(): List<TransformedValue> = super.testValues() + baseField.testValues().map(transform)
     override fun valueCode(): String = valueCode(value)
+    override fun serializer(): KSerializer<TransformedValue>? =
+        baseField.serializer()?.let { TransformingSerializer(it, transform, reverse) }
 
     override var value: TransformedValue
         get() = transform(baseField.value)
@@ -84,3 +90,27 @@ fun <BaseValue, TransformedValue> MutablePreviewLabField<BaseValue>.transform(
     label = label,
     initialValue = initialValue,
 )
+
+/**
+ * A serializer that transforms values during serialization/deserialization.
+ *
+ * This serializer wraps a base serializer and applies transform/reverse functions
+ * to convert between BaseValue and TransformedValue types.
+ *
+ * @param baseSerializer The serializer for the base value type.
+ * @param transform Function to convert from base value to transformed value (used during deserialization).
+ * @param reverse Function to convert from transformed value back to base value (used during serialization).
+ */
+internal class TransformingSerializer<BaseValue, TransformedValue>(
+    private val baseSerializer: KSerializer<BaseValue>,
+    private val transform: (BaseValue) -> TransformedValue,
+    private val reverse: (TransformedValue) -> BaseValue,
+) : KSerializer<TransformedValue> {
+    override val descriptor: SerialDescriptor = baseSerializer.descriptor
+
+    override fun serialize(encoder: Encoder, value: TransformedValue) {
+        baseSerializer.serialize(encoder, reverse(value))
+    }
+
+    override fun deserialize(decoder: Decoder): TransformedValue = transform(baseSerializer.deserialize(decoder))
+}
