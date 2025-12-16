@@ -13,6 +13,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.nullable
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.PreviewLabField
 import me.tbsten.compose.preview.lab.ui.components.Checkbox
@@ -109,6 +111,8 @@ class NullableField<Value : Any> internal constructor(private val baseField: Pre
         }
 
     override fun valueCode(): String = if (value == null) "null" else baseField.valueCode()
+
+    override fun serializer(): KSerializer<Value?>? = baseField.serializer()?.nullable
 
     @Composable
     override fun Content() {

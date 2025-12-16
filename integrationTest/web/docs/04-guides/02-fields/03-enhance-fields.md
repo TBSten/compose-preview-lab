@@ -7,7 +7,8 @@ import EmbeddedPreviewLab from '@site/src/components/EmbeddedPreviewLab';
 
 # Field を強化する
 
-[All Fields](./all-fields) で紹介されている Field と組み合わせることで、カスタム Field を作成せずとも 独自の型に対応したり、Field の編集 UI を簡単に作成できます。
+[All Fields](./all-fields) で紹介されている Field と組み合わせることで、カスタム Field を作成せずとも 独自の型に対応したり、Field
+の編集 UI を簡単に作成できます。
 
 TODO サンプルの PreviewLab
 
@@ -29,7 +30,7 @@ val theme =
 ```
 
 <EmbeddedPreviewLab
- previewId="FieldSelectable"
+previewId="FieldSelectable"
 />
 
 デフォルトでは選択肢のテキストは `選択肢.toString()` が使用されますが、SelectableField には label を設定できるオーバーライドも存在します。
@@ -100,7 +101,8 @@ private fun PreviewParameterProviderButtonPreview() = PreviewLab {
 }
 ```
 
-[PreviewParameterProvider.toField()](https://github.com/TBSten/compose-preview-lab/blob/908ae45aa87e477263de2c4d6a30eb6f21e5f4bc/core/src/commonMain/kotlin/me/tbsten/compose/preview/lab/field/ComposableField.kt#L591) が用意されているため、必要に応じて活用してください。
+[PreviewParameterProvider.toField()](https://github.com/TBSten/compose-preview-lab/blob/908ae45aa87e477263de2c4d6a30eb6f21e5f4bc/core/src/commonMain/kotlin/me/tbsten/compose/preview/lab/field/ComposableField.kt#L591)
+が用意されているため、必要に応じて活用してください。
 
 </details>
 
@@ -122,7 +124,7 @@ val email = fieldValue {
 ```
 
 <EmbeddedPreviewLab
- previewId="FieldWithHint"
+previewId="FieldWithHint"
 />
 
 Field.withHint() はあくまでも既存の Field の編集 UI によくある選択肢を追加するだけです。
@@ -182,7 +184,7 @@ val timeout: Int? = fieldValue {
 ```
 
 <EmbeddedPreviewLab
- previewId="FieldNullable"
+previewId="FieldNullable"
 />
 
 ## CombinedField: 複数の Field を組み合わせる
@@ -222,20 +224,23 @@ val uiState = fieldValue {
             "description",
             "...",
         ),
-        field3 = BooleanField("isLoading", ...),
-        combine = { title, description, isLoading -> MyUiState(title, description, isLoading) },
-        split = { splitedOf(it.title, it.description, it.isLoading) },
+        field3 = BooleanField("isLoading", ...
+    ),
+    combine = { title, description, isLoading -> MyUiState(title, description, isLoading) },
+    split = { splitedOf(it.title, it.description, it.isLoading) },
     )
 }
 ```
 
 <EmbeddedPreviewLab
- previewId="FieldCombined"
+previewId="FieldCombined"
 />
 
 - `combine` は それぞれの Field の値 -> 合体した値に変換する関数です。それぞれの Field の値から現在の CombinedField の値を取得するために
 - `split` は 合体した値 -> それぞれの Field に分割する関数です。それぞれの編集 UI を表示する際に使用されます。
-- 標準では `combined` 関数が CombinedField1~10 まで用意されているため最大10個まで合体させることができます。11個以上の場合はライブラリの CombinedField 実装を参考に独自実装するか、型安全性が失われるものの任意の Field を合体させることができる CombinedField 合体する Field を List を受け取るバージョンの CombinedField を利用してください。
+- 標準では `combined` 関数が CombinedField1~10 まで用意されているため最大10個まで合体させることができます。11個以上の場合はライブラリの
+  CombinedField 実装を参考に独自実装するか、型安全性が失われるものの任意の Field を合体させることができる CombinedField 合体する
+  Field を List を受け取るバージョンの CombinedField を利用してください。
 
 :::warning
 CombinedField は深くネストさせたり、あまりに多い数のプロパティがあると編集 UI が非常に使いづらくなってしまいます。
@@ -254,7 +259,7 @@ CombinedField の自動生成機能も検討しています。
 ## TransformField: Field を変換する
 
 <EmbeddedPreviewLab
- previewId="FieldTransform"
+previewId="FieldTransform"
 />
 
 ## Field.withValueCode(): Code タブに出力されるコードをカスタマイズ
@@ -265,14 +270,15 @@ CombinedField の自動生成機能も検討しています。
 
 ### 基本的な使い方
 
-`PreviewLabField` には `valueCode(): String` メソッドがあり、現在の値を Kotlin コードとして表現します。多くのビルトイン Field では、適切なコード表現が自動的に生成されますが、拡張関数 `withValueCode { value -> "..." }` を使用することで、出力だけを差し替えることができます。
+`PreviewLabField` には `valueCode(): String` メソッドがあり、現在の値を Kotlin コードとして表現します。多くのビルトイン Field
+では、適切なコード表現が自動的に生成されますが、拡張関数 `withValueCode { value -> "..." }` を使用することで、出力だけを差し替えることができます。
 
 ```kt
 val text = fieldValue {
     StringField("text", "Hello")
         // highlight-start
         .withValueCode { value -> """"prefix-$value"""" }
-        // highlight-end
+    // highlight-end
 }
 ```
 
@@ -300,7 +306,8 @@ Code タブでは `Theme.Light` のように表示されます。
 
 ### ラッパー Field との組み合わせ
 
-`.withHint()`, `.nullable()`, `.withTestValues()` などのラッパー Field は、ベース Field の `valueCode()` を尊重します。そのため、まずベース Field で `withValueCode {}` を呼び出してから、他のラッパーを適用するのが推奨パターンです：
+`.withHint()`, `.nullable()`, `.withTestValues()` などのラッパー Field は、ベース Field の `valueCode()` を尊重します。そのため、まずベース
+Field で `withValueCode {}` を呼び出してから、他のラッパーを適用するのが推奨パターンです：
 
 ```kt
 val fontSize = fieldValue {
@@ -317,6 +324,69 @@ val fontSize = fieldValue {
 ```
 
 詳細については、[Inspector Tab の Code タブの説明](../inspector-tab#inspectortabcode)も参照してください。
+
+## Field.withSerializer(): Field のシリアライザを設定する
+
+`withSerializer()` を使用すると、Field にカスタムシリアライザを設定できます。
+設定されたシリアライザは Web ブラウザの query parameter として保存する際など 永続化のために利用されます。
+
+### 基本的な使い方
+
+```kt
+@Serializable
+enum class Theme { Light, Dark, System }
+
+val theme = fieldValue {
+    SelectableField(
+        label = "theme",
+        choices = Theme.entries,
+        choiceLabel = { it.name },
+    )
+        // highlight-next-line
+        .withSerializer(Theme.serializer())
+}
+```
+
+### いつ使うか
+
+- `SelectableField` でシリアライズ可能な enum や sealed class を使用する場合
+- デフォルトで `serializer()` が `null` を返す Field にシリアライザを設定したい場合
+- デフォルトのシリアライザとは異なるカスタムシリアライザを使用したい場合
+
+### ビルトイン Field のシリアライザ対応状況
+
+以下の Field はデフォルトでシリアライザを提供しています：
+
+| Field             | Serializer                        |
+|-------------------|-----------------------------------|
+| `BooleanField`    | `Boolean.serializer()`            |
+| `StringField`     | `String.serializer()`             |
+| `IntField`        | `Int.serializer()`                |
+| `LongField`       | `Long.serializer()`               |
+| `ByteField`       | `Byte.serializer()`               |
+| `DoubleField`     | `Double.serializer()`             |
+| `FloatField`      | `Float.serializer()`              |
+| `NullableField`   | ベース Field の nullable serializer |
+| `ColorField`      | `ColorSerializer`                 |
+| `DpField`         | `DpSerializer`                    |
+| `SpField`         | `TextUnitSerializer`              |
+| `OffsetField`     | `OffsetSerializer`                |
+| `DpOffsetField`   | `DpOffsetSerializer`              |
+| `SizeField`       | `SizeSerializer`                  |
+| `DpSizeField`     | `DpSizeSerializer`                |
+| `ScreenSizeField` | `ScreenSizeSerializer`            |
+| `TransformField`  | ベース Field の serializer を変換    |
+
+以下の Field はデフォルトで `null` を返します（シリアライズ不可）：
+
+- `SelectableField`
+- `PolymorphicField`
+- `CombinedField`
+- `ComposableField`
+- `ModifierField`
+
+
+その場合 `SelectableField` で enum を使用する場合は、`.withSerializer()` を使用してシリアライザを設定することで、値の永続化や共有が可能になります。
 
 ## 不十分ですか？
 

@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.field.DefaultFieldView
 
 /**
@@ -101,7 +102,130 @@ interface PreviewLabField<Value> {
      */
     fun valueCode(): String = defaultValueCode(label)
 
+    /**
+     * Returns a list of representative values for this field to be used in automated testing.
+     *
+     * This method provides edge cases and boundary values that are useful for property-based testing
+     * and visual regression testing (VRT). The returned values are used as test inputs to ensure
+     * the preview component behaves correctly across different states.
+     *
+     * # Default behavior
+     *
+     * By default, this method returns a list containing only the [initialValue].
+     * Built-in field types override this to provide meaningful edge cases:
+     * - [me.tbsten.compose.preview.lab.field.BooleanField]: `[true, false]`
+     * - [me.tbsten.compose.preview.lab.field.StringField]: `["", initialValue]` (empty string and initial)
+     * - [me.tbsten.compose.preview.lab.field.NullableField]: `[null, wrappedValue]`
+     * - [me.tbsten.compose.preview.lab.field.SelectableField]: All available choices
+     *
+     * # Usage in property-based testing
+     *
+     * The test values are typically used as edge cases in property-based testing frameworks:
+     *
+     * ```kotlin
+     * @Test
+     * fun `component handles all field values`() = runDesktopComposeUiTest {
+     *     val state = PreviewLabState()
+     *     setContent { TestPreviewLab(state) { MyPreview() } }
+     *
+     *     val myField by state.field<String>("label")
+     *
+     *     // Use testValues as edge cases for property-based testing
+     *     forAll(Arb.string().plusEdgecases(myField.testValues())) { value ->
+     *         myField.value = value
+     *         awaitIdle()
+     *         // assertions...
+     *         true
+     *     }
+     * }
+     * ```
+     *
+     * # Custom implementation
+     *
+     * Override this method when creating a custom field to provide meaningful edge cases:
+     *
+     * ```kotlin
+     * class PercentageField(label: String, initialValue: Int) :
+     *     MutablePreviewLabField<Int>(label, initialValue) {
+     *
+     *     override fun testValues(): List<Int> = listOf(0, 50, 100, initialValue)
+     *
+     *     @Composable
+     *     override fun Content() { /* ... */ }
+     * }
+     * ```
+     *
+     * # Using withTestValues
+     *
+     * For existing fields, use [me.tbsten.compose.preview.lab.field.withTestValues] to add
+     * additional test values without creating a new class:
+     *
+     * ```kotlin
+     * val fontSize = fieldValue {
+     *     IntField(label = "Font Size", initialValue = 14)
+     *         .withTestValues(8, 12, 24, 48) // Add edge cases
+     * }
+     * ```
+     *
+     * @return A list of values to use as test inputs, including edge cases and boundary values
+     * @see me.tbsten.compose.preview.lab.field.withTestValues
+     */
     fun testValues(): List<Value> = listOf(initialValue)
+
+    /**
+     * Returns a [KSerializer] for this field's value type, or null if serialization is not supported.
+     *
+     * This method is used to enable persistence of field values. When a serializer is provided,
+     * the preview state can be saved and restored across sessions, allowing users to maintain
+     * their configured preview settings.
+     *
+     * # Default behavior
+     *
+     * By default, this method returns `null`, indicating that the field does not support serialization.
+     * Built-in primitive fields (like [me.tbsten.compose.preview.lab.field.StringField],
+     * [me.tbsten.compose.preview.lab.field.IntField], [me.tbsten.compose.preview.lab.field.BooleanField])
+     * provide serializers automatically.
+     *
+     * # Custom implementation
+     *
+     * When creating a custom field with a serializable value type, override this method:
+     *
+     * ```kotlin
+     * @Serializable
+     * data class MyConfig(val name: String, val enabled: Boolean)
+     *
+     * class MyConfigField(label: String, initialValue: MyConfig) :
+     *     MutablePreviewLabField<MyConfig>(label, initialValue) {
+     *
+     *     override fun serializer(): KSerializer<MyConfig> = MyConfig.serializer()
+     *
+     *     @Composable
+     *     override fun Content() { /* ... */ }
+     * }
+     * ```
+     *
+     * # Using withSerializer
+     *
+     * For existing fields, use [me.tbsten.compose.preview.lab.field.withSerializer] to add
+     * serialization support without creating a new class:
+     *
+     * ```kotlin
+     * @Serializable
+     * enum class Theme { Light, Dark, System }
+     *
+     * val theme = fieldValue {
+     *     SelectableField(
+     *         label = "Theme",
+     *         choices = Theme.entries,
+     *         choiceLabel = { it.name },
+     *     ).withSerializer(Theme.serializer())
+     * }
+     * ```
+     *
+     * @return A [KSerializer] for the value type, or `null` if serialization is not supported
+     * @see me.tbsten.compose.preview.lab.field.withSerializer
+     */
+    fun serializer(): KSerializer<Value>? = null
 
     /**
      * Composable, which displays the entire UI for this Field.

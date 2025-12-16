@@ -1,6 +1,8 @@
 package me.tbsten.compose.preview.lab.field
 
 import androidx.compose.runtime.Composable
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.serializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.component.TextFieldContent
 
@@ -180,7 +182,9 @@ open class IntField(label: String, initialValue: Int, inputType: InputType = Inp
         toString = { it.toString() },
         inputType = inputType,
         valueCode = { "$it" },
-    )
+    ) {
+    override fun serializer(): KSerializer<Int> = Int.serializer()
+}
 
 /**
  * Field that holds an Long value.
@@ -237,7 +241,9 @@ open class LongField(label: String, initialValue: Long, inputType: InputType = I
         toString = { it.toString() },
         inputType = inputType,
         valueCode = { "${it}L" },
-    )
+    ) {
+    override fun serializer(): KSerializer<Long> = Long.serializer()
+}
 
 /**
  * Field that holds an Byte value.
@@ -293,7 +299,9 @@ open class ByteField(label: String, initialValue: Byte, inputType: InputType = I
         toString = { it.toString() },
         inputType = inputType,
         valueCode = { "$it" },
-    )
+    ) {
+    override fun serializer(): KSerializer<Byte> = Byte.serializer()
+}
 
 /**
  * Field that holds an Double value.
@@ -351,7 +359,9 @@ open class DoubleField(label: String, initialValue: Double, inputType: InputType
         toString = { it.toString() },
         inputType = inputType,
         valueCode = { doubleValueCode(it) },
-    )
+    ) {
+    override fun serializer(): KSerializer<Double> = Double.serializer()
+}
 
 /**
  * Field that holds an Float value.
@@ -408,4 +418,6 @@ open class FloatField(label: String, initialValue: Float, inputType: InputType =
         toString = { it.toString() },
         inputType = inputType,
         valueCode = { floatValueCode(it) },
-    )
+    ) {
+    override fun serializer(): KSerializer<Float> = Float.serializer()
+}

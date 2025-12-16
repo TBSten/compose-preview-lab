@@ -1,6 +1,7 @@
 package me.tbsten.compose.preview.lab.field
 
 import androidx.compose.runtime.Composable
+import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 
 /**
@@ -25,6 +26,8 @@ class WrapField<Value> internal constructor(
     private val content: @Composable (@Composable () -> Unit) -> Unit,
 ) : MutablePreviewLabField<Value>(label = baseField.label, initialValue = baseField.initialValue) {
     override var value: Value by baseField::value
+
+    override fun serializer(): KSerializer<Value>? = baseField.serializer()
 
     @Composable
     override fun View() {

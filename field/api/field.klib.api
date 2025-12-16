@@ -32,6 +32,7 @@ abstract interface <#A: kotlin/Any?> me.tbsten.compose.preview.lab/PreviewLabFie
     abstract fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab/PreviewLabField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
     open fun View(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab/PreviewLabField.View|View(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
     open fun onCleared() // me.tbsten.compose.preview.lab/PreviewLabField.onCleared|onCleared(){}[0]
+    open fun serializer(): kotlinx.serialization/KSerializer<#A>? // me.tbsten.compose.preview.lab/PreviewLabField.serializer|serializer(){}[0]
     open fun testValues(): kotlin.collections/List<#A> // me.tbsten.compose.preview.lab/PreviewLabField.testValues|testValues(){}[0]
     open fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab/PreviewLabField.valueCode|valueCode(){}[0]
 }
@@ -221,6 +222,7 @@ final class <#A: kotlin/Any> me.tbsten.compose.preview.lab.field/NullableField :
         final fun <set-value>(#A?) // me.tbsten.compose.preview.lab.field/NullableField.value.<set-value>|<set-value>(1:0?){}[0]
 
     final fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/NullableField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun serializer(): kotlinx.serialization/KSerializer<#A?>? // me.tbsten.compose.preview.lab.field/NullableField.serializer|serializer(){}[0]
     final fun testValues(): kotlin.collections/List<#A?> // me.tbsten.compose.preview.lab.field/NullableField.testValues|testValues(){}[0]
     final fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/NullableField.valueCode|valueCode(){}[0]
 }
@@ -496,6 +498,7 @@ final class <#A: kotlin/Any?> me.tbsten.compose.preview.lab.field/MutableWithTes
 
     final fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/MutableWithTestValuesField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
     final fun View(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/MutableWithTestValuesField.View|View(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun serializer(): kotlinx.serialization/KSerializer<#A>? // me.tbsten.compose.preview.lab.field/MutableWithTestValuesField.serializer|serializer(){}[0]
     final fun testValues(): kotlin.collections/List<#A> // me.tbsten.compose.preview.lab.field/MutableWithTestValuesField.testValues|testValues(){}[0]
     final fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/MutableWithTestValuesField.valueCode|valueCode(){}[0]
 }
@@ -515,8 +518,23 @@ final class <#A: kotlin/Any?> me.tbsten.compose.preview.lab.field/Splited1 { // 
 
 final class <#A: kotlin/Any?> me.tbsten.compose.preview.lab.field/WithHintField : me.tbsten.compose.preview.lab.field/TransformField<#A, #A> { // me.tbsten.compose.preview.lab.field/WithHintField|null[0]
     final fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/WithHintField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun serializer(): kotlinx.serialization/KSerializer<#A>? // me.tbsten.compose.preview.lab.field/WithHintField.serializer|serializer(){}[0]
     final fun testValues(): kotlin.collections/List<#A> // me.tbsten.compose.preview.lab.field/WithHintField.testValues|testValues(){}[0]
     final fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/WithHintField.valueCode|valueCode(){}[0]
+}
+
+final class <#A: kotlin/Any?> me.tbsten.compose.preview.lab.field/WithSerializerField : me.tbsten.compose.preview.lab/MutablePreviewLabField<#A> { // me.tbsten.compose.preview.lab.field/WithSerializerField|null[0]
+    constructor <init>(me.tbsten.compose.preview.lab/MutablePreviewLabField<#A>, kotlinx.serialization/KSerializer<#A>) // me.tbsten.compose.preview.lab.field/WithSerializerField.<init>|<init>(me.tbsten.compose.preview.lab.MutablePreviewLabField<1:0>;kotlinx.serialization.KSerializer<1:0>){}[0]
+
+    final var value // me.tbsten.compose.preview.lab.field/WithSerializerField.value|{}value[0]
+        final fun <get-value>(): #A // me.tbsten.compose.preview.lab.field/WithSerializerField.value.<get-value>|<get-value>(){}[0]
+        final fun <set-value>(#A) // me.tbsten.compose.preview.lab.field/WithSerializerField.value.<set-value>|<set-value>(1:0){}[0]
+
+    final fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/WithSerializerField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun View(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/WithSerializerField.View|View(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun serializer(): kotlinx.serialization/KSerializer<#A> // me.tbsten.compose.preview.lab.field/WithSerializerField.serializer|serializer(){}[0]
+    final fun testValues(): kotlin.collections/List<#A> // me.tbsten.compose.preview.lab.field/WithSerializerField.testValues|testValues(){}[0]
+    final fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/WithSerializerField.valueCode|valueCode(){}[0]
 }
 
 final class <#A: kotlin/Any?> me.tbsten.compose.preview.lab.field/WithTestValuesField : me.tbsten.compose.preview.lab/PreviewLabField<#A> { // me.tbsten.compose.preview.lab.field/WithTestValuesField|null[0]
@@ -538,6 +556,7 @@ final class <#A: kotlin/Any?> me.tbsten.compose.preview.lab.field/WithTestValues
     final fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/WithTestValuesField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
     final fun View(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/WithTestValuesField.View|View(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
     final fun onCleared() // me.tbsten.compose.preview.lab.field/WithTestValuesField.onCleared|onCleared(){}[0]
+    final fun serializer(): kotlinx.serialization/KSerializer<#A>? // me.tbsten.compose.preview.lab.field/WithTestValuesField.serializer|serializer(){}[0]
     final fun testValues(): kotlin.collections/List<#A> // me.tbsten.compose.preview.lab.field/WithTestValuesField.testValues|testValues(){}[0]
     final fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/WithTestValuesField.valueCode|valueCode(){}[0]
 }
@@ -551,6 +570,7 @@ final class <#A: kotlin/Any?> me.tbsten.compose.preview.lab.field/WithValueCodeF
 
     final fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/WithValueCodeField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
     final fun View(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/WithValueCodeField.View|View(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun serializer(): kotlinx.serialization/KSerializer<#A>? // me.tbsten.compose.preview.lab.field/WithValueCodeField.serializer|serializer(){}[0]
     final fun testValues(): kotlin.collections/List<#A> // me.tbsten.compose.preview.lab.field/WithValueCodeField.testValues|testValues(){}[0]
     final fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/WithValueCodeField.valueCode|valueCode(){}[0]
 }
@@ -562,6 +582,7 @@ final class <#A: kotlin/Any?> me.tbsten.compose.preview.lab.field/WrapField : me
 
     final fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/WrapField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
     final fun View(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/WrapField.View|View(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun serializer(): kotlinx.serialization/KSerializer<#A>? // me.tbsten.compose.preview.lab.field/WrapField.serializer|serializer(){}[0]
 }
 
 final class me.tbsten.compose.preview.lab.field.modifier/AlphaModifierFieldValue : me.tbsten.compose.preview.lab.field.modifier/ModifierFieldValue { // me.tbsten.compose.preview.lab.field.modifier/AlphaModifierFieldValue|null[0]
@@ -1223,6 +1244,7 @@ final class me.tbsten.compose.preview.lab.field/ColorField : me.tbsten.compose.p
     constructor <init>(kotlin/String, androidx.compose.ui.graphics/Color) // me.tbsten.compose.preview.lab.field/ColorField.<init>|<init>(kotlin.String;androidx.compose.ui.graphics.Color){}[0]
 
     final fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/ColorField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun serializer(): kotlinx.serialization/KSerializer<androidx.compose.ui.graphics/Color> // me.tbsten.compose.preview.lab.field/ColorField.serializer|serializer(){}[0]
     final fun testValues(): kotlin.collections/List<androidx.compose.ui.graphics/Color> // me.tbsten.compose.preview.lab.field/ColorField.testValues|testValues(){}[0]
     final fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/ColorField.valueCode|valueCode(){}[0]
 
@@ -1234,12 +1256,15 @@ final class me.tbsten.compose.preview.lab.field/ColorField : me.tbsten.compose.p
 
 final class me.tbsten.compose.preview.lab.field/DpField : me.tbsten.compose.preview.lab.field/TransformField<kotlin/Float, androidx.compose.ui.unit/Dp> { // me.tbsten.compose.preview.lab.field/DpField|null[0]
     constructor <init>(kotlin/String, androidx.compose.ui.unit/Dp) // me.tbsten.compose.preview.lab.field/DpField.<init>|<init>(kotlin.String;androidx.compose.ui.unit.Dp){}[0]
+
+    final fun serializer(): kotlinx.serialization/KSerializer<androidx.compose.ui.unit/Dp> // me.tbsten.compose.preview.lab.field/DpField.serializer|serializer(){}[0]
 }
 
 final class me.tbsten.compose.preview.lab.field/DpOffsetField : me.tbsten.compose.preview.lab/MutablePreviewLabField<androidx.compose.ui.unit/DpOffset> { // me.tbsten.compose.preview.lab.field/DpOffsetField|null[0]
     constructor <init>(kotlin/String, androidx.compose.ui.unit/DpOffset) // me.tbsten.compose.preview.lab.field/DpOffsetField.<init>|<init>(kotlin.String;androidx.compose.ui.unit.DpOffset){}[0]
 
     final fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/DpOffsetField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun serializer(): kotlinx.serialization/KSerializer<androidx.compose.ui.unit/DpOffset> // me.tbsten.compose.preview.lab.field/DpOffsetField.serializer|serializer(){}[0]
     final fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/DpOffsetField.valueCode|valueCode(){}[0]
 }
 
@@ -1247,6 +1272,7 @@ final class me.tbsten.compose.preview.lab.field/DpSizeField : me.tbsten.compose.
     constructor <init>(kotlin/String, androidx.compose.ui.unit/DpSize) // me.tbsten.compose.preview.lab.field/DpSizeField.<init>|<init>(kotlin.String;androidx.compose.ui.unit.DpSize){}[0]
 
     final fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/DpSizeField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun serializer(): kotlinx.serialization/KSerializer<androidx.compose.ui.unit/DpSize> // me.tbsten.compose.preview.lab.field/DpSizeField.serializer|serializer(){}[0]
     final fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/DpSizeField.valueCode|valueCode(){}[0]
 }
 
@@ -1263,6 +1289,7 @@ final class me.tbsten.compose.preview.lab.field/OffsetField : me.tbsten.compose.
     constructor <init>(kotlin/String, androidx.compose.ui.geometry/Offset) // me.tbsten.compose.preview.lab.field/OffsetField.<init>|<init>(kotlin.String;androidx.compose.ui.geometry.Offset){}[0]
 
     final fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/OffsetField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun serializer(): kotlinx.serialization/KSerializer<androidx.compose.ui.geometry/Offset> // me.tbsten.compose.preview.lab.field/OffsetField.serializer|serializer(){}[0]
     final fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/OffsetField.valueCode|valueCode(){}[0]
 }
 
@@ -1322,17 +1349,21 @@ final class me.tbsten.compose.preview.lab.field/SizeField : me.tbsten.compose.pr
     constructor <init>(kotlin/String, androidx.compose.ui.geometry/Size) // me.tbsten.compose.preview.lab.field/SizeField.<init>|<init>(kotlin.String;androidx.compose.ui.geometry.Size){}[0]
 
     final fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/SizeField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun serializer(): kotlinx.serialization/KSerializer<androidx.compose.ui.geometry/Size> // me.tbsten.compose.preview.lab.field/SizeField.serializer|serializer(){}[0]
     final fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/SizeField.valueCode|valueCode(){}[0]
 }
 
 final class me.tbsten.compose.preview.lab.field/SpField : me.tbsten.compose.preview.lab.field/TransformField<kotlin/Float, androidx.compose.ui.unit/TextUnit> { // me.tbsten.compose.preview.lab.field/SpField|null[0]
     constructor <init>(kotlin/String, androidx.compose.ui.unit/TextUnit) // me.tbsten.compose.preview.lab.field/SpField.<init>|<init>(kotlin.String;androidx.compose.ui.unit.TextUnit){}[0]
+
+    final fun serializer(): kotlinx.serialization/KSerializer<androidx.compose.ui.unit/TextUnit> // me.tbsten.compose.preview.lab.field/SpField.serializer|serializer(){}[0]
 }
 
 final class me.tbsten.compose.preview.lab.field/StringField : me.tbsten.compose.preview.lab/MutablePreviewLabField<kotlin/String> { // me.tbsten.compose.preview.lab.field/StringField|null[0]
     constructor <init>(kotlin/String, kotlin/String, kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>? = ..., kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>? = ...) // me.tbsten.compose.preview.lab.field/StringField.<init>|<init>(kotlin.String;kotlin.String;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>?;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>?){}[0]
 
     final fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/StringField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun serializer(): kotlinx.serialization/KSerializer<kotlin/String> // me.tbsten.compose.preview.lab.field/StringField.serializer|serializer(){}[0]
     final fun testValues(): kotlin.collections/List<kotlin/String> // me.tbsten.compose.preview.lab.field/StringField.testValues|testValues(){}[0]
     final fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/StringField.valueCode|valueCode(){}[0]
 }
@@ -1396,29 +1427,32 @@ open class <#A: kotlin/Any?, #B: kotlin/Any?> me.tbsten.compose.preview.lab.fiel
         open fun <set-value>(#B) // me.tbsten.compose.preview.lab.field/TransformField.value.<set-value>|<set-value>(1:1){}[0]
 
     open fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/TransformField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    open fun serializer(): kotlinx.serialization/KSerializer<#B>? // me.tbsten.compose.preview.lab.field/TransformField.serializer|serializer(){}[0]
     open fun testValues(): kotlin.collections/List<#B> // me.tbsten.compose.preview.lab.field/TransformField.testValues|testValues(){}[0]
     open fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/TransformField.valueCode|valueCode(){}[0]
 }
 
 open class <#A: kotlin/Any?> me.tbsten.compose.preview.lab.field/PolymorphicField : me.tbsten.compose.preview.lab/MutablePreviewLabField<#A> { // me.tbsten.compose.preview.lab.field/PolymorphicField|null[0]
-    constructor <init>(kotlin/String, #A, kotlin.collections/List<me.tbsten.compose.preview.lab/PreviewLabField<out #A>>, kotlin/Function1<#A, me.tbsten.compose.preview.lab/PreviewLabField<out #A>> = ...) // me.tbsten.compose.preview.lab.field/PolymorphicField.<init>|<init>(kotlin.String;1:0;kotlin.collections.List<me.tbsten.compose.preview.lab.PreviewLabField<out|1:0>>;kotlin.Function1<1:0,me.tbsten.compose.preview.lab.PreviewLabField<out|1:0>>){}[0]
+    constructor <init>(kotlin/String, #A, kotlin.collections/List<me.tbsten.compose.preview.lab/PreviewLabField<out #A>>, kotlin/Function1<#A, me.tbsten.compose.preview.lab/PreviewLabField<out #A>> = ..., kotlinx.serialization/KSerializer<#A>? = ...) // me.tbsten.compose.preview.lab.field/PolymorphicField.<init>|<init>(kotlin.String;1:0;kotlin.collections.List<me.tbsten.compose.preview.lab.PreviewLabField<out|1:0>>;kotlin.Function1<1:0,me.tbsten.compose.preview.lab.PreviewLabField<out|1:0>>;kotlinx.serialization.KSerializer<1:0>?){}[0]
 
     open var value // me.tbsten.compose.preview.lab.field/PolymorphicField.value|{}value[0]
         open fun <get-value>(): #A // me.tbsten.compose.preview.lab.field/PolymorphicField.value.<get-value>|<get-value>(){}[0]
         open fun <set-value>(#A) // me.tbsten.compose.preview.lab.field/PolymorphicField.value.<set-value>|<set-value>(1:0){}[0]
 
     open fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/PolymorphicField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    open fun serializer(): kotlinx.serialization/KSerializer<#A>? // me.tbsten.compose.preview.lab.field/PolymorphicField.serializer|serializer(){}[0]
     open fun testValues(): kotlin.collections/List<#A> // me.tbsten.compose.preview.lab.field/PolymorphicField.testValues|testValues(){}[0]
     open fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/PolymorphicField.valueCode|valueCode(){}[0]
 }
 
 open class <#A: kotlin/Any?> me.tbsten.compose.preview.lab.field/SelectableField : me.tbsten.compose.preview.lab/MutablePreviewLabField<#A> { // me.tbsten.compose.preview.lab.field/SelectableField|null[0]
-    constructor <init>(kotlin/String, kotlin.collections/List<#A>, kotlin/Function1<#A, kotlin/String> = ..., me.tbsten.compose.preview.lab.field/SelectableField.Type = ..., #A = ..., kotlin/Function1<#A, kotlin/String> = ...) // me.tbsten.compose.preview.lab.field/SelectableField.<init>|<init>(kotlin.String;kotlin.collections.List<1:0>;kotlin.Function1<1:0,kotlin.String>;me.tbsten.compose.preview.lab.field.SelectableField.Type;1:0;kotlin.Function1<1:0,kotlin.String>){}[0]
+    constructor <init>(kotlin/String, kotlin.collections/List<#A>, kotlin/Function1<#A, kotlin/String> = ..., me.tbsten.compose.preview.lab.field/SelectableField.Type = ..., #A = ..., kotlin/Function1<#A, kotlin/String> = ..., kotlinx.serialization/KSerializer<#A>? = ...) // me.tbsten.compose.preview.lab.field/SelectableField.<init>|<init>(kotlin.String;kotlin.collections.List<1:0>;kotlin.Function1<1:0,kotlin.String>;me.tbsten.compose.preview.lab.field.SelectableField.Type;1:0;kotlin.Function1<1:0,kotlin.String>;kotlinx.serialization.KSerializer<1:0>?){}[0]
 
     final val choices // me.tbsten.compose.preview.lab.field/SelectableField.choices|{}choices[0]
         final fun <get-choices>(): kotlin.collections/List<#A> // me.tbsten.compose.preview.lab.field/SelectableField.choices.<get-choices>|<get-choices>(){}[0]
 
     open fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/SelectableField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    open fun serializer(): kotlinx.serialization/KSerializer<#A>? // me.tbsten.compose.preview.lab.field/SelectableField.serializer|serializer(){}[0]
     open fun testValues(): kotlin.collections/List<#A> // me.tbsten.compose.preview.lab.field/SelectableField.testValues|testValues(){}[0]
     open fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/SelectableField.valueCode|valueCode(){}[0]
 
@@ -1469,12 +1503,15 @@ open class me.tbsten.compose.preview.lab.field/BooleanField : me.tbsten.compose.
     constructor <init>(kotlin/String, kotlin/Boolean) // me.tbsten.compose.preview.lab.field/BooleanField.<init>|<init>(kotlin.String;kotlin.Boolean){}[0]
 
     open fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/BooleanField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    open fun serializer(): kotlinx.serialization/KSerializer<kotlin/Boolean> // me.tbsten.compose.preview.lab.field/BooleanField.serializer|serializer(){}[0]
     open fun testValues(): kotlin.collections/List<kotlin/Boolean> // me.tbsten.compose.preview.lab.field/BooleanField.testValues|testValues(){}[0]
     open fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/BooleanField.valueCode|valueCode(){}[0]
 }
 
 open class me.tbsten.compose.preview.lab.field/ByteField : me.tbsten.compose.preview.lab.field/NumberField<kotlin/Byte> { // me.tbsten.compose.preview.lab.field/ByteField|null[0]
     constructor <init>(kotlin/String, kotlin/Byte, me.tbsten.compose.preview.lab.field/NumberField.InputType = ...) // me.tbsten.compose.preview.lab.field/ByteField.<init>|<init>(kotlin.String;kotlin.Byte;me.tbsten.compose.preview.lab.field.NumberField.InputType){}[0]
+
+    open fun serializer(): kotlinx.serialization/KSerializer<kotlin/Byte> // me.tbsten.compose.preview.lab.field/ByteField.serializer|serializer(){}[0]
 }
 
 open class me.tbsten.compose.preview.lab.field/ComposableField : me.tbsten.compose.preview.lab/ImmutablePreviewLabField<kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>> { // me.tbsten.compose.preview.lab.field/ComposableField|null[0]
@@ -1493,24 +1530,33 @@ open class me.tbsten.compose.preview.lab.field/ComposableField : me.tbsten.compo
 
 open class me.tbsten.compose.preview.lab.field/DoubleField : me.tbsten.compose.preview.lab.field/NumberField<kotlin/Double> { // me.tbsten.compose.preview.lab.field/DoubleField|null[0]
     constructor <init>(kotlin/String, kotlin/Double, me.tbsten.compose.preview.lab.field/NumberField.InputType = ...) // me.tbsten.compose.preview.lab.field/DoubleField.<init>|<init>(kotlin.String;kotlin.Double;me.tbsten.compose.preview.lab.field.NumberField.InputType){}[0]
+
+    open fun serializer(): kotlinx.serialization/KSerializer<kotlin/Double> // me.tbsten.compose.preview.lab.field/DoubleField.serializer|serializer(){}[0]
 }
 
 open class me.tbsten.compose.preview.lab.field/FloatField : me.tbsten.compose.preview.lab.field/NumberField<kotlin/Float> { // me.tbsten.compose.preview.lab.field/FloatField|null[0]
     constructor <init>(kotlin/String, kotlin/Float, me.tbsten.compose.preview.lab.field/NumberField.InputType = ...) // me.tbsten.compose.preview.lab.field/FloatField.<init>|<init>(kotlin.String;kotlin.Float;me.tbsten.compose.preview.lab.field.NumberField.InputType){}[0]
+
+    open fun serializer(): kotlinx.serialization/KSerializer<kotlin/Float> // me.tbsten.compose.preview.lab.field/FloatField.serializer|serializer(){}[0]
 }
 
 open class me.tbsten.compose.preview.lab.field/IntField : me.tbsten.compose.preview.lab.field/NumberField<kotlin/Int> { // me.tbsten.compose.preview.lab.field/IntField|null[0]
     constructor <init>(kotlin/String, kotlin/Int, me.tbsten.compose.preview.lab.field/NumberField.InputType = ...) // me.tbsten.compose.preview.lab.field/IntField.<init>|<init>(kotlin.String;kotlin.Int;me.tbsten.compose.preview.lab.field.NumberField.InputType){}[0]
+
+    open fun serializer(): kotlinx.serialization/KSerializer<kotlin/Int> // me.tbsten.compose.preview.lab.field/IntField.serializer|serializer(){}[0]
 }
 
 open class me.tbsten.compose.preview.lab.field/LongField : me.tbsten.compose.preview.lab.field/NumberField<kotlin/Long> { // me.tbsten.compose.preview.lab.field/LongField|null[0]
     constructor <init>(kotlin/String, kotlin/Long, me.tbsten.compose.preview.lab.field/NumberField.InputType = ...) // me.tbsten.compose.preview.lab.field/LongField.<init>|<init>(kotlin.String;kotlin.Long;me.tbsten.compose.preview.lab.field.NumberField.InputType){}[0]
+
+    open fun serializer(): kotlinx.serialization/KSerializer<kotlin/Long> // me.tbsten.compose.preview.lab.field/LongField.serializer|serializer(){}[0]
 }
 
 open class me.tbsten.compose.preview.lab.field/ScreenSizeField : me.tbsten.compose.preview.lab.field/SelectableField<me.tbsten.compose.preview.lab.field/ScreenSize> { // me.tbsten.compose.preview.lab.field/ScreenSizeField|null[0]
     constructor <init>(kotlin/String = ..., kotlin.collections/List<me.tbsten.compose.preview.lab.field/ScreenSize> = ..., me.tbsten.compose.preview.lab.field/SelectableField.Type = ..., me.tbsten.compose.preview.lab.field/ScreenSize = ...) // me.tbsten.compose.preview.lab.field/ScreenSizeField.<init>|<init>(kotlin.String;kotlin.collections.List<me.tbsten.compose.preview.lab.field.ScreenSize>;me.tbsten.compose.preview.lab.field.SelectableField.Type;me.tbsten.compose.preview.lab.field.ScreenSize){}[0]
 
     open fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/ScreenSizeField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    open fun serializer(): kotlinx.serialization/KSerializer<me.tbsten.compose.preview.lab.field/ScreenSize> // me.tbsten.compose.preview.lab.field/ScreenSizeField.serializer|serializer(){}[0]
     open fun testValues(): kotlin.collections/List<me.tbsten.compose.preview.lab.field/ScreenSize> // me.tbsten.compose.preview.lab.field/ScreenSizeField.testValues|testValues(){}[0]
 }
 
@@ -1627,6 +1673,7 @@ final val me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_fiel
 final val me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_StringField$stableprop // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_StringField$stableprop|#static{}me_tbsten_compose_preview_lab_field_StringField$stableprop[0]
 final val me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_TransformField$stableprop // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_TransformField$stableprop|#static{}me_tbsten_compose_preview_lab_field_TransformField$stableprop[0]
 final val me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WithHintField$stableprop // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WithHintField$stableprop|#static{}me_tbsten_compose_preview_lab_field_WithHintField$stableprop[0]
+final val me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WithSerializerField$stableprop // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WithSerializerField$stableprop|#static{}me_tbsten_compose_preview_lab_field_WithSerializerField$stableprop[0]
 final val me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WithTestValuesField$stableprop // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WithTestValuesField$stableprop|#static{}me_tbsten_compose_preview_lab_field_WithTestValuesField$stableprop[0]
 final val me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WithValueCodeField$stableprop // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WithValueCodeField$stableprop|#static{}me_tbsten_compose_preview_lab_field_WithValueCodeField$stableprop[0]
 final val me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WrapField$stableprop // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WrapField$stableprop|#static{}me_tbsten_compose_preview_lab_field_WrapField$stableprop[0]
@@ -1696,6 +1743,7 @@ final fun <#A: kotlin/Any?> (me.tbsten.compose.preview.lab.field.modifier/Defaul
 final fun <#A: kotlin/Any?> (me.tbsten.compose.preview.lab.field.modifier/DefaultModifierFieldValueBuilderDefaultMenuScope).me.tbsten.compose.preview.lab.field.modifier/TextFieldItem(kotlin/String, #A, kotlin/Function1<#A, kotlin/Unit>, me.tbsten.compose.preview.lab.ui.components/Transformer<#A>, kotlin/String?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // me.tbsten.compose.preview.lab.field.modifier/TextFieldItem|TextFieldItem@me.tbsten.compose.preview.lab.field.modifier.DefaultModifierFieldValueBuilderDefaultMenuScope(kotlin.String;0:0;kotlin.Function1<0:0,kotlin.Unit>;me.tbsten.compose.preview.lab.ui.components.Transformer<0:0>;kotlin.String?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){0§<kotlin.Any?>}[0]
 final fun <#A: kotlin/Any?> (me.tbsten.compose.preview.lab/MutablePreviewLabField<#A>).me.tbsten.compose.preview.lab.field.component/TextFieldContent(kotlin/Function1<#A, kotlin/String>, kotlin/Function1<kotlin/String, kotlin/Result<#A>>, androidx.compose.ui/Modifier?, kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>?, kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>?, kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // me.tbsten.compose.preview.lab.field.component/TextFieldContent|TextFieldContent@me.tbsten.compose.preview.lab.MutablePreviewLabField<0:0>(kotlin.Function1<0:0,kotlin.String>;kotlin.Function1<kotlin.String,kotlin.Result<0:0>>;androidx.compose.ui.Modifier?;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>?;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>?;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){0§<kotlin.Any?>}[0]
 final fun <#A: kotlin/Any?> (me.tbsten.compose.preview.lab/MutablePreviewLabField<#A>).me.tbsten.compose.preview.lab.field/withHint(kotlin/Array<out kotlin/Pair<kotlin/String, #A>>...): me.tbsten.compose.preview.lab/MutablePreviewLabField<#A> // me.tbsten.compose.preview.lab.field/withHint|withHint@me.tbsten.compose.preview.lab.MutablePreviewLabField<0:0>(kotlin.Array<out|kotlin.Pair<kotlin.String,0:0>>...){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (me.tbsten.compose.preview.lab/MutablePreviewLabField<#A>).me.tbsten.compose.preview.lab.field/withSerializer(kotlinx.serialization/KSerializer<#A>): me.tbsten.compose.preview.lab/MutablePreviewLabField<#A> // me.tbsten.compose.preview.lab.field/withSerializer|withSerializer@me.tbsten.compose.preview.lab.MutablePreviewLabField<0:0>(kotlinx.serialization.KSerializer<0:0>){0§<kotlin.Any?>}[0]
 final fun <#A: kotlin/Any?> (me.tbsten.compose.preview.lab/MutablePreviewLabField<#A>).me.tbsten.compose.preview.lab.field/withTestValues(kotlin/Array<out #A>...): me.tbsten.compose.preview.lab.field/MutableWithTestValuesField<#A> // me.tbsten.compose.preview.lab.field/withTestValues|withTestValues@me.tbsten.compose.preview.lab.MutablePreviewLabField<0:0>(kotlin.Array<out|0:0>...){0§<kotlin.Any?>}[0]
 final fun <#A: kotlin/Any?> (me.tbsten.compose.preview.lab/MutablePreviewLabField<#A>).me.tbsten.compose.preview.lab.field/withValueCode(kotlin/Function1<#A, kotlin/String>): me.tbsten.compose.preview.lab.field/WithValueCodeField<#A> // me.tbsten.compose.preview.lab.field/withValueCode|withValueCode@me.tbsten.compose.preview.lab.MutablePreviewLabField<0:0>(kotlin.Function1<0:0,kotlin.String>){0§<kotlin.Any?>}[0]
 final fun <#A: kotlin/Any?> (me.tbsten.compose.preview.lab/MutablePreviewLabField<#A>).me.tbsten.compose.preview.lab.field/wrap(me.tbsten.compose.preview.lab.field/WrapRange = ..., kotlin/Function3<kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>): me.tbsten.compose.preview.lab.field/WrapField<#A> // me.tbsten.compose.preview.lab.field/wrap|wrap@me.tbsten.compose.preview.lab.MutablePreviewLabField<0:0>(me.tbsten.compose.preview.lab.field.WrapRange;kotlin.Function3<kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>){0§<kotlin.Any?>}[0]
@@ -1815,6 +1863,7 @@ final fun me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_fiel
 final fun me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_StringField$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_StringField$stableprop_getter|me_tbsten_compose_preview_lab_field_StringField$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_TransformField$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_TransformField$stableprop_getter|me_tbsten_compose_preview_lab_field_TransformField$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WithHintField$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WithHintField$stableprop_getter|me_tbsten_compose_preview_lab_field_WithHintField$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WithSerializerField$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WithSerializerField$stableprop_getter|me_tbsten_compose_preview_lab_field_WithSerializerField$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WithTestValuesField$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WithTestValuesField$stableprop_getter|me_tbsten_compose_preview_lab_field_WithTestValuesField$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WithValueCodeField$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WithValueCodeField$stableprop_getter|me_tbsten_compose_preview_lab_field_WithValueCodeField$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WrapField$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_WrapField$stableprop_getter|me_tbsten_compose_preview_lab_field_WrapField$stableprop_getter(){}[0]

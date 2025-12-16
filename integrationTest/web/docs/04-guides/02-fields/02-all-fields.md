@@ -734,6 +734,46 @@ PreviewLab {
 
 詳細は [Enhance Fields](./enhance-fields#fieldwithvaluecode-code-タブに出力されるコードをカスタマイズ) を参照してください。
 
+### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-with-serializer-field/index.html">WithSerializerField</KDocLink> / `.withSerializer()`
+
+<table>
+    <tr>
+        <th>対応する 型</th>
+        <td> 元のフィールドと同じ型 </td>
+    </tr>
+    <tr>
+        <th>利用頻度</th>
+        <td> ⭐⭐ </td>
+    </tr>
+    <tr>
+        <th>KDoc</th>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-with-serializer-field/index.html">WithSerializerField</KDocLink> </td>
+    </tr>
+</table>
+
+任意の Field にカスタムシリアライザを設定するユーティリティです。`SelectableField` で enum や sealed class を使用する場合など、デフォルトでシリアライザを持たない Field にシリアライズ機能を追加したいときに使用します。
+
+```kt
+@Serializable
+enum class Theme { Light, Dark, System }
+
+PreviewLab {
+    val theme = fieldValue {
+        SelectableField(
+            label = "theme",
+            choices = Theme.entries,
+            choiceLabel = { it.name },
+        )
+            // highlight-next-line
+            .withSerializer(Theme.serializer())
+    }
+
+    AppTheme(theme = theme)
+}
+```
+
+詳細は [Enhance Fields](./enhance-fields#fieldwithserializer-field-のシリアライザを設定する) を参照してください。
+
 ## 3. Compose Value Fields
 
 Compose 固有の値型（Dp、Sp、Color、Offset、Size、Modifier、Composable など）に対応するフィールドです。Compose UI の構築に特化した型を扱います。
