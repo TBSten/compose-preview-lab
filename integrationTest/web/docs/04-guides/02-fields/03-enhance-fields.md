@@ -357,23 +357,33 @@ val theme = fieldValue {
 
 以下の Field はデフォルトでシリアライザを提供しています：
 
-| Field           | Serializer                      |
-|-----------------|---------------------------------|
-| `BooleanField`  | `Boolean.serializer()`          |
-| `StringField`   | `String.serializer()`           |
-| `IntField`      | `Int.serializer()`              |
-| `LongField`     | `Long.serializer()`             |
-| `ByteField`     | `Byte.serializer()`             |
-| `DoubleField`   | `Double.serializer()`           |
-| `FloatField`    | `Float.serializer()`            |
-| `NullableField` | ベース Field の nullable serializer |
+| Field             | Serializer                        |
+|-------------------|-----------------------------------|
+| `BooleanField`    | `Boolean.serializer()`            |
+| `StringField`     | `String.serializer()`             |
+| `IntField`        | `Int.serializer()`                |
+| `LongField`       | `Long.serializer()`               |
+| `ByteField`       | `Byte.serializer()`               |
+| `DoubleField`     | `Double.serializer()`             |
+| `FloatField`      | `Float.serializer()`              |
+| `NullableField`   | ベース Field の nullable serializer |
+| `ColorField`      | `ColorSerializer`                 |
+| `DpField`         | `DpSerializer`                    |
+| `SpField`         | `TextUnitSerializer`              |
+| `OffsetField`     | `OffsetSerializer`                |
+| `DpOffsetField`   | `DpOffsetSerializer`              |
+| `SizeField`       | `SizeSerializer`                  |
+| `DpSizeField`     | `DpSizeSerializer`                |
+| `ScreenSizeField` | `ScreenSizeSerializer`            |
+| `TransformField`  | ベース Field の serializer を変換    |
 
 以下の Field はデフォルトで `null` を返します（シリアライズ不可）：
 
-- `SelectableField` - 任意の型を扱うため
+- `SelectableField` - 任意の型を扱うため（`withSerializer()` で設定可能）
+- `PolymorphicField` - 多態性のため（コンストラクタで serializer を指定可能）
 - `CombinedField` - 複合型のため
-- `PolymorphicField` - 多態性のため
-- `ColorField`, `DpField`, `SpField` など - Compose 固有の型のため
+- `ComposableField` - Composable 関数はシリアライズ不可
+- `ModifierField` - Modifier はシリアライズ不可
 
 :::tip
 `SelectableField` で enum を使用する場合は、`withSerializer()` を使用してシリアライザを設定することで、値の永続化や共有が可能になります。
