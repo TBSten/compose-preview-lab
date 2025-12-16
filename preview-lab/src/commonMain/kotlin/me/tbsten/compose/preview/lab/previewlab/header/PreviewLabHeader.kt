@@ -4,8 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
@@ -36,17 +39,22 @@ internal fun PreviewLabHeader(
                     .fillMaxWidth()
                     .horizontalScroll(rememberScrollState())
                     .padding(8.dp)
-                    .zIndex(2f),
+                    .zIndex(2f)
+                    .height(IntrinsicSize.Min),
             ) {
                 Zoom(
                     scale = scale,
                     onScaleChange = onScaleChange,
                 )
 
+                Divider()
+
                 InspectorPanelVisible(
                     isInspectorPanelVisible = isInspectorPanelVisible,
                     onToggle = onIsInspectorPanelVisibleToggle,
                 )
+
+                PlatformHeaders()
             }
 
             Divider(
@@ -58,3 +66,6 @@ internal fun PreviewLabHeader(
         content()
     }
 }
+
+@Composable
+internal expect fun RowScope.PlatformHeaders()

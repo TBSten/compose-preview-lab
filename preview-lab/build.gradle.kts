@@ -60,6 +60,13 @@ kotlin {
 
     applyDefaultHierarchyTemplate()
     sourceSets {
+        val otherWeb by creating {
+            dependsOn(commonMain.get())
+        }
+        listOf(androidMain, jvmMain, iosMain).forEach {
+            it.get().dependsOn(otherWeb)
+        }
+
         commonMain.dependencies {
             api(projects.core)
             api(projects.ui)
