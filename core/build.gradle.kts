@@ -62,6 +62,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.annotation)
+            api(projects.ui)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.components.resources)

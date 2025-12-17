@@ -61,7 +61,7 @@ kotlin {
     applyDefaultHierarchyTemplate()
     sourceSets {
         commonMain.dependencies {
-            api(projects.core)
+            api(projects.annotation)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.components.resources)
