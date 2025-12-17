@@ -39,6 +39,7 @@ plugins {
 includeBuild("./buildLogic")
 include(":core")
 include(":field")
+include(":action")
 include(":gallery")
 include(":preview-lab")
 include(":ui")
