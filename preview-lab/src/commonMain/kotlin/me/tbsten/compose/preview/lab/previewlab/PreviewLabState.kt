@@ -11,6 +11,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.DpOffset
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
+import me.tbsten.compose.preview.lab.PreviewLabAction
 import me.tbsten.compose.preview.lab.PreviewLabEvent
 import me.tbsten.compose.preview.lab.PreviewLabField
 
@@ -64,6 +65,9 @@ class PreviewLabState {
 
     @ExperimentalComposePreviewLabApi
     val events = mutableStateListOf<PreviewLabEvent>()
+
+    @ExperimentalComposePreviewLabApi
+    val actions = mutableStateListOf<PreviewLabAction<*>>()
 
     /**
      * Deselects the currently selected tab

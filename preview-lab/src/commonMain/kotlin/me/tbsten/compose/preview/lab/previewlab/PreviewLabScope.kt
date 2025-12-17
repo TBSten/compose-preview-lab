@@ -7,6 +7,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import kotlin.time.ExperimentalTime
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
+import me.tbsten.compose.preview.lab.PreviewLabAction
+import me.tbsten.compose.preview.lab.PreviewLabAction0
+import me.tbsten.compose.preview.lab.PreviewLabAction1
+import me.tbsten.compose.preview.lab.PreviewLabAction2
+import me.tbsten.compose.preview.lab.PreviewLabAction3
 import me.tbsten.compose.preview.lab.PreviewLabEvent
 import me.tbsten.compose.preview.lab.PreviewLabField
 
@@ -78,6 +83,71 @@ class PreviewLabScope(val state: PreviewLabState) {
         }
         return field.value
     }
+
+    @Composable
+    fun <R> action(label: String, key: Any? = null, action: suspend () -> R): PreviewLabAction0<R> {
+        val action = remember(key) { PreviewLabAction0(label = label, action = action) }
+        DisposableEffect(action) {
+            state.actions.add(action)
+            onDispose {
+                state.actions.remove(action)
+            }
+        }
+        return action
+    }
+
+    @Composable
+    fun <A1, R> action(
+        label: String,
+        key: Any? = null,
+        argFields: PreviewLabAction.ArgFieldsScope.() -> PreviewLabField<A1>,
+        action: suspend (A1) -> R,
+    ): PreviewLabAction1<A1, R> {
+        val action = remember(key) { PreviewLabAction1(label = label, argFields = argFields, action = action) }
+        DisposableEffect(key) {
+            state.actions.add(action)
+            onDispose {
+                state.actions.remove(action)
+            }
+        }
+        return action
+    }
+
+    @Composable
+    fun <A1, A2, R> action(
+        label: String,
+        key: Any? = null,
+        argFields: PreviewLabAction.ArgFieldsScope.() -> Pair<PreviewLabField<A1>, PreviewLabField<A2>>,
+        action: suspend (A1, A2) -> R,
+    ): PreviewLabAction2<A1, A2, R> {
+        val action = PreviewLabAction2(label = label, argFields = argFields, action = action)
+        DisposableEffect(key) {
+            state.actions.add(action)
+            onDispose {
+                state.actions.remove(action)
+            }
+        }
+        return action
+    }
+
+    @Composable
+    fun <A1, A2, A3, R> action(
+        label: String,
+        key: Any? = null,
+        argFields: PreviewLabAction.ArgFieldsScope.() -> Triple<PreviewLabField<A1>, PreviewLabField<A2>, PreviewLabField<A3>>,
+        action: suspend (A1, A2, A3) -> R,
+    ): PreviewLabAction3<A1, A2, A3, R> {
+        val action = PreviewLabAction3(label = label, argFields = argFields, action = action)
+        DisposableEffect(key) {
+            state.actions.add(action)
+            onDispose {
+                state.actions.remove(action)
+            }
+        }
+        return action
+    }
+
+    // TODO Action<A1, A2, A3, ..., R>
 
     /**
      * Records an event in the Preview Lab.

@@ -9,11 +9,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
+import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.generated.resources.Res
 import me.tbsten.compose.preview.lab.previewlab.generated.resources.icon_edit
 import me.tbsten.compose.preview.lab.previewlab.generated.resources.icon_history
-import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
-import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.ui.components.Text
 import org.jetbrains.compose.resources.painterResource
 
@@ -128,6 +128,18 @@ interface InspectorTab {
         }
     }
 
+    data object Actions : InspectorTab {
+        override val title: String = "Actions"
+        override val icon: @Composable () -> Painter = { painterResource(Res.drawable.icon_history) }
+
+        @Composable
+        override fun ContentContext.Content() {
+            ActionListSection(
+                actions = state.actions,
+            )
+        }
+    }
+
     @ExperimentalComposePreviewLabApi
     data object Code : InspectorTab {
         override val title: String = "Code"
@@ -163,6 +175,6 @@ interface InspectorTab {
         /**
          * Default built-in tabs: Fields and Events
          */
-        val defaults: List<InspectorTab> = listOf(Fields, Events)
+        val defaults: List<InspectorTab> = listOf(Fields, Events, Actions)
     }
 }

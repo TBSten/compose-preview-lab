@@ -19,17 +19,19 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.movableContentOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.collectLatest
+import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
+import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.generated.resources.Res
 import me.tbsten.compose.preview.lab.previewlab.generated.resources.icon_code
-import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
 import me.tbsten.compose.preview.lab.previewlab.openfilehandler.LocalOpenFileHandler
 import me.tbsten.compose.preview.lab.previewlab.openfilehandler.OpenFileHandler
-import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.adaptive
 import me.tbsten.compose.preview.lab.ui.components.Button
@@ -50,6 +52,8 @@ internal fun InspectorsPane(
     inspectorTabs: List<InspectorTab> = InspectorTab.defaults,
     content: @Composable () -> Unit,
 ) {
+    val content = remember { movableContentOf { content() } }
+
     if (!isVisible) {
         content()
         return

@@ -30,6 +30,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -578,6 +580,40 @@ enum class PreviewsForUiDebug(
             }
         },
     ),
+    Actions(
+        "Actions",
+        content = {
+            PreviewLab {
+                val viewModel = remember { MyViewModel() }
+
+                val onRefreshAction =
+                    action(
+                        label = "onRefresh",
+                        action = viewModel::onRefresh,
+                    )
+
+                repeat(5) {
+                    action(
+                        label = "onItemClick",
+                        argFields = { StringField("itemId", "item-id-1") },
+                        action = viewModel::onItemClick,
+                    )
+                }
+
+                Column {
+                    Text("event (${viewModel.events.size})")
+
+                    viewModel.events.forEach {
+                        Text(it)
+                    }
+
+                    HorizontalDivider()
+
+                    onRefreshAction.ResultsView()
+                }
+            }
+        },
+    )
 }
 
 val previewsForUiDebug = PreviewsForUiDebug.entries.toList()
@@ -757,5 +793,16 @@ private data class DebugInfoTab(
                 Text("Example Action Button")
             }
         }
+    }
+}
+
+class MyViewModel {
+    val events = mutableStateListOf<String>()
+    fun onRefresh() {
+        events.add("onRefresh")
+    }
+
+    fun onItemClick(itemId: String) {
+        events.add("onItemClick(itemId = $itemId)")
     }
 }
