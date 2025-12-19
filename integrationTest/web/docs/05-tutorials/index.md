@@ -13,6 +13,7 @@ sidebar_position: 1
 - [新規プロジェクトで Compose Preview Lab を導入する](./setup-new-project)
 - [Preview を収集して UI カタログを構築する](./preview-ui-catalog)
 - [UI カタログで Review 体験を向上する](./improve-ui-review-by-ui-catalog)
+- [Compose Preview Lab を使った debug menu の構築](./build-debug-menu)
 
 ## デザインシステム・ライブラリ作成者向け
 
