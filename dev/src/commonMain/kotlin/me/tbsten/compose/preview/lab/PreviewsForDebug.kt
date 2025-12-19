@@ -45,6 +45,8 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.delay
 import me.tbsten.compose.preview.lab.event.withEvent
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.ColorField
@@ -585,31 +587,32 @@ enum class PreviewsForUiDebug(
         content = {
             PreviewLab {
                 val viewModel = remember { MyViewModel() }
+                val getItemUseCase = remember { GetItemUseCase() }
 
-                val onRefreshAction =
-                    action(
-                        label = "onRefresh",
-                        action = viewModel::onRefresh,
-                    )
+                action(
+                    label = "onRefresh",
+                    action = viewModel::onRefresh,
+                )
 
-                repeat(5) {
+                action(
+                    label = "onItemClick",
+                    argFields = { StringField("itemId", "item-id-1") },
+                    action = viewModel::onItemClick,
+                )
+
+                val getItemListUseCaseAction =
                     action(
-                        label = "onItemClick",
-                        argFields = { StringField("itemId", "item-id-1") },
-                        action = viewModel::onItemClick,
+                        label = "GetItemListUseCase.invoke",
+                        argFields = {
+                            BooleanField("desc", false) + BooleanField("willError", false)
+                        },
+                        action = getItemUseCase::invoke,
                     )
-                }
 
                 Column {
-                    Text("event (${viewModel.events.size})")
-
-                    viewModel.events.forEach {
-                        Text(it)
-                    }
-
-                    HorizontalDivider()
-
-                    onRefreshAction.ResultsView()
+                    getItemListUseCaseAction.ResultsView(
+                        field = { result -> StringField(label, result) },
+                    )
                 }
             }
         },
@@ -804,5 +807,15 @@ class MyViewModel {
 
     fun onItemClick(itemId: String) {
         events.add("onItemClick(itemId = $itemId)")
+    }
+}
+
+class GetItemUseCase {
+    private var count = 0
+    suspend operator fun invoke(desc: Boolean, willError: Boolean): String {
+        delay(2.seconds)
+        count++
+        if (willError) error("GetItemUseCase throw error !")
+        return "Item - $count - " + if (desc) "desc" else "asc"
     }
 }
