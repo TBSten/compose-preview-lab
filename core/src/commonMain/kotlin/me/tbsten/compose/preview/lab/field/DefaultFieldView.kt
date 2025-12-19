@@ -18,15 +18,22 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  * @see me.tbsten.compose.preview.lab.PreviewLabField
  */
 @Composable
-fun <Value> PreviewLabField<Value>.DefaultFieldView(
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit = { Content() },
-) {
+fun PreviewLabField<*>.DefaultFieldView(modifier: Modifier = Modifier, content: @Composable () -> Unit = { Content() }) =
+    DefaultFieldView(
+        label = this.label,
+        modifier = modifier,
+        content = content,
+    )
+
+@Composable
+fun DefaultFieldView(label: String, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp),
         modifier = modifier,
     ) {
-        FieldLabelHeader()
+        FieldLabelHeader(
+            label = label,
+        )
         content()
     }
 }
@@ -38,9 +45,16 @@ fun <Value> PreviewLabField<Value>.DefaultFieldView(
  * @see PreviewLabField
  */
 @Composable
-fun PreviewLabField<*>.FieldLabelHeader() {
+fun PreviewLabField<*>.FieldLabelHeader(modifier: Modifier = Modifier) = FieldLabelHeader(
+    label = label,
+    modifier = modifier,
+)
+
+@Composable
+fun FieldLabelHeader(label: String, modifier: Modifier = Modifier) {
     Text(
-        text = this.label,
+        text = label,
         style = PreviewLabTheme.typography.label2,
+        modifier = modifier,
     )
 }

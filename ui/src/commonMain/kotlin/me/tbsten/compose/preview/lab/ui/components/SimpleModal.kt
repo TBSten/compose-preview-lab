@@ -18,9 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.generated.resources.Res
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_close
-import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -29,17 +29,18 @@ fun SimpleModal(
     isVisible: Boolean,
     onDismissRequest: () -> Unit,
     contentPadding: PaddingValues = PaddingValues(12.dp),
+    contentAlignment: Alignment = Alignment.Center,
     content: @Composable () -> Unit,
 ) {
     if (isVisible) {
         Dialog(
-            onDismissRequest = { onDismissRequest },
+            onDismissRequest = { onDismissRequest() },
             properties = DialogProperties(
                 usePlatformDefaultWidth = false,
             ),
         ) {
             Box(
-                contentAlignment = Alignment.Center,
+                contentAlignment = contentAlignment,
                 modifier = Modifier
                     .pointerInput(Unit) {
                         detectTapGestures { onDismissRequest() }

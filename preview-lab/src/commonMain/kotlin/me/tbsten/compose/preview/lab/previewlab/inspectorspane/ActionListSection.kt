@@ -15,10 +15,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import me.tbsten.compose.preview.lab.PreviewLabAction
 import me.tbsten.compose.preview.lab.ui.components.Button
+import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
 import me.tbsten.compose.preview.lab.ui.components.Divider
 
 @Composable
@@ -49,12 +51,14 @@ private fun ActionListItem(action: PreviewLabAction<*>) {
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Button(
+            variant = ButtonVariant.Secondary,
             text = "${action.label}(${action.argFields.joinToString(", ") { "${it.label} = ..." }})",
             onClick = {
                 coroutineScope.launch {
-                    action.action()
+                    action.doAction()
                 }
             },
+            textAlign = TextAlign.Start,
             modifier = Modifier.fillMaxWidth(),
         )
 

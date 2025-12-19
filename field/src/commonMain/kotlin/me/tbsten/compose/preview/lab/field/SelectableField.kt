@@ -15,7 +15,7 @@ import me.tbsten.compose.preview.lab.defaultValueCode
 import me.tbsten.compose.preview.lab.field.SelectableField.Type
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.CHIPS
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.DROPDOWN
-import me.tbsten.compose.preview.lab.ui.components.Chip
+import me.tbsten.compose.preview.lab.ui.components.OutlinedChip
 import me.tbsten.compose.preview.lab.ui.components.SelectButton
 import me.tbsten.compose.preview.lab.ui.components.Text
 
@@ -139,7 +139,7 @@ open class SelectableField<Value>(
                 .horizontalScroll(rememberScrollState()),
         ) {
             choices.forEach { choice ->
-                Chip(
+                OutlinedChip(
                     selected = value == choice,
                     label = { Text(choiceLabel(choice)) },
                     onClick = { value = choice },
