@@ -457,6 +457,8 @@ open class PreviewLab(
      *   The content will be rendered within the selected screen size constraints and can use
      *   layout modifiers like fillMaxSize() which will be bounded by the selected screen size.
      *
+     * @param graphicsLayer GraphicsLayer for capturing screenshots. Defaults to rememberGraphicsLayer().
+     *
      * @throws IllegalArgumentException if screenSizes is empty
      * @see PreviewLabState State management and persistence
      * @see PreviewLabScope Scope providing field and event functions
@@ -470,6 +472,7 @@ open class PreviewLab(
         isHeaderShow: Boolean = this.defaultIsHeaderShow(),
         inspectorTabs: List<InspectorTab> = this.defaultInspectorTabs(),
         isInPreviewLabGalleryCardBody: Boolean = LocalIsInPreviewLabGalleryCardBody.current,
+        graphicsLayer: GraphicsLayer = rememberGraphicsLayer(),
         content: @Composable PreviewLabScope.() -> Unit,
     ) {
         if (isInPreviewLabGalleryCardBody) {
@@ -498,7 +501,6 @@ open class PreviewLab(
             }
         }
 
-        val graphicsLayer = rememberGraphicsLayer()
         val captureScreenshot: suspend () -> androidx.compose.ui.graphics.ImageBitmap? = remember(graphicsLayer) {
             suspend { graphicsLayer.toImageBitmap() }
         }
