@@ -24,6 +24,10 @@ import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.layer.GraphicsLayer
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.dokar.sonner.TextToastAction
@@ -36,6 +40,7 @@ import me.tbsten.compose.preview.lab.field.ScreenSizeField
 import me.tbsten.compose.preview.lab.previewlab.header.PreviewLabHeader
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorsPane
+import me.tbsten.compose.preview.lab.previewlab.screenshot.LocalCaptureScreenshot
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.util.toDpOffset
 
@@ -492,7 +497,12 @@ open class PreviewLab(
             }
         }
 
-        Providers(state = state, toaster = toaster) {
+        val graphicsLayer = rememberGraphicsLayer()
+        val captureScreenshot: suspend () -> androidx.compose.ui.graphics.ImageBitmap? = {
+            graphicsLayer.toImageBitmap()
+        }
+
+        Providers(state = state, toaster = toaster, captureScreenshot = captureScreenshot) {
             Column(modifier = modifier.background(PreviewLabTheme.colors.background)) {
                 PreviewLabHeader(
                     isHeaderShow = isHeaderShow,
@@ -514,6 +524,7 @@ open class PreviewLab(
                             ContentSection(
                                 state = state,
                                 screenSizes = screenSizes,
+                                graphicsLayer = graphicsLayer,
                                 content = content,
                                 modifier = Modifier
                                     .weight(1f)
@@ -538,13 +549,19 @@ open class PreviewLab(
     }
 
     @Composable
-    private fun Providers(state: PreviewLabState, toaster: ToasterState, content: @Composable () -> Unit) {
+    private fun Providers(
+        state: PreviewLabState,
+        toaster: ToasterState,
+        captureScreenshot: suspend () -> androidx.compose.ui.graphics.ImageBitmap?,
+        content: @Composable () -> Unit,
+    ) {
         DisableSelection {
             contentRoot {
                 PreviewLabTheme {
                     CompositionLocalProvider(
                         LocalEnforcePreviewLabState provides state,
                         LocalToaster provides toaster,
+                        LocalCaptureScreenshot provides captureScreenshot,
                     ) {
                         content()
                     }
@@ -583,6 +600,7 @@ internal val LocalToaster = compositionLocalOf<ToasterState> { error("No Toaster
 private fun ContentSection(
     state: PreviewLabState,
     screenSizes: List<ScreenSize>,
+    graphicsLayer: GraphicsLayer,
     modifier: Modifier = Modifier,
     content: @Composable PreviewLabScope.() -> Unit,
 ) {
@@ -637,6 +655,12 @@ private fun ContentSection(
                 modifier = Modifier
                     .border(8.dp, PreviewLabTheme.colors.outline.copy(alpha = 0.25f))
                     .padding(8.dp)
+                    .drawWithContent {
+                        graphicsLayer.record {
+                            this@drawWithContent.drawContent()
+                        }
+                        drawLayer(graphicsLayer)
+                    }
                     .onPlaced {
                         state.contentRootOffsetInAppRoot =
                             it.positionInRoot().toDpOffset(density)
