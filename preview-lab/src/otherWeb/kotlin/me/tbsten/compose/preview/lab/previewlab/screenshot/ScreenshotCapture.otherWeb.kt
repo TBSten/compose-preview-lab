@@ -9,12 +9,12 @@ import io.github.vinceglb.filekit.dialogs.openFileSaver
 import io.github.vinceglb.filekit.write
 
 @Composable
-internal actual fun rememberSaveScreenshot(): suspend (ImageBitmap) -> Unit = remember {
-    { imageBitmap ->
+internal actual fun rememberSaveScreenshot(): suspend (ImageBitmap, String) -> Unit = remember {
+    { imageBitmap, fileName ->
         try {
             val bytes = imageBitmap.encodeToPngByteArray()
             val file: PlatformFile? = FileKit.openFileSaver(
-                suggestedName = "preview-lab-screenshot",
+                suggestedName = fileName,
                 extension = "png",
             )
             file?.write(bytes)

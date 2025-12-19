@@ -14,6 +14,7 @@ internal val LocalCaptureScreenshot = compositionLocalOf<CaptureScreenshot?> { n
 
 /**
  * Saves an ImageBitmap to a file using FileKit.
+ * @param fileName Base file name without extension (e.g., "MyPreview"). Defaults to "preview-lab-screenshot".
  */
 @Composable
-internal expect fun rememberSaveScreenshot(): suspend (ImageBitmap) -> Unit
+internal expect fun rememberSaveScreenshot(): suspend (imageBitmap: ImageBitmap, fileName: String) -> Unit
