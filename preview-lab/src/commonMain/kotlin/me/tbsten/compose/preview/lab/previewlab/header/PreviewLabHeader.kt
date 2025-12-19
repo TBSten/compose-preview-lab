@@ -54,6 +54,10 @@ internal fun PreviewLabHeader(
                     onToggle = onIsInspectorPanelVisibleToggle,
                 )
 
+                Divider()
+
+                Screenshot()
+
                 PlatformHeaders()
             }
 
