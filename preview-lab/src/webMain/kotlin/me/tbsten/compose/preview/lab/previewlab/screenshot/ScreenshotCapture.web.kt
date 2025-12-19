@@ -9,10 +9,14 @@ import io.github.vinceglb.filekit.download
 @Composable
 internal actual fun rememberSaveScreenshot(): suspend (ImageBitmap) -> Unit = remember {
     { imageBitmap ->
-        val bytes = imageBitmap.encodeToPngByteArray()
-        FileKit.download(
-            bytes = bytes,
-            fileName = "preview-lab-screenshot.png",
-        )
+        try {
+            val bytes = imageBitmap.encodeToPngByteArray()
+            FileKit.download(
+                bytes = bytes,
+                fileName = "preview-lab-screenshot.png",
+            )
+        } catch (e: Throwable) {
+            println("Failed to save screenshot: ${e.message}")
+        }
     }
 }

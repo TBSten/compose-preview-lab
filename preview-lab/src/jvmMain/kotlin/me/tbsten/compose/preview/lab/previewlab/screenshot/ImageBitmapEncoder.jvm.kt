@@ -5,7 +5,13 @@ import androidx.compose.ui.graphics.asSkiaBitmap
 import org.jetbrains.skia.EncodedImageFormat
 import org.jetbrains.skia.Image
 
-internal actual fun ImageBitmap.encodeToPngByteArray(): ByteArray = Image.makeFromBitmap(this.asSkiaBitmap())
-    .encodeToData(EncodedImageFormat.PNG, 100)
-    ?.bytes
-    ?: byteArrayOf()
+// PNG is lossless; the quality parameter is typically ignored for PNG format in Skia.
+private const val PngCompressionQuality: Int = 100
+
+internal actual fun ImageBitmap.encodeToPngByteArray(): ByteArray {
+    val data = Image
+        .makeFromBitmap(this.asSkiaBitmap())
+        .encodeToData(EncodedImageFormat.PNG, PngCompressionQuality)
+        ?: throw IllegalStateException("Failed to encode ImageBitmap to PNG")
+    return data.bytes
+}

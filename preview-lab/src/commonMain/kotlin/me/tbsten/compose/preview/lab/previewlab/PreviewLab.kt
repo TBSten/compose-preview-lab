@@ -14,6 +14,7 @@ import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.TransformOrigin
@@ -498,8 +499,8 @@ open class PreviewLab(
         }
 
         val graphicsLayer = rememberGraphicsLayer()
-        val captureScreenshot: suspend () -> androidx.compose.ui.graphics.ImageBitmap? = {
-            graphicsLayer.toImageBitmap()
+        val captureScreenshot: suspend () -> androidx.compose.ui.graphics.ImageBitmap? = remember(graphicsLayer) {
+            suspend { graphicsLayer.toImageBitmap() }
         }
 
         Providers(state = state, toaster = toaster, captureScreenshot = captureScreenshot) {
