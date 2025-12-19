@@ -27,6 +27,7 @@ private fun MyButtonPreview() = PreviewLab {
 
 <EmbeddedPreviewLab
  previewId="FieldQuickSummary"
+ title="Field Quick Summary"
 />
 
 ## Field の基本的な使い方
@@ -52,6 +53,7 @@ private fun MyButtonPreview() = PreviewLab {
 
 <EmbeddedPreviewLab
   previewId="FieldBasic"
+  title="Field Basic"
 />
 
 この例では：
@@ -123,6 +125,7 @@ private fun MyTextFieldPreview() = PreviewLab {
 <EmbeddedPreviewLab
   previewId="FieldState"
   size="small"
+  title="Field State"
 />
 
 <details>
@@ -166,6 +169,7 @@ Compose Preview Lab には、多くのビルトイン Field が用意されて�
 
 <EmbeddedPreviewLab
   previewId="FieldCommonly"
+  title="Field Commonly"
 />
 
 ただしここにある Field はほんの一部です。

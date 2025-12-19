@@ -41,6 +41,7 @@ fun ButtonEventPreview() = PreviewLab {
 
 <EmbeddedPreviewLab
   previewId="GetStarted"
+  title="Events Example"
 />
 
 ## withEvent(): ハンドラーをラップして記録を楽にする

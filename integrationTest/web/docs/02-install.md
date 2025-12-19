@@ -199,6 +199,7 @@ fun MyButtonPreview() = PreviewLab {
 
 <EmbeddedPreviewLab
   previewId="GetStarted"
+  title="Get Started"
 />
 
 :::tip 次のステップ

@@ -31,6 +31,7 @@ val theme =
 
 <EmbeddedPreviewLab
 previewId="FieldSelectable"
+title="SelectableField Example"
 />
 
 デフォルトでは選択肢のテキストは `選択肢.toString()` が使用されますが、SelectableField には label を設定できるオーバーライドも存在します。
@@ -125,6 +126,7 @@ val email = fieldValue {
 
 <EmbeddedPreviewLab
 previewId="FieldWithHint"
+title="Field with Hint Example"
 />
 
 Field.withHint() はあくまでも既存の Field の編集 UI によくある選択肢を追加するだけです。
@@ -185,6 +187,7 @@ val timeout: Int? = fieldValue {
 
 <EmbeddedPreviewLab
 previewId="FieldNullable"
+title="Nullable Field Example"
 />
 
 ## CombinedField: 複数の Field を組み合わせる
@@ -234,6 +237,7 @@ val uiState = fieldValue {
 
 <EmbeddedPreviewLab
 previewId="FieldCombined"
+title="Combined Field Example"
 />
 
 - `combine` は それぞれの Field の値 -> 合体した値に変換する関数です。それぞれの Field の値から現在の CombinedField の値を取得するために
@@ -260,6 +264,7 @@ CombinedField の自動生成機能も検討しています。
 
 <EmbeddedPreviewLab
 previewId="FieldTransform"
+title="Transform Field Example"
 />
 
 ## Field.withValueCode(): Code タブに出力されるコードをカスタマイズ

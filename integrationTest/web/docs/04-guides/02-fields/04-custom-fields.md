@@ -118,6 +118,7 @@ fun PaddingFieldPreview() = PreviewLab {
 
 <EmbeddedPreviewLab
   previewId="CombinedFieldExample"
+  title="CombinedField Example"
 />
 
 ### combined() ヘルパーでより読みやすく書く
@@ -150,6 +151,7 @@ fun PaddingFieldWithHelperPreview() = PreviewLab {
 
 <EmbeddedPreviewLab
   previewId="CombinedFieldWithCombinedFunctionExample"
+  title="CombinedField with Combined Function Example"
 />
 
 ## 3. 既存の Field をラップして拡張する
@@ -173,6 +175,7 @@ val intValue = fieldValue {
 
 <EmbeddedPreviewLab
   previewId="TransformFieldExample"
+  title="TransformField Example"
 />
 
 ### withHint() でよく使うプリセットを追加する
@@ -193,6 +196,7 @@ val fontSize = fieldValue {
 
 <EmbeddedPreviewLab
   previewId="WithHintFieldExample"
+  title="WithHintField Example"
 />
 
 :::tip まずは「拡張」から始める

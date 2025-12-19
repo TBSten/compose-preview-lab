@@ -97,6 +97,7 @@ fun MyScreenPreview() = PreviewLab {
 
 <EmbeddedPreviewLab
   previewId="GetStarted"
+  title="Get Started"
 />
 
 :::info 段階的な移行を推奨

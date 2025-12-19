@@ -107,6 +107,7 @@ fun MyButtonPreview() = PreviewLab {
 
 <EmbeddedPreviewLab
   previewId="FieldQuickSummary"
+  title="Field Quick Summary"
 />
 
 :::info PreviewList の生成を確認する

@@ -109,6 +109,7 @@ fun DebugMenu(
 
 <EmbeddedPreviewLab
   previewId="FieldQuickSummary"
+  title="Field Quick Summary"
 />
 
 ## 2. PreviewLab を使ったデバッグメニューの利点

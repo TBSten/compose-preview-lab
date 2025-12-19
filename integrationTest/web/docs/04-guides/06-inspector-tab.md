@@ -144,7 +144,7 @@ object DocsTab : InspectorTab {
 }
 ```
 
-<EmbeddedPreviewLab previewId="InspectorTabDocsExample" />
+<EmbeddedPreviewLab previewId="InspectorTabDocsExample" title="Inspector Tab Docs Example" />
 
 </details>
 
@@ -180,7 +180,7 @@ object DebugTab : InspectorTab {
 }
 ```
 
-<EmbeddedPreviewLab previewId="InspectorTabDebugExample" />
+<EmbeddedPreviewLab previewId="InspectorTabDebugExample" title="Inspector Tab Debug Example" />
 
 </details>
 
