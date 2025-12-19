@@ -1,0 +1,48 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <me.tbsten.compose.preview.lab:action>
+final class me.tbsten.compose.preview.lab.action/ActionListContentScope { // me.tbsten.compose.preview.lab.action/ActionListContentScope|null[0]
+    constructor <init>() // me.tbsten.compose.preview.lab.action/ActionListContentScope.<init>|<init>(){}[0]
+}
+
+final class me.tbsten.compose.preview.lab.action/ActionState { // me.tbsten.compose.preview.lab.action/ActionState|null[0]
+    constructor <init>() // me.tbsten.compose.preview.lab.action/ActionState.<init>|<init>(){}[0]
+
+    final val actions // me.tbsten.compose.preview.lab.action/ActionState.actions|{}actions[0]
+        final fun <get-actions>(): kotlin.collections/List<me.tbsten.compose.preview.lab/PreviewLabAction<*>> // me.tbsten.compose.preview.lab.action/ActionState.actions.<get-actions>|<get-actions>(){}[0]
+
+    final fun add(me.tbsten.compose.preview.lab/PreviewLabAction<*>) // me.tbsten.compose.preview.lab.action/ActionState.add|add(me.tbsten.compose.preview.lab.PreviewLabAction<*>){}[0]
+    final fun clear() // me.tbsten.compose.preview.lab.action/ActionState.clear|clear(){}[0]
+    final fun remove(me.tbsten.compose.preview.lab/PreviewLabAction<*>) // me.tbsten.compose.preview.lab.action/ActionState.remove|remove(me.tbsten.compose.preview.lab.PreviewLabAction<*>){}[0]
+}
+
+final class me.tbsten.compose.preview.lab.action/ArgFieldsScope { // me.tbsten.compose.preview.lab.action/ArgFieldsScope|null[0]
+    constructor <init>() // me.tbsten.compose.preview.lab.action/ArgFieldsScope.<init>|<init>(){}[0]
+
+    final fun <#A1: kotlin/Any?, #B1: kotlin/Any?, #C1: kotlin/Any?> (kotlin/Pair<me.tbsten.compose.preview.lab/PreviewLabField<#A1>, me.tbsten.compose.preview.lab/PreviewLabField<#B1>>).plus(me.tbsten.compose.preview.lab/PreviewLabField<#C1>): kotlin/Triple<me.tbsten.compose.preview.lab/PreviewLabField<#A1>, me.tbsten.compose.preview.lab/PreviewLabField<#B1>, me.tbsten.compose.preview.lab/PreviewLabField<#C1>> // me.tbsten.compose.preview.lab.action/ArgFieldsScope.plus|plus@kotlin.Pair<me.tbsten.compose.preview.lab.PreviewLabField<0:0>,me.tbsten.compose.preview.lab.PreviewLabField<0:1>>(me.tbsten.compose.preview.lab.PreviewLabField<0:2>){0§<kotlin.Any?>;1§<kotlin.Any?>;2§<kotlin.Any?>}[0]
+    final fun <#A1: kotlin/Any?, #B1: kotlin/Any?> (me.tbsten.compose.preview.lab/PreviewLabField<#A1>).plus(me.tbsten.compose.preview.lab/PreviewLabField<#B1>): kotlin/Pair<me.tbsten.compose.preview.lab/PreviewLabField<#A1>, me.tbsten.compose.preview.lab/PreviewLabField<#B1>> // me.tbsten.compose.preview.lab.action/ArgFieldsScope.plus|plus@me.tbsten.compose.preview.lab.PreviewLabField<0:0>(me.tbsten.compose.preview.lab.PreviewLabField<0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+}
+
+final val me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_array$stableprop // me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_array$stableprop|#static{}me_tbsten_compose_preview_lab_action_generated_resources_Res_array$stableprop[0]
+final val me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_drawable$stableprop // me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_drawable$stableprop|#static{}me_tbsten_compose_preview_lab_action_generated_resources_Res_drawable$stableprop[0]
+final val me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_font$stableprop // me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_font$stableprop|#static{}me_tbsten_compose_preview_lab_action_generated_resources_Res_font$stableprop[0]
+final val me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_plurals$stableprop // me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_plurals$stableprop|#static{}me_tbsten_compose_preview_lab_action_generated_resources_Res_plurals$stableprop[0]
+final val me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_string$stableprop // me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_string$stableprop|#static{}me_tbsten_compose_preview_lab_action_generated_resources_Res_string$stableprop[0]
+final val me.tbsten.compose.preview.lab.action/me_tbsten_compose_preview_lab_action_ActionListContentScope$stableprop // me.tbsten.compose.preview.lab.action/me_tbsten_compose_preview_lab_action_ActionListContentScope$stableprop|#static{}me_tbsten_compose_preview_lab_action_ActionListContentScope$stableprop[0]
+final val me.tbsten.compose.preview.lab.action/me_tbsten_compose_preview_lab_action_ActionState$stableprop // me.tbsten.compose.preview.lab.action/me_tbsten_compose_preview_lab_action_ActionState$stableprop|#static{}me_tbsten_compose_preview_lab_action_ActionState$stableprop[0]
+final val me.tbsten.compose.preview.lab.action/me_tbsten_compose_preview_lab_action_ArgFieldsScope$stableprop // me.tbsten.compose.preview.lab.action/me_tbsten_compose_preview_lab_action_ArgFieldsScope$stableprop|#static{}me_tbsten_compose_preview_lab_action_ArgFieldsScope$stableprop[0]
+
+final fun me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_array$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_array$stableprop_getter|me_tbsten_compose_preview_lab_action_generated_resources_Res_array$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_drawable$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_drawable$stableprop_getter|me_tbsten_compose_preview_lab_action_generated_resources_Res_drawable$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_font$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_font$stableprop_getter|me_tbsten_compose_preview_lab_action_generated_resources_Res_font$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_plurals$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_plurals$stableprop_getter|me_tbsten_compose_preview_lab_action_generated_resources_Res_plurals$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_string$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.action.generated.resources/me_tbsten_compose_preview_lab_action_generated_resources_Res_string$stableprop_getter|me_tbsten_compose_preview_lab_action_generated_resources_Res_string$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.action/ActionListContent(kotlin.collections/List<me.tbsten.compose.preview.lab/PreviewLabAction<*>>, kotlin/Function1<me.tbsten.compose.preview.lab/PreviewLabAction<*>, kotlin/Unit>, androidx.compose.ui/Modifier?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // me.tbsten.compose.preview.lab.action/ActionListContent|ActionListContent(kotlin.collections.List<me.tbsten.compose.preview.lab.PreviewLabAction<*>>;kotlin.Function1<me.tbsten.compose.preview.lab.PreviewLabAction<*>,kotlin.Unit>;androidx.compose.ui.Modifier?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun me.tbsten.compose.preview.lab.action/me_tbsten_compose_preview_lab_action_ActionListContentScope$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.action/me_tbsten_compose_preview_lab_action_ActionListContentScope$stableprop_getter|me_tbsten_compose_preview_lab_action_ActionListContentScope$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.action/me_tbsten_compose_preview_lab_action_ActionState$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.action/me_tbsten_compose_preview_lab_action_ActionState$stableprop_getter|me_tbsten_compose_preview_lab_action_ActionState$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.action/me_tbsten_compose_preview_lab_action_ArgFieldsScope$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.action/me_tbsten_compose_preview_lab_action_ArgFieldsScope$stableprop_getter|me_tbsten_compose_preview_lab_action_ArgFieldsScope$stableprop_getter(){}[0]

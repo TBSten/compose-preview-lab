@@ -81,12 +81,12 @@ fun CircularProgressIndicator(
             Int.VectorConverter,
             infiniteRepeatable(
                 animation =
-                    tween(
-                        durationMillis =
-                            CircularProgressIndicatorDefaults.RotationDuration *
-                                CircularProgressIndicatorDefaults.RotationsPerCycle,
-                        easing = LinearEasing,
-                    ),
+                tween(
+                    durationMillis =
+                    CircularProgressIndicatorDefaults.RotationDuration *
+                        CircularProgressIndicatorDefaults.RotationsPerCycle,
+                    easing = LinearEasing,
+                ),
             ),
             label = "Current Rotation",
         )
@@ -96,10 +96,10 @@ fun CircularProgressIndicator(
             CircularProgressIndicatorDefaults.BaseRotationAngle,
             infiniteRepeatable(
                 animation =
-                    tween(
-                        durationMillis = CircularProgressIndicatorDefaults.RotationDuration,
-                        easing = LinearEasing,
-                    ),
+                tween(
+                    durationMillis = CircularProgressIndicatorDefaults.RotationDuration,
+                    easing = LinearEasing,
+                ),
             ),
             label = "Base Rotation",
         )
@@ -109,12 +109,13 @@ fun CircularProgressIndicator(
             CircularProgressIndicatorDefaults.JumpRotationAngle,
             infiniteRepeatable(
                 animation =
-                    keyframes {
-                        durationMillis = CircularProgressIndicatorDefaults.HeadTailAnimationDuration +
-                            CircularProgressIndicatorDefaults.HeadTailDelayDuration
-                        0f at 0 using CircularProgressIndicatorDefaults.CircularEasing
-                        CircularProgressIndicatorDefaults.JumpRotationAngle at CircularProgressIndicatorDefaults.HeadTailAnimationDuration
-                    },
+                keyframes {
+                    durationMillis = CircularProgressIndicatorDefaults.HeadTailAnimationDuration +
+                        CircularProgressIndicatorDefaults.HeadTailDelayDuration
+                    0f at 0 using CircularProgressIndicatorDefaults.CircularEasing
+                    CircularProgressIndicatorDefaults.JumpRotationAngle at
+                        CircularProgressIndicatorDefaults.HeadTailAnimationDuration
+                },
             ),
             label = "End Angle",
         )
@@ -124,12 +125,13 @@ fun CircularProgressIndicator(
             CircularProgressIndicatorDefaults.JumpRotationAngle,
             infiniteRepeatable(
                 animation =
-                    keyframes {
-                        durationMillis = CircularProgressIndicatorDefaults.HeadTailAnimationDuration +
-                            CircularProgressIndicatorDefaults.HeadTailDelayDuration
-                        0f at CircularProgressIndicatorDefaults.HeadTailDelayDuration using CircularProgressIndicatorDefaults.CircularEasing
-                        CircularProgressIndicatorDefaults.JumpRotationAngle at durationMillis
-                    },
+                keyframes {
+                    durationMillis = CircularProgressIndicatorDefaults.HeadTailAnimationDuration +
+                        CircularProgressIndicatorDefaults.HeadTailDelayDuration
+                    0f at CircularProgressIndicatorDefaults.HeadTailDelayDuration using
+                        CircularProgressIndicatorDefaults.CircularEasing
+                    CircularProgressIndicatorDefaults.JumpRotationAngle at durationMillis
+                },
             ),
             label = "Start Angle",
         )
@@ -158,12 +160,7 @@ fun CircularProgressIndicator(
     }
 }
 
-private fun DrawScope.drawCircularIndicator(
-    startAngle: Float,
-    sweep: Float,
-    color: Color,
-    stroke: Stroke,
-) {
+private fun DrawScope.drawCircularIndicator(startAngle: Float, sweep: Float, color: Color, stroke: Stroke,) {
     val diameterOffset = stroke.width / 2
     val arcDimen = size.width - 2 * diameterOffset
     drawArc(
@@ -177,17 +174,11 @@ private fun DrawScope.drawCircularIndicator(
     )
 }
 
-private fun DrawScope.drawCircularIndicatorTrack(
-    color: Color,
-    stroke: Stroke,
-) = drawCircularIndicator(0f, CircularProgressIndicatorDefaults.SweepAngle, color, stroke)
+private fun DrawScope.drawCircularIndicatorTrack(color: Color, stroke: Stroke,) =
+    drawCircularIndicator(0f, CircularProgressIndicatorDefaults.SweepAngle, color, stroke)
 
-private fun DrawScope.drawDeterminateCircularIndicator(
-    startAngle: Float,
-    sweep: Float,
-    color: Color,
-    stroke: Stroke,
-) = drawCircularIndicator(startAngle, sweep, color, stroke)
+private fun DrawScope.drawDeterminateCircularIndicator(startAngle: Float, sweep: Float, color: Color, stroke: Stroke,) =
+    drawCircularIndicator(startAngle, sweep, color, stroke)
 
 private fun DrawScope.drawIndeterminateCircularIndicator(
     startAngle: Float,

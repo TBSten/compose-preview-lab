@@ -61,11 +61,14 @@ fun LinearProgressIndicator(
             1f,
             infiniteRepeatable(
                 animation =
-                    keyframes {
-                        durationMillis = LinearProgressIndicatorDefaults.AnimationDuration
-                        0f at LinearProgressIndicatorDefaults.FirstLineHeadDelay using LinearProgressIndicatorDefaults.FirstLineHeadEasing
-                        1f at LinearProgressIndicatorDefaults.FirstLineHeadDuration + LinearProgressIndicatorDefaults.FirstLineHeadDelay
-                    },
+                keyframes {
+                    durationMillis = LinearProgressIndicatorDefaults.AnimationDuration
+                    0f at LinearProgressIndicatorDefaults.FirstLineHeadDelay using
+                        LinearProgressIndicatorDefaults.FirstLineHeadEasing
+                    1f at
+                        LinearProgressIndicatorDefaults.FirstLineHeadDuration +
+                        LinearProgressIndicatorDefaults.FirstLineHeadDelay
+                },
             ),
             label = "FirstLineHead",
         )
@@ -75,11 +78,14 @@ fun LinearProgressIndicator(
             1f,
             infiniteRepeatable(
                 animation =
-                    keyframes {
-                        durationMillis = LinearProgressIndicatorDefaults.AnimationDuration
-                        0f at LinearProgressIndicatorDefaults.FirstLineTailDelay using LinearProgressIndicatorDefaults.FirstLineTailEasing
-                        1f at LinearProgressIndicatorDefaults.FirstLineTailDuration + LinearProgressIndicatorDefaults.FirstLineTailDelay
-                    },
+                keyframes {
+                    durationMillis = LinearProgressIndicatorDefaults.AnimationDuration
+                    0f at LinearProgressIndicatorDefaults.FirstLineTailDelay using
+                        LinearProgressIndicatorDefaults.FirstLineTailEasing
+                    1f at
+                        LinearProgressIndicatorDefaults.FirstLineTailDuration +
+                        LinearProgressIndicatorDefaults.FirstLineTailDelay
+                },
             ),
             label = "FirstLineTail",
         )
@@ -89,11 +95,14 @@ fun LinearProgressIndicator(
             1f,
             infiniteRepeatable(
                 animation =
-                    keyframes {
-                        durationMillis = LinearProgressIndicatorDefaults.AnimationDuration
-                        0f at LinearProgressIndicatorDefaults.SecondLineHeadDelay using LinearProgressIndicatorDefaults.SecondLineHeadEasing
-                        1f at LinearProgressIndicatorDefaults.SecondLineHeadDuration + LinearProgressIndicatorDefaults.SecondLineHeadDelay
-                    },
+                keyframes {
+                    durationMillis = LinearProgressIndicatorDefaults.AnimationDuration
+                    0f at LinearProgressIndicatorDefaults.SecondLineHeadDelay using
+                        LinearProgressIndicatorDefaults.SecondLineHeadEasing
+                    1f at
+                        LinearProgressIndicatorDefaults.SecondLineHeadDuration +
+                        LinearProgressIndicatorDefaults.SecondLineHeadDelay
+                },
             ),
             label = "SecondLineHead",
         )
@@ -103,11 +112,14 @@ fun LinearProgressIndicator(
             1f,
             infiniteRepeatable(
                 animation =
-                    keyframes {
-                        durationMillis = LinearProgressIndicatorDefaults.AnimationDuration
-                        0f at LinearProgressIndicatorDefaults.SecondLineTailDelay using LinearProgressIndicatorDefaults.SecondLineTailEasing
-                        1f at LinearProgressIndicatorDefaults.SecondLineTailDuration + LinearProgressIndicatorDefaults.SecondLineTailDelay
-                    },
+                keyframes {
+                    durationMillis = LinearProgressIndicatorDefaults.AnimationDuration
+                    0f at LinearProgressIndicatorDefaults.SecondLineTailDelay using
+                        LinearProgressIndicatorDefaults.SecondLineTailEasing
+                    1f at
+                        LinearProgressIndicatorDefaults.SecondLineTailDuration +
+                        LinearProgressIndicatorDefaults.SecondLineTailDelay
+                },
             ),
             label = "SecondLineTail",
         )
@@ -175,11 +187,8 @@ private fun DrawScope.drawLinearIndicator(
     }
 }
 
-private fun DrawScope.drawLinearIndicatorTrack(
-    color: Color,
-    strokeWidth: Float,
-    strokeCap: StrokeCap,
-) = drawLinearIndicator(0f, 1f, color, strokeWidth, strokeCap)
+private fun DrawScope.drawLinearIndicatorTrack(color: Color, strokeWidth: Float, strokeCap: StrokeCap,) =
+    drawLinearIndicator(0f, 1f, color, strokeWidth, strokeCap)
 
 object LinearProgressIndicatorDefaults {
     val Color: Color

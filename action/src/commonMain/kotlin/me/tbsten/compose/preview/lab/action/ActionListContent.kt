@@ -28,8 +28,8 @@ class ActionListContentScope
 @ExperimentalComposePreviewLabApi
 @Composable
 fun ActionListContent(
-    actions: List<PreviewLabAction<*, *>>,
-    onActionExecute: (PreviewLabAction<*, *>) -> Unit,
+    actions: List<PreviewLabAction<*>>,
+    onActionExecute: (PreviewLabAction<*>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -57,7 +57,7 @@ fun ActionListContent(
 @ExperimentalComposePreviewLabApi
 @Composable
 private fun ActionItem(
-    action: PreviewLabAction<*, *>,
+    action: PreviewLabAction<*>,
     onExecute: () -> Unit,
     modifier: Modifier = Modifier,
 ) {

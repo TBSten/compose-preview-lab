@@ -11,10 +11,7 @@ import me.tbsten.compose.preview.lab.readonly
 import me.tbsten.compose.preview.lab.ui.components.Text
 
 @Composable
-internal fun <R> PreviewLabAction<R>.SuccessView(
-    result: R,
-    field: PreviewLabAction<R>.(R) -> PreviewLabField<R>?,
-) {
+internal fun <R> PreviewLabAction<R>.SuccessView(result: R, field: PreviewLabAction<R>.(R) -> PreviewLabField<R>?,) {
     val resolvedField = field(result)?.readonly(value = result)
 
     Column(Modifier.padding(8.dp)) {

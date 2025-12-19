@@ -16,19 +16,19 @@ import me.tbsten.compose.preview.lab.PreviewLabAction
 @Stable
 @ExperimentalComposePreviewLabApi
 class ActionState {
-    private val _actions = mutableStateListOf<PreviewLabAction<*, *>>()
+    private val _actions = mutableStateListOf<PreviewLabAction<*>>()
 
     /**
      * The list of registered actions.
      */
-    val actions: List<PreviewLabAction<*, *>> get() = _actions
+    val actions: List<PreviewLabAction<*>> get() = _actions
 
     /**
      * Adds an action to the state.
      *
      * @param action The action to add
      */
-    fun add(action: PreviewLabAction<*, *>) {
+    fun add(action: PreviewLabAction<*>) {
         _actions.add(action)
     }
 
@@ -37,7 +37,7 @@ class ActionState {
      *
      * @param action The action to remove
      */
-    fun remove(action: PreviewLabAction<*, *>) {
+    fun remove(action: PreviewLabAction<*>) {
         _actions.remove(action)
     }
 

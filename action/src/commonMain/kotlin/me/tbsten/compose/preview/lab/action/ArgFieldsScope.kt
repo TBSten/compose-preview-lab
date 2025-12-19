@@ -38,6 +38,7 @@ class ArgFieldsScope {
     /**
      * Combines a [Pair] of fields with another field to create a [Triple] for actions with three arguments.
      */
-    operator fun <A1, A2, A3> Pair<PreviewLabField<A1>, PreviewLabField<A2>>.plus(other: PreviewLabField<A3>): Triple<PreviewLabField<A1>, PreviewLabField<A2>, PreviewLabField<A3>> =
-        Triple(this.first, this.second, other)
+    operator fun <A1, A2, A3> Pair<PreviewLabField<A1>, PreviewLabField<A2>>.plus(
+        other: PreviewLabField<A3>
+    ): Triple<PreviewLabField<A1>, PreviewLabField<A2>, PreviewLabField<A3>> = Triple(this.first, this.second, other)
 }
