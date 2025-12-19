@@ -67,6 +67,13 @@ kotlin {
             it.get().dependsOn(otherWeb)
         }
 
+        val webMain by getting {
+            dependsOn(commonMain.get())
+        }
+        listOf(jsMain, wasmJsMain).forEach {
+            it.get().dependsOn(webMain)
+        }
+
         commonMain.dependencies {
             api(projects.core)
             api(projects.ui)
