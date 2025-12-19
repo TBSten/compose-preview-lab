@@ -52,6 +52,10 @@ public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabKt {
 public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabScope {
 	public static final field $stable I
 	public fun <init> (Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;)V
+	public final fun action (Ljava/lang/String;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/PreviewLabAction0;
+	public final fun action (Ljava/lang/String;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/PreviewLabAction1;
+	public final fun action (Ljava/lang/String;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/PreviewLabAction2;
+	public final fun action (Ljava/lang/String;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/PreviewLabAction3;
 	public final fun fieldState (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/MutableState;
 	public final fun fieldValue (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Ljava/lang/Object;
 	public final fun getState ()Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;
@@ -69,6 +73,7 @@ public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabState {
 	public static final field Companion Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState$Companion;
 	public fun <init> ()V
 	public final fun deselectTab ()V
+	public final fun getActions ()Landroidx/compose/runtime/snapshots/SnapshotStateList;
 	public final fun getContentOffset-F1C5BW0 ()J
 	public final fun getContentScale ()F
 	public final fun getEvents ()Landroidx/compose/runtime/snapshots/SnapshotStateList;
@@ -88,7 +93,7 @@ public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabState$Comp
 public final class me/tbsten/compose/preview/lab/previewlab/header/ComposableSingletons$LinksKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/previewlab/header/ComposableSingletons$LinksKt;
 	public fun <init> ()V
-	public final fun getLambda$761465664$preview_lab ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-437269601$preview_lab ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class me/tbsten/compose/preview/lab/previewlab/inspectorspane/ComposableSingletons$EventListSectionKt {
@@ -100,7 +105,7 @@ public final class me/tbsten/compose/preview/lab/previewlab/inspectorspane/Compo
 public final class me/tbsten/compose/preview/lab/previewlab/inspectorspane/ComposableSingletons$InspectorsPaneKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/previewlab/inspectorspane/ComposableSingletons$InspectorsPaneKt;
 	public fun <init> ()V
-	public final fun getLambda$-497615280$preview_lab ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-446930287$preview_lab ()Lkotlin/jvm/functions/Function2;
 }
 
 public abstract interface class me/tbsten/compose/preview/lab/previewlab/inspectorspane/InspectorTab {
@@ -108,6 +113,17 @@ public abstract interface class me/tbsten/compose/preview/lab/previewlab/inspect
 	public abstract fun Content (Lme/tbsten/compose/preview/lab/previewlab/inspectorspane/InspectorTab$ContentContext;Landroidx/compose/runtime/Composer;I)V
 	public fun getIcon ()Lkotlin/jvm/functions/Function2;
 	public abstract fun getTitle ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/previewlab/inspectorspane/InspectorTab$Actions : me/tbsten/compose/preview/lab/previewlab/inspectorspane/InspectorTab {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/previewlab/inspectorspane/InspectorTab$Actions;
+	public fun Content (Lme/tbsten/compose/preview/lab/previewlab/inspectorspane/InspectorTab$ContentContext;Landroidx/compose/runtime/Composer;I)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getIcon ()Lkotlin/jvm/functions/Function2;
+	public fun getTitle ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class me/tbsten/compose/preview/lab/previewlab/inspectorspane/InspectorTab$Code : me/tbsten/compose/preview/lab/previewlab/inspectorspane/InspectorTab {

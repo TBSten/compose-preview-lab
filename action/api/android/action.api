@@ -1,0 +1,25 @@
+public final class me/tbsten/compose/preview/lab/action/ActionListContentKt {
+	public static final fun ActionListContent (Ljava/util/List;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/action/ActionListContentScope {
+	public static final field $stable I
+	public fun <init> ()V
+}
+
+public final class me/tbsten/compose/preview/lab/action/ActionState {
+	public static final field $stable I
+	public fun <init> ()V
+	public final fun add (Lme/tbsten/compose/preview/lab/PreviewLabAction;)V
+	public final fun clear ()V
+	public final fun getActions ()Ljava/util/List;
+	public final fun remove (Lme/tbsten/compose/preview/lab/PreviewLabAction;)V
+}
+
+public final class me/tbsten/compose/preview/lab/action/ArgFieldsScope {
+	public static final field $stable I
+	public fun <init> ()V
+	public final fun plus (Lkotlin/Pair;Lme/tbsten/compose/preview/lab/PreviewLabField;)Lkotlin/Triple;
+	public final fun plus (Lme/tbsten/compose/preview/lab/PreviewLabField;Lme/tbsten/compose/preview/lab/PreviewLabField;)Lkotlin/Pair;
+}
+

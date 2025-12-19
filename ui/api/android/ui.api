@@ -265,7 +265,7 @@ public final class me/tbsten/compose/preview/lab/ui/components/ButtonDefaults {
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/ButtonKt {
-	public static final fun Button (Landroidx/compose/ui/Modifier;Ljava/lang/String;ZZZLme/tbsten/compose/preview/lab/ui/components/ButtonVariant;Landroidx/compose/ui/graphics/Shape;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
+	public static final fun Button-IOmhX-c (Landroidx/compose/ui/Modifier;Ljava/lang/String;ZZZLme/tbsten/compose/preview/lab/ui/components/ButtonVariant;Landroidx/compose/ui/graphics/Shape;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/interaction/MutableInteractionSource;ILkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
 	public static final fun buttonStyleFor (Lme/tbsten/compose/preview/lab/ui/components/ButtonVariant;ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
 }
 
@@ -748,7 +748,7 @@ public final class me/tbsten/compose/preview/lab/ui/components/SelectButtonKt {
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/SimpleModalKt {
-	public static final fun SimpleModal (ZLkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun SimpleModal (ZLkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/ui/Alignment;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/SurfaceKt {
@@ -904,6 +904,73 @@ public final class me/tbsten/compose/preview/lab/ui/components/card/ComposableSi
 
 public final class me/tbsten/compose/preview/lab/ui/components/colorpicker/CommonColorPickerKt {
 	public static final fun CommonColorPicker-KTwxG1Y (JLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/progressindicators/CircularProgressIndicatorDefaults {
+	public static final field $stable I
+	public static final field BaseRotationAngle F
+	public static final field HeadTailAnimationDuration I
+	public static final field HeadTailDelayDuration I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/progressindicators/CircularProgressIndicatorDefaults;
+	public static final field JumpRotationAngle F
+	public static final field RotationAngleOffset F
+	public static final field RotationDuration I
+	public static final field RotationsPerCycle I
+	public static final field StartAngle F
+	public static final field StartAngleOffset F
+	public static final field SweepAngle F
+	public final fun getCircularEasing ()Landroidx/compose/animation/core/CubicBezierEasing;
+	public final fun getColor (Landroidx/compose/runtime/Composer;I)J
+	public final fun getDiameter-D9Ej5fM ()F
+	public final fun getStrokeStyle-KaPHkGw ()I
+	public final fun getStrokeWidth-D9Ej5fM ()F
+	public final fun getTrackColor (Landroidx/compose/runtime/Composer;I)J
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/progressindicators/CircularProgressIndicatorKt {
+	public static final fun CircularProgressIndicator-IKA6Amw (FLandroidx/compose/ui/Modifier;JJFILandroidx/compose/runtime/Composer;II)V
+	public static final fun CircularProgressIndicator-VulcgIY (Landroidx/compose/ui/Modifier;JJFILandroidx/compose/runtime/Composer;II)V
+	public static final fun CircularProgressIndicatorPreview (Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/progressindicators/ComposableSingletons$CircularProgressIndicatorKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/progressindicators/ComposableSingletons$CircularProgressIndicatorKt;
+	public fun <init> ()V
+	public final fun getLambda$1374080984$ui_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/progressindicators/ComposableSingletons$LinearProgressIndicatorKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/progressindicators/ComposableSingletons$LinearProgressIndicatorKt;
+	public fun <init> ()V
+	public final fun getLambda$442473752$ui_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/progressindicators/LinearProgressIndicatorDefaults {
+	public static final field $stable I
+	public static final field AnimationDuration I
+	public static final field FirstLineHeadDelay I
+	public static final field FirstLineHeadDuration I
+	public static final field FirstLineTailDelay I
+	public static final field FirstLineTailDuration I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/progressindicators/LinearProgressIndicatorDefaults;
+	public static final field SecondLineHeadDelay I
+	public static final field SecondLineHeadDuration I
+	public static final field SecondLineTailDelay I
+	public static final field SecondLineTailDuration I
+	public final fun getColor (Landroidx/compose/runtime/Composer;I)J
+	public final fun getFirstLineHeadEasing ()Landroidx/compose/animation/core/CubicBezierEasing;
+	public final fun getFirstLineTailEasing ()Landroidx/compose/animation/core/CubicBezierEasing;
+	public final fun getSecondLineHeadEasing ()Landroidx/compose/animation/core/CubicBezierEasing;
+	public final fun getSecondLineTailEasing ()Landroidx/compose/animation/core/CubicBezierEasing;
+	public final fun getStrokeStyle-KaPHkGw ()I
+	public final fun getTrackColor (Landroidx/compose/runtime/Composer;I)J
+	public final fun getTrackHeight-D9Ej5fM ()F
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/progressindicators/LinearProgressIndicatorKt {
+	public static final fun LinearProgressIndicator-2cYBFYY (Landroidx/compose/ui/Modifier;JJILandroidx/compose/runtime/Composer;II)V
+	public static final fun LinearProgressIndicator-_5eSR-E (FLandroidx/compose/ui/Modifier;JJILandroidx/compose/runtime/Composer;II)V
+	public static final fun LinearProgressIndicatorPreview (Landroidx/compose/runtime/Composer;I)V
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/textfield/OutlinedTextFieldDefaults {

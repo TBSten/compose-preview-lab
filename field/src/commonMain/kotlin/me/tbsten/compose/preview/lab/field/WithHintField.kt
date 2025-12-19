@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Chip
+import me.tbsten.compose.preview.lab.ui.components.OutlinedChip
 import me.tbsten.compose.preview.lab.ui.components.Text
 
 /**
@@ -198,7 +198,7 @@ class WithHintField<Value> internal constructor(
                     .horizontalScroll(rememberScrollState()),
             ) {
                 allChoices.forEach { choice ->
-                    Chip(
+                    OutlinedChip(
                         selected = value == choice.value,
                         label = { Text(choice.key, style = PreviewLabTheme.typography.label2) },
                         onClick = { onSelected(choice.value) },

@@ -30,6 +30,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -43,6 +45,8 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.delay
 import me.tbsten.compose.preview.lab.event.withEvent
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.ColorField
@@ -578,6 +582,41 @@ enum class PreviewsForUiDebug(
             }
         },
     ),
+    Actions(
+        "Actions",
+        content = {
+            PreviewLab {
+                val viewModel = remember { MyViewModel() }
+                val getItemUseCase = remember { GetItemUseCase() }
+
+                action(
+                    label = "onRefresh",
+                    action = viewModel::onRefresh,
+                )
+
+                action(
+                    label = "onItemClick",
+                    argFields = { StringField("itemId", "item-id-1") },
+                    action = viewModel::onItemClick,
+                )
+
+                val getItemListUseCaseAction =
+                    action(
+                        label = "GetItemListUseCase.invoke",
+                        argFields = {
+                            BooleanField("desc", false) + BooleanField("willError", false)
+                        },
+                        action = getItemUseCase::invoke,
+                    )
+
+                Column {
+                    getItemListUseCaseAction.ResultsView(
+                        field = { result -> StringField(label, result) },
+                    )
+                }
+            }
+        },
+    )
 }
 
 val previewsForUiDebug = PreviewsForUiDebug.entries.toList()
@@ -757,5 +796,26 @@ private data class DebugInfoTab(
                 Text("Example Action Button")
             }
         }
+    }
+}
+
+class MyViewModel {
+    val events = mutableStateListOf<String>()
+    fun onRefresh() {
+        events.add("onRefresh")
+    }
+
+    fun onItemClick(itemId: String) {
+        events.add("onItemClick(itemId = $itemId)")
+    }
+}
+
+class GetItemUseCase {
+    private var count = 0
+    suspend operator fun invoke(desc: Boolean, willError: Boolean): String {
+        delay(2.seconds)
+        count++
+        if (willError) error("GetItemUseCase throw error !")
+        return "Item - $count - " + if (desc) "desc" else "asc"
     }
 }

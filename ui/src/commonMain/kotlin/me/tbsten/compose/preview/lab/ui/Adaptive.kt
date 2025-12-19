@@ -98,7 +98,7 @@ fun <A, R> adaptive(arg: A, small: (A) -> R, medium: (A) -> R = small, large: (A
 
 @Composable
 @InternalComposePreviewLabApi
-fun <A, B, R> adaptive(arg1: A, arg2: B, small: (A, B) -> R, medium: (A, B) -> R = small, large: (A, B) -> R = medium,): R =
+fun <A, B, R> adaptive(arg1: A, arg2: B, small: (A, B) -> R, medium: (A, B) -> R = small, large: (A, B) -> R = medium): R =
     adaptive(
         small = { small(arg1, arg2) },
         medium = { medium(arg1, arg2) },

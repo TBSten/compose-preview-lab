@@ -70,15 +70,15 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.dokar3Sonner)
         }
+        androidMain.dependencies {
+            implementation(compose.uiTooling)
+        }
         commonTest.dependencies {
             implementation(kotlin("test"))
         }
         jvmTest.dependencies {
             implementation(libs.kotestProperty)
             implementation(libs.kotlinxCoroutinesTest)
-        }
-        androidMain.dependencies {
-            implementation(compose.uiTooling)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
@@ -43,6 +44,7 @@ fun Button(
     onClick: () -> Unit = {},
     contentPadding: PaddingValues = ButtonDefaults.contentPadding,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    textAlign: TextAlign = TextAlign.Center,
     content: (@Composable () -> Unit)? = null,
 ) {
     val style = buttonStyleFor(variant, isSelected = isSelected)
@@ -56,6 +58,7 @@ fun Button(
         onClick = onClick,
         contentPadding = contentPadding,
         interactionSource = interactionSource,
+        textAlign = textAlign,
         content = content,
     )
 }
@@ -71,6 +74,7 @@ private fun ButtonComponent(
     onClick: () -> Unit,
     contentPadding: PaddingValues = ButtonDefaults.contentPadding,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    textAlign: TextAlign = TextAlign.Center,
     content: (@Composable () -> Unit)? = null,
 ) {
     val containerColor = style.colors.containerColor(enabled).value
@@ -104,13 +108,16 @@ private fun ButtonComponent(
         shadowElevation = shadowElevation,
         interactionSource = interactionSource,
     ) {
-        DefaultButtonContent(
-            text = text,
-            loading = loading,
-            contentColor = contentColor,
-            content = content,
-            modifier = Modifier.padding(contentPadding),
-        )
+        DisableSelection {
+            DefaultButtonContent(
+                text = text,
+                loading = loading,
+                textAlign = textAlign,
+                contentColor = contentColor,
+                content = content,
+                modifier = Modifier.padding(contentPadding),
+            )
+        }
     }
 }
 
@@ -119,6 +126,7 @@ private fun DefaultButtonContent(
     modifier: Modifier = Modifier,
     text: String? = null,
     loading: Boolean,
+    textAlign: TextAlign = TextAlign.Center,
     contentColor: Color,
     content: (@Composable () -> Unit)? = null,
 ) {
@@ -138,7 +146,7 @@ private fun DefaultButtonContent(
 
             Text(
                 text = AnnotatedString(text = text),
-                textAlign = TextAlign.Center,
+                textAlign = textAlign,
                 style = PreviewLabTheme.typography.button,
                 overflow = TextOverflow.Clip,
                 color = contentColor,
