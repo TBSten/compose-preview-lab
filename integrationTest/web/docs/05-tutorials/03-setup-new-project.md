@@ -59,7 +59,7 @@ kotlin {
                 implementation(compose.components.uiToolingPreview)
 
                 // ✅ Compose Preview Lab 本体
-                implementation("me.tbsten.compose.preview.lab:core:<compose-preview-lab-version>")
+                implementation("me.tbsten.compose.preview.lab:starter:<compose-preview-lab-version>")
             }
         }
     }

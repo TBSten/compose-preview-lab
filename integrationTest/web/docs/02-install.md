@@ -29,7 +29,7 @@ Compose Preview Lab を既存のプロジェクトに導入するための手順
 - Gradle 7 以降（Kotlin DSL 推奨）
 
 :::tip バージョンの確認
-公式ドキュメントや [Maven Central の `me.tbsten.compose.preview.lab:core`](https://central.sonatype.com/artifact/me.tbsten.compose.preview.lab/core) を確認し、利用したいバージョンを決定します。
+公式ドキュメントや [Maven Central の `me.tbsten.compose.preview.lab:starter`](https://central.sonatype.com/artifact/me.tbsten.compose.preview.lab/core) を確認し、利用したいバージョンを決定します。
 :::
 
 ## 2. Kotlin Multiplatform プロジェクトへの導入（推奨）

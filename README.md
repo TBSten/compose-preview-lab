@@ -97,11 +97,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             // ⭐️ Add individual modules as needed
-            implementation("me.tbsten.compose.preview.lab:core:<compose-preview-lab-version>")
-            implementation("me.tbsten.compose.preview.lab:field:<compose-preview-lab-version>")
-            implementation("me.tbsten.compose.preview.lab:ui:<compose-preview-lab-version>")
-            implementation("me.tbsten.compose.preview.lab:preview-lab:<compose-preview-lab-version>")
-            implementation("me.tbsten.compose.preview.lab:gallery:<compose-preview-lab-version>")
+            implementation("me.tbsten.compose.preview.lab:starter:<compose-preview-lab-version>")
         }
     }
 }
