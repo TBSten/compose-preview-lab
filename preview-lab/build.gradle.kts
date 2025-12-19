@@ -77,6 +77,9 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.dokar3Sonner)
+            implementation(libs.filekitCore)
+            implementation(libs.filekitDialogs)
+            implementation(libs.filekitDialogsCompose)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
