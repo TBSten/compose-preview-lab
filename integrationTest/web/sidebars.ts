@@ -7,7 +7,7 @@ const sidebars: SidebarsConfig = {
     {
       type: 'link',
       label: 'API Reference',
-      href: `https://tbsten.github.io/compose-preview-lab/dokka/${composePreviewLabVersion}/core/index.html`,
+      href: `https://tbsten.github.io/compose-preview-lab/dokka/${composePreviewLabVersion}`,
     },
   ],
 };
