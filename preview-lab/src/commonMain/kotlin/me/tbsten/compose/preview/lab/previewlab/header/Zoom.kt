@@ -8,13 +8,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.previewlab.generated.resources.Res
-import me.tbsten.compose.preview.lab.previewlab.generated.resources.icon_refresh
-import me.tbsten.compose.preview.lab.previewlab.generated.resources.icon_zoom_in
-import me.tbsten.compose.preview.lab.previewlab.generated.resources.icon_zoom_out
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.CommonIconButton
 import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
+import me.tbsten.compose.preview.lab.ui.generated.resources.icon_refresh
+import me.tbsten.compose.preview.lab.ui.generated.resources.icon_zoom_in
+import me.tbsten.compose.preview.lab.ui.generated.resources.icon_zoom_out
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -30,7 +30,7 @@ internal fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, modifier: Modifi
             verticalAlignment = Alignment.CenterVertically,
         ) {
             CommonIconButton(
-                painter = painterResource(Res.drawable.icon_zoom_in),
+                painter = painterResource(PreviewLabUiRes.drawable.icon_zoom_in),
                 contentDescription = "Zoom In",
                 enabled = scale < MaxZoomScale,
                 onClick = {
@@ -39,7 +39,7 @@ internal fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, modifier: Modifi
             )
 
             CommonIconButton(
-                painter = painterResource(Res.drawable.icon_zoom_out),
+                painter = painterResource(PreviewLabUiRes.drawable.icon_zoom_out),
                 contentDescription = "Zoom Out",
                 enabled = MinZoomScale < scale,
                 onClick = {
@@ -49,7 +49,7 @@ internal fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, modifier: Modifi
             )
 
             CommonIconButton(
-                painter = painterResource(Res.drawable.icon_refresh),
+                painter = painterResource(PreviewLabUiRes.drawable.icon_refresh),
                 contentDescription = "Zoom Reset",
                 onClick = {
                     onScaleChange(1.00f)

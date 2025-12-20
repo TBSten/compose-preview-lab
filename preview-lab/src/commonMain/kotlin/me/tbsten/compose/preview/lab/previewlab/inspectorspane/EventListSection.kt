@@ -23,13 +23,13 @@ import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.delay
 import me.tbsten.compose.preview.lab.PreviewLabEvent
-import me.tbsten.compose.preview.lab.previewlab.generated.resources.Res
-import me.tbsten.compose.preview.lab.previewlab.generated.resources.icon_delete
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.CommonIconButton
 import me.tbsten.compose.preview.lab.ui.components.CommonListHeader
 import me.tbsten.compose.preview.lab.ui.components.Divider
 import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
+import me.tbsten.compose.preview.lab.ui.generated.resources.icon_delete
 import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalTime::class)
@@ -43,7 +43,7 @@ internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: Prev
                     actions = {
                         // TODO add export button
                         CommonIconButton(
-                            painter = painterResource(Res.drawable.icon_delete),
+                            painter = painterResource(PreviewLabUiRes.drawable.icon_delete),
                             contentDescription = "Clear Events",
                             enabled = events.isNotEmpty(),
                             onClick = onClear,

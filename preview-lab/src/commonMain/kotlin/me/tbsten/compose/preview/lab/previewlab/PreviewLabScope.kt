@@ -48,6 +48,7 @@ class PreviewLabScope(val state: PreviewLabState) {
             state.fields.add(field)
             onDispose {
                 state.fields.remove(field)
+                field.onCleared()
             }
         }
         return field
@@ -74,6 +75,7 @@ class PreviewLabScope(val state: PreviewLabState) {
             state.fields.add(field)
             onDispose {
                 state.fields.remove(field)
+                field.onCleared()
             }
         }
         return field.value

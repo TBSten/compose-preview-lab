@@ -16,13 +16,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
-import me.tbsten.compose.preview.lab.previewlab.generated.resources.Res
-import me.tbsten.compose.preview.lab.previewlab.generated.resources.icon_screenshot_frame
 import me.tbsten.compose.preview.lab.previewlab.screenshot.LocalCaptureScreenshot
 import me.tbsten.compose.preview.lab.previewlab.screenshot.rememberSaveScreenshot
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Icon
 import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
+import me.tbsten.compose.preview.lab.ui.generated.resources.icon_screenshot_frame
 import org.jetbrains.compose.resources.painterResource
 
 private const val DefaultScreenshotFileName = "preview-lab-screenshot"
@@ -52,7 +52,7 @@ internal fun Screenshot(modifier: Modifier = Modifier) {
             .padding(8.dp),
     ) {
         Icon(
-            painter = painterResource(Res.drawable.icon_screenshot_frame),
+            painter = painterResource(PreviewLabUiRes.drawable.icon_screenshot_frame),
             contentDescription = null,
             modifier = Modifier.size(20.dp),
         )

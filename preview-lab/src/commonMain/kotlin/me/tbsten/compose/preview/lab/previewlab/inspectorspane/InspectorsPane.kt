@@ -24,12 +24,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.collectLatest
-import me.tbsten.compose.preview.lab.previewlab.generated.resources.Res
-import me.tbsten.compose.preview.lab.previewlab.generated.resources.icon_code
 import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
+import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.openfilehandler.LocalOpenFileHandler
 import me.tbsten.compose.preview.lab.previewlab.openfilehandler.OpenFileHandler
-import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.adaptive
 import me.tbsten.compose.preview.lab.ui.components.Button
@@ -41,6 +39,8 @@ import me.tbsten.compose.preview.lab.ui.components.IconButtonVariant
 import me.tbsten.compose.preview.lab.ui.components.SimpleModal
 import me.tbsten.compose.preview.lab.ui.components.TabPager
 import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
+import me.tbsten.compose.preview.lab.ui.generated.resources.icon_code
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -110,7 +110,7 @@ internal fun InspectorsPane(
                         val configuredValue = openHandler.configure()
                         CommonIconButton(
                             variant = IconButtonVariant.PrimaryOutlined,
-                            painter = painterResource(Res.drawable.icon_code),
+                            painter = painterResource(PreviewLabUiRes.drawable.icon_code),
                             contentDescription = "Show source code",
                             onClick = {
                                 @Suppress("UNCHECKED_CAST")
@@ -188,7 +188,7 @@ internal fun InspectorsPane(
                             modifier = Modifier.padding(vertical = 4.dp, horizontal = 12.dp).fillMaxWidth(),
                         ) {
                             Icon(
-                                painter = painterResource(Res.drawable.icon_code),
+                                painter = painterResource(PreviewLabUiRes.drawable.icon_code),
                                 contentDescription = null,
                             )
                             Spacer(Modifier.width(8.dp))

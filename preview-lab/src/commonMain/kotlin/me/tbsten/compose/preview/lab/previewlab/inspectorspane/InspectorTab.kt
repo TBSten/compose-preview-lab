@@ -9,12 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
-import me.tbsten.compose.preview.lab.previewlab.generated.resources.Res
-import me.tbsten.compose.preview.lab.previewlab.generated.resources.icon_edit
-import me.tbsten.compose.preview.lab.previewlab.generated.resources.icon_history
 import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
+import me.tbsten.compose.preview.lab.ui.generated.resources.icon_edit
+import me.tbsten.compose.preview.lab.ui.generated.resources.icon_history
 import org.jetbrains.compose.resources.painterResource
 
 /**
@@ -30,7 +30,7 @@ import org.jetbrains.compose.resources.painterResource
  * ```kt
  * object CustomTab : InspectorTab {
  *     override val title = "Custom"
- *     override val icon: @Composable () -> Painter = { painterResource(Res.drawable.icon_custom) }
+ *     override val icon: @Composable () -> Painter = { painterResource(PreviewLabUiRes.drawable.icon_custom) }
  *
  *     @Composable
  *     override fun ContentContext.Content() {
@@ -99,7 +99,7 @@ interface InspectorTab {
      */
     data object Fields : InspectorTab {
         override val title: String = "Fields"
-        override val icon: @Composable () -> Painter = { painterResource(Res.drawable.icon_edit) }
+        override val icon: @Composable () -> Painter = { painterResource(PreviewLabUiRes.drawable.icon_edit) }
 
         @Composable
         override fun ContentContext.Content() {
@@ -116,7 +116,7 @@ interface InspectorTab {
      */
     data object Events : InspectorTab {
         override val title: String = "Events"
-        override val icon: @Composable () -> Painter = { painterResource(Res.drawable.icon_history) }
+        override val icon: @Composable () -> Painter = { painterResource(PreviewLabUiRes.drawable.icon_history) }
 
         @Composable
         override fun ContentContext.Content() {

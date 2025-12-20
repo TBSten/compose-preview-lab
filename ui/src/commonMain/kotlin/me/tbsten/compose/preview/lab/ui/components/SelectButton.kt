@@ -14,11 +14,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
-import me.tbsten.compose.preview.lab.ui.generated.resources.Res
-import me.tbsten.compose.preview.lab.ui.generated.resources.icon_check
 import me.tbsten.compose.preview.lab.ui.LocalTextStyle
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.adaptive
+import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
+import me.tbsten.compose.preview.lab.ui.generated.resources.icon_check
 import org.jetbrains.compose.resources.imageResource
 
 @Composable
@@ -84,7 +84,7 @@ fun <V> SelectButton(
                     ) {
                         if (isSelected) {
                             Icon(
-                                imageResource(Res.drawable.icon_check),
+                                imageResource(PreviewLabUiRes.drawable.icon_check),
                                 contentDescription = "selected",
                             )
                         }

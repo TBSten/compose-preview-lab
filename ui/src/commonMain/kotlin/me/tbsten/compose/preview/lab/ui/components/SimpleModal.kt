@@ -18,9 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
-import me.tbsten.compose.preview.lab.ui.generated.resources.Res
-import me.tbsten.compose.preview.lab.ui.generated.resources.icon_close
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
+import me.tbsten.compose.preview.lab.ui.generated.resources.icon_close
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -52,7 +52,7 @@ fun SimpleModal(
                         .padding(contentPadding),
                 ) {
                     CommonIconButton(
-                        painter = painterResource(Res.drawable.icon_close),
+                        painter = painterResource(PreviewLabUiRes.drawable.icon_close),
                         contentDescription = "close",
                         tint = PreviewLabTheme.colors.background,
                         onClick = onDismissRequest,

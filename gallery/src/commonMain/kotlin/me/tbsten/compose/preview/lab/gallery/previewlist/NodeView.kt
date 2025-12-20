@@ -23,8 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.gallery.generated.resources.Res
-import me.tbsten.compose.preview.lab.gallery.generated.resources.icon_more_vert
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Button
 import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
@@ -32,6 +30,8 @@ import me.tbsten.compose.preview.lab.ui.components.CommonIconButton
 import me.tbsten.compose.preview.lab.ui.components.CommonListItem
 import me.tbsten.compose.preview.lab.ui.components.CommonMenu
 import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
+import me.tbsten.compose.preview.lab.ui.generated.resources.icon_more_vert
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -147,7 +147,7 @@ private fun PreviewView(
 
         Column {
             CommonIconButton(
-                painter = painterResource(Res.drawable.icon_more_vert),
+                painter = painterResource(PreviewLabUiRes.drawable.icon_more_vert),
                 contentDescription = "Open menu",
                 onClick = { isMenuOpen = true },
                 modifier = Modifier.size(20.dp),
