@@ -102,7 +102,7 @@ internal fun copyPreview(context: CopyPreviewContext, preview: ValidPreview, cod
             sources = buildList { preview.previewFun.containingFile?.let { add(it) } }.toTypedArray(),
         ),
         packageName = copied.packageName,
-        fileName = "Copied${copied.baseName}",
+        fileName = "Copied__${copied.baseName}",
     ).bufferedWriter().use { writer ->
         writer.appendLine("package ${copied.packageName}")
         writer.appendLine()
