@@ -11,6 +11,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.field.DefaultFieldView
+import me.tbsten.compose.preview.lab.ui.components.CommonListItem
 
 /**
  * Returns a default placeholder code string for fields that don't have a custom [PreviewLabField.valueCode] implementation.
@@ -244,7 +245,9 @@ interface PreviewLabField<Value> {
      * @see Content
      */
     @Composable
-    fun View() = DefaultFieldView()
+    fun View(menuItems: List<ViewMenuItem<Value>> = ViewMenuItem.defaults(this)) = DefaultFieldView(
+        menuItems = menuItems,
+    )
 
     /**
      * Composable, which displays the main UI for this Field.
@@ -263,6 +266,49 @@ interface PreviewLabField<Value> {
 
     fun onCleared() {
         coroutineScope.cancel()
+    }
+
+    abstract class ViewMenuItem<Value>(open val field: PreviewLabField<Value>) {
+        abstract val title: String
+        open val enabled: Boolean = true
+
+        abstract fun onClick()
+
+        @Composable
+        open fun Content(close: () -> Unit) {
+            CommonListItem(
+                title = title,
+                isSelected = true,
+                isEnabled = enabled,
+                onSelect = {
+                    onClick()
+                    close()
+                },
+            )
+        }
+
+        class ResetValue<Value>(override val field: MutablePreviewLabField<Value>) : ViewMenuItem<Value>(field) {
+            override val title: String = "Reset Value"
+
+            override fun onClick() {
+                field.value = field.initialValue
+            }
+        }
+
+        companion object {
+            operator fun <Value> invoke(field: PreviewLabField<Value>, title: String, onClick: () -> Unit) =
+                object : ViewMenuItem<Value>(field) {
+                    override val title: String = title
+
+                    override fun onClick() = onClick()
+                }
+
+            fun <Value> defaults(field: MutablePreviewLabField<Value>): List<ViewMenuItem<Value>> = listOf(
+                ResetValue(field),
+            )
+
+            fun <Value> defaults(field: PreviewLabField<Value>): List<ViewMenuItem<Value>> = listOf()
+        }
     }
 }
 
