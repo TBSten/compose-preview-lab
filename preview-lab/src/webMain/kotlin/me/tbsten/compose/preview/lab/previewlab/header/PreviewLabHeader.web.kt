@@ -1,11 +1,7 @@
 package me.tbsten.compose.preview.lab.previewlab.header
 
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,18 +14,12 @@ internal actual fun RowScope.PlatformHeaders() {
 
     val copyUrl = copyUserHandler()
 
-    Row(
-        Modifier
-            .align(Alignment.CenterVertically)
-            .height(IntrinsicSize.Min),
-    ) {
-        Button(
-            text = "Copy",
-            variant = ButtonVariant.PrimaryOutlined,
-            onClick = { copyUrl() },
-            modifier = Modifier.fillMaxHeight(),
-        )
-    }
+    Button(
+        text = "Copy",
+        variant = ButtonVariant.PrimaryOutlined,
+        onClick = { copyUrl() },
+        modifier = Modifier.align(Alignment.CenterVertically),
+    )
 }
 
 @Composable
