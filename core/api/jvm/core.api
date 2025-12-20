@@ -60,6 +60,64 @@ public final class me/tbsten/compose/preview/lab/PreviewLabPreviewKt {
 	public static synthetic fun PreviewLabPreview$default (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/PreviewLabPreview;
 }
 
+public final class me/tbsten/compose/preview/lab/core/generated/resources/ActualResourceCollectorsKt {
+	public static final fun getAllDrawableResources (Lme/tbsten/compose/preview/lab/core/generated/resources/Res;)Ljava/util/Map;
+	public static final fun getAllFontResources (Lme/tbsten/compose/preview/lab/core/generated/resources/Res;)Ljava/util/Map;
+	public static final fun getAllPluralStringResources (Lme/tbsten/compose/preview/lab/core/generated/resources/Res;)Ljava/util/Map;
+	public static final fun getAllStringArrayResources (Lme/tbsten/compose/preview/lab/core/generated/resources/Res;)Ljava/util/Map;
+	public static final fun getAllStringResources (Lme/tbsten/compose/preview/lab/core/generated/resources/Res;)Ljava/util/Map;
+}
+
+public final class me/tbsten/compose/preview/lab/core/generated/resources/Drawable0_commonMainKt {
+	public static final fun getIcon_add (Lme/tbsten/compose/preview/lab/core/generated/resources/Res$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_check (Lme/tbsten/compose/preview/lab/core/generated/resources/Res$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_close (Lme/tbsten/compose/preview/lab/core/generated/resources/Res$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_code (Lme/tbsten/compose/preview/lab/core/generated/resources/Res$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_dashboard (Lme/tbsten/compose/preview/lab/core/generated/resources/Res$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_delete (Lme/tbsten/compose/preview/lab/core/generated/resources/Res$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_edit (Lme/tbsten/compose/preview/lab/core/generated/resources/Res$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_history (Lme/tbsten/compose/preview/lab/core/generated/resources/Res$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_more_vert (Lme/tbsten/compose/preview/lab/core/generated/resources/Res$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_refresh (Lme/tbsten/compose/preview/lab/core/generated/resources/Res$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_remove (Lme/tbsten/compose/preview/lab/core/generated/resources/Res$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_right_panel_close (Lme/tbsten/compose/preview/lab/core/generated/resources/Res$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_right_panel_open (Lme/tbsten/compose/preview/lab/core/generated/resources/Res$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_zoom_in (Lme/tbsten/compose/preview/lab/core/generated/resources/Res$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_zoom_out (Lme/tbsten/compose/preview/lab/core/generated/resources/Res$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+}
+
+public final class me/tbsten/compose/preview/lab/core/generated/resources/Res {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/core/generated/resources/Res;
+	public final fun getUri (Ljava/lang/String;)Ljava/lang/String;
+	public final fun readBytes (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class me/tbsten/compose/preview/lab/core/generated/resources/Res$array {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/core/generated/resources/Res$array;
+}
+
+public final class me/tbsten/compose/preview/lab/core/generated/resources/Res$drawable {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/core/generated/resources/Res$drawable;
+}
+
+public final class me/tbsten/compose/preview/lab/core/generated/resources/Res$font {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/core/generated/resources/Res$font;
+}
+
+public final class me/tbsten/compose/preview/lab/core/generated/resources/Res$plurals {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/core/generated/resources/Res$plurals;
+}
+
+public final class me/tbsten/compose/preview/lab/core/generated/resources/Res$string {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/core/generated/resources/Res$string;
+}
+
 public abstract interface annotation class me/tbsten/compose/preview/lab/util/JsOnlyExport : java/lang/annotation/Annotation {
 }
 
