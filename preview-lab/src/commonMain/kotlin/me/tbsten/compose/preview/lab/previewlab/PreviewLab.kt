@@ -327,6 +327,7 @@ open class PreviewLab(
         isHeaderShow: Boolean = this.defaultIsHeaderShow(),
         inspectorTabs: List<InspectorTab> = this.defaultInspectorTabs(),
         isInPreviewLabGalleryCardBody: Boolean = LocalIsInPreviewLabGalleryCardBody.current,
+        contentGraphicsLayer: GraphicsLayer = rememberGraphicsLayer(),
         content: @Composable PreviewLabScope.() -> Unit,
     ) = invoke(
         state = state,
@@ -457,7 +458,7 @@ open class PreviewLab(
      *   The content will be rendered within the selected screen size constraints and can use
      *   layout modifiers like fillMaxSize() which will be bounded by the selected screen size.
      *
-     * @param graphicsLayer GraphicsLayer for capturing screenshots. Defaults to rememberGraphicsLayer().
+     * @param contentGraphicsLayer GraphicsLayer for capturing screenshots. Defaults to rememberGraphicsLayer().
      *
      * @throws IllegalArgumentException if screenSizes is empty
      * @see PreviewLabState State management and persistence
@@ -472,7 +473,7 @@ open class PreviewLab(
         isHeaderShow: Boolean = this.defaultIsHeaderShow(),
         inspectorTabs: List<InspectorTab> = this.defaultInspectorTabs(),
         isInPreviewLabGalleryCardBody: Boolean = LocalIsInPreviewLabGalleryCardBody.current,
-        graphicsLayer: GraphicsLayer = rememberGraphicsLayer(),
+        contentGraphicsLayer: GraphicsLayer = rememberGraphicsLayer(),
         content: @Composable PreviewLabScope.() -> Unit,
     ) {
         if (isInPreviewLabGalleryCardBody) {
@@ -501,8 +502,8 @@ open class PreviewLab(
             }
         }
 
-        val captureScreenshot: suspend () -> androidx.compose.ui.graphics.ImageBitmap? = remember(graphicsLayer) {
-            suspend { graphicsLayer.toImageBitmap() }
+        val captureScreenshot: suspend () -> androidx.compose.ui.graphics.ImageBitmap? = remember(contentGraphicsLayer) {
+            suspend { contentGraphicsLayer.toImageBitmap() }
         }
 
         Providers(state = state, toaster = toaster, captureScreenshot = captureScreenshot) {
@@ -527,7 +528,7 @@ open class PreviewLab(
                             ContentSection(
                                 state = state,
                                 screenSizes = screenSizes,
-                                graphicsLayer = graphicsLayer,
+                                graphicsLayer = contentGraphicsLayer,
                                 content = content,
                                 modifier = Modifier
                                     .weight(1f)
