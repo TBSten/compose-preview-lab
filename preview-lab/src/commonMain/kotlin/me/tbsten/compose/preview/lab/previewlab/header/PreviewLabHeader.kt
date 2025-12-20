@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
@@ -52,6 +53,12 @@ internal fun PreviewLabHeader(
                 InspectorPanelVisible(
                     isInspectorPanelVisible = isInspectorPanelVisible,
                     onToggle = onIsInspectorPanelVisibleToggle,
+                )
+
+                Divider()
+
+                Screenshot(
+                    modifier = Modifier.align(Alignment.CenterVertically),
                 )
 
                 PlatformHeaders()

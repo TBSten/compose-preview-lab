@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import kotlin.math.min
 import kotlin.math.roundToInt
+import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.LocalIsInPreviewLabGalleryCardBody
 import me.tbsten.compose.preview.lab.PreviewLabPreview
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
@@ -106,8 +107,9 @@ private fun LazyGridScope.previewListGrid(
     }
 }
 
+@ExperimentalComposePreviewLabApi
 @Composable
-private fun PreviewListGridCard(preview: PreviewLabPreview, onClick: () -> Unit) = OutlinedCard(
+fun PreviewListGridCard(preview: PreviewLabPreview, onClick: () -> Unit) = OutlinedCard(
     border = CardDefaults.outlinedCardBorder(),
     onClick = onClick,
 ) {
@@ -154,7 +156,7 @@ private fun PreviewListGridCard(preview: PreviewLabPreview, onClick: () -> Unit)
 @Composable
 private fun PreviewLabGalleryCardBody(preview: PreviewLabPreview, modifier: Modifier = Modifier) {
     val scale = adaptive(small = 0.3f, medium = 0.4f)
-    val aspectRatio = 16f / 9f
+    val aspectRatio = adaptive(small = 16f / 9f, large = 4f / 3f)
 
     Box(modifier = modifier) {
         Layout(

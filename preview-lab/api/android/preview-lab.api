@@ -26,7 +26,7 @@ public final class me/tbsten/compose/preview/lab/field/ComposeDefaultComposition
 public final class me/tbsten/compose/preview/lab/previewlab/ComposableSingletons$PreviewLabKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/previewlab/ComposableSingletons$PreviewLabKt;
 	public fun <init> ()V
-	public final fun getLambda$1290531238$preview_lab_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$-1594961153$preview_lab_release ()Lkotlin/jvm/functions/Function4;
 	public final fun getLambda$569618072$preview_lab_release ()Lkotlin/jvm/functions/Function3;
 }
 
@@ -36,8 +36,8 @@ public class me/tbsten/compose/preview/lab/previewlab/PreviewLab {
 	public fun <init> ()V
 	public fun <init> (Lkotlin/jvm/functions/Function2;Ljava/util/List;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Ljava/lang/Void;)V
 	public synthetic fun <init> (Lkotlin/jvm/functions/Function2;Ljava/util/List;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Ljava/lang/Void;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun invoke (Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;Ljava/util/List;ZLjava/util/List;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;I)V
-	public synthetic fun invoke (Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;Ljava/util/List;ZLjava/util/List;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public fun invoke (Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;Ljava/util/List;ZLjava/util/List;ZLandroidx/compose/ui/graphics/layer/GraphicsLayer;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;I)V
+	public synthetic fun invoke (Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;Ljava/util/List;ZLjava/util/List;ZLandroidx/compose/ui/graphics/layer/GraphicsLayer;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public final fun invoke-lVwrFTI (FFLandroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;ZLjava/util/List;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
@@ -45,7 +45,7 @@ public final class me/tbsten/compose/preview/lab/previewlab/PreviewLab$Companion
 }
 
 public final class me/tbsten/compose/preview/lab/previewlab/PreviewLab$ComposeDefaultImpls {
-	public static final fun invoke$default (Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;Ljava/util/List;ZLjava/util/List;ZLkotlin/jvm/functions/Function3;Lme/tbsten/compose/preview/lab/previewlab/PreviewLab;Landroidx/compose/runtime/Composer;II)V
+	public static final fun invoke$default (Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;Ljava/util/List;ZLjava/util/List;ZLandroidx/compose/ui/graphics/layer/GraphicsLayer;Lkotlin/jvm/functions/Function3;Lme/tbsten/compose/preview/lab/previewlab/PreviewLab;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabKt {

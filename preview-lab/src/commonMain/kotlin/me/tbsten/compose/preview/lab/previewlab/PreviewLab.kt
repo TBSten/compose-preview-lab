@@ -14,10 +14,15 @@ import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.layer.GraphicsLayer
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
@@ -36,6 +41,7 @@ import me.tbsten.compose.preview.lab.field.ScreenSizeField
 import me.tbsten.compose.preview.lab.previewlab.header.PreviewLabHeader
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorsPane
+import me.tbsten.compose.preview.lab.previewlab.screenshot.LocalCaptureScreenshot
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.util.toDpOffset
 
@@ -451,6 +457,8 @@ open class PreviewLab(
      *   The content will be rendered within the selected screen size constraints and can use
      *   layout modifiers like fillMaxSize() which will be bounded by the selected screen size.
      *
+     * @param graphicsLayer GraphicsLayer for capturing screenshots. Defaults to rememberGraphicsLayer().
+     *
      * @throws IllegalArgumentException if screenSizes is empty
      * @see PreviewLabState State management and persistence
      * @see PreviewLabScope Scope providing field and event functions
@@ -464,6 +472,7 @@ open class PreviewLab(
         isHeaderShow: Boolean = this.defaultIsHeaderShow(),
         inspectorTabs: List<InspectorTab> = this.defaultInspectorTabs(),
         isInPreviewLabGalleryCardBody: Boolean = LocalIsInPreviewLabGalleryCardBody.current,
+        graphicsLayer: GraphicsLayer = rememberGraphicsLayer(),
         content: @Composable PreviewLabScope.() -> Unit,
     ) {
         if (isInPreviewLabGalleryCardBody) {
@@ -492,7 +501,11 @@ open class PreviewLab(
             }
         }
 
-        Providers(state = state, toaster = toaster) {
+        val captureScreenshot: suspend () -> androidx.compose.ui.graphics.ImageBitmap? = remember(graphicsLayer) {
+            suspend { graphicsLayer.toImageBitmap() }
+        }
+
+        Providers(state = state, toaster = toaster, captureScreenshot = captureScreenshot) {
             Column(modifier = modifier.background(PreviewLabTheme.colors.background)) {
                 PreviewLabHeader(
                     isHeaderShow = isHeaderShow,
@@ -514,6 +527,7 @@ open class PreviewLab(
                             ContentSection(
                                 state = state,
                                 screenSizes = screenSizes,
+                                graphicsLayer = graphicsLayer,
                                 content = content,
                                 modifier = Modifier
                                     .weight(1f)
@@ -538,13 +552,19 @@ open class PreviewLab(
     }
 
     @Composable
-    private fun Providers(state: PreviewLabState, toaster: ToasterState, content: @Composable () -> Unit) {
+    private fun Providers(
+        state: PreviewLabState,
+        toaster: ToasterState,
+        captureScreenshot: suspend () -> androidx.compose.ui.graphics.ImageBitmap?,
+        content: @Composable () -> Unit,
+    ) {
         DisableSelection {
             contentRoot {
                 PreviewLabTheme {
                     CompositionLocalProvider(
                         LocalEnforcePreviewLabState provides state,
                         LocalToaster provides toaster,
+                        LocalCaptureScreenshot provides captureScreenshot,
                     ) {
                         content()
                     }
@@ -583,6 +603,7 @@ internal val LocalToaster = compositionLocalOf<ToasterState> { error("No Toaster
 private fun ContentSection(
     state: PreviewLabState,
     screenSizes: List<ScreenSize>,
+    graphicsLayer: GraphicsLayer,
     modifier: Modifier = Modifier,
     content: @Composable PreviewLabScope.() -> Unit,
 ) {
@@ -637,6 +658,12 @@ private fun ContentSection(
                 modifier = Modifier
                     .border(8.dp, PreviewLabTheme.colors.outline.copy(alpha = 0.25f))
                     .padding(8.dp)
+                    .drawWithContent {
+                        graphicsLayer.record {
+                            this@drawWithContent.drawContent()
+                        }
+                        drawLayer(graphicsLayer)
+                    }
                     .onPlaced {
                         state.contentRootOffsetInAppRoot =
                             it.positionInRoot().toDpOffset(density)
