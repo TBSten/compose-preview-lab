@@ -86,7 +86,6 @@ kotlin {
             implementation(libs.dokar3Sonner)
             implementation(libs.filekitCore)
             implementation(libs.filekitDialogs)
-            implementation(libs.filekitDialogsCompose)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))

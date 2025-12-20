@@ -43,7 +43,6 @@ kotestProperty = { module = "io.kotest:kotest-property", version.ref = "kotest" 
 kotlinxCoroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 filekitCore = { module = "io.github.vinceglb:filekit-core", version.ref = "filekit" }
 filekitDialogs = { module = "io.github.vinceglb:filekit-dialogs", version.ref = "filekit" }
-filekitDialogsCompose = { module = "io.github.vinceglb:filekit-dialogs-compose", version.ref = "filekit" }
 
 androidxLifecycleViewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 androidxLifecycleRuntimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
