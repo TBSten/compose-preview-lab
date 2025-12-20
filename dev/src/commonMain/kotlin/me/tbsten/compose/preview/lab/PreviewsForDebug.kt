@@ -48,6 +48,7 @@ import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.ColorField
 import me.tbsten.compose.preview.lab.field.ComposableField
 import me.tbsten.compose.preview.lab.field.ComposableFieldValue
+import me.tbsten.compose.preview.lab.field.DoubleField
 import me.tbsten.compose.preview.lab.field.DpOffsetField
 import me.tbsten.compose.preview.lab.field.DpSizeField
 import me.tbsten.compose.preview.lab.field.EnumField
@@ -107,8 +108,8 @@ enum class PreviewsForUiDebug(
                                 Text("floatField: $floatValue")
                             }
                             item {
-                                val floatValue = fieldValue { FloatField("floatField", 0f) }
-                                Text("floatField: $floatValue")
+                                val doubleValue = fieldValue { DoubleField("doubleValue", 0.0) }
+                                Text("doubleValue: $doubleValue")
                             }
                             item {
                                 val booleanValue = fieldValue { BooleanField("booleanValue", false) }
