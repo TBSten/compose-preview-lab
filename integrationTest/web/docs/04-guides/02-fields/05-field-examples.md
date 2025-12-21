@@ -36,10 +36,10 @@ fun MyComposable(
 PreviewLab {
     MyComposable(
         str = fieldValue { StringField("str", "") },
-        int = fieldValue { IntField("int", "") },
-        bool = fieldValue { BooleanField("bool", "") },
-        dp = fieldValue { DpField("dp", "") },
-        color = fieldValue { ColorField("color", "") },
+        int = fieldValue { IntField("int", 0) },
+        bool = fieldValue { BooleanField("bool", true) },
+        dp = fieldValue { DpField("dp", 100.dp) },
+        color = fieldValue { ColorField("color", Color.Red) },
     )
 }
 ```
@@ -62,7 +62,7 @@ fun MyLayout(
 ```kt
 PreviewLab {
     MyLayout(
-        topBar = fieldValue { ComposableField("topBar", ComposableFieldValue) },
+        topBar = fieldValue { ComposableField("topBar", ComposableFieldValue.Red300X300) },
         // ...
     )
 }
