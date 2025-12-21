@@ -285,7 +285,7 @@ import me.tbsten.compose.preview.lab.ui.util.toDpOffset
  */
 open class PreviewLab(
     private val defaultState: @Composable () -> PreviewLabState =
-        { rememberSaveable(saver = PreviewLabState.Saver) { PreviewLabState() } },
+        { rememberPreviewLabStateFromUrl() },
     private val defaultScreenSizes: List<ScreenSize> = ScreenSize.SmartphoneAndDesktops,
     private val contentRoot: @Composable (content: @Composable () -> Unit) -> Unit = { it() },
     private val defaultIsHeaderShow: @Composable () -> Boolean = { LocalDefaultIsHeaderShow.current },
@@ -560,6 +560,7 @@ open class PreviewLab(
         captureScreenshot: suspend () -> androidx.compose.ui.graphics.ImageBitmap?,
         content: @Composable () -> Unit,
     ) {
+        val urlParams = rememberUrlParams()
         DisableSelection {
             contentRoot {
                 PreviewLabTheme {
@@ -567,6 +568,7 @@ open class PreviewLab(
                         LocalEnforcePreviewLabState provides state,
                         LocalToaster provides toaster,
                         LocalCaptureScreenshot provides captureScreenshot,
+                        LocalUrlParams provides urlParams,
                     ) {
                         content()
                     }
@@ -678,3 +680,17 @@ private fun ContentSection(
 }
 
 val LocalDefaultIsHeaderShow = compositionLocalOf { true }
+
+/**
+ * URLパラメータからPreviewLabStateを初期化するComposable関数。
+ * contentScaleなどの状態をURLパラメータから復元する。
+ */
+@Composable
+fun rememberPreviewLabStateFromUrl(): PreviewLabState {
+    val urlParams = rememberUrlParams()
+    return rememberSaveable(saver = PreviewLabState.Saver) {
+        PreviewLabState(
+            initialContentScale = urlParams["contentScale"]?.toFloatOrNull() ?: 1f,
+        )
+    }
+}
