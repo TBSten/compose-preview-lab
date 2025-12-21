@@ -2,8 +2,8 @@ name: Integration Test Nightly
 
 on:
   schedule:
-    # Run daily at 5:00 AM UTC
-    - cron: '0 5 * * *'
+    # Run daily at 5:00 AM JST (20:00 UTC)
+    - cron: '0 20 * * *'
   workflow_dispatch:
 
 jobs:
