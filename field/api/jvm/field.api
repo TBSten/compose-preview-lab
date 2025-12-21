@@ -838,6 +838,11 @@ public final class me/tbsten/compose/preview/lab/field/WithHintFieldKt {
 	public static final fun withHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;[Lkotlin/Pair;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
 }
 
+public final class me/tbsten/compose/preview/lab/field/WithImageUrlHintKt {
+	public static final fun withImageUrlHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;ZZ)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+	public static synthetic fun withImageUrlHint$default (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;ZZILjava/lang/Object;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+}
+
 public final class me/tbsten/compose/preview/lab/field/WithSerializerField : me/tbsten/compose/preview/lab/MutablePreviewLabField {
 	public static final field $stable I
 	public fun <init> (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;Lkotlinx/serialization/KSerializer;)V
