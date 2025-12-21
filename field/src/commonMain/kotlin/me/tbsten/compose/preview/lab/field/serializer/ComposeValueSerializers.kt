@@ -9,7 +9,10 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -28,16 +31,27 @@ import me.tbsten.compose.preview.lab.field.ScreenSize
  * Serializes colors as their ARGB integer representation (ULong internally).
  * This allows any color value to be serialized and deserialized without loss.
  */
+@OptIn(ExperimentalSerializationApi::class, InternalSerializationApi::class)
 internal object ColorSerializer : KSerializer<Color> {
-    override val descriptor: SerialDescriptor =
-        PrimitiveSerialDescriptor("Color", PrimitiveKind.LONG)
+    private val baseSerializer = ColorData.serializer()
+    override val descriptor: SerialDescriptor = baseSerializer.descriptor
 
-    override fun serialize(encoder: Encoder, value: Color) {
-        encoder.encodeLong(value.value.toLong())
+    override fun serialize(encoder: Encoder, value: Color) = baseSerializer.serialize(
+        encoder,
+        value.let {
+            ColorData(it.red, it.green, it.blue, it.alpha)
+        },
+    )
+
+    override fun deserialize(decoder: Decoder): Color = baseSerializer.deserialize(
+        decoder,
+    ).let {
+        Color(it.red, it.green, it.blue, it.alpha)
     }
-
-    override fun deserialize(decoder: Decoder): Color = Color(decoder.decodeLong().toULong())
 }
+
+@Serializable
+private data class ColorData(val red: Float, val green: Float, val blue: Float, val alpha: Float)
 
 /**
  * Serializer for Compose [Dp] values.
