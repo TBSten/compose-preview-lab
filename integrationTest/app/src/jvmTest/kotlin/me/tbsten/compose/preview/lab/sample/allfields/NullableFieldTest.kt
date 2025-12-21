@@ -14,10 +14,11 @@ import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
+import me.tbsten.compose.preview.lab.sample.PropertyTestBase
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
-class NullableFieldTest {
+class NullableFieldTest : PropertyTestBase() {
     @Test
     fun `NullableField should update user name when value changes`() = runDesktopComposeUiTest {
         val state = PreviewLabState()

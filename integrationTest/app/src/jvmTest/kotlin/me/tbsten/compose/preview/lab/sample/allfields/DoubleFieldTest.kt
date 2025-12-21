@@ -18,10 +18,11 @@ import kotlinx.coroutines.withTimeout
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
+import me.tbsten.compose.preview.lab.sample.PropertyTestBase
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
-class DoubleFieldTest {
+class DoubleFieldTest : PropertyTestBase() {
     @OptIn(ExperimentalKotest::class)
     @Test
     fun `DoubleField should update price when value changes`() = runDesktopComposeUiTest {
@@ -32,7 +33,7 @@ class DoubleFieldTest {
 
         forAll(
             Arb.double()
-                .filterNot { it.isNaN() || it.isInfinite() || it != -0.0 }
+                .filterNot { it.isNaN() || it.isInfinite() || it == -0.0 }
                 .plusEdgecases(priceField.testValues()),
         ) { doubleValue ->
             priceField.value = doubleValue

@@ -13,10 +13,11 @@ import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
+import me.tbsten.compose.preview.lab.sample.PropertyTestBase
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
-class EnumFieldTest {
+class EnumFieldTest : PropertyTestBase() {
     @Test
     fun `EnumField should update button variant when selection changes`() = runDesktopComposeUiTest {
         val state = PreviewLabState()

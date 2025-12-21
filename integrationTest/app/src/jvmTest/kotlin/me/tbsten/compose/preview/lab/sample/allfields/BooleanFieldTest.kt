@@ -12,10 +12,11 @@ import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
+import me.tbsten.compose.preview.lab.sample.PropertyTestBase
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
-class BooleanFieldTest {
+class BooleanFieldTest : PropertyTestBase() {
     @Test
     fun `BooleanField should toggle button enabled state`() = runDesktopComposeUiTest {
         val state = PreviewLabState()

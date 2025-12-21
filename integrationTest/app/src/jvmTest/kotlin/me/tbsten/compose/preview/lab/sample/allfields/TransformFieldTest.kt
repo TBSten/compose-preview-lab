@@ -14,10 +14,11 @@ import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
+import me.tbsten.compose.preview.lab.sample.PropertyTestBase
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
-class TransformFieldTest {
+class TransformFieldTest : PropertyTestBase() {
     @Test
     fun `TransformField should transform string to int`() = runDesktopComposeUiTest {
         val state = PreviewLabState()

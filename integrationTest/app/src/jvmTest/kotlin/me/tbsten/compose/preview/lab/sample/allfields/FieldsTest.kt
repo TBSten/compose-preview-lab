@@ -19,13 +19,14 @@ import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
+import me.tbsten.compose.preview.lab.sample.PropertyTestBase
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 /**
  * Property-based tests for Field components in integrationTest/app.
  */
 @OptIn(ExperimentalTestApi::class)
-class FieldsTest {
+class FieldsTest : PropertyTestBase() {
     @Test
     fun `Can render all Previews without error`() = runDesktopComposeUiTest {
         checkAll(

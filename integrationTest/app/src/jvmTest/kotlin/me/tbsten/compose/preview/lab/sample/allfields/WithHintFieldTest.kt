@@ -15,10 +15,11 @@ import kotlin.test.Test
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
+import me.tbsten.compose.preview.lab.sample.PropertyTestBase
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
-class WithHintFieldTest {
+class WithHintFieldTest : PropertyTestBase() {
     @Test
     fun `WithHintField should update font size from hints`() = runDesktopComposeUiTest {
         val state = PreviewLabState()
