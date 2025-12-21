@@ -221,6 +221,7 @@ PreviewLab {
 ItemImageScreen(
     imageUrl = fieldValue {
         StringField("imageUrl", "")
+            // highlight-next-line
             .withImageUrlHint()
     }
 )
