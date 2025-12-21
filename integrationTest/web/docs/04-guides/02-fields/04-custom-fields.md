@@ -72,6 +72,9 @@ import searchGithubImage from "./custom-fields-serach-github.png"
 
 <img src={searchGithubImage} width="600" />
 
+また [DeepWiki](https://deepwiki.com/TBSten/compose-preview-lab) に質問することも有用です。
+検索キーワードがわからない場合、定期的に Field の実装を深く学習している AI に曖昧な自然言語で質問することができます。
+
 ## 推奨されるカスタマイズ
 
 Custom Field 実装の基本セクションで紹介した実装で Custom Field 実装に必要な最低限の実装は完了です。
