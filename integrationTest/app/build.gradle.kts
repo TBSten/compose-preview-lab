@@ -1,3 +1,4 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.INT
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.reload.gradle.ComposeHotRun
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
@@ -9,6 +10,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.hotReload)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.buildkonfig)
     id("me.tbsten.compose.preview.lab")
 }
 
@@ -155,6 +157,15 @@ compose.desktop {
 
 composePreviewLab {
     generateFeaturedFiles = true
+}
+
+buildkonfig {
+    packageName = "me.tbsten.compose.preview.lab.sample"
+
+    defaultConfigs {
+        val iterations = findProperty("test.property.iterations")?.toString()?.toIntOrNull() ?: 20
+        buildConfigField(INT, "PROPERTY_TEST_ITERATIONS", iterations.toString())
+    }
 }
 
 tasks.register<ComposeHotRun>("runHot") {
