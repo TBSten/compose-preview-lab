@@ -199,7 +199,7 @@ object ButtonDefaults {
     val OutlineHeight = 1.dp
     val ButtonHorizontalPadding = 16.dp
     val ButtonVerticalPadding = 8.dp
-    private val ButtonShape = RoundedCornerShape(12)
+    val ButtonShape = RoundedCornerShape(12)
 
     val contentPadding =
         PaddingValues(

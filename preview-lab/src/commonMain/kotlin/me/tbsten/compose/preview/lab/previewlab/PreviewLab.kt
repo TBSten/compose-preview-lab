@@ -509,6 +509,7 @@ open class PreviewLab(
         Providers(state = state, toaster = toaster, captureScreenshot = captureScreenshot) {
             Column(modifier = modifier.background(PreviewLabTheme.colors.background)) {
                 PreviewLabHeader(
+                    state = state,
                     isHeaderShow = isHeaderShow,
                     scale = state.contentScale,
                     onScaleChange = { state.contentScale = it },

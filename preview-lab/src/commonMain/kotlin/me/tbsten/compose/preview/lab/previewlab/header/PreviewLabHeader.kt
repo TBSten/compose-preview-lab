@@ -18,11 +18,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Divider
 
 @Composable
 internal fun PreviewLabHeader(
+    state: PreviewLabState,
     isHeaderShow: Boolean,
     scale: Float,
     onScaleChange: (Float) -> Unit,
@@ -61,7 +63,7 @@ internal fun PreviewLabHeader(
                     modifier = Modifier.align(Alignment.CenterVertically),
                 )
 
-                PlatformHeaders()
+                PlatformHeaders(state = state)
             }
 
             Divider(
@@ -75,4 +77,4 @@ internal fun PreviewLabHeader(
 }
 
 @Composable
-internal expect fun RowScope.PlatformHeaders()
+internal expect fun RowScope.PlatformHeaders(state: PreviewLabState)
