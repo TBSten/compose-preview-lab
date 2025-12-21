@@ -63,7 +63,7 @@ import CompareCode from '@site/src/components/CompareCode';
 | `displayName = ""`                        | <img src="" width="300" /> | 
 | `displayName = ""`                        | <img src="" width="300" /> | 
 
-## 3. @ComposePreviewLabOption の displayName は `. ` でグループ化できる
+## 3. @ComposePreviewLabOption の displayName は `.` でグループ化できる
 
 ## 4. 独自のアプリテーマを定義している場合、ラベルとカスタムモディファイアを含むカラーモデルを準備する
 
