@@ -5,11 +5,17 @@ on:
     # Run daily at 5:00 AM JST (20:00 UTC)
     - cron: '0 20 * * *'
   workflow_dispatch:
+    inputs:
+      iterations:
+        description: 'Number of property test iterations'
+        required: false
+        default: '5000'
+        type: string
 
 jobs:
   integration-test:
     runs-on: ubuntu-latest
-    name: Integration Test (5000 iterations)
+    name: Integration Test (${{ inputs.iterations || '5000' }} iterations)
     steps:
       - uses: actions/checkout@v4
 
@@ -25,4 +31,4 @@ jobs:
 
       - name: Run Integration Test jvmTest
         shell: bash
-        run: cd ./integrationTest && ./gradlew :app:jvmTest -Ptest.property.iterations=5000
+        run: cd ./integrationTest && ./gradlew :app:jvmTest -Ptest.property.iterations=${{ inputs.iterations || '5000' }}
