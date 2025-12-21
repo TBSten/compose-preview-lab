@@ -13,11 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set test.property.iterations to 5000
-        run: |
-          sed -i 's/test.property.iterations=.*/test.property.iterations=5000/' integrationTest/gradle.properties
-          cat integrationTest/gradle.properties
-
       - name: Setup Java for Gradle
         uses: actions/setup-java@v4
         with:
@@ -30,4 +25,4 @@ jobs:
 
       - name: Run Integration Test jvmTest
         shell: bash
-        run: cd ./integrationTest && ./gradlew :app:jvmTest
+        run: cd ./integrationTest && ./gradlew :app:jvmTest -Ptest.property.iterations=5000
