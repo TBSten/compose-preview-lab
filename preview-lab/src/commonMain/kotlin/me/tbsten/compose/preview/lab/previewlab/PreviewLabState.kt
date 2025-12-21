@@ -19,7 +19,11 @@ import me.tbsten.compose.preview.lab.PreviewLabField
  * Mainly holds state values that have changed due to user interaction during debugging.
  */
 @Stable
-class PreviewLabState {
+class PreviewLabState(
+    initialContentOffset: Offset = Offset.Zero,
+    initialContentScale: Float = 1f,
+    initialIsInspectorPanelVisible: Boolean = true,
+) {
     internal var contentRootOffsetInAppRoot by mutableStateOf<DpOffset?>(null)
 
     /**
@@ -29,7 +33,7 @@ class PreviewLabState {
      * @see contentDraggableState
      */
     @ExperimentalComposePreviewLabApi
-    var contentOffset by mutableStateOf(Offset.Zero)
+    var contentOffset by mutableStateOf(initialContentOffset)
 
     internal val contentDraggableState = Draggable2DState { contentOffset += it }
 
@@ -39,14 +43,14 @@ class PreviewLabState {
      * values less than 1.0 zoom out.
      */
     @ExperimentalComposePreviewLabApi
-    var contentScale by mutableStateOf(1f)
+    var contentScale by mutableStateOf(initialContentScale)
 
     /**
      * Controls whether the inspector panel is visible.
      * When true, the inspector panel (Fields, Events, and additional tabs) is shown on the right side.
      */
     @ExperimentalComposePreviewLabApi
-    var isInspectorPanelVisible by mutableStateOf(true)
+    var isInspectorPanelVisible by mutableStateOf(initialIsInspectorPanelVisible)
 
     /**
      * The currently selected tab index in the inspector panel.
