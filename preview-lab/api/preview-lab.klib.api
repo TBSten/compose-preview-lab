@@ -97,7 +97,7 @@ final class me.tbsten.compose.preview.lab.previewlab/PreviewLabScope { // me.tbs
 }
 
 final class me.tbsten.compose.preview.lab.previewlab/PreviewLabState { // me.tbsten.compose.preview.lab.previewlab/PreviewLabState|null[0]
-    constructor <init>() // me.tbsten.compose.preview.lab.previewlab/PreviewLabState.<init>|<init>(){}[0]
+    constructor <init>(androidx.compose.ui.geometry/Offset = ..., kotlin/Float = ..., kotlin/Boolean = ...) // me.tbsten.compose.preview.lab.previewlab/PreviewLabState.<init>|<init>(androidx.compose.ui.geometry.Offset;kotlin.Float;kotlin.Boolean){}[0]
 
     final val events // me.tbsten.compose.preview.lab.previewlab/PreviewLabState.events|{}events[0]
         final fun <get-events>(): androidx.compose.runtime.snapshots/SnapshotStateList<me.tbsten.compose.preview.lab/PreviewLabEvent> // me.tbsten.compose.preview.lab.previewlab/PreviewLabState.events.<get-events>|<get-events>(){}[0]
@@ -196,5 +196,24 @@ final fun me.tbsten.compose.preview.lab.previewlab/me_tbsten_compose_preview_lab
 final fun me.tbsten.compose.preview.lab.previewlab/me_tbsten_compose_preview_lab_previewlab_PreviewLabScope_Effect_ShowEventToast$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.previewlab/me_tbsten_compose_preview_lab_previewlab_PreviewLabScope_Effect_ShowEventToast$stableprop_getter|me_tbsten_compose_preview_lab_previewlab_PreviewLabScope_Effect_ShowEventToast$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.previewlab/me_tbsten_compose_preview_lab_previewlab_PreviewLabScope_FieldBuilderScope$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.previewlab/me_tbsten_compose_preview_lab_previewlab_PreviewLabScope_FieldBuilderScope$stableprop_getter|me_tbsten_compose_preview_lab_previewlab_PreviewLabScope_FieldBuilderScope$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.previewlab/me_tbsten_compose_preview_lab_previewlab_PreviewLabState$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.previewlab/me_tbsten_compose_preview_lab_previewlab_PreviewLabState$stableprop_getter|me_tbsten_compose_preview_lab_previewlab_PreviewLabState$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.previewlab/rememberPreviewLabStateFromUrl(androidx.compose.runtime/Composer?, kotlin/Int): me.tbsten.compose.preview.lab.previewlab/PreviewLabState // me.tbsten.compose.preview.lab.previewlab/rememberPreviewLabStateFromUrl|rememberPreviewLabStateFromUrl(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
 final inline fun <#A: reified kotlin/Any?> (me.tbsten.compose.preview.lab.previewlab/PreviewLabState).me.tbsten.compose.preview.lab.previewlab/field(kotlin/String): kotlin/Lazy<me.tbsten.compose.preview.lab/MutablePreviewLabField<#A>> // me.tbsten.compose.preview.lab.previewlab/field|field@me.tbsten.compose.preview.lab.previewlab.PreviewLabState(kotlin.String){0§<kotlin.Any?>}[0]
 final inline fun <#A: reified kotlin/Any?> (me.tbsten.compose.preview.lab.previewlab/PreviewLabState).me.tbsten.compose.preview.lab.previewlab/fieldOrNull(kotlin/String): kotlin/Lazy<me.tbsten.compose.preview.lab/MutablePreviewLabField<#A>?> // me.tbsten.compose.preview.lab.previewlab/fieldOrNull|fieldOrNull@me.tbsten.compose.preview.lab.previewlab.PreviewLabState(kotlin.String){0§<kotlin.Any?>}[0]
+
+// Targets: [js, wasmJs]
+final val me.tbsten.compose.preview.lab.previewlab.header/me_tbsten_compose_preview_lab_previewlab_header_CopyParam_Field$stableprop // me.tbsten.compose.preview.lab.previewlab.header/me_tbsten_compose_preview_lab_previewlab_header_CopyParam_Field$stableprop|#static{}me_tbsten_compose_preview_lab_previewlab_header_CopyParam_Field$stableprop[0]
+
+// Targets: [js, wasmJs]
+final val me.tbsten.compose.preview.lab.previewlab.header/me_tbsten_compose_preview_lab_previewlab_header_CopyParam_PreviewId$stableprop // me.tbsten.compose.preview.lab.previewlab.header/me_tbsten_compose_preview_lab_previewlab_header_CopyParam_PreviewId$stableprop|#static{}me_tbsten_compose_preview_lab_previewlab_header_CopyParam_PreviewId$stableprop[0]
+
+// Targets: [js, wasmJs]
+final val me.tbsten.compose.preview.lab.previewlab.header/me_tbsten_compose_preview_lab_previewlab_header_CopyParam_State$stableprop // me.tbsten.compose.preview.lab.previewlab.header/me_tbsten_compose_preview_lab_previewlab_header_CopyParam_State$stableprop|#static{}me_tbsten_compose_preview_lab_previewlab_header_CopyParam_State$stableprop[0]
+
+// Targets: [js, wasmJs]
+final fun me.tbsten.compose.preview.lab.previewlab.header/me_tbsten_compose_preview_lab_previewlab_header_CopyParam_Field$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.previewlab.header/me_tbsten_compose_preview_lab_previewlab_header_CopyParam_Field$stableprop_getter|me_tbsten_compose_preview_lab_previewlab_header_CopyParam_Field$stableprop_getter(){}[0]
+
+// Targets: [js, wasmJs]
+final fun me.tbsten.compose.preview.lab.previewlab.header/me_tbsten_compose_preview_lab_previewlab_header_CopyParam_PreviewId$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.previewlab.header/me_tbsten_compose_preview_lab_previewlab_header_CopyParam_PreviewId$stableprop_getter|me_tbsten_compose_preview_lab_previewlab_header_CopyParam_PreviewId$stableprop_getter(){}[0]
+
+// Targets: [js, wasmJs]
+final fun me.tbsten.compose.preview.lab.previewlab.header/me_tbsten_compose_preview_lab_previewlab_header_CopyParam_State$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.previewlab.header/me_tbsten_compose_preview_lab_previewlab_header_CopyParam_State$stableprop_getter|me_tbsten_compose_preview_lab_previewlab_header_CopyParam_State$stableprop_getter(){}[0]

@@ -51,6 +51,7 @@ public final class me/tbsten/compose/preview/lab/previewlab/PreviewLab$ComposeDe
 public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabKt {
 	public static final fun getLocalDefaultIsHeaderShow ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalEnforcePreviewLabState ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun rememberPreviewLabStateFromUrl (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;
 }
 
 public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabScope {
@@ -71,7 +72,8 @@ public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabScope$Fiel
 public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabState {
 	public static final field $stable I
 	public static final field Companion Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState$Companion;
-	public fun <init> ()V
+	public synthetic fun <init> (JFZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JFZLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun deselectTab ()V
 	public final fun getContentOffset-F1C5BW0 ()J
 	public final fun getContentScale ()F

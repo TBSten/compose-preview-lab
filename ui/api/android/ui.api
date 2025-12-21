@@ -246,6 +246,7 @@ public final class me/tbsten/compose/preview/lab/ui/components/ButtonDefaults {
 	public final fun destructiveGhost (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
 	public final fun destructiveOutlined (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
 	public final fun getButtonHorizontalPadding-D9Ej5fM ()F
+	public final fun getButtonShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
 	public final fun getButtonVerticalPadding-D9Ej5fM ()F
 	public final fun getContentPadding ()Landroidx/compose/foundation/layout/PaddingValues;
 	public final fun getElevatedShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
@@ -1065,6 +1066,7 @@ public final class me/tbsten/compose/preview/lab/ui/generated/resources/ActualRe
 
 public final class me/tbsten/compose/preview/lab/ui/generated/resources/Drawable0_commonMainKt {
 	public static final fun getIcon_add (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_arrow_drop_down (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
 	public static final fun getIcon_check (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
 	public static final fun getIcon_close (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
 	public static final fun getIcon_code (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
