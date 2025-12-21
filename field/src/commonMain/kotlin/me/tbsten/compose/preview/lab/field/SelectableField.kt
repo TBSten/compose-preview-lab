@@ -277,7 +277,7 @@ inline fun <reified E : Enum<E>> EnumField(
     choiceLabel = choiceLabel,
     type = type,
     initialValue = initialValue,
-    serializer = serializer<E>(),
+    serializer = runCatching { serializer<E>() }.getOrNull(),
 )
 
 /**
