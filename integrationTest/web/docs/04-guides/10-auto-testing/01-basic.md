@@ -9,51 +9,46 @@ import ComposePreviewLabVersion from "@site/src/components/ComposePreviewLabVers
 
 # Basic for Testing with Compose Preview Lab
 
-Compose Preview Lab を使った自動テストを支援するパッケージが用意されています。
-テスト用ソースセットに追加してください。
+Compose Preview Lab を使った自動テストを記述する方法を紹介します。
 
-<Tabs>
-  <TabItem value="compose-multiplatform" label="Compose Multiplatform" default>
+## テスト環境のセットアップ
 
-<table>
-<tr>
-<th> `<compose-preview-lab-version>` </th>
-<td> <ComposePreviewLabVersion /> </td>
-</tr>
-</table>
+Compose Preview Lab でテストを行うには、`PreviewLabState` をテスト対象の Preview に渡す必要があります。
+これには `LocalEnforcePreviewLabState` CompositionLocal を使用します。
 
-```kts
-kotlin {
-    sourceSets {
-        commonTest.dependencies {
-            implementation("me.tbsten.compose.preview.lab:testing:<compose-preview-lab-version>")
-        }
+以下のようなテストユーティリティを作成することを推奨します。
+
+```kt title="TestPreviewLab.kt"
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import me.tbsten.compose.preview.lab.previewlab.LocalEnforcePreviewLabState
+import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
+
+@Composable
+fun TestPreviewLab(
+    state: PreviewLabState,
+    block: @Composable () -> Unit,
+) {
+    CompositionLocalProvider(
+        LocalEnforcePreviewLabState provides state,
+    ) {
+        block()
     }
 }
 ```
 
-  </TabItem>
-  <TabItem value="android-jvm" label="Android / JVM">
+:::tip
 
-<table>
-<tr>
-<th> `<compose-preview-lab-version>` </th>
-<td> <ComposePreviewLabVersion /> </td>
-</tr>
-</table>
+プロジェクトによっては `LocalViewModelStoreOwner` や `LocalLifecycleOwner` などの追加の CompositionLocal を提供する必要がある場合があります。
 
-```kts
-dependencies {
-    testImplementation("me.tbsten.compose.preview.lab:testing:<compose-preview-lab-version>")
-}
-```
-
-  </TabItem>
-</Tabs>
+:::
 
 ## どのようなテストができるか？
 
-- TODO 箇条書き
+- Preview の表示確認
+- Field の値を変更してUIの更新を確認
+- Event が正しく発火されるかの確認
+- Property-based testing との組み合わせ
 
 ## 基本構成
 
@@ -98,8 +93,8 @@ textField.value = "Click MyButton!"
 @Composable
 fun MyButtonPreview() = PreviewLab {
   MyButton(
-    text = fieldValue { 
-      StringField("text", "Click Me!") 
+    text = fieldValue {
+      StringField("text", "Click Me!")
     }
   )
 }

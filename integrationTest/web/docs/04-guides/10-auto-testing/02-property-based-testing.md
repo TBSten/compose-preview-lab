@@ -11,7 +11,7 @@ import ComposePreviewLabVersion from "@site/src/components/ComposePreviewLabVers
 
 PreviewLab は Property-based testing との相性が良く、Field の `testValues()` API を使って効率的にテストを記述できます。
 
-このページでは kotest property と Compose Preview Lab を組み合わせて Property-based testing を実装する方法を紹介しまうs。
+このページでは kotest property と Compose Preview Lab を組み合わせて Property-based testing を実装する方法を紹介します。
 
 - Compose Preview Lab を使ったテストについては [Basic](./basic) を確認してください。
 - Property-based testing については [kotest のドキュメント](https://kotest.io/docs/proptest/property-based-testing.html)
@@ -19,16 +19,13 @@ PreviewLab は Property-based testing との相性が良く、Field の `testVal
 
 ## セットアップ
 
-kotest の property と Compose Preview Lab Testing の依存関係をセットアップします。
+kotest の property 依存関係をセットアップします。
+テスト環境のセットアップについては [Basic](./basic) を参照してください。
 
 <Tabs>
   <TabItem value="cmp" label="Compose Multiplatform">
 
 <table>
-<tr>
-<th> `<compose-preview-lab-version>` </th>
-<td> <ComposePreviewLabVersion /> </td>
-</tr>
 <tr>
 <th> `<kotest-version>` </th>
 <td> [See Kotest release note](https://github.com/kotest/kotest/releases) </td>
@@ -40,7 +37,6 @@ kotlin {
     sourceSets {
         commonTest.dependencies {
             implementation("io.kotest:kotest-property:<kotest-version>")
-            implementation("me.tbsten.compose.preview.lab:testing:<compose-preview-lab-version>")
         }
     }
 }
@@ -51,10 +47,6 @@ kotlin {
 
 <table>
 <tr>
-<th> `<compose-preview-lab-version>` </th>
-<td> <ComposePreviewLabVersion /> </td>
-</tr>
-<tr>
 <th> `<kotest-version>` </th>
 <td> [See Kotest release note](https://github.com/kotest/kotest/releases) </td>
 </tr>
@@ -63,8 +55,6 @@ kotlin {
 ```kt
 dependencies {
     testImplementation("io.kotest:kotest-property:<kotest-version>")
-    testImplementation("me.tbsten.compose.preview.lab:testing:<compose-preview-lab-version>")
-    
 }
 ```
 
