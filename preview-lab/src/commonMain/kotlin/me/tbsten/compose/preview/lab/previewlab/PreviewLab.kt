@@ -476,12 +476,14 @@ open class PreviewLab(
         contentGraphicsLayer: GraphicsLayer = rememberGraphicsLayer(),
         content: @Composable PreviewLabScope.() -> Unit,
     ) {
+        // Use LocalEnforcePreviewLabState if provided (e.g., from TestPreviewLab)
+        @Suppress("NAME_SHADOWING")
+        val state = LocalEnforcePreviewLabState.current ?: state
+
         if (isInPreviewLabGalleryCardBody) {
             content(state.scope)
             return
         }
-
-        val state = LocalEnforcePreviewLabState.current ?: state
 
         val toaster = rememberToasterState().also { toaster ->
             state.scope.HandleEffect { event ->

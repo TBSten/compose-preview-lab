@@ -11,6 +11,7 @@ import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.arbitrary.string
 import io.kotest.property.forAll
 import kotlin.test.Test
+import kotlinx.coroutines.runBlocking
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
@@ -26,14 +27,19 @@ class NullableFieldTest : PropertyTestBase() {
 
         val userNameField by state.field<String?>("User Name")
 
-        forAll(Arb.string(1..20).orNull().plusEdgecases(userNameField.testValues())) { userName ->
-            userNameField.value = userName
-            awaitIdle()
+        runBlocking {
+            forAll(Arb.string(1..20).orNull().plusEdgecases(userNameField.testValues())) { userName ->
+                userNameField.value = userName
+                awaitIdle()
 
-            val expectedText = userName ?: "No user name"
-            onAllNodesWithText(expectedText)
-                .fetchSemanticsNodes()
-                .isNotEmpty()
+                val expectedText = userName ?: "No user name"
+                onAllNodesWithText(expectedText)
+                    .fetchSemanticsNodes()
+                    .isNotEmpty()
+            }
         }
+
+        // Ensure all coroutines are completed
+        awaitIdle()
     }
 }

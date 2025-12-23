@@ -12,6 +12,7 @@ import io.kotest.property.arbitrary.map
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
+import kotlinx.coroutines.runBlocking
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
@@ -27,10 +28,15 @@ class SpFieldTest : PropertyTestBase() {
 
         val fontSizeField by state.field<TextUnit>("Font Size")
 
-        forAll(Arb.float(8f..48f).map { it.sp }.plusEdgecases(fontSizeField.testValues())) { spValue ->
-            fontSizeField.value = spValue
-            awaitIdle()
-            true
+        runBlocking {
+            forAll(Arb.float(8f..48f).map { it.sp }.plusEdgecases(fontSizeField.testValues())) { spValue ->
+                fontSizeField.value = spValue
+                awaitIdle()
+                true
+            }
         }
+
+        // Ensure all coroutines (including LaunchedEffect/snapshotFlow) are completed
+        awaitIdle()
     }
 }

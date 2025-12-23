@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
-import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.LocalIsInPreviewLabGalleryCardBody
 import me.tbsten.compose.preview.lab.previewlab.LocalEnforcePreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 
@@ -20,34 +20,11 @@ import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
  * This function sets up all required CompositionLocals (ViewModelStoreOwner, LifecycleOwner, and PreviewLabState)
  * needed for PreviewLab components to work correctly in tests.
  *
- * Example usage:
- * ```kotlin
- * @Test
- * fun `test preview lab functionality`() = runDesktopComposeUiTest {
- *     val state = PreviewLabState()
- *     setContent {
- *         TestPreviewLab(state) {
- *             SomePreview()
- *         }
- *     }
- *
- *     val intField by state.field<Int>("intValue")
- *     intField.value = 42
- *     awaitIdle()
- *
- *     onNodeWithText("intValue: 42").assertIsDisplayed()
- * }
- * ```
- *
- * @param state The PreviewLabState instance to provide to the content
- * @param viewModelStoreOwner The ViewModelStoreOwner to provide. Defaults to a test instance if not in a Compose context
- * @param lifecycleOwner The LifecycleOwner to provide. Defaults to a test instance if not in a Compose context
- * @param block The composable content to test
+ * Note: This sets LocalIsInPreviewLabGalleryCardBody to true to skip PreviewLab's full UI
+ * (including Toaster) and avoid coroutine issues in tests.
  */
-@ExperimentalComposePreviewLabApi
-@Suppress("VisibleForTests")
 @Composable
-fun TestPreviewLab(
+internal fun TestPreviewLab(
     state: PreviewLabState,
     viewModelStoreOwner: ViewModelStoreOwner = defaultTestViewModelStoreOwner(),
     lifecycleOwner: LifecycleOwner = defaultTestLifecycleOwner(),
@@ -57,6 +34,8 @@ fun TestPreviewLab(
         LocalViewModelStoreOwner provides viewModelStoreOwner,
         LocalLifecycleOwner provides lifecycleOwner,
         LocalEnforcePreviewLabState provides state,
+        // Skip PreviewLab's full UI (including Toaster) to avoid coroutine issues in tests
+        LocalIsInPreviewLabGalleryCardBody provides true,
     ) {
         block()
     }

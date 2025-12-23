@@ -11,6 +11,7 @@ import io.kotest.property.arbitrary.int
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
+import kotlinx.coroutines.runBlocking
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
@@ -26,12 +27,17 @@ class TransformFieldTest : PropertyTestBase() {
 
         val numberField by state.field<Int>("number")
 
-        forAll(Arb.int().plusEdgecases(numberField.testValues())) { intValue ->
-            numberField.value = intValue
-            awaitIdle()
+        runBlocking {
+            forAll(Arb.int().plusEdgecases(numberField.testValues())) { intValue ->
+                numberField.value = intValue
+                awaitIdle()
 
-            onNodeWithText("intValue: $intValue")
-                .isDisplayed()
+                onNodeWithText("intValue: $intValue")
+                    .isDisplayed()
+            }
         }
+
+        // Ensure all coroutines (including LaunchedEffect/snapshotFlow) are completed
+        awaitIdle()
     }
 }

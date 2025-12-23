@@ -10,6 +10,7 @@ import io.kotest.property.arbitrary.of
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
+import kotlinx.coroutines.runBlocking
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
@@ -25,13 +26,18 @@ class EnumFieldTest : PropertyTestBase() {
 
         val variantField by state.field<ButtonVariant>("Variant")
 
-        forAll(Arb.of(variantField.testValues()).plusEdgecases(variantField.testValues())) { variant ->
-            variantField.value = variant
-            awaitIdle()
+        runBlocking {
+            forAll(Arb.of(variantField.testValues()).plusEdgecases(variantField.testValues())) { variant ->
+                variantField.value = variant
+                awaitIdle()
 
-            onAllNodesWithText(variant.name)
-                .fetchSemanticsNodes()
-                .isNotEmpty()
+                onAllNodesWithText(variant.name)
+                    .fetchSemanticsNodes()
+                    .isNotEmpty()
+            }
         }
+
+        // Ensure all coroutines (including LaunchedEffect/snapshotFlow) are completed
+        awaitIdle()
     }
 }

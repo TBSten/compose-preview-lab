@@ -12,6 +12,7 @@ import io.kotest.property.arbitrary.map
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
+import kotlinx.coroutines.runBlocking
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
@@ -27,10 +28,15 @@ class DpFieldTest : PropertyTestBase() {
 
         val paddingField by state.field<Dp>("Padding")
 
-        forAll(Arb.float(0f..100f).map { it.dp }.plusEdgecases(paddingField.testValues())) { dpValue ->
-            paddingField.value = dpValue
-            awaitIdle()
-            true
+        runBlocking {
+            forAll(Arb.float(0f..100f).map { it.dp }.plusEdgecases(paddingField.testValues())) { dpValue ->
+                paddingField.value = dpValue
+                awaitIdle()
+                true
+            }
         }
+
+        // Ensure all coroutines (including LaunchedEffect/snapshotFlow) are completed
+        awaitIdle()
     }
 }

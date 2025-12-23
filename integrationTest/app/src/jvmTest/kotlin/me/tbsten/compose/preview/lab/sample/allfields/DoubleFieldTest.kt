@@ -14,6 +14,7 @@ import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
@@ -31,23 +32,28 @@ class DoubleFieldTest : PropertyTestBase() {
 
         val priceField by state.field<Double>("Price")
 
-        forAll(
-            Arb.double()
-                .filterNot { it.isNaN() || it.isInfinite() || it == -0.0 }
-                .plusEdgecases(priceField.testValues()),
-        ) { doubleValue ->
-            priceField.value = doubleValue
-            withTimeout(1.seconds) {
-                awaitIdle()
-            }
-
-            onAllNodesWithText("Price: $$doubleValue")
-                .fetchSemanticsNodes()
-                .let {
-                    withClue(it) {
-                        it.isNotEmpty()
-                    }
+        runBlocking {
+            forAll(
+                Arb.double()
+                    .filterNot { it.isNaN() || it.isInfinite() || it == -0.0 }
+                    .plusEdgecases(priceField.testValues()),
+            ) { doubleValue ->
+                priceField.value = doubleValue
+                withTimeout(1.seconds) {
+                    awaitIdle()
                 }
+
+                onAllNodesWithText("Price: $$doubleValue")
+                    .fetchSemanticsNodes()
+                    .let {
+                        withClue(it) {
+                            it.isNotEmpty()
+                        }
+                    }
+            }
         }
+
+        // Ensure all coroutines (including LaunchedEffect/snapshotFlow) are completed
+        awaitIdle()
     }
 }

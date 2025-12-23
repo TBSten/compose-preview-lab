@@ -10,6 +10,7 @@ import io.kotest.property.arbitrary.of
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
+import kotlinx.coroutines.runBlocking
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
@@ -26,10 +27,15 @@ class ColorFieldTest : PropertyTestBase() {
         val backgroundField by state.field<Color>("Background")
         val testColors = listOf(Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.Magenta)
 
-        forAll(Arb.of(testColors).plusEdgecases(backgroundField.testValues())) { color ->
-            backgroundField.value = color
-            awaitIdle()
-            true
+        runBlocking {
+            forAll(Arb.of(testColors).plusEdgecases(backgroundField.testValues())) { color ->
+                backgroundField.value = color
+                awaitIdle()
+                true
+            }
         }
+
+        // Ensure all coroutines (including LaunchedEffect/snapshotFlow) are completed
+        awaitIdle()
     }
 }

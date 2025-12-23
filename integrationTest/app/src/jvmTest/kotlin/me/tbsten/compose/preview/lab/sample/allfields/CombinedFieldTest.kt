@@ -9,6 +9,7 @@ import io.kotest.property.arbitrary.of
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
+import kotlinx.coroutines.runBlocking
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
@@ -24,10 +25,15 @@ class CombinedFieldTest : PropertyTestBase() {
 
         val paddingField by state.field<CombinedFieldPadding>("Padding")
 
-        forAll(Arb.of(paddingField.testValues()).plusEdgecases(paddingField.testValues())) { padding ->
-            paddingField.value = padding
-            awaitIdle()
-            true
+        runBlocking {
+            forAll(Arb.of(paddingField.testValues()).plusEdgecases(paddingField.testValues())) { padding ->
+                paddingField.value = padding
+                awaitIdle()
+                true
+            }
         }
+
+        // Ensure all coroutines (including LaunchedEffect/snapshotFlow) are completed
+        awaitIdle()
     }
 }

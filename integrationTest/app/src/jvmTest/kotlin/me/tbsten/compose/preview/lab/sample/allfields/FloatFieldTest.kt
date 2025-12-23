@@ -10,6 +10,7 @@ import io.kotest.property.arbitrary.float
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
+import kotlinx.coroutines.runBlocking
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
@@ -25,10 +26,15 @@ class FloatFieldTest : PropertyTestBase() {
 
         val alphaField by state.field<Float>("Alpha")
 
-        forAll(Arb.float(0f..1f).filterNot { it.isNaN() }.plusEdgecases(alphaField.testValues())) { floatValue ->
-            alphaField.value = floatValue
-            awaitIdle()
-            true
+        runBlocking {
+            forAll(Arb.float(0f..1f).filterNot { it.isNaN() }.plusEdgecases(alphaField.testValues())) { floatValue ->
+                alphaField.value = floatValue
+                awaitIdle()
+                true
+            }
         }
+
+        // Ensure all coroutines (including LaunchedEffect/snapshotFlow) are completed
+        awaitIdle()
     }
 }

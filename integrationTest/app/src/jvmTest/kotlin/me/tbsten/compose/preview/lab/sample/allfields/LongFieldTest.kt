@@ -10,6 +10,7 @@ import io.kotest.property.arbitrary.long
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
+import kotlinx.coroutines.runBlocking
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
@@ -25,13 +26,18 @@ class LongFieldTest : PropertyTestBase() {
 
         val timestampField by state.field<Long>("Timestamp")
 
-        forAll(Arb.long().plusEdgecases(timestampField.testValues())) { longValue ->
-            timestampField.value = longValue
-            awaitIdle()
+        runBlocking {
+            forAll(Arb.long().plusEdgecases(timestampField.testValues())) { longValue ->
+                timestampField.value = longValue
+                awaitIdle()
 
-            onNodeWithText("Timestamp: $longValue")
-                .assertExists()
-            true
+                onNodeWithText("Timestamp: $longValue")
+                    .assertExists()
+                true
+            }
         }
+
+        // Ensure all coroutines (including LaunchedEffect/snapshotFlow) are completed
+        awaitIdle()
     }
 }

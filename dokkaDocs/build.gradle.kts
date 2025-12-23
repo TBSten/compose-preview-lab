@@ -19,7 +19,6 @@ dependencies {
     dokka(projects.previewLab)
     dokka(projects.ui)
     dokka(projects.annotation)
-    dokka(projects.testing)
 }
 
 dokka {

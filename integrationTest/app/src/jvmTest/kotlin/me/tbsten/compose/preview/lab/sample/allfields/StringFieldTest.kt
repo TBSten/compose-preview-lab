@@ -10,6 +10,7 @@ import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.arbitrary.string
 import io.kotest.property.forAll
 import kotlin.test.Test
+import kotlinx.coroutines.runBlocking
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
@@ -25,13 +26,18 @@ class StringFieldTest : PropertyTestBase() {
 
         val textField by state.field<String>("text")
 
-        forAll(Arb.string(1..50).plusEdgecases(textField.testValues())) { stringValue ->
-            textField.value = stringValue
-            awaitIdle()
+        runBlocking {
+            forAll(Arb.string(1..50).plusEdgecases(textField.testValues())) { stringValue ->
+                textField.value = stringValue
+                awaitIdle()
 
-            onAllNodesWithText(stringValue)
-                .fetchSemanticsNodes()
-                .isNotEmpty()
+                onAllNodesWithText(stringValue)
+                    .fetchSemanticsNodes()
+                    .isNotEmpty()
+            }
         }
+
+        // Ensure all coroutines (including LaunchedEffect/snapshotFlow) are completed
+        awaitIdle()
     }
 }

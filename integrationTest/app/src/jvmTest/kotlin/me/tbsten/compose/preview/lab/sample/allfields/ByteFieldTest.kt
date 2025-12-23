@@ -11,6 +11,7 @@ import io.kotest.property.arbitrary.byte
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
+import kotlinx.coroutines.runBlocking
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
@@ -26,12 +27,17 @@ class ByteFieldTest : PropertyTestBase() {
 
         val flagField by state.field<Byte>("Flag")
 
-        forAll(Arb.byte().plusEdgecases(flagField.testValues())) { byteValue ->
-            flagField.value = byteValue
-            awaitIdle()
+        runBlocking {
+            forAll(Arb.byte().plusEdgecases(flagField.testValues())) { byteValue ->
+                flagField.value = byteValue
+                awaitIdle()
 
-            onNodeWithText("Flag: $byteValue")
-                .isDisplayed()
+                onNodeWithText("Flag: $byteValue")
+                    .isDisplayed()
+            }
         }
+
+        // Ensure all coroutines (including LaunchedEffect/snapshotFlow) are completed
+        awaitIdle()
     }
 }

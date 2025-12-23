@@ -178,9 +178,10 @@ class PreviewsForUiDebugTest {
 
         awaitIdle()
 
-        // Verify onEvent was triggered
-        onNodeWithTag("onClick")
-            .assertExists()
+        // Verify onEvent was triggered (check state.events instead of toast)
+        assert(state.events.any { it.title == "onClick" }) {
+            "Expected onClick event but got: ${state.events.map { it.title }}"
+        }
     }
 
     @Test
@@ -196,9 +197,10 @@ class PreviewsForUiDebugTest {
 
         awaitIdle()
 
-        // Verify onEvent was triggered
-        onNodeWithTag("SecondaryButton.onClick")
-            .assertExists()
+        // Verify onEvent was triggered (check state.events instead of toast)
+        assert(state.events.any { it.title == "SecondaryButton.onClick" }) {
+            "Expected SecondaryButton.onClick event but got: ${state.events.map { it.title }}"
+        }
     }
 
     @Test
