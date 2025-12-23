@@ -22,8 +22,6 @@ me.tbsten.compose.preview.lab.field
 me.tbsten.compose.preview.lab.previewlab
 me.tbsten.compose.preview.lab.previewlab.inspectorspane
 me.tbsten.compose.preview.lab.previewlab.openfilehandler
-module:testing
-me.tbsten.compose.preview.lab.testing
 module:ui
 me.tbsten.compose.preview.lab.ui
 me.tbsten.compose.preview.lab.ui.animation
