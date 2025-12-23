@@ -63,7 +63,7 @@ import EmbeddedPreviewLab from '@site/src/components/EmbeddedPreviewLab';
 
 `MyButton` は プライマリ / セカンダリ / テキストボタン などのバリエーションを持つボタンコンポーネントです。
 
-<EmbeddedPreviewLab previewId="ButtonVariantsPreview" />
+<EmbeddedPreviewLab previewId="ButtonVariantsPreview" title="Button Variants Preview" />
 ```
 
 :::tip previewId の決め方
@@ -99,6 +99,7 @@ fun ButtonWithDesignTabPreview() = PreviewLab(
 
 <EmbeddedPreviewLab
   previewId="InspectorTabDesignExample"
+  title="Inspector Tab Design Example"
 />
 
 ## 4. 実運用でのパターン

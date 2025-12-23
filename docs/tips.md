@@ -43,7 +43,7 @@ No need to add more lambdas that call onEvent() as the number of events grows.
 | `displayName = ""`                        | <img src="" width="300" /> | 
 | `displayName = ""`                        | <img src="" width="300" /> | 
 
-## 3. The displayName of @ComposePreviewLabOption can be grouped by `. ` for grouping
+## 3. The displayName of @ComposePreviewLabOption can be grouped by `.` for grouping
 
 ## 4. If you have defined your own app theme, prepare a color model that includes labels and custom modifiers.
 

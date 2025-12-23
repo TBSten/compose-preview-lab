@@ -11,13 +11,15 @@ import io.kotest.property.arbitrary.byte
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
+import kotlinx.coroutines.runBlocking
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
+import me.tbsten.compose.preview.lab.sample.PropertyTestBase
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
-class ByteFieldTest {
+class ByteFieldTest : PropertyTestBase() {
     @Test
     fun `ByteField should update flag when value changes`() = runDesktopComposeUiTest {
         val state = PreviewLabState()
@@ -25,12 +27,17 @@ class ByteFieldTest {
 
         val flagField by state.field<Byte>("Flag")
 
-        forAll(Arb.byte().plusEdgecases(flagField.testValues())) { byteValue ->
-            flagField.value = byteValue
-            awaitIdle()
+        runBlocking {
+            forAll(Arb.byte().plusEdgecases(flagField.testValues())) { byteValue ->
+                flagField.value = byteValue
+                awaitIdle()
 
-            onNodeWithText("Flag: $byteValue")
-                .isDisplayed()
+                onNodeWithText("Flag: $byteValue")
+                    .isDisplayed()
+            }
         }
+
+        // Ensure all coroutines (including LaunchedEffect/snapshotFlow) are completed
+        awaitIdle()
     }
 }

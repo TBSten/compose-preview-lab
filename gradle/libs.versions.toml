@@ -1,13 +1,13 @@
 [versions]
 composePreviewLab = "0.1.0-dev09"
 kotlin = "2.2.21"
-compose = "1.10.0-rc02"
+compose = "1.11.0-alpha01"
 agp = "8.9.3"
 androidx-activityCompose = "1.11.0"
 androidx-uiTest = "1.9.4"
 lumoUi = "1.2.5"
 dokar3Sonner = "0.3.8"
-hotReload = "1.1.0-alpha02"
+hotReload = "1.1.0-alpha03"
 ksp = "2.3.2"
 intellijPlatform = "2.6.0"
 jewelIdeLafBridge = "0.27.0"
@@ -21,6 +21,8 @@ androidxLifecycle = "2.9.6"
 kodeview = "0.9.0"
 kotest = "6.0.5"
 kotlinxCoroutines = "1.10.1"
+filekit = "0.12.0"
+buildkonfig = "0.17.1"
 
 [libraries]
 
@@ -40,6 +42,8 @@ dokkaGradlePlugin = { module = "org.jetbrains.dokka:org.jetbrains.dokka.gradle.p
 kspGradlePlugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 kotestProperty = { module = "io.kotest:kotest-property", version.ref = "kotest" }
 kotlinxCoroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+filekitCore = { module = "io.github.vinceglb:filekit-core", version.ref = "filekit" }
+filekitDialogs = { module = "io.github.vinceglb:filekit-dialogs", version.ref = "filekit" }
 
 androidxLifecycleViewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 androidxLifecycleRuntimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
@@ -65,3 +69,4 @@ lumoUi = { id = "com.nomanr.plugin.lumo", version.ref = "lumoUi" }
 ktlintGradle = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
 conventionFormat = { id = "convention-format", version = "unspecified" }
 conventionPublish = { id = "convention-publish", version = "unspecified" }
+buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Chip
@@ -144,6 +145,7 @@ class WithHintField<Value> internal constructor(
     reverse = { it },
 ) {
     override fun valueCode(): String = baseField.valueCode()
+    override fun serializer(): KSerializer<Value>? = baseField.serializer()
 
     override fun testValues(): List<Value> = super.testValues() +
         (baseField.testValues() + choices.values).distinct()

@@ -245,9 +245,15 @@ public final class me/tbsten/compose/preview/lab/ui/components/ButtonDefaults {
 	public final fun destructiveFilled (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
 	public final fun destructiveGhost (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
 	public final fun destructiveOutlined (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
+	public final fun getButtonHorizontalPadding-D9Ej5fM ()F
+	public final fun getButtonShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
+	public final fun getButtonVerticalPadding-D9Ej5fM ()F
 	public final fun getContentPadding ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun getElevatedShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
+	public final fun getFilledShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
 	public final fun getMinHeight-D9Ej5fM ()F
 	public final fun getOutlineHeight-D9Ej5fM ()F
+	public final fun getOutlinedShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
 	public final fun ghost (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
 	public final fun primaryElevated (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
 	public final fun primaryFilled (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
@@ -1048,6 +1054,66 @@ public final class me/tbsten/compose/preview/lab/ui/foundation/RippleKt {
 	public static synthetic fun ripple-H2RKhps$default (ZFJILjava/lang/Object;)Landroidx/compose/foundation/IndicationNodeFactory;
 	public static final fun ripple-wH6b6FI (Landroidx/compose/ui/graphics/ColorProducer;ZF)Landroidx/compose/foundation/IndicationNodeFactory;
 	public static synthetic fun ripple-wH6b6FI$default (Landroidx/compose/ui/graphics/ColorProducer;ZFILjava/lang/Object;)Landroidx/compose/foundation/IndicationNodeFactory;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/generated/resources/ActualResourceCollectorsKt {
+	public static final fun getAllDrawableResources (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes;)Ljava/util/Map;
+	public static final fun getAllFontResources (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes;)Ljava/util/Map;
+	public static final fun getAllPluralStringResources (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes;)Ljava/util/Map;
+	public static final fun getAllStringArrayResources (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes;)Ljava/util/Map;
+	public static final fun getAllStringResources (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes;)Ljava/util/Map;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/generated/resources/Drawable0_commonMainKt {
+	public static final fun getIcon_add (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_arrow_drop_down (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_check (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_close (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_code (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_dashboard (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_delete (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_edit (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_history (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_more_vert (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_refresh (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_remove (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_right_panel_close (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_right_panel_open (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_screenshot_frame (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_zoom_in (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_zoom_out (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes;
+	public final fun getUri (Ljava/lang/String;)Ljava/lang/String;
+	public final fun readBytes (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$array {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$array;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$font {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$font;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$plurals {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$plurals;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$string {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$string;
 }
 
 public final class me/tbsten/compose/preview/lab/ui/util/DpExtKt {

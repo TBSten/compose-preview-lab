@@ -26,8 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
 import me.tbsten.compose.preview.lab.PreviewLabPreview
-import me.tbsten.compose.preview.lab.gallery.generated.resources.Res
-import me.tbsten.compose.preview.lab.gallery.generated.resources.icon_remove
 import me.tbsten.compose.preview.lab.gallery.previewlist.PreviewListTree
 import me.tbsten.compose.preview.lab.gallery.previewlist.SearchBar
 import me.tbsten.compose.preview.lab.gallery.previewlist.filterByQuery
@@ -40,6 +38,8 @@ import me.tbsten.compose.preview.lab.ui.components.CommonIconButton
 import me.tbsten.compose.preview.lab.ui.components.Divider
 import me.tbsten.compose.preview.lab.ui.components.HorizontalDivider
 import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
+import me.tbsten.compose.preview.lab.ui.generated.resources.icon_remove
 import org.jetbrains.compose.resources.painterResource
 
 /**
@@ -244,7 +244,7 @@ private fun SelectedPreviewTitleHeader(selectedPreview: SelectedPreview, onRemov
         )
 
         CommonIconButton(
-            painter = painterResource(Res.drawable.icon_remove),
+            painter = painterResource(PreviewLabUiRes.drawable.icon_remove),
             contentDescription = "Remove ${selectedPreview.title}",
             onClick = {
                 onRemoveClick()

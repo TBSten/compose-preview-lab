@@ -10,13 +10,15 @@ import io.kotest.property.arbitrary.of
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
+import kotlinx.coroutines.runBlocking
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
+import me.tbsten.compose.preview.lab.sample.PropertyTestBase
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
-class ColorFieldTest {
+class ColorFieldTest : PropertyTestBase() {
     @Test
     fun `ColorField should update background color when value changes`() = runDesktopComposeUiTest {
         val state = PreviewLabState()
@@ -25,10 +27,15 @@ class ColorFieldTest {
         val backgroundField by state.field<Color>("Background")
         val testColors = listOf(Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.Magenta)
 
-        forAll(Arb.of(testColors).plusEdgecases(backgroundField.testValues())) { color ->
-            backgroundField.value = color
-            awaitIdle()
-            true
+        runBlocking {
+            forAll(Arb.of(testColors).plusEdgecases(backgroundField.testValues())) { color ->
+                backgroundField.value = color
+                awaitIdle()
+                true
+            }
         }
+
+        // Ensure all coroutines (including LaunchedEffect/snapshotFlow) are completed
+        awaitIdle()
     }
 }

@@ -17,9 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.dokar.sonner.rememberToasterState
-import me.tbsten.compose.preview.lab.field.generated.resources.Res
-import me.tbsten.compose.preview.lab.field.generated.resources.icon_add
-import me.tbsten.compose.preview.lab.field.generated.resources.icon_remove
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Button
 import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
@@ -30,6 +27,9 @@ import me.tbsten.compose.preview.lab.ui.components.Divider
 import me.tbsten.compose.preview.lab.ui.components.Icon
 import me.tbsten.compose.preview.lab.ui.components.SimpleModal
 import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
+import me.tbsten.compose.preview.lab.ui.generated.resources.icon_add
+import me.tbsten.compose.preview.lab.ui.generated.resources.icon_remove
 import org.jetbrains.compose.resources.painterResource
 
 /**
@@ -90,7 +90,7 @@ internal fun ModifierBuilder(
                 }
 
                 CommonIconButton(
-                    painter = painterResource(Res.drawable.icon_remove),
+                    painter = painterResource(PreviewLabUiRes.drawable.icon_remove),
                     contentDescription = "Remove",
                     onClick = { state.onRemove(index, modifierFieldValue) },
                 )
@@ -104,7 +104,7 @@ internal fun ModifierBuilder(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Icon(
-                    painter = painterResource(Res.drawable.icon_add),
+                    painter = painterResource(PreviewLabUiRes.drawable.icon_add),
                     contentDescription = "Add",
                 )
             }

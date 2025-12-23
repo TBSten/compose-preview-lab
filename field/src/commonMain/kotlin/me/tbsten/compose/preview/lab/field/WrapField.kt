@@ -1,7 +1,9 @@
 package me.tbsten.compose.preview.lab.field
 
 import androidx.compose.runtime.Composable
+import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
+import me.tbsten.compose.preview.lab.PreviewLabField.ViewMenuItem
 
 /**
  * A field that wraps another [me.tbsten.compose.preview.lab.MutablePreviewLabField] with additional composable content.
@@ -26,14 +28,16 @@ class WrapField<Value> internal constructor(
 ) : MutablePreviewLabField<Value>(label = baseField.label, initialValue = baseField.initialValue) {
     override var value: Value by baseField::value
 
+    override fun serializer(): KSerializer<Value>? = baseField.serializer()
+
     @Composable
-    override fun View() {
+    override fun View(menuItems: List<ViewMenuItem<Value>>) {
         if (wrapRange.wrapView) {
             content {
-                super.View()
+                super.View(menuItems = menuItems)
             }
         } else {
-            super.View()
+            super.View(menuItems = menuItems)
         }
     }
 

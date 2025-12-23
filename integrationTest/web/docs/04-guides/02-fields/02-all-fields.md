@@ -42,6 +42,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab 
  previewId="StringFieldExample"
+ title="StringField Example"
 />
 
 <details>
@@ -69,6 +70,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab
  previewId="StringFieldWithPrefixSuffixExample"
+ title="StringField with Prefix/Suffix Example"
 />
 
 </details>
@@ -98,6 +100,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab
   previewId="StringFieldWithTextHintExample"
+  title="StringField with Text Hint Example"
 />
 
 </details>
@@ -132,6 +135,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab 
  previewId="BooleanFieldExample"
+ title="BooleanField Example"
 />
 
 ### 数値型フィールド
@@ -190,6 +194,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab 
  previewId="IntFieldExample"
+ title="IntField Example"
 />
 
 <details>
@@ -218,6 +223,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab
  previewId="IntFieldWithPrefixSuffixExample"
+ title="IntField with Prefix/Suffix Example"
 />
 
 </details>
@@ -262,6 +268,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab 
  previewId="SelectableFieldExample"
+ title="SelectableField Example"
 />
 
 <details>
@@ -286,6 +293,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab
  previewId="SelectableFieldChipsExample"
+ title="SelectableField Chips Example"
 />
 
 </details>
@@ -316,6 +324,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab
  previewId="SelectableFieldMapExample"
+ title="SelectableField Map Example"
 />
 
 </details>
@@ -343,6 +352,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab
  previewId="SelectableFieldBuilderExample"
+ title="SelectableField Builder Example"
 />
 
 </details>
@@ -381,6 +391,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab 
  previewId="EnumFieldExample"
+ title="EnumField Example"
 />
 
 ### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-combined-field/index.html">CombinedField</KDocLink>
@@ -433,6 +444,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab 
  previewId="CombinedFieldExample"
+ title="CombinedField Example"
 />
 
 <details>
@@ -512,6 +524,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab
  previewId="CombinedFieldWithCombinedFunctionExample"
+ title="CombinedField with Combined Function Example"
 />
 
 </details>
@@ -548,6 +561,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab 
  previewId="NullableFieldExample"
+ title="NullableField Example"
 />
 
 ### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-transform-field/index.html">TransformField</KDocLink>
@@ -585,6 +599,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab 
  previewId="TransformFieldExample"
+ title="TransformField Example"
 />
 
 ### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-with-hint-field/index.html">WithHintField</KDocLink>
@@ -627,6 +642,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab 
  previewId="WithHintFieldExample"
+ title="WithHintField Example"
 />
 
 ### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-polymorphic-field/index.html">PolymorphicField</KDocLink>
@@ -686,6 +702,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab 
  previewId="PolymorphicFieldExample"
+ title="PolymorphicField Example"
 />
 
 ### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-fixed-field/index.html">FixedField</KDocLink>
@@ -726,6 +743,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab 
  previewId="FixedFieldExample"
+ title="FixedField Example"
 />
 
 ### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-with-value-code-field/index.html">WithValueCodeField</KDocLink> / `.withValueCode()`
@@ -733,6 +751,46 @@ PreviewLab {
 任意の Field に対して、Inspector の Code タブに表示されるコード表現だけを差し替えるユーティリティです。UI や値の型はそのままに、コードスニペットを自分のプロジェクトの API 形式に合わせたいときに使用します。
 
 詳細は [Enhance Fields](./enhance-fields#fieldwithvaluecode-code-タブに出力されるコードをカスタマイズ) を参照してください。
+
+### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-with-serializer-field/index.html">WithSerializerField</KDocLink> / `.withSerializer()`
+
+<table>
+    <tr>
+        <th>対応する 型</th>
+        <td> 元のフィールドと同じ型 </td>
+    </tr>
+    <tr>
+        <th>利用頻度</th>
+        <td> ⭐⭐ </td>
+    </tr>
+    <tr>
+        <th>KDoc</th>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-with-serializer-field/index.html">WithSerializerField</KDocLink> </td>
+    </tr>
+</table>
+
+任意の Field にカスタムシリアライザを設定するユーティリティです。`SelectableField` で enum や sealed class を使用する場合など、デフォルトでシリアライザを持たない Field にシリアライズ機能を追加したいときに使用します。
+
+```kt
+@Serializable
+enum class Theme { Light, Dark, System }
+
+PreviewLab {
+    val theme = fieldValue {
+        SelectableField(
+            label = "theme",
+            choices = Theme.entries,
+            choiceLabel = { it.name },
+        )
+            // highlight-next-line
+            .withSerializer(Theme.serializer())
+    }
+
+    AppTheme(theme = theme)
+}
+```
+
+詳細は [Enhance Fields](./enhance-fields#fieldwithserializer-field-のシリアライザを設定する) を参照してください。
 
 ## 3. Compose Value Fields
 
@@ -771,6 +829,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab 
  previewId="DpFieldExample"
+ title="DpField Example"
 />
 
 ### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-sp-field/index.html">SpField</KDocLink>
@@ -804,6 +863,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab 
  previewId="SpFieldExample"
+ title="SpField Example"
 />
 
 ### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-color-field/index.html">ColorField</KDocLink>
@@ -838,6 +898,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab 
  previewId="ColorFieldExample"
+ title="ColorField Example"
 />
 
 ### Offset / Size フィールド
@@ -924,6 +985,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab 
  previewId="OffsetAndSizeFieldExample"
+ title="Offset and Size Field Example"
 />
 
 ### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-modifier-field/index.html">ModifierField</KDocLink>
@@ -959,6 +1021,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab 
  previewId="ModifierFieldExample"
+ title="ModifierField Example"
 />
 
 <details>
@@ -985,6 +1048,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab
  previewId="ModifierFieldWithMarkExample"
+ title="ModifierField with Mark Example"
 />
 
 </details>
@@ -1024,6 +1088,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab 
  previewId="ComposableFieldExample"
+ title="ComposableField Example"
 />
 
 <details>
@@ -1052,6 +1117,7 @@ PreviewLab {
 
 <EmbeddedPreviewLab
  previewId="ComposableFieldWithPredefinedValuesExample"
+ title="ComposableField with Predefined Values Example"
 />
 
 </details>

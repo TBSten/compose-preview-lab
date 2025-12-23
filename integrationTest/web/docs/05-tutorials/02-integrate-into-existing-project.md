@@ -46,7 +46,7 @@ kotlin {
                 // 既存の依存関係...
 
                 // Compose Preview Lab 本体
-                implementation("me.tbsten.compose.preview.lab:core:<compose-preview-lab-version>")
+                implementation("me.tbsten.compose.preview.lab:starter:<compose-preview-lab-version>")
             }
         }
     }
@@ -97,6 +97,7 @@ fun MyScreenPreview() = PreviewLab {
 
 <EmbeddedPreviewLab
   previewId="GetStarted"
+  title="Get Started"
 />
 
 :::info 段階的な移行を推奨

@@ -68,6 +68,7 @@ fun ButtonVariantsPreview() = PreviewLab {
 
 <EmbeddedPreviewLab
   previewId="FieldQuickSummary"
+  title="Field Quick Summary"
 />
 
 ## 3. PreviewLabGallery を使った UI カタログ画面

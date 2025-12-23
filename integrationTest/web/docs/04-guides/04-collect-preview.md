@@ -56,7 +56,7 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("me.tbsten.compose.preview.lab:core:<compose-preview-lab-version>")
+            implementation("me.tbsten.compose.preview.lab:starter:<compose-preview-lab-version>")
         }
     }
 }
@@ -99,7 +99,7 @@ plugins {
 }
 
 dependencies {
-    implementation("me.tbsten.compose.preview.lab:core:<compose-preview-lab-version>")
+    implementation("me.tbsten.compose.preview.lab:starter:<compose-preview-lab-version>")
     ksp("me.tbsten.compose.preview.lab:ksp-plugin:<compose-preview-lab-version>")
 }
 ```

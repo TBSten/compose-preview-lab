@@ -8,6 +8,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.serializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.defaultValueCode
 import me.tbsten.compose.preview.lab.field.SelectableField.Type
@@ -68,6 +70,8 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  *
  * @param choiceLabel Text to be displayed in the UI to select a choice.
  * @param type Select UI type, default is [Type.DROPDOWN]. See also [SelectableField.Type].
+ * @param serializer Optional serializer for the value type. If provided, enables serialization support.
+ *                   For enum types, consider using [EnumField] which provides automatic serialization.
  */
 open class SelectableField<Value>(
     label: String,
@@ -76,12 +80,14 @@ open class SelectableField<Value>(
     private val type: Type = DROPDOWN,
     initialValue: Value = choices[0],
     private val valueCode: (Value) -> String = { defaultValueCode(label) },
+    private val serializer: KSerializer<Value>? = null,
 ) : MutablePreviewLabField<Value>(
     label = label,
     initialValue = initialValue,
 ) {
     override fun testValues(): List<Value> = super.testValues() + choices
     override fun valueCode(): String = valueCode.invoke(value)
+    override fun serializer(): KSerializer<Value>? = serializer
 
     class Builder<Value> internal constructor() {
         internal val choices = mutableListOf<Pair<String, Value>>()
@@ -223,6 +229,8 @@ fun <Value> SelectableField(
 /**
  * Create a [SelectableField] from enum class values.
  *
+ * This function automatically provides serialization support for enum types.
+ *
  * # Usage
  *
  * ```kt
@@ -269,6 +277,7 @@ inline fun <reified E : Enum<E>> EnumField(
     choiceLabel = choiceLabel,
     type = type,
     initialValue = initialValue,
+    serializer = runCatching { serializer<E>() }.getOrNull(),
 )
 
 /**

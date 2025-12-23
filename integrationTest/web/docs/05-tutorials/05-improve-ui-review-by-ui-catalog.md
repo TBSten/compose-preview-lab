@@ -108,6 +108,7 @@ fun ReviewNotesPreview() = PreviewLab {
 
 <EmbeddedPreviewLab
   previewId="FieldQuickSummary"
+  title="Field Quick Summary"
 />
 
 ## 5. ベストプラクティス

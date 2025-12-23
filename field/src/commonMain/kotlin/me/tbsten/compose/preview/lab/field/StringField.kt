@@ -1,6 +1,8 @@
 package me.tbsten.compose.preview.lab.field
 
 import androidx.compose.runtime.Composable
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.serializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.component.TextFieldContent
 
@@ -73,6 +75,8 @@ class StringField(
             .replace("$", "\\$")
         return "\"$escaped\""
     }
+
+    override fun serializer(): KSerializer<String> = String.serializer()
 
     @Composable
     override fun Content() {

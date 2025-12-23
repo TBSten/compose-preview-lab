@@ -13,12 +13,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.previewlab.generated.resources.Res
-import me.tbsten.compose.preview.lab.previewlab.generated.resources.icon_right_panel_close
-import me.tbsten.compose.preview.lab.previewlab.generated.resources.icon_right_panel_open
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Icon
 import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
+import me.tbsten.compose.preview.lab.ui.generated.resources.icon_right_panel_close
+import me.tbsten.compose.preview.lab.ui.generated.resources.icon_right_panel_open
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -35,9 +35,9 @@ internal fun InspectorPanelVisible(isInspectorPanelVisible: Boolean, onToggle: (
         Icon(
             painter = painterResource(
                 if (isInspectorPanelVisible) {
-                    Res.drawable.icon_right_panel_close
+                    PreviewLabUiRes.drawable.icon_right_panel_close
                 } else {
-                    Res.drawable.icon_right_panel_open
+                    PreviewLabUiRes.drawable.icon_right_panel_open
                 },
             ),
             contentDescription = null,

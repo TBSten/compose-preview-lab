@@ -58,7 +58,6 @@ kotlin {
         }
 
         commonTest.dependencies {
-            implementation(projects.testing)
             implementation(kotlin("test"))
             implementation(libs.kotestProperty)
         }
@@ -72,7 +71,6 @@ kotlin {
         }
 
         jvmTest.dependencies {
-            implementation(projects.testing)
             implementation(compose.desktop.currentOs)
             implementation(compose.desktop.uiTestJUnit4)
         }

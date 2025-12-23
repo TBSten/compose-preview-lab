@@ -1,7 +1,9 @@
 package me.tbsten.compose.preview.lab.field
 
 import androidx.compose.runtime.Composable
+import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
+import me.tbsten.compose.preview.lab.PreviewLabField.ViewMenuItem
 
 /**
  * Wraps this field with a custom [me.tbsten.compose.preview.lab.PreviewLabField.valueCode] implementation.
@@ -73,9 +75,10 @@ class WithValueCodeField<Value>(
     override var value: Value by baseField::value
     override fun valueCode(): String = valueCode(value)
     override fun testValues(): List<Value> = baseField.testValues()
+    override fun serializer(): KSerializer<Value>? = baseField.serializer()
 
     @Composable
-    override fun View() = baseField.View()
+    override fun View(menuItems: List<ViewMenuItem<Value>>) = baseField.View(menuItems = menuItems)
 
     @Composable
     override fun Content() = baseField.Content()

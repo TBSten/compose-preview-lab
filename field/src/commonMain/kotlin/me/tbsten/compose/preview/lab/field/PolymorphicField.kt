@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.ImmutablePreviewLabField
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.PreviewLabField
@@ -24,6 +25,7 @@ open class PolymorphicField<Value>(
     initialValue: Value,
     private val fields: List<PreviewLabField<out Value>>,
     private val valueToField: (Value) -> PreviewLabField<out Value> = sameType(fields),
+    private val serializer: KSerializer<Value>? = null,
 ) : MutablePreviewLabField<Value>(
     label = label,
     initialValue = initialValue,
@@ -44,6 +46,8 @@ open class PolymorphicField<Value>(
     override fun testValues(): List<Value> = fields.flatMap { it.testValues() }
 
     override fun valueCode(): String = selectedField.valueCode()
+
+    override fun serializer(): KSerializer<Value>? = serializer
 
     @Composable
     override fun Content() {

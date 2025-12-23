@@ -99,6 +99,7 @@ export default function FeaturesSection() {
                     noPadding
                     lazy={false}
                     shadow="large"
+                    title="Preview Gallery"
                 />
              </div>
           </div>

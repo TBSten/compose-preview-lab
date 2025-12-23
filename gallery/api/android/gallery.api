@@ -44,6 +44,7 @@ public final class me/tbsten/compose/preview/lab/gallery/PreviewLabGalleryState 
 
 public final class me/tbsten/compose/preview/lab/gallery/PreviewListGridKt {
 	public static final fun PreviewListGrid (Ljava/util/Map;Lkotlin/jvm/functions/Function2;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewListGridCard (Lme/tbsten/compose/preview/lab/PreviewLabPreview;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V
 }
 
 public final class me/tbsten/compose/preview/lab/gallery/SelectedPreview {

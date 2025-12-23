@@ -10,13 +10,15 @@ import io.kotest.property.arbitrary.long
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
+import kotlinx.coroutines.runBlocking
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
+import me.tbsten.compose.preview.lab.sample.PropertyTestBase
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
-class LongFieldTest {
+class LongFieldTest : PropertyTestBase() {
     @Test
     fun `LongField should update timestamp when value changes`() = runDesktopComposeUiTest {
         val state = PreviewLabState()
@@ -24,13 +26,18 @@ class LongFieldTest {
 
         val timestampField by state.field<Long>("Timestamp")
 
-        forAll(Arb.long().plusEdgecases(timestampField.testValues())) { longValue ->
-            timestampField.value = longValue
-            awaitIdle()
+        runBlocking {
+            forAll(Arb.long().plusEdgecases(timestampField.testValues())) { longValue ->
+                timestampField.value = longValue
+                awaitIdle()
 
-            onNodeWithText("Timestamp: $longValue")
-                .assertExists()
-            true
+                onNodeWithText("Timestamp: $longValue")
+                    .assertExists()
+                true
+            }
         }
+
+        // Ensure all coroutines (including LaunchedEffect/snapshotFlow) are completed
+        awaitIdle()
     }
 }

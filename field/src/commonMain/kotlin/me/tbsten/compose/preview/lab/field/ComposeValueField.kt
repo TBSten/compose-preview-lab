@@ -17,9 +17,17 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.NumberField.InputType
 import me.tbsten.compose.preview.lab.field.component.TextFieldContent
+import me.tbsten.compose.preview.lab.field.serializer.ColorSerializer
+import me.tbsten.compose.preview.lab.field.serializer.DpOffsetSerializer
+import me.tbsten.compose.preview.lab.field.serializer.DpSerializer
+import me.tbsten.compose.preview.lab.field.serializer.DpSizeSerializer
+import me.tbsten.compose.preview.lab.field.serializer.OffsetSerializer
+import me.tbsten.compose.preview.lab.field.serializer.SizeSerializer
+import me.tbsten.compose.preview.lab.field.serializer.TextUnitSerializer
 import me.tbsten.compose.preview.lab.ui.components.Text
 import me.tbsten.compose.preview.lab.ui.components.colorpicker.CommonColorPicker
 
@@ -94,7 +102,9 @@ class DpField(label: String, initialValue: Dp) :
         transform = { it.dp },
         reverse = { it.value },
         valueCode = { "${it.value}.dp" },
-    )
+    ) {
+    override fun serializer(): KSerializer<Dp> = DpSerializer
+}
 
 /**
  * Field for editing Compose scalable pixel (Sp) values for typography
@@ -163,7 +173,9 @@ class SpField(label: String, initialValue: TextUnit) :
         transform = { it.sp },
         reverse = { it.value },
         valueCode = { "${it.value}.sp" },
-    )
+    ) {
+    override fun serializer(): KSerializer<TextUnit> = TextUnitSerializer
+}
 
 /**
  * Field for editing Compose Offset values (x, y coordinates)
@@ -219,6 +231,7 @@ class OffsetField(label: String, initialValue: Offset) :
         initialValue = initialValue,
     ) {
     override fun valueCode(): String = "Offset(x = ${floatValueCode(value.x)}, y = ${floatValueCode(value.y)})"
+    override fun serializer(): KSerializer<Offset> = OffsetSerializer
 
     @Composable
     override fun Content() {
@@ -308,6 +321,7 @@ class DpOffsetField(label: String, initialValue: DpOffset) :
         initialValue = initialValue,
     ) {
     override fun valueCode(): String = "DpOffset(x = ${value.x.value}.dp, y = ${value.y.value}.dp)"
+    override fun serializer(): KSerializer<DpOffset> = DpOffsetSerializer
 
     @Composable
     override fun Content() {
@@ -384,6 +398,7 @@ class SizeField(label: String, initialValue: Size) :
         initialValue = initialValue,
     ) {
     override fun valueCode(): String = "Size(width = ${floatValueCode(value.width)}, height = ${floatValueCode(value.height)})"
+    override fun serializer(): KSerializer<Size> = SizeSerializer
 
     @Composable
     override fun Content() {
@@ -472,6 +487,7 @@ class DpSizeField(label: String, initialValue: DpSize) :
         initialValue = initialValue,
     ) {
     override fun valueCode(): String = "DpSize(width = ${value.width.value}.dp, height = ${value.height.value}.dp)"
+    override fun serializer(): KSerializer<DpSize> = DpSizeSerializer
 
     @Composable
     override fun Content() {
@@ -566,6 +582,7 @@ class ColorField(label: String, initialValue: Color) :
         initialValue = initialValue,
     ) {
     override fun testValues(): List<Color> = predefinedColorNames.keys.toList()
+    override fun serializer(): KSerializer<Color> = ColorSerializer
 
     override fun valueCode(): String {
         val color: Color = this.value

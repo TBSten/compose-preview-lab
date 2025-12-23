@@ -1,4 +1,5 @@
 import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
+import { composePreviewLabVersion } from './src/generated/libVersion';
 
 const sidebars: SidebarsConfig = {
   docsSidebar: [
@@ -6,7 +7,7 @@ const sidebars: SidebarsConfig = {
     {
       type: 'link',
       label: 'API Reference',
-      href: 'https://tbsten.github.io/compose-preview-lab/dokka/core/index.html',
+      href: `https://tbsten.github.io/compose-preview-lab/dokka/${composePreviewLabVersion}`,
     },
   ],
 };

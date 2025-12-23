@@ -115,6 +115,13 @@ kotlin {
     }
 }
 
+compose {
+    resources {
+        publicResClass = true
+        nameOfResClass = "PreviewLabUiRes"
+    }
+}
+
 publishConvention {
     artifactName = "Ui"
     artifactId = "ui"

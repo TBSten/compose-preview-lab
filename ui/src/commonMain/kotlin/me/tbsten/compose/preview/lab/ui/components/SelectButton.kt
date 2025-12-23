@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -14,11 +15,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
-import me.tbsten.compose.preview.lab.ui.generated.resources.Res
-import me.tbsten.compose.preview.lab.ui.generated.resources.icon_check
 import me.tbsten.compose.preview.lab.ui.LocalTextStyle
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.adaptive
+import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
+import me.tbsten.compose.preview.lab.ui.generated.resources.icon_check
 import org.jetbrains.compose.resources.imageResource
 
 @Composable
@@ -65,36 +66,38 @@ fun <V> SelectButton(
                 Text(title(value))
             }
         }
-        CommonMenu(
-            expanded = isOpenMenu,
-            onDismissRequest = { isOpenMenu = false },
-        ) {
-            choices.forEach { item ->
-                val isSelected = item == value
-                CommonListItem(
-                    isSelected = isSelected,
-                    onSelect = {
-                        onSelect(item)
-                        isOpenMenu = false
-                    },
-                    modifier = Modifier.widthIn(min = adaptive(100, 200).dp),
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
+        DisableSelection {
+            CommonMenu(
+                expanded = isOpenMenu,
+                onDismissRequest = { isOpenMenu = false },
+            ) {
+                choices.forEach { item ->
+                    val isSelected = item == value
+                    CommonListItem(
+                        isSelected = isSelected,
+                        onSelect = {
+                            onSelect(item)
+                            isOpenMenu = false
+                        },
+                        modifier = Modifier.widthIn(min = adaptive(100, 200).dp),
                     ) {
-                        if (isSelected) {
-                            Icon(
-                                imageResource(Res.drawable.icon_check),
-                                contentDescription = "selected",
-                            )
-                        }
-                        Column {
-                            Text(text = title(item), style = PreviewLabTheme.typography.body2)
-                            itemDetail(item)?.let {
-                                Text(
-                                    text = it,
-                                    style = PreviewLabTheme.typography.body3,
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            if (isSelected) {
+                                Icon(
+                                    imageResource(PreviewLabUiRes.drawable.icon_check),
+                                    contentDescription = "selected",
                                 )
+                            }
+                            Column {
+                                Text(text = title(item), style = PreviewLabTheme.typography.body2)
+                                itemDetail(item)?.let {
+                                    Text(
+                                        text = it,
+                                        style = PreviewLabTheme.typography.body3,
+                                    )
+                                }
                             }
                         }
                     }

@@ -6,6 +6,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import kotlin.time.ExperimentalTime
+import kotlinx.serialization.json.Json
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.PreviewLabEvent
 import me.tbsten.compose.preview.lab.PreviewLabField
@@ -43,11 +44,17 @@ class PreviewLabScope(val state: PreviewLabState) {
         key: String? = null,
         builder: FieldBuilderScope.() -> MutablePreviewLabField<Value>,
     ): MutableState<Value> {
-        val field = remember(key1 = key) { builder(PreviewLabScope.FieldBuilderScope()) }
+        val urlParams = LocalUrlParams.current
+        val field = remember(key1 = key) {
+            builder(PreviewLabScope.FieldBuilderScope()).also { field ->
+                restoreFieldValueFromUrl(field, urlParams)
+            }
+        }
         DisposableEffect(Unit) {
             state.fields.add(field)
             onDispose {
                 state.fields.remove(field)
+                field.onCleared()
             }
         }
         return field
@@ -69,11 +76,17 @@ class PreviewLabScope(val state: PreviewLabState) {
      */
     @Composable
     fun <Value> fieldValue(key: String? = null, builder: FieldBuilderScope.() -> PreviewLabField<out Value>): Value {
-        val field = remember(key1 = key) { builder(PreviewLabScope.FieldBuilderScope()) }
+        val urlParams = LocalUrlParams.current
+        val field = remember(key1 = key) {
+            builder(PreviewLabScope.FieldBuilderScope()).also { field ->
+                restoreFieldValueFromUrl(field, urlParams)
+            }
+        }
         DisposableEffect(Unit) {
             state.fields.add(field)
             onDispose {
                 state.fields.remove(field)
+                field.onCleared()
             }
         }
         return field.value
@@ -112,4 +125,30 @@ class PreviewLabScope(val state: PreviewLabState) {
     }
 
     class FieldBuilderScope
+}
+
+private val json = Json {
+    ignoreUnknownKeys = true
+    isLenient = true
+}
+
+/**
+ * URLパラメータからFieldの値を復元する。
+ * Fieldのlabelをキーとして、URLパラメータから値を取得し、
+ * serializerを使ってデシリアライズして値を設定する。
+ */
+@Suppress("UNCHECKED_CAST")
+private fun <Value> restoreFieldValueFromUrl(field: PreviewLabField<Value>, urlParams: UrlParams) {
+    val paramValue = urlParams[field.label] ?: return
+    val serializer = field.serializer() ?: return
+
+    try {
+        val restoredValue = json.decodeFromString(serializer, paramValue)
+        if (field is MutablePreviewLabField<Value>) {
+            field.value = restoredValue
+        }
+    } catch (e: Exception) {
+        // デシリアライズに失敗した場合は無視（初期値を使用）
+        println("Failed to restore field '${field.label}' from URL: ${e.message}")
+    }
 }

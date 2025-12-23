@@ -43,11 +43,13 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.serialization.Serializable
 import me.tbsten.compose.preview.lab.event.withEvent
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.ColorField
 import me.tbsten.compose.preview.lab.field.ComposableField
 import me.tbsten.compose.preview.lab.field.ComposableFieldValue
+import me.tbsten.compose.preview.lab.field.DoubleField
 import me.tbsten.compose.preview.lab.field.DpOffsetField
 import me.tbsten.compose.preview.lab.field.DpSizeField
 import me.tbsten.compose.preview.lab.field.EnumField
@@ -107,8 +109,8 @@ enum class PreviewsForUiDebug(
                                 Text("floatField: $floatValue")
                             }
                             item {
-                                val floatValue = fieldValue { FloatField("floatField", 0f) }
-                                Text("floatField: $floatValue")
+                                val doubleValue = fieldValue { DoubleField("doubleValue", 0.0) }
+                                Text("doubleValue: $doubleValue")
                             }
                             item {
                                 val booleanValue = fieldValue { BooleanField("booleanValue", false) }
@@ -593,6 +595,7 @@ private fun LazyListScope.header(title: String) {
     }
 }
 
+@Serializable
 private enum class MyEnum {
     A,
     B,

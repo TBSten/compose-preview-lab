@@ -12,13 +12,15 @@ import io.kotest.property.arbitrary.map
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.test.Test
+import kotlinx.coroutines.runBlocking
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
+import me.tbsten.compose.preview.lab.sample.PropertyTestBase
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
-class WithHintFieldTest {
+class WithHintFieldTest : PropertyTestBase() {
     @Test
     fun `WithHintField should update font size from hints`() = runDesktopComposeUiTest {
         val state = PreviewLabState()
@@ -26,10 +28,15 @@ class WithHintFieldTest {
 
         val fontSizeField by state.field<TextUnit>("Font Size")
 
-        forAll(Arb.float(8f..32f).map { it.sp }.plusEdgecases(fontSizeField.testValues())) { fontSize ->
-            fontSizeField.value = fontSize
-            awaitIdle()
-            true
+        runBlocking {
+            forAll(Arb.float(8f..32f).map { it.sp }.plusEdgecases(fontSizeField.testValues())) { fontSize ->
+                fontSizeField.value = fontSize
+                awaitIdle()
+                true
+            }
         }
+
+        // Ensure all coroutines (including LaunchedEffect/snapshotFlow) are completed
+        awaitIdle()
     }
 }
