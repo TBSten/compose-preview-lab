@@ -110,10 +110,8 @@ open class SelectableField<Value>(
         DefaultFieldView(menuItems = menuItems + typeMenuItems)
     }
 
-    private class ChangeTypeMenuItem<Value>(
-        override val field: SelectableField<Value>,
-        private val targetType: Type,
-    ) : ViewMenuItem<Value>(field) {
+    private class ChangeTypeMenuItem<Value>(override val field: SelectableField<Value>, private val targetType: Type,) :
+        ViewMenuItem<Value>(field) {
         override val title: String = "Type: ${targetType.name}"
         override val enabled: Boolean = field.type != targetType
 

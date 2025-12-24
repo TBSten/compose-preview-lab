@@ -1487,7 +1487,11 @@ open class <#A: kotlin/Any?> me.tbsten.compose.preview.lab.field/SelectableField
     final val choices // me.tbsten.compose.preview.lab.field/SelectableField.choices|{}choices[0]
         final fun <get-choices>(): kotlin.collections/List<#A> // me.tbsten.compose.preview.lab.field/SelectableField.choices.<get-choices>|<get-choices>(){}[0]
 
+    final var type // me.tbsten.compose.preview.lab.field/SelectableField.type|{}type[0]
+        final fun <get-type>(): me.tbsten.compose.preview.lab.field/SelectableField.Type // me.tbsten.compose.preview.lab.field/SelectableField.type.<get-type>|<get-type>(){}[0]
+
     open fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/SelectableField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    open fun View(kotlin.collections/List<me.tbsten.compose.preview.lab/PreviewLabField.ViewMenuItem<#A>>, androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/SelectableField.View|View(kotlin.collections.List<me.tbsten.compose.preview.lab.PreviewLabField.ViewMenuItem<1:0>>;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
     open fun serializer(): kotlinx.serialization/KSerializer<#A>? // me.tbsten.compose.preview.lab.field/SelectableField.serializer|serializer(){}[0]
     open fun testValues(): kotlin.collections/List<#A> // me.tbsten.compose.preview.lab.field/SelectableField.testValues|testValues(){}[0]
     open fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/SelectableField.valueCode|valueCode(){}[0]
@@ -1495,6 +1499,7 @@ open class <#A: kotlin/Any?> me.tbsten.compose.preview.lab.field/SelectableField
     final enum class Type : kotlin/Enum<me.tbsten.compose.preview.lab.field/SelectableField.Type> { // me.tbsten.compose.preview.lab.field/SelectableField.Type|null[0]
         enum entry CHIPS // me.tbsten.compose.preview.lab.field/SelectableField.Type.CHIPS|null[0]
         enum entry DROPDOWN // me.tbsten.compose.preview.lab.field/SelectableField.Type.DROPDOWN|null[0]
+        enum entry RADIO // me.tbsten.compose.preview.lab.field/SelectableField.Type.RADIO|null[0]
 
         final val entries // me.tbsten.compose.preview.lab.field/SelectableField.Type.entries|#static{}entries[0]
             final fun <get-entries>(): kotlin.enums/EnumEntries<me.tbsten.compose.preview.lab.field/SelectableField.Type> // me.tbsten.compose.preview.lab.field/SelectableField.Type.entries.<get-entries>|<get-entries>#static(){}[0]

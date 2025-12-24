@@ -57,10 +57,10 @@ fun RadioButton(
                 role = Role.RadioButton,
                 interactionSource = interactionSource,
                 indication =
-                    ripple(
-                        bounded = false,
-                        radius = MinimumInteractiveSize / 2,
-                    ),
+                ripple(
+                    bounded = false,
+                    radius = MinimumInteractiveSize / 2,
+                ),
             )
         } else {
             Modifier
@@ -119,13 +119,12 @@ object RadioButtonDefaults {
     val MinimumInteractiveSize = 44.dp
 
     @Composable
-    fun colors() =
-        RadioButtonColors(
-            selectedColor = PreviewLabTheme.colors.primary,
-            unselectedColor = PreviewLabTheme.colors.primary,
-            disabledSelectedColor = PreviewLabTheme.colors.disabled,
-            disabledUnselectedColor = PreviewLabTheme.colors.disabled,
-        )
+    fun colors() = RadioButtonColors(
+        selectedColor = PreviewLabTheme.colors.primary,
+        unselectedColor = PreviewLabTheme.colors.primary,
+        disabledSelectedColor = PreviewLabTheme.colors.disabled,
+        disabledUnselectedColor = PreviewLabTheme.colors.disabled,
+    )
 }
 
 @Immutable
