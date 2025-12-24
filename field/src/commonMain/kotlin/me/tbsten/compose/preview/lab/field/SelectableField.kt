@@ -1,11 +1,15 @@
 package me.tbsten.compose.preview.lab.field
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.serialization.KSerializer
@@ -15,7 +19,9 @@ import me.tbsten.compose.preview.lab.defaultValueCode
 import me.tbsten.compose.preview.lab.field.SelectableField.Type
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.CHIPS
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.DROPDOWN
+import me.tbsten.compose.preview.lab.field.SelectableField.Type.RADIO
 import me.tbsten.compose.preview.lab.ui.components.Chip
+import me.tbsten.compose.preview.lab.ui.components.RadioButton
 import me.tbsten.compose.preview.lab.ui.components.SelectButton
 import me.tbsten.compose.preview.lab.ui.components.Text
 
@@ -115,6 +121,11 @@ open class SelectableField<Value>(
          * Chips that can be selected.
          */
         CHIPS,
+
+        /**
+         * Radio button list.
+         */
+        RADIO,
     }
 
     @Composable
@@ -127,6 +138,7 @@ open class SelectableField<Value>(
                 title = choiceLabel,
             )
             CHIPS -> ChipsContent()
+            RADIO -> RadioContent()
         }
     }
 
@@ -144,6 +156,30 @@ open class SelectableField<Value>(
                     label = { Text(choiceLabel(choice)) },
                     onClick = { value = choice },
                 )
+            }
+        }
+    }
+
+    @Composable
+    private fun RadioContent() {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            choices.forEach { choice ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier
+                        .clickable { value = choice }
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp, horizontal = 4.dp),
+                ) {
+                    RadioButton(
+                        selected = value == choice,
+                        onClick = null,
+                    )
+                    Text(choiceLabel(choice))
+                }
             }
         }
     }
