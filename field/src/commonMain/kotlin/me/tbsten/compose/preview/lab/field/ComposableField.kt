@@ -598,5 +598,5 @@ fun <Value> PreviewParameterProvider<Value>.toField(
     label = label,
     choices = this.values.toList(),
     choiceLabel = choiceLabel,
-    type = type,
+    initialType = type,
 )

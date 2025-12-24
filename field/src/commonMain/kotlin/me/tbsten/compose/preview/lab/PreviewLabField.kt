@@ -278,7 +278,7 @@ interface PreviewLabField<Value> {
         open fun Content(close: () -> Unit) {
             CommonListItem(
                 title = title,
-                isSelected = true,
+                isSelected = false,
                 isEnabled = enabled,
                 onSelect = {
                     onClick()

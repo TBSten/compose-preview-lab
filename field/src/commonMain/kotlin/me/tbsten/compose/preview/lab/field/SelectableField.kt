@@ -9,12 +9,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
+import me.tbsten.compose.preview.lab.PreviewLabField.ViewMenuItem
 import me.tbsten.compose.preview.lab.defaultValueCode
 import me.tbsten.compose.preview.lab.field.SelectableField.Type
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.CHIPS
@@ -83,7 +87,7 @@ open class SelectableField<Value>(
     label: String,
     val choices: List<Value>,
     private val choiceLabel: (Value) -> String = { it.toString() },
-    private val type: Type = DROPDOWN,
+    initialType: Type = DROPDOWN,
     initialValue: Value = choices[0],
     private val valueCode: (Value) -> String = { defaultValueCode(label) },
     private val serializer: KSerializer<Value>? = null,
@@ -91,9 +95,32 @@ open class SelectableField<Value>(
     label = label,
     initialValue = initialValue,
 ) {
+    var type: Type by mutableStateOf(initialType)
+        private set
+
     override fun testValues(): List<Value> = super.testValues() + choices
     override fun valueCode(): String = valueCode.invoke(value)
     override fun serializer(): KSerializer<Value>? = serializer
+
+    @Composable
+    override fun View(menuItems: List<ViewMenuItem<Value>>) {
+        val typeMenuItems = Type.entries.map { targetType ->
+            ChangeTypeMenuItem(this, targetType)
+        }
+        DefaultFieldView(menuItems = menuItems + typeMenuItems)
+    }
+
+    private class ChangeTypeMenuItem<Value>(
+        override val field: SelectableField<Value>,
+        private val targetType: Type,
+    ) : ViewMenuItem<Value>(field) {
+        override val title: String = "Type: ${targetType.name}"
+        override val enabled: Boolean = field.type != targetType
+
+        override fun onClick() {
+            field.type = targetType
+        }
+    }
 
     class Builder<Value> internal constructor() {
         internal val choices = mutableListOf<Pair<String, Value>>()
@@ -217,7 +244,7 @@ fun <Value> SelectableField(
     return SelectableField<Value>(
         label = label,
         choices = builder.choices.map { it.second },
-        type = type,
+        initialType = type,
         choiceLabel = { choice -> builder.choices.first { it.second == choice }.first },
         initialValue = if (builder.isDefaultValueSet) builder.defaultValue as Value else builder.choices[0].second,
     )
@@ -311,7 +338,7 @@ inline fun <reified E : Enum<E>> EnumField(
     label = label,
     choices = enumValues<E>().toList(),
     choiceLabel = choiceLabel,
-    type = type,
+    initialType = type,
     initialValue = initialValue,
     serializer = runCatching { serializer<E>() }.getOrNull(),
 )
@@ -358,6 +385,6 @@ fun <Value> List<Value>.toField(
     label = label,
     choices = this,
     choiceLabel = choiceLabel,
-    type = type,
+    initialType = type,
     initialValue = initialValue,
 )
