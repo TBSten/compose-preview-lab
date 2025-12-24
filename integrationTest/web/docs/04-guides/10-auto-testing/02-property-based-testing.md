@@ -1,11 +1,17 @@
 ---
-title: Property-based testing
+title: "[TODO] Property-based testing"
 sidebar_position: 2
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ComposePreviewLabVersion from "@site/src/components/ComposePreviewLabVersion"
+
+:::warning
+
+このページは生成 AI によって自動生成されたページです。
+
+:::
 
 # Property-based testing
 

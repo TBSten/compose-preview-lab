@@ -1,11 +1,17 @@
 ---
-title: Basic
+title: "[TODO] Basic"
 sidebar_position: 1
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ComposePreviewLabVersion from "@site/src/components/ComposePreviewLabVersion"
+
+:::warning
+
+このページは生成 AI によって自動生成されたページです。
+
+:::
 
 # Basic for Testing with Compose Preview Lab
 
