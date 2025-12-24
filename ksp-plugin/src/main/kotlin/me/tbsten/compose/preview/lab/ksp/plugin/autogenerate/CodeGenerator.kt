@@ -11,7 +11,7 @@ import me.tbsten.compose.preview.lab.ksp.plugin.autogenerate.model.TypeClassific
 /**
  * 自動生成するフィールドのリクエスト情報
  */
-data class FieldGenerationRequest(
+internal data class FieldGenerationRequest(
     val targetObject: KSClassDeclaration,
     val targetType: KSType,
     val typeClassification: TypeClassification,
@@ -22,7 +22,7 @@ data class FieldGenerationRequest(
 /**
  * コード生成を行うクラス
  */
-class CodeGenerator {
+internal class CodeGenerator {
     private val imports = mutableSetOf<String>()
     private val generatedCode = StringBuilder()
 

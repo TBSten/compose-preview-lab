@@ -6,7 +6,7 @@ import com.google.devtools.ksp.symbol.KSType
 /**
  * 型の分類結果を表す sealed interface
  */
-sealed interface TypeClassification {
+internal sealed interface TypeClassification {
     val ksType: KSType
 
     /**
@@ -50,7 +50,7 @@ sealed interface TypeClassification {
 /**
  * プリミティブ型の種類
  */
-enum class PrimitiveKind(val qualifiedName: String, val fieldClassName: String,) {
+internal enum class PrimitiveKind(val qualifiedName: String, val fieldClassName: String,) {
     STRING("kotlin.String", "StringField"),
     INT("kotlin.Int", "IntField"),
     LONG("kotlin.Long", "LongField"),
@@ -68,9 +68,9 @@ enum class PrimitiveKind(val qualifiedName: String, val fieldClassName: String,)
 /**
  * Data Class のプロパティ情報
  */
-data class PropertyInfo(val name: String, val type: KSType, val typeClassification: TypeClassification,)
+internal data class PropertyInfo(val name: String, val type: KSType, val typeClassification: TypeClassification,)
 
 /**
  * Sealed のサブクラス情報
  */
-data class SubclassInfo(val name: String, val declaration: KSClassDeclaration, val typeClassification: TypeClassification,)
+internal data class SubclassInfo(val name: String, val declaration: KSClassDeclaration, val typeClassification: TypeClassification,)

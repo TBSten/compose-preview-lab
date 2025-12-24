@@ -15,7 +15,7 @@ private val AutoGenerateFieldAnnotation =
 /**
  * @AutoGenerateField アノテーションを処理し、Field ファクトリコードを生成する
  */
-class AutoGenerateFieldProcessor(private val kspCodeGenerator: KspCodeGenerator, private val logger: KSPLogger) {
+internal class AutoGenerateFieldProcessor(private val kspCodeGenerator: KspCodeGenerator, private val logger: KSPLogger) {
     private val typeClassifier = TypeClassifier()
     private val codeGenerator = CodeGenerator()
 

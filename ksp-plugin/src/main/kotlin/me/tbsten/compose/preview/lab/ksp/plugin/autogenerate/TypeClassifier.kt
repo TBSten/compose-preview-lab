@@ -12,7 +12,7 @@ import me.tbsten.compose.preview.lab.ksp.plugin.autogenerate.model.TypeClassific
 /**
  * KSType を TypeClassification に分類する
  */
-class TypeClassifier {
+internal class TypeClassifier {
     private val cache = mutableMapOf<String, TypeClassification>()
 
     fun classify(type: KSType): TypeClassification {
