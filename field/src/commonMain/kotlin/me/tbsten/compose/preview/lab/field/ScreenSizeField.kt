@@ -59,7 +59,7 @@ open class ScreenSizeField(
     label = label,
     choices = sizes,
     choiceLabel = { it.label },
-    initialType = type,
+    type = type,
     initialValue = initialValue,
 ) {
     override fun testValues(): List<ScreenSize> = super.testValues() + sizes

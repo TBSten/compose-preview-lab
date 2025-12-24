@@ -87,7 +87,7 @@ open class SelectableField<Value>(
     label: String,
     val choices: List<Value>,
     private val choiceLabel: (Value) -> String = { it.toString() },
-    initialType: Type = DROPDOWN,
+    type: Type = DROPDOWN,
     initialValue: Value = choices[0],
     private val valueCode: (Value) -> String = { defaultValueCode(label) },
     private val serializer: KSerializer<Value>? = null,
@@ -95,7 +95,7 @@ open class SelectableField<Value>(
     label = label,
     initialValue = initialValue,
 ) {
-    var type: Type by mutableStateOf(initialType)
+    var type: Type by mutableStateOf(type)
         private set
 
     override fun testValues(): List<Value> = super.testValues() + choices
@@ -242,7 +242,7 @@ fun <Value> SelectableField(
     return SelectableField<Value>(
         label = label,
         choices = builder.choices.map { it.second },
-        initialType = type,
+        type = type,
         choiceLabel = { choice -> builder.choices.first { it.second == choice }.first },
         initialValue = if (builder.isDefaultValueSet) builder.defaultValue as Value else builder.choices[0].second,
     )
@@ -336,7 +336,7 @@ inline fun <reified E : Enum<E>> EnumField(
     label = label,
     choices = enumValues<E>().toList(),
     choiceLabel = choiceLabel,
-    initialType = type,
+    type = type,
     initialValue = initialValue,
     serializer = runCatching { serializer<E>() }.getOrNull(),
 )
@@ -383,6 +383,6 @@ fun <Value> List<Value>.toField(
     label = label,
     choices = this,
     choiceLabel = choiceLabel,
-    initialType = type,
+    type = type,
     initialValue = initialValue,
 )
