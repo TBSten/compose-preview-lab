@@ -19,6 +19,7 @@ import io.kotest.property.arbitrary.int
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.arbitrary.string
 import io.kotest.property.forAll
+import me.tbsten.compose.preview.lab.PBT
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
@@ -34,7 +35,7 @@ class PreviewsForUiDebugTest : StringSpec({
         }
     }
 
-    "IntField should update preview when value changes" {
+    "IntField should update preview when value changes".config(tags = setOf(PBT)) {
         runDesktopComposeUiTest {
             val state = PreviewLabState()
             setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
@@ -51,7 +52,7 @@ class PreviewsForUiDebugTest : StringSpec({
         }
     }
 
-    "StringField should update preview when value changes" {
+    "StringField should update preview when value changes".config(tags = setOf(PBT)) {
         runDesktopComposeUiTest {
             val state = PreviewLabState()
             setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
@@ -67,7 +68,7 @@ class PreviewsForUiDebugTest : StringSpec({
         }
     }
 
-    "BooleanField should toggle preview when value changes" {
+    "BooleanField should toggle preview when value changes".config(tags = setOf(PBT)) {
         runDesktopComposeUiTest {
             val state = PreviewLabState()
             setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
@@ -83,7 +84,7 @@ class PreviewsForUiDebugTest : StringSpec({
         }
     }
 
-    "FloatField should update preview when value changes" {
+    "FloatField should update preview when value changes".config(tags = setOf(PBT)) {
         runDesktopComposeUiTest {
             val state = PreviewLabState()
             setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }

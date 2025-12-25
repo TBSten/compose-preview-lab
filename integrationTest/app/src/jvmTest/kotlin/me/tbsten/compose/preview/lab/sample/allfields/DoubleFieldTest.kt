@@ -14,6 +14,7 @@ import io.kotest.property.arbitrary.filterNot
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import kotlin.time.Duration.Companion.seconds
+import me.tbsten.compose.preview.lab.sample.PBT
 import kotlinx.coroutines.withTimeout
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
@@ -22,6 +23,7 @@ import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class, ExperimentalKotest::class)
 class DoubleFieldTest : StringSpec({
+    tags(PBT)
 
     "DoubleField should update price when value changes" {
         runDesktopComposeUiTest {

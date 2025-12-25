@@ -8,6 +8,7 @@ import io.kotest.property.arbitrary.list
 import io.kotest.property.arbitrary.string
 import io.kotest.property.forAll
 import me.tbsten.compose.preview.lab.CollectedPreview
+import me.tbsten.compose.preview.lab.PBT
 import me.tbsten.compose.preview.lab.PreviewLabPreview
 import me.tbsten.compose.preview.lab.gallery.previewlist.PreviewTreeNode
 import me.tbsten.compose.preview.lab.gallery.previewlist.collapse
@@ -103,7 +104,7 @@ class PreviewListTreeTest :
             )
         }
 
-        "toTree should contain all previews" {
+        "toTree should contain all previews".config(tags = setOf(PBT)) {
             forAll(Arb.list(Arb.string(1..20), 1..50)) { displayNames ->
                 val previews = displayNames.map { previewForTest(it) }
                 val tree = previews.toTree()
@@ -113,7 +114,7 @@ class PreviewListTreeTest :
             }
         }
 
-        "collapse should preserve all previews" {
+        "collapse should preserve all previews".config(tags = setOf(PBT)) {
             forAll(Arb.list(Arb.string(1..20), 1..50)) { displayNames ->
                 val previews = displayNames.map { previewForTest(it) }
                 val tree = previews.toTree()

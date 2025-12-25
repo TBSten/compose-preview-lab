@@ -13,12 +13,14 @@ import io.kotest.property.arbitrary.map
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.sample.PBT
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
 class DpFieldTest : StringSpec({
+    tags(PBT)
 
     "DpField should update padding when value changes" {
         runDesktopComposeUiTest {

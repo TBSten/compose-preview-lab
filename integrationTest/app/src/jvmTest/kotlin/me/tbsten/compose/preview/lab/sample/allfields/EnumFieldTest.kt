@@ -11,12 +11,14 @@ import io.kotest.property.arbitrary.of
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.sample.PBT
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
 class EnumFieldTest : StringSpec({
+    tags(PBT)
 
     "EnumField should update button variant when selection changes" {
         runDesktopComposeUiTest {
