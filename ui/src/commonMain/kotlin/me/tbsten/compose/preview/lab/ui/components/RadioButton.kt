@@ -30,6 +30,7 @@ import me.tbsten.compose.preview.lab.ui.components.RadioButtonDefaults.RadioButt
 import me.tbsten.compose.preview.lab.ui.components.RadioButtonDefaults.RadioSelectedStrokeWidth
 import me.tbsten.compose.preview.lab.ui.components.RadioButtonDefaults.RadioStrokeWidth
 import me.tbsten.compose.preview.lab.ui.foundation.ripple
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun RadioButton(
@@ -57,10 +58,10 @@ fun RadioButton(
                 role = Role.RadioButton,
                 interactionSource = interactionSource,
                 indication =
-                ripple(
-                    bounded = false,
-                    radius = MinimumInteractiveSize / 2,
-                ),
+                    ripple(
+                        bounded = false,
+                        radius = MinimumInteractiveSize / 2,
+                    ),
             )
         } else {
             Modifier
@@ -148,6 +149,42 @@ data class RadioButtonColors(
             animateColorAsState(target, tween(durationMillis = RadioAnimationDuration), label = "radioColor")
         } else {
             rememberUpdatedState(target)
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun RadioButtonPreview() {
+    PreviewLabTheme {
+        Row {
+            RadioButton(
+                selected = true,
+                onClick = {},
+            )
+            RadioButton(
+                selected = false,
+                onClick = {},
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun DisabledRadioButtonPreview() {
+    PreviewLabTheme {
+        Row {
+            RadioButton(
+                selected = true,
+                onClick = {},
+                enabled = false,
+            )
+            RadioButton(
+                selected = false,
+                onClick = {},
+                enabled = false,
+            )
         }
     }
 }
