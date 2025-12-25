@@ -73,6 +73,9 @@ kotlin {
         jvmTest.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(compose.desktop.uiTestJUnit4)
+            implementation(libs.kotestFrameworkEngine)
+            implementation(libs.kotestAssertionsCore)
+            implementation(libs.kotestRunnerJunit5)
         }
 
         androidMain.dependencies {
@@ -137,4 +140,13 @@ compose.desktop {
 
 tasks.register<ComposeHotRun>("runHot") {
     mainClass.set("MainKt")
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    // Forward kotest-related system properties to the test JVM
+    // See: https://kotest.io/docs/framework/tags.html#gradle
+    System.getProperties()
+        .filter { it.key.toString().startsWith("kotest.") }
+        .forEach { (key, value) -> systemProperty(key.toString(), value) }
 }

@@ -50,21 +50,27 @@ jobs:
           - name: Jvm
             test_task: jvmTest
             os: ubuntu-latest
+            kotest_tags: '!PBT'
           - name: JS
             test_task: jsBrowserTest
             os: ubuntu-latest
+            kotest_tags: ''
           - name: Wasm JS
             test_task: wasmJsBrowserTest
             os: ubuntu-latest
+            kotest_tags: ''
           - name: Android Debug
             test_task: testDebugUnitTest # compose ui test on local android is not supported yet
             os: ubuntu-latest
+            kotest_tags: ''
           - name: Android Release
             test_task: testReleaseUnitTest
             os: ubuntu-latest
+            kotest_tags: ''
           - name: iOS
             test_task: iosSimulatorArm64Test
             os: macos-latest
+            kotest_tags: ''
     runs-on: ${{ matrix.os }}
     name: Test ${{ matrix.name }}
     steps:
@@ -79,7 +85,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v5
       - name: Test Library
         shell: bash
-        run: ./gradlew ${{ matrix.test_task }}
+        run: ./gradlew ${{ matrix.test_task }} ${{ matrix.kotest_tags && format('-Dkotest.tags="{0}"', matrix.kotest_tags) || '' }}
       - name: Test Integration Test
         shell: bash
-        run: cd ./integrationTest && ./gradlew ${{ matrix.test_task }}
+        run: cd ./integrationTest && ./gradlew ${{ matrix.test_task }} ${{ matrix.kotest_tags && format('-Dkotest.tags="{0}"', matrix.kotest_tags) || '' }}
