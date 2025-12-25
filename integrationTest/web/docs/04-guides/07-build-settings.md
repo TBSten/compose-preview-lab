@@ -1,5 +1,5 @@
 ---
-title: "[TODO] Build Settings"
+title: "Build Settings"
 sidebar_position: 7
 ---
 s

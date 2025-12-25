@@ -1,17 +1,15 @@
 ---
-title: "[TODO] Featured Files"
+title: "Featured Files"
 sidebar_position: 8
 ---
 
-:::warning
-
-このページは生成 AI によって自動生成されたページです。
-
-:::
-
 # Featured Files
 
-Featured Files は、プロジェクト内の Preview をグループ化して整理する機能です。重要な Preview や、現在作業中の Preview を簡単にアクセスできるようにします。
+Featured Files は、プロジェクト内の Preview をグループ化して整理する機能です。`.composepreviewlab/featured` ファイルに 重要な Preview や、現在作業中の Preview をリストアップ・グループ化し簡単にアクセスできるようにします。
+
+import featuredFilesExampleImage from "./featured-files-example.png";
+
+<img src={featuredFilesExampleImage} width="400" />
 
 ## 概要
 
@@ -60,11 +58,13 @@ src/commonMain/kotlin/com/example/ui/components/Button.kt
 
 ### 例 1: レビュー用グループ
 
-PR レビュー中の Preview をまとめます：
+CI で Compose Preview Lab をビルドする場合、PR の差分があるファイルを `.composepreviewlab/featured/PR` ファイルにリストアップすることで レビュー対象の Preview のみに絞ったグループを作成して Preview を探す手間が省けます。
 
-`.composepreviewlab/featured/Under Review`
-
+```shell
+git diff --name-only origin/main...HEAD | grep '\.kt$' > .composepreviewlab/featured/PR
 ```
+
+```txt title=".composepreviewlab/featured/PR"
 src/commonMain/kotlin/com/example/feature/newFeature/NewFeatureScreen.kt
 src/commonMain/kotlin/com/example/feature/newFeature/NewFeatureDialog.kt
 ```
@@ -95,17 +95,7 @@ src/commonMain/kotlin/com/example/auth/ForgotPasswordScreen.kt
 
 ## アプリケーションへの統合
 
-生成された `FeaturedFileList` を `previewLabApplication` に渡します：
-
-### JS/WasmJS の場合
-
-```kotlin
-fun main() = previewLabApplication(
-    previewList = myModule.PreviewList,
-    featuredFileList = myModule.FeaturedFileList, // 追加
-    openFileHandler = UrlOpenFileHandler("https://github.com/user/repo/blob/main"),
-)
-```
+生成された `FeaturedFileList` を `previewLabApplication` または PreviewLabGallery に渡すことでアプリケーションにグループを表示することができます。
 
 ### JVM の場合
 
@@ -116,34 +106,15 @@ fun main() = previewLabApplication(
 )
 ```
 
-## Featured Files の動作
-
-1. **ビルド時の処理**：
-   - Gradle プラグインが `.composepreviewlab/featured/` ディレクトリをスキャン
-   - 各ファイルから Preview のグループ情報を読み取る
-   - `FeaturedFileList` クラスを自動生成
-
-2. **生成されるコード例**：
+### JS/WasmJS の場合
 
 ```kotlin
-data object FeaturedFileList : Map<String, List<String>> by mapOf(
-    "Important" to listOf(
-        "src/commonMain/kotlin/com/example/ui/HomeScreen.kt",
-        "src/commonMain/kotlin/com/example/ui/LoginScreen.kt"
-    ),
-    "Under Review" to listOf(
-        "src/commonMain/kotlin/com/example/feature/newFeature/NewFeatureScreen.kt"
-    ),
-) {
-    val Important get() = this["Important"]!!
-    val `Under Review` get() = this["Under Review"]!!
-}
+fun main() = previewLabApplication(
+    previewList = myModule.PreviewList,
+    featuredFileList = myModule.FeaturedFileList, // 追加
+    openFileHandler = UrlOpenFileHandler("https://github.com/user/repo/blob/main"),
+)
 ```
-
-3. **ランタイムでの表示**：
-   - PreviewLab アプリケーションがグループ情報を読み込む
-   - UI でグループごとに Preview を表示
-   - ユーザーはグループを選択して、関連する Preview をすばやく確認
 
 ## ベストプラクティス
 
@@ -185,11 +156,7 @@ data object FeaturedFileList : Map<String, List<String>> by mapOf(
 
 1. `generateFeaturedFiles = true` が設定されているか確認
 2. `.composepreviewlab/featured/` ディレクトリが存在するか確認
-3. プロジェクトをクリーンしてリビルド：
-
-```bash
-./gradlew clean build
-```
+3. `./gradlew clean` 実行後に再度ビルドする
 
 ### ファイルパスが認識されない
 
