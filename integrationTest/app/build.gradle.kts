@@ -82,6 +82,9 @@ kotlin {
         jvmTest.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(compose.desktop.uiTestJUnit4)
+            implementation(libs.kotestFrameworkEngine)
+            implementation(libs.kotestAssertionsCore)
+            implementation(libs.kotestRunnerJunit5)
             implementation(libs.kotestProperty)
             implementation(libs.androidxLifecycleViewmodel)
             implementation(libs.androidxLifecycleRuntimeCompose)
@@ -227,4 +230,8 @@ val buildProductionPreviewLabGallery by tasks.registering(Copy::class) {
 
     from(layout.buildDirectory.dir("dist/js/productionExecutable"))
     into(layout.buildDirectory.dir("web-static-content/compose-preview-lab-gallery"))
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }

@@ -75,6 +75,9 @@ kotlin {
             implementation(kotlin("test"))
         }
         jvmTest.dependencies {
+            implementation(libs.kotestFrameworkEngine)
+            implementation(libs.kotestAssertionsCore)
+            implementation(libs.kotestRunnerJunit5)
             implementation(libs.kotestProperty)
             implementation(libs.kotlinxCoroutinesTest)
         }
@@ -115,6 +118,10 @@ kotlin {
             "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
         )
     }
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 publishConvention {
