@@ -58,10 +58,10 @@ fun RadioButton(
                 role = Role.RadioButton,
                 interactionSource = interactionSource,
                 indication =
-                    ripple(
-                        bounded = false,
-                        radius = MinimumInteractiveSize / 2,
-                    ),
+                ripple(
+                    bounded = false,
+                    radius = MinimumInteractiveSize / 2,
+                ),
             )
         } else {
             Modifier

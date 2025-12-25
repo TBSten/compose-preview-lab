@@ -535,6 +535,13 @@ public final class me/tbsten/compose/preview/lab/ui/components/ComposableSinglet
 	public final fun getLambda$872789638$ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
+public final class me/tbsten/compose/preview/lab/ui/components/ComposableSingletons$RadioButtonKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/ComposableSingletons$RadioButtonKt;
+	public fun <init> ()V
+	public final fun getLambda$-1130553893$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$332560191$ui_release ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class me/tbsten/compose/preview/lab/ui/components/ComposableSingletons$SwitchKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/ComposableSingletons$SwitchKt;
 	public fun <init> ()V
