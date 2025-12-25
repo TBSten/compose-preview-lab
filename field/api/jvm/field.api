@@ -542,7 +542,9 @@ public class me/tbsten/compose/preview/lab/field/SelectableField : me/tbsten/com
 	public fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlinx/serialization/KSerializer;)V
 	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlinx/serialization/KSerializer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun View (Ljava/util/List;Landroidx/compose/runtime/Composer;I)V
 	public final fun getChoices ()Ljava/util/List;
+	public final fun getType ()Lme/tbsten/compose/preview/lab/field/SelectableField$Type;
 	public fun serializer ()Lkotlinx/serialization/KSerializer;
 	public fun testValues ()Ljava/util/List;
 	public fun valueCode ()Ljava/lang/String;
@@ -557,6 +559,7 @@ public final class me/tbsten/compose/preview/lab/field/SelectableField$Builder {
 public final class me/tbsten/compose/preview/lab/field/SelectableField$Type : java/lang/Enum {
 	public static final field CHIPS Lme/tbsten/compose/preview/lab/field/SelectableField$Type;
 	public static final field DROPDOWN Lme/tbsten/compose/preview/lab/field/SelectableField$Type;
+	public static final field RADIO Lme/tbsten/compose/preview/lab/field/SelectableField$Type;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lme/tbsten/compose/preview/lab/field/SelectableField$Type;
 	public static fun values ()[Lme/tbsten/compose/preview/lab/field/SelectableField$Type;

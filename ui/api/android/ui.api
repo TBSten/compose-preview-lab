@@ -535,6 +535,13 @@ public final class me/tbsten/compose/preview/lab/ui/components/ComposableSinglet
 	public final fun getLambda$872789638$ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
+public final class me/tbsten/compose/preview/lab/ui/components/ComposableSingletons$RadioButtonKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/ComposableSingletons$RadioButtonKt;
+	public fun <init> ()V
+	public final fun getLambda$-1130553893$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$332560191$ui_release ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class me/tbsten/compose/preview/lab/ui/components/ComposableSingletons$SwitchKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/ComposableSingletons$SwitchKt;
 	public fun <init> ()V
@@ -741,6 +748,40 @@ public final class me/tbsten/compose/preview/lab/ui/components/NullableFloatTran
 	public synthetic fun fromString (Ljava/lang/String;)Ljava/lang/Object;
 	public fun toString (Ljava/lang/Float;)Ljava/lang/String;
 	public synthetic fun toString (Ljava/lang/Object;)Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/RadioButtonColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun copy-jRlVdoo (JJJJ)Lme/tbsten/compose/preview/lab/ui/components/RadioButtonColors;
+	public static synthetic fun copy-jRlVdoo$default (Lme/tbsten/compose/preview/lab/ui/components/RadioButtonColors;JJJJILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/RadioButtonColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDisabledSelectedColor-0d7_KjU ()J
+	public final fun getDisabledUnselectedColor-0d7_KjU ()J
+	public final fun getSelectedColor-0d7_KjU ()J
+	public final fun getUnselectedColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/RadioButtonDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/RadioButtonDefaults;
+	public static final field RadioAnimationDuration I
+	public final fun colors (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/RadioButtonColors;
+	public final fun getMinimumInteractiveSize-D9Ej5fM ()F
+	public final fun getRadioButtonIconSize-D9Ej5fM ()F
+	public final fun getRadioButtonPadding-D9Ej5fM ()F
+	public final fun getRadioSelectedStrokeWidth-D9Ej5fM ()F
+	public final fun getRadioStrokeWidth-D9Ej5fM ()F
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/RadioButtonKt {
+	public static final fun RadioButton (Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function0;ZLme/tbsten/compose/preview/lab/ui/components/RadioButtonColors;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/SelectButtonKt {

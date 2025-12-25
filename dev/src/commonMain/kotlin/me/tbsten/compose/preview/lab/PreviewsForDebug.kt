@@ -212,6 +212,17 @@ enum class PreviewsForUiDebug(
                                         }
                                     }",
                                 )
+                                Text(
+                                    "myEnumValue (radio UI): ${
+                                        fieldValue {
+                                            EnumField<MyEnum>(
+                                                "myEnumValue",
+                                                MyEnum.A,
+                                                type = SelectableField.Type.RADIO,
+                                            )
+                                        }
+                                    }",
+                                )
                             }
                             item {
                                 val state =
