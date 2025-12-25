@@ -144,5 +144,9 @@ tasks.register<ComposeHotRun>("runHot") {
 
 tasks.withType<Test> {
     useJUnitPlatform()
-    systemProperty("kotest.tags", System.getProperty("kotest.tags") ?: "")
+    // Forward kotest-related system properties to the test JVM
+    // See: https://kotest.io/docs/framework/tags.html#gradle
+    System.getProperties()
+        .filter { it.key.toString().startsWith("kotest.") }
+        .forEach { (key, value) -> systemProperty(key.toString(), value) }
 }
