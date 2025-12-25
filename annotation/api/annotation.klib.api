@@ -6,6 +6,15 @@
 // - Show declarations: true
 
 // Library unique name: <me.tbsten.compose.preview.lab:annotation>
+open annotation class <#A: kotlin/Any> me.tbsten.compose.preview.lab/AutoGenerateField : kotlin/Annotation { // me.tbsten.compose.preview.lab/AutoGenerateField|null[0]
+    constructor <init>(kotlin/String = ..., kotlin/Boolean = ...) // me.tbsten.compose.preview.lab/AutoGenerateField.<init>|<init>(kotlin.String;kotlin.Boolean){}[0]
+
+    final val autoLabelByTypeName // me.tbsten.compose.preview.lab/AutoGenerateField.autoLabelByTypeName|{}autoLabelByTypeName[0]
+        final fun <get-autoLabelByTypeName>(): kotlin/Boolean // me.tbsten.compose.preview.lab/AutoGenerateField.autoLabelByTypeName.<get-autoLabelByTypeName>|<get-autoLabelByTypeName>(){}[0]
+    final val name // me.tbsten.compose.preview.lab/AutoGenerateField.name|{}name[0]
+        final fun <get-name>(): kotlin/String // me.tbsten.compose.preview.lab/AutoGenerateField.name.<get-name>|<get-name>(){}[0]
+}
+
 open annotation class me.tbsten.compose.preview.lab/AggregateToAll : kotlin/Annotation { // me.tbsten.compose.preview.lab/AggregateToAll|null[0]
     constructor <init>() // me.tbsten.compose.preview.lab/AggregateToAll.<init>|<init>(){}[0]
 }
@@ -30,6 +39,8 @@ open annotation class me.tbsten.compose.preview.lab/InternalComposePreviewLabApi
 }
 
 final object me.tbsten.compose.preview.lab.internal/KspArg { // me.tbsten.compose.preview.lab.internal/KspArg|null[0]
+    final const val generateAutoField // me.tbsten.compose.preview.lab.internal/KspArg.generateAutoField|{}generateAutoField[0]
+        final fun <get-generateAutoField>(): kotlin/String // me.tbsten.compose.preview.lab.internal/KspArg.generateAutoField.<get-generateAutoField>|<get-generateAutoField>(){}[0]
     final const val generatePreviewAllList // me.tbsten.compose.preview.lab.internal/KspArg.generatePreviewAllList|{}generatePreviewAllList[0]
         final fun <get-generatePreviewAllList>(): kotlin/String // me.tbsten.compose.preview.lab.internal/KspArg.generatePreviewAllList.<get-generatePreviewAllList>|<get-generatePreviewAllList>(){}[0]
     final const val generatePreviewList // me.tbsten.compose.preview.lab.internal/KspArg.generatePreviewList|{}generatePreviewList[0]

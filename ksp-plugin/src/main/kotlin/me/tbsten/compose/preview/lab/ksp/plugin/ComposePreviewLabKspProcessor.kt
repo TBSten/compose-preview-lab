@@ -8,6 +8,7 @@ import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.validate
 import me.tbsten.compose.preview.lab.internal.KspArg
+import me.tbsten.compose.preview.lab.ksp.plugin.autogenerate.AutoGenerateFieldProcessor
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment.Companion.getOrCreateApplicationEnvironment
@@ -96,6 +97,16 @@ internal class ComposePreviewLabKspProcessor(
                 )
             }
         }
+
+        // AutoGenerateField の処理
+        if (options.optionIsTrue(KspArg.generateAutoField)) {
+            val autoGenerateFieldProcessor = AutoGenerateFieldProcessor(
+                kspCodeGenerator = codeGenerator,
+                logger = logger,
+            )
+            autoGenerateFieldProcessor.process(resolver)
+        }
+
         return emptyList()
     }
 }
