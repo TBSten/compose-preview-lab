@@ -144,4 +144,5 @@ tasks.register<ComposeHotRun>("runHot") {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    systemProperty("kotest.tags", System.getProperty("kotest.tags") ?: "")
 }

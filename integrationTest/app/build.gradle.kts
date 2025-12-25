@@ -234,4 +234,5 @@ val buildProductionPreviewLabGallery by tasks.registering(Copy::class) {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    systemProperty("kotest.tags", System.getProperty("kotest.tags") ?: "")
 }

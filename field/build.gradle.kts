@@ -121,6 +121,7 @@ kotlin {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    systemProperty("kotest.tags", System.getProperty("kotest.tags") ?: "")
 }
 
 publishConvention {
