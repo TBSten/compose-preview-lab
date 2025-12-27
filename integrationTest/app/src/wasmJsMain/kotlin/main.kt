@@ -1,8 +1,6 @@
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
-import app.FeaturedFileList
-import helloComposePreviewLab.PreviewList
 import kotlinx.browser.document
 import me.tbsten.compose.preview.lab.EmbeddedPreviewOrGallery
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
@@ -20,11 +18,7 @@ fun main() {
             state = remember {
                 PreviewLabGalleryState(
                     initialSelectedPreview =
-                        initialSelectedPreviewFromSearchParam(previewList.toList())
-                            ?: (
-                                FeaturedFileList.hello_compose_preview_lab.first() to
-                                    PreviewList.AboutComposePreviewLab
-                                ),
+                        initialSelectedPreviewFromSearchParam(previewList.toList()),
                 )
             },
         )
