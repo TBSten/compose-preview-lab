@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import app.FeaturedFileList
-import helloComposePreviewLab.PreviewList
 import me.tbsten.compose.preview.lab.gallery.PreviewLabGallery
 import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
 
@@ -20,13 +19,9 @@ class AppActivity : ComponentActivity() {
         setContent {
             PreviewLabGallery(
                 state = remember {
-                    PreviewLabGalleryState(
-                        initialSelectedPreview =
-                            FeaturedFileList.hello_compose_preview_lab.first() to
-                                PreviewList.AboutComposePreviewLab,
-                    )
+                    PreviewLabGalleryState()
                 },
-                previewList = app.PreviewList + uiLib.PreviewList + PreviewList,
+                previewList = app.PreviewList + uiLib.PreviewList + helloComposePreviewLab.PreviewList,
                 featuredFileList = FeaturedFileList,
                 modifier = Modifier
                     .systemBarsPadding()
