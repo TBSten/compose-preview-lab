@@ -12,6 +12,8 @@ class ToastHostState {
     private val _toasts = mutableStateListOf<ToastData>()
     val toasts: List<ToastData> get() = _toasts
 
+    // Note: This counter is only accessed from the main thread (Compose UI thread),
+    // so thread-safety is not required for this use case.
     private var nextId = 0L
 
     fun show(

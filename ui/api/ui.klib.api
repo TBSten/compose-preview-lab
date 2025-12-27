@@ -752,6 +752,9 @@ final object me.tbsten.compose.preview.lab.ui.components.textfield/UnderlinedTex
 }
 
 final object me.tbsten.compose.preview.lab.ui.components.toast/ToastDefaults { // me.tbsten.compose.preview.lab.ui.components.toast/ToastDefaults|null[0]
+    final const val AnimationDurationMillis // me.tbsten.compose.preview.lab.ui.components.toast/ToastDefaults.AnimationDurationMillis|{}AnimationDurationMillis[0]
+        final fun <get-AnimationDurationMillis>(): kotlin/Long // me.tbsten.compose.preview.lab.ui.components.toast/ToastDefaults.AnimationDurationMillis.<get-AnimationDurationMillis>|<get-AnimationDurationMillis>(){}[0]
+
     final val shadowElevation // me.tbsten.compose.preview.lab.ui.components.toast/ToastDefaults.shadowElevation|{}shadowElevation[0]
         final fun <get-shadowElevation>(): androidx.compose.ui.unit/Dp // me.tbsten.compose.preview.lab.ui.components.toast/ToastDefaults.shadowElevation.<get-shadowElevation>|<get-shadowElevation>(){}[0]
     final val shape // me.tbsten.compose.preview.lab.ui.components.toast/ToastDefaults.shape|{}shape[0]

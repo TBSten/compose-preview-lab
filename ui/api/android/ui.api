@@ -1094,6 +1094,7 @@ public final class me/tbsten/compose/preview/lab/ui/components/toast/ToastData {
 
 public final class me/tbsten/compose/preview/lab/ui/components/toast/ToastDefaults {
 	public static final field $stable I
+	public static final field AnimationDurationMillis J
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/toast/ToastDefaults;
 	public final fun containerColor-XeAY9LY (Lme/tbsten/compose/preview/lab/ui/components/toast/ToastType;Landroidx/compose/runtime/Composer;I)J
 	public final fun contentColor-XeAY9LY (Lme/tbsten/compose/preview/lab/ui/components/toast/ToastType;Landroidx/compose/runtime/Composer;I)J

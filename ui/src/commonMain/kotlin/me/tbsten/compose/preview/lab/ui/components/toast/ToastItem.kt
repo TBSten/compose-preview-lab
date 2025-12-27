@@ -15,12 +15,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.components.Icon
 import me.tbsten.compose.preview.lab.ui.components.Surface
@@ -33,13 +36,14 @@ import org.jetbrains.compose.resources.painterResource
 @InternalComposePreviewLabApi
 fun ToastItem(toast: ToastData, onDismiss: () -> Unit, modifier: Modifier = Modifier,) {
     var isVisible by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(toast.id) {
         isVisible = true
         if (toast.duration != ToastDuration.Indefinite) {
             delay(toast.duration.millis)
             isVisible = false
-            delay(300)
+            delay(ToastDefaults.AnimationDurationMillis)
             onDismiss()
         }
     }
@@ -48,7 +52,7 @@ fun ToastItem(toast: ToastData, onDismiss: () -> Unit, modifier: Modifier = Modi
         visible = isVisible,
         enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
         exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
-        modifier = modifier.testTag(toast.message),
+        modifier = modifier.testTag("toast_${toast.id}"),
     ) {
         val containerColor = ToastDefaults.containerColor(toast.type)
         val contentColor = ToastDefaults.contentColor(toast.type)
@@ -75,7 +79,7 @@ fun ToastItem(toast: ToastData, onDismiss: () -> Unit, modifier: Modifier = Modi
                         text = action.label,
                         color = contentColor,
                         modifier = Modifier
-                            .clickable { action.onClick() }
+                            .clickable(role = Role.Button) { action.onClick() }
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                     )
                 }
@@ -87,9 +91,12 @@ fun ToastItem(toast: ToastData, onDismiss: () -> Unit, modifier: Modifier = Modi
                         tint = contentColor,
                         modifier = Modifier
                             .size(20.dp)
-                            .clickable {
-                                isVisible = false
-                                onDismiss()
+                            .clickable(role = Role.Button) {
+                                coroutineScope.launch {
+                                    isVisible = false
+                                    delay(ToastDefaults.AnimationDurationMillis)
+                                    onDismiss()
+                                }
                             },
                     )
                 }
