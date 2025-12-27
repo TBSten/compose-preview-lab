@@ -22,7 +22,6 @@ public final class me/tbsten/compose/preview/lab/field/ComposeDefaultComposition
 public final class me/tbsten/compose/preview/lab/previewlab/ComposableSingletons$PreviewLabKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/previewlab/ComposableSingletons$PreviewLabKt;
 	public fun <init> ()V
-	public final fun getLambda$-1594961153$preview_lab ()Lkotlin/jvm/functions/Function4;
 	public final fun getLambda$569618072$preview_lab ()Lkotlin/jvm/functions/Function3;
 }
 

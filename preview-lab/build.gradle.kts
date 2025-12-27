@@ -77,7 +77,6 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.kotlinxSerializationJson)
-            implementation(libs.dokar3Sonner)
             implementation(libs.filekitCore)
             implementation(libs.filekitDialogs)
         }

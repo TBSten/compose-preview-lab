@@ -6,20 +6,19 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withLink
-import com.dokar.sonner.Toast
-import com.dokar.sonner.ToastType
-import com.dokar.sonner.ToasterState
+import me.tbsten.compose.preview.lab.ui.components.toast.ToastHostState
+import me.tbsten.compose.preview.lab.ui.components.toast.ToastType
 import kotlinx.browser.window
 import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
 import me.tbsten.compose.preview.lab.PreviewLabPreview
-import me.tbsten.compose.preview.lab.previewlab.LocalToaster
+import me.tbsten.compose.preview.lab.previewlab.LocalToastHostState
 import org.w3c.dom.url.URL
 
 @Composable
 internal actual fun copyUserHandler(params: Map<String, String>): CopyUserHandler {
     // TODO migrate LocalClipboard
     val clipboardManager = LocalClipboardManager.current
-    val toaster = LocalToaster.current
+    val toastHostState = LocalToastHostState.current
     val currentPreview = LocalPreviewLabPreview.current
 
     val link = window.location.href
@@ -34,7 +33,7 @@ internal actual fun copyUserHandler(params: Map<String, String>): CopyUserHandle
 
     return CopyUserHandler(
         clipboardManager = clipboardManager,
-        toaster = toaster,
+        toastHostState = toastHostState,
         currentPreview = currentPreview,
         link = link,
     )
@@ -42,7 +41,7 @@ internal actual fun copyUserHandler(params: Map<String, String>): CopyUserHandle
 
 internal actual class CopyUserHandler(
     private val clipboardManager: ClipboardManager,
-    private val toaster: ToasterState,
+    private val toastHostState: ToastHostState,
     private val currentPreview: PreviewLabPreview?,
     actual val link: String,
 ) {
@@ -54,17 +53,15 @@ internal actual class CopyUserHandler(
                 }
             },
         )
-        toaster.show(
-            Toast(
-                message = buildString {
-                    append("Copied ")
-                    if (currentPreview != null) {
-                        append("${currentPreview.displayName.split(".").last()} ")
-                    }
-                    append("url!")
-                },
-                type = ToastType.Success,
-            ),
+        toastHostState.show(
+            message = buildString {
+                append("Copied ")
+                if (currentPreview != null) {
+                    append("${currentPreview.displayName.split(".").last()} ")
+                }
+                append("url!")
+            },
+            type = ToastType.Success,
         )
     }
 }

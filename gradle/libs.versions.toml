@@ -6,7 +6,6 @@ agp = "8.9.3"
 androidx-activityCompose = "1.11.0"
 androidx-uiTest = "1.9.4"
 lumoUi = "1.2.5"
-dokar3Sonner = "0.3.8"
 hotReload = "1.1.0-alpha03"
 ksp = "2.3.2"
 intellijPlatform = "2.6.0"
@@ -29,7 +28,6 @@ buildkonfig = "0.17.1"
 androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 androidx-uitest-testManifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "androidx-uiTest" }
 androidx-uitest-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidx-uiTest" }
-dokar3Sonner = { module = "io.github.dokar3:sonner", version.ref = "dokar3Sonner" }
 
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlinCompilerEmbeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
