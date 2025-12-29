@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -40,6 +42,8 @@ import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_delete
 import org.jetbrains.compose.resources.painterResource
 
+private const val ScrollAnimationDurationMs = 400
+
 @OptIn(ExperimentalTime::class)
 @Composable
 internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: PreviewLabEvent?, onClear: () -> Unit) {
@@ -51,7 +55,7 @@ internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: Prev
             // Wait for item to be laid out before scrolling
             delay(50.milliseconds)
             // +1 for stickyHeader offset
-            listState.animateScrollToItem(events.size)
+            listState.smoothScrollToItem(events.size)
         }
     }
 
@@ -63,7 +67,7 @@ internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: Prev
                 // Wait a bit to ensure smooth animation
                 delay(50.milliseconds)
                 // +1 for stickyHeader offset
-                listState.animateScrollToItem(index + 1)
+                listState.smoothScrollToItem(index + 1)
             }
         }
     }
@@ -192,6 +196,37 @@ private fun NoEvents() {
         Text(
             text = "No events have been issued by onEvent(\"title\") yet.",
             style = PreviewLabTheme.typography.body2,
+        )
+    }
+}
+
+/**
+ * Smoothly scroll to the specified item with a slower animation.
+ */
+private suspend fun LazyListState.smoothScrollToItem(index: Int) {
+    // First scroll to make the item visible
+    val targetIndex = index.coerceIn(0, layoutInfo.totalItemsCount - 1)
+    if (targetIndex < 0) return
+
+    // If item is already visible, just animate to it
+    val visibleItem = layoutInfo.visibleItemsInfo.find { it.index == targetIndex }
+    if (visibleItem != null) {
+        animateScrollBy(
+            value = visibleItem.offset.toFloat(),
+            animationSpec = tween(durationMillis = ScrollAnimationDurationMs),
+        )
+        return
+    }
+
+    // Otherwise, first jump close to the target, then animate
+    scrollToItem(maxOf(0, targetIndex - 2))
+
+    // Now animate to the exact position
+    val newVisibleItem = layoutInfo.visibleItemsInfo.find { it.index == targetIndex }
+    if (newVisibleItem != null) {
+        animateScrollBy(
+            value = newVisibleItem.offset.toFloat(),
+            animationSpec = tween(durationMillis = ScrollAnimationDurationMs),
         )
     }
 }
