@@ -16,7 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.dokar.sonner.rememberToasterState
+import me.tbsten.compose.preview.lab.ui.components.toast.ToastType
+import me.tbsten.compose.preview.lab.ui.components.toast.rememberToastHostState
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Button
 import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
@@ -119,7 +120,7 @@ internal fun ModifierBuilder(
 
 @Composable
 private fun AddModifierMenu(state: ModifierBuilderState, selectableModifierFieldValueFactories: ModifierFieldValueFactories) {
-    val toaster = rememberToasterState()
+    val toastHostState = rememberToastHostState()
 
     CommonMenu(
         expanded = state.addMenu.isAddMenuOpen,
@@ -143,7 +144,10 @@ private fun AddModifierMenu(state: ModifierBuilderState, selectableModifierField
                                 state.addMenu.close()
                             },
                             onFailure = {
-                                toaster.show(message = it.message ?: "Error")
+                                toastHostState.show(
+                                    message = it.message ?: "Error",
+                                    type = ToastType.Error,
+                                )
                             },
                         )
                 }

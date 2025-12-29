@@ -27,14 +27,9 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.dokar.sonner.TextToastAction
-import com.dokar.sonner.Toaster
-import com.dokar.sonner.ToasterState
-import com.dokar.sonner.rememberToasterState
 import me.tbsten.compose.preview.lab.LocalIsInPreviewLabGalleryCardBody
 import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.field.ScreenSizeField
@@ -43,6 +38,10 @@ import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorsPane
 import me.tbsten.compose.preview.lab.previewlab.screenshot.LocalCaptureScreenshot
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.toast.ToastAction
+import me.tbsten.compose.preview.lab.ui.components.toast.ToastHost
+import me.tbsten.compose.preview.lab.ui.components.toast.ToastHostState
+import me.tbsten.compose.preview.lab.ui.components.toast.rememberToastHostState
 import me.tbsten.compose.preview.lab.ui.util.toDpOffset
 
 /**
@@ -485,21 +484,21 @@ open class PreviewLab(
             return
         }
 
-        val toaster = rememberToasterState().also { toaster ->
+        val toastHostState = rememberToastHostState().also { toastHostState ->
             state.scope.HandleEffect { event ->
                 when (event) {
-                    is PreviewLabScope.Effect.ShowEventToast ->
-                        toaster.show(
+                    is PreviewLabScope.Effect.ShowEventToast -> {
+                        val toastId = toastHostState.show(
                             message = event.event.title,
-                            action = TextToastAction(
-                                text = "Show Detail",
+                            action = ToastAction(
+                                label = "Show Detail",
                                 onClick = {
                                     state.selectedTabIndex = InspectorTab.defaults.indexOf(InspectorTab.Events)
                                     state.selectedEvent = event.event
-                                    toaster.dismiss(it)
                                 },
                             ),
                         )
+                    }
                 }
             }
         }
@@ -508,57 +507,53 @@ open class PreviewLab(
             suspend { contentGraphicsLayer.toImageBitmap() }
         }
 
-        Providers(state = state, toaster = toaster, captureScreenshot = captureScreenshot) {
-            Column(modifier = modifier.background(PreviewLabTheme.colors.background)) {
-                PreviewLabHeader(
-                    state = state,
-                    isHeaderShow = isHeaderShow,
-                    scale = state.contentScale,
-                    onScaleChange = { state.contentScale = it },
-                    isInspectorPanelVisible = state.isInspectorPanelVisible,
-                    onIsInspectorPanelVisibleToggle = { state.isInspectorPanelVisible = !state.isInspectorPanelVisible },
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
+        Providers(state = state, toastHostState = toastHostState, captureScreenshot = captureScreenshot) {
+            Box {
+                Column(modifier = modifier.background(PreviewLabTheme.colors.background)) {
+                    PreviewLabHeader(
+                        state = state,
+                        isHeaderShow = isHeaderShow,
+                        scale = state.contentScale,
+                        onScaleChange = { state.contentScale = it },
+                        isInspectorPanelVisible = state.isInspectorPanelVisible,
+                        onIsInspectorPanelVisibleToggle = { state.isInspectorPanelVisible = !state.isInspectorPanelVisible },
                     ) {
-                        InspectorsPane(
-                            state = state,
-                            isVisible = state.isInspectorPanelVisible,
-                            inspectorTabs = inspectorTabs,
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
                         ) {
-                            ContentSection(
+                            InspectorsPane(
                                 state = state,
-                                screenSizes = screenSizes,
-                                graphicsLayer = contentGraphicsLayer,
-                                content = content,
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .zIndex(-1f),
-                            )
+                                isVisible = state.isInspectorPanelVisible,
+                                inspectorTabs = inspectorTabs,
+                            ) {
+                                ContentSection(
+                                    state = state,
+                                    screenSizes = screenSizes,
+                                    graphicsLayer = contentGraphicsLayer,
+                                    content = content,
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .zIndex(-1f),
+                                )
+                            }
                         }
                     }
                 }
-            }
 
-            Toaster(
-                state = toaster,
-                maxVisibleToasts = 10,
-                showCloseButton = true,
-                toastBox = { toast, toastContent ->
-                    Box(Modifier.testTag(toast.message.toString())) {
-                        toastContent()
-                    }
-                },
-            )
+                ToastHost(
+                    state = toastHostState,
+                    maxVisibleToasts = 10,
+                )
+            }
         }
     }
 
     @Composable
     private fun Providers(
         state: PreviewLabState,
-        toaster: ToasterState,
+        toastHostState: ToastHostState,
         captureScreenshot: suspend () -> androidx.compose.ui.graphics.ImageBitmap?,
         content: @Composable () -> Unit,
     ) {
@@ -568,7 +563,7 @@ open class PreviewLab(
                 PreviewLabTheme {
                     CompositionLocalProvider(
                         LocalEnforcePreviewLabState provides state,
-                        LocalToaster provides toaster,
+                        LocalToastHostState provides toastHostState,
                         LocalCaptureScreenshot provides captureScreenshot,
                         LocalUrlParams provides urlParams,
                     ) {
@@ -603,7 +598,7 @@ open class PreviewLab(
 
 @VisibleForTesting
 val LocalEnforcePreviewLabState = compositionLocalOf<PreviewLabState?> { null }
-internal val LocalToaster = compositionLocalOf<ToasterState> { error("No ToasterState") }
+internal val LocalToastHostState = compositionLocalOf<ToastHostState> { error("No ToastHostState") }
 
 @Composable
 private fun ContentSection(

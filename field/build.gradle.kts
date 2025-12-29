@@ -68,7 +68,6 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.ui)
             implementation(compose.components.uiToolingPreview)
-            implementation(libs.dokar3Sonner)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))

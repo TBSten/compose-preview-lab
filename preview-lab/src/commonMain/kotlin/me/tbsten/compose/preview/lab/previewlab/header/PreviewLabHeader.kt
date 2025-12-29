@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.movableContentOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,6 +35,8 @@ internal fun PreviewLabHeader(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
+    val content = remember(content) { movableContentOf { content() } }
+
     Column(modifier = modifier.clip(RectangleShape)) {
         if (isHeaderShow) {
             Row(
