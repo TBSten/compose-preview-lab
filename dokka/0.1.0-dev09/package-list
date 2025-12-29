@@ -30,6 +30,7 @@ me.tbsten.compose.preview.lab.ui.components.card
 me.tbsten.compose.preview.lab.ui.components.colorpicker
 me.tbsten.compose.preview.lab.ui.components.textfield
 me.tbsten.compose.preview.lab.ui.components.textfield.base
+me.tbsten.compose.preview.lab.ui.components.toast
 me.tbsten.compose.preview.lab.ui.foundation
 me.tbsten.compose.preview.lab.ui.generated.resources
 me.tbsten.compose.preview.lab.ui.util
