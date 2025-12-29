@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -42,8 +43,29 @@ import org.jetbrains.compose.resources.painterResource
 @OptIn(ExperimentalTime::class)
 @Composable
 internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: PreviewLabEvent?, onClear: () -> Unit) {
+    val listState = rememberLazyListState()
+
+    // Scroll to new event when added
+    LaunchedEffect(events.size) {
+        if (events.isNotEmpty()) {
+            // +1 for stickyHeader offset
+            listState.animateScrollToItem(events.size)
+        }
+    }
+
+    // Scroll to selected event
+    LaunchedEffect(selectedEvent) {
+        if (selectedEvent != null) {
+            val index = events.indexOf(selectedEvent)
+            if (index >= 0) {
+                // +1 for stickyHeader offset
+                listState.animateScrollToItem(index + 1)
+            }
+        }
+    }
+
     SelectionContainer {
-        LazyColumn {
+        LazyColumn(state = listState) {
             stickyHeader {
                 CommonListHeader(
                     title = "${events.size} items",
