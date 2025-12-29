@@ -1,6 +1,9 @@
 package me.tbsten.compose.preview.lab.previewlab.inspectorspane
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,14 +17,18 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlin.time.Clock
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import me.tbsten.compose.preview.lab.PreviewLabEvent
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.CommonIconButton
@@ -60,8 +67,21 @@ internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: Prev
 
             items(events, key = { it.createAt }) { event ->
                 Column(modifier = Modifier.animateItem()) {
+                    val coroutineScope = rememberCoroutineScope()
                     var showDetail by remember { mutableStateOf(false) }
                     var now by remember { mutableStateOf(Clock.System.now().epochSeconds) }
+                    var isHighlighted by remember { mutableStateOf(false) }
+
+                    val highlightColor by animateColorAsState(
+                        targetValue = if (isHighlighted) {
+                            PreviewLabTheme.colors.primary.copy(alpha = 0.2f)
+                        } else {
+                            Color.Transparent
+                        },
+                        animationSpec = tween(durationMillis = 300),
+                        label = "highlight",
+                    )
+
                     LaunchedEffect(Unit) {
                         while (true) {
                             delay(1.seconds)
@@ -69,13 +89,26 @@ internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: Prev
                         }
                     }
                     LaunchedEffect(selectedEvent == event) {
-                        showDetail = selectedEvent == event
+                        if (selectedEvent == event) {
+                            isHighlighted = true
+                            showDetail = true
+                            delay(800.milliseconds)
+                            isHighlighted = false
+                        }
                     }
 
                     Column(
                         verticalArrangement = Arrangement.spacedBy(4.dp),
                         modifier = Modifier
-                            .clickable { showDetail = !showDetail }
+                            .background(highlightColor)
+                            .clickable {
+                                showDetail = !showDetail
+                                coroutineScope.launch {
+                                    isHighlighted = true
+                                    delay(800.milliseconds)
+                                    isHighlighted = false
+                                }
+                            }
                             .padding(12.dp)
                             .fillMaxWidth()
                             .animateItem(),
