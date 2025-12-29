@@ -70,7 +70,8 @@ internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: Prev
                     val coroutineScope = rememberCoroutineScope()
                     var showDetail by remember { mutableStateOf(false) }
                     var now by remember { mutableStateOf(Clock.System.now().epochSeconds) }
-                    var isHighlighted by remember { mutableStateOf(false) }
+                    // Start highlighted for new items
+                    var isHighlighted by remember { mutableStateOf(true) }
 
                     val highlightColor by animateColorAsState(
                         targetValue = if (isHighlighted) {
@@ -82,6 +83,11 @@ internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: Prev
                         label = "highlight",
                     )
 
+                    // Fade out highlight after initial display
+                    LaunchedEffect(Unit) {
+                        delay(800.milliseconds)
+                        isHighlighted = false
+                    }
                     LaunchedEffect(Unit) {
                         while (true) {
                             delay(1.seconds)
