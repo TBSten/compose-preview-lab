@@ -48,13 +48,8 @@ internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: Prev
     // Scroll to new event when added
     LaunchedEffect(events.size) {
         if (events.isNotEmpty()) {
-            // Wait for item to be laid out before scrolling
-            delay(50.milliseconds)
             // +1 for stickyHeader offset
-            listState.animateScrollToItem(
-                index = events.size,
-                scrollOffset = 0,
-            )
+            listState.animateScrollToItem(events.size)
         }
     }
 
@@ -63,13 +58,8 @@ internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: Prev
         if (selectedEvent != null) {
             val index = events.indexOf(selectedEvent)
             if (index >= 0) {
-                // Wait a bit to ensure smooth animation
-                delay(50.milliseconds)
                 // +1 for stickyHeader offset
-                listState.animateScrollToItem(
-                    index = index + 1,
-                    scrollOffset = 0,
-                )
+                listState.animateScrollToItem(index + 1)
             }
         }
     }
