@@ -30,10 +30,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import me.tbsten.compose.preview.lab.ui.components.toast.ToastAction
-import me.tbsten.compose.preview.lab.ui.components.toast.ToastHost
-import me.tbsten.compose.preview.lab.ui.components.toast.ToastHostState
-import me.tbsten.compose.preview.lab.ui.components.toast.rememberToastHostState
 import me.tbsten.compose.preview.lab.LocalIsInPreviewLabGalleryCardBody
 import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.field.ScreenSizeField
@@ -42,6 +38,10 @@ import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorsPane
 import me.tbsten.compose.preview.lab.previewlab.screenshot.LocalCaptureScreenshot
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.toast.ToastAction
+import me.tbsten.compose.preview.lab.ui.components.toast.ToastHost
+import me.tbsten.compose.preview.lab.ui.components.toast.ToastHostState
+import me.tbsten.compose.preview.lab.ui.components.toast.rememberToastHostState
 import me.tbsten.compose.preview.lab.ui.util.toDpOffset
 
 /**
@@ -508,43 +508,45 @@ open class PreviewLab(
         }
 
         Providers(state = state, toastHostState = toastHostState, captureScreenshot = captureScreenshot) {
-            Column(modifier = modifier.background(PreviewLabTheme.colors.background)) {
-                PreviewLabHeader(
-                    state = state,
-                    isHeaderShow = isHeaderShow,
-                    scale = state.contentScale,
-                    onScaleChange = { state.contentScale = it },
-                    isInspectorPanelVisible = state.isInspectorPanelVisible,
-                    onIsInspectorPanelVisibleToggle = { state.isInspectorPanelVisible = !state.isInspectorPanelVisible },
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
+            Box {
+                Column(modifier = modifier.background(PreviewLabTheme.colors.background)) {
+                    PreviewLabHeader(
+                        state = state,
+                        isHeaderShow = isHeaderShow,
+                        scale = state.contentScale,
+                        onScaleChange = { state.contentScale = it },
+                        isInspectorPanelVisible = state.isInspectorPanelVisible,
+                        onIsInspectorPanelVisibleToggle = { state.isInspectorPanelVisible = !state.isInspectorPanelVisible },
                     ) {
-                        InspectorsPane(
-                            state = state,
-                            isVisible = state.isInspectorPanelVisible,
-                            inspectorTabs = inspectorTabs,
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
                         ) {
-                            ContentSection(
+                            InspectorsPane(
                                 state = state,
-                                screenSizes = screenSizes,
-                                graphicsLayer = contentGraphicsLayer,
-                                content = content,
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .zIndex(-1f),
-                            )
+                                isVisible = state.isInspectorPanelVisible,
+                                inspectorTabs = inspectorTabs,
+                            ) {
+                                ContentSection(
+                                    state = state,
+                                    screenSizes = screenSizes,
+                                    graphicsLayer = contentGraphicsLayer,
+                                    content = content,
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .zIndex(-1f),
+                                )
+                            }
                         }
                     }
                 }
-            }
 
-            ToastHost(
-                state = toastHostState,
-                maxVisibleToasts = 10,
-            )
+                ToastHost(
+                    state = toastHostState,
+                    maxVisibleToasts = 10,
+                )
+            }
         }
     }
 

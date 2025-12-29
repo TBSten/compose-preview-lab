@@ -3,8 +3,8 @@ package me.tbsten.compose.preview.lab.ui.components.toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -50,8 +50,8 @@ fun ToastItem(toast: ToastData, onDismiss: () -> Unit, modifier: Modifier = Modi
 
     AnimatedVisibility(
         visible = isVisible,
-        enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
-        exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
+        enter = scaleIn(initialScale = 0.9f) + fadeIn(),
+        exit = scaleOut(targetScale = 0.9f) + fadeOut(),
         modifier = modifier.testTag("toast_${toast.id}"),
     ) {
         val containerColor = ToastDefaults.containerColor(toast.type)
