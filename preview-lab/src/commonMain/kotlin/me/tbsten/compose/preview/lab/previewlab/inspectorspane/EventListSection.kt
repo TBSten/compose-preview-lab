@@ -121,7 +121,8 @@ internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: Prev
                             now = Clock.System.now().epochSeconds
                         }
                     }
-                    LaunchedEffect(selectedEvent == event) {
+                    // Only highlight when selectedEvent changes to this event
+                    LaunchedEffect(selectedEvent) {
                         if (selectedEvent == event) {
                             isHighlighted = true
                             showDetail = true
