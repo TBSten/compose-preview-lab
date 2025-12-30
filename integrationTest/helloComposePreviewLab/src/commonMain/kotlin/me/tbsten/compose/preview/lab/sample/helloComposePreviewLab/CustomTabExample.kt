@@ -24,7 +24,7 @@ import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 /**
  * Example of a custom inspector tab implementation.

@@ -8,7 +8,7 @@ import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 import me.tbsten.compose.preview.lab.field.ModifierField
 import me.tbsten.compose.preview.lab.field.mark
 import me.tbsten.compose.preview.lab.field.modifier.ModifierFieldValue
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Preview
 @ComposePreviewLabOption(id = "ModifierFieldExample")

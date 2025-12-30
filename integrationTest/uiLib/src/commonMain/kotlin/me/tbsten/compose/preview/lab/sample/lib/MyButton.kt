@@ -10,7 +10,7 @@ import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.gallery.LocalPreviewLabGalleryNavigator
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.gallery.navigateOr
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun MyButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {

@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.field.SelectableField
 import me.tbsten.compose.preview.lab.sample.component.previewLab
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @ComposePreviewLabOption(id = "FieldSelectable")
 @Preview
