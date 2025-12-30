@@ -30,7 +30,7 @@ import me.tbsten.compose.preview.lab.ui.components.RadioButtonDefaults.RadioButt
 import me.tbsten.compose.preview.lab.ui.components.RadioButtonDefaults.RadioSelectedStrokeWidth
 import me.tbsten.compose.preview.lab.ui.components.RadioButtonDefaults.RadioStrokeWidth
 import me.tbsten.compose.preview.lab.ui.foundation.ripple
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun RadioButton(
