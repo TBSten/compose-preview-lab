@@ -14,10 +14,6 @@ class PreviewLabMcpServer internal constructor(
         ktorServer.start(wait = false)
     }
 
-    fun updateFeaturedFileList(featuredFileList: Map<String, List<String>>) {
-        /* TODO */
-    }
-
     fun updateState(state: PreviewLabGalleryState) {
         /* TODO */
     }
