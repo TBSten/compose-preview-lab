@@ -163,6 +163,13 @@ interface InspectorTab {
         /**
          * Default built-in tabs: Fields and Events
          */
-        val defaults: List<InspectorTab> = listOf(Fields, Events)
+        val defaults by lazy { DefaultInspectorTabs }
     }
 }
+
+internal expect val DefaultInspectorTabs: List<InspectorTab>
+
+internal val SharedDefaultInspectorTabs = listOf(
+    InspectorTab.Fields,
+    InspectorTab.Events,
+).also { println("commonMain SharedDefaultInspectorTabs") }

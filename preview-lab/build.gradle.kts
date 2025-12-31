@@ -67,6 +67,13 @@ kotlin {
             it.get().dependsOn(otherWeb)
         }
 
+        val otherDesktop by creating {
+            dependsOn(commonMain.get())
+        }
+        listOf(androidMain, iosMain, webMain).forEach {
+            it.get().dependsOn(otherDesktop)
+        }
+
         commonMain.dependencies {
             api(projects.core)
             api(projects.ui)
@@ -135,6 +142,6 @@ publishConvention {
     artifactId = "preview-lab"
     description =
         "A component catalog library that collects and lists @Preview. \n" +
-        "By providing APIs such as Field, Event, etc., it provides not only display but also interactive preview.\n" +
-        "preview-lab provides <TODO>"
+            "By providing APIs such as Field, Event, etc., it provides not only display but also interactive preview.\n" +
+            "preview-lab provides <TODO>"
 }

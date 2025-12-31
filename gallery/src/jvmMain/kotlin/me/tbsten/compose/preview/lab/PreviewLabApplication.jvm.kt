@@ -2,6 +2,7 @@ package me.tbsten.compose.preview.lab
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.key.KeyEvent
@@ -15,6 +16,7 @@ import java.util.Collections.emptyMap
 import me.tbsten.compose.preview.lab.gallery.PreviewLabGallery
 import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
 import me.tbsten.compose.preview.lab.gallery.PreviewListGrid
+import me.tbsten.compose.preview.lab.previewlab.LocalComposeWindow
 import me.tbsten.compose.preview.lab.previewlab.openfilehandler.OpenFileHandler
 import me.tbsten.compose.preview.lab.ui.adaptive
 
@@ -117,12 +119,16 @@ fun ApplicationScope.PreviewLabGalleryWindows(
         onPreviewKeyEvent = onPreviewKeyEvent,
         onKeyEvent = onKeyEvent,
     ) {
-        PreviewLabGallery(
-            previewList = previewList,
-            featuredFileList = featuredFileList,
-            openFileHandler = openFileHandler,
-            state = state,
-            noSelectedContents = noSelectedContents,
-        )
+        CompositionLocalProvider(
+            LocalComposeWindow provides window,
+        ) {
+            PreviewLabGallery(
+                previewList = previewList,
+                featuredFileList = featuredFileList,
+                openFileHandler = openFileHandler,
+                state = state,
+                noSelectedContents = noSelectedContents,
+            )
+        }
     }
 }
