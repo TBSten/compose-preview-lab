@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.ktor)
     alias(libs.plugins.conventionFormat)
     alias(libs.plugins.conventionPublish)
 }
@@ -86,6 +87,9 @@ kotlin {
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
+            implementation(libs.ktor.server.core)
+            implementation(libs.ktor.server.cio)
+            implementation(libs.mcp.kotlin.sdk)
         }
     }
 }

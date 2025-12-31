@@ -22,6 +22,8 @@ kotest = "6.0.5"
 kotlinxCoroutines = "1.10.1"
 filekit = "0.12.0"
 buildkonfig = "0.17.1"
+ktor = "3.3.3"
+mcp = "0.8.1"
 
 [libraries]
 
@@ -45,6 +47,10 @@ kotestRunnerJunit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = 
 kotlinxCoroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 filekitCore = { module = "io.github.vinceglb:filekit-core", version.ref = "filekit" }
 filekitDialogs = { module = "io.github.vinceglb:filekit-dialogs", version.ref = "filekit" }
+
+ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
+ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
+mcp-kotlin-sdk = { module = "io.modelcontextprotocol:kotlin-sdk", version.ref = "mcp" }
 
 androidxLifecycleViewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 androidxLifecycleRuntimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
@@ -71,3 +77,4 @@ ktlintGradle = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGrad
 conventionFormat = { id = "convention-format", version = "unspecified" }
 conventionPublish = { id = "convention-publish", version = "unspecified" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
+ktor = { id = "io.ktor.plugin", version.ref = "ktor" }

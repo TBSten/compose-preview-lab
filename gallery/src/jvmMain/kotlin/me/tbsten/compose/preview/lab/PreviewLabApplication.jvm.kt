@@ -15,6 +15,8 @@ import java.util.Collections.emptyMap
 import me.tbsten.compose.preview.lab.gallery.PreviewLabGallery
 import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
 import me.tbsten.compose.preview.lab.gallery.PreviewListGrid
+import me.tbsten.compose.preview.lab.mcp.PreviewLabMcpServerConfig
+import me.tbsten.compose.preview.lab.mcp.ProvideMcpServer
 import me.tbsten.compose.preview.lab.previewlab.openfilehandler.OpenFileHandler
 import me.tbsten.compose.preview.lab.ui.adaptive
 
@@ -86,7 +88,8 @@ fun ApplicationScope.PreviewLabGalleryWindows(
             contentPadding = PaddingValues(adaptive(12.dp, 20.dp)),
         )
     },
-    // Window arguments
+    mcpServerConfig: PreviewLabMcpServerConfig = PreviewLabMcpServerConfig(),
+    // Main window arguments
     // TODO: Review appropriate default values
     windowState: WindowState = rememberWindowState(size = DpSize(1000.dp, 800.dp)),
     onCloseRequest: () -> Unit = ::exitApplication,
@@ -102,27 +105,29 @@ fun ApplicationScope.PreviewLabGalleryWindows(
     onPreviewKeyEvent: (KeyEvent) -> Boolean = { false },
     onKeyEvent: (KeyEvent) -> Boolean = { false },
 ) {
-    Window(
-        onCloseRequest = onCloseRequest,
-        state = windowState,
-        visible = visible,
-        title = title,
-        icon = icon,
-        undecorated = undecorated,
-        transparent = transparent,
-        resizable = resizable,
-        enabled = enabled,
-        focusable = focusable,
-        alwaysOnTop = alwaysOnTop,
-        onPreviewKeyEvent = onPreviewKeyEvent,
-        onKeyEvent = onKeyEvent,
-    ) {
-        PreviewLabGallery(
-            previewList = previewList,
-            featuredFileList = featuredFileList,
-            openFileHandler = openFileHandler,
-            state = state,
-            noSelectedContents = noSelectedContents,
-        )
+    ProvideMcpServer(mcpServerConfig) {
+        Window(
+            onCloseRequest = onCloseRequest,
+            state = windowState,
+            visible = visible,
+            title = title,
+            icon = icon,
+            undecorated = undecorated,
+            transparent = transparent,
+            resizable = resizable,
+            enabled = enabled,
+            focusable = focusable,
+            alwaysOnTop = alwaysOnTop,
+            onPreviewKeyEvent = onPreviewKeyEvent,
+            onKeyEvent = onKeyEvent,
+        ) {
+            PreviewLabGallery(
+                previewList = previewList,
+                featuredFileList = featuredFileList,
+                openFileHandler = openFileHandler,
+                state = state,
+                noSelectedContents = noSelectedContents,
+            )
+        }
     }
 }
