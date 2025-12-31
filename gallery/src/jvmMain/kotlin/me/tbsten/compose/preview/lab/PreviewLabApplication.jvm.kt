@@ -105,7 +105,12 @@ fun ApplicationScope.PreviewLabGalleryWindows(
     onPreviewKeyEvent: (KeyEvent) -> Boolean = { false },
     onKeyEvent: (KeyEvent) -> Boolean = { false },
 ) {
-    ProvideMcpServer(mcpServerConfig) {
+    ProvideMcpServer(
+        previewList = previewList,
+        featuredFileList = featuredFileList,
+        state = state,
+        config = mcpServerConfig,
+    ) {
         Window(
             onCloseRequest = onCloseRequest,
             state = windowState,

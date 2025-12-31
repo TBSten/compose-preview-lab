@@ -1,40 +1,73 @@
 package me.tbsten.compose.preview.lab.mcp
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer
 import io.modelcontextprotocol.kotlin.sdk.server.Server
 import io.modelcontextprotocol.kotlin.sdk.server.ServerOptions
 import io.modelcontextprotocol.kotlin.sdk.server.mcp
 import io.modelcontextprotocol.kotlin.sdk.types.Implementation
-import io.modelcontextprotocol.kotlin.sdk.types.ReadResourceResult
 import io.modelcontextprotocol.kotlin.sdk.types.ServerCapabilities
 import io.modelcontextprotocol.kotlin.sdk.types.ServerCapabilities.Prompts
 import io.modelcontextprotocol.kotlin.sdk.types.ServerCapabilities.Resources
-import io.modelcontextprotocol.kotlin.sdk.types.TextResourceContents
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
+import me.tbsten.compose.preview.lab.PreviewLabPreview
+import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
 
 @Composable
 internal fun ProvideMcpServer(
-    mcpServerConfig: PreviewLabMcpServerConfig = PreviewLabMcpServerConfig(),
+    previewList: List<PreviewLabPreview>?,
+    featuredFileList: Map<String, List<String>>?,
+    state: PreviewLabGalleryState?,
+    config: PreviewLabMcpServerConfig = PreviewLabMcpServerConfig(),
     content: @Composable () -> Unit,
 ) {
     var server by remember { mutableStateOf<PreviewLabMcpServer?>(null) }
+    val coroutineScope = rememberCoroutineScope()
 
-    DisposableEffect(mcpServerConfig) {
-        server = startPreviewLabMcpServer(mcpServerConfig)
+    DisposableEffect(config) {
+        server = startPreviewLabMcpServer(config)
+        coroutineScope.launch {
+            previewList?.let { previewList ->
+                snapshotFlow { previewList }
+                    .distinctUntilChanged()
+                    .collect { server?.updatePreviewList(it) }
+            }
+        }
+
+        coroutineScope.launch {
+            featuredFileList?.let { featuredFileList ->
+                snapshotFlow { featuredFileList }
+                    .distinctUntilChanged()
+                    .collect { server?.updateFeaturedFileList(it) }
+            }
+        }
+
+        coroutineScope.launch {
+            state?.let { state ->
+                snapshotFlow { state }
+                    .distinctUntilChanged()
+                    .collect { server?.updateState(it) }
+            }
+        }
 
         onDispose {
             server?.stop()
         }
     }
 
-    // TODO Provide
-    content()
+    CompositionLocalProvider(LocalPreviewLabMcpServer provides server) {
+        content()
+    }
 }
 
 private fun startPreviewLabMcpServer(config: PreviewLabMcpServerConfig): PreviewLabMcpServer? = runCatching {
@@ -86,20 +119,4 @@ private fun createMcpServer(config: PreviewLabMcpServerConfig): Server = Server(
 }
 
 private fun Server.applyDefaultPreviewLabServerSetting() {
-    addResource(
-        uri = "$McpBaseUrl/example",
-        name = "Example Resource",
-        description = """TODO """.repeat(10),
-        mimeType = "text/plain",
-    ) { request ->
-        ReadResourceResult(
-            contents = listOf(
-                TextResourceContents(
-                    text = "meta=${request.meta?.json}",
-                    uri = request.uri,
-                    mimeType = "text/plain",
-                ),
-            ),
-        )
-    }
 }
