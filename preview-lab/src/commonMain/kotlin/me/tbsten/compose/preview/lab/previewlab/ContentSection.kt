@@ -21,6 +21,7 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -35,6 +36,9 @@ import me.tbsten.compose.preview.lab.ui.util.toDpOffset
 @VisibleForTesting
 val LocalEnforcePreviewLabState = compositionLocalOf<PreviewLabState?> { null }
 internal val LocalToastHostState = compositionLocalOf<ToastHostState> { error("No ToastHostState") }
+
+/** Test tag of the node wrapping the preview content (`PreviewLab { ... }` body). */
+internal const val PreviewLabContentTestTag: String = "PreviewLab.content"
 
 @Composable
 internal fun ContentSection(
@@ -111,7 +115,9 @@ internal fun ContentSection(
                     .onPlaced {
                         state.contentRootOffsetInAppRoot =
                             it.positionInRoot().toDpOffset(density)
-                    },
+                    }
+                    // Lets the Layout and Semantics inspector tab locate the preview content root.
+                    .testTag(PreviewLabContentTestTag),
             ) {
                 content(state.scope)
             }
