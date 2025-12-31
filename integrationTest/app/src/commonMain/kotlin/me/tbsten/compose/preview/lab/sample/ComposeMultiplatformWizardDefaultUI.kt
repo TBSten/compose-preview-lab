@@ -147,7 +147,7 @@ internal fun ComposeMultiplatformWizardDefaultUI(isRotating: Boolean, onIsRotati
 @Preview
 @Composable
 private fun ComposeMultiplatformWizardDefaultUIPreview() = PreviewLab {
-    var isRotating by fieldState { BooleanField("is", false) }
+    var isRotating by fieldState { BooleanField("isRotating", false) }
 
     ComposeMultiplatformWizardDefaultUI(
         isRotating = isRotating,
