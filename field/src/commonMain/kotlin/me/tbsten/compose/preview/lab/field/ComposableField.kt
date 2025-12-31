@@ -25,7 +25,7 @@ import me.tbsten.compose.preview.lab.ui.LocalTextStyle
 import me.tbsten.compose.preview.lab.ui.components.SelectButton
 import me.tbsten.compose.preview.lab.ui.util.thenIf
 import me.tbsten.compose.preview.lab.ui.util.thenIfNotNull
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 
 /**
  * A field that allows selecting from predefined Composable content options.

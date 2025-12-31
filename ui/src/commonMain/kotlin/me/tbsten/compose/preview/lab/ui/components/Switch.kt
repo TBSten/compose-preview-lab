@@ -49,7 +49,7 @@ import me.tbsten.compose.preview.lab.ui.components.SwitchDefaults.TrackBorderWid
 import me.tbsten.compose.preview.lab.ui.components.SwitchDefaults.TrackShape
 import me.tbsten.compose.preview.lab.ui.components.SwitchDefaults.UncheckedThumbSize
 import me.tbsten.compose.preview.lab.ui.foundation.ripple
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 @InternalComposePreviewLabApi

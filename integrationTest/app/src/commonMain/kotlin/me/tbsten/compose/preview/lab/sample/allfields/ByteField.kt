@@ -13,7 +13,7 @@ import me.tbsten.compose.preview.lab.field.ByteField
 import me.tbsten.compose.preview.lab.sample.OnValueChange
 import me.tbsten.compose.preview.lab.sample.SpeechBubbleBox
 import me.tbsten.compose.preview.lab.sample.speechBubble
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 internal enum class ByteFieldExampleSteps {
     EditValue,

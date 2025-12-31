@@ -66,7 +66,7 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.components.resources)
             implementation(compose.ui)
-            implementation(compose.components.uiToolingPreview)
+            implementation("org.jetbrains.compose.ui:ui-tooling-preview:${libs.versions.compose.get()}")
             implementation("org.jetbrains.compose.material:material-ripple:${libs.versions.compose.get()}")
         }
         commonTest.dependencies {

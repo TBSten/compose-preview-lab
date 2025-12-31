@@ -64,7 +64,7 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
+            implementation("org.jetbrains.compose.ui:ui-tooling-preview:${libs.versions.compose.get()}")
             implementation("me.tbsten.compose.preview.lab:starter:${libs.versions.composePreviewLab.get()}")
             implementation(project(":uiLib"))
             implementation(project(":helloComposePreviewLab"))

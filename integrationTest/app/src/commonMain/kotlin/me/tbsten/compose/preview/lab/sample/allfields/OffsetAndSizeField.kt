@@ -25,7 +25,7 @@ import me.tbsten.compose.preview.lab.field.DpSizeField
 import me.tbsten.compose.preview.lab.field.OffsetField
 import me.tbsten.compose.preview.lab.field.SizeField
 import me.tbsten.compose.preview.lab.previewlab.PreviewLab
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Preview
 @ComposePreviewLabOption(id = "OffsetAndSizeFieldExample")

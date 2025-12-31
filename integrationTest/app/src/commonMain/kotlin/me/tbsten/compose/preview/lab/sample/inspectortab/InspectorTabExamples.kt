@@ -21,7 +21,7 @@ import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 import me.tbsten.compose.preview.lab.previewlab.field
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 // Docs Tab
 internal object DocsTab : InspectorTab {

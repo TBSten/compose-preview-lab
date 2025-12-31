@@ -217,8 +217,8 @@ public class me/tbsten/compose/preview/lab/field/ComposableField : me/tbsten/com
 
 public final class me/tbsten/compose/preview/lab/field/ComposableFieldKt {
 	public static final fun ComposableFieldValue (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lme/tbsten/compose/preview/lab/field/ComposableFieldValue;
-	public static final fun toField (Lorg/jetbrains/compose/ui/tooling/preview/PreviewParameterProvider;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;)Lme/tbsten/compose/preview/lab/field/SelectableField;
-	public static synthetic fun toField$default (Lorg/jetbrains/compose/ui/tooling/preview/PreviewParameterProvider;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/SelectableField;
+	public static final fun toField (Landroidx/compose/ui/tooling/preview/PreviewParameterProvider;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;)Lme/tbsten/compose/preview/lab/field/SelectableField;
+	public static synthetic fun toField$default (Landroidx/compose/ui/tooling/preview/PreviewParameterProvider;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/SelectableField;
 }
 
 public abstract interface class me/tbsten/compose/preview/lab/field/ComposableFieldValue {
