@@ -13,6 +13,7 @@ import java.io.File
 import java.util.Base64
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.time.ExperimentalTime
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
@@ -23,6 +24,9 @@ import me.tbsten.compose.preview.lab.PreviewLabEvent
 import me.tbsten.compose.preview.lab.PreviewLabField
 import me.tbsten.compose.preview.lab.mcp.util.ToolArgsParser
 import me.tbsten.compose.preview.lab.mcp.util.json
+import me.tbsten.compose.preview.lab.mcp.util.notifyResourceListChanged
+import me.tbsten.compose.preview.lab.mcp.util.notifyResourceUpdated
+import me.tbsten.compose.preview.lab.mcp.util.notifyToolListChanged
 import me.tbsten.compose.preview.lab.mcp.util.putResource
 import org.jetbrains.skia.EncodedImageFormat
 import org.jetbrains.skia.Image
@@ -43,7 +47,7 @@ internal class PreviewLabMcpState(
  * Manager for PreviewLab MCP state.
  * Stores all preview states and provides static resources/tools to access them.
  */
-internal class PreviewLabMcpStateManager(private val server: Server) {
+internal class PreviewLabMcpStateManager(private val server: Server, private val scope: CoroutineScope,) {
     private val states = ConcurrentHashMap<String, PreviewLabMcpState>()
     private var toolsRegistered = false
     private var listResourceRegistered = false
@@ -55,12 +59,19 @@ internal class PreviewLabMcpStateManager(private val server: Server) {
         ensureListResourceRegistered()
         if (isNewPreview) {
             registerPreviewResources(state.previewId)
+            server.notifyResourceListChanged(scope)
+        } else {
+            // Existing preview updated - notify resource updated
+            val baseUrl = "$McpBaseUrl/preview-lab"
+            server.notifyResourceUpdated("$baseUrl/${state.previewId}/fields", scope)
+            server.notifyResourceUpdated("$baseUrl/${state.previewId}/events", scope)
         }
     }
 
     fun removeState(previewId: String) {
         states.remove(previewId)
         unregisterPreviewResources(previewId)
+        server.notifyResourceListChanged(scope)
     }
 
     fun getState(previewId: String): PreviewLabMcpState? = states[previewId]
@@ -72,12 +83,14 @@ internal class PreviewLabMcpStateManager(private val server: Server) {
         if (toolsRegistered) return
         toolsRegistered = true
         registerTools()
+        server.notifyToolListChanged(scope)
     }
 
     private fun ensureListResourceRegistered() {
         if (listResourceRegistered) return
         listResourceRegistered = true
         registerListResource()
+        server.notifyResourceListChanged(scope)
     }
 
     private fun registerListResource() {
