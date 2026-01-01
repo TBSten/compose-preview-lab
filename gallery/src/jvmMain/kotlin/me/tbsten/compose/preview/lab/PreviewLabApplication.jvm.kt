@@ -69,11 +69,16 @@ import me.tbsten.compose.preview.lab.ui.adaptive
  * @param enabled Whether the window is enabled for user interaction
  * @param focusable Whether the window can receive focus
  * @param alwaysOnTop Whether the window should stay on top of other windows
+ * @param noSelectedContents Content to display when no preview is selected
+ * @param mcpServerConfig Configuration for the MCP server (experimental feature).
+ *   The MCP server allows AI assistants to interact with previews.
+ *   Use [PreviewLabMcpServerConfig.Disable] to disable the MCP server.
  * @param onPreviewKeyEvent Callback for preview key events
  * @param onKeyEvent Callback for key events
  * @see me.tbsten.compose.preview.lab.gallery.PreviewLabGallery
  * @see CollectedPreview
  * @see OpenFileHandler
+ * @see PreviewLabMcpServerConfig
  */
 @Composable
 fun ApplicationScope.PreviewLabGalleryWindows(
