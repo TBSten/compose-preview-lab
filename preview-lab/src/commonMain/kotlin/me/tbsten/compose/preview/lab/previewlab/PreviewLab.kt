@@ -13,9 +13,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.TransformOrigin
@@ -30,12 +33,17 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import kotlinx.serialization.json.Json
+import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.LocalIsInPreviewLabGalleryCardBody
+import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
+import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.field.ScreenSizeField
 import me.tbsten.compose.preview.lab.previewlab.header.PreviewLabHeader
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorsPane
+import me.tbsten.compose.preview.lab.previewlab.mcp.LocalPreviewLabMcpBridge
 import me.tbsten.compose.preview.lab.previewlab.screenshot.LocalCaptureScreenshot
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.toast.ToastAction
@@ -550,6 +558,7 @@ open class PreviewLab(
         }
     }
 
+    @OptIn(ExperimentalComposePreviewLabApi::class)
     @Composable
     private fun Providers(
         state: PreviewLabState,
@@ -558,6 +567,19 @@ open class PreviewLab(
         content: @Composable () -> Unit,
     ) {
         val urlParams = rememberUrlParams()
+        val mcpBridge = LocalPreviewLabMcpBridge.current
+        val previewId = LocalPreviewLabPreview.current?.id
+
+        // Notify MCP bridge of state changes (only if previewId is available)
+        if (previewId != null) {
+            McpBridgeEffect(
+                mcpBridge = mcpBridge,
+                previewId = previewId,
+                state = state,
+                captureScreenshot = captureScreenshot,
+            )
+        }
+
         DisableSelection {
             contentRoot {
                 PreviewLabTheme {
@@ -689,5 +711,69 @@ fun rememberPreviewLabStateFromUrl(): PreviewLabState {
         PreviewLabState(
             initialContentScale = urlParams["contentScale"]?.toFloatOrNull() ?: 1f,
         )
+    }
+}
+
+private val mcpBridgeJson = Json {
+    ignoreUnknownKeys = true
+    isLenient = true
+}
+
+/**
+ * Effect that notifies the MCP bridge of PreviewLab state changes.
+ */
+@OptIn(ExperimentalComposePreviewLabApi::class)
+@Composable
+private fun McpBridgeEffect(
+    mcpBridge: me.tbsten.compose.preview.lab.previewlab.mcp.PreviewLabMcpBridge,
+    previewId: String,
+    state: PreviewLabState,
+    captureScreenshot: suspend () -> androidx.compose.ui.graphics.ImageBitmap?,
+) {
+    // Notify MCP bridge when fields or events change
+    LaunchedEffect(mcpBridge, previewId, state) {
+        snapshotFlow { state.fields.toList() to state.events.toList() }
+            .collect { (fields, events) ->
+                mcpBridge.updateState(
+                    previewId = previewId,
+                    fields = fields,
+                    events = events,
+                    captureScreenshot = captureScreenshot,
+                    onUpdateField = { label, serializedValue ->
+                        updateFieldValue(state, label, serializedValue)
+                    },
+                    onClearEvents = {
+                        state.events.clear()
+                    },
+                )
+            }
+    }
+
+    // Remove state when disposed
+    DisposableEffect(mcpBridge, previewId) {
+        onDispose {
+            mcpBridge.removeState(previewId)
+        }
+    }
+}
+
+/**
+ * Updates a field value from a serialized JSON string.
+ */
+@OptIn(ExperimentalComposePreviewLabApi::class)
+@Suppress("UNCHECKED_CAST")
+private fun updateFieldValue(state: PreviewLabState, label: String, serializedValue: String): Boolean {
+    val field = state.fields.find { it.label == label } ?: return false
+    if (field !is MutablePreviewLabField<*>) return false
+
+    val serializer = field.serializer() ?: return false
+
+    return try {
+        val newValue = mcpBridgeJson.decodeFromString(serializer, serializedValue)
+        (field as MutablePreviewLabField<Any?>).value = newValue
+        true
+    } catch (e: Exception) {
+        println("[PreviewLab] Failed to update field '$label': ${e.message}")
+        false
     }
 }

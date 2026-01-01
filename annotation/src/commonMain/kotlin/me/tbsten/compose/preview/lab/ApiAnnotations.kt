@@ -18,6 +18,7 @@ package me.tbsten.compose.preview.lab
     AnnotationTarget.PROPERTY,
     AnnotationTarget.PROPERTY_GETTER,
     AnnotationTarget.PROPERTY_SETTER,
+    AnnotationTarget.VALUE_PARAMETER,
 )
 annotation class ExperimentalComposePreviewLabApi
 

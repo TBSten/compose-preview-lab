@@ -1,6 +1,6 @@
 ---
 title: "[TODO] Recommended App Architecture"
-sidebar_position: 11
+sidebar_position: 12
 ---
 
 :::warning
