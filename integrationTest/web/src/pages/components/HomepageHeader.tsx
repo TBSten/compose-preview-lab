@@ -29,7 +29,7 @@ export default function HomepageHeader() {
           </Link>
           <Link
             className={clsx("button button--lg", styles.heroButtonSecondary)}
-            to="https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/"
+            to="https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/compose-preview-lab-gallery/"
           >
             View Demo 👁️
           </Link>
