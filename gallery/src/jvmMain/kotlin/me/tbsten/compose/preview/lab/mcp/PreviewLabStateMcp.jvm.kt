@@ -47,7 +47,7 @@ internal class PreviewLabMcpState(
  * Manager for PreviewLab MCP state.
  * Stores all preview states and provides static resources/tools to access them.
  */
-internal class PreviewLabMcpStateManager(private val server: Server, private val scope: CoroutineScope,) {
+internal class PreviewLabMcpStateManager(private val server: Server, private val scope: CoroutineScope) {
     private val states = ConcurrentHashMap<String, PreviewLabMcpState>()
     private var toolsRegistered = false
     private var listResourceRegistered = false
@@ -160,10 +160,16 @@ internal class PreviewLabMcpStateManager(private val server: Server, private val
                             text = json.encodeToString(
                                 JsonArray(
                                     state.fields.map { field ->
+                                        val testValues = field.testValues()
                                         buildJsonObject {
                                             put("label", JsonPrimitive(field.label))
                                             put("value", JsonPrimitive(field.value.toString()))
                                             put("isMutable", JsonPrimitive(field is MutablePreviewLabField<*>))
+                                            put("testValuesCount", JsonPrimitive(testValues.size))
+                                            put(
+                                                "testValues",
+                                                JsonArray(testValues.map { JsonPrimitive(it.toString()) }),
+                                            )
                                         }
                                     },
                                 ),
@@ -375,6 +381,7 @@ internal class PreviewLabMcpStateManager(private val server: Server, private val
                                     testValue,
                                 )
                             } catch (e: Exception) {
+                                println("[PreviewLab] Failed to serialize test value '$testValue': ${e.message}")
                                 null
                             }
 
