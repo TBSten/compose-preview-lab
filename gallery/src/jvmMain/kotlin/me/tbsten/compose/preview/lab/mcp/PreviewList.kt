@@ -22,14 +22,14 @@ internal fun Server.updatePreviewList(previewList: List<PreviewLabPreview>, scop
         mimeType = "application/json",
     ) {
         ReadResourceResult(
-            contents = previewList.map { preview ->
+            contents = listOf(
                 TextResourceContents(
-                    uri = preview.uri(),
+                    uri = "$McpBaseUrl/previews",
                     text = json.encodeToString(
                         previewList.map { it.serializeMap(all = false) },
                     ),
-                )
-            },
+                ),
+            ),
         )
     }
 
