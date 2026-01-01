@@ -16,11 +16,14 @@ me.tbsten.compose.preview.lab.field.modifier
 module:gallery
 me.tbsten.compose.preview.lab
 me.tbsten.compose.preview.lab.gallery
+me.tbsten.compose.preview.lab.mcp
+me.tbsten.compose.preview.lab.mcp.util
 module:preview-lab
 me.tbsten.compose.preview.lab.event
 me.tbsten.compose.preview.lab.field
 me.tbsten.compose.preview.lab.previewlab
 me.tbsten.compose.preview.lab.previewlab.inspectorspane
+me.tbsten.compose.preview.lab.previewlab.mcp
 me.tbsten.compose.preview.lab.previewlab.openfilehandler
 module:ui
 me.tbsten.compose.preview.lab.ui
