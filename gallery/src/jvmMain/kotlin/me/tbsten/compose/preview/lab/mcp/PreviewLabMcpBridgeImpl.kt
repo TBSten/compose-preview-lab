@@ -10,11 +10,12 @@ import me.tbsten.compose.preview.lab.previewlab.mcp.PreviewLabMcpBridge
 /**
  * Implementation of [PreviewLabMcpBridge] that connects to an MCP [Server].
  *
- * This implementation registers MCP resources and tools for each PreviewLab instance,
- * allowing external tools to query and manipulate PreviewLab state.
+ * This implementation uses a [PreviewLabMcpStateManager] to manage preview states
+ * and provides static MCP resources and tools that don't change when previews are added or removed.
  */
 @ExperimentalComposePreviewLabApi
-internal class PreviewLabMcpBridgeImpl(private val server: Server,) : PreviewLabMcpBridge {
+internal class PreviewLabMcpBridgeImpl(server: Server) : PreviewLabMcpBridge {
+    private val stateManager = PreviewLabMcpStateManager(server)
 
     override fun updateState(
         previewId: String,
@@ -32,10 +33,10 @@ internal class PreviewLabMcpBridgeImpl(private val server: Server,) : PreviewLab
             onUpdateField = onUpdateField,
             onClearEvents = onClearEvents,
         )
-        server.updatePreviewLabState(mcpState)
+        stateManager.updateState(mcpState)
     }
 
     override fun removeState(previewId: String) {
-        server.removePreviewLabState(previewId)
+        stateManager.removeState(previewId)
     }
 }
