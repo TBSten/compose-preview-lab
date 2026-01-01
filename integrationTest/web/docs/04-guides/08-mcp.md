@@ -20,7 +20,7 @@ Compose Preview Lab は [MCP (Model Context Protocol)](https://modelcontextproto
 MCP Server を使用すると、以下のことが可能です：
 
 - **[PreviewLabGallery](./preview-lab-gallery) の操作**: Preview の選択、検索クエリの変更、比較パネルへの追加
-- **PreviewLab の操作**: [フィールド](./fields/)値の取得・更新、[イベント](./events)の取得・クリア、スクリーンショットの撮影
+- **PreviewLab の操作**: [フィールド](./fields/overview)値の取得・更新、[イベント](./events)の取得・クリア、スクリーンショットの撮影
 
 {/* TODO: MCP Server の概念図 (alt=MCP Server architecture diagram) */}
 
