@@ -13,7 +13,6 @@ import java.util.Base64
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.time.ExperimentalTime
 import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -133,11 +132,11 @@ internal class PreviewLabMcpStateManager(private val server: Server) {
                             text = json.encodeToString(
                                 JsonArray(
                                     state.fields.map { field ->
-                                        mapOf(
-                                            "label" to field.label,
-                                            "value" to field.value.toString(),
-                                            "isMutable" to (field is MutablePreviewLabField<*>),
-                                        ).toJsonElement()
+                                        buildJsonObject {
+                                            put("label", JsonPrimitive(field.label))
+                                            put("value", JsonPrimitive(field.value.toString()))
+                                            put("isMutable", JsonPrimitive(field is MutablePreviewLabField<*>))
+                                        }
                                     },
                                 ),
                             ),
@@ -183,11 +182,11 @@ internal class PreviewLabMcpStateManager(private val server: Server) {
                             text = json.encodeToString(
                                 JsonArray(
                                     state.events.map { event ->
-                                        mapOf(
-                                            "title" to event.title,
-                                            "description" to (event.description ?: ""),
-                                            "createdAt" to event.createAt.toString(),
-                                        ).toJsonElement()
+                                        buildJsonObject {
+                                            put("title", JsonPrimitive(event.title))
+                                            put("description", JsonPrimitive(event.description ?: ""))
+                                            put("createdAt", JsonPrimitive(event.createAt.toString()))
+                                        }
                                     },
                                 ),
                             ),
@@ -492,30 +491,4 @@ private fun ImageBitmap.encodeToBase64Png(): String {
         .encodeToData(EncodedImageFormat.PNG, 100)
         ?: throw IllegalStateException("Failed to encode ImageBitmap to PNG")
     return Base64.getEncoder().encodeToString(data.bytes)
-}
-
-/**
- * Converts a Map to a JsonElement.
- */
-private fun Map<String, Any?>.toJsonElement(): JsonElement = buildJsonObject {
-    forEach { (key, value) ->
-        when (value) {
-            is String -> put(key, JsonPrimitive(value))
-            is Boolean -> put(key, JsonPrimitive(value))
-            is Number -> put(key, JsonPrimitive(value))
-            is List<*> -> put(
-                key,
-                JsonArray(
-                    value.map { item ->
-                        when (item) {
-                            is String -> JsonPrimitive(item)
-                            else -> JsonPrimitive(item.toString())
-                        }
-                    },
-                ),
-            )
-            null -> put(key, kotlinx.serialization.json.JsonNull)
-            else -> put(key, JsonPrimitive(value.toString()))
-        }
-    }
 }
