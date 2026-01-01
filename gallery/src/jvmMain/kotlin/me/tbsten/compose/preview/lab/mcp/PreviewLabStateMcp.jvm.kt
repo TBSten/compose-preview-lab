@@ -9,18 +9,19 @@ import io.modelcontextprotocol.kotlin.sdk.types.ReadResourceResult
 import io.modelcontextprotocol.kotlin.sdk.types.TextContent
 import io.modelcontextprotocol.kotlin.sdk.types.TextResourceContents
 import io.modelcontextprotocol.kotlin.sdk.types.ToolSchema
+import java.io.File
 import java.util.Base64
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.time.ExperimentalTime
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.putJsonObject
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.PreviewLabEvent
 import me.tbsten.compose.preview.lab.PreviewLabField
+import me.tbsten.compose.preview.lab.mcp.util.ToolArgsParser
 import me.tbsten.compose.preview.lab.mcp.util.json
 import me.tbsten.compose.preview.lab.mcp.util.putResource
 import org.jetbrains.skia.EncodedImageFormat
@@ -44,15 +45,22 @@ internal class PreviewLabMcpState(
  */
 internal class PreviewLabMcpStateManager(private val server: Server) {
     private val states = ConcurrentHashMap<String, PreviewLabMcpState>()
-    private var resourcesAndToolsRegistered = false
+    private var toolsRegistered = false
+    private var listResourceRegistered = false
 
     fun updateState(state: PreviewLabMcpState) {
+        val isNewPreview = !states.containsKey(state.previewId)
         states[state.previewId] = state
-        ensureResourcesAndToolsRegistered()
+        ensureToolsRegistered()
+        ensureListResourceRegistered()
+        if (isNewPreview) {
+            registerPreviewResources(state.previewId)
+        }
     }
 
     fun removeState(previewId: String) {
         states.remove(previewId)
+        unregisterPreviewResources(previewId)
     }
 
     fun getState(previewId: String): PreviewLabMcpState? = states[previewId]
@@ -60,16 +68,19 @@ internal class PreviewLabMcpStateManager(private val server: Server) {
     fun getAllStates(): Map<String, PreviewLabMcpState> = states.toMap()
 
     @OptIn(ExperimentalComposePreviewLabApi::class)
-    private fun ensureResourcesAndToolsRegistered() {
-        if (resourcesAndToolsRegistered) return
-        resourcesAndToolsRegistered = true
-
-        registerResources()
+    private fun ensureToolsRegistered() {
+        if (toolsRegistered) return
+        toolsRegistered = true
         registerTools()
     }
 
-    @OptIn(ExperimentalTime::class)
-    private fun registerResources() {
+    private fun ensureListResourceRegistered() {
+        if (listResourceRegistered) return
+        listResourceRegistered = true
+        registerListResource()
+    }
+
+    private fun registerListResource() {
         val baseUrl = "$McpBaseUrl/preview-lab"
 
         // Resource: List all available previews
@@ -95,26 +106,30 @@ internal class PreviewLabMcpStateManager(private val server: Server) {
                 ),
             )
         }
+    }
+
+    @OptIn(ExperimentalComposePreviewLabApi::class, ExperimentalTime::class)
+    private fun registerPreviewResources(previewId: String) {
+        val baseUrl = "$McpBaseUrl/preview-lab"
+        val fieldsUri = "$baseUrl/$previewId/fields"
+        val eventsUri = "$baseUrl/$previewId/events"
 
         // Resource: Get fields for a specific preview
         server.putResource(
-            uri = "$baseUrl/fields",
-            name = "PreviewLab fields",
+            uri = fieldsUri,
+            name = "PreviewLab fields: $previewId",
             description = """
-                Get the list of fields for a specific PreviewLab instance.
-                Use with previewId query parameter (e.g., preview-lab/fields?previewId=xxx).
+                Get the list of fields for PreviewLab instance '$previewId'.
                 Each field includes: label, value (toString), and whether it is mutable.
             """.trimIndent(),
             mimeType = "application/json",
-        ) { request ->
-            val previewId = extractPreviewId(request.params.uri)
-            val state = previewId?.let { states[it] }
-
+        ) {
+            val state = states[previewId]
             if (state == null) {
                 ReadResourceResult(
                     contents = listOf(
                         TextResourceContents(
-                            uri = "$baseUrl/fields",
+                            uri = fieldsUri,
                             text = json.encodeToString(
                                 buildJsonObject {
                                     put("error", JsonPrimitive("Preview not found"))
@@ -128,7 +143,7 @@ internal class PreviewLabMcpStateManager(private val server: Server) {
                 ReadResourceResult(
                     contents = listOf(
                         TextResourceContents(
-                            uri = "$baseUrl/fields",
+                            uri = fieldsUri,
                             text = json.encodeToString(
                                 JsonArray(
                                     state.fields.map { field ->
@@ -148,23 +163,20 @@ internal class PreviewLabMcpStateManager(private val server: Server) {
 
         // Resource: Get events for a specific preview
         server.putResource(
-            uri = "$baseUrl/events",
-            name = "PreviewLab events",
+            uri = eventsUri,
+            name = "PreviewLab events: $previewId",
             description = """
-                Get the list of events for a specific PreviewLab instance.
-                Use with previewId query parameter (e.g., preview-lab/events?previewId=xxx).
+                Get the list of events for PreviewLab instance '$previewId'.
                 Each event includes: title, description, and timestamp.
             """.trimIndent(),
             mimeType = "application/json",
-        ) { request ->
-            val previewId = extractPreviewId(request.params.uri)
-            val state = previewId?.let { states[it] }
-
+        ) {
+            val state = states[previewId]
             if (state == null) {
                 ReadResourceResult(
                     contents = listOf(
                         TextResourceContents(
-                            uri = "$baseUrl/events",
+                            uri = eventsUri,
                             text = json.encodeToString(
                                 buildJsonObject {
                                     put("error", JsonPrimitive("Preview not found"))
@@ -178,7 +190,7 @@ internal class PreviewLabMcpStateManager(private val server: Server) {
                 ReadResourceResult(
                     contents = listOf(
                         TextResourceContents(
-                            uri = "$baseUrl/events",
+                            uri = eventsUri,
                             text = json.encodeToString(
                                 JsonArray(
                                     state.events.map { event ->
@@ -195,6 +207,12 @@ internal class PreviewLabMcpStateManager(private val server: Server) {
                 )
             }
         }
+    }
+
+    private fun unregisterPreviewResources(previewId: String) {
+        val baseUrl = "$McpBaseUrl/preview-lab"
+        server.removeResource("$baseUrl/$previewId/fields")
+        server.removeResource("$baseUrl/$previewId/events")
     }
 
     @OptIn(ExperimentalComposePreviewLabApi::class)
@@ -224,11 +242,13 @@ internal class PreviewLabMcpStateManager(private val server: Server) {
                 required = listOf("previewId", "label", "serializedValue"),
             ),
         ) { request ->
-            val args = request.params.arguments ?: error("No arguments")
-            val previewId = args["previewId"]?.jsonPrimitive?.content ?: error("Missing previewId")
-            val label = args["label"]?.jsonPrimitive?.content ?: error("Missing label")
-            val serializedValue = args["serializedValue"]?.jsonPrimitive?.content
-                ?: error("Missing serializedValue")
+            val parser = ToolArgsParser(request.params.arguments)
+            val previewId = parser.requireString("previewId", "preview ID")
+            val label = parser.requireString("label", "field label")
+            val serializedValue = parser.requireString("serializedValue", "serialized value")
+            parser.errorMessageOrNull()?.let { errorMessage ->
+                return@addTool CallToolResult(content = listOf(TextContent(text = errorMessage)))
+            }
 
             val state = states[previewId]
             if (state == null) {
@@ -281,11 +301,13 @@ internal class PreviewLabMcpStateManager(private val server: Server) {
                 required = listOf("previewId", "label", "testValueIndex"),
             ),
         ) { request ->
-            val args = request.params.arguments ?: error("No arguments")
-            val previewId = args["previewId"]?.jsonPrimitive?.content ?: error("Missing previewId")
-            val label = args["label"]?.jsonPrimitive?.content ?: error("Missing label")
-            val testValueIndex = args["testValueIndex"]?.jsonPrimitive?.content?.toIntOrNull()
-                ?: error("Missing or invalid testValueIndex")
+            val parser = ToolArgsParser(request.params.arguments)
+            val previewId = parser.requireString("previewId", "preview ID")
+            val label = parser.requireString("label", "field label")
+            val testValueIndex = parser.requireInt("testValueIndex", "test value index")
+            parser.errorMessageOrNull()?.let { errorMessage ->
+                return@addTool CallToolResult(content = listOf(TextContent(text = errorMessage)))
+            }
 
             val state = states[previewId]
             if (state == null) {
@@ -376,7 +398,7 @@ internal class PreviewLabMcpStateManager(private val server: Server) {
             name = "Take PreviewLab screenshot",
             description = """
                 Capture a screenshot of the preview content in a PreviewLab instance.
-                Returns the screenshot as a PNG image.
+                Returns the screenshot as a PNG image, or saves it to a file if outputPath is specified.
             """.trimIndent(),
             inputSchema = ToolSchema(
                 properties = buildJsonObject {
@@ -384,12 +406,28 @@ internal class PreviewLabMcpStateManager(private val server: Server) {
                         put("type", JsonPrimitive("string"))
                         put("description", JsonPrimitive("The ID of the preview to capture."))
                     }
+                    putJsonObject("outputPath") {
+                        put("type", JsonPrimitive("string"))
+                        put(
+                            "description",
+                            JsonPrimitive(
+                                "Optional file path to save the screenshot. " +
+                                    "If specified, the screenshot will be saved as a PNG file. " +
+                                    "If not specified, the screenshot will be returned as base64 image data.",
+                            ),
+                        )
+                    }
                 },
                 required = listOf("previewId"),
             ),
         ) { request ->
-            val args = request.params.arguments ?: error("No arguments")
-            val previewId = args["previewId"]?.jsonPrimitive?.content ?: error("Missing previewId")
+            val parser = ToolArgsParser(request.params.arguments)
+            val previewId = parser.requireString("previewId", "preview ID")
+            val outputPath = parser.optionalString("outputPath", "")
+                .ifEmpty { null }
+            parser.errorMessageOrNull()?.let { errorMessage ->
+                return@addTool CallToolResult(content = listOf(TextContent(text = errorMessage)))
+            }
 
             val state = states[previewId]
             if (state == null) {
@@ -403,15 +441,31 @@ internal class PreviewLabMcpStateManager(private val server: Server) {
             } else {
                 val imageBitmap = state.captureScreenshot()
                 if (imageBitmap != null) {
-                    val base64Image = imageBitmap.encodeToBase64Png()
-                    CallToolResult(
-                        content = listOf(
-                            ImageContent(
-                                data = base64Image,
-                                mimeType = "image/png",
+                    if (outputPath != null) {
+                        // Save to file
+                        val pngData = imageBitmap.encodeToPngBytes()
+                        val file = File(outputPath)
+                        file.parentFile?.mkdirs()
+                        file.writeBytes(pngData)
+                        CallToolResult(
+                            content = listOf(
+                                TextContent(
+                                    text = "Screenshot saved to: ${file.absolutePath}",
+                                ),
                             ),
-                        ),
-                    )
+                        )
+                    } else {
+                        // Return as base64
+                        val base64Image = imageBitmap.encodeToBase64Png()
+                        CallToolResult(
+                            content = listOf(
+                                ImageContent(
+                                    data = base64Image,
+                                    mimeType = "image/png",
+                                ),
+                            ),
+                        )
+                    }
                 } else {
                     CallToolResult(
                         content = listOf(
@@ -440,8 +494,11 @@ internal class PreviewLabMcpStateManager(private val server: Server) {
                 required = listOf("previewId"),
             ),
         ) { request ->
-            val args = request.params.arguments ?: error("No arguments")
-            val previewId = args["previewId"]?.jsonPrimitive?.content ?: error("Missing previewId")
+            val parser = ToolArgsParser(request.params.arguments)
+            val previewId = parser.requireString("previewId", "preview ID")
+            parser.errorMessageOrNull()?.let { errorMessage ->
+                return@addTool CallToolResult(content = listOf(TextContent(text = errorMessage)))
+            }
 
             val state = states[previewId]
             if (state == null) {
@@ -464,31 +521,20 @@ internal class PreviewLabMcpStateManager(private val server: Server) {
             }
         }
     }
+}
 
-    /**
-     * Extract previewId from URI query parameter.
-     * Expected format: .../resource?previewId=xxx
-     */
-    private fun extractPreviewId(uri: String): String? {
-        val queryStart = uri.indexOf('?')
-        if (queryStart == -1) return null
-
-        val query = uri.substring(queryStart + 1)
-        return query.split('&')
-            .map { it.split('=', limit = 2) }
-            .find { it.size == 2 && it[0] == "previewId" }
-            ?.get(1)
-            ?.let { java.net.URLDecoder.decode(it, Charsets.UTF_8.name()) }
-    }
+/**
+ * Encodes an ImageBitmap to PNG byte array.
+ */
+private fun ImageBitmap.encodeToPngBytes(): ByteArray {
+    val data = Image
+        .makeFromBitmap(this.asSkiaBitmap())
+        .encodeToData(EncodedImageFormat.PNG, 100)
+        ?: throw IllegalStateException("Failed to encode ImageBitmap to PNG")
+    return data.bytes
 }
 
 /**
  * Encodes an ImageBitmap to a base64-encoded PNG string.
  */
-private fun ImageBitmap.encodeToBase64Png(): String {
-    val data = Image
-        .makeFromBitmap(this.asSkiaBitmap())
-        .encodeToData(EncodedImageFormat.PNG, 100)
-        ?: throw IllegalStateException("Failed to encode ImageBitmap to PNG")
-    return Base64.getEncoder().encodeToString(data.bytes)
-}
+private fun ImageBitmap.encodeToBase64Png(): String = Base64.getEncoder().encodeToString(encodeToPngBytes())
