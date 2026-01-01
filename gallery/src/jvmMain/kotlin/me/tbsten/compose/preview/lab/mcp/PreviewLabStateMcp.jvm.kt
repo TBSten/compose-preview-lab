@@ -9,7 +9,8 @@ import io.modelcontextprotocol.kotlin.sdk.types.ReadResourceResult
 import io.modelcontextprotocol.kotlin.sdk.types.TextContent
 import io.modelcontextprotocol.kotlin.sdk.types.TextResourceContents
 import io.modelcontextprotocol.kotlin.sdk.types.ToolSchema
-import kotlinx.coroutines.runBlocking
+import java.util.Base64
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.time.ExperimentalTime
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
@@ -25,8 +26,6 @@ import me.tbsten.compose.preview.lab.mcp.util.json
 import me.tbsten.compose.preview.lab.mcp.util.putResource
 import org.jetbrains.skia.EncodedImageFormat
 import org.jetbrains.skia.Image
-import java.util.Base64
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Holds the state information for a single PreviewLab instance that can be accessed via MCP.
@@ -403,7 +402,7 @@ internal class PreviewLabMcpStateManager(private val server: Server) {
                     ),
                 )
             } else {
-                val imageBitmap = runBlocking { state.captureScreenshot() }
+                val imageBitmap = state.captureScreenshot()
                 if (imageBitmap != null) {
                     val base64Image = imageBitmap.encodeToBase64Png()
                     CallToolResult(
