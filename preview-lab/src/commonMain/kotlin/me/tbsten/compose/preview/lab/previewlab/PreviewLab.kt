@@ -36,6 +36,7 @@ import androidx.compose.ui.zIndex
 import kotlinx.serialization.json.Json
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.LocalIsInPreviewLabGalleryCardBody
+import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.field.ScreenSizeField
@@ -567,15 +568,17 @@ open class PreviewLab(
     ) {
         val urlParams = rememberUrlParams()
         val mcpBridge = LocalPreviewLabMcpBridge.current
-        val previewId = remember { generatePreviewId() }
+        val previewId = LocalPreviewLabPreview.current?.id
 
-        // Notify MCP bridge of state changes
-        McpBridgeEffect(
-            mcpBridge = mcpBridge,
-            previewId = previewId,
-            state = state,
-            captureScreenshot = captureScreenshot,
-        )
+        // Notify MCP bridge of state changes (only if previewId is available)
+        if (previewId != null) {
+            McpBridgeEffect(
+                mcpBridge = mcpBridge,
+                previewId = previewId,
+                state = state,
+                captureScreenshot = captureScreenshot,
+            )
+        }
 
         DisableSelection {
             contentRoot {
@@ -773,9 +776,3 @@ private fun updateFieldValue(state: PreviewLabState, label: String, serializedVa
         false
     }
 }
-
-/**
- * Generates a unique preview ID for MCP resource identification.
- */
-private var previewIdCounter = 0
-private fun generatePreviewId(): String = "preview-${previewIdCounter++}"
