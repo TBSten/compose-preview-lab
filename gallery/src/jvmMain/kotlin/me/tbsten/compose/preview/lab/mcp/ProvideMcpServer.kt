@@ -1,6 +1,7 @@
 package me.tbsten.compose.preview.lab.mcp
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,13 +22,13 @@ import io.modelcontextprotocol.kotlin.sdk.types.ServerCapabilities.Resources
 import io.modelcontextprotocol.kotlin.sdk.types.ServerCapabilities.Tools
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabPreview
 import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
+import me.tbsten.compose.preview.lab.previewlab.mcp.LocalPreviewLabMcpBridge
+import me.tbsten.compose.preview.lab.previewlab.mcp.PreviewLabMcpBridge
 
-private class McpServerHolder(
-    val ktorServer: EmbeddedServer<*, *>,
-    val mcpServer: Server,
-) {
+private class McpServerHolder(val ktorServer: EmbeddedServer<*, *>, val mcpServer: Server,) {
     fun start() {
         ktorServer.start(wait = false)
     }
@@ -37,6 +38,7 @@ private class McpServerHolder(
     }
 }
 
+@OptIn(ExperimentalComposePreviewLabApi::class)
 @Composable
 internal fun ProvideMcpServer(
     previewList: List<PreviewLabPreview>?,
@@ -81,7 +83,15 @@ internal fun ProvideMcpServer(
         }
     }
 
-    content()
+    // Provide MCP bridge implementation to child composables
+    val mcpBridge: PreviewLabMcpBridge = remember(holder) {
+        holder?.mcpServer?.let { PreviewLabMcpBridgeImpl(it) }
+            ?: PreviewLabMcpBridge.NoOp
+    }
+
+    CompositionLocalProvider(LocalPreviewLabMcpBridge provides mcpBridge) {
+        content()
+    }
 }
 
 private fun startMcpServer(config: PreviewLabMcpServerConfig): McpServerHolder? = runCatching {
