@@ -1,7 +1,6 @@
 package me.tbsten.compose.preview.lab.mcp
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,6 +9,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import io.ktor.server.cio.CIO
+import io.ktor.server.engine.EmbeddedServer
 import io.ktor.server.engine.embeddedServer
 import io.modelcontextprotocol.kotlin.sdk.server.Server
 import io.modelcontextprotocol.kotlin.sdk.server.ServerOptions
@@ -18,10 +18,24 @@ import io.modelcontextprotocol.kotlin.sdk.types.Implementation
 import io.modelcontextprotocol.kotlin.sdk.types.ServerCapabilities
 import io.modelcontextprotocol.kotlin.sdk.types.ServerCapabilities.Prompts
 import io.modelcontextprotocol.kotlin.sdk.types.ServerCapabilities.Resources
+import io.modelcontextprotocol.kotlin.sdk.types.ServerCapabilities.Tools
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import me.tbsten.compose.preview.lab.PreviewLabPreview
 import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
+
+private class McpServerHolder(
+    val ktorServer: EmbeddedServer<*, *>,
+    val mcpServer: Server,
+) {
+    fun start() {
+        ktorServer.start(wait = false)
+    }
+
+    fun stop() {
+        ktorServer.stop(timeoutMillis = 5_000)
+    }
+}
 
 @Composable
 internal fun ProvideMcpServer(
@@ -31,16 +45,16 @@ internal fun ProvideMcpServer(
     config: PreviewLabMcpServerConfig = PreviewLabMcpServerConfig(),
     content: @Composable () -> Unit,
 ) {
-    var server by remember { mutableStateOf<PreviewLabMcpServer?>(null) }
+    var holder by remember { mutableStateOf<McpServerHolder?>(null) }
     val coroutineScope = rememberCoroutineScope()
 
     DisposableEffect(config) {
-        server = startPreviewLabMcpServer(config)
+        holder = startMcpServer(config)
         coroutineScope.launch {
             previewList?.let { previewList ->
                 snapshotFlow { previewList }
                     .distinctUntilChanged()
-                    .collect { server?.updatePreviewList(it) }
+                    .collect { holder?.mcpServer?.updatePreviewList(it) }
             }
         }
 
@@ -48,29 +62,29 @@ internal fun ProvideMcpServer(
             featuredFileList?.let { featuredFileList ->
                 snapshotFlow { featuredFileList }
                     .distinctUntilChanged()
-                    .collect { server?.updateFeaturedFileList(it) }
+                    .collect { holder?.mcpServer?.updateFeaturedFileList(it) }
             }
         }
 
         coroutineScope.launch {
             state?.let { state ->
-                snapshotFlow { state }
-                    .distinctUntilChanged()
-                    .collect { server?.updateState(it) }
+                previewList?.let { previewList ->
+                    snapshotFlow { state to previewList }
+                        .distinctUntilChanged()
+                        .collect { holder?.mcpServer?.updateState(it.first, it.second) }
+                }
             }
         }
 
         onDispose {
-            server?.stop()
+            holder?.stop()
         }
     }
 
-    CompositionLocalProvider(LocalPreviewLabMcpServer provides server) {
-        content()
-    }
+    content()
 }
 
-private fun startPreviewLabMcpServer(config: PreviewLabMcpServerConfig): PreviewLabMcpServer? = runCatching {
+private fun startMcpServer(config: PreviewLabMcpServerConfig): McpServerHolder? = runCatching {
     if (config.enabled) {
         val mcpServer = createMcpServer(config)
 
@@ -83,8 +97,7 @@ private fun startPreviewLabMcpServer(config: PreviewLabMcpServerConfig): Preview
                 mcp { mcpServer }
             }
 
-        PreviewLabMcpServer(
-            config = config,
+        McpServerHolder(
             ktorServer = ktorServer,
             mcpServer = mcpServer,
         ).also {
@@ -108,8 +121,9 @@ private fun createMcpServer(config: PreviewLabMcpServerConfig): Server = Server(
     ),
     options = ServerOptions(
         capabilities = ServerCapabilities(
-            prompts = Prompts(listChanged = false),
+            prompts = Prompts(listChanged = true),
             resources = Resources(subscribe = true, listChanged = true),
+            tools = Tools(listChanged = true),
         ),
     ),
 ) {

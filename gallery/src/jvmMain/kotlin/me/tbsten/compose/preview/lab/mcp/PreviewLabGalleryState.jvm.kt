@@ -1,5 +1,6 @@
 package me.tbsten.compose.preview.lab.mcp
 
+import io.modelcontextprotocol.kotlin.sdk.server.Server
 import io.modelcontextprotocol.kotlin.sdk.types.CallToolResult
 import io.modelcontextprotocol.kotlin.sdk.types.ReadResourceResult
 import io.modelcontextprotocol.kotlin.sdk.types.TextContent
@@ -28,8 +29,8 @@ private fun PreviewLabGalleryState.serializeState(): String = json.encodeToStrin
     ).toJson(),
 )
 
-fun PreviewLabMcpServer.updateState(state: PreviewLabGalleryState, previewList: List<PreviewLabPreview>) {
-    mcpServer.putResource(
+fun Server.updateState(state: PreviewLabGalleryState, previewList: List<PreviewLabPreview>) {
+    putResource(
         uri = "$McpBaseUrl/gallery-state",
         name = "PreviewLabGallery state",
         description = """
@@ -49,7 +50,7 @@ fun PreviewLabMcpServer.updateState(state: PreviewLabGalleryState, previewList: 
         )
     }
 
-    mcpServer.addTool(
+    addTool(
         name = "Update PreviewLagGallery.query",
         description = """
             Update the status of PreviewLabGallery. Specifically, the following information can be updated:
@@ -78,7 +79,7 @@ fun PreviewLabMcpServer.updateState(state: PreviewLabGalleryState, previewList: 
         )
     }
 
-    mcpServer.addTool(
+    addTool(
         name = "Select preview PreviewLagGallery.select",
         description = """
             Select a preview. Specifically, the following information can be updated:
@@ -114,7 +115,7 @@ fun PreviewLabMcpServer.updateState(state: PreviewLabGalleryState, previewList: 
         )
     }
 
-    mcpServer.addTool(
+    addTool(
         name = "Unselect preview PreviewLabGallery.unselect",
         description = """
             Unselect all selected previews.
@@ -134,7 +135,7 @@ fun PreviewLabMcpServer.updateState(state: PreviewLabGalleryState, previewList: 
         )
     }
 
-    mcpServer.addTool(
+    addTool(
         name = "Add to compare panel PreviewLabGallery.addToComparePanel",
         description = """
             Add a preview to the compare panel. Specifically, the following information is required:
@@ -170,7 +171,7 @@ fun PreviewLabMcpServer.updateState(state: PreviewLabGalleryState, previewList: 
         )
     }
 
-    mcpServer.addTool(
+    addTool(
         name = "Remove from compare panel PreviewLabGallery.removeFromComparePanel",
         description = """
             Remove a preview from the compare panel by its index in selectedPreviews.

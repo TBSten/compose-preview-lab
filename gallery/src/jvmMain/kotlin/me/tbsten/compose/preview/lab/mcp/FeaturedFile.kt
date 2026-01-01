@@ -1,12 +1,13 @@
 package me.tbsten.compose.preview.lab.mcp
 
+import io.modelcontextprotocol.kotlin.sdk.server.Server
 import io.modelcontextprotocol.kotlin.sdk.types.ReadResourceResult
 import io.modelcontextprotocol.kotlin.sdk.types.TextResourceContents
 import me.tbsten.compose.preview.lab.mcp.util.json
 import me.tbsten.compose.preview.lab.mcp.util.putResource
 
-internal fun PreviewLabMcpServer.updateFeaturedFileList(featuredFileList: Map<String, List<String>>) {
-    mcpServer.putResource(
+internal fun Server.updateFeaturedFileList(featuredFileList: Map<String, List<String>>) {
+    putResource(
         uri = "$McpBaseUrl/featuredFiles",
         name = "FeaturedFile list (in Gallery)",
         description = "",
@@ -23,7 +24,7 @@ internal fun PreviewLabMcpServer.updateFeaturedFileList(featuredFileList: Map<St
     }
 
     featuredFileList.forEach { (featuredFile, files) ->
-        mcpServer.putResource(
+        putResource(
             uri = "$McpBaseUrl/featuredFiles/$featuredFile",
             name = "FeaturedFile: $featuredFile",
             description = "x",

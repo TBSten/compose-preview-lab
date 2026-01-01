@@ -1,5 +1,6 @@
 package me.tbsten.compose.preview.lab.mcp
 
+import io.modelcontextprotocol.kotlin.sdk.server.Server
 import io.modelcontextprotocol.kotlin.sdk.types.ReadResourceResult
 import io.modelcontextprotocol.kotlin.sdk.types.TextResourceContents
 import me.tbsten.compose.preview.lab.PreviewLabPreview
@@ -7,8 +8,8 @@ import me.tbsten.compose.preview.lab.mcp.util.json
 import me.tbsten.compose.preview.lab.mcp.util.putResource
 import me.tbsten.compose.preview.lab.mcp.util.serializeMap
 
-internal fun PreviewLabMcpServer.updatePreviewList(previewList: List<PreviewLabPreview>) {
-    mcpServer.putResource(
+internal fun Server.updatePreviewList(previewList: List<PreviewLabPreview>) {
+    putResource(
         uri = "$McpBaseUrl/previews",
         name = "Preview List (in Gallery)",
         description = "",
@@ -27,7 +28,7 @@ internal fun PreviewLabMcpServer.updatePreviewList(previewList: List<PreviewLabP
     }
 
     previewList.forEach { preview ->
-        mcpServer.putResource(
+        putResource(
             uri = preview.uri(),
             name = "PreviewLab Preview: " + preview.displayName,
             description = "",
