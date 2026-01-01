@@ -49,7 +49,7 @@ fun main() {
 以下のコマンドを実行：
 
 ```bash
-claude mcp add compose-preview-lab --transport sse http://0.0.0.0:7007
+claude mcp add compose-preview-lab --transport sse http://localhost:7007
 ```
 
 </details>
@@ -63,7 +63,7 @@ claude mcp add compose-preview-lab --transport sse http://0.0.0.0:7007
 {
   "mcpServers": {
     "compose-preview-lab": {
-      "url": "http://0.0.0.0:7007"
+      "url": "http://localhost:7007"
     }
   }
 }
@@ -80,7 +80,7 @@ claude mcp add compose-preview-lab --transport sse http://0.0.0.0:7007
 {
   "mcpServers": {
     "compose-preview-lab": {
-      "url": "http://0.0.0.0:7007"
+      "url": "http://localhost:7007"
     }
   }
 }
