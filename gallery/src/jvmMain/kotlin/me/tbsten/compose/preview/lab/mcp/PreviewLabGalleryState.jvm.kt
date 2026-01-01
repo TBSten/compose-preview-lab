@@ -24,12 +24,13 @@ private fun PreviewLabGalleryState.serializeState(): String = json.encodeToStrin
             mapOf(
                 "groupName" to selectedPreview.groupName,
                 "title" to selectedPreview.title,
-            ).toJson() + selectedPreview.preview.serializeMap(all = false)
+            ).toJson() +
+                selectedPreview.preview.serializeMap(all = false)
         },
     ).toJson(),
 )
 
-fun Server.updateState(state: PreviewLabGalleryState, previewList: List<PreviewLabPreview>) {
+internal fun Server.updateState(state: PreviewLabGalleryState, previewList: List<PreviewLabPreview>) {
     putResource(
         uri = "$McpBaseUrl/gallery-state",
         name = "PreviewLabGallery state",
