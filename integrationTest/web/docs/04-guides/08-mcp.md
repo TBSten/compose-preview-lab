@@ -101,11 +101,15 @@ PreviewLabGalleryWindows(
     previewList = app.PreviewList,
     mcpServerConfig = PreviewLabMcpServerConfig(
         enabled = true,       // MCP Server を有効化 (デフォルト: true)
-        host = "0.0.0.0",     // バインドするホスト (デフォルト: "0.0.0.0")
+        host = "127.0.0.1",   // バインドするホスト (デフォルト: "0.0.0.0")
         port = 7007,          // ポート番号 (デフォルト: 7007)
     ),
 )
 ```
+
+:::caution セキュリティに関する注意
+デフォルト設定では `0.0.0.0` にバインドするため、ローカルネットワーク上のすべてのクライアントから MCP Server にアクセス可能です。MCP Server は認証なしで Preview の操作やスクリーンショット取得が可能なため、ローカル開発環境以外での使用時は `host = "127.0.0.1"` を設定してローカルホストのみに制限することを推奨します。
+:::
 
 ### MCP Server を無効化する
 
@@ -122,8 +126,8 @@ PreviewLabGalleryWindows(
 
 | Resource | 説明 |
 |----------|------|
-| `preview-lab:///preview-list` | Gallery 内の全 Preview 一覧 |
-| `preview-lab:///featured-files` | [Featured Files](./featured-files) の一覧 |
+| `preview-lab:///previews` | Gallery 内の全 Preview 一覧 |
+| `preview-lab:///featuredFiles` | [Featured Files](./featured-files) の一覧 |
 | `preview-lab:///gallery-state` | Gallery の現在の状態 (検索クエリ、選択中の Preview) |
 
 ### PreviewLab Resources
@@ -131,8 +135,8 @@ PreviewLabGalleryWindows(
 | Resource | 説明 |
 |----------|------|
 | `preview-lab:///preview-lab/list` | 利用可能な PreviewLab インスタンスの ID 一覧 |
-| `preview-lab:///preview-lab/fields?previewId=xxx` | 指定した Preview のフィールド一覧 |
-| `preview-lab:///preview-lab/events?previewId=xxx` | 指定した Preview のイベント一覧 |
+| `preview-lab:///preview-lab/{previewId}/fields` | 指定した Preview のフィールド一覧 |
+| `preview-lab:///preview-lab/{previewId}/events` | 指定した Preview のイベント一覧 |
 
 ## 利用可能な Tools
 
