@@ -52,7 +52,7 @@ internal fun Server.updateState(state: PreviewLabGalleryState, previewList: List
     }
 
     addTool(
-        name = "Update PreviewLagGallery.query",
+        name = "Update PreviewLabGallery.query",
         description = """
             Update the status of PreviewLabGallery. Specifically, the following information can be updated:
             1. query ... search query.
@@ -67,8 +67,10 @@ internal fun Server.updateState(state: PreviewLabGalleryState, previewList: List
             required = listOf("newQuery"),
         ),
     ) { request ->
-        val args = request.params.arguments!!
-        val newQuery = args["newQuery"]!!.jsonPrimitive.content
+        val args = request.params.arguments
+            ?: error("Missing arguments for Update PreviewLabGallery.query")
+        val newQuery = args["newQuery"]?.jsonPrimitive?.content
+            ?: error("Missing \"newQuery\" argument")
 
         state.query = newQuery
         CallToolResult(
@@ -81,11 +83,11 @@ internal fun Server.updateState(state: PreviewLabGalleryState, previewList: List
     }
 
     addTool(
-        name = "Select preview PreviewLagGallery.select",
+        name = "Select preview PreviewLabGallery.select",
         description = """
             Select a preview. Specifically, the following information can be updated:
             1. groupName ... The group name (featured files or "all")
-            2. previewId ... The id of the preview to select. Please use the preview obtained from `Preview List (in Gallery)`.。
+            2. previewId ... The id of the preview to select. Please use the preview obtained from `Preview List (in Gallery)`.
         """.trimIndent(),
         inputSchema = ToolSchema(
             properties = buildJsonObject {
@@ -101,10 +103,13 @@ internal fun Server.updateState(state: PreviewLabGalleryState, previewList: List
             required = listOf("previewId"),
         ),
     ) { request ->
-        val args = request.params.arguments ?: error("No arguments")
+        val args = request.params.arguments
+            ?: error("Missing arguments for Select preview PreviewLabGallery.select")
         val groupName = args["groupName"]?.jsonPrimitive?.content ?: "all"
-        val previewId = args["previewId"]!!.jsonPrimitive.content
-        val preview = previewList.find { it.id == previewId } ?: error("No preview found with id $previewId")
+        val previewId = args["previewId"]?.jsonPrimitive?.content
+            ?: error("Missing \"previewId\" argument")
+        val preview = previewList.find { it.id == previewId }
+            ?: error("No preview found with id $previewId")
 
         state.select(groupName, preview)
         CallToolResult(
@@ -157,10 +162,13 @@ internal fun Server.updateState(state: PreviewLabGalleryState, previewList: List
             required = listOf("previewId"),
         ),
     ) { request ->
-        val args = request.params.arguments ?: error("No arguments")
+        val args = request.params.arguments
+            ?: error("Missing arguments for Add to compare panel PreviewLabGallery.addToComparePanel")
         val groupName = args["groupName"]?.jsonPrimitive?.content ?: "all"
-        val previewId = args["previewId"]!!.jsonPrimitive.content
-        val preview = previewList.find { it.id == previewId } ?: error("No preview found with id $previewId")
+        val previewId = args["previewId"]?.jsonPrimitive?.content
+            ?: error("Missing \"previewId\" argument")
+        val preview = previewList.find { it.id == previewId }
+            ?: error("No preview found with id $previewId")
 
         state.addToComparePanel(groupName, preview)
         CallToolResult(
@@ -188,8 +196,10 @@ internal fun Server.updateState(state: PreviewLabGalleryState, previewList: List
             required = listOf("indexInSelectedPreviews"),
         ),
     ) { request ->
-        val args = request.params.arguments ?: error("No arguments")
-        val indexInSelectedPreviews = args["indexInSelectedPreviews"]!!.jsonPrimitive.content.toInt()
+        val args = request.params.arguments
+            ?: error("Missing arguments for Remove from compare panel PreviewLabGallery.removeFromComparePanel")
+        val indexInSelectedPreviews = args["indexInSelectedPreviews"]?.jsonPrimitive?.content?.toIntOrNull()
+            ?: error("Missing or invalid \"indexInSelectedPreviews\" argument")
 
         state.removeFromComparePanel(indexInSelectedPreviews)
         CallToolResult(

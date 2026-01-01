@@ -82,13 +82,11 @@ public final class me/tbsten/compose/preview/lab/gallery/previewlist/ComposableS
 	public final fun getLambda$974183748$gallery ()Lkotlin/jvm/functions/Function2;
 }
 
-public final class me/tbsten/compose/preview/lab/mcp/PreviewLabGalleryState_jvmKt {
-	public static final fun updateState (Lio/modelcontextprotocol/kotlin/sdk/server/Server;Lme/tbsten/compose/preview/lab/gallery/PreviewLabGalleryState;Ljava/util/List;)V
-}
-
 public class me/tbsten/compose/preview/lab/mcp/PreviewLabMcpServerConfig {
 	public static final field $stable I
 	public fun <init> ()V
+	public fun <init> (ZLjava/lang/String;ILkotlin/jvm/functions/Function1;)V
+	public synthetic fun <init> (ZLjava/lang/String;ILkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getAdditionalMcpServerSetting ()Lkotlin/jvm/functions/Function1;
 	public final fun getEnabled ()Z
 	public final fun getHost ()Ljava/lang/String;

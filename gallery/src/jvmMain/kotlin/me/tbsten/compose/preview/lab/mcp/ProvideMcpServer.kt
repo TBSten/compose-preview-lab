@@ -52,7 +52,9 @@ internal fun ProvideMcpServer(
 
     DisposableEffect(config) {
         holder = startMcpServer(config)
-        coroutineScope.launch {
+        val jobs = mutableListOf<kotlinx.coroutines.Job>()
+
+        jobs += coroutineScope.launch {
             previewList?.let { previewList ->
                 snapshotFlow { previewList }
                     .distinctUntilChanged()
@@ -60,7 +62,7 @@ internal fun ProvideMcpServer(
             }
         }
 
-        coroutineScope.launch {
+        jobs += coroutineScope.launch {
             featuredFileList?.let { featuredFileList ->
                 snapshotFlow { featuredFileList }
                     .distinctUntilChanged()
@@ -68,7 +70,7 @@ internal fun ProvideMcpServer(
             }
         }
 
-        coroutineScope.launch {
+        jobs += coroutineScope.launch {
             state?.let { state ->
                 previewList?.let { previewList ->
                     snapshotFlow { state to previewList }
@@ -79,6 +81,7 @@ internal fun ProvideMcpServer(
         }
 
         onDispose {
+            jobs.forEach { it.cancel() }
             holder?.stop()
         }
     }
@@ -137,10 +140,7 @@ private fun createMcpServer(config: PreviewLabMcpServerConfig): Server = Server(
         ),
     ),
 ) {
-    "TODO ".repeat(20)
-}.apply(Server::applyDefaultPreviewLabServerSetting).apply {
+    // Server initialization block (no additional setup required)
+}.apply {
     config.additionalMcpServerSetting(this)
-}
-
-private fun Server.applyDefaultPreviewLabServerSetting() {
 }
