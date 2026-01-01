@@ -33,7 +33,7 @@ private fun PreviewLabGalleryState.serializeState(): String = json.encodeToStrin
     ).toJson(),
 )
 
-internal fun Server.updateState(state: PreviewLabGalleryState, previewList: List<PreviewLabPreview>, scope: CoroutineScope,) {
+internal fun Server.updateState(state: PreviewLabGalleryState, previewList: List<PreviewLabPreview>, scope: CoroutineScope) {
     putResource(
         uri = "$McpBaseUrl/gallery-state",
         name = "PreviewLabGallery state",

@@ -8,7 +8,7 @@ import me.tbsten.compose.preview.lab.mcp.util.json
 import me.tbsten.compose.preview.lab.mcp.util.notifyResourceListChanged
 import me.tbsten.compose.preview.lab.mcp.util.putResource
 
-internal fun Server.updateFeaturedFileList(featuredFileList: Map<String, List<String>>, scope: CoroutineScope,) {
+internal fun Server.updateFeaturedFileList(featuredFileList: Map<String, List<String>>, scope: CoroutineScope) {
     putResource(
         uri = "$McpBaseUrl/featuredFiles",
         name = "FeaturedFile list (in Gallery)",
@@ -21,7 +21,7 @@ internal fun Server.updateFeaturedFileList(featuredFileList: Map<String, List<St
         ReadResourceResult(
             contents = featuredFileList.map { (featuredFile, files) ->
                 TextResourceContents(
-                    uri = featuredFile,
+                    uri = "$McpBaseUrl/featuredFiles/$featuredFile",
                     text = json.encodeToString(files),
                 )
             },
@@ -41,7 +41,7 @@ internal fun Server.updateFeaturedFileList(featuredFileList: Map<String, List<St
             ReadResourceResult(
                 contents = listOf(
                     TextResourceContents(
-                        uri = featuredFile,
+                        uri = "$McpBaseUrl/featuredFiles/$featuredFile",
                         text = json.encodeToString(files),
                     ),
                 ),
