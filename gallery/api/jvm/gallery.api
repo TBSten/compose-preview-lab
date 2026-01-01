@@ -101,3 +101,30 @@ public final class me/tbsten/compose/preview/lab/mcp/PreviewLabMcpServerConfig$D
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class me/tbsten/compose/preview/lab/mcp/util/ToolArgsParser {
+	public static final field $stable I
+	public fun <init> (Lkotlinx/serialization/json/JsonObject;)V
+	public final fun addError (Ljava/lang/String;)V
+	public final fun errorMessageOrNull ()Ljava/lang/String;
+	public final fun getErrors ()Ljava/util/List;
+	public final fun getRaw (Ljava/lang/String;)Lkotlinx/serialization/json/JsonElement;
+	public final fun hasErrors ()Z
+	public final fun optionalInt (Ljava/lang/String;I)I
+	public final fun optionalString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public final fun requireInt (Ljava/lang/String;Ljava/lang/String;)I
+	public static synthetic fun requireInt$default (Lme/tbsten/compose/preview/lab/mcp/util/ToolArgsParser;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)I
+	public final fun requireString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public static synthetic fun requireString$default (Lme/tbsten/compose/preview/lab/mcp/util/ToolArgsParser;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/String;
+	public final fun validate ()V
+}
+
+public final class me/tbsten/compose/preview/lab/mcp/util/ToolArgsParserKt {
+	public static final fun parseToolArgs (Lkotlinx/serialization/json/JsonObject;Lkotlin/jvm/functions/Function1;)Lme/tbsten/compose/preview/lab/mcp/util/ToolArgsParser;
+}
+
+public final class me/tbsten/compose/preview/lab/mcp/util/ToolArgsValidationException : java/lang/Exception {
+	public static final field $stable I
+	public fun <init> (Ljava/util/List;)V
+	public final fun getErrors ()Ljava/util/List;
+}
+
