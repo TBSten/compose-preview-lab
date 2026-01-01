@@ -2,6 +2,7 @@ package me.tbsten.compose.preview.lab.mcp
 
 import androidx.compose.ui.graphics.ImageBitmap
 import io.modelcontextprotocol.kotlin.sdk.server.Server
+import kotlinx.coroutines.CoroutineScope
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabEvent
 import me.tbsten.compose.preview.lab.PreviewLabField
@@ -14,8 +15,8 @@ import me.tbsten.compose.preview.lab.previewlab.mcp.PreviewLabMcpBridge
  * and provides static MCP resources and tools that don't change when previews are added or removed.
  */
 @ExperimentalComposePreviewLabApi
-internal class PreviewLabMcpBridgeImpl(server: Server) : PreviewLabMcpBridge {
-    private val stateManager = PreviewLabMcpStateManager(server)
+internal class PreviewLabMcpBridgeImpl(server: Server, scope: CoroutineScope) : PreviewLabMcpBridge {
+    private val stateManager = PreviewLabMcpStateManager(server, scope)
 
     override fun updateState(
         previewId: String,

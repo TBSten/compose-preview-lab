@@ -59,7 +59,7 @@ internal fun ProvideMcpServer(
             previewList?.let { previewList ->
                 snapshotFlow { previewList }
                     .distinctUntilChanged()
-                    .collect { holder?.mcpServer?.updatePreviewList(it) }
+                    .collect { holder?.mcpServer?.updatePreviewList(it, coroutineScope) }
             }
         }
 
@@ -67,7 +67,7 @@ internal fun ProvideMcpServer(
             featuredFileList?.let { featuredFileList ->
                 snapshotFlow { featuredFileList }
                     .distinctUntilChanged()
-                    .collect { holder?.mcpServer?.updateFeaturedFileList(it) }
+                    .collect { holder?.mcpServer?.updateFeaturedFileList(it, coroutineScope) }
             }
         }
 
@@ -76,7 +76,7 @@ internal fun ProvideMcpServer(
                 previewList?.let { previewList ->
                     snapshotFlow { state to previewList }
                         .distinctUntilChanged()
-                        .collect { holder?.mcpServer?.updateState(it.first, it.second) }
+                        .collect { holder?.mcpServer?.updateState(it.first, it.second, coroutineScope) }
                 }
             }
         }
@@ -88,8 +88,8 @@ internal fun ProvideMcpServer(
     }
 
     // Provide MCP bridge implementation to child composables
-    val mcpBridge: PreviewLabMcpBridge = remember(holder) {
-        holder?.mcpServer?.let { PreviewLabMcpBridgeImpl(it) }
+    val mcpBridge: PreviewLabMcpBridge = remember(holder, coroutineScope) {
+        holder?.mcpServer?.let { PreviewLabMcpBridgeImpl(it, coroutineScope) }
             ?: PreviewLabMcpBridge.NoOp
     }
 
