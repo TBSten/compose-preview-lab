@@ -3,12 +3,14 @@ package me.tbsten.compose.preview.lab.mcp
 import io.modelcontextprotocol.kotlin.sdk.server.Server
 import io.modelcontextprotocol.kotlin.sdk.types.ReadResourceResult
 import io.modelcontextprotocol.kotlin.sdk.types.TextResourceContents
+import kotlinx.coroutines.CoroutineScope
 import me.tbsten.compose.preview.lab.PreviewLabPreview
 import me.tbsten.compose.preview.lab.mcp.util.json
+import me.tbsten.compose.preview.lab.mcp.util.notifyResourceListChanged
 import me.tbsten.compose.preview.lab.mcp.util.putResource
 import me.tbsten.compose.preview.lab.mcp.util.serializeMap
 
-internal fun Server.updatePreviewList(previewList: List<PreviewLabPreview>) {
+internal fun Server.updatePreviewList(previewList: List<PreviewLabPreview>, scope: CoroutineScope) {
     putResource(
         uri = "$McpBaseUrl/previews",
         name = "Preview List (in Gallery)",
@@ -51,6 +53,8 @@ internal fun Server.updatePreviewList(previewList: List<PreviewLabPreview>) {
             )
         }
     }
+
+    notifyResourceListChanged(scope)
 }
 
 private fun PreviewLabPreview.uri() = "$McpBaseUrl/previews/$id"

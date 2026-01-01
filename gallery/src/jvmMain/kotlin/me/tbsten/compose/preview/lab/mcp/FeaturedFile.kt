@@ -3,10 +3,12 @@ package me.tbsten.compose.preview.lab.mcp
 import io.modelcontextprotocol.kotlin.sdk.server.Server
 import io.modelcontextprotocol.kotlin.sdk.types.ReadResourceResult
 import io.modelcontextprotocol.kotlin.sdk.types.TextResourceContents
+import kotlinx.coroutines.CoroutineScope
 import me.tbsten.compose.preview.lab.mcp.util.json
+import me.tbsten.compose.preview.lab.mcp.util.notifyResourceListChanged
 import me.tbsten.compose.preview.lab.mcp.util.putResource
 
-internal fun Server.updateFeaturedFileList(featuredFileList: Map<String, List<String>>) {
+internal fun Server.updateFeaturedFileList(featuredFileList: Map<String, List<String>>, scope: CoroutineScope,) {
     putResource(
         uri = "$McpBaseUrl/featuredFiles",
         name = "FeaturedFile list (in Gallery)",
@@ -46,4 +48,6 @@ internal fun Server.updateFeaturedFileList(featuredFileList: Map<String, List<St
             )
         }
     }
+
+    notifyResourceListChanged(scope)
 }

@@ -7,6 +7,7 @@ import io.modelcontextprotocol.kotlin.sdk.types.TextContent
 import io.modelcontextprotocol.kotlin.sdk.types.TextResourceContents
 import io.modelcontextprotocol.kotlin.sdk.types.ToolSchema
 import io.modelcontextprotocol.kotlin.sdk.types.toJson
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.putJsonObject
@@ -14,6 +15,8 @@ import me.tbsten.compose.preview.lab.PreviewLabPreview
 import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
 import me.tbsten.compose.preview.lab.mcp.util.ToolArgsParser
 import me.tbsten.compose.preview.lab.mcp.util.json
+import me.tbsten.compose.preview.lab.mcp.util.notifyResourceListChanged
+import me.tbsten.compose.preview.lab.mcp.util.notifyToolListChanged
 import me.tbsten.compose.preview.lab.mcp.util.putResource
 import me.tbsten.compose.preview.lab.mcp.util.serializeMap
 
@@ -30,7 +33,7 @@ private fun PreviewLabGalleryState.serializeState(): String = json.encodeToStrin
     ).toJson(),
 )
 
-internal fun Server.updateState(state: PreviewLabGalleryState, previewList: List<PreviewLabPreview>) {
+internal fun Server.updateState(state: PreviewLabGalleryState, previewList: List<PreviewLabPreview>, scope: CoroutineScope,) {
     putResource(
         uri = "$McpBaseUrl/gallery-state",
         name = "PreviewLabGallery state",
@@ -226,4 +229,7 @@ internal fun Server.updateState(state: PreviewLabGalleryState, previewList: List
             ),
         )
     }
+
+    notifyResourceListChanged(scope)
+    notifyToolListChanged(scope)
 }
