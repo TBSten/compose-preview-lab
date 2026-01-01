@@ -10,7 +10,10 @@ internal fun Server.updateFeaturedFileList(featuredFileList: Map<String, List<St
     putResource(
         uri = "$McpBaseUrl/featuredFiles",
         name = "FeaturedFile list (in Gallery)",
-        description = "",
+        description = """
+            List of all featured file groups in the gallery.
+            Featured files are user-defined groupings of related previews for easy access.
+        """.trimIndent(),
         mimeType = "application/json",
     ) {
         ReadResourceResult(
@@ -27,7 +30,10 @@ internal fun Server.updateFeaturedFileList(featuredFileList: Map<String, List<St
         putResource(
             uri = "$McpBaseUrl/featuredFiles/$featuredFile",
             name = "FeaturedFile: $featuredFile",
-            description = "x",
+            description = """
+                List of preview IDs belonging to the featured file group '$featuredFile'.
+                Use these IDs with preview selection or comparison tools.
+            """.trimIndent(),
             mimeType = "application/json",
         ) {
             ReadResourceResult(

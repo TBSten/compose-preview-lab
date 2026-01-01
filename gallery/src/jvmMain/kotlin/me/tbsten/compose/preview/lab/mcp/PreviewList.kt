@@ -12,7 +12,11 @@ internal fun Server.updatePreviewList(previewList: List<PreviewLabPreview>) {
     putResource(
         uri = "$McpBaseUrl/previews",
         name = "Preview List (in Gallery)",
-        description = "",
+        description = """
+            List of all available previews in the gallery.
+            Each preview includes: id, displayName, filePath, and startLineNumber.
+            Use preview IDs with other tools to select, compare, or inspect previews.
+        """.trimIndent(),
         mimeType = "application/json",
     ) {
         ReadResourceResult(
@@ -31,7 +35,10 @@ internal fun Server.updatePreviewList(previewList: List<PreviewLabPreview>) {
         putResource(
             uri = preview.uri(),
             name = "PreviewLab Preview: " + preview.displayName,
-            description = "",
+            description = """
+                Detailed information for preview '${preview.displayName}'.
+                Includes: id, displayName, filePath, startLineNumber, and source code.
+            """.trimIndent(),
             mimeType = "application/json",
         ) {
             ReadResourceResult(
