@@ -14,4 +14,5 @@ object KspArg {
     const val projectRootPath = "${PREFIX}projectRootPath"
     const val generatePreviewList = "${PREFIX}generatePreviewList"
     const val generatePreviewAllList = "${PREFIX}generatePreviewAllList"
+    const val generateAutoField = "${PREFIX}generateAutoField"
 }
