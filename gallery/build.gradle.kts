@@ -1,5 +1,6 @@
 @file:OptIn(ExperimentalKotlinGradlePluginApi::class, ExperimentalWasmDsl::class)
 
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
@@ -11,6 +12,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.ktor)
+    alias(libs.plugins.buildkonfig)
     alias(libs.plugins.conventionFormat)
     alias(libs.plugins.conventionPublish)
 }
@@ -140,4 +142,12 @@ publishConvention {
         "A component catalog library that collects and lists @Preview. \n" +
         "By providing APIs such as Field, Event, etc., it provides not only display but also interactive preview.\n" +
         "gallery provides <TODO>"
+}
+
+buildkonfig {
+    packageName = "me.tbsten.compose.preview.lab.gallery"
+
+    defaultConfigs {
+        buildConfigField(STRING, "COMPOSE_PREVIEW_LAB_VERSION", libs.versions.composePreviewLab.get())
+    }
 }

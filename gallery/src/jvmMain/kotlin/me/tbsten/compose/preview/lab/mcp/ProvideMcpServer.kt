@@ -24,11 +24,12 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabPreview
+import me.tbsten.compose.preview.lab.gallery.BuildKonfig
 import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
 import me.tbsten.compose.preview.lab.previewlab.mcp.LocalPreviewLabMcpBridge
 import me.tbsten.compose.preview.lab.previewlab.mcp.PreviewLabMcpBridge
 
-private class McpServerHolder(val ktorServer: EmbeddedServer<*, *>, val mcpServer: Server,) {
+private class McpServerHolder(val ktorServer: EmbeddedServer<*, *>, val mcpServer: Server) {
     fun start() {
         ktorServer.start(wait = false)
     }
@@ -130,7 +131,7 @@ private fun startMcpServer(config: PreviewLabMcpServerConfig): McpServerHolder? 
 private fun createMcpServer(config: PreviewLabMcpServerConfig): Server = Server(
     serverInfo = Implementation(
         name = "Compose Preview Lab MCP (SSE)",
-        version = "0.1.0-dev09", // TODO
+        version = BuildKonfig.COMPOSE_PREVIEW_LAB_VERSION,
     ),
     options = ServerOptions(
         capabilities = ServerCapabilities(
