@@ -89,7 +89,7 @@ public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabState$Comp
 public final class me/tbsten/compose/preview/lab/previewlab/header/ComposableSingletons$LinksKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/previewlab/header/ComposableSingletons$LinksKt;
 	public fun <init> ()V
-	public final fun getLambda$761465664$preview_lab ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-437269601$preview_lab ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class me/tbsten/compose/preview/lab/previewlab/inspectorspane/ComposableSingletons$EventListSectionKt {

@@ -790,7 +790,7 @@ public final class me/tbsten/compose/preview/lab/ui/components/SelectButtonKt {
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/SimpleModalKt {
-	public static final fun SimpleModal (ZLkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun SimpleModal (ZLkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/ui/Alignment;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/SurfaceKt {
@@ -906,10 +906,11 @@ public final class me/tbsten/compose/preview/lab/ui/components/card/CardDefaults
 	public final fun cardElevation-aqJV_2Y (FFFFFFLandroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;
 	public final fun elevatedCardColors-ro_MJ88 (JJJJLandroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/card/CardColors;
 	public final fun elevatedCardElevation-aqJV_2Y (FFFFFFLandroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;
+	public final fun getBorderWidth-D9Ej5fM ()F
 	public final fun getElevatedShape (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/graphics/Shape;
 	public final fun getOutlinedShape (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/graphics/Shape;
 	public final fun getShape (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/graphics/Shape;
-	public final fun outlinedCardBorder (ZLandroidx/compose/runtime/Composer;II)Landroidx/compose/foundation/BorderStroke;
+	public final fun outlinedCardBorder-aM-cp0Q (ZJFLandroidx/compose/runtime/Composer;II)Landroidx/compose/foundation/BorderStroke;
 	public final fun outlinedCardColors-ro_MJ88 (JJJJLandroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/card/CardColors;
 	public final fun outlinedCardElevation-aqJV_2Y (FFFFFFLandroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;
 }
