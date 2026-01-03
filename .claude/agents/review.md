@@ -75,39 +75,50 @@ color: purple
 ```markdown
 # コードレビュー結果
 
-## 概要
-
 - レビュー対象: [ブランチ名 or PR番号（PRの場合はリンクも記載）]
 - 変更ファイル数: X ファイル
 
-## CI事前チェック結果
-
-- ktlintCheck: [PASS/FAIL]
-- apiCheck: [PASS/FAIL]
-- jvmTest: [PASS/FAIL]
+## [ステータスに応じた絵文字, ✅ or ⚠️ or 🔴] 結論: ✅ マージ可能/⚠️ 修正後マージ可能/🔴 要議論
 
 ## 指摘事項
 
-### Critical（必須修正）
+### 🔴 Critical（必須修正）
 
 - [問題] `path/to/file.kt:行番号`
     - 修正案: [提案]
 
-### Warning（推奨修正）
+### ⚠️ Warning（推奨修正）
 
 - [問題] `path/to/file.kt:行番号`
+
+## そのほか
+
+<details>
+<summary>参考情報</summary>
 
 ### Info（参考情報）
 
 - [情報]
 
-## 良い点
+</details>
+
+<details>
+<summary>良い点</summary>
+
+### 良い点
 
 - [コードの良い点]
 
-## 結論
+</details>
 
-[マージ可能/修正後マージ可能/要議論]
+<details>
+<summary>CI事前チェック結果</summary>
+
+- ktlintCheck: [✅ PASS/❌ FAIL]
+- apiCheck: [✅ PASS/❌ FAIL]
+- jvmTest: [✅ PASS/❌ FAIL]
+
+</details>
 ```
 
 対応するPRがある場合は、指摘内容をPRにコメントする:
@@ -121,11 +132,11 @@ color: purple
 
 ## 指摘レベルの基準
 
-| レベル      | 基準                      |
-| --------- | --------------------------- |
+| レベル     | 基準                                   |
+|----------|----------------------------------------|
 | Critical | バグ、セキュリティ脆弱性、CI失敗、テスト不足 |
-| Warning  | 可読性、命名改善、リファクタリング提案     |
-| Info     | 将来の改善提案、代替アプローチ         |
+| Warning  | 可読性、命名改善、リファクタリング提案        |
+| Info     | 将来の改善提案、代替アプローチ              |
 
 ## コミュニケーション
 
