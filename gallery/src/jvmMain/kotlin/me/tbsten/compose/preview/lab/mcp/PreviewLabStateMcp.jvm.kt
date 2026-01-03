@@ -287,7 +287,9 @@ internal class PreviewLabMcpStateManager(private val server: Server, private val
                                 "Field '$label' updated successfully."
                             } else {
                                 "Failed to update field '$label'. The field may not exist, " +
-                                    "may not be mutable, or the value format may be invalid."
+                                    "may not be mutable, or the value format may be invalid. " +
+                                    "Available fields: ${state.fields.map { it.label }}. " +
+                                    "serializedValue: $serializedValue"
                             },
                         ),
                     ),

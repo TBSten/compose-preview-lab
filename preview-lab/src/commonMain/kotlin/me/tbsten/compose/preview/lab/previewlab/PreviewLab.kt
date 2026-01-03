@@ -716,7 +716,7 @@ fun rememberPreviewLabStateFromUrl(): PreviewLabState {
 
 private val mcpBridgeJson = Json {
     ignoreUnknownKeys = true
-    isLenient = true
+    isLenient = false
 }
 
 /**
@@ -770,7 +770,7 @@ private fun updateFieldValue(state: PreviewLabState, label: String, serializedVa
 
     return try {
         val newValue = mcpBridgeJson.decodeFromString(serializer, serializedValue)
-        (field as MutablePreviewLabField<Any?>).value = newValue
+        (field).value = newValue as Nothing
         true
     } catch (e: Exception) {
         println("[PreviewLab] Failed to update field '$label': ${e.message}")
