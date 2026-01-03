@@ -60,6 +60,7 @@ internal fun <Value> CollectionFieldEditModal(
     isVisible: Boolean,
     onDismissRequest: () -> Unit,
     onInsertAt: (Int) -> Unit,
+    onAfterDelete: () -> Unit = {},
     isDuplicate: (MutablePreviewLabField<Value>) -> Boolean = { false },
     modifier: Modifier = Modifier,
 ) {
@@ -87,7 +88,10 @@ internal fun <Value> CollectionFieldEditModal(
 
                     CollectionFieldElementsEditor(
                         fields = fields,
-                        onDelete = { fields.remove(it) },
+                        onDelete = {
+                            fields.remove(it)
+                            onAfterDelete()
+                        },
                         onInsertAt = onInsertAt,
                         isDuplicate = isDuplicate,
                     )
@@ -107,8 +111,9 @@ internal fun <Value> CollectionFieldElementsEditor(
     modifier: Modifier = Modifier,
 ) {
     var selectedField by remember { mutableStateOf<MutablePreviewLabField<Value>?>(null) }
-    val duplicateFields = fields.filter { isDuplicate(it) }
-    val duplicateValues = duplicateFields.map { it.valueCode() }.distinct()
+    val duplicateValues = remember(fields, isDuplicate) {
+        fields.filter { isDuplicate(it) }.map { it.valueCode() }.distinct()
+    }
 
     Column(modifier) {
         if (duplicateValues.isNotEmpty()) {
@@ -164,7 +169,7 @@ internal fun <Value> CollectionFieldElementsRow(
         modifier = modifier,
     ) {
         if (fields.isEmpty()) {
-            // コレクションが空の場合は追加ボタンのみ表示
+            // Show only insert button when collection is empty
             item {
                 Column {
                     Box(
@@ -199,7 +204,7 @@ internal fun <Value> CollectionFieldElementsRow(
                             modifier = Modifier.align(Alignment.CenterHorizontally),
                         )
                     }
-                    // 最後の要素の右側にも追加ボタンを配置
+                    // Also place insert button on the right side of the last element
                     if (index == fields.lastIndex) {
                         Column {
                             InsertButton(onClick = { onInsertAt(fields.size) })

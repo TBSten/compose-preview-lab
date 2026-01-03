@@ -17,7 +17,10 @@ open class SetField<Value>(
     label: String,
     initialValue: Set<Value>,
     internal val elementField: ElementFieldScope.() -> MutablePreviewLabField<Value>,
-    private val defaultValue: () -> Value = { initialValue.first() },
+    private val defaultValue: () -> Value = {
+        initialValue.firstOrNull()
+            ?: error("SetField requires a non-empty initialValue or an explicit defaultValue")
+    },
 ) : MutablePreviewLabField<Set<Value>>(
     label = label,
     initialValue = initialValue,
@@ -32,35 +35,58 @@ open class SetField<Value>(
     override var value: Set<Value>
         get() = _value
         set(value) {
-            fields.clear()
-            value.forEachIndexed { index, v ->
+            // Update existing fields or add new ones to match the new value set
+            value.forEachIndexed { index, newValue ->
                 val oldField = fields.getOrNull(index)
                 if (oldField != null) {
                     oldField.label = "$index"
-                    oldField.value = v
+                    oldField.value = newValue
                 } else {
-                    fields.add(elementField(ElementFieldScope("$index", v)))
+                    fields.add(elementField(ElementFieldScope("$index", newValue)))
                 }
+            }
+            // Remove extra fields if the new value set is smaller
+            while (fields.size > value.size) {
+                fields.removeAt(fields.lastIndex)
             }
         }
 
     internal fun insertAt(index: Int) {
         val newField = elementField(ElementFieldScope("$index", defaultValue()))
         fields.add(index, newField)
+        // Update labels of all fields to reflect new indices
+        fields.forEachIndexed { i, field -> field.label = "$i" }
+    }
+
+    internal fun updateLabelsAfterDelete() {
+        fields.forEachIndexed { i, field -> field.label = "$i" }
     }
 
     override fun serializer(): KSerializer<Set<Value>>? = runCatching { serializer<Set<Value>>() }.getOrNull()
-    override fun valueCode(): String = "setOf(\n" +
-        fields.joinToString(",\n") { "    ${it.valueCode()}" } +
-        ")"
+    override fun valueCode(): String = "setOf(\n" + fields.joinToString(",\n") { "    ${it.valueCode()}" } + ")"
 
     @Composable
     override fun Content() {
         var isModalShow by remember { mutableStateOf(false) }
 
-        // summaryText は重複を除外して表示
-        val uniqueValues = fields.map { it.value }.distinct()
-        val summaryText = if (uniqueValues.isEmpty()) "(Empty)" else uniqueValues.joinToString(", ") { it.toString() }
+        // Display summaryText with duplicates removed and limit displayed items
+        val summaryText = remember(fields.size) {
+            val seenValues = mutableSetOf<Value>()
+            val uniqueValues = mutableListOf<Value>()
+            for (field in fields) {
+                if (seenValues.add(field.value)) {
+                    uniqueValues.add(field.value)
+                }
+            }
+            if (uniqueValues.isEmpty()) {
+                "(Empty)"
+            } else {
+                val maxItems = 5
+                val displayed = uniqueValues.take(maxItems).joinToString(", ") { it.toString() }
+                val remaining = uniqueValues.size - maxItems
+                if (remaining > 0) "$displayed, ... and $remaining more" else displayed
+            }
+        }
 
         CollectionFieldSummaryCard(
             summaryText = summaryText,
@@ -73,6 +99,7 @@ open class SetField<Value>(
             isVisible = isModalShow,
             onDismissRequest = { isModalShow = false },
             onInsertAt = ::insertAt,
+            onAfterDelete = ::updateLabelsAfterDelete,
             isDuplicate = { field ->
                 fields.count { it.value == field.value } > 1
             },

@@ -17,7 +17,10 @@ open class ListField<Value>(
     label: String,
     initialValue: List<Value>,
     internal val elementField: ElementFieldScope.() -> MutablePreviewLabField<Value>,
-    private val defaultValue: () -> Value = { initialValue.first() },
+    private val defaultValue: () -> Value = {
+        initialValue.firstOrNull()
+            ?: error("ListField requires a non-empty initialValue or an explicit defaultValue")
+    },
 ) : MutablePreviewLabField<List<Value>>(
     label = label,
     initialValue = initialValue,
@@ -32,34 +35,53 @@ open class ListField<Value>(
     override var value: List<Value>
         get() = _value
         set(value) {
-            fields.clear()
-            value.forEachIndexed { index, value ->
+            // Update existing fields or add new ones to match the new value list
+            value.forEachIndexed { index, newValue ->
                 val oldField = fields.getOrNull(index)
                 if (oldField != null) {
                     oldField.label = "$index"
-                    oldField.value = value
+                    oldField.value = newValue
                 } else {
-                    fields.add(elementField(ElementFieldScope("$index", value)))
+                    fields.add(elementField(ElementFieldScope("$index", newValue)))
                 }
+            }
+            // Remove extra fields if the new value list is shorter
+            while (fields.size > value.size) {
+                fields.removeAt(fields.lastIndex)
             }
         }
 
     internal fun insertAt(index: Int) {
         val newField = elementField(ElementFieldScope("$index", defaultValue()))
         fields.add(index, newField)
+        // Update labels of all fields to reflect new indices
+        fields.forEachIndexed { i, field -> field.label = "$i" }
+    }
+
+    internal fun updateLabelsAfterDelete() {
+        fields.forEachIndexed { i, field -> field.label = "$i" }
     }
 
     override fun serializer(): KSerializer<List<Value>>? = runCatching { serializer<List<Value>>() }.getOrNull()
-    override fun valueCode(): String = "listOf(\n" +
-        fields.joinToString(",\n") { "    ${it.valueCode()}" } +
-        ")"
+    override fun valueCode(): String = "listOf(\n" + fields.joinToString(",\n") { "    ${it.valueCode()}" } + ")"
 
     @Composable
     override fun Content() {
         var isModalShow by remember { mutableStateOf(false) }
 
+        val summaryText = remember(fields.size) {
+            if (fields.isEmpty()) {
+                "(Empty)"
+            } else {
+                val maxItems = 5
+                val displayed = fields.take(maxItems).joinToString(", ") { it.valueCode() }
+                val remaining = fields.size - maxItems
+                if (remaining > 0) "$displayed, ... and $remaining more" else displayed
+            }
+        }
+
         CollectionFieldSummaryCard(
-            summaryText = if (fields.isEmpty()) "(Empty)" else fields.joinToString(", ") { it.valueCode() },
+            summaryText = summaryText,
             onClick = { isModalShow = !isModalShow },
         )
 
@@ -69,6 +91,7 @@ open class ListField<Value>(
             isVisible = isModalShow,
             onDismissRequest = { isModalShow = false },
             onInsertAt = ::insertAt,
+            onAfterDelete = ::updateLabelsAfterDelete,
         )
     }
 
