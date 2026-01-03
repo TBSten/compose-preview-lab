@@ -58,7 +58,7 @@ internal fun LocalTimeEditor(
         Text(":")
 
         TextFieldContent<Double>(
-            label = "day",
+            label = "second",
             value = second,
             onValueChange = onSecondChange,
             toString = { it.toString() },

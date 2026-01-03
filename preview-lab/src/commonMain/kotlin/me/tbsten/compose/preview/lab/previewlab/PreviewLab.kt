@@ -770,7 +770,7 @@ private fun updateFieldValue(state: PreviewLabState, label: String, serializedVa
 
     return try {
         val newValue = mcpBridgeJson.decodeFromString(serializer, serializedValue)
-        (field).value = newValue as Nothing
+        (field as MutablePreviewLabField<Any?>).value = newValue
         true
     } catch (e: Exception) {
         println("[PreviewLab] Failed to update field '$label': ${e.message}")

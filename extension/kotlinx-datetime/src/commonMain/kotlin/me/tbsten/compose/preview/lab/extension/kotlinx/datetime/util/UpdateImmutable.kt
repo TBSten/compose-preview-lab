@@ -48,7 +48,7 @@ internal fun DateTimePeriod.with(
     nanoseconds = nanoseconds,
 )
 
-internal fun DatePeriod.with(years: Int = this.years, months: Int = this.months, days: Int = this.days,) = DatePeriod(
+internal fun DatePeriod.with(years: Int = this.years, months: Int = this.months, days: Int = this.days) = DatePeriod(
     years = years,
     months = months,
     days = days,

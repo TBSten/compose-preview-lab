@@ -24,7 +24,7 @@ kotlin {
     jvm()
 
     js {
-        outputModuleName = "compose-previewl-lab-extension-kotlinx-datetime"
+        outputModuleName = "compose-preview-lab-extension-kotlinx-datetime"
         browser()
         binaries.executable()
         binaries.library()
@@ -36,7 +36,7 @@ kotlin {
     }
 
     wasmJs {
-        outputModuleName = "compose-previewl-lab-extension-kotlinx-datetime"
+        outputModuleName = "compose-preview-lab-extension-kotlinx-datetime"
         browser()
         binaries.executable()
         binaries.library()

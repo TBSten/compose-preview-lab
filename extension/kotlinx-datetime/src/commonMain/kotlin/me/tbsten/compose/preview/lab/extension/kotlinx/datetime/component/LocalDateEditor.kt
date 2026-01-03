@@ -47,7 +47,7 @@ internal fun LocalDateEditor(
         Text("/")
 
         TextFieldContent<Int>(
-            label = "number",
+            label = "month",
             value = month,
             onValueChange = onMonthChange,
             toString = { it.toString() },

@@ -2,7 +2,7 @@ package me.tbsten.compose.preview.lab.mcp
 
 internal fun printStartMcpServerMessage(config: PreviewLabMcpServerConfig) = with(config) {
     println(
-        $"""
+        """
             ====================================================
             ==                                                ==
             ==  🔍 Compose Preview Lab MCP Server             ==

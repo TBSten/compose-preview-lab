@@ -24,10 +24,10 @@ class DateTimePeriodField(label: String, initialValue: DateTimePeriod) :
     override fun valueCode(): String = "DateTimePeriod(" +
         "years = ${value.years}, " +
         "months = ${value.months}, " +
-        "days = ${value.days}" +
-        "hours = ${value.hours}" +
-        "minutes = ${value.minutes}" +
-        "seconds = ${value.seconds}" +
+        "days = ${value.days}, " +
+        "hours = ${value.hours}, " +
+        "minutes = ${value.minutes}, " +
+        "seconds = ${value.seconds}, " +
         "nanoseconds = ${value.nanoseconds}" +
         ")"
 

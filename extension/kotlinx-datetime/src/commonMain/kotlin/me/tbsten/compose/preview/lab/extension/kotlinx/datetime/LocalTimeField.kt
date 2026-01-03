@@ -12,9 +12,9 @@ class LocalTimeField(label: String, initialValue: LocalTime) :
     ) {
 
     override fun valueCode(): String = "LocalTime(" +
-        "year = ${value.hour}, " +
-        "month = ${value.minute}, " +
-        "second = ${value.second}" +
+        "hour = ${value.hour}, " +
+        "minute = ${value.minute}, " +
+        "second = ${value.second}, " +
         "nanosecond = ${value.nanosecond}" +
         ")"
 
