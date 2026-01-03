@@ -64,20 +64,20 @@ dependencies {
 
 | Field | 対応する kotlinx-datetime の型 | 説明 |
 |-------|-------------------------------|------|
-| `LocalDateTimeField` | `LocalDateTime` | 日付と時刻を編集 |
-| `LocalDateField` | `LocalDate` | 日付を編集 |
-| `LocalTimeField` | `LocalTime` | 時刻を編集 |
-| `TimeZoneField` | `TimeZone` | タイムゾーンを編集 |
-| `MonthField` | `Month` | 月を選択 |
-| `DayOfWeekField` | `DayOfWeek` | 曜日を選択 |
-| `DatePeriodField` | `DatePeriod` | 日付の期間を編集 |
-| `DateTimePeriodField` | `DateTimePeriod` | 日時の期間を編集 |
+| [`LocalDateTimeField`](#localdatetimefield) | [`LocalDateTime`](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-local-date-time/) | 日付と時刻を編集 |
+| [`LocalDateField`](#localdatefield) | [`LocalDate`](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-local-date/) | 日付を編集 |
+| [`LocalTimeField`](#localtimefield) | [`LocalTime`](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-local-time/) | 時刻を編集 |
+| [`TimeZoneField`](#timezonefield) | [`TimeZone`](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-time-zone/) | タイムゾーンを編集 |
+| [`MonthField`](#monthfield) | [`Month`](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-month/) | 月を選択 |
+| [`DayOfWeekField`](#dayofweekfield) | [`DayOfWeek`](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-day-of-week/) | 曜日を選択 |
+| [`DatePeriodField`](#dateperiodfield) | [`DatePeriod`](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-date-period/) | 日付の期間を編集 |
+| [`DateTimePeriodField`](#datetimeperiodfield) | [`DateTimePeriod`](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-date-time-period/) | 日時の期間を編集 |
 
 ## 使用例
 
 ### LocalDateTimeField
 
-日付と時刻を編集できる Field です。
+[`LocalDateTime`](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-local-date-time/) を編集できる Field です。日付と時刻を編集できます。
 
 ```kotlin
 PreviewLab {
@@ -99,7 +99,7 @@ PreviewLab {
 
 ### LocalDateField
 
-日付を編集できる Field です。
+[`LocalDate`](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-local-date/) を編集できる Field です。日付を編集できます。
 
 ```kotlin
 PreviewLab {
@@ -121,7 +121,7 @@ PreviewLab {
 
 ### LocalTimeField
 
-時刻を編集できる Field です。
+[`LocalTime`](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-local-time/) を編集できる Field です。時刻を編集できます。
 
 ```kotlin
 PreviewLab {
@@ -143,7 +143,7 @@ PreviewLab {
 
 ### TimeZoneField
 
-タイムゾーンを編集できる Field です。`withMainTimeZonesHint()` や `withAllTimeZonesHint()` を使用して、よく使用されるタイムゾーンをヒントとして表示できます。
+[`TimeZone`](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-time-zone/) を編集できる Field です。`withMainTimeZonesHint()` や `withAllTimeZonesHint()` を使用して、よく使用されるタイムゾーンをヒントとして表示できます。
 
 ```kotlin
 PreviewLab {
@@ -170,7 +170,7 @@ PreviewLab {
 
 ### MonthField
 
-月を選択できる Field です。内部的には `EnumField` を使用しています。
+[`Month`](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-month/) を選択できる Field です。内部的には `EnumField` を使用しています。
 
 ```kotlin
 PreviewLab {
@@ -192,7 +192,7 @@ PreviewLab {
 
 ### DayOfWeekField
 
-曜日を選択できる Field です。内部的には `EnumField` を使用しています。
+[`DayOfWeek`](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-day-of-week/) を選択できる Field です。内部的には `EnumField` を使用しています。
 
 ```kotlin
 PreviewLab {
@@ -214,7 +214,7 @@ PreviewLab {
 
 ### DatePeriodField
 
-日付の期間を編集できる Field です。年・月・日の期間を表します。
+[`DatePeriod`](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-date-period/) を編集できる Field です。年・月・日の期間を表します。
 
 ```kotlin
 PreviewLab {
@@ -236,7 +236,7 @@ PreviewLab {
 
 ### DateTimePeriodField
 
-日時の期間を編集できる Field です。年・月・日・時・分・秒・ナノ秒の期間を表します。
+[`DateTimePeriod`](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-date-time-period/) を編集できる Field です。年・月・日・時・分・秒・ナノ秒の期間を表します。
 
 ```kotlin
 PreviewLab {
@@ -270,3 +270,4 @@ PreviewLab {
 - [Fields Overview](../02-fields/01-overview.md) - Field の基本的な使い方
 - [All Fields](../02-fields/02-all-fields.md) - ビルトインの Field 一覧
 - [kotlinx-datetime GitHub](https://github.com/Kotlin/kotlinx-datetime) - kotlinx-datetime ライブラリ
+- [kotlinx-datetime API Reference](https://kotlinlang.org/api/kotlinx-datetime/) - kotlinx-datetime API ドキュメント
