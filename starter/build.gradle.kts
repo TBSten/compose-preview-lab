@@ -40,7 +40,6 @@ kotlin {
             implementation(compose.runtime)
             api(projects.core)
             api(projects.field)
-            api(projects.ui)
             api(projects.previewLab)
             api(projects.gallery)
         }
