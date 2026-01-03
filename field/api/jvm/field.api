@@ -923,6 +923,7 @@ public final class me/tbsten/compose/preview/lab/field/WrapRange : java/lang/Enu
 }
 
 public final class me/tbsten/compose/preview/lab/field/component/TextFieldContentKt {
+	public static final fun TextFieldContent (Ljava/lang/String;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
 	public static final fun TextFieldContent (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
