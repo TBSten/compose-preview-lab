@@ -9,6 +9,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 class ValueCodeTest :
     StringSpec({
@@ -319,6 +321,26 @@ class ValueCodeTest :
                 reverse = { it.toInt() },
             )
             field.valueCode() shouldBe "/* TODO Set test value here */"
+        }
+        // endregion
+
+        // region InstantField
+        @OptIn(ExperimentalTime::class)
+        "InstantField valueCode returns Instant.fromEpochMilliseconds format" {
+            val field = InstantField("test", Instant.fromEpochMilliseconds(1234567890123L))
+            field.valueCode() shouldBe "Instant.fromEpochMilliseconds(1234567890123)"
+        }
+
+        @OptIn(ExperimentalTime::class)
+        "InstantField valueCode handles zero epoch" {
+            val field = InstantField("test", Instant.fromEpochMilliseconds(0L))
+            field.valueCode() shouldBe "Instant.fromEpochMilliseconds(0)"
+        }
+
+        @OptIn(ExperimentalTime::class)
+        "InstantField valueCode handles negative epoch" {
+            val field = InstantField("test", Instant.fromEpochMilliseconds(-1000L))
+            field.valueCode() shouldBe "Instant.fromEpochMilliseconds(-1000)"
         }
         // endregion
 

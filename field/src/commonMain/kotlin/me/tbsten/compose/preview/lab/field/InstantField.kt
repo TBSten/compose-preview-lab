@@ -16,7 +16,7 @@ class InstantField(label: String, initialValue: Instant) :
         label = label,
         initialValue = initialValue,
     ) {
-    override fun valueCode(): String = "Instant.fromEpochMilliseconds($value)"
+    override fun valueCode(): String = "Instant.fromEpochMilliseconds(${value.toEpochMilliseconds()})"
 
     override fun serializer(): KSerializer<Instant> = InstantSerializer
 
