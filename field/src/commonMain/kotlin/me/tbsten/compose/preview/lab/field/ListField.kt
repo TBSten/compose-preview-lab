@@ -13,6 +13,9 @@ import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.component.CollectionFieldEditModal
 import me.tbsten.compose.preview.lab.field.component.CollectionFieldSummaryCard
 
+/** Maximum number of items to display in the summary view. */
+private const val SummaryMaxItems = 5
+
 /**
  * A field for editing [List] values with support for dynamic element insertion and deletion.
  *
@@ -103,9 +106,8 @@ open class ListField<Value>(
             if (fields.isEmpty()) {
                 "(Empty)"
             } else {
-                val maxItems = 5
-                val displayed = fields.take(maxItems).joinToString(", ") { it.valueCode() }
-                val remaining = fields.size - maxItems
+                val displayed = fields.take(SummaryMaxItems).joinToString(", ") { it.valueCode() }
+                val remaining = fields.size - SummaryMaxItems
                 if (remaining > 0) "$displayed, ... and $remaining more" else displayed
             }
         }

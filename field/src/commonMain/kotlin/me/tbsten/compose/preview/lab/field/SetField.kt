@@ -13,6 +13,9 @@ import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.component.CollectionFieldEditModal
 import me.tbsten.compose.preview.lab.field.component.CollectionFieldSummaryCard
 
+/** Maximum number of items to display in the summary view. */
+private const val SummaryMaxItems = 5
+
 /**
  * A field for editing [Set] values with support for dynamic element insertion, deletion, and duplicate detection.
  *
@@ -109,18 +112,17 @@ open class SetField<Value>(
         // Display summaryText with duplicates removed and limit displayed items
         val summaryText = remember(fields.size) {
             val seenValues = mutableSetOf<Value>()
-            val uniqueValues = mutableListOf<Value>()
+            val uniqueFields = mutableListOf<MutablePreviewLabField<Value>>()
             for (field in fields) {
                 if (seenValues.add(field.value)) {
-                    uniqueValues.add(field.value)
+                    uniqueFields.add(field)
                 }
             }
-            if (uniqueValues.isEmpty()) {
+            if (uniqueFields.isEmpty()) {
                 "(Empty)"
             } else {
-                val maxItems = 5
-                val displayed = uniqueValues.take(maxItems).joinToString(", ") { it.toString() }
-                val remaining = uniqueValues.size - maxItems
+                val displayed = uniqueFields.take(SummaryMaxItems).joinToString(", ") { it.valueCode() }
+                val remaining = uniqueFields.size - SummaryMaxItems
                 if (remaining > 0) "$displayed, ... and $remaining more" else displayed
             }
         }
