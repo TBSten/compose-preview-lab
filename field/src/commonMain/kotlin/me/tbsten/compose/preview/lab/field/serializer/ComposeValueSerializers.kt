@@ -23,7 +23,6 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
-import kotlin.time.Instant
 import me.tbsten.compose.preview.lab.field.ScreenSize
 
 /**
@@ -253,21 +252,4 @@ internal object ScreenSizeSerializer : KSerializer<ScreenSize> {
         }
         ScreenSize(width.dp, height.dp, label)
     }
-}
-
-/**
- * Serializer for [Instant] values.
- *
- * Serializes Instant as its epoch milliseconds (Long value).
- */
-@OptIn(kotlin.time.ExperimentalTime::class, ExperimentalSerializationApi::class)
-internal object InstantSerializer : KSerializer<Instant> {
-    override val descriptor: SerialDescriptor =
-        PrimitiveSerialDescriptor("Instant", PrimitiveKind.LONG)
-
-    override fun serialize(encoder: Encoder, value: Instant) {
-        encoder.encodeLong(value.toEpochMilliseconds())
-    }
-
-    override fun deserialize(decoder: Decoder): Instant = Instant.fromEpochMilliseconds(decoder.decodeLong())
 }
