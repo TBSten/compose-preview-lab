@@ -28,7 +28,7 @@ class LocalDateTimeField(label: String, initialValue: LocalDateTime) :
         "month = ${value.month.number}, " +
         "day = ${value.day}, " +
         "hour = ${value.hour}, " +
-        "minute = ${value.minute}," +
+        "minute = ${value.minute}, " +
         "second = ${value.second}, " +
         "nanosecond = ${value.nanosecond}" +
         ")"
@@ -60,9 +60,9 @@ class LocalDateTimeField(label: String, initialValue: LocalDateTime) :
                 },
             )
 
-            errorMessage?.let { errorMessage ->
+            errorMessage?.let { error ->
                 Text(
-                    text = errorMessage,
+                    text = error,
                     style = PreviewLabTheme.typography.body2,
                     color = PreviewLabTheme.colors.error,
                 )

@@ -36,10 +36,10 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention").version("0.10.0")
 }
 
-fun include(projectPath: String, `as`: String) {
+fun include(projectPath: String, projectName: String) {
     include(projectPath)
     project(projectPath).apply {
-        name = `as`
+        name = projectName
     }
 }
 
@@ -55,7 +55,7 @@ include(":ksp-plugin")
 include(":gradle-plugin")
 include(":dokkaDocs")
 
-include(":extension:kotlinx-datetime", `as` = "extension-kotlinx-datetime")
+include(":extension:kotlinx-datetime", projectName = "extension-kotlinx-datetime")
 
 // include(":intellij-plugin")
 

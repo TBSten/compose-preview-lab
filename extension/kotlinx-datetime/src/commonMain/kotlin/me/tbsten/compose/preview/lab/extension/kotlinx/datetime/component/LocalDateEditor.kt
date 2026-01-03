@@ -98,9 +98,9 @@ internal fun LocalDateEditor(date: LocalDate, onDateChange: (LocalDate) -> Unit,
             },
         )
 
-        errorMessage?.let { errorMessage ->
+        errorMessage?.let { error ->
             Text(
-                text = errorMessage,
+                text = error,
                 style = PreviewLabTheme.typography.body2,
                 color = PreviewLabTheme.colors.error,
             )

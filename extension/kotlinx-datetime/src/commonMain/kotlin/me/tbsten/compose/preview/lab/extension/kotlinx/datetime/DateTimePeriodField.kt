@@ -74,7 +74,7 @@ class DateTimePeriodField(label: String, initialValue: DateTimePeriod) :
                         .onSuccess { value = it }
                         .also { errorMessage = it.exceptionOrNull()?.message }
                 },
-                second = value.seconds + value.nanoseconds * 1_000_000_000.0,
+                second = value.seconds + value.nanoseconds / 1_000_000_000.0,
                 onSecondChange = {
                     runCatching {
                         value.with(
@@ -87,9 +87,9 @@ class DateTimePeriodField(label: String, initialValue: DateTimePeriod) :
                 },
             )
 
-            errorMessage?.let { errorMessage ->
+            errorMessage?.let { error ->
                 Text(
-                    text = errorMessage,
+                    text = error,
                     style = PreviewLabTheme.typography.body2,
                     color = PreviewLabTheme.colors.error,
                 )

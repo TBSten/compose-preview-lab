@@ -56,9 +56,9 @@ class DatePeriodField(label: String, initialValue: DatePeriod) :
                 },
             )
 
-            errorMessage?.let { errorMessage ->
+            errorMessage?.let { error ->
                 Text(
-                    text = errorMessage,
+                    text = error,
                     style = PreviewLabTheme.typography.body2,
                     color = PreviewLabTheme.colors.error,
                 )

@@ -77,7 +77,7 @@ internal fun LocalTimeEditor(time: LocalTime, onTimeChange: (LocalTime) -> Unit,
         LocalTimeEditor(
             hour = time.hour,
             minute = time.minute,
-            second = time.second + time.nanosecond * 1_000_000_000.0,
+            second = time.second + time.nanosecond / 1_000_000_000.0,
             onHourChange = {
                 runCatching { time.with(hour = it) }
                     .onSuccess(onTimeChange)
@@ -100,9 +100,9 @@ internal fun LocalTimeEditor(time: LocalTime, onTimeChange: (LocalTime) -> Unit,
             },
         )
 
-        errorMessage?.let { errorMessage ->
+        errorMessage?.let { error ->
             Text(
-                text = errorMessage,
+                text = error,
                 style = PreviewLabTheme.typography.body2,
                 color = PreviewLabTheme.colors.error,
             )
