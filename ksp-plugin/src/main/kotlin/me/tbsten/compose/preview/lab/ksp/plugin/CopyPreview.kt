@@ -132,6 +132,7 @@ internal fun copyPreview(context: CopyPreviewContext, preview: ValidPreview, cod
         fileName = "Copied__${copied.baseName}",
     ).bufferedWriter().use { writer ->
         // ファイルレベルのアノテーションを出力
+        // annotation.text は "@file:OptIn(...)" 形式なので、中身だけ取り出して再構築
         fileAnnotations.forEach { annotation ->
             val annotationText = annotation.text
                 .removePrefix("@file:")
