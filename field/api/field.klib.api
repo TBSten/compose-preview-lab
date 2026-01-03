@@ -1312,6 +1312,14 @@ final class me.tbsten.compose.preview.lab.field/DpSizeField : me.tbsten.compose.
     final fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/DpSizeField.valueCode|valueCode(){}[0]
 }
 
+final class me.tbsten.compose.preview.lab.field/InstantField : me.tbsten.compose.preview.lab/MutablePreviewLabField<kotlin.time/Instant> { // me.tbsten.compose.preview.lab.field/InstantField|null[0]
+    constructor <init>(kotlin/String, kotlin.time/Instant) // me.tbsten.compose.preview.lab.field/InstantField.<init>|<init>(kotlin.String;kotlin.time.Instant){}[0]
+
+    final fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/InstantField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun serializer(): kotlinx.serialization/KSerializer<kotlin.time/Instant> // me.tbsten.compose.preview.lab.field/InstantField.serializer|serializer(){}[0]
+    final fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/InstantField.valueCode|valueCode(){}[0]
+}
+
 final class me.tbsten.compose.preview.lab.field/ModifierField : me.tbsten.compose.preview.lab/ImmutablePreviewLabField<androidx.compose.ui/Modifier> { // me.tbsten.compose.preview.lab.field/ModifierField|null[0]
     constructor <init>(kotlin/String, me.tbsten.compose.preview.lab.field.modifier/ModifierFieldValueList = ...) // me.tbsten.compose.preview.lab.field/ModifierField.<init>|<init>(kotlin.String;me.tbsten.compose.preview.lab.field.modifier.ModifierFieldValueList){}[0]
 
@@ -1686,6 +1694,7 @@ final val me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_fiel
 final val me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_DpSizeField$stableprop // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_DpSizeField$stableprop|#static{}me_tbsten_compose_preview_lab_field_DpSizeField$stableprop[0]
 final val me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_FixedField$stableprop // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_FixedField$stableprop|#static{}me_tbsten_compose_preview_lab_field_FixedField$stableprop[0]
 final val me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_FloatField$stableprop // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_FloatField$stableprop|#static{}me_tbsten_compose_preview_lab_field_FloatField$stableprop[0]
+final val me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_InstantField$stableprop // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_InstantField$stableprop|#static{}me_tbsten_compose_preview_lab_field_InstantField$stableprop[0]
 final val me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_IntField$stableprop // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_IntField$stableprop|#static{}me_tbsten_compose_preview_lab_field_IntField$stableprop[0]
 final val me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_LongField$stableprop // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_LongField$stableprop|#static{}me_tbsten_compose_preview_lab_field_LongField$stableprop[0]
 final val me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_ModifierField$stableprop // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_ModifierField$stableprop|#static{}me_tbsten_compose_preview_lab_field_ModifierField$stableprop[0]
@@ -1881,6 +1890,7 @@ final fun me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_fiel
 final fun me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_DpSizeField$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_DpSizeField$stableprop_getter|me_tbsten_compose_preview_lab_field_DpSizeField$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_FixedField$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_FixedField$stableprop_getter|me_tbsten_compose_preview_lab_field_FixedField$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_FloatField$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_FloatField$stableprop_getter|me_tbsten_compose_preview_lab_field_FloatField$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_InstantField$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_InstantField$stableprop_getter|me_tbsten_compose_preview_lab_field_InstantField$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_IntField$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_IntField$stableprop_getter|me_tbsten_compose_preview_lab_field_IntField$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_LongField$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_LongField$stableprop_getter|me_tbsten_compose_preview_lab_field_LongField$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_ModifierField$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.field/me_tbsten_compose_preview_lab_field_ModifierField$stableprop_getter|me_tbsten_compose_preview_lab_field_ModifierField$stableprop_getter(){}[0]

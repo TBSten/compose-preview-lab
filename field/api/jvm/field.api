@@ -311,6 +311,12 @@ public final class me/tbsten/compose/preview/lab/field/ComposableSingletons$Comp
 	public final fun getLambda$332218513$field ()Lkotlin/jvm/functions/Function2;
 }
 
+public final class me/tbsten/compose/preview/lab/field/ComposableSingletons$InstantFieldKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/ComposableSingletons$InstantFieldKt;
+	public fun <init> ()V
+	public final fun getLambda$1529696582$field ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class me/tbsten/compose/preview/lab/field/ComposableSingletons$ScreenSizeFieldKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/ComposableSingletons$ScreenSizeFieldKt;
 	public fun <init> ()V
@@ -369,6 +375,14 @@ public class me/tbsten/compose/preview/lab/field/FloatField : me/tbsten/compose/
 	public fun <init> (Ljava/lang/String;FLme/tbsten/compose/preview/lab/field/NumberField$InputType;)V
 	public synthetic fun <init> (Ljava/lang/String;FLme/tbsten/compose/preview/lab/field/NumberField$InputType;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class me/tbsten/compose/preview/lab/field/InstantField : me/tbsten/compose/preview/lab/MutablePreviewLabField {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Lkotlin/time/Instant;)V
+	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun serializer ()Lkotlinx/serialization/KSerializer;
+	public fun valueCode ()Ljava/lang/String;
 }
 
 public class me/tbsten/compose/preview/lab/field/IntField : me/tbsten/compose/preview/lab/field/NumberField {

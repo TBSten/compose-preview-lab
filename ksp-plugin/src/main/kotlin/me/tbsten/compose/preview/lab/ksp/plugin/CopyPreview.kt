@@ -11,8 +11,35 @@ import me.tbsten.compose.preview.lab.ksp.plugin.util.findArg
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.com.intellij.openapi.util.TextRange
 import org.jetbrains.kotlin.com.intellij.psi.util.PsiUtilCore
+import org.jetbrains.kotlin.psi.KtAnnotationEntry
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.psi.KtNamedFunction
+
+/**
+ * コピー対象のアノテーション名リスト
+ */
+private val COPY_TARGET_ANNOTATIONS = setOf("OptIn", "Suppress")
+
+/**
+ * アノテーションがコピー対象かどうか判定する
+ */
+private fun KtAnnotationEntry.isCopyTargetAnnotation(): Boolean {
+    val shortName = shortName?.asString() ?: return false
+    return shortName in COPY_TARGET_ANNOTATIONS
+}
+
+/**
+ * ファイルレベルのコピー対象アノテーションを取得する
+ */
+private fun KtFile.getFileAnnotationsToCopy(): List<KtAnnotationEntry> =
+    fileAnnotationList?.annotationEntries?.filter { it.isCopyTargetAnnotation() } ?: emptyList()
+
+/**
+ * 関数のコピー対象アノテーションを取得する
+ */
+private fun KtNamedFunction.getAnnotationsToCopy(): List<KtAnnotationEntry> =
+    modifierList?.annotationEntries?.filter { it.isCopyTargetAnnotation() } ?: emptyList()
 
 internal fun checkPreview(annotated: KSAnnotated): ValidPreview? {
     if (annotated !is KSFunctionDeclaration) return null
@@ -57,44 +84,44 @@ internal fun copyPreview(context: CopyPreviewContext, preview: ValidPreview, cod
                     "    Preview fun name = ${preview.previewFun.simpleName.asString()} (${preview.previewFun.qualifiedName?.asString()})",
             )
         )
-    val (psiFile, previewBody) =
-        run {
-            val virtualFile = requireNotNull(context.environment.findLocalFile(filePath))
-            val psiFile = PsiUtilCore.getPsiFile(context.environment.project, virtualFile) as? KtFile
-                ?: throw IllegalStateException(
-                    "Can not copy Preview for Compose Preview Lab, because file is not KtFile.\n" +
-                        "|  error details:\n" +
-                        "|    file = ${virtualFile.name} (${virtualFile.path})\n" +
-                        "|    fileType = ${
-                            virtualFile.fileType.name +
-                                " (${
-                                    PsiUtilCore.getPsiFile(
-                                        context.environment.project,
-                                        virtualFile,
-                                    )::class.simpleName?.removeSuffix("Impl")
-                                })"
-                        }\n" +
-                        "|",
-                )
-            val functionElement =
-                FunctionCollector.visitPsiFile(file = psiFile, funName = copied.baseName)
-                    .single()
+    val virtualFile = requireNotNull(context.environment.findLocalFile(filePath))
+    val psiFile = PsiUtilCore.getPsiFile(context.environment.project, virtualFile) as? KtFile
+        ?: throw IllegalStateException(
+            "Can not copy Preview for Compose Preview Lab, because file is not KtFile.\n" +
+                "|  error details:\n" +
+                "|    file = ${virtualFile.name} (${virtualFile.path})\n" +
+                "|    fileType = ${
+                    virtualFile.fileType.name +
+                        " (${
+                            PsiUtilCore.getPsiFile(
+                                context.environment.project,
+                                virtualFile,
+                            )::class.simpleName?.removeSuffix("Impl")
+                        })"
+                }\n" +
+                "|",
+        )
+    val functionElement =
+        FunctionCollector.visitPsiFile(file = psiFile, funName = copied.baseName)
+            .single()
 
-            val bodyExp = functionElement.bodyExpression
-            val bodyText =
-                if (bodyExp is KtBlockExpression) {
-                    val range = TextRange(
-                        bodyExp.lBrace!!.textRange.endOffset - bodyExp.textRange.startOffset,
-                        bodyExp.rBrace!!.textRange.startOffset - bodyExp.textRange.startOffset,
-                    )
-                    bodyExp.text.substring(range.startOffset, range.endOffset)
-                } else if (bodyExp != null) {
-                    bodyExp.text
-                } else {
-                    "// FIXME Warn: ${functionElement.name} has no body"
-                }
-            psiFile to bodyText
+    val bodyExp = functionElement.bodyExpression
+    val previewBody =
+        if (bodyExp is KtBlockExpression) {
+            val range = TextRange(
+                bodyExp.lBrace!!.textRange.endOffset - bodyExp.textRange.startOffset,
+                bodyExp.rBrace!!.textRange.startOffset - bodyExp.textRange.startOffset,
+            )
+            bodyExp.text.substring(range.startOffset, range.endOffset)
+        } else if (bodyExp != null) {
+            bodyExp.text
+        } else {
+            "// FIXME Warn: ${functionElement.name} has no body"
         }
+
+    // コピー対象のアノテーションを取得
+    val fileAnnotations = psiFile.getFileAnnotationsToCopy()
+    val functionAnnotations = functionElement.getAnnotationsToCopy()
 
     codeGenerator.createNewFile(
         dependencies = Dependencies(
@@ -104,6 +131,17 @@ internal fun copyPreview(context: CopyPreviewContext, preview: ValidPreview, cod
         packageName = copied.packageName,
         fileName = "Copied__${copied.baseName}",
     ).bufferedWriter().use { writer ->
+        // ファイルレベルのアノテーションを出力
+        // annotation.text は "@file:OptIn(...)" 形式なので、中身だけ取り出して再構築
+        fileAnnotations.forEach { annotation ->
+            val annotationText = annotation.text
+                .removePrefix("@file:")
+                .removePrefix("@")
+            writer.appendLine("@file:$annotationText")
+        }
+        if (fileAnnotations.isNotEmpty()) {
+            writer.appendLine()
+        }
         writer.appendLine("package ${copied.packageName}")
         writer.appendLine()
         psiFile.importDirectives.forEach {
@@ -116,6 +154,10 @@ internal fun copyPreview(context: CopyPreviewContext, preview: ValidPreview, cod
         writer.appendLine("/**")
         writer.appendLine(" * base: [${copied.baseName}]")
         writer.appendLine(" */")
+        // 関数レベルのアノテーションを出力
+        functionAnnotations.forEach { annotation ->
+            writer.appendLine(annotation.text)
+        }
         writer.appendLine("@Composable")
         writer.appendLine("internal fun ${copied.copyName}() {")
         writer.appendLine(previewBody)
