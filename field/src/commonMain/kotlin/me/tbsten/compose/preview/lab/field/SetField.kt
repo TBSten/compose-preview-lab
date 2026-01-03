@@ -13,6 +13,43 @@ import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.component.CollectionFieldEditModal
 import me.tbsten.compose.preview.lab.field.component.CollectionFieldSummaryCard
 
+/**
+ * A field for editing [Set] values with support for dynamic element insertion, deletion, and duplicate detection.
+ *
+ * SetField provides a UI for editing set collections where each element is represented
+ * by its own field. Elements can be inserted at any position using insert buttons.
+ * Unlike [ListField], SetField automatically detects and highlights duplicate values,
+ * displaying them with an error indicator in the edit modal.
+ *
+ * # Usage
+ *
+ * ```kotlin
+ * PreviewLab {
+ *     val fruits by fieldValue {
+ *         SetField(
+ *             label = "fruits",
+ *             initialValue = setOf("Apple", "Banana", "Cherry"),
+ *             elementField = { StringField(label, initialValue) },
+ *         )
+ *     }
+ *     Text(fruits.joinToString(", "))
+ * }
+ * ```
+ *
+ * # Duplicate Detection
+ *
+ * When editing, if two or more elements have the same value, they will be highlighted
+ * with an error color and a message indicating which values are duplicated.
+ * The summary view shows only unique values.
+ *
+ * @param Value The type of elements in the set.
+ * @param label Label displayed in the UI for this field.
+ * @param initialValue Initial set value.
+ * @param elementField Factory function to create a field for each element.
+ *                     Receives [ElementFieldScope] with the element's label (index) and initial value.
+ * @param defaultValue Factory function to create a default value when inserting new elements.
+ *                     Defaults to the first element of initialValue if available.
+ */
 open class SetField<Value>(
     label: String,
     initialValue: Set<Value>,
@@ -106,7 +143,18 @@ open class SetField<Value>(
         )
     }
 
+    /**
+     * Scope provided to [elementField] factory function for creating element fields.
+     *
+     * @property label The label for the element field, representing its index in the set.
+     * @property initialValue The initial value for the element.
+     */
     inner class ElementFieldScope internal constructor(val label: String, val initialValue: Value)
 }
 
+/**
+ * Adds an "Empty Set" hint to a [SetField], allowing quick selection of an empty set value.
+ *
+ * @return The field with the empty set hint added.
+ */
 fun <Value> MutablePreviewLabField<Set<Value>>.withEmptyHint() = withHint("Empty Set" to emptySet())

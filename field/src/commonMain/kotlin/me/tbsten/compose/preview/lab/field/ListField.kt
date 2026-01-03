@@ -13,6 +13,36 @@ import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.component.CollectionFieldEditModal
 import me.tbsten.compose.preview.lab.field.component.CollectionFieldSummaryCard
 
+/**
+ * A field for editing [List] values with support for dynamic element insertion and deletion.
+ *
+ * ListField provides a UI for editing list collections where each element is represented
+ * by its own field. Elements can be inserted at any position using insert buttons,
+ * and the field automatically maintains correct indices.
+ *
+ * # Usage
+ *
+ * ```kotlin
+ * PreviewLab {
+ *     val characters by fieldValue {
+ *         ListField(
+ *             label = "characters",
+ *             initialValue = listOf("Alice", "Bob", "Charlie"),
+ *             elementField = { StringField(label, initialValue) },
+ *         )
+ *     }
+ *     Text(characters.joinToString(", "))
+ * }
+ * ```
+ *
+ * @param Value The type of elements in the list.
+ * @param label Label displayed in the UI for this field.
+ * @param initialValue Initial list value.
+ * @param elementField Factory function to create a field for each element.
+ *                     Receives [ElementFieldScope] with the element's label (index) and initial value.
+ * @param defaultValue Factory function to create a default value when inserting new elements.
+ *                     Defaults to the first element of initialValue if available.
+ */
 open class ListField<Value>(
     label: String,
     initialValue: List<Value>,
@@ -95,7 +125,18 @@ open class ListField<Value>(
         )
     }
 
+    /**
+     * Scope provided to [elementField] factory function for creating element fields.
+     *
+     * @property label The label for the element field, representing its index in the list.
+     * @property initialValue The initial value for the element.
+     */
     inner class ElementFieldScope internal constructor(val label: String, val initialValue: Value)
 }
 
+/**
+ * Adds an "Empty List" hint to a [ListField], allowing quick selection of an empty list value.
+ *
+ * @return The field with the empty list hint added.
+ */
 fun <Value> MutablePreviewLabField<List<Value>>.withEmptyHint() = withHint("Empty List" to emptyList())
