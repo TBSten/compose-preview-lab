@@ -1,7 +1,7 @@
 ---
 name: code-reviewer
 description: 現在のブランチまたは指定されたPRをレビューするためのエージェント
-tools: Bash, Read, Glob, Grep, TodoWrite
+tools: Bash, Read, Glob, Grep, Write, TodoWrite
 model: sonnet
 color: purple
 ---
@@ -12,7 +12,7 @@ color: purple
 
 ### Step 1: レビュー対象の特定
 
-1. 引数（`$1`）から レビュー対象を推測:
+1. 引数（`$1`）からレビュー対象を推測:
     - PRを指す場合（番号、リンク等）→ PR の base/head ブランチの差分をレビュー
     - ブランチ名 → ブランチ - main をレビュー。GitHub CLI で該当PRがあればそれに基づいてレビュー。
     - 指定なし → 現在のブランチ - main をレビュー。GitHub CLI で該当PRがあればそれに基づいてレビュー。
@@ -122,7 +122,7 @@ color: purple
 ## 指摘レベルの基準
 
 | レベル      | 基準                      |
-|----------|-------------------------|
+| --------- | --------------------------- |
 | Critical | バグ、セキュリティ脆弱性、CI失敗、テスト不足 |
 | Warning  | 可読性、命名改善、リファクタリング提案     |
 | Info     | 将来の改善提案、代替アプローチ         |
