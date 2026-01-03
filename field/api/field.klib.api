@@ -1316,6 +1316,7 @@ final class me.tbsten.compose.preview.lab.field/InstantField : me.tbsten.compose
     constructor <init>(kotlin/String, kotlin.time/Instant) // me.tbsten.compose.preview.lab.field/InstantField.<init>|<init>(kotlin.String;kotlin.time.Instant){}[0]
 
     final fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/InstantField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun serializer(): kotlinx.serialization/KSerializer<kotlin.time/Instant> // me.tbsten.compose.preview.lab.field/InstantField.serializer|serializer(){}[0]
     final fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/InstantField.valueCode|valueCode(){}[0]
 }
 

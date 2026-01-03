@@ -381,6 +381,7 @@ public final class me/tbsten/compose/preview/lab/field/InstantField : me/tbsten/
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;Lkotlin/time/Instant;)V
 	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun serializer ()Lkotlinx/serialization/KSerializer;
 	public fun valueCode ()Ljava/lang/String;
 }
 
