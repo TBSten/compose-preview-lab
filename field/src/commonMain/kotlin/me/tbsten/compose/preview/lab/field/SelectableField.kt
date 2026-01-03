@@ -110,7 +110,7 @@ open class SelectableField<Value>(
         DefaultFieldView(menuItems = menuItems + typeMenuItems)
     }
 
-    private class ChangeTypeMenuItem<Value>(override val field: SelectableField<Value>, private val targetType: Type,) :
+    private class ChangeTypeMenuItem<Value>(override val field: SelectableField<Value>, private val targetType: Type) :
         ViewMenuItem<Value>(field) {
         override val title: String = "Type: ${targetType.name}"
         override val enabled: Boolean = field.type != targetType
@@ -339,7 +339,7 @@ inline fun <reified E : Enum<E>> EnumField(
     type = type,
     initialValue = initialValue,
     serializer = runCatching { serializer<E>() }.getOrNull(),
-)
+).withValueCode { "${E::class.simpleName}.${it.name}" }
 
 /**
  * Extension function to convert a [List] to a [SelectableField].
