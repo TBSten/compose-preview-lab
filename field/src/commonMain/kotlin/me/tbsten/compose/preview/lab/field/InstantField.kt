@@ -5,8 +5,10 @@ package me.tbsten.compose.preview.lab.field
 import androidx.compose.runtime.Composable
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
+import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.component.TextFieldContent
+import me.tbsten.compose.preview.lab.field.serializer.InstantSerializer
 import me.tbsten.compose.preview.lab.ui.components.Text
 
 class InstantField(label: String, initialValue: Instant) :
@@ -15,6 +17,8 @@ class InstantField(label: String, initialValue: Instant) :
         initialValue = initialValue,
     ) {
     override fun valueCode(): String = "Instant.fromEpochMilliseconds($value)"
+
+    override fun serializer(): KSerializer<Instant> = InstantSerializer
 
     @Composable
     override fun Content() {
