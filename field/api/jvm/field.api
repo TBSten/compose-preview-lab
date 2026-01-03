@@ -9,6 +9,7 @@ public abstract class me/tbsten/compose/preview/lab/ImmutablePreviewLabField : a
 	public fun getValueFlow ()Lkotlinx/coroutines/flow/Flow;
 	public fun onCleared ()V
 	public fun serializer ()Lkotlinx/serialization/KSerializer;
+	public fun setLabel (Ljava/lang/String;)V
 	protected fun setValue (Ljava/lang/Object;)V
 	public fun testValues ()Ljava/util/List;
 	public fun valueCode ()Ljava/lang/String;
@@ -27,6 +28,7 @@ public abstract class me/tbsten/compose/preview/lab/MutablePreviewLabField : and
 	public fun getValueFlow ()Lkotlinx/coroutines/flow/Flow;
 	public fun onCleared ()V
 	public fun serializer ()Lkotlinx/serialization/KSerializer;
+	public fun setLabel (Ljava/lang/String;)V
 	public fun setValue (Ljava/lang/Object;)V
 	public fun testValues ()Ljava/util/List;
 	public fun valueCode ()Ljava/lang/String;
@@ -43,6 +45,7 @@ public abstract interface class me/tbsten/compose/preview/lab/PreviewLabField {
 	public abstract fun getValueFlow ()Lkotlinx/coroutines/flow/Flow;
 	public fun onCleared ()V
 	public fun serializer ()Lkotlinx/serialization/KSerializer;
+	public abstract fun setLabel (Ljava/lang/String;)V
 	public fun testValues ()Ljava/util/List;
 	public fun valueCode ()Ljava/lang/String;
 }
@@ -392,6 +395,28 @@ public class me/tbsten/compose/preview/lab/field/IntField : me/tbsten/compose/pr
 	public fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public class me/tbsten/compose/preview/lab/field/ListField : me/tbsten/compose/preview/lab/MutablePreviewLabField {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public synthetic fun getValue ()Ljava/lang/Object;
+	public fun getValue ()Ljava/util/List;
+	public fun serializer ()Lkotlinx/serialization/KSerializer;
+	public synthetic fun setValue (Ljava/lang/Object;)V
+	public fun setValue (Ljava/util/List;)V
+	public fun valueCode ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/ListField$ElementFieldScope {
+	public final fun getInitialValue ()Ljava/lang/Object;
+	public final fun getLabel ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/ListFieldKt {
+	public static final fun withEmptyHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+}
+
 public class me/tbsten/compose/preview/lab/field/LongField : me/tbsten/compose/preview/lab/field/NumberField {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;JLme/tbsten/compose/preview/lab/field/NumberField$InputType;)V
@@ -586,6 +611,28 @@ public final class me/tbsten/compose/preview/lab/field/SelectableFieldKt {
 	public static synthetic fun SelectableField$default (Ljava/lang/String;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/SelectableField;
 	public static final fun toField (Ljava/util/List;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/SelectableField;
 	public static synthetic fun toField$default (Ljava/util/List;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Ljava/lang/Object;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/SelectableField;
+}
+
+public class me/tbsten/compose/preview/lab/field/SetField : me/tbsten/compose/preview/lab/MutablePreviewLabField {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Ljava/util/Set;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/Set;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public synthetic fun getValue ()Ljava/lang/Object;
+	public fun getValue ()Ljava/util/Set;
+	public fun serializer ()Lkotlinx/serialization/KSerializer;
+	public synthetic fun setValue (Ljava/lang/Object;)V
+	public fun setValue (Ljava/util/Set;)V
+	public fun valueCode ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/SetField$ElementFieldScope {
+	public final fun getInitialValue ()Ljava/lang/Object;
+	public final fun getLabel ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/SetFieldKt {
+	public static final fun withEmptyHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
 }
 
 public final class me/tbsten/compose/preview/lab/field/SizeField : me/tbsten/compose/preview/lab/MutablePreviewLabField {
@@ -889,6 +936,7 @@ public final class me/tbsten/compose/preview/lab/field/WithTestValuesField : me/
 	public fun getValueFlow ()Lkotlinx/coroutines/flow/Flow;
 	public fun onCleared ()V
 	public fun serializer ()Lkotlinx/serialization/KSerializer;
+	public fun setLabel (Ljava/lang/String;)V
 	public fun testValues ()Ljava/util/List;
 	public fun valueCode ()Ljava/lang/String;
 }
