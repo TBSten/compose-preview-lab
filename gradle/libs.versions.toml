@@ -10,7 +10,7 @@ hotReload = "1.1.0-alpha03"
 ksp = "2.3.2"
 intellijPlatform = "2.6.0"
 jewelIdeLafBridge = "0.27.0"
-kotlinxSerializationJson = "1.9.0"
+kotlinxSerialization = "1.9.0"
 vanniktechMavenPublish = "0.35.0"
 dokka = "2.1.0"
 binaryCompatibilityValidator = "0.18.1"
@@ -24,6 +24,7 @@ filekit = "0.12.0"
 buildkonfig = "0.17.1"
 ktor = "3.3.3"
 mcp = "0.8.1"
+kotlinxDatetime = "0.7.1"
 
 [libraries]
 
@@ -35,7 +36,8 @@ kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", ver
 kotlinCompilerEmbeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
 kspApi = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 jewelIdeLafBridge = { module = "org.jetbrains.jewel:jewel-ide-laf-bridge-243", version.ref = "jewelIdeLafBridge" }
-kotlinxSerializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+kotlinxSerializationCore = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerialization" }
+kotlinxSerializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 ktlintGradlePlugin = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlintGradle" }
 vanniktechMavenPublishGradlePlugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "vanniktechMavenPublish" }
 dokkaGradlePlugin = { module = "org.jetbrains.dokka:org.jetbrains.dokka.gradle.plugin", version.ref = "dokka" }
@@ -55,6 +57,8 @@ mcp-kotlin-sdk = { module = "io.modelcontextprotocol:kotlin-sdk", version.ref = 
 androidxLifecycleViewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 androidxLifecycleRuntimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 kodeview = { module = "dev.snipme:kodeview", version.ref = "kodeview" }
+
+kotlinxDatetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 
 [plugins]
 

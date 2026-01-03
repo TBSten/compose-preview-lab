@@ -66,6 +66,10 @@ kotlin {
             implementation(compose.components.resources)
             implementation("org.jetbrains.compose.ui:ui-tooling-preview:${libs.versions.compose.get()}")
             implementation("me.tbsten.compose.preview.lab:starter:${libs.versions.composePreviewLab.get()}")
+
+            implementation("me.tbsten.compose.preview.lab:extension-kotlinx-datetime:${libs.versions.composePreviewLab.get()}")
+            implementation(libs.kotlinxDatetime)
+
             implementation(project(":uiLib"))
             implementation(project(":helloComposePreviewLab"))
 

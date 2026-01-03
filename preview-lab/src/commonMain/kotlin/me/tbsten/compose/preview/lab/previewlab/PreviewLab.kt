@@ -716,7 +716,7 @@ fun rememberPreviewLabStateFromUrl(): PreviewLabState {
 
 private val mcpBridgeJson = Json {
     ignoreUnknownKeys = true
-    isLenient = true
+    isLenient = false
 }
 
 /**
