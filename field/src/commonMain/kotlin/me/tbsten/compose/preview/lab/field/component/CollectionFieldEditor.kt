@@ -102,8 +102,7 @@ internal fun <Value> CollectionFieldEditModal(
 }
 
 @Composable
-@InternalComposePreviewLabApi
-internal fun <Value> CollectionFieldElementsEditor(
+private fun <Value> CollectionFieldElementsEditor(
     fields: List<MutablePreviewLabField<Value>>,
     onDelete: (MutablePreviewLabField<Value>) -> Unit,
     onInsertAt: (Int) -> Unit,
@@ -151,8 +150,7 @@ internal fun <Value> CollectionFieldElementsEditor(
 }
 
 @Composable
-@InternalComposePreviewLabApi
-internal fun <Value> CollectionFieldElementsRow(
+private fun <Value> CollectionFieldElementsRow(
     fields: List<MutablePreviewLabField<Value>>,
     selectedField: MutablePreviewLabField<Value>?,
     onFieldSelect: (MutablePreviewLabField<Value>) -> Unit,
@@ -217,9 +215,8 @@ internal fun <Value> CollectionFieldElementsRow(
     }
 }
 
-@InternalComposePreviewLabApi
 @Composable
-internal fun InsertButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun InsertButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     CommonIconButton(
         painter = painterResource(PreviewLabUiRes.drawable.icon_add),
         contentDescription = "Insert",
@@ -228,9 +225,8 @@ internal fun InsertButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     )
 }
 
-@InternalComposePreviewLabApi
 @Composable
-internal fun SelectedArrow(isSelected: Boolean, modifier: Modifier = Modifier) {
+private fun SelectedArrow(isSelected: Boolean, modifier: Modifier = Modifier) {
     val arrowColor by animateColorAsState(if (isSelected) PreviewLabTheme.colors.primary else Color.Transparent)
 
     Canvas(modifier.padding(top = 8.dp).width(20.dp).height(12.dp)) {
@@ -246,9 +242,8 @@ internal fun SelectedArrow(isSelected: Boolean, modifier: Modifier = Modifier) {
     }
 }
 
-@InternalComposePreviewLabApi
 @Composable
-internal fun <Value> SelectedFieldView(
+private fun <Value> SelectedFieldView(
     selectedField: MutablePreviewLabField<Value>?,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
@@ -285,9 +280,8 @@ internal fun <Value> SelectedFieldView(
 
 private fun String.takeEllipsis(max: Int) = if (length < max) this else (this.take(max - 3) + "...")
 
-@InternalComposePreviewLabApi
 @Composable
-internal fun CollectionElementCard(
+private fun CollectionElementCard(
     isSelected: Boolean,
     onClick: () -> Unit,
     displayText: String,

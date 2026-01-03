@@ -88,14 +88,14 @@ open class SetField<Value>(
             }
         }
 
-    internal fun insertAt(index: Int) {
+    private fun insertAt(index: Int) {
         val newField = elementField(ElementFieldScope("$index", defaultValue()))
         fields.add(index, newField)
         // Update labels of all fields to reflect new indices
         fields.forEachIndexed { i, field -> field.label = "$i" }
     }
 
-    internal fun updateLabelsAfterDelete() {
+    private fun updateLabelsAfterDelete() {
         fields.forEachIndexed { i, field -> field.label = "$i" }
     }
 
