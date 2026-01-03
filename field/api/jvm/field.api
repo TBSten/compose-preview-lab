@@ -311,6 +311,12 @@ public final class me/tbsten/compose/preview/lab/field/ComposableSingletons$Comp
 	public final fun getLambda$332218513$field ()Lkotlin/jvm/functions/Function2;
 }
 
+public final class me/tbsten/compose/preview/lab/field/ComposableSingletons$ListFieldKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/ComposableSingletons$ListFieldKt;
+	public fun <init> ()V
+	public final fun getLambda$499956062$field ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class me/tbsten/compose/preview/lab/field/ComposableSingletons$ScreenSizeFieldKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/ComposableSingletons$ScreenSizeFieldKt;
 	public fun <init> ()V
@@ -376,6 +382,24 @@ public class me/tbsten/compose/preview/lab/field/IntField : me/tbsten/compose/pr
 	public fun <init> (Ljava/lang/String;ILme/tbsten/compose/preview/lab/field/NumberField$InputType;)V
 	public synthetic fun <init> (Ljava/lang/String;ILme/tbsten/compose/preview/lab/field/NumberField$InputType;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public class me/tbsten/compose/preview/lab/field/ListField : me/tbsten/compose/preview/lab/MutablePreviewLabField {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public synthetic fun getValue ()Ljava/lang/Object;
+	public fun getValue ()Ljava/util/List;
+	public fun serializer ()Lkotlinx/serialization/KSerializer;
+	public synthetic fun setValue (Ljava/lang/Object;)V
+	public fun setValue (Ljava/util/List;)V
+	public fun valueCode ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/ListField$ElementFieldScope {
+	public final fun getInitialValue ()Ljava/lang/Object;
+	public final fun getLabel ()Ljava/lang/String;
 }
 
 public class me/tbsten/compose/preview/lab/field/LongField : me/tbsten/compose/preview/lab/field/NumberField {
