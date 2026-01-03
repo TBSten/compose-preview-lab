@@ -24,6 +24,7 @@ import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.LocalDateTimeFie
 import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.LocalTimeField
 import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.MonthField
 import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.TimeZoneField
+import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.withMainTimeZonesHint
 import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 
@@ -126,6 +127,7 @@ private fun KotlinxDateTimeExamples() = PreviewLab {
 
 // Individual Field Examples for Documentation
 
+@ComposePreviewLabOption(id = "LocalDateTimeFieldExample")
 @Preview
 @Composable
 private fun LocalDateTimeFieldExample() = PreviewLab {
@@ -138,6 +140,7 @@ private fun LocalDateTimeFieldExample() = PreviewLab {
     Text("Created at: $createdAt", modifier = Modifier.padding(16.dp))
 }
 
+@ComposePreviewLabOption(id = "LocalDateFieldExample")
 @Preview
 @Composable
 private fun LocalDateFieldExample() = PreviewLab {
@@ -150,6 +153,7 @@ private fun LocalDateFieldExample() = PreviewLab {
     Text("Birthday: $birthday", modifier = Modifier.padding(16.dp))
 }
 
+@ComposePreviewLabOption(id = "LocalTimeFieldExample")
 @Preview
 @Composable
 private fun LocalTimeFieldExample() = PreviewLab {
@@ -162,6 +166,7 @@ private fun LocalTimeFieldExample() = PreviewLab {
     Text("Meeting time: $meetingTime", modifier = Modifier.padding(16.dp))
 }
 
+@ComposePreviewLabOption(id = "TimeZoneFieldExample")
 @Preview
 @Composable
 private fun TimeZoneFieldExample() = PreviewLab {
@@ -174,6 +179,7 @@ private fun TimeZoneFieldExample() = PreviewLab {
     Text("TimeZone: $timeZone", modifier = Modifier.padding(16.dp))
 }
 
+@ComposePreviewLabOption(id = "MonthFieldExample")
 @Preview
 @Composable
 private fun MonthFieldExample() = PreviewLab {
@@ -186,6 +192,7 @@ private fun MonthFieldExample() = PreviewLab {
     Text("Month: $month", modifier = Modifier.padding(16.dp))
 }
 
+@ComposePreviewLabOption(id = "DayOfWeekFieldExample")
 @Preview
 @Composable
 private fun DayOfWeekFieldExample() = PreviewLab {
@@ -198,6 +205,7 @@ private fun DayOfWeekFieldExample() = PreviewLab {
     Text("Regular closing day: $dayOfWeek", modifier = Modifier.padding(16.dp))
 }
 
+@ComposePreviewLabOption(id = "DatePeriodFieldExample")
 @Preview
 @Composable
 private fun DatePeriodFieldExample() = PreviewLab {
@@ -210,6 +218,7 @@ private fun DatePeriodFieldExample() = PreviewLab {
     Text("Subscription period: $datePeriod", modifier = Modifier.padding(16.dp))
 }
 
+@ComposePreviewLabOption(id = "DateTimePeriodFieldExample")
 @Preview
 @Composable
 private fun DateTimePeriodFieldExample() = PreviewLab {

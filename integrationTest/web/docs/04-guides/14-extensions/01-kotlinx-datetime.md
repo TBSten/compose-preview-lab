@@ -165,7 +165,7 @@ PreviewLab {
 
 **ヒント関数:**
 
-- `withMainTimeZonesHint()` - 主要なタイムゾーン（UTC, JST, EST など）をヒントとして表示
+- `withMainTimeZonesHint()` - 主要なタイムゾーン（UTC, Asia/Tokyo, America/New_York など）をヒントとして表示
 - `withAllTimeZonesHint()` - すべての利用可能なタイムゾーンをヒントとして表示
 
 ### MonthField
