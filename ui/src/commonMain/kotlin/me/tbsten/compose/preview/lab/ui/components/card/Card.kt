@@ -22,13 +22,13 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalTypography
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Surface
-import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 @InternalComposePreviewLabApi
@@ -171,7 +171,7 @@ object CardDefaults {
     val Shape: Shape @Composable get() = RoundedCornerShape(12.0.dp)
     val ElevatedShape: Shape @Composable get() = Shape
     val OutlinedShape: Shape @Composable get() = Shape
-    private val BorderWidth = 1.dp
+    val BorderWidth = 1.dp
 
     @Composable
     fun cardElevation(
@@ -267,15 +267,16 @@ object CardDefaults {
     )
 
     @Composable
-    fun outlinedCardBorder(enabled: Boolean = true): BorderStroke {
-        val color =
+    fun outlinedCardBorder(
+        enabled: Boolean = true,
+        color: Color =
             if (enabled) {
                 PreviewLabTheme.colors.outline
             } else {
                 PreviewLabTheme.colors.disabled
-            }
-        return remember(color) { BorderStroke(BorderWidth, color) }
-    }
+            },
+        borderWidth: Dp = BorderWidth,
+    ): BorderStroke = remember(borderWidth, color) { BorderStroke(borderWidth, color) }
 }
 
 @ConsistentCopyVisibility
@@ -299,7 +300,7 @@ constructor(
 }
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 private fun CardComponentSampleInTheme() {
     PreviewLabTheme {
         CardComponentSample()
@@ -307,7 +308,7 @@ private fun CardComponentSampleInTheme() {
 }
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 private fun CardComponentSample() {
     val cardModifier =
         Modifier
