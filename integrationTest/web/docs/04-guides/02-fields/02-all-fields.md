@@ -498,13 +498,11 @@ data class Padding(val horizontal: Dp, val vertical: Dp)
 PreviewLab {
     val padding: Padding = fieldValue {
         // highlight-start
-        CombinedField(
+        combined(
             label = "padding",
-            fields = listOf(
-                DpField("horizontal", 16.dp),
-                DpField("vertical", 8.dp),
-            ),
-            combine = { values -> Padding(values[0] as Dp, values[1] as Dp) },
+            field1 = DpField("horizontal", 16.dp),
+            field2 = DpField("vertical", 8.dp),
+            combine = { horizontal, vertical -> Padding(horizontal, vertical) },
             split = { listOf(it.horizontal, it.vertical) },
         )
         // highlight-end
@@ -534,65 +532,6 @@ PreviewLab {
 - `split`: `T -> List<Any>` の形式で、複合型の値を受け取り、サブフィールドの値のリストを返します
 
 これらの関数は、`CombinedField` がサブフィールドの値と複合値の間で変換を行うために使用されます。
-
-</details>
-
-<details>
-<summary><code>combined</code> 関数を使用する</summary>
-
-`combined` 関数を使用すると、より簡潔に記述できます（1〜10個のフィールドに対応）。
-
-**1つのフィールドを変換する例：**
-
-```kt
-data class UserId(val value: String)
-
-PreviewLab {
-    val userId: UserId = fieldValue {
-        // highlight-start
-        combined(
-            label = "userId",
-            field1 = StringField("id", "user-001"),
-            combine = { id -> UserId(id) },
-            split = { splitedOf(it.value) }
-        )
-        // highlight-end
-    }
-
-    Text("User ID: ${userId.value}")
-}
-```
-
-**2つのフィールドを結合する例：**
-
-```kt
-data class Padding(val horizontal: Dp, val vertical: Dp)
-
-PreviewLab {
-    val padding: Padding = fieldValue {
-        // highlight-start
-        combined(
-            label = "padding",
-            field1 = DpField("horizontal", 16.dp),
-            field2 = DpField("vertical", 8.dp),
-            combine = { h, v -> Padding(h, v) },
-            split = { splitedOf(it.horizontal, it.vertical) }
-        )
-        // highlight-end
-    }
-
-    Box(
-        modifier = Modifier
-            .background(Color.LightGray)
-            .padding(horizontal = padding.horizontal, vertical = padding.vertical)
-    ) { Text("Content") }
-}
-```
-
-<EmbeddedPreviewLab
- previewId="CombinedFieldWithCombinedFunctionExample"
- title="CombinedField with Combined Function Example"
-/>
 
 </details>
 

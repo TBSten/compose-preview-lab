@@ -70,39 +70,6 @@ internal fun CombinedFieldExample() = PreviewLab {
     }
 }
 
-@Preview
-@ComposePreviewLabOption(id = "CombinedFieldWithCombinedFunctionExample")
-@Composable
-internal fun CombinedFieldWithCombinedFunctionExample() = PreviewLab {
-    var step by remember { mutableStateOf(CombinedFieldExampleSteps.EditValue) }
-
-    val padding = fieldState {
-        combined(
-            label = "Padding",
-            field1 = DpField("Horizontal", 16.dp),
-            field2 = DpField("Vertical", 8.dp),
-            combine = { h, v -> CombinedFieldPadding(h, v) },
-            split = { splitedOf(it.horizontal, it.vertical) },
-        ).speechBubble(
-            bubbleText = "1. Adjust padding values",
-            alignment = Alignment.BottomStart,
-            visible = { step == CombinedFieldExampleSteps.EditValue },
-        )
-    }.also { state ->
-        OnValueChange(state) {
-            step = CombinedFieldExampleSteps.SeeResult
-        }
-    }
-
-    SpeechBubbleBox(
-        bubbleText = "2. Padding updated!",
-        visible = step == CombinedFieldExampleSteps.SeeResult,
-        alignment = Alignment.BottomCenter,
-    ) {
-        PaddedBox(padding = padding.value)
-    }
-}
-
 @Composable
 internal fun PaddedBox(padding: CombinedFieldPadding) {
     Box(
