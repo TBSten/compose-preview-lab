@@ -52,9 +52,6 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-
-            // TODO migrate retain { } (compose runtime api)
-            implementation("io.github.takahirom.rin:rin:0.3.0")
         }
 
         commonTest.dependencies {

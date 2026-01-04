@@ -72,9 +72,6 @@ kotlin {
 
             implementation(project(":uiLib"))
             implementation(project(":helloComposePreviewLab"))
-
-            // TODO migrate retain { } (compose runtime api)
-            implementation("io.github.takahirom.rin:rin:0.3.0")
         }
 
         commonTest.dependencies {
