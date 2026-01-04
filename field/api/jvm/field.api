@@ -572,6 +572,7 @@ public class me/tbsten/compose/preview/lab/field/ScreenSizeField : me/tbsten/com
 	public fun <init> (Ljava/lang/String;Ljava/util/List;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Lme/tbsten/compose/preview/lab/field/ScreenSize;)V
 	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lme/tbsten/compose/preview/lab/field/SelectableField$Type;Lme/tbsten/compose/preview/lab/field/ScreenSize;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun View (Ljava/util/List;Landroidx/compose/runtime/Composer;I)V
 	public fun serializer ()Lkotlinx/serialization/KSerializer;
 	public fun testValues ()Ljava/util/List;
 }
