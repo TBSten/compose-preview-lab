@@ -15,7 +15,7 @@ kotlin {
 }
 
 dependencies {
-    implementation(projects.annotation)
+    api(projects.annotation)
     compileOnly(gradleApi())
     implementation(libs.kotlinGradlePlugin)
     implementation(libs.kspGradlePlugin)
