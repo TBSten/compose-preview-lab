@@ -5,9 +5,9 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     alias(libs.plugins.multiplatform)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.compose)
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.androidApplication)
     alias(libs.plugins.hotReload)
     alias(libs.plugins.ksp)
     alias(libs.plugins.buildkonfig)
@@ -60,11 +60,11 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.compose.runtime)
-            implementation(libs.compose.foundation)
-            implementation(libs.compose.material3)
-            implementation(libs.compose.components.resources)
-            implementation(libs.compose.ui.tooling.preview)
+            implementation(libs.composeRuntime)
+            implementation(libs.composeFoundation)
+            implementation(libs.composeMaterial3)
+            implementation(libs.composeComponentsResources)
+            implementation(libs.composeUiToolingPreview)
             implementation("me.tbsten.compose.preview.lab:starter:${libs.versions.composePreviewLab.get()}")
 
             implementation("me.tbsten.compose.preview.lab:extension-kotlinx-datetime:${libs.versions.composePreviewLab.get()}")
@@ -76,12 +76,12 @@ kotlin {
 
         commonTest.dependencies {
             implementation(kotlin("test"))
-            implementation(libs.compose.ui.test)
+            implementation(libs.composeUiTest)
         }
 
         jvmTest.dependencies {
             implementation(compose.desktop.currentOs)
-            implementation(libs.compose.ui.test.junit4)
+            implementation(libs.composeUiTestJunit4)
             implementation(libs.kotestFrameworkEngine)
             implementation(libs.kotestAssertionsCore)
             implementation(libs.kotestRunnerJunit5)
@@ -91,8 +91,8 @@ kotlin {
         }
 
         androidMain.dependencies {
-            implementation(libs.compose.ui.tooling)
-            implementation(libs.androidx.activityCompose)
+            implementation(libs.composeUiTooling)
+            implementation(libs.androidxActivityCompose)
         }
 
         jvmMain.dependencies {
@@ -119,8 +119,8 @@ android {
 
 // https://developer.android.com/develop/ui/compose/testing#setup
 dependencies {
-    androidTestImplementation(libs.androidx.uitest.junit4)
-    debugImplementation(libs.androidx.uitest.testManifest)
+    androidTestImplementation(libs.androidxUitestJunit4)
+    debugImplementation(libs.androidxUitestTestManifest)
 
     val composePreviewLabKspPlugin =
         "me.tbsten.compose.preview.lab:ksp-plugin:${libs.versions.composePreviewLab.get()}"

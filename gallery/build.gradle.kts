@@ -7,9 +7,9 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     alias(libs.plugins.multiplatform)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.compose)
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.ktor)
     alias(libs.plugins.buildkonfig)
@@ -62,17 +62,25 @@ kotlin {
     }
 
     applyDefaultHierarchyTemplate()
+
+    compilerOptions {
+        optIn.addAll(
+            "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
+            "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
+        )
+    }
+
     sourceSets {
         commonMain.dependencies {
             api(projects.core)
             api(projects.ui)
             api(projects.field)
             api(projects.previewLab)
-            implementation(libs.compose.runtime)
-            implementation(libs.compose.foundation)
-            implementation(libs.compose.components.resources)
-            implementation(libs.compose.ui)
-            implementation(libs.compose.ui.tooling.preview)
+            implementation(libs.composeRuntime)
+            implementation(libs.composeFoundation)
+            implementation(libs.composeComponentsResources)
+            implementation(libs.composeUi)
+            implementation(libs.composeUiToolingPreview)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
@@ -85,13 +93,13 @@ kotlin {
             implementation(libs.kotlinxCoroutinesTest)
         }
         androidMain.dependencies {
-            implementation(libs.compose.ui.tooling)
+            implementation(libs.composeUiTooling)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
-            implementation(libs.ktor.server.core)
-            implementation(libs.ktor.server.cio)
-            implementation(libs.mcp.kotlin.sdk)
+            implementation(libs.ktorServerCore)
+            implementation(libs.ktorServerCio)
+            implementation(libs.mcpKotlinSdk)
         }
     }
 }
@@ -109,21 +117,8 @@ android {
 
 // https://developer.android.com/develop/ui/compose/testing#setup
 dependencies {
-    androidTestImplementation(libs.androidx.uitest.junit4)
-    debugImplementation(libs.androidx.uitest.testManifest)
-}
-
-// for library development configuration
-
-kotlin {
-    applyDefaultHierarchyTemplate()
-
-    compilerOptions {
-        optIn.addAll(
-            "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
-            "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
-        )
-    }
+    androidTestImplementation(libs.androidxUitestJunit4)
+    debugImplementation(libs.androidxUitestTestManifest)
 }
 
 tasks.withType<Test> {
