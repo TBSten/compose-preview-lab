@@ -71,11 +71,11 @@ kotlin {
             api(projects.core)
             api(projects.ui)
             api(projects.field)
-            implementation("org.jetbrains.compose.runtime:runtime:1.11.0-alpha01")
-            implementation("org.jetbrains.compose.foundation:foundation:1.11.0-alpha01")
-            implementation("org.jetbrains.compose.components:components-resources:1.11.0-alpha01")
-            implementation("org.jetbrains.compose.ui:ui:1.11.0-alpha01")
-            implementation("org.jetbrains.compose.ui:ui-tooling-preview:1.11.0-alpha01")
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.components.resources)
+            implementation(libs.compose.ui)
+            implementation(libs.compose.ui.tooling.preview)
             implementation(libs.kotlinxSerializationJson)
             implementation(libs.filekitCore)
             implementation(libs.filekitDialogs)
@@ -88,7 +88,7 @@ kotlin {
             implementation(libs.kotlinxCoroutinesTest)
         }
         androidMain.dependencies {
-            implementation("org.jetbrains.compose.ui:ui-tooling:1.11.0-alpha01")
+            implementation(libs.compose.ui.tooling)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
