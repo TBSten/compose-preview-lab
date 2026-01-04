@@ -202,8 +202,8 @@ data class UserId(val value: String)
 
 val userId: UserId = fieldValue {
     combined(
-        label = "User ID",
-        field1 = StringField("ID", "user-001"),
+        label = "userId",
+        field1 = StringField("id", "user-001"),
         combine = { id -> UserId(id) },
         split = { splitedOf(it.value) }
     )
@@ -316,7 +316,7 @@ Field で `withValueCode {}` を呼び出してから、他のラッパーを適
 
 ```kt
 val fontSize = fieldValue {
-    SpField(label = "Font Size", initialValue = 16.sp)
+    SpField(label = "fontSize", initialValue = 16.sp)
         // highlight-start
         .withValueCode { value -> "TextUnit(${value.value}.sp)" }
         // highlight-end

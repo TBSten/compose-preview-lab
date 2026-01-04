@@ -51,14 +51,14 @@ src/
 @Composable
 fun ButtonVariantsPreview() = PreviewLab {
     val variant by fieldState {
-        EnumField("Variant", ButtonVariant.Primary)
+        EnumField("variant", ButtonVariant.Primary)
     }
     val enabled by fieldState {
-        BooleanField("Enabled", true)
+        BooleanField("enabled", true)
     }
 
     MyButton(
-        text = fieldValue { StringField("Text", "Click me") },
+        text = fieldValue { StringField("text", "Click me") },
         variant = variant,
         enabled = enabled,
         onClick = { onEvent("Button clicked") },

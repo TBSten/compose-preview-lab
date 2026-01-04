@@ -5,6 +5,8 @@ sidebar_position: 2
 
 import EmbeddedPreviewLab from '@site/src/components/EmbeddedPreviewLab';
 import KDocLink from '@site/src/components/KDocLink';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # All Fields Reference
 
@@ -185,9 +187,9 @@ Kotlin の数値型（Int、Long、Byte、Double、Float）に対応するフィ
 
 ```kt
 PreviewLab {
-    Counter(
+    MyCartScreen(
         // highlight-next-line
-        count = fieldValue { IntField("Count", 0) },
+        count = fieldValue { IntField("quantity", 1) },
     )
 }
 ```
@@ -208,7 +210,7 @@ PreviewLab {
     Counter(
         count = fieldValue {
             IntField(
-                label = "Count",
+                label = "count",
                 initialValue = 0,
                 // highlight-next-line
                 inputType = NumberField.InputType.TextField(
@@ -227,6 +229,83 @@ PreviewLab {
 />
 
 </details>
+
+<details>
+<summary>Long / Byte / Double / Float の例</summary>
+
+数値型フィールドは **型ごとにユースケースが違う** ことが多いので、代表例をいくつか載せます。
+
+- **LongField**: 大きな値（ファイルサイズ、タイムスタンプ、ID など）
+- **ByteField**: ビットフラグなどの低レベル表現
+- **DoubleField**: 金額・割合計算などの小数（精度が必要な場合は注意）
+- **FloatField**: アニメーション/アルファなど UI パラメータ（0..1 など範囲を意識）
+
+<Tabs groupId="numberFieldExamples">
+  <TabItem value="long" label="Long">
+    <EmbeddedPreviewLab
+      previewId="LongFieldExample"
+      title="LongField Example"
+    />
+  </TabItem>
+  <TabItem value="byte" label="Byte">
+    <EmbeddedPreviewLab
+      previewId="ByteFieldExample"
+      title="ByteField Example"
+    />
+  </TabItem>
+  <TabItem value="double" label="Double">
+    <EmbeddedPreviewLab
+      previewId="DoubleFieldExample"
+      title="DoubleField Example"
+    />
+  </TabItem>
+  <TabItem value="float" label="Float">
+    <EmbeddedPreviewLab
+      previewId="FloatFieldExample"
+      title="FloatField Example"
+    />
+  </TabItem>
+</Tabs>
+
+</details>
+
+### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-instant-field/index.html">InstantField</KDocLink>
+
+<table>
+    <tr>
+        <th>対応する 型</th>
+        <td> `kotlin.time.Instant` </td>
+    </tr>
+    <tr>
+        <th>利用頻度</th>
+        <td> ⭐ </td>
+    </tr>
+    <tr>
+        <th>KDoc</th>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-instant-field/index.html">InstantField</KDocLink> </td>
+    </tr>
+</table>
+
+`kotlin.time.Instant` を編集するためのフィールドです。
+
+編集 UI では **Epoch milliseconds**（`Long`）として入力し、値は `Instant.fromEpochMilliseconds(...)` として扱われます。
+（`kotlin.time.Instant` は現状 Experimental のため、利用側で `@OptIn(ExperimentalTime::class)` が必要になる場合があります）
+
+```kt
+PreviewLab {
+    Text(
+        text = "Create at: ${
+            // highlight-next-line
+            fieldValue { InstantField("createAt", Clock.System.now()) }
+        }",
+    )
+}
+```
+
+<EmbeddedPreviewLab
+ previewId="InstantFieldExample"
+ title="InstantField Example"
+/>
 
 ## 2. Enhance Fields
 
@@ -257,7 +336,7 @@ PreviewLab {
         theme = fieldValue {
             // highlight-start
             SelectableField(
-                label = "Theme",
+                label = "theme",
                 choices = listOf("Light", "Dark", "Auto")
             )
             // highlight-end
@@ -281,7 +360,7 @@ PreviewLab {
     MyApp(
         theme = fieldValue {
             SelectableField(
-                label = "Theme",
+                label = "theme",
                 choices = listOf("Light", "Dark", "Auto"),
                 // highlight-next-line
                 type = SelectableField.Type.CHIPS
@@ -309,7 +388,7 @@ PreviewLab {
         theme = fieldValue {
             // highlight-start
             SelectableField(
-                label = "Theme",
+                label = "theme",
                 choices = mapOf(
                     "Light Mode" to "Light",
                     "Dark Mode" to "Dark",
@@ -339,7 +418,7 @@ PreviewLab {
     MyApp(
         theme = fieldValue {
             // highlight-start
-            SelectableField<String>(label = "Theme") {
+            SelectableField<String>(label = "theme") {
                 choice("Light", label = "Light Mode", isDefault = true)
                 choice("Dark", label = "Dark Mode")
                 choice("Auto", label = "Auto (System)")
@@ -383,7 +462,7 @@ PreviewLab {
     MyButton(
         variant = fieldValue {
             // highlight-next-line
-            EnumField("Variant", ButtonVariant.Primary)
+            EnumField("variant", ButtonVariant.Primary)
         },
     )
 }
@@ -417,25 +496,24 @@ PreviewLab {
 data class Padding(val horizontal: Dp, val vertical: Dp)
 
 PreviewLab {
+    val padding: Padding = fieldValue {
+        // highlight-start
+        CombinedField(
+            label = "padding",
+            fields = listOf(
+                DpField("horizontal", 16.dp),
+                DpField("vertical", 8.dp),
+            ),
+            combine = { values -> Padding(values[0] as Dp, values[1] as Dp) },
+            split = { listOf(it.horizontal, it.vertical) },
+        )
+        // highlight-end
+    }
+
     Box(
         modifier = Modifier
             .background(Color.LightGray)
-            .padding(
-                fieldValue {
-                    // highlight-start
-                    CombinedField(
-                        label = "Padding",
-                        fields = listOf(
-                            DpField("Horizontal", 16.dp),
-                            DpField("Vertical", 8.dp)
-                        ),
-                        combine = { values -> Padding(values[0] as Dp, values[1] as Dp) },
-                        split = { listOf(it.horizontal, it.vertical) }
-                    )
-                    // highlight-end
-                }.horizontal,
-                fieldValue { /* ... */ }.vertical
-            )
+            .padding(horizontal = padding.horizontal, vertical = padding.vertical),
     ) {
         Text("Content")
     }
@@ -473,8 +551,8 @@ PreviewLab {
     val userId: UserId = fieldValue {
         // highlight-start
         combined(
-            label = "User ID",
-            field1 = StringField("ID", "user-001"),
+            label = "userId",
+            field1 = StringField("id", "user-001"),
             combine = { id -> UserId(id) },
             split = { splitedOf(it.value) }
         )
@@ -491,34 +569,23 @@ PreviewLab {
 data class Padding(val horizontal: Dp, val vertical: Dp)
 
 PreviewLab {
+    val padding: Padding = fieldValue {
+        // highlight-start
+        combined(
+            label = "padding",
+            field1 = DpField("horizontal", 16.dp),
+            field2 = DpField("vertical", 8.dp),
+            combine = { h, v -> Padding(h, v) },
+            split = { splitedOf(it.horizontal, it.vertical) }
+        )
+        // highlight-end
+    }
+
     Box(
         modifier = Modifier
             .background(Color.LightGray)
-            .padding(
-                fieldValue {
-                    // highlight-start
-                    combined(
-                        label = "Padding",
-                        field1 = DpField("Horizontal", 16.dp),
-                        field2 = DpField("Vertical", 8.dp),
-                        combine = { h, v -> Padding(h, v) },
-                        split = { splitedOf(it.horizontal, it.vertical) }
-                    )
-                    // highlight-end
-                }.horizontal,
-                fieldValue {
-                    combined(
-                        label = "Padding",
-                        field1 = DpField("Horizontal", 16.dp),
-                        field2 = DpField("Vertical", 8.dp),
-                        combine = { h, v -> Padding(h, v) },
-                        split = { splitedOf(it.horizontal, it.vertical) }
-                    )
-                }.vertical
-            )
-    ) {
-        Text("Content")
-    }
+            .padding(horizontal = padding.horizontal, vertical = padding.vertical)
+    ) { Text("Content") }
 }
 ```
 
@@ -553,7 +620,7 @@ PreviewLab {
     UserName(
         userName = fieldValue {
             // highlight-next-line
-            StringField("User Name", "John Doe").nullable()
+            StringField("userName", "John Doe").nullable()
         },
     )
 }
@@ -626,7 +693,7 @@ PreviewLab {
     Text(
         text = "Sample Text",
         fontSize = fieldValue {
-            SpField(label = "Font Size", initialValue = 16.sp)
+            SpField(label = "fontSize", initialValue = 16.sp)
                 // highlight-start
                 .withHint(
                     "Small" to 12.sp,
@@ -675,19 +742,19 @@ PreviewLab {
     val uiState: UiState = fieldValue {
         // highlight-start
         PolymorphicField(
-            label = "UI State",
+            label = "uiState",
             initialValue = UiState.Loading,
             fields = listOf(
-                FixedField("Loading", UiState.Loading),
+                FixedField("loading", UiState.Loading),
                 combined(
-                    label = "Success",
-                    field1 = StringField("Data", "Sample data"),
+                    label = "success",
+                    field1 = StringField("data", "Sample data"),
                     combine = { data -> UiState.Success(data) },
                     split = { splitedOf(it.data) }
                 ),
                 combined(
-                    label = "Error",
-                    field1 = StringField("Message", "Something went wrong"),
+                    label = "error",
+                    field1 = StringField("message", "Something went wrong"),
                     combine = { message -> UiState.Error(message) },
                     split = { splitedOf(it.message) }
                 )
@@ -725,26 +792,26 @@ PreviewLab {
 編集不可の固定値を持つフィールドです。`PolymorphicField` 内で固定値の選択肢を提供する場合などに使用します。
 
 ```kt
+sealed interface FixedFieldExampleUiState {
+    data object Initial : FixedFieldExampleUiState
+    data object Stable : FixedFieldExampleUiState
+}
+
 PreviewLab {
     val value = fieldValue {
         PolymorphicField(
-            label = "Value",
-            initialValue = "dynamic",
+            label = "value",
+            initialValue = FixedFieldExampleUiState.Initial,
             fields = listOf(
                 // highlight-start
-                FixedField("Fixed", UiState.Initial),
-                FixedField("Stable", UiState.Stable),
+                FixedField("initial", FixedFieldExampleUiState.Initial),
+                FixedField("stable", FixedFieldExampleUiState.Stable),
                 // highlight-end
             )
         )
     }
 }
 ```
-
-<EmbeddedPreviewLab 
- previewId="FixedFieldExample"
- title="FixedField Example"
-/>
 
 ### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-with-value-code-field/index.html">WithValueCodeField</KDocLink> / `.withValueCode()`
 
@@ -820,7 +887,7 @@ PreviewLab {
     Box(
         modifier = Modifier
             // highlight-next-line
-            .padding(fieldValue { DpField("Padding", 16.dp) })
+            .padding(fieldValue { DpField("padding", 16.dp) })
     ) {
         Text("Padded Content")
     }
@@ -856,7 +923,7 @@ PreviewLab {
     Text(
         text = "Sample Text",
         // highlight-next-line
-        fontSize = fieldValue { SpField("Font Size", 16.sp) },
+        fontSize = fieldValue { SpField("fontSize", 16.sp) },
     )
 }
 ```
@@ -891,7 +958,7 @@ PreviewLab {
         modifier = Modifier
             .size(100.dp)
             // highlight-next-line
-            .background(fieldValue { ColorField("Background", Color.Blue) })
+            .background(fieldValue { ColorField("background", Color.Blue) })
     )
 }
 ```
@@ -900,6 +967,38 @@ PreviewLab {
  previewId="ColorFieldExample"
  title="ColorField Example"
 />
+
+<details>
+<summary><code>.withPredefinedColorHint()</code> でよく使う色をワンタップで選べるようにする</summary>
+
+`ColorField` はカラーピッカーで自由に色を選べますが、`Color.Red` など **Compose が定義している定番色**を素早く選びたい場合があります。
+
+その場合は `ColorField(...).withPredefinedColorHint()` を付けることで、`ColorField.predefinedColorNames` に定義されている色（例：`Color.Red`, `Color.Blue` など）がヒントとして追加され、ワンタップで切り替えできるようになります（内部的には `withHint()` を使っています）。
+
+含まれる色の例：
+
+- Primary: `Color.Red`, `Color.Green`, `Color.Blue`, `Color.Black`, `Color.White`
+- Secondary: `Color.Cyan`, `Color.Magenta`, `Color.Yellow`
+- Grays: `Color.Gray`, `Color.DarkGray`, `Color.LightGray`
+- Special: `Color.Transparent`, `Color.Unspecified`
+
+```kt
+PreviewLab {
+    Box(
+        modifier = Modifier
+            .size(100.dp)
+            .background(
+                fieldValue {
+                    ColorField("background", Color.Blue)
+                        // highlight-next-line
+                        .withPredefinedColorHint()
+                }
+            )
+    )
+}
+```
+
+</details>
 
 ### Offset / Size フィールド
 
@@ -947,7 +1046,7 @@ PreviewLab {
                 .size(100.dp)
                 .graphicsLayer {
                     // highlight-next-line
-                    val offset = fieldValue { OffsetField("Position", Offset(50f, 100f)) }
+                    val offset = fieldValue { OffsetField("position", Offset(50f, 100f)) }
                     translationX = offset.x
                     translationY = offset.y
                 }
@@ -958,7 +1057,7 @@ PreviewLab {
             text = "Positioned Text",
             modifier = Modifier
                 // highlight-next-line
-                .offset(fieldValue { DpOffsetField("Text Offset", DpOffset(16.dp, 8.dp)) })
+                .offset(fieldValue { DpOffsetField("textOffset", DpOffset(16.dp, 8.dp)) })
         )
 
         // SizeField: Float 単位のサイズ
@@ -966,7 +1065,7 @@ PreviewLab {
             modifier = Modifier.size(200.dp)
         ) {
             // highlight-next-line
-            val canvasSize = fieldValue { SizeField("Canvas Size", Size(200f, 150f)) }
+            val canvasSize = fieldValue { SizeField("canvasSize", Size(200f, 150f)) }
             drawRect(Color.Blue, size = canvasSize)
         }
 
@@ -975,7 +1074,7 @@ PreviewLab {
             onClick = { },
             modifier = Modifier
                 // highlight-next-line
-                .size(fieldValue { DpSizeField("Button Size", DpSize(120.dp, 48.dp)) })
+                .size(fieldValue { DpSizeField("buttonSize", DpSize(120.dp, 48.dp)) })
         ) {
             Text("Sized Button")
         }
@@ -1012,7 +1111,7 @@ PreviewLab {
     Button(
         onClick = { },
         // highlight-next-line
-        modifier = fieldValue { ModifierField("Button modifier") },
+        modifier = fieldValue { ModifierField("buttonModifier") },
     ) {
         Text("Styled Button")
     }
@@ -1035,7 +1134,7 @@ PreviewLab {
         onClick = { },
         modifier = fieldValue {
             ModifierField(
-                label = "Button modifier",
+                label = "buttonModifier",
                 // highlight-next-line
                 initialValue = ModifierFieldValue.mark()
             )
@@ -1078,7 +1177,7 @@ PreviewLab {
         content = fieldValue {
             // highlight-next-line
             ComposableField(
-                label = "Content",
+                label = "content",
                 initialValue = ComposableFieldValue.Red32X32
             )
         },
@@ -1101,7 +1200,7 @@ PreviewLab {
     MyContainer(
         content = fieldValue {
             ComposableField(
-                label = "Content",
+                label = "content",
                 // highlight-next-line
                 initialValue = ComposableFieldValue.Red32X32,
                 choices = listOf(
@@ -1119,5 +1218,162 @@ PreviewLab {
  previewId="ComposableFieldWithPredefinedValuesExample"
  title="ComposableField with Predefined Values Example"
 />
+
+</details>
+
+## 4. Collection Fields
+
+コレクション型（List、Set）を編集するためのフィールドです。要素の追加・削除・挿入が可能で、各要素は個別のフィールドとして編集できます。
+
+### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-list-field/index.html">ListField</KDocLink>
+
+<table>
+    <tr>
+        <th>対応する 型</th>
+        <td> `kotlin.collections.List` </td>
+    </tr>
+    <tr>
+        <th>利用頻度</th>
+        <td> ⭐⭐ </td>
+    </tr>
+    <tr>
+        <th>KDoc</th>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-list-field/index.html">ListField</KDocLink> </td>
+    </tr>
+</table>
+
+リスト値を編集するためのフィールドです。要素の追加・削除・挿入が可能で、各要素は `elementField` で指定したフィールドとして編集できます。
+
+```kt
+PreviewLab {
+    val characters by fieldValue {
+        // highlight-start
+        ListField(
+            label = "characters",
+            initialValue = listOf("Alice", "Bob", "Charlie"),
+            elementField = { StringField(label, initialValue) },
+        )
+        // highlight-end
+    }
+    Text(characters.joinToString(", "))
+}
+```
+
+<EmbeddedPreviewLab
+ previewId="ListFieldExample"
+ title="ListField Example"
+/>
+
+<details>
+<summary><code>.withEmptyHint()</code> で空リストの選択肢を追加する</summary>
+
+`MutablePreviewLabField<List<Value>>.withEmptyHint()` 拡張関数を使うと、空リストをワンタップで選択できるヒントを追加できます。
+
+```kt
+PreviewLab {
+    val items by fieldValue {
+        ListField(
+            label = "items",
+            initialValue = listOf("Item 1", "Item 2"),
+            elementField = { StringField(label, initialValue) },
+        )
+            // highlight-next-line
+            .withEmptyHint()
+    }
+    Text("Items: ${items.size}")
+}
+```
+
+</details>
+
+<details>
+<summary><code>defaultValue</code> で新規要素のデフォルト値を指定する</summary>
+
+`defaultValue` パラメータを指定すると、新しい要素を挿入する際のデフォルト値をカスタマイズできます。指定しない場合は、`initialValue` の最初の要素がデフォルト値として使用されます。
+
+```kt
+PreviewLab {
+    val numbers by fieldValue {
+        ListField(
+            label = "numbers",
+            initialValue = listOf(1, 2, 3),
+            elementField = { IntField(label, initialValue) },
+            // highlight-next-line
+            defaultValue = { 0 }  // 新しい要素のデフォルト値
+        )
+    }
+    Text(numbers.joinToString(", "))
+}
+```
+
+</details>
+
+### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-set-field/index.html">SetField</KDocLink>
+
+<table>
+    <tr>
+        <th>対応する 型</th>
+        <td> `kotlin.collections.Set` </td>
+    </tr>
+    <tr>
+        <th>利用頻度</th>
+        <td> ⭐⭐ </td>
+    </tr>
+    <tr>
+        <th>KDoc</th>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-set-field/index.html">SetField</KDocLink> </td>
+    </tr>
+</table>
+
+セット値を編集するためのフィールドです。`ListField` と同様に要素の追加・削除が可能ですが、重複する値がある場合はエラーインジケーターで警告されます。
+
+```kt
+PreviewLab {
+    val fruits by fieldValue {
+        // highlight-start
+        SetField(
+            label = "fruits",
+            initialValue = setOf("Apple", "Banana", "Cherry"),
+            elementField = { StringField(label, initialValue) },
+        )
+        // highlight-end
+    }
+    Text(fruits.joinToString(", "))
+}
+```
+
+<EmbeddedPreviewLab
+ previewId="SetFieldExample"
+ title="SetField Example"
+/>
+
+<details>
+<summary>重複検出機能について</summary>
+
+SetField は編集中に重複する値を自動的に検出し、エラーカラーでハイライト表示します。重複があってもエラーにはなりませんが、最終的な `value` は Set として重複が除去された状態で返されます。
+
+これは、ユーザーが誤って同じ値を追加した場合に視覚的にフィードバックを提供するための機能です。
+
+</details>
+
+<details>
+<summary><code>.withEmptyHint()</code> で空セットの選択肢を追加する</summary>
+
+`MutablePreviewLabField<Set<Value>>.withEmptyHint()` 拡張関数を使うと、空セットをワンタップで選択できるヒントを追加できます。
+
+```kt
+PreviewLab {
+    val tags by fieldValue {
+        SetField(
+            label = "tags",
+            initialValue = setOf("tag1", "tag2"),
+            elementField = { StringField(label, initialValue) },
+        )
+            // highlight-next-line
+            .withEmptyHint()
+    }
+    Text("Tags: ${tags.size}")
+}
+```
 
 </details>

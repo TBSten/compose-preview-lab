@@ -168,7 +168,7 @@ forAll(Arb.of(themeField.testValues()).plusEdgecases(themeField.testValues())) {
 #### NullableField
 
 ```kotlin
-val userNameField by state.field<String?>("User Name")
+val userNameField by state.field<String?>("userName")
 
 forAll(Arb.string(1..20).orNull().plusEdgecases(userNameField.testValues())) { userName ->
     userNameField.value = userName
@@ -188,7 +188,7 @@ forAll(Arb.string(1..20).orNull().plusEdgecases(userNameField.testValues())) { u
 @Composable
 fun MyPreview() = PreviewLab {
     val count = fieldValue {
-        IntField("Count", 0)
+        IntField("count", 0)
             // highlight-next-line
             .withTestValues(-1, 0, 1, Int.MAX_VALUE, Int.MIN_VALUE)
     }
