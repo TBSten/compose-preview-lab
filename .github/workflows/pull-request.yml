@@ -89,3 +89,19 @@ jobs:
       - name: Test Integration Test
         shell: bash
         run: cd ./integrationTest && ./gradlew ${{ matrix.test_task }} ${{ matrix.kotest_tags && format('-Dkotest.tags="{0}"', matrix.kotest_tags) || '' }}
+  publish-to-maven-local:
+    name: Publish to Maven Local
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Java for Gradle
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+      - name: Publish to Maven Local
+        shell: bash
+        run: ./gradlew publishToMavenLocal
