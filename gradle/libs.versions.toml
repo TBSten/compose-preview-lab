@@ -1,64 +1,67 @@
 [versions]
+# Project
 composePreviewLab = "0.1.0-dev09"
+
+# Kotlin / Compose
 kotlin = "2.2.21"
 compose = "1.11.0-alpha01"
+
+# Android
 agp = "8.9.3"
 androidx-activityCompose = "1.11.0"
 androidx-uiTest = "1.9.4"
-lumoUi = "1.2.5"
-hotReload = "1.1.0-alpha03"
+
+# Gradle Plugins
 ksp = "2.3.2"
-intellijPlatform = "2.6.0"
-jewelIdeLafBridge = "0.27.0"
-kotlinxSerialization = "1.9.0"
 vanniktechMavenPublish = "0.35.0"
 dokka = "2.1.0"
 binaryCompatibilityValidator = "0.18.1"
 ktlint = "1.6.0"
 ktlintGradle = "14.0.1"
-androidxLifecycle = "2.9.6"
-kodeview = "0.9.0"
-kotest = "6.0.5"
-kotlinxCoroutines = "1.10.1"
-filekit = "0.12.0"
 buildkonfig = "0.17.1"
+
+# ================================
+# Library Dependencies
+# ================================
+
+# KotlinX
+kotlinxSerialization = "1.9.0"
+kotlinxCoroutines = "1.10.1"
+
+# Filekit
+filekit = "0.12.0"
+
+# Ktor / MCP (gallery)
 ktor = "3.3.3"
 mcp = "0.8.1"
+
+# Test
+kotest = "6.0.5"
+
+# IntelliJ Plugin
+intellijPlatform = "2.6.0"
+jewelIdeLafBridge = "0.27.0"
+
+# Dev (Hot Reload)
+hotReload = "1.1.0-alpha03"
+lumoUi = "1.2.5"
+
+# ================================
+# Extension Dependencies
+# ================================
 kotlinxDatetime = "0.7.1"
+
+# ================================
+# IntegrationTest Dependencies
+# ================================
+androidxLifecycle = "2.9.6"
+kodeview = "0.9.0"
 
 [libraries]
 
-androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
-androidx-uitest-testManifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "androidx-uiTest" }
-androidx-uitest-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidx-uiTest" }
-
-kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-kotlinCompilerEmbeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
-kspApi = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
-jewelIdeLafBridge = { module = "org.jetbrains.jewel:jewel-ide-laf-bridge-243", version.ref = "jewelIdeLafBridge" }
-kotlinxSerializationCore = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerialization" }
-kotlinxSerializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
-ktlintGradlePlugin = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlintGradle" }
-vanniktechMavenPublishGradlePlugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "vanniktechMavenPublish" }
-dokkaGradlePlugin = { module = "org.jetbrains.dokka:org.jetbrains.dokka.gradle.plugin", version.ref = "dokka" }
-kspGradlePlugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
-kotestProperty = { module = "io.kotest:kotest-property", version.ref = "kotest" }
-kotestFrameworkEngine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
-kotestAssertionsCore = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
-kotestRunnerJunit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
-kotlinxCoroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
-filekitCore = { module = "io.github.vinceglb:filekit-core", version.ref = "filekit" }
-filekitDialogs = { module = "io.github.vinceglb:filekit-dialogs", version.ref = "filekit" }
-
-ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
-ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
-mcp-kotlin-sdk = { module = "io.modelcontextprotocol:kotlin-sdk", version.ref = "mcp" }
-
-androidxLifecycleViewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
-androidxLifecycleRuntimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
-kodeview = { module = "dev.snipme:kodeview", version.ref = "kodeview" }
-
-kotlinxDatetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+# ================================
+# Library Dependencies
+# ================================
 
 # Compose Multiplatform
 compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose" }
@@ -72,25 +75,84 @@ compose-components-resources = { module = "org.jetbrains.compose.components:comp
 compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "compose" }
 compose-material-ripple = { module = "org.jetbrains.compose.material:material-ripple", version.ref = "compose" }
 
+# KotlinX Serialization
+kotlinxSerializationCore = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerialization" }
+kotlinxSerializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+
+# Filekit
+filekitCore = { module = "io.github.vinceglb:filekit-core", version.ref = "filekit" }
+filekitDialogs = { module = "io.github.vinceglb:filekit-dialogs", version.ref = "filekit" }
+
+# Ktor / MCP (gallery)
+ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
+ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
+mcp-kotlin-sdk = { module = "io.modelcontextprotocol:kotlin-sdk", version.ref = "mcp" }
+
+# Test
+kotestProperty = { module = "io.kotest:kotest-property", version.ref = "kotest" }
+kotestFrameworkEngine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
+kotestAssertionsCore = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotestRunnerJunit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+kotlinxCoroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+
+# Android
+androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+androidx-uitest-testManifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "androidx-uiTest" }
+androidx-uitest-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidx-uiTest" }
+
+# Build Logic
+kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlinCompilerEmbeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
+kspApi = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
+kspGradlePlugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+ktlintGradlePlugin = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlintGradle" }
+vanniktechMavenPublishGradlePlugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "vanniktechMavenPublish" }
+dokkaGradlePlugin = { module = "org.jetbrains.dokka:org.jetbrains.dokka.gradle.plugin", version.ref = "dokka" }
+
+# IntelliJ Plugin
+jewelIdeLafBridge = { module = "org.jetbrains.jewel:jewel-ide-laf-bridge-243", version.ref = "jewelIdeLafBridge" }
+
+# ================================
+# Extension Dependencies
+# ================================
+kotlinxDatetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+
+# ================================
+# IntegrationTest Dependencies
+# ================================
+androidxLifecycleViewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+androidxLifecycleRuntimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
+kodeview = { module = "dev.snipme:kodeview", version.ref = "kodeview" }
+
 [plugins]
 
+# Kotlin / Compose
 multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+# Android
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
-hotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "hotReload" }
-kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+# Build / Publish
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-intellijPlatform = { id = "org.jetbrains.intellij.platform", version.ref = "intellijPlatform" }
 vanniktechMavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktechMavenPublish" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 binaryCompatibilityValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binaryCompatibilityValidator" }
-lumoUi = { id = "com.nomanr.plugin.lumo", version.ref = "lumoUi" }
-
 ktlintGradle = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
+buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
+
+# Convention Plugins
 conventionFormat = { id = "convention-format", version = "unspecified" }
 conventionPublish = { id = "convention-publish", version = "unspecified" }
-buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
+
+# IntelliJ Plugin
+intellijPlatform = { id = "org.jetbrains.intellij.platform", version.ref = "intellijPlatform" }
+
+# Dev / IntegrationTest
+hotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "hotReload" }
+lumoUi = { id = "com.nomanr.plugin.lumo", version.ref = "lumoUi" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
