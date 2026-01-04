@@ -63,10 +63,10 @@ kotlin {
         commonMain.dependencies {
             api(projects.core)
             api(projects.ui)
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.components.resources)
-            implementation(compose.ui)
+            implementation("org.jetbrains.compose.runtime:runtime:1.11.0-alpha01")
+            implementation("org.jetbrains.compose.foundation:foundation:1.11.0-alpha01")
+            implementation("org.jetbrains.compose.components:components-resources:1.11.0-alpha01")
+            implementation("org.jetbrains.compose.ui:ui:1.11.0-alpha01")
             implementation("org.jetbrains.compose.ui:ui-tooling-preview:${libs.versions.compose.get()}")
         }
         commonTest.dependencies {
@@ -80,7 +80,7 @@ kotlin {
             implementation(libs.kotlinxCoroutinesTest)
         }
         androidMain.dependencies {
-            implementation(compose.uiTooling)
+            implementation("org.jetbrains.compose.ui:ui-tooling:1.11.0-alpha01")
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)

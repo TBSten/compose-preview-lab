@@ -60,10 +60,10 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.components.resources)
+            implementation("org.jetbrains.compose.runtime:runtime:1.11.0-alpha01")
+            implementation("org.jetbrains.compose.foundation:foundation:1.11.0-alpha01")
+            implementation("org.jetbrains.compose.material3:material3:1.9.0-beta03")
+            implementation("org.jetbrains.compose.components:components-resources:1.11.0-alpha01")
             implementation("org.jetbrains.compose.ui:ui-tooling-preview:${libs.versions.compose.get()}")
             implementation("me.tbsten.compose.preview.lab:starter:${libs.versions.composePreviewLab.get()}")
 
@@ -76,13 +76,12 @@ kotlin {
 
         commonTest.dependencies {
             implementation(kotlin("test"))
-            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-            implementation(compose.uiTest)
+            implementation("org.jetbrains.compose.ui:ui-test:1.11.0-alpha01")
         }
 
         jvmTest.dependencies {
             implementation(compose.desktop.currentOs)
-            implementation(compose.desktop.uiTestJUnit4)
+            implementation("org.jetbrains.compose.ui:ui-test-junit4:1.11.0-alpha01")
             implementation(libs.kotestFrameworkEngine)
             implementation(libs.kotestAssertionsCore)
             implementation(libs.kotestRunnerJunit5)
@@ -92,16 +91,12 @@ kotlin {
         }
 
         androidMain.dependencies {
-            implementation(compose.uiTooling)
+            implementation("org.jetbrains.compose.ui:ui-tooling:1.11.0-alpha01")
             implementation(libs.androidx.activityCompose)
         }
 
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
-        }
-
-        jsMain.dependencies {
-            implementation(compose.html.core)
         }
     }
 }

@@ -61,9 +61,9 @@ kotlin {
     applyDefaultHierarchyTemplate()
     sourceSets {
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.ui)
+            implementation("org.jetbrains.compose.runtime:runtime:1.11.0-alpha01")
+            implementation("org.jetbrains.compose.foundation:foundation:1.11.0-alpha01")
+            implementation("org.jetbrains.compose.ui:ui:1.11.0-alpha01")
             implementation(projects.ui)
             implementation(projects.field)
             implementation(libs.kotlinxDatetime)

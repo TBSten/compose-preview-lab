@@ -47,11 +47,11 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.starter)
 
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
+            implementation("org.jetbrains.compose.runtime:runtime:1.11.0-alpha01")
+            implementation("org.jetbrains.compose.foundation:foundation:1.11.0-alpha01")
+            implementation("org.jetbrains.compose.material3:material3:1.11.0-alpha01")
+            implementation("org.jetbrains.compose.components:components-resources:1.11.0-alpha01")
+            implementation("org.jetbrains.compose.ui:ui-tooling-preview:1.11.0-alpha01")
         }
 
         commonTest.dependencies {
@@ -61,31 +61,26 @@ kotlin {
 
         commonTest.dependencies {
             implementation(kotlin("test"))
-            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-            implementation(compose.uiTest)
+            implementation("org.jetbrains.compose.ui:ui-test:1.11.0-alpha01")
             implementation(libs.androidxLifecycleViewmodel)
             implementation(libs.androidxLifecycleRuntimeCompose)
         }
 
         jvmTest.dependencies {
             implementation(compose.desktop.currentOs)
-            implementation(compose.desktop.uiTestJUnit4)
+            implementation("org.jetbrains.compose.ui:ui-test-junit4:1.11.0-alpha01")
             implementation(libs.kotestFrameworkEngine)
             implementation(libs.kotestAssertionsCore)
             implementation(libs.kotestRunnerJunit5)
         }
 
         androidMain.dependencies {
-            implementation(compose.uiTooling)
+            implementation("org.jetbrains.compose.ui:ui-tooling:1.11.0-alpha01")
             implementation(libs.androidx.activityCompose)
         }
 
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
-        }
-
-        jsMain.dependencies {
-            implementation(compose.html.core)
         }
     }
 }

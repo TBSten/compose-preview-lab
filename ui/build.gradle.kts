@@ -62,10 +62,10 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.core)
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.components.resources)
-            implementation(compose.ui)
+            implementation("org.jetbrains.compose.runtime:runtime:1.11.0-alpha01")
+            implementation("org.jetbrains.compose.foundation:foundation:1.11.0-alpha01")
+            implementation("org.jetbrains.compose.components:components-resources:1.11.0-alpha01")
+            implementation("org.jetbrains.compose.ui:ui:1.11.0-alpha01")
             implementation("org.jetbrains.compose.ui:ui-tooling-preview:${libs.versions.compose.get()}")
             implementation("org.jetbrains.compose.material:material-ripple:${libs.versions.compose.get()}")
         }
@@ -77,7 +77,7 @@ kotlin {
             implementation(libs.kotlinxCoroutinesTest)
         }
         androidMain.dependencies {
-            implementation(compose.uiTooling)
+            implementation("org.jetbrains.compose.ui:ui-tooling:1.11.0-alpha01")
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
