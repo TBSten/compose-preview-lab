@@ -50,6 +50,8 @@ lumoUi = "1.2.5"
 # Extension Dependencies
 # ================================
 kotlinxDatetime = "0.7.1"
+androidxNavigation = "2.9.1"
+androidxNavigation3Ui = "1.0.0-alpha05"
 
 # ================================
 # IntegrationTest Dependencies
@@ -116,6 +118,8 @@ jewelIdeLafBridge = { module = "org.jetbrains.jewel:jewel-ide-laf-bridge-243", v
 # Extension Dependencies
 # ================================
 kotlinxDatetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+androidxNavigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidxNavigation" }
+androidxNavigation3Ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "androidxNavigation3Ui" }
 
 # ================================
 # IntegrationTest Dependencies
