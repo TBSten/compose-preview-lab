@@ -21,19 +21,17 @@ import EmbeddedPreviewLab from '@site/src/components/EmbeddedPreviewLab';
 ```kotlin title="build.gradle.kts"
 kotlin {
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                // Compose Preview Lab
-                implementation("me.tbsten.compose.preview.lab:starter:<version>")
+        commonMain.dependencies {
+            // Compose Preview Lab
+            implementation("me.tbsten.compose.preview.lab:starter:<version>")
 
-                // highlight-next-line
-                // Navigation Extension
-                // highlight-next-line
-                implementation("me.tbsten.compose.preview.lab:extension-navigation:<version>")
+            // highlight-next-line
+            // Navigation Extension
+            // highlight-next-line
+            implementation("me.tbsten.compose.preview.lab:extension-navigation:<version>")
 
-                // Navigation 本体も必要
-                implementation("org.jetbrains.androidx.navigation:navigation-compose:<navigation-version>")
-            }
+            // Navigation 本体も必要
+            implementation("org.jetbrains.androidx.navigation:navigation-compose:<navigation-version>")
         }
     }
 }
@@ -72,7 +70,6 @@ dependencies {
 
 `NavHostController` を Inspector から操作できる Field です。以下の機能を提供します：
 
-- **NavGraph 構造表示**: ナビゲーショングラフ内の全 destination を表示
 - **BackStack 表示**: 現在のバックスタック履歴を表示
 - **Pop Back**: バックスタックから戻る操作
 - **Route 選択**: `PolymorphicField` を使用して遷移先を選択
@@ -152,19 +149,19 @@ FixedField("Settings", Settings)
 
 #### 引数ありの route
 
-`CombinedField1`（1引数）、`CombinedField2`（2引数）などを使用します：
+`combined()` 関数を使用します：
 
 ```kotlin
 // 1引数の route
-CombinedField1(
+combined(
     label = "Profile",
-    field1 = StringField("userId", "default"),
+    field = StringField("userId", "default"),
     combine = { userId -> Profile(userId = userId) },
-    split = { profile -> splitedOf(profile.userId) },
+    split = { profile -> profile.userId },
 )
 
 // 2引数の route
-CombinedField2(
+combined(
     label = "Article",
     field1 = IntField("articleId", 1),
     field2 = BooleanField("showComments", true),
@@ -178,16 +175,9 @@ CombinedField2(
 NavControllerField は Inspector で以下のように表示されます：
 
 ```
-NavGraph:
-  - Home
-  > Profile/{userId}
-  - Settings
-
 BackStack:
-  - Home
-  - Profile/{userId} <- current
-
-[<- Pop Back]
+  1. Home
+  2. Profile/{userId} <- current (× ボタン表示)
 
 Navigate to:
 [Home | Profile | Settings]  <- route を選択
@@ -195,9 +185,7 @@ userId: [default______]      <- 選択した route の引数を編集
 [Navigate]                   <- 遷移ボタン
 ```
 
-- **NavGraph**: 登録されている全ての destination（`>` は現在の destination）
-- **BackStack**: 現在のナビゲーション履歴（`<- current` は現在の destination）
-- **Pop Back ボタン**: 前の画面に戻る（バックスタックが空の場合は無効化）
+- **BackStack**: 現在のナビゲーション履歴（`<- current` は現在の destination、`×` ボタンは pop back）
 - **Route 選択**: `PolymorphicField` のセレクターで遷移先を選択
 - **引数編集**: 選択した route に引数がある場合、そのフィールドを表示
 - **Navigate ボタン**: 選択した route に遷移

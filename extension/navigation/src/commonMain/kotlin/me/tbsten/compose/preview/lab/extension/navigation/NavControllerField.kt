@@ -89,7 +89,7 @@ import org.jetbrains.compose.resources.painterResource
  *                     label = "Profile",
  *                     field1 = StringField("userId", "default"),
  *                     combine = { userId -> Profile(userId = userId) },
- *                     split = { profile -> Splited1(profile.userId) },
+ *                     split = { profile -> splitedOf(profile.userId) },
  *                 ),
  *                 FixedField("Settings", Settings),
  *             ),
@@ -299,7 +299,7 @@ private fun NavOptionsSection(onNavigate: (androidx.navigation.NavOptions?) -> U
 @Composable
 private fun AutoScrollToTopEffect(listState: LazyListState, key: Any) {
     LaunchedEffect(key) {
-        val wasAtTop = listState.firstVisibleItemIndex == 1 &&
+        val wasAtTop = listState.firstVisibleItemIndex == 0 &&
             listState.firstVisibleItemScrollOffset == 0
         if (wasAtTop) {
             listState.animateScrollToItem(0)
