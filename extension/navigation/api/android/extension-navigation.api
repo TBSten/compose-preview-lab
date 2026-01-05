@@ -1,8 +1,11 @@
 public final class me/tbsten/compose/preview/lab/extension/navigation/ComposableSingletons$NavControllerFieldKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/extension/navigation/ComposableSingletons$NavControllerFieldKt;
 	public fun <init> ()V
-	public final fun getLambda$-1309581337$extension_navigation_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$250781228$extension_navigation_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1318501904$extension_navigation_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1485636313$extension_navigation_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1042392884$extension_navigation_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1107372423$extension_navigation_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$913390611$extension_navigation_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class me/tbsten/compose/preview/lab/extension/navigation/NavControllerField : me/tbsten/compose/preview/lab/ImmutablePreviewLabField {

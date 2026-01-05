@@ -57,7 +57,7 @@ object Settings
 private fun NavControllerFieldExample() = PreviewLab {
     @Suppress("ktlint:standard:backing-property-naming", "LocalVariableName")
     val _navController = rememberNavController()
-    val navController = fieldValue(_navController) {
+    val navController = fieldValue("navController") {
         NavControllerField(
             label = "navController",
             navController = _navController,
