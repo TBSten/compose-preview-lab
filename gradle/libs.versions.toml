@@ -34,6 +34,7 @@ filekit = "0.12.0"
 # Ktor / MCP (gallery)
 ktor = "3.3.3"
 mcp = "0.8.1"
+slf4j = "2.0.16"
 
 # Test
 kotest = "6.0.5"
@@ -89,6 +90,7 @@ filekitDialogs = { module = "io.github.vinceglb:filekit-dialogs", version.ref = 
 ktorServerCore = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
 ktorServerCio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
 mcpKotlinSdk = { module = "io.modelcontextprotocol:kotlin-sdk", version.ref = "mcp" }
+slf4jNop = { module = "org.slf4j:slf4j-nop", version.ref = "slf4j" }
 
 # Test
 kotestProperty = { module = "io.kotest:kotest-property", version.ref = "kotest" }

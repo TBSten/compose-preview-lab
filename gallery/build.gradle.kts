@@ -100,6 +100,7 @@ kotlin {
             implementation(libs.ktorServerCore)
             implementation(libs.ktorServerCio)
             implementation(libs.mcpKotlinSdk)
+            implementation(libs.slf4jNop)
         }
     }
 }
