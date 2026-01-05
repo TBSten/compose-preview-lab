@@ -155,9 +155,9 @@ FixedField("Settings", Settings)
 // 1引数の route
 combined(
     label = "Profile",
-    field = StringField("userId", "default"),
+    field1 = StringField("userId", "default"),
     combine = { userId -> Profile(userId = userId) },
-    split = { profile -> profile.userId },
+    split = { profile -> splitedOf(profile.userId) },
 )
 
 // 2引数の route

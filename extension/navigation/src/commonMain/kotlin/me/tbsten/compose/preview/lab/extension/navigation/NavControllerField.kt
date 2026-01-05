@@ -71,7 +71,7 @@ import org.jetbrains.compose.resources.painterResource
  * @param label The label for this field
  * @param navController The NavHostController to inspect and control
  * @param routes List of route fields for navigation. Use [FixedField] for routes without
- *   parameters, and [CombinedField1] etc. for routes with parameters.
+ *   parameters, and [combined] for routes with parameters.
  *
  * @sample
  * ```kotlin
@@ -85,7 +85,7 @@ import org.jetbrains.compose.resources.painterResource
  *             navController = _navController,
  *             routes = listOf(
  *                 FixedField("Home", Home),
- *                 CombinedField1(
+ *                 combined(
  *                     label = "Profile",
  *                     field1 = StringField("userId", "default"),
  *                     combine = { userId -> Profile(userId = userId) },

@@ -28,9 +28,9 @@ import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.extension.navigation.NavControllerField
-import me.tbsten.compose.preview.lab.field.CombinedField1
 import me.tbsten.compose.preview.lab.field.FixedField
 import me.tbsten.compose.preview.lab.field.StringField
+import me.tbsten.compose.preview.lab.field.combined
 import me.tbsten.compose.preview.lab.field.splitedOf
 import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 
@@ -64,11 +64,11 @@ private fun NavControllerFieldExample() = PreviewLab {
             routes = listOf(
                 FixedField("Home", Home),
                 FixedField("Settings", Settings),
-                CombinedField1(
+                combined(
                     label = "Profile",
                     field1 = StringField("userId", "default"),
-                    combine = { userId -> Profile(userId = userId) },
-                    split = { profile -> splitedOf(profile.userId) },
+                    combine = { userId: String -> Profile(userId = userId) },
+                    split = { profile: Profile -> splitedOf(profile.userId) },
                 ),
             ),
         )
