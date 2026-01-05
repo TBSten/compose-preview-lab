@@ -170,26 +170,6 @@ combined(
 )
 ```
 
-### Inspector での表示
-
-NavControllerField は Inspector で以下のように表示されます：
-
-```
-BackStack:
-  1. Home
-  2. Profile/{userId} <- current (× ボタン表示)
-
-Navigate to:
-[Home | Profile | Settings]  <- route を選択
-userId: [default______]      <- 選択した route の引数を編集
-[Navigate]                   <- 遷移ボタン
-```
-
-- **BackStack**: 現在のナビゲーション履歴（`<- current` は現在の destination、`×` ボタンは pop back）
-- **Route 選択**: `PolymorphicField` のセレクターで遷移先を選択
-- **引数編集**: 選択した route に引数がある場合、そのフィールドを表示
-- **Navigate ボタン**: 選択した route に遷移
-
 ## 型安全なルート定義
 
 Navigation 2.8 以降では、`@Serializable` アノテーションを使用した型安全なルート定義が推奨されています：
