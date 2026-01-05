@@ -6,9 +6,9 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     alias(libs.plugins.multiplatform)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.compose)
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.conventionFormat)
     alias(libs.plugins.conventionPublish)
@@ -59,28 +59,31 @@ kotlin {
     }
 
     applyDefaultHierarchyTemplate()
+
+    compilerOptions {
+        optIn.addAll(
+            "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
+            "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
+        )
+    }
+
     sourceSets {
         commonMain.dependencies {
             api(projects.annotation)
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.components.resources)
-            implementation(compose.ui)
-            implementation(compose.components.uiToolingPreview)
-            // TODO migrate retain { } (compose runtime api)
-            implementation("io.github.takahirom.rin:rin:0.3.0")
+            implementation(libs.composeRuntime)
+            implementation(libs.composeFoundation)
+            implementation(libs.composeComponentsResources)
+            implementation(libs.composeUi)
+            implementation(libs.composeUiToolingPreview)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
         }
         androidMain.dependencies {
-            implementation(compose.uiTooling)
+            implementation(libs.composeUiTooling)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
-        }
-        jsMain.dependencies {
-            implementation(compose.html.core)
         }
 
         val otherJsMain by creating {
@@ -110,21 +113,8 @@ android {
 
 // https://developer.android.com/develop/ui/compose/testing#setup
 dependencies {
-    androidTestImplementation(libs.androidx.uitest.junit4)
-    debugImplementation(libs.androidx.uitest.testManifest)
-}
-
-// for library development configuration
-
-kotlin {
-    applyDefaultHierarchyTemplate()
-
-    compilerOptions {
-        optIn.addAll(
-            "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
-            "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
-        )
-    }
+    androidTestImplementation(libs.androidxUitestJunit4)
+    debugImplementation(libs.androidxUitestTestManifest)
 }
 
 publishConvention {

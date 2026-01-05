@@ -6,9 +6,9 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     alias(libs.plugins.multiplatform)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.compose)
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.conventionFormat)
     alias(libs.plugins.conventionPublish)
@@ -59,15 +59,23 @@ kotlin {
     }
 
     applyDefaultHierarchyTemplate()
+
+    compilerOptions {
+        optIn.addAll(
+            "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
+            "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
+        )
+    }
+
     sourceSets {
         commonMain.dependencies {
             api(projects.core)
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.components.resources)
-            implementation(compose.ui)
-            implementation("org.jetbrains.compose.ui:ui-tooling-preview:${libs.versions.compose.get()}")
-            implementation("org.jetbrains.compose.material:material-ripple:${libs.versions.compose.get()}")
+            implementation(libs.composeRuntime)
+            implementation(libs.composeFoundation)
+            implementation(libs.composeComponentsResources)
+            implementation(libs.composeUi)
+            implementation(libs.composeUiToolingPreview)
+            implementation(libs.composeMaterialRipple)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
@@ -77,7 +85,7 @@ kotlin {
             implementation(libs.kotlinxCoroutinesTest)
         }
         androidMain.dependencies {
-            implementation(compose.uiTooling)
+            implementation(libs.composeUiTooling)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -98,21 +106,8 @@ android {
 
 // https://developer.android.com/develop/ui/compose/testing#setup
 dependencies {
-    androidTestImplementation(libs.androidx.uitest.junit4)
-    debugImplementation(libs.androidx.uitest.testManifest)
-}
-
-// for library development configuration
-
-kotlin {
-    applyDefaultHierarchyTemplate()
-
-    compilerOptions {
-        optIn.addAll(
-            "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
-            "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
-        )
-    }
+    androidTestImplementation(libs.androidxUitestJunit4)
+    debugImplementation(libs.androidxUitestTestManifest)
 }
 
 compose {

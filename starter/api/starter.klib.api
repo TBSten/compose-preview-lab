@@ -7,7 +7,3 @@
 
 // Library unique name: <me.tbsten.compose.preview.lab:starter>
 final object me.tbsten.compose.preview.lab.starter/ComposePreviewLabStarter // me.tbsten.compose.preview.lab.starter/ComposePreviewLabStarter|null[0]
-
-final val me.tbsten.compose.preview.lab.starter/me_tbsten_compose_preview_lab_starter_ComposePreviewLabStarter$stableprop // me.tbsten.compose.preview.lab.starter/me_tbsten_compose_preview_lab_starter_ComposePreviewLabStarter$stableprop|#static{}me_tbsten_compose_preview_lab_starter_ComposePreviewLabStarter$stableprop[0]
-
-final fun me.tbsten.compose.preview.lab.starter/me_tbsten_compose_preview_lab_starter_ComposePreviewLabStarter$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.starter/me_tbsten_compose_preview_lab_starter_ComposePreviewLabStarter$stableprop_getter|me_tbsten_compose_preview_lab_starter_ComposePreviewLabStarter$stableprop_getter(){}[0]
