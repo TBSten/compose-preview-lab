@@ -25,7 +25,7 @@ class FloatFieldTest : StringSpec({
             val state = PreviewLabState()
             setContent { TestPreviewLab(state) { FloatFieldExample() } }
 
-            val alphaField by state.field<Float>("Alpha")
+            val alphaField by state.field<Float>("Alpha (0..1)")
 
             forAll(Arb.float(0f..1f).filterNot { it.isNaN() }.plusEdgecases(alphaField.testValues())) { floatValue ->
                 alphaField.value = floatValue
