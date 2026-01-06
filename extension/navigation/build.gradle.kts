@@ -107,5 +107,5 @@ publishConvention {
     description =
         "A component catalog library that collects and lists @Preview. \n" +
         "By providing APIs such as Field, Event, etc., it provides not only display but also interactive preview.\n" +
-        "extension-navigation provides extension functions for Compose Navigation."
+        "extension-navigation provides NavControllerField for inspecting and controlling NavHostController in PreviewLab."
 }

@@ -77,13 +77,13 @@ dependencies {
 
 ```kotlin
 @Serializable
-object Home
+data object Home
 
 @Serializable
 data class Profile(val userId: String)
 
 @Serializable
-object Settings
+data object Settings
 
 @Preview
 @Composable
@@ -135,8 +135,6 @@ fun MyScreenPreview() = PreviewLab {
 | `routes` | `List<PreviewLabField<out Any>>` | 遷移先の route Field リスト |
 
 ### routes の定義
-
-`routes` パラメータには、各遷移先を表す Field のリストを渡します。
 
 #### 引数なしの route
 

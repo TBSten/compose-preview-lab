@@ -73,32 +73,8 @@ import org.jetbrains.compose.resources.painterResource
  * @param routes List of route fields for navigation. Use [FixedField] for routes without
  *   parameters, and [combined] for routes with parameters.
  *
- * @sample
- * ```kotlin
- * @Preview
- * @Composable
- * fun MyScreenPreview() = PreviewLab {
- *     val _navController = rememberNavController()
- *     val navController = fieldValue("navController") {
- *         NavControllerField(
- *             label = "navController",
- *             navController = _navController,
- *             routes = listOf(
- *                 FixedField("Home", Home),
- *                 combined(
- *                     label = "Profile",
- *                     field1 = StringField("userId", "default"),
- *                     combine = { userId -> Profile(userId = userId) },
- *                     split = { profile -> splitedOf(profile.userId) },
- *                 ),
- *                 FixedField("Settings", Settings),
- *             ),
- *         )
- *     }
- *
- *     MyAppNavHost(navController = navController)
- * }
- * ```
+ * @see me.tbsten.compose.preview.lab.sample.extension.navigation.NavControllerFieldExample
+ * For a complete usage example, see the integration test sample.
  */
 class NavControllerField(
     label: String,

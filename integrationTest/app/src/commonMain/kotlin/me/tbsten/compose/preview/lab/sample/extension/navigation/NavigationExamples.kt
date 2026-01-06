@@ -42,7 +42,7 @@ data object Home
 data class Profile(val userId: String)
 
 @Serializable
-object Settings
+data object Settings
 
 /**
  * Example showing how to use NavControllerField with type-safe routes.
