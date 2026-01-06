@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.hotReload)
     alias(libs.plugins.ksp)
     alias(libs.plugins.buildkonfig)
+    alias(libs.plugins.kotlinxSerialization)
     id("me.tbsten.compose.preview.lab")
 }
 
@@ -69,6 +70,10 @@ kotlin {
 
             implementation("me.tbsten.compose.preview.lab:extension-kotlinx-datetime:${libs.versions.composePreviewLab.get()}")
             implementation(libs.kotlinxDatetime)
+
+            implementation("me.tbsten.compose.preview.lab:extension-navigation:${libs.versions.composePreviewLab.get()}")
+            implementation(libs.androidxNavigation)
+            implementation(libs.kotlinxSerializationCore)
 
             implementation(project(":uiLib"))
             implementation(project(":helloComposePreviewLab"))

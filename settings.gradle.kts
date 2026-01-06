@@ -56,6 +56,9 @@ include(":gradle-plugin")
 include(":dokkaDocs")
 
 include(":extension:kotlinx-datetime", projectName = "extension-kotlinx-datetime")
+include(":extension:navigation", projectName = "extension-navigation")
+// Navigation 3 extension is planned for future support (currently in alpha)
+// include(":extension:navigation3", projectName = "extension-navigation3")
 
 // include(":intellij-plugin")
 

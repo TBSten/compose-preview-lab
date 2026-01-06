@@ -1,6 +1,5 @@
 @file:OptIn(ExperimentalKotlinGradlePluginApi::class, ExperimentalWasmDsl::class)
 
-import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
@@ -11,8 +10,6 @@ plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinxSerialization)
-    alias(libs.plugins.ktor)
-    alias(libs.plugins.buildkonfig)
     alias(libs.plugins.conventionFormat)
     alias(libs.plugins.conventionPublish)
 }
@@ -27,7 +24,7 @@ kotlin {
     jvm()
 
     js {
-        outputModuleName = "compose-previewl-lab-gallery"
+        outputModuleName = "compose-preview-lab-extension-navigation"
         browser()
         binaries.executable()
         binaries.library()
@@ -39,7 +36,7 @@ kotlin {
     }
 
     wasmJs {
-        outputModuleName = "compose-previewl-lab-gallery"
+        outputModuleName = "compose-preview-lab-extension-navigation"
         browser()
         binaries.executable()
         binaries.library()
@@ -56,7 +53,7 @@ kotlin {
         iosSimulatorArm64(),
     ).forEach {
         it.binaries.framework {
-            baseName = "ComposePreviewLabGallery"
+            baseName = "ComposePreviewLabExtensionNavigation"
             isStatic = true
         }
     }
@@ -72,41 +69,23 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(projects.core)
-            api(projects.ui)
-            api(projects.field)
-            api(projects.previewLab)
             implementation(libs.composeRuntime)
             implementation(libs.composeFoundation)
-            implementation(libs.composeComponentsResources)
             implementation(libs.composeUi)
-            implementation(libs.composeUiToolingPreview)
+            implementation(libs.composeComponentsResources)
+            implementation(projects.ui)
+            implementation(projects.field)
+            implementation(libs.androidxNavigation)
+            implementation(libs.kotlinxSerializationCore)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
-        }
-        jvmTest.dependencies {
-            implementation(libs.kotestFrameworkEngine)
-            implementation(libs.kotestAssertionsCore)
-            implementation(libs.kotestRunnerJunit5)
-            implementation(libs.kotestProperty)
-            implementation(libs.kotlinxCoroutinesTest)
-        }
-        androidMain.dependencies {
-            implementation(libs.composeUiTooling)
-        }
-        jvmMain.dependencies {
-            implementation(compose.desktop.currentOs)
-            implementation(libs.ktorServerCore)
-            implementation(libs.ktorServerCio)
-            implementation(libs.mcpKotlinSdk)
-            implementation(libs.slf4jNop)
         }
     }
 }
 
 android {
-    namespace = "me.tbsten.compose.preview.lab.gallery"
+    namespace = "me.tbsten.compose.preview.lab.extension.navigation"
     compileSdk = 36
 
     defaultConfig {
@@ -122,28 +101,11 @@ dependencies {
     debugImplementation(libs.androidxUitestTestManifest)
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-    // Forward kotest-related system properties to the test JVM
-    // See: https://kotest.io/docs/framework/tags.html#gradle
-    System.getProperties()
-        .filter { it.key.toString().startsWith("kotest.") }
-        .forEach { (key, value) -> systemProperty(key.toString(), value) }
-}
-
 publishConvention {
-    artifactName = "Gallery"
-    artifactId = "gallery"
+    artifactName = "Extension Navigation"
+    artifactId = "extension-navigation"
     description =
         "A component catalog library that collects and lists @Preview. \n" +
         "By providing APIs such as Field, Event, etc., it provides not only display but also interactive preview.\n" +
-        "gallery provides <TODO>"
-}
-
-buildkonfig {
-    packageName = "me.tbsten.compose.preview.lab.gallery"
-
-    defaultConfigs {
-        buildConfigField(STRING, "COMPOSE_PREVIEW_LAB_VERSION", libs.versions.composePreviewLab.get())
-    }
+        "extension-navigation provides NavControllerField for inspecting and controlling NavHostController in PreviewLab."
 }

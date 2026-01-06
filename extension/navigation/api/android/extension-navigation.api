@@ -1,0 +1,20 @@
+public final class me/tbsten/compose/preview/lab/extension/navigation/ComposableSingletons$NavControllerFieldKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/extension/navigation/ComposableSingletons$NavControllerFieldKt;
+	public fun <init> ()V
+	public final fun getLambda$-1318501904$extension_navigation_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1485636313$extension_navigation_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1042392884$extension_navigation_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1107372423$extension_navigation_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$913390611$extension_navigation_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class me/tbsten/compose/preview/lab/extension/navigation/NavControllerField : me/tbsten/compose/preview/lab/ImmutablePreviewLabField {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Landroidx/navigation/NavHostController;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/lang/String;Landroidx/navigation/NavHostController;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun serializer ()Ljava/lang/Void;
+	public synthetic fun serializer ()Lkotlinx/serialization/KSerializer;
+	public fun valueCode ()Ljava/lang/String;
+}
+

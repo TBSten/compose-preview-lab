@@ -25,13 +25,13 @@ class LongFieldTest : StringSpec({
             val state = PreviewLabState()
             setContent { TestPreviewLab(state) { LongFieldExample() } }
 
-            val timestampField by state.field<Long>("Timestamp")
+            val timestampField by state.field<Long>("File size (bytes)")
 
             forAll(Arb.long().plusEdgecases(timestampField.testValues())) { longValue ->
                 timestampField.value = longValue
                 awaitIdle()
 
-                onNodeWithText("Timestamp: $longValue")
+                onNodeWithText("bytes: $longValue")
                     .assertExists()
                 true
             }

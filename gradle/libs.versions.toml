@@ -34,6 +34,7 @@ filekit = "0.12.0"
 # Ktor / MCP (gallery)
 ktor = "3.3.3"
 mcp = "0.8.1"
+slf4j = "2.0.16"
 
 # Test
 kotest = "6.0.5"
@@ -50,6 +51,8 @@ lumoUi = "1.2.5"
 # Extension Dependencies
 # ================================
 kotlinxDatetime = "0.7.1"
+androidxNavigation = "2.9.1"
+androidxNavigation3Ui = "1.0.0-alpha05"
 
 # ================================
 # IntegrationTest Dependencies
@@ -87,6 +90,7 @@ filekitDialogs = { module = "io.github.vinceglb:filekit-dialogs", version.ref = 
 ktorServerCore = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
 ktorServerCio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
 mcpKotlinSdk = { module = "io.modelcontextprotocol:kotlin-sdk", version.ref = "mcp" }
+slf4jNop = { module = "org.slf4j:slf4j-nop", version.ref = "slf4j" }
 
 # Test
 kotestProperty = { module = "io.kotest:kotest-property", version.ref = "kotest" }
@@ -116,6 +120,8 @@ jewelIdeLafBridge = { module = "org.jetbrains.jewel:jewel-ide-laf-bridge-243", v
 # Extension Dependencies
 # ================================
 kotlinxDatetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+androidxNavigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidxNavigation" }
+androidxNavigation3Ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "androidxNavigation3Ui" }
 
 # ================================
 # IntegrationTest Dependencies
