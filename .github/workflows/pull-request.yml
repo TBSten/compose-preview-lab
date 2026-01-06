@@ -29,6 +29,9 @@ jobs:
   validate-binary-compatibility:
     name: Validate Binary Compatibility
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # for checkout, peter-evans/create-pull-request
+      pull-requests: write # for yumemi/comment-pull-request
     steps:
       - uses: actions/checkout@v4
       - name: Setup Java for Gradle
@@ -42,6 +45,37 @@ jobs:
       - name: Validate Binary Compatibility
         shell: bash
         run: ./gradlew apiCheck
+
+      # auto api dump
+      - run: ./gradlew apiDump --continue
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+      - uses: peter-evans/create-pull-request@v7
+        if: ${{ !cancelled() }}
+        id: create-auto-format-pull-request
+        with:
+          commit-message: 'apiDump'
+          title: '[AUTO GENERATE] Format for #${{ github.event.number }}'
+          body: |
+            @${{ github.actor }}
+            An API change has been detected in #${{ github.event.number }}.
+            Please check the differences in this PR and merge it if there are no problems.
+
+          base: ${{ github.head_ref }}
+          branch: 'auto-api-dump/pr-${{ github.event.number }}'
+
+      # comment failure
+      - name: Comment
+        if: ${{ !cancelled() && steps.create-auto-format-pull-request.outputs.pull-request-operation != 'none' }}
+        uses: yumemi-inc/comment-pull-request@v1
+        with:
+          comment: |
+            @${{ github.actor }}
+
+            > [!IMPORTANT]
+            > An API change has been detected.
+            > See #${{ steps.create-auto-format-pull-request.outputs.pull-request-number }}.
+
   test:
     strategy:
       fail-fast: false
