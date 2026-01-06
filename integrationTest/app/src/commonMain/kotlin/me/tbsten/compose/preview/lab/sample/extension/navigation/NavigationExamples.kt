@@ -27,6 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
+import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.extension.navigation.NavControllerField
 import me.tbsten.compose.preview.lab.field.FixedField
 import me.tbsten.compose.preview.lab.field.StringField
@@ -51,6 +52,7 @@ data object Settings
  * - BackStack tracking
  * - Route selection via PolymorphicField with editable parameters
  */
+@OptIn(ExperimentalComposePreviewLabApi::class)
 @ComposePreviewLabOption(id = "NavControllerFieldExample")
 @Preview
 @Composable

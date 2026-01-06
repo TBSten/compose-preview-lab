@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.navOptions
+import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ImmutablePreviewLabField
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabField
@@ -76,6 +77,7 @@ import org.jetbrains.compose.resources.painterResource
  * @see me.tbsten.compose.preview.lab.sample.extension.navigation.NavControllerFieldExample
  * For a complete usage example, see the integration test sample.
  */
+@ExperimentalComposePreviewLabApi
 class NavControllerField(
     label: String,
     private val navController: NavHostController,
