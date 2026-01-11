@@ -83,8 +83,9 @@ internal fun WithHintActionExample() = PreviewLab {
     val items = fieldState {
         ListField(
             label = "Items",
-            elementField = { StringField(label = "Item", initialValue = "") },
+            elementField = { StringField(label = label, initialValue = initialValue) },
             initialValue = emptyList<String>(),
+            defaultValue = { "" },
         )
             .withHintAction(
                 "Add 3 items" to {

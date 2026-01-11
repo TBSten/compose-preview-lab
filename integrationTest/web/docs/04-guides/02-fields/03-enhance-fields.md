@@ -175,7 +175,7 @@ MyTextField(
 val items = fieldValue {
     ListField(
         label = "items",
-        elementField = { StringField("item", "") },
+        elementField = { StringField(label, initialValue) },
         initialValue = emptyList<String>(),
     )
         // highlight-start
@@ -215,7 +215,7 @@ title="Field withHintAction Example"
 val tags = fieldValue {
     ListField(
         label = "tags",
-        elementField = { StringField("tag", "") },
+        elementField = { StringField(label, initialValue) },
         initialValue = emptyList<String>(),
     )
         .withHintAction(

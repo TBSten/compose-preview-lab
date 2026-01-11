@@ -145,9 +145,13 @@ fun <Value> MutablePreviewLabField<Value>.withHint(choices: Map<String, Value>):
  * @Composable
  * fun ListPreview() = PreviewLab {
  *     val items: List<String> = fieldValue {
- *         ListField(StringField(label = "Item", initialValue = ""))
+ *         ListField(
+ *             label = "items",
+ *             elementField = { StringField(label, initialValue) },
+ *             initialValue = emptyList(),
+ *         )
  *             .withHintAction(
- *                 "Add 3 items" to { repeat(3) { value = value + "Item ${value.size + 1}" } },
+ *                 "Add 3 items" to { value = value + listOf("Item A", "Item B", "Item C") },
  *                 "Clear all" to { value = emptyList() }
  *             )
  *     }
@@ -225,9 +229,13 @@ fun <Value> MutablePreviewLabField<Value>.withHint(
  * @Composable
  * fun ListPreview() = PreviewLab {
  *     val items: List<String> = fieldValue {
- *         ListField(StringField(label = "Item", initialValue = ""))
+ *         ListField(
+ *             label = "items",
+ *             elementField = { StringField(label, initialValue) },
+ *             initialValue = emptyList(),
+ *         )
  *             .withHintAction(
- *                 "Add 3 items" to { repeat(3) { value = value + "Item" } },
+ *                 "Add 3 items" to { value = value + listOf("Item A", "Item B", "Item C") },
  *                 "Clear" to { value = emptyList() }
  *             )
  *     }
