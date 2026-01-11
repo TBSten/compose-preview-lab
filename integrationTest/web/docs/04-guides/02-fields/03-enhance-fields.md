@@ -120,7 +120,7 @@ val email = fieldValue {
             "Admin" to "admin@example.com",
             "Test" to "test@example.com",
         )
-        // highlight-end
+    // highlight-end
 }
 ```
 
@@ -161,6 +161,98 @@ MyTextField(
     onValueChange = { text = it },
     // highlight-end
 )
+```
+
+</details>
+
+## Field.withHintAction(): アクションを実行するヒントを追加
+
+`Field.withHintAction()` は `withHint()` と似ていますが、単純な値の設定ではなくカスタムアクションを実行できます。
+アクションのラムダでは Field 自身を `this` として受け取るため、`value` プロパティに直接アクセスして複雑な操作が可能です。
+アクションは `suspend` 関数として定義されているため、非同期処理も可能です。
+
+```kt
+val items = fieldValue {
+    ListField(
+        label = "items",
+        elementField = { StringField("item", "") },
+        initialValue = emptyList<String>(),
+    )
+        // highlight-start
+        .withHintAction(
+            "Add 3 items" to {
+                value = value + listOf("Item A", "Item B", "Item C")
+            },
+            "Clear all" to {
+                value = emptyList()
+            },
+        )
+        // highlight-end
+}
+```
+
+また、単一のアクションを追加する場合は、トレーリングラムダ構文を使用できます:
+
+```kt
+val text = fieldValue {
+    StringField("text", "hello")
+        .withHint("Uppercase") { value = value.uppercase() }
+        .withHint("Clear") { value = "" }
+}
+```
+
+<EmbeddedPreviewLab
+previewId="WithHintActionExample"
+title="Field withHintAction Example"
+/>
+
+### 利用例
+
+<details>
+<summary>リストの一括操作</summary>
+
+```kt
+val tags = fieldValue {
+    ListField(
+        label = "tags",
+        elementField = { StringField("tag", "") },
+        initialValue = emptyList<String>(),
+    )
+        .withHintAction(
+            // highlight-start
+            "Add sample tags" to {
+                value = value + listOf("kotlin", "compose", "android")
+            },
+            "Remove duplicates" to {
+                value = value.distinct()
+            },
+            "Sort A-Z" to {
+                value = value.sorted()
+            },
+            // highlight-end
+        )
+}
+```
+
+</details>
+
+<details>
+<summary>withHint と withHintAction の組み合わせ</summary>
+
+```kt
+val text = fieldValue {
+    StringField("text", "hello")
+        // highlight-start
+        .withHint(
+            "Hello" to "Hello, World!",
+            "Lorem" to "Lorem ipsum dolor sit amet",
+        )
+        .withHintAction(
+            "Uppercase" to { value = value.uppercase() },
+            "Clear" to { value = "" },
+        )
+    // highlight-end
+}
 ```
 
 </details>
@@ -303,7 +395,7 @@ val theme = fieldValue {
     )
         // highlight-start
         .withValueCode { value -> "Theme.${value.name}" }
-        // highlight-end
+    // highlight-end
 }
 ```
 
@@ -362,25 +454,25 @@ val theme = fieldValue {
 
 以下の Field はデフォルトでシリアライザを提供しています：
 
-| Field             | Serializer                        |
-|-------------------|-----------------------------------|
-| `BooleanField`    | `Boolean.serializer()`            |
-| `StringField`     | `String.serializer()`             |
-| `IntField`        | `Int.serializer()`                |
-| `LongField`       | `Long.serializer()`               |
-| `ByteField`       | `Byte.serializer()`               |
-| `DoubleField`     | `Double.serializer()`             |
-| `FloatField`      | `Float.serializer()`              |
+| Field             | Serializer                      |
+|-------------------|---------------------------------|
+| `BooleanField`    | `Boolean.serializer()`          |
+| `StringField`     | `String.serializer()`           |
+| `IntField`        | `Int.serializer()`              |
+| `LongField`       | `Long.serializer()`             |
+| `ByteField`       | `Byte.serializer()`             |
+| `DoubleField`     | `Double.serializer()`           |
+| `FloatField`      | `Float.serializer()`            |
 | `NullableField`   | ベース Field の nullable serializer |
-| `ColorField`      | `ColorSerializer`                 |
-| `DpField`         | `DpSerializer`                    |
-| `SpField`         | `TextUnitSerializer`              |
-| `OffsetField`     | `OffsetSerializer`                |
-| `DpOffsetField`   | `DpOffsetSerializer`              |
-| `SizeField`       | `SizeSerializer`                  |
-| `DpSizeField`     | `DpSizeSerializer`                |
-| `ScreenSizeField` | `ScreenSizeSerializer`            |
-| `TransformField`  | ベース Field の serializer を変換    |
+| `ColorField`      | `ColorSerializer`               |
+| `DpField`         | `DpSerializer`                  |
+| `SpField`         | `TextUnitSerializer`            |
+| `OffsetField`     | `OffsetSerializer`              |
+| `DpOffsetField`   | `DpOffsetSerializer`            |
+| `SizeField`       | `SizeSerializer`                |
+| `DpSizeField`     | `DpSizeSerializer`              |
+| `ScreenSizeField` | `ScreenSizeSerializer`          |
+| `TransformField`  | ベース Field の serializer を変換      |
 
 以下の Field はデフォルトで `null` を返します（シリアライズ不可）：
 
@@ -389,7 +481,6 @@ val theme = fieldValue {
 - `CombinedField`
 - `ComposableField`
 - `ModifierField`
-
 
 その場合 `SelectableField` で enum を使用する場合は、`.withSerializer()` を使用してシリアライザを設定することで、値の永続化や共有が可能になります。
 
