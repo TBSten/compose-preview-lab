@@ -646,10 +646,54 @@ PreviewLab {
 }
 ```
 
-<EmbeddedPreviewLab 
+<EmbeddedPreviewLab
  previewId="WithHintFieldExample"
  title="WithHintField Example"
 />
+
+<details>
+<summary><code>.withHintAction()</code> でアクションを実行するヒントを追加する</summary>
+
+`withHintAction()` を使用すると、単純な値の設定ではなくカスタムアクションを実行するヒントを追加できます。
+アクションのラムダでは Field 自身を `this` として受け取るため、`value` プロパティに直接アクセスして複雑な操作が可能です。
+
+```kt
+PreviewLab {
+    val items = fieldValue {
+        ListField(
+            label = "items",
+            elementField = { StringField(label, initialValue) },
+            initialValue = emptyList<String>(),
+        )
+            // highlight-start
+            .withHintAction(
+                "Add 3 items" to { value = value + listOf("Item A", "Item B", "Item C") },
+                "Clear all" to { value = emptyList() },
+            )
+            // highlight-end
+    }
+    ItemList(items = items)
+}
+```
+
+また、単一のアクションを追加する場合は、トレーリングラムダ構文も使用できます：
+
+```kt
+PreviewLab {
+    val text = fieldValue {
+        StringField("text", "hello")
+            // highlight-start
+            .withHint("Uppercase") { value = value.uppercase() }
+            .withHint("Clear") { value = "" }
+            // highlight-end
+    }
+    Text(text)
+}
+```
+
+詳細は [Enhance Fields](./enhance-fields#fieldwithhintaction-アクションを実行するヒントを追加) を参照してください。
+
+</details>
 
 ### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-polymorphic-field/index.html">PolymorphicField</KDocLink>
 
