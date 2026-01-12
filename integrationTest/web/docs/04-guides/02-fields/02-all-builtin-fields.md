@@ -1,5 +1,5 @@
 ---
-title: All Fields
+title: All Builtin Fields
 sidebar_position: 2
 ---
 
@@ -8,7 +8,7 @@ import KDocLink from '@site/src/components/KDocLink';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# All Fields Reference
+# All Builtin Fields Reference
 
 ## 1. Primitive Fields
 
