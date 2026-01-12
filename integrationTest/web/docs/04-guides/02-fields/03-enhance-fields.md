@@ -191,7 +191,7 @@ val items = fieldValue {
 }
 ```
 
-また、単一のアクションを追加する場合は、トレーリングラムダ構文を使用できます:
+また、単一のアクションを追加する場合は、trailing lambda 構文を使用できます:
 
 ```kt
 val text = fieldValue {
