@@ -76,7 +76,6 @@ kotlin {
             implementation(libs.kotlinxSerializationCore)
 
             implementation(project(":uiLib"))
-            implementation(project(":helloComposePreviewLab"))
         }
 
         commonTest.dependencies {

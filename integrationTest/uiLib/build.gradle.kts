@@ -42,6 +42,22 @@ kotlin {
             implementation(libs.composeUiToolingPreview)
             implementation("me.tbsten.compose.preview.lab:starter:${libs.versions.composePreviewLab.get()}")
         }
+
+        commonMain.dependencies {
+            implementation(libs.composeRuntime)
+            implementation(libs.composeFoundation)
+            implementation(libs.composeMaterial3)
+            implementation(libs.composeComponentsResources)
+            implementation(libs.composeUiToolingPreview)
+            implementation("me.tbsten.compose.preview.lab:starter:${libs.versions.composePreviewLab.get()}")
+
+            implementation("me.tbsten.compose.preview.lab:extension-kotlinx-datetime:${libs.versions.composePreviewLab.get()}")
+            implementation(libs.kotlinxDatetime)
+
+            implementation("me.tbsten.compose.preview.lab:extension-navigation:${libs.versions.composePreviewLab.get()}")
+            implementation(libs.androidxNavigation)
+            implementation(libs.kotlinxSerializationCore)
+        }
     }
 }
 

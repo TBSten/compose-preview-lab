@@ -17,8 +17,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
-import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.KotlinCodeBlock
-import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.createCodeBlockColor
 
 class CodeTab(code: String, override val title: String = "Code") : InspectorTab {
     internal var code by mutableStateOf(code)

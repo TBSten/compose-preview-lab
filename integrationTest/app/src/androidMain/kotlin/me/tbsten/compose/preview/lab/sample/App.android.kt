@@ -21,7 +21,7 @@ class AppActivity : ComponentActivity() {
                 state = remember {
                     PreviewLabGalleryState()
                 },
-                previewList = app.PreviewList + uiLib.PreviewList + helloComposePreviewLab.PreviewList,
+                previewList = app.PreviewList + uiLib.PreviewList,
                 featuredFileList = FeaturedFileList,
                 modifier = Modifier
                     .systemBarsPadding()
