@@ -1,0 +1,15 @@
+public final class me/tbsten/compose/preview/lab/extension/navigation3/ComposableSingletons$NavBackStackFieldKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/extension/navigation3/ComposableSingletons$NavBackStackFieldKt;
+	public fun <init> ()V
+	public final fun getLambda$1643926059$extension_navigation3_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class me/tbsten/compose/preview/lab/extension/navigation3/NavBackStackField : me/tbsten/compose/preview/lab/ImmutablePreviewLabField {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Landroidx/compose/runtime/snapshots/SnapshotStateList;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlinx/serialization/KSerializer;)V
+	public synthetic fun <init> (Ljava/lang/String;Landroidx/compose/runtime/snapshots/SnapshotStateList;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlinx/serialization/KSerializer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun serializer ()Lkotlinx/serialization/KSerializer;
+	public fun valueCode ()Ljava/lang/String;
+}
+

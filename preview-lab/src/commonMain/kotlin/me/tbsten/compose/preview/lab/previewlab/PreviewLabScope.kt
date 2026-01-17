@@ -60,6 +60,24 @@ class PreviewLabScope(val state: PreviewLabState) {
         return field
     }
 
+    @Composable
+    fun <Field : PreviewLabField<*>> field(key: String? = null, builder: FieldBuilderScope.() -> Field): Field {
+        val urlParams = LocalUrlParams.current
+        val field = remember(key1 = key) {
+            builder(PreviewLabScope.FieldBuilderScope()).also { field ->
+                restoreFieldValueFromUrl(field, urlParams)
+            }
+        }
+        DisposableEffect(Unit) {
+            state.fields.add(field)
+            onDispose {
+                state.fields.remove(field)
+                field.onCleared()
+            }
+        }
+        return field
+    }
+
     /**
      * Creates a field that can be used to store and observe state in the Preview Lab.
      * Use this if you do not need to update the status.
