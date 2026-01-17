@@ -11,7 +11,7 @@ import org.w3c.dom.Element
 
 @OptIn(ExperimentalJsExport::class, ExperimentalWasmJsInterop::class)
 @JsExport
-val appPreviewList = (app.PreviewList + uiLib.PreviewList + helloComposePreviewLab.PreviewList)
+val appPreviewList = (app.PreviewList + uiLib.PreviewList)
     .toJsArray()
 
 @OptIn(ExperimentalJsExport::class, ExperimentalWasmJsInterop::class, ExperimentalComposePreviewLabApi::class)
