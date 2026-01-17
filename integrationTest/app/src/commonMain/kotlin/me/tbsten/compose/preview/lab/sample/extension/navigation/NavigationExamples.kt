@@ -1,29 +1,18 @@
 package me.tbsten.compose.preview.lab.sample.extension.navigation
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
@@ -34,6 +23,9 @@ import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.combined
 import me.tbsten.compose.preview.lab.field.splitedOf
 import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.extension.navigation.common.SampleHomeScreen
+import me.tbsten.compose.preview.lab.sample.extension.navigation.common.SampleProfileScreen
+import me.tbsten.compose.preview.lab.sample.extension.navigation.common.SampleSettingsScreen
 
 // Type-safe route definitions
 @Serializable
@@ -59,7 +51,7 @@ data object Settings
 private fun NavControllerFieldExample() = PreviewLab {
     @Suppress("ktlint:standard:backing-property-naming", "LocalVariableName")
     val _navController = rememberNavController()
-    val navController = fieldValue("navController") {
+    val navController = fieldValue {
         NavControllerField(
             label = "navController",
             navController = _navController,
@@ -81,146 +73,48 @@ private fun NavControllerFieldExample() = PreviewLab {
 
 @Composable
 internal fun SampleNavHost(navController: NavHostController) {
+    LaunchedEffect(Unit) {
+        navController.graph.forEach { dest ->
+            println("dest: ${dest::class.qualifiedName}")
+            println("dest:     - detail: $dest")
+
+            (dest as? ComposeNavigator.Destination)?.apply {
+                val isHome = hasRoute<Home>()
+                val isProfile = hasRoute<Profile>()
+                val isSettings = hasRoute<Settings>()
+                println("dest:     - isHome = $isHome")
+                println("dest:     - isProfile = $isProfile")
+                println("dest:     - isSettings = $isSettings")
+            }
+
+            (dest as? NavGraph)?.apply {
+                println("dest:     - route = ${this.route}")
+                println("dest:     - nodes = ${this.map { it.route }}")
+            }
+        }
+    }
+
     NavHost(
         navController = navController,
         startDestination = Home,
         modifier = Modifier.fillMaxSize(),
     ) {
         composable<Home> {
-            HomeScreen(onNavigate = { navController.navigate(Profile(userId = "user1")) })
+            SampleHomeScreen(onNavigateProfile = { navController.navigate(Profile(userId = "user1")) })
         }
         composable<Profile> { backStackEntry ->
             val profile: Profile = backStackEntry.toRoute()
-            ProfileScreen(
+            SampleProfileScreen(
                 userId = profile.userId,
-                onNavigate = { navController.navigate(Settings) },
+                onSettingsNavigate = { navController.navigate(Settings) },
             )
         }
         composable<Settings> {
-            SettingsScreen(onNavigate = { navController.navigate(Home) })
+            SampleSettingsScreen(onNavigateHome = { navController.navigate(Home) })
+        }
+        navigation("a-1", "a") {
+            composable("a-1") {}
+            composable("a-2") {}
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun HomeScreen(onNavigate: () -> Unit) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Home") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF6200EE),
-                    titleContentColor = Color.White,
-                ),
-            )
-        },
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                onClick = onNavigate,
-                containerColor = Color(0xFF6200EE),
-                contentColor = Color.White,
-            ) {
-                Text("Go to Profile →")
-            }
-        },
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            Text("Welcome!", style = MaterialTheme.typography.headlineLarge)
-            Text("This is the home screen.", style = MaterialTheme.typography.bodyLarge)
-            Text("Tap the button below to view a profile.", style = MaterialTheme.typography.bodyMedium)
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun ProfileScreen(userId: String, onNavigate: () -> Unit) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Profile") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF03DAC5),
-                    titleContentColor = Color.Black,
-                ),
-            )
-        },
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Spacer(Modifier.height(32.dp))
-            Text("User ID: $userId", style = MaterialTheme.typography.headlineSmall)
-            Spacer(Modifier.height(8.dp))
-            Text("This is the profile page.", style = MaterialTheme.typography.bodyMedium)
-            Spacer(Modifier.weight(1f))
-            ExtendedFloatingActionButton(
-                onClick = onNavigate,
-                containerColor = Color(0xFF03DAC5),
-                contentColor = Color.Black,
-            ) {
-                Text("Go to Settings →")
-            }
-            Spacer(Modifier.height(16.dp))
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun SettingsScreen(onNavigate: () -> Unit) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Settings") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFFFF5722),
-                    titleContentColor = Color.White,
-                ),
-            )
-        },
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-        ) {
-            SettingsItem("Notifications")
-            SettingsItem("Dark Mode")
-            SettingsItem("Privacy")
-            SettingsItem("About")
-            Spacer(Modifier.weight(1f))
-            ExtendedFloatingActionButton(
-                onClick = onNavigate,
-                containerColor = Color(0xFFFF5722),
-                contentColor = Color.White,
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-            ) {
-                Text("Back to Home →")
-            }
-            Spacer(Modifier.height(16.dp))
-        }
-    }
-}
-
-@Composable
-private fun SettingsItem(text: String) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.bodyLarge,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-    )
 }

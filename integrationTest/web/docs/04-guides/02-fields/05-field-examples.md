@@ -211,6 +211,45 @@ PreviewLab {
 }
 ```
 
+## 関数型
+
+引数の型が関数型 ((Args) -> R など) の場合は、一意の Field に決まりません。
+引数の用途に応じて `event`, `slot`, `builder` を使い分ける必要があります。
+
+### event の引数
+
+何かのイベントが発生した際に該当の処理を記述するための引数が event に該当します。
+`onClick` のような命名がされてることが多いでしょう。
+
+この場合は Field ではなく [Event](../events) の使用を検討してください。
+
+### slot の引数
+
+`@Composable () -> Unit` のように Composable なラムダを引数で受け取る Slot 引数の場合が該当します。
+
+Slot based layout については [Google のドキュメント](https://developer.android.com/develop/ui/compose/layouts/basics?hl=ja#slot-based-layouts) も参照してください。
+
+slot 引数の場合は [`ComposableField`](./all-fields#composablefield) の利用をお勧めします。子要素として取りうる様々な Composable 関数が事前に定義されているため、様々なパターンを簡単にテストすることができます。
+
+```kt
+PreviewLab {
+    // TODO
+}
+```
+
+### builder の引数
+
+要素の event, slot ではないものの
+例えば LazyColumn の `content: LazyListScope.() -> Unit` ラムダなどが該当します。
+
+builder 引数の場合は [`ListField`]() と [`.transform()`]() を組み合わせることをお勧めします。
+
+```kt
+PreviewLab {
+    // TODO
+}
+```
+
 ## 画像の URL
 
 アプリで画像 URL を参照することは一般的なユースケースです。

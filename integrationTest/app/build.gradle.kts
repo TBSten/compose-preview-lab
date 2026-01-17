@@ -75,6 +75,9 @@ kotlin {
             implementation(libs.androidxNavigation)
             implementation(libs.kotlinxSerializationCore)
 
+            implementation("me.tbsten.compose.preview.lab:extension-navigation3:${libs.versions.composePreviewLab.get()}")
+            implementation(libs.androidxNavigation3Ui)
+
             implementation(project(":uiLib"))
             implementation(project(":helloComposePreviewLab"))
         }

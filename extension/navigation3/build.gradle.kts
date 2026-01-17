@@ -72,6 +72,7 @@ kotlin {
             implementation(libs.composeRuntime)
             implementation(libs.composeFoundation)
             implementation(libs.composeUi)
+            implementation(libs.composeComponentsResources)
             implementation(projects.ui)
             implementation(projects.field)
             implementation(libs.androidxNavigation3Ui)

@@ -211,6 +211,11 @@ public final class me/tbsten/compose/preview/lab/ui/animation/AnimatedValueKt {
 	public static final fun defaultAnimationSpec ()Landroidx/compose/animation/core/TweenSpec;
 }
 
+public final class me/tbsten/compose/preview/lab/ui/components/BackStackListKt {
+	public static final fun BackStackItem (ILjava/lang/String;ZZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun BackStackList (Ljava/util/List;ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class me/tbsten/compose/preview/lab/ui/components/ButtonColors {
 	public static final field $stable I
 	public synthetic fun <init> (JJLandroidx/compose/ui/graphics/Color;JJLandroidx/compose/ui/graphics/Color;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -464,6 +469,14 @@ public final class me/tbsten/compose/preview/lab/ui/components/CommonMenuScope :
 	public fun weight (Landroidx/compose/ui/Modifier;FZ)Landroidx/compose/ui/Modifier;
 }
 
+public final class me/tbsten/compose/preview/lab/ui/components/ComposableSingletons$BackStackListKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/ComposableSingletons$BackStackListKt;
+	public fun <init> ()V
+	public final fun getLambda$-1638493876$ui ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-78141547$ui ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-918329355$ui ()Lkotlin/jvm/functions/Function3;
+}
+
 public final class me/tbsten/compose/preview/lab/ui/components/ComposableSingletons$ButtonKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/ComposableSingletons$ButtonKt;
 	public fun <init> ()V
@@ -540,6 +553,12 @@ public final class me/tbsten/compose/preview/lab/ui/components/ComposableSinglet
 	public fun <init> ()V
 	public final fun getLambda$-1130553893$ui ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$332560191$ui ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/ComposableSingletons$SegmentedCardKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/ComposableSingletons$SegmentedCardKt;
+	public fun <init> ()V
+	public final fun getLambda$-170629117$ui ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/ComposableSingletons$SwitchKt {
@@ -782,6 +801,11 @@ public final class me/tbsten/compose/preview/lab/ui/components/RadioButtonDefaul
 
 public final class me/tbsten/compose/preview/lab/ui/components/RadioButtonKt {
 	public static final fun RadioButton (Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function0;ZLme/tbsten/compose/preview/lab/ui/components/RadioButtonColors;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/SegmentedCardKt {
+	public static final fun SegmentedCard (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun SegmentedCardSection (ZLandroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/SelectButtonKt {
@@ -1244,6 +1268,10 @@ public final class me/tbsten/compose/preview/lab/ui/generated/resources/PreviewL
 public final class me/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$string {
 	public static final field $stable I
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$string;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/util/AutoScrollToTopEffectKt {
+	public static final fun AutoScrollToTopEffect (Landroidx/compose/foundation/lazy/LazyListState;Ljava/lang/Object;Landroidx/compose/runtime/Composer;I)V
 }
 
 public final class me/tbsten/compose/preview/lab/ui/util/DpExtKt {
