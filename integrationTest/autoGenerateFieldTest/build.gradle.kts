@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.multiplatform)
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.ksp)
     id("me.tbsten.compose.preview.lab")
 }
