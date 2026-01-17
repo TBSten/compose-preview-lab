@@ -380,6 +380,33 @@ public class me/tbsten/compose/preview/lab/field/FloatField : me/tbsten/compose/
 	public fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public abstract interface class me/tbsten/compose/preview/lab/field/HintChoice {
+}
+
+public final class me/tbsten/compose/preview/lab/field/HintChoice$ActionChoice : me/tbsten/compose/preview/lab/field/HintChoice {
+	public static final field $stable I
+	public fun <init> (Lkotlin/jvm/functions/Function2;)V
+	public final fun component1 ()Lkotlin/jvm/functions/Function2;
+	public final fun copy (Lkotlin/jvm/functions/Function2;)Lme/tbsten/compose/preview/lab/field/HintChoice$ActionChoice;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/field/HintChoice$ActionChoice;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/HintChoice$ActionChoice;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAction ()Lkotlin/jvm/functions/Function2;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/field/HintChoice$ValueChoice : me/tbsten/compose/preview/lab/field/HintChoice {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/field/HintChoice$ValueChoice;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/field/HintChoice$ValueChoice;Ljava/lang/Object;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/HintChoice$ValueChoice;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class me/tbsten/compose/preview/lab/field/InstantField : me/tbsten/compose/preview/lab/MutablePreviewLabField {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;Lkotlin/time/Instant;)V
@@ -900,7 +927,10 @@ public final class me/tbsten/compose/preview/lab/field/WithHintField : me/tbsten
 }
 
 public final class me/tbsten/compose/preview/lab/field/WithHintFieldKt {
+	public static final fun withHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+	public static final fun withHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;Ljava/util/Map;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
 	public static final fun withHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;[Lkotlin/Pair;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+	public static final fun withHintAction (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;[Lkotlin/Pair;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
 }
 
 public final class me/tbsten/compose/preview/lab/field/WithImageUrlHintKt {
@@ -970,6 +1000,8 @@ public final class me/tbsten/compose/preview/lab/field/WrapField : me/tbsten/com
 	public fun getValue ()Ljava/lang/Object;
 	public fun serializer ()Lkotlinx/serialization/KSerializer;
 	public fun setValue (Ljava/lang/Object;)V
+	public fun testValues ()Ljava/util/List;
+	public fun valueCode ()Ljava/lang/String;
 }
 
 public final class me/tbsten/compose/preview/lab/field/WrapFieldKt {

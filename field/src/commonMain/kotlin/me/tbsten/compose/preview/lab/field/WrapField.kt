@@ -29,6 +29,8 @@ class WrapField<Value> internal constructor(
     override var value: Value by baseField::value
 
     override fun serializer(): KSerializer<Value>? = baseField.serializer()
+    override fun valueCode(): String = baseField.valueCode()
+    override fun testValues(): List<Value> = baseField.testValues()
 
     @Composable
     override fun View(menuItems: List<ViewMenuItem<Value>>) {
