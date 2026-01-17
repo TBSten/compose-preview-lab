@@ -2,7 +2,7 @@
 
 # Compose Preview Lab
 
-<img src="./docs/cover.png" width="1024" />
+<img src="cover.png" width="1024" />
 
 <p align="center">
 <a href="./README.md">English</a>
@@ -42,7 +42,8 @@ Compose Multiplatform is supported.
 <details>
 <summary> [Recommended] Compose Multiplatform Project - Simple Setup with Starter</summary>
 
-The easiest way to get started. The `starter` module bundles all core modules (core, field, ui, preview-lab, gallery) into a single dependency.
+The easiest way to get started. The `starter` module bundles all core modules (core, field, ui, preview-lab, gallery) into a
+single dependency.
 
 ```kts
 plugins {
@@ -180,7 +181,7 @@ private fun MyButtonPreview() = PreviewLab {
 }
 ```
 
-<img src="./docs/demo.gif" width="350" />
+<img src="demo.gif" width="350" />
 
 ## Two core concepts
 
