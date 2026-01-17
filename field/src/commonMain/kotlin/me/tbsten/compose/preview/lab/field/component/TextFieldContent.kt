@@ -8,8 +8,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Text
 import me.tbsten.compose.preview.lab.ui.components.textfield.OutlinedTextField
 
@@ -30,6 +32,30 @@ fun <Value> MutablePreviewLabField<Value>.TextFieldContent(
     prefix: (@Composable () -> Unit)? = null,
     suffix: (@Composable () -> Unit)? = null,
     placeholder: (@Composable () -> Unit)? = null,
+) = TextFieldContent(
+    label = label,
+    value = value,
+    onValueChange = { value = it },
+    toString = toString,
+    toValue = toValue,
+    modifier = modifier,
+    prefix = prefix,
+    suffix = suffix,
+    placeholder = placeholder,
+)
+
+@Composable
+fun <Value> TextFieldContent(
+    label: String,
+    value: Value,
+    onValueChange: (Value) -> Unit,
+    toString: (Value) -> String,
+    toValue: (String) -> Result<Value>,
+    modifier: Modifier = Modifier,
+    prefix: (@Composable () -> Unit)? = null,
+    suffix: (@Composable () -> Unit)? = null,
+    placeholder: (@Composable () -> Unit)? = null,
+    textStyle: TextStyle = PreviewLabTheme.typography.input,
 ) {
     var textFieldText by remember(value.toString()) { mutableStateOf(toString(value)) }
     var isValid by remember {
@@ -46,7 +72,7 @@ fun <Value> MutablePreviewLabField<Value>.TextFieldContent(
                 textFieldText = it
                 toValue(it)
                     .also { isValid = it.isSuccess }
-                    .onSuccess { value = it }
+                    .onSuccess { onValueChange(it) }
             },
             placeholder = {
                 placeholder?.invoke() ?: Text(label)
@@ -54,6 +80,7 @@ fun <Value> MutablePreviewLabField<Value>.TextFieldContent(
             prefix = prefix,
             suffix = suffix,
             isError = !isValid,
+            textStyle = textStyle,
         )
     }
 }

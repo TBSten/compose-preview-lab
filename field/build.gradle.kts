@@ -6,9 +6,9 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     alias(libs.plugins.multiplatform)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.compose)
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.conventionFormat)
     alias(libs.plugins.conventionPublish)
@@ -59,26 +59,36 @@ kotlin {
     }
 
     applyDefaultHierarchyTemplate()
+
+    compilerOptions {
+        optIn.addAll(
+            "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
+            "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
+        )
+    }
+
     sourceSets {
         commonMain.dependencies {
             api(projects.core)
             api(projects.ui)
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.components.resources)
-            implementation(compose.ui)
-            implementation(compose.components.uiToolingPreview)
-            implementation(libs.dokar3Sonner)
+            implementation(libs.composeRuntime)
+            implementation(libs.composeFoundation)
+            implementation(libs.composeComponentsResources)
+            implementation(libs.composeUi)
+            implementation(libs.composeUiToolingPreview)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
         }
         jvmTest.dependencies {
+            implementation(libs.kotestFrameworkEngine)
+            implementation(libs.kotestAssertionsCore)
+            implementation(libs.kotestRunnerJunit5)
             implementation(libs.kotestProperty)
             implementation(libs.kotlinxCoroutinesTest)
         }
         androidMain.dependencies {
-            implementation(compose.uiTooling)
+            implementation(libs.composeUiTooling)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -99,21 +109,17 @@ android {
 
 // https://developer.android.com/develop/ui/compose/testing#setup
 dependencies {
-    androidTestImplementation(libs.androidx.uitest.junit4)
-    debugImplementation(libs.androidx.uitest.testManifest)
+    androidTestImplementation(libs.androidxUitestJunit4)
+    debugImplementation(libs.androidxUitestTestManifest)
 }
 
-// for library development configuration
-
-kotlin {
-    applyDefaultHierarchyTemplate()
-
-    compilerOptions {
-        optIn.addAll(
-            "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
-            "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
-        )
-    }
+tasks.withType<Test> {
+    useJUnitPlatform()
+    // Forward kotest-related system properties to the test JVM
+    // See: https://kotest.io/docs/framework/tags.html#gradle
+    System.getProperties()
+        .filter { it.key.toString().startsWith("kotest.") }
+        .forEach { (key, value) -> systemProperty(key.toString(), value) }
 }
 
 publishConvention {

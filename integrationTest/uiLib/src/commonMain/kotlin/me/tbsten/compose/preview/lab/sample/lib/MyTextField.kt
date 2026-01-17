@@ -11,7 +11,7 @@ import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 import me.tbsten.compose.preview.lab.event.ChangeEvent
 import me.tbsten.compose.preview.lab.field.StringField
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun MyTextField(value: String, onValueChange: (String) -> Unit, modifier: Modifier = Modifier) {

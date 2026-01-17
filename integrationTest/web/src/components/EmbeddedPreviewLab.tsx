@@ -1,4 +1,4 @@
-import { ComponentProps, CSSProperties, useState } from "react";
+import { ComponentProps, CSSProperties, useLayoutEffect, useRef, useState } from "react";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './EmbeddedPreviewLab.module.css';
 import clsx from "clsx";
@@ -34,6 +34,7 @@ export default function EmbeddedPreviewLab({
     lazy?: boolean,
     iframeOptions?: ComponentProps<"iframe">,
 }) {
+    const iframeRef = useRef<HTMLIFrameElement>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     let url = "compose-preview-lab-gallery/?iframe"
@@ -43,6 +44,23 @@ export default function EmbeddedPreviewLab({
 
     const iframeSrc = useBaseUrl(url)
     const titleLinkSrc = useBaseUrl(`compose-preview-lab-gallery/?previewId=${previewId}`)
+
+    // マウント時にiframeがすでに読み込まれているか確認（キャッシュがある場合など）
+    useLayoutEffect(() => {
+        const iframe = iframeRef.current;
+        if (iframe) {
+            // iframeのdocumentにアクセスして読み込み完了を確認
+            // readyStateが"complete"の場合、すでに読み込まれている
+            try {
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+                if (iframeDoc && iframeDoc.readyState === 'complete') {
+                    setIsLoading(false);
+                }
+            } catch {
+                // cross-originの場合はアクセスできないのでonLoadに任せる
+            }
+        }
+    }, []);
 
     const handleLoad = () => {
         setIsLoading(false);
@@ -57,6 +75,7 @@ export default function EmbeddedPreviewLab({
                     </div>
                 )}
                 <iframe
+                    ref={iframeRef}
                     className={clsx(
                         styles.embeddedPreviewLabIframe,
                         iframeSizeStyleMap[size],

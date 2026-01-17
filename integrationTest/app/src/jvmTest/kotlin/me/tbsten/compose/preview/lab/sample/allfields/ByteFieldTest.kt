@@ -6,28 +6,28 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.runDesktopComposeUiTest
+import io.kotest.core.spec.style.StringSpec
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.byte
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
-import kotlin.test.Test
-import kotlinx.coroutines.runBlocking
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.sample.PBT
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
-import me.tbsten.compose.preview.lab.sample.PropertyTestBase
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
-class ByteFieldTest : PropertyTestBase() {
-    @Test
-    fun `ByteField should update flag when value changes`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { ByteFieldExample() } }
+class ByteFieldTest : StringSpec({
+    tags(PBT)
 
-        val flagField by state.field<Byte>("Flag")
+    "ByteField should update flag when value changes" {
+        runDesktopComposeUiTest {
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { ByteFieldExample() } }
 
-        runBlocking {
+            val flagField by state.field<Byte>("Flag")
+
             forAll(Arb.byte().plusEdgecases(flagField.testValues())) { byteValue ->
                 flagField.value = byteValue
                 awaitIdle()
@@ -35,9 +35,8 @@ class ByteFieldTest : PropertyTestBase() {
                 onNodeWithText("Flag: $byteValue")
                     .isDisplayed()
             }
-        }
 
-        // Ensure all coroutines (including LaunchedEffect/snapshotFlow) are completed
-        awaitIdle()
+            awaitIdle()
+        }
     }
-}
+})

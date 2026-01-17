@@ -1,6 +1,9 @@
 package me.tbsten.compose.preview.lab.previewlab.inspectorspane
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,20 +11,25 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlin.time.Clock
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import me.tbsten.compose.preview.lab.PreviewLabEvent
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.CommonIconButton
@@ -35,8 +43,29 @@ import org.jetbrains.compose.resources.painterResource
 @OptIn(ExperimentalTime::class)
 @Composable
 internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: PreviewLabEvent?, onClear: () -> Unit) {
+    val listState = rememberLazyListState()
+
+    // Scroll to new event when added
+    LaunchedEffect(events.size) {
+        if (events.isNotEmpty()) {
+            // +1 for stickyHeader offset
+            listState.animateScrollToItem(events.size)
+        }
+    }
+
+    // Scroll to selected event
+    LaunchedEffect(selectedEvent) {
+        if (selectedEvent != null) {
+            val index = events.indexOf(selectedEvent)
+            if (index >= 0) {
+                // +1 for stickyHeader offset
+                listState.animateScrollToItem(index + 1)
+            }
+        }
+    }
+
     SelectionContainer {
-        LazyColumn {
+        LazyColumn(state = listState) {
             stickyHeader {
                 CommonListHeader(
                     title = "${events.size} items",
@@ -60,22 +89,60 @@ internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: Prev
 
             items(events, key = { it.createAt }) { event ->
                 Column(modifier = Modifier.animateItem()) {
+                    val coroutineScope = rememberCoroutineScope()
                     var showDetail by remember { mutableStateOf(false) }
                     var now by remember { mutableStateOf(Clock.System.now().epochSeconds) }
+                    // Only highlight if event was created within the last 1 second (truly new)
+                    val isNewEvent = remember {
+                        (Clock.System.now().epochSeconds - event.createAt.epochSeconds) < 1
+                    }
+                    var isHighlighted by remember { mutableStateOf(isNewEvent) }
+
+                    val highlightColor by animateColorAsState(
+                        targetValue = if (isHighlighted) {
+                            PreviewLabTheme.colors.primary.copy(alpha = 0.2f)
+                        } else {
+                            Color.Transparent
+                        },
+                        animationSpec = tween(durationMillis = 300),
+                        label = "highlight",
+                    )
+
+                    // Fade out highlight after initial display (only if it was a new event)
+                    LaunchedEffect(isNewEvent) {
+                        if (isNewEvent) {
+                            delay(800.milliseconds)
+                            isHighlighted = false
+                        }
+                    }
                     LaunchedEffect(Unit) {
                         while (true) {
                             delay(1.seconds)
                             now = Clock.System.now().epochSeconds
                         }
                     }
-                    LaunchedEffect(selectedEvent == event) {
-                        showDetail = selectedEvent == event
+                    // Only highlight when selectedEvent changes to this event
+                    LaunchedEffect(selectedEvent) {
+                        if (selectedEvent == event) {
+                            isHighlighted = true
+                            showDetail = true
+                            delay(800.milliseconds)
+                            isHighlighted = false
+                        }
                     }
 
                     Column(
                         verticalArrangement = Arrangement.spacedBy(4.dp),
                         modifier = Modifier
-                            .clickable { showDetail = !showDetail }
+                            .background(highlightColor)
+                            .clickable {
+                                showDetail = !showDetail
+                                coroutineScope.launch {
+                                    isHighlighted = true
+                                    delay(800.milliseconds)
+                                    isHighlighted = false
+                                }
+                            }
                             .padding(12.dp)
                             .fillMaxWidth()
                             .animateItem(),

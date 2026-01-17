@@ -17,7 +17,9 @@ class FormatConventionPlugin : Plugin<Project> {
             version.set(libs.version("ktlint"))
             filter {
                 exclude { element ->
-                    element.file.path.contains("generated/") || element.file.path.contains("resources/")
+                    element.file.path.contains("generated/") ||
+                        element.file.path.contains("resources/") ||
+                        element.file.path.contains("buildkonfig/")
                 }
                 exclude("kotlin/me/tbsten/compose/preview/lab/theme/AppTheme.kt")
             }

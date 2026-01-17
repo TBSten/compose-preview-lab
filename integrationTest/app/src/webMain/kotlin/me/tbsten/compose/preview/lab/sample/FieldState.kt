@@ -9,7 +9,7 @@ import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.sample.component.previewLab
 import me.tbsten.compose.preview.lab.sample.component.rememberCodeTab
 import me.tbsten.compose.preview.lab.sample.lib.MyTextField
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @ComposePreviewLabOption(id = "FieldState")
 @Preview

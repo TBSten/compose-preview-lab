@@ -37,7 +37,7 @@ import me.tbsten.compose.preview.lab.ui.LocalContentColor
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.contentColorFor
 import me.tbsten.compose.preview.lab.ui.foundation.ButtonElevation
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 @InternalComposePreviewLabApi

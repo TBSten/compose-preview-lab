@@ -23,7 +23,7 @@ import me.tbsten.compose.preview.lab.field.splitedOf
 import me.tbsten.compose.preview.lab.sample.OnValueChange
 import me.tbsten.compose.preview.lab.sample.SpeechBubbleBox
 import me.tbsten.compose.preview.lab.sample.speechBubble
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 internal data class CombinedFieldPadding(val horizontal: Dp, val vertical: Dp)
 
@@ -50,39 +50,6 @@ internal fun CombinedFieldExample() = PreviewLab {
                 CombinedFieldPadding(values[0] as Dp, values[1] as Dp)
             },
             split = { listOf(it.horizontal, it.vertical) },
-        ).speechBubble(
-            bubbleText = "1. Adjust padding values",
-            alignment = Alignment.BottomStart,
-            visible = { step == CombinedFieldExampleSteps.EditValue },
-        )
-    }.also { state ->
-        OnValueChange(state) {
-            step = CombinedFieldExampleSteps.SeeResult
-        }
-    }
-
-    SpeechBubbleBox(
-        bubbleText = "2. Padding updated!",
-        visible = step == CombinedFieldExampleSteps.SeeResult,
-        alignment = Alignment.BottomCenter,
-    ) {
-        PaddedBox(padding = padding.value)
-    }
-}
-
-@Preview
-@ComposePreviewLabOption(id = "CombinedFieldWithCombinedFunctionExample")
-@Composable
-internal fun CombinedFieldWithCombinedFunctionExample() = PreviewLab {
-    var step by remember { mutableStateOf(CombinedFieldExampleSteps.EditValue) }
-
-    val padding = fieldState {
-        combined(
-            label = "Padding",
-            field1 = DpField("Horizontal", 16.dp),
-            field2 = DpField("Vertical", 8.dp),
-            combine = { h, v -> CombinedFieldPadding(h, v) },
-            split = { splitedOf(it.horizontal, it.vertical) },
         ).speechBubble(
             bubbleText = "1. Adjust padding values",
             alignment = Alignment.BottomStart,

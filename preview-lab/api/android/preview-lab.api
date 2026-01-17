@@ -26,7 +26,6 @@ public final class me/tbsten/compose/preview/lab/field/ComposeDefaultComposition
 public final class me/tbsten/compose/preview/lab/previewlab/ComposableSingletons$PreviewLabKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/previewlab/ComposableSingletons$PreviewLabKt;
 	public fun <init> ()V
-	public final fun getLambda$-1594961153$preview_lab_release ()Lkotlin/jvm/functions/Function4;
 	public final fun getLambda$569618072$preview_lab_release ()Lkotlin/jvm/functions/Function3;
 }
 
@@ -94,7 +93,7 @@ public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabState$Comp
 public final class me/tbsten/compose/preview/lab/previewlab/header/ComposableSingletons$LinksKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/previewlab/header/ComposableSingletons$LinksKt;
 	public fun <init> ()V
-	public final fun getLambda$761465664$preview_lab_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-437269601$preview_lab_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class me/tbsten/compose/preview/lab/previewlab/inspectorspane/ComposableSingletons$EventListSectionKt {
@@ -162,6 +161,20 @@ public final class me/tbsten/compose/preview/lab/previewlab/inspectorspane/Inspe
 	public fun getTitle ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class me/tbsten/compose/preview/lab/previewlab/mcp/PreviewLabMcpBridge {
+	public static final field Companion Lme/tbsten/compose/preview/lab/previewlab/mcp/PreviewLabMcpBridge$Companion;
+	public abstract fun removeState (Ljava/lang/String;)V
+	public abstract fun updateState (Ljava/lang/String;Ljava/util/List;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function0;)V
+}
+
+public final class me/tbsten/compose/preview/lab/previewlab/mcp/PreviewLabMcpBridge$Companion {
+	public final fun getNoOp ()Lme/tbsten/compose/preview/lab/previewlab/mcp/PreviewLabMcpBridge;
+}
+
+public final class me/tbsten/compose/preview/lab/previewlab/mcp/PreviewLabMcpBridgeKt {
+	public static final fun getLocalPreviewLabMcpBridge ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 }
 
 public final class me/tbsten/compose/preview/lab/previewlab/openfilehandler/GithubOpenFileHandler : me/tbsten/compose/preview/lab/previewlab/openfilehandler/UrlOpenFileHandler {

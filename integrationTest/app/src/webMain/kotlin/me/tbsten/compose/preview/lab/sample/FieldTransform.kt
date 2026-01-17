@@ -11,7 +11,7 @@ import me.tbsten.compose.preview.lab.field.transform
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.sample.component.previewLab
 import me.tbsten.compose.preview.lab.sample.component.rememberCodeTab
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Preview
 @ComposePreviewLabOption(id = "FieldTransform")

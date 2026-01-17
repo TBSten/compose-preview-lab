@@ -1,21 +1,31 @@
 package me.tbsten.compose.preview.lab.field
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
+import me.tbsten.compose.preview.lab.PreviewLabField.ViewMenuItem
 import me.tbsten.compose.preview.lab.defaultValueCode
 import me.tbsten.compose.preview.lab.field.SelectableField.Type
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.CHIPS
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.DROPDOWN
+import me.tbsten.compose.preview.lab.field.SelectableField.Type.RADIO
 import me.tbsten.compose.preview.lab.ui.components.Chip
+import me.tbsten.compose.preview.lab.ui.components.RadioButton
 import me.tbsten.compose.preview.lab.ui.components.SelectButton
 import me.tbsten.compose.preview.lab.ui.components.Text
 
@@ -77,7 +87,7 @@ open class SelectableField<Value>(
     label: String,
     val choices: List<Value>,
     private val choiceLabel: (Value) -> String = { it.toString() },
-    private val type: Type = DROPDOWN,
+    type: Type = DROPDOWN,
     initialValue: Value = choices[0],
     private val valueCode: (Value) -> String = { defaultValueCode(label) },
     private val serializer: KSerializer<Value>? = null,
@@ -85,9 +95,30 @@ open class SelectableField<Value>(
     label = label,
     initialValue = initialValue,
 ) {
+    var type: Type by mutableStateOf(type)
+        private set
+
     override fun testValues(): List<Value> = super.testValues() + choices
     override fun valueCode(): String = valueCode.invoke(value)
     override fun serializer(): KSerializer<Value>? = serializer
+
+    @Composable
+    override fun View(menuItems: List<ViewMenuItem<Value>>) {
+        val typeMenuItems = Type.entries.map { targetType ->
+            ChangeTypeMenuItem(this, targetType)
+        }
+        DefaultFieldView(menuItems = menuItems + typeMenuItems)
+    }
+
+    private class ChangeTypeMenuItem<Value>(override val field: SelectableField<Value>, private val targetType: Type) :
+        ViewMenuItem<Value>(field) {
+        override val title: String = "Type: ${targetType.name}"
+        override val enabled: Boolean = field.type != targetType
+
+        override fun onClick() {
+            field.type = targetType
+        }
+    }
 
     class Builder<Value> internal constructor() {
         internal val choices = mutableListOf<Pair<String, Value>>()
@@ -115,6 +146,11 @@ open class SelectableField<Value>(
          * Chips that can be selected.
          */
         CHIPS,
+
+        /**
+         * Radio button list.
+         */
+        RADIO,
     }
 
     @Composable
@@ -127,6 +163,7 @@ open class SelectableField<Value>(
                 title = choiceLabel,
             )
             CHIPS -> ChipsContent()
+            RADIO -> RadioContent()
         }
     }
 
@@ -144,6 +181,30 @@ open class SelectableField<Value>(
                     label = { Text(choiceLabel(choice)) },
                     onClick = { value = choice },
                 )
+            }
+        }
+    }
+
+    @Composable
+    private fun RadioContent() {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            choices.forEach { choice ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier
+                        .clickable { value = choice }
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp, horizontal = 4.dp),
+                ) {
+                    RadioButton(
+                        selected = value == choice,
+                        onClick = null,
+                    )
+                    Text(choiceLabel(choice))
+                }
             }
         }
     }
@@ -278,7 +339,7 @@ inline fun <reified E : Enum<E>> EnumField(
     type = type,
     initialValue = initialValue,
     serializer = runCatching { serializer<E>() }.getOrNull(),
-)
+).withValueCode { "${E::class.simpleName}.${it.name}" }
 
 /**
  * Extension function to convert a [List] to a [SelectableField].

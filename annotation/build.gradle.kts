@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     alias(libs.plugins.multiplatform)
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.conventionFormat)
     alias(libs.plugins.conventionPublish)

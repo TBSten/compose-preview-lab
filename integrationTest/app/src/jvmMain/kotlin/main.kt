@@ -1,9 +1,7 @@
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.application
-import app.FeaturedFileList
-import helloComposePreviewLab.PreviewList
-import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
 import me.tbsten.compose.preview.lab.PreviewLabGalleryWindows
+import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
 import me.tbsten.compose.preview.lab.previewlab.openfilehandler.UrlOpenFileHandler
 
 fun main(): Unit = application {
@@ -15,7 +13,7 @@ fun main(): Unit = application {
         ),
         state = remember {
             PreviewLabGalleryState(
-                FeaturedFileList.hello_compose_preview_lab.first() to PreviewList.AboutComposePreviewLab,
+//                FeaturedFileList.hello_compose_preview_lab.first() to PreviewList.AboutComposePreviewLab,
             )
         },
     )

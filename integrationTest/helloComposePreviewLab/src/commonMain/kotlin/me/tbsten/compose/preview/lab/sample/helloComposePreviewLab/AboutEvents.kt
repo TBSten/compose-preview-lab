@@ -44,7 +44,7 @@ import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.Ico
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.KotlinCodeBlock
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.createCodeBlockColor
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun AboutEvents() {

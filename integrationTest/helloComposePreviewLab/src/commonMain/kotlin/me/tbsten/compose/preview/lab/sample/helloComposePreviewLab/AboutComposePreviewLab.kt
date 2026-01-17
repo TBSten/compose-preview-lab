@@ -74,7 +74,7 @@ import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.Ico
 import me.tbsten.compose.preview.lab.sample.helloComposePreviewLab.component.KotlinCodeBlock
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 // FIXME migrate LabDoc API
 

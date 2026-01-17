@@ -3,7 +3,9 @@ package me.tbsten.compose.preview.lab
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -36,7 +38,7 @@ fun defaultValueCode(label: String) = "/* TODO Set $label value here */"
  * @property value Current value of this PreviewLabField.
  */
 interface PreviewLabField<Value> {
-    val label: String
+    var label: String
     val initialValue: Value
     val value: Value
     val valueFlow: Flow<Value>
@@ -278,7 +280,7 @@ interface PreviewLabField<Value> {
         open fun Content(close: () -> Unit) {
             CommonListItem(
                 title = title,
-                isSelected = true,
+                isSelected = false,
                 isEnabled = enabled,
                 onSelect = {
                     onClick()
@@ -320,11 +322,13 @@ interface PreviewLabField<Value> {
  * @see MutablePreviewLabField
  */
 abstract class ImmutablePreviewLabField<Value> private constructor(
-    override val label: String,
+    label: String,
     override val initialValue: Value,
     private val state: MutableState<Value>,
 ) : PreviewLabField<Value>,
     State<Value> by state {
+    override var label by mutableStateOf(label)
+
     constructor(
         label: String,
         initialValue: Value,
@@ -353,11 +357,12 @@ abstract class ImmutablePreviewLabField<Value> private constructor(
  * @see ImmutablePreviewLabField
  */
 abstract class MutablePreviewLabField<Value> private constructor(
-    override val label: String,
+    label: String,
     override val initialValue: Value,
     state: MutableState<Value>,
 ) : PreviewLabField<Value>,
     MutableState<Value> by state {
+    override var label by mutableStateOf(label)
 
     override val valueFlow: Flow<Value> = snapshotFlow { state.value }
 

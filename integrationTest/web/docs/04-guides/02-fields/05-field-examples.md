@@ -165,15 +165,15 @@ PreviewLab {
             label = "uiState",
             initialValue = HomeScreenUiState.Loading,
             fields = listOf(
-                FixedField("Loading", HomeScreenUiState.Loading),
+                FixedField("loading", HomeScreenUiState.Loading),
                 combined(
-                    label = "Success",
+                    label = "success",
                     field1 = StringField("data", "Sample data"),
                     combine = { data -> HomeScreenUiState.Success(data) },
                     split = { splitedOf(it.data) }
                 ),
                 combined(
-                    label = "Error",
+                    label = "error",
                     field1 = StringField("message", "Something went wrong"),
                     combine = { message -> HomeScreenUiState.Error(message) },
                     split = { splitedOf(it.message) }

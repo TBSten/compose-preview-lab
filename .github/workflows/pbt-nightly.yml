@@ -1,0 +1,38 @@
+name: Property-Based Test Nightly
+
+on:
+  schedule:
+    # Run daily at 5:00 AM JST (20:00 UTC)
+    - cron: '0 20 * * *'
+  workflow_dispatch:
+    inputs:
+      iterations:
+        description: 'Number of property test iterations'
+        required: false
+        default: '5000'
+        type: string
+
+jobs:
+  pbt:
+    runs-on: ubuntu-latest
+    name: PBT (${{ inputs.iterations || '5000' }} iterations)
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java for Gradle
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+
+      - name: Run Library PBT
+        shell: bash
+        run: ./gradlew jvmTest -Dkotest.tags="PBT"
+
+      - name: Run Integration Test PBT
+        shell: bash
+        run: cd ./integrationTest && ./gradlew :app:jvmTest -Dkotest.tags="PBT" -Ptest.property.iterations=${{ inputs.iterations || '5000' }}

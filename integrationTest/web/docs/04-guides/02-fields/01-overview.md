@@ -98,7 +98,7 @@ private fun MyComponentPreview() = PreviewLab {
     MyComponent(
         // highlight-next-line
         text = fieldValue { 
-            StringField("Hello") 
+            StringField("text", "Hello") 
         },
     )
 }

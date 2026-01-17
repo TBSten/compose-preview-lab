@@ -6,28 +6,28 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.runDesktopComposeUiTest
+import io.kotest.core.spec.style.StringSpec
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.int
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
-import kotlin.test.Test
-import kotlinx.coroutines.runBlocking
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.sample.PBT
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
-import me.tbsten.compose.preview.lab.sample.PropertyTestBase
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
-class TransformFieldTest : PropertyTestBase() {
-    @Test
-    fun `TransformField should transform string to int`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { TransformFieldExample() } }
+class TransformFieldTest : StringSpec({
+    tags(PBT)
 
-        val numberField by state.field<Int>("number")
+    "TransformField should transform string to int" {
+        runDesktopComposeUiTest {
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { TransformFieldExample() } }
 
-        runBlocking {
+            val numberField by state.field<Int>("number")
+
             forAll(Arb.int().plusEdgecases(numberField.testValues())) { intValue ->
                 numberField.value = intValue
                 awaitIdle()
@@ -35,9 +35,8 @@ class TransformFieldTest : PropertyTestBase() {
                 onNodeWithText("intValue: $intValue")
                     .isDisplayed()
             }
-        }
 
-        // Ensure all coroutines (including LaunchedEffect/snapshotFlow) are completed
-        awaitIdle()
+            awaitIdle()
+        }
     }
-}
+})

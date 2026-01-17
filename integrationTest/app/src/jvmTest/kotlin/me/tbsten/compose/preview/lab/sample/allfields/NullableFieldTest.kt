@@ -5,29 +5,29 @@ package me.tbsten.compose.preview.lab.sample.allfields
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.runDesktopComposeUiTest
+import io.kotest.core.spec.style.StringSpec
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.orNull
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.arbitrary.string
 import io.kotest.property.forAll
-import kotlin.test.Test
-import kotlinx.coroutines.runBlocking
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.sample.PBT
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
-import me.tbsten.compose.preview.lab.sample.PropertyTestBase
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
 @OptIn(ExperimentalTestApi::class)
-class NullableFieldTest : PropertyTestBase() {
-    @Test
-    fun `NullableField should update user name when value changes`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { NullableFieldExample() } }
+class NullableFieldTest : StringSpec({
+    tags(PBT)
 
-        val userNameField by state.field<String?>("User Name")
+    "NullableField should update user name when value changes" {
+        runDesktopComposeUiTest {
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { NullableFieldExample() } }
 
-        runBlocking {
+            val userNameField by state.field<String?>("User Name")
+
             forAll(Arb.string(1..20).orNull().plusEdgecases(userNameField.testValues())) { userName ->
                 userNameField.value = userName
                 awaitIdle()
@@ -37,9 +37,8 @@ class NullableFieldTest : PropertyTestBase() {
                     .fetchSemanticsNodes()
                     .isNotEmpty()
             }
-        }
 
-        // Ensure all coroutines are completed
-        awaitIdle()
+            awaitIdle()
+        }
     }
-}
+})

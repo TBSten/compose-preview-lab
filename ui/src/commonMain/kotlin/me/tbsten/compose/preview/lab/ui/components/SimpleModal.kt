@@ -29,17 +29,18 @@ fun SimpleModal(
     isVisible: Boolean,
     onDismissRequest: () -> Unit,
     contentPadding: PaddingValues = PaddingValues(12.dp),
+    contentAlignment: Alignment = Alignment.Center,
     content: @Composable () -> Unit,
 ) {
     if (isVisible) {
         Dialog(
-            onDismissRequest = { onDismissRequest },
+            onDismissRequest = onDismissRequest,
             properties = DialogProperties(
                 usePlatformDefaultWidth = false,
             ),
         ) {
             Box(
-                contentAlignment = Alignment.Center,
+                contentAlignment = contentAlignment,
                 modifier = Modifier
                     .pointerInput(Unit) {
                         detectTapGestures { onDismissRequest() }

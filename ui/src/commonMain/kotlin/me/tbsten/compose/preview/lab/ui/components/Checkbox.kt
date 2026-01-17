@@ -54,7 +54,7 @@ import me.tbsten.compose.preview.lab.ui.components.CheckboxDefaults.MinimumInter
 import me.tbsten.compose.preview.lab.ui.components.CheckboxDefaults.RadiusSize
 import me.tbsten.compose.preview.lab.ui.components.CheckboxDefaults.StrokeWidth
 import me.tbsten.compose.preview.lab.ui.foundation.ripple
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import kotlin.math.floor
 import kotlin.math.max
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi

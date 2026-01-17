@@ -1,5 +1,5 @@
 public final class me/tbsten/compose/preview/lab/PreviewLabApplication_jvmKt {
-	public static final fun PreviewLabGalleryWindows (Landroidx/compose/ui/window/ApplicationScope;Ljava/util/List;Lme/tbsten/compose/preview/lab/previewlab/openfilehandler/OpenFileHandler;Ljava/util/Map;Lme/tbsten/compose/preview/lab/gallery/PreviewLabGalleryState;Lkotlin/jvm/functions/Function3;Landroidx/compose/ui/window/WindowState;Lkotlin/jvm/functions/Function0;ZLjava/lang/String;Landroidx/compose/ui/graphics/painter/Painter;ZZZZZZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;III)V
+	public static final fun PreviewLabGalleryWindows (Landroidx/compose/ui/window/ApplicationScope;Ljava/util/List;Lme/tbsten/compose/preview/lab/previewlab/openfilehandler/OpenFileHandler;Ljava/util/Map;Lme/tbsten/compose/preview/lab/gallery/PreviewLabGalleryState;Lkotlin/jvm/functions/Function3;Lme/tbsten/compose/preview/lab/mcp/PreviewLabMcpServerConfig;Landroidx/compose/ui/window/WindowState;Lkotlin/jvm/functions/Function0;ZLjava/lang/String;Landroidx/compose/ui/graphics/painter/Painter;ZZZZZZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;III)V
 }
 
 public final class me/tbsten/compose/preview/lab/gallery/ComposableSingletons$PreviewLabGalleryKt {
@@ -80,5 +80,51 @@ public final class me/tbsten/compose/preview/lab/gallery/previewlist/ComposableS
 	public final fun getLambda$1023236993$gallery ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$925130503$gallery ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$974183748$gallery ()Lkotlin/jvm/functions/Function2;
+}
+
+public class me/tbsten/compose/preview/lab/mcp/PreviewLabMcpServerConfig {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (ZLjava/lang/String;ILkotlin/jvm/functions/Function1;)V
+	public synthetic fun <init> (ZLjava/lang/String;ILkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getAdditionalMcpServerSetting ()Lkotlin/jvm/functions/Function1;
+	public final fun getEnabled ()Z
+	public final fun getHost ()Ljava/lang/String;
+	public final fun getPort ()I
+}
+
+public final class me/tbsten/compose/preview/lab/mcp/PreviewLabMcpServerConfig$Disable : me/tbsten/compose/preview/lab/mcp/PreviewLabMcpServerConfig {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/mcp/PreviewLabMcpServerConfig$Disable;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/mcp/util/ToolArgsParser {
+	public static final field $stable I
+	public fun <init> (Lkotlinx/serialization/json/JsonObject;)V
+	public final fun addError (Ljava/lang/String;)V
+	public final fun errorMessageOrNull ()Ljava/lang/String;
+	public final fun getErrors ()Ljava/util/List;
+	public final fun getRaw (Ljava/lang/String;)Lkotlinx/serialization/json/JsonElement;
+	public final fun hasErrors ()Z
+	public final fun optionalInt (Ljava/lang/String;I)I
+	public final fun optionalString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public final fun requireInt (Ljava/lang/String;Ljava/lang/String;)I
+	public static synthetic fun requireInt$default (Lme/tbsten/compose/preview/lab/mcp/util/ToolArgsParser;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)I
+	public final fun requireString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public static synthetic fun requireString$default (Lme/tbsten/compose/preview/lab/mcp/util/ToolArgsParser;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/String;
+	public final fun validate ()V
+}
+
+public final class me/tbsten/compose/preview/lab/mcp/util/ToolArgsParserKt {
+	public static final fun parseToolArgs (Lkotlinx/serialization/json/JsonObject;Lkotlin/jvm/functions/Function1;)Lme/tbsten/compose/preview/lab/mcp/util/ToolArgsParser;
+}
+
+public final class me/tbsten/compose/preview/lab/mcp/util/ToolArgsValidationException : java/lang/Exception {
+	public static final field $stable I
+	public fun <init> (Ljava/util/List;)V
+	public final fun getErrors ()Ljava/util/List;
 }
 

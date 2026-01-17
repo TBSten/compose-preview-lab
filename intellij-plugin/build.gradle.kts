@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.jvm)
     alias(libs.plugins.intellijPlatform)
     alias(libs.plugins.compose)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.conventionFormat)
 }
 

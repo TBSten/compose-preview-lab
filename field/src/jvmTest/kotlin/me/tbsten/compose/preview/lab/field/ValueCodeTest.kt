@@ -7,385 +7,356 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.shouldBe
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
-class ValueCodeTest {
+class ValueCodeTest :
+    StringSpec({
 
-    // region BooleanField
-    @Test
-    fun `BooleanField valueCode returns true for true value`() {
-        val field = BooleanField("test", true)
-        assertEquals("true", field.valueCode())
-    }
+        // region BooleanField
+        "BooleanField valueCode returns true for true value" {
+            val field = BooleanField("test", true)
+            field.valueCode() shouldBe "true"
+        }
 
-    @Test
-    fun `BooleanField valueCode returns false for false value`() {
-        val field = BooleanField("test", false)
-        assertEquals("false", field.valueCode())
-    }
-    // endregion
+        "BooleanField valueCode returns false for false value" {
+            val field = BooleanField("test", false)
+            field.valueCode() shouldBe "false"
+        }
+        // endregion
 
-    // region StringField
-    @Test
-    fun `StringField valueCode returns quoted string`() {
-        val field = StringField("test", "Hello")
-        assertEquals("\"Hello\"", field.valueCode())
-    }
+        // region StringField
+        "StringField valueCode returns quoted string" {
+            val field = StringField("test", "Hello")
+            field.valueCode() shouldBe "\"Hello\""
+        }
 
-    @Test
-    fun `StringField valueCode escapes double quotes`() {
-        val field = StringField("test", "Hello \"World\"")
-        assertEquals("\"Hello \\\"World\\\"\"", field.valueCode())
-    }
+        "StringField valueCode escapes double quotes" {
+            val field = StringField("test", "Hello \"World\"")
+            field.valueCode() shouldBe "\"Hello \\\"World\\\"\""
+        }
 
-    @Test
-    fun `StringField valueCode escapes backslashes`() {
-        val field = StringField("test", "path\\to\\file")
-        assertEquals("\"path\\\\to\\\\file\"", field.valueCode())
-    }
+        "StringField valueCode escapes backslashes" {
+            val field = StringField("test", "path\\to\\file")
+            field.valueCode() shouldBe "\"path\\\\to\\\\file\""
+        }
 
-    @Test
-    fun `StringField valueCode escapes newlines`() {
-        val field = StringField("test", "line1\nline2")
-        assertEquals("\"line1\\nline2\"", field.valueCode())
-    }
+        "StringField valueCode escapes newlines" {
+            val field = StringField("test", "line1\nline2")
+            field.valueCode() shouldBe "\"line1\\nline2\""
+        }
 
-    @Test
-    fun `StringField valueCode escapes carriage returns`() {
-        val field = StringField("test", "line1\rline2")
-        assertEquals("\"line1\\rline2\"", field.valueCode())
-    }
+        "StringField valueCode escapes carriage returns" {
+            val field = StringField("test", "line1\rline2")
+            field.valueCode() shouldBe "\"line1\\rline2\""
+        }
 
-    @Test
-    fun `StringField valueCode escapes tabs`() {
-        val field = StringField("test", "col1\tcol2")
-        assertEquals("\"col1\\tcol2\"", field.valueCode())
-    }
+        "StringField valueCode escapes tabs" {
+            val field = StringField("test", "col1\tcol2")
+            field.valueCode() shouldBe "\"col1\\tcol2\""
+        }
 
-    @Test
-    fun `StringField valueCode escapes dollar signs`() {
-        val field = StringField("test", "Cost: $50")
-        assertEquals("\"Cost: \\\$50\"", field.valueCode())
-    }
+        "StringField valueCode escapes dollar signs" {
+            val field = StringField("test", "Cost: $50")
+            field.valueCode() shouldBe "\"Cost: \\\$50\""
+        }
 
-    @Test
-    fun `StringField valueCode handles empty string`() {
-        val field = StringField("test", "")
-        assertEquals("\"\"", field.valueCode())
-    }
-    // endregion
+        "StringField valueCode handles empty string" {
+            val field = StringField("test", "")
+            field.valueCode() shouldBe "\"\""
+        }
+        // endregion
 
-    // region IntField
-    @Test
-    fun `IntField valueCode returns integer without suffix`() {
-        val field = IntField("test", 42)
-        assertEquals("42", field.valueCode())
-    }
+        // region IntField
+        "IntField valueCode returns integer without suffix" {
+            val field = IntField("test", 42)
+            field.valueCode() shouldBe "42"
+        }
 
-    @Test
-    fun `IntField valueCode handles negative values`() {
-        val field = IntField("test", -100)
-        assertEquals("-100", field.valueCode())
-    }
+        "IntField valueCode handles negative values" {
+            val field = IntField("test", -100)
+            field.valueCode() shouldBe "-100"
+        }
 
-    @Test
-    fun `IntField valueCode handles zero`() {
-        val field = IntField("test", 0)
-        assertEquals("0", field.valueCode())
-    }
-    // endregion
+        "IntField valueCode handles zero" {
+            val field = IntField("test", 0)
+            field.valueCode() shouldBe "0"
+        }
+        // endregion
 
-    // region LongField
-    @Test
-    fun `LongField valueCode returns long with L suffix`() {
-        val field = LongField("test", 42L)
-        assertEquals("42L", field.valueCode())
-    }
+        // region LongField
+        "LongField valueCode returns long with L suffix" {
+            val field = LongField("test", 42L)
+            field.valueCode() shouldBe "42L"
+        }
 
-    @Test
-    fun `LongField valueCode handles large values`() {
-        val field = LongField("test", 9223372036854775807L)
-        assertEquals("9223372036854775807L", field.valueCode())
-    }
-    // endregion
+        "LongField valueCode handles large values" {
+            val field = LongField("test", 9223372036854775807L)
+            field.valueCode() shouldBe "9223372036854775807L"
+        }
+        // endregion
 
-    // region ByteField
-    @Test
-    fun `ByteField valueCode returns byte without suffix`() {
-        val field = ByteField("test", 42.toByte())
-        assertEquals("42", field.valueCode())
-    }
-    // endregion
+        // region ByteField
+        "ByteField valueCode returns byte without suffix" {
+            val field = ByteField("test", 42.toByte())
+            field.valueCode() shouldBe "42"
+        }
+        // endregion
 
-    // region FloatField
-    @Test
-    fun `FloatField valueCode returns float with f suffix`() {
-        val field = FloatField("test", 3.14f)
-        assertEquals("3.14f", field.valueCode())
-    }
+        // region FloatField
+        "FloatField valueCode returns float with f suffix" {
+            val field = FloatField("test", 3.14f)
+            field.valueCode() shouldBe "3.14f"
+        }
 
-    @Test
-    fun `FloatField valueCode handles NaN`() {
-        val field = FloatField("test", Float.NaN)
-        assertEquals("Float.NaN", field.valueCode())
-    }
+        "FloatField valueCode handles NaN" {
+            val field = FloatField("test", Float.NaN)
+            field.valueCode() shouldBe "Float.NaN"
+        }
 
-    @Test
-    fun `FloatField valueCode handles positive infinity`() {
-        val field = FloatField("test", Float.POSITIVE_INFINITY)
-        assertEquals("Float.POSITIVE_INFINITY", field.valueCode())
-    }
+        "FloatField valueCode handles positive infinity" {
+            val field = FloatField("test", Float.POSITIVE_INFINITY)
+            field.valueCode() shouldBe "Float.POSITIVE_INFINITY"
+        }
 
-    @Test
-    fun `FloatField valueCode handles negative infinity`() {
-        val field = FloatField("test", Float.NEGATIVE_INFINITY)
-        assertEquals("Float.NEGATIVE_INFINITY", field.valueCode())
-    }
-    // endregion
+        "FloatField valueCode handles negative infinity" {
+            val field = FloatField("test", Float.NEGATIVE_INFINITY)
+            field.valueCode() shouldBe "Float.NEGATIVE_INFINITY"
+        }
+        // endregion
 
-    // region DoubleField
-    @Test
-    fun `DoubleField valueCode returns double without d suffix`() {
-        val field = DoubleField("test", 3.14)
-        assertEquals("3.14", field.valueCode())
-    }
+        // region DoubleField
+        "DoubleField valueCode returns double without d suffix" {
+            val field = DoubleField("test", 3.14)
+            field.valueCode() shouldBe "3.14"
+        }
 
-    @Test
-    fun `DoubleField valueCode handles NaN`() {
-        val field = DoubleField("test", Double.NaN)
-        assertEquals("Double.NaN", field.valueCode())
-    }
+        "DoubleField valueCode handles NaN" {
+            val field = DoubleField("test", Double.NaN)
+            field.valueCode() shouldBe "Double.NaN"
+        }
 
-    @Test
-    fun `DoubleField valueCode handles positive infinity`() {
-        val field = DoubleField("test", Double.POSITIVE_INFINITY)
-        assertEquals("Double.POSITIVE_INFINITY", field.valueCode())
-    }
+        "DoubleField valueCode handles positive infinity" {
+            val field = DoubleField("test", Double.POSITIVE_INFINITY)
+            field.valueCode() shouldBe "Double.POSITIVE_INFINITY"
+        }
 
-    @Test
-    fun `DoubleField valueCode handles negative infinity`() {
-        val field = DoubleField("test", Double.NEGATIVE_INFINITY)
-        assertEquals("Double.NEGATIVE_INFINITY", field.valueCode())
-    }
-    // endregion
+        "DoubleField valueCode handles negative infinity" {
+            val field = DoubleField("test", Double.NEGATIVE_INFINITY)
+            field.valueCode() shouldBe "Double.NEGATIVE_INFINITY"
+        }
+        // endregion
 
-    // region DpField
-    @Test
-    fun `DpField valueCode returns dp format`() {
-        val field = DpField("test", 16.dp)
-        assertEquals("16.0.dp", field.valueCode())
-    }
-    // endregion
+        // region DpField
+        "DpField valueCode returns dp format" {
+            val field = DpField("test", 16.dp)
+            field.valueCode() shouldBe "16.0.dp"
+        }
+        // endregion
 
-    // region SpField
-    @Test
-    fun `SpField valueCode returns sp format`() {
-        val field = SpField("test", 14.sp)
-        assertEquals("14.0.sp", field.valueCode())
-    }
-    // endregion
+        // region SpField
+        "SpField valueCode returns sp format" {
+            val field = SpField("test", 14.sp)
+            field.valueCode() shouldBe "14.0.sp"
+        }
+        // endregion
 
-    // region OffsetField
-    @Test
-    fun `OffsetField valueCode returns Offset constructor format`() {
-        val field = OffsetField("test", Offset(10f, 20f))
-        assertEquals("Offset(x = 10.0f, y = 20.0f)", field.valueCode())
-    }
+        // region OffsetField
+        "OffsetField valueCode returns Offset constructor format" {
+            val field = OffsetField("test", Offset(10f, 20f))
+            field.valueCode() shouldBe "Offset(x = 10.0f, y = 20.0f)"
+        }
 
-    @Test
-    fun `OffsetField valueCode handles NaN values`() {
-        val field = OffsetField("test", Offset(Float.NaN, Float.NaN))
-        assertEquals("Offset(x = Float.NaN, y = Float.NaN)", field.valueCode())
-    }
+        "OffsetField valueCode handles NaN values" {
+            val field = OffsetField("test", Offset(Float.NaN, Float.NaN))
+            field.valueCode() shouldBe "Offset(x = Float.NaN, y = Float.NaN)"
+        }
 
-    @Test
-    fun `OffsetField valueCode handles infinity values`() {
-        val field = OffsetField("test", Offset(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY))
-        assertEquals("Offset(x = Float.POSITIVE_INFINITY, y = Float.NEGATIVE_INFINITY)", field.valueCode())
-    }
-    // endregion
+        "OffsetField valueCode handles infinity values" {
+            val field = OffsetField("test", Offset(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY))
+            field.valueCode() shouldBe "Offset(x = Float.POSITIVE_INFINITY, y = Float.NEGATIVE_INFINITY)"
+        }
+        // endregion
 
-    // region DpOffsetField
-    @Test
-    fun `DpOffsetField valueCode returns DpOffset constructor format`() {
-        val field = DpOffsetField("test", DpOffset(10.dp, 20.dp))
-        assertEquals("DpOffset(x = 10.0.dp, y = 20.0.dp)", field.valueCode())
-    }
-    // endregion
+        // region DpOffsetField
+        "DpOffsetField valueCode returns DpOffset constructor format" {
+            val field = DpOffsetField("test", DpOffset(10.dp, 20.dp))
+            field.valueCode() shouldBe "DpOffset(x = 10.0.dp, y = 20.0.dp)"
+        }
+        // endregion
 
-    // region SizeField
-    @Test
-    fun `SizeField valueCode returns Size constructor format`() {
-        val field = SizeField("test", Size(100f, 200f))
-        assertEquals("Size(width = 100.0f, height = 200.0f)", field.valueCode())
-    }
+        // region SizeField
+        "SizeField valueCode returns Size constructor format" {
+            val field = SizeField("test", Size(100f, 200f))
+            field.valueCode() shouldBe "Size(width = 100.0f, height = 200.0f)"
+        }
 
-    @Test
-    fun `SizeField valueCode handles NaN values`() {
-        val field = SizeField("test", Size(Float.NaN, Float.NaN))
-        assertEquals("Size(width = Float.NaN, height = Float.NaN)", field.valueCode())
-    }
-    // endregion
+        "SizeField valueCode handles NaN values" {
+            val field = SizeField("test", Size(Float.NaN, Float.NaN))
+            field.valueCode() shouldBe "Size(width = Float.NaN, height = Float.NaN)"
+        }
+        // endregion
 
-    // region DpSizeField
-    @Test
-    fun `DpSizeField valueCode returns DpSize constructor format`() {
-        val field = DpSizeField("test", DpSize(100.dp, 200.dp))
-        assertEquals("DpSize(width = 100.0.dp, height = 200.0.dp)", field.valueCode())
-    }
-    // endregion
+        // region DpSizeField
+        "DpSizeField valueCode returns DpSize constructor format" {
+            val field = DpSizeField("test", DpSize(100.dp, 200.dp))
+            field.valueCode() shouldBe "DpSize(width = 100.0.dp, height = 200.0.dp)"
+        }
+        // endregion
 
-    // region ColorField
-    @Test
-    fun `ColorField valueCode returns predefined color name for Red`() {
-        val field = ColorField("test", Color.Red)
-        assertEquals("Color.Red", field.valueCode())
-    }
+        // region ColorField
+        "ColorField valueCode returns predefined color name for Red" {
+            val field = ColorField("test", Color.Red)
+            field.valueCode() shouldBe "Color.Red"
+        }
 
-    @Test
-    fun `ColorField valueCode returns predefined color name for Blue`() {
-        val field = ColorField("test", Color.Blue)
-        assertEquals("Color.Blue", field.valueCode())
-    }
+        "ColorField valueCode returns predefined color name for Blue" {
+            val field = ColorField("test", Color.Blue)
+            field.valueCode() shouldBe "Color.Blue"
+        }
 
-    @Test
-    fun `ColorField valueCode returns predefined color name for Green`() {
-        val field = ColorField("test", Color.Green)
-        assertEquals("Color.Green", field.valueCode())
-    }
+        "ColorField valueCode returns predefined color name for Green" {
+            val field = ColorField("test", Color.Green)
+            field.valueCode() shouldBe "Color.Green"
+        }
 
-    @Test
-    fun `ColorField valueCode returns predefined color name for Black`() {
-        val field = ColorField("test", Color.Black)
-        assertEquals("Color.Black", field.valueCode())
-    }
+        "ColorField valueCode returns predefined color name for Black" {
+            val field = ColorField("test", Color.Black)
+            field.valueCode() shouldBe "Color.Black"
+        }
 
-    @Test
-    fun `ColorField valueCode returns predefined color name for White`() {
-        val field = ColorField("test", Color.White)
-        assertEquals("Color.White", field.valueCode())
-    }
+        "ColorField valueCode returns predefined color name for White" {
+            val field = ColorField("test", Color.White)
+            field.valueCode() shouldBe "Color.White"
+        }
 
-    @Test
-    fun `ColorField valueCode returns predefined color name for Transparent`() {
-        val field = ColorField("test", Color.Transparent)
-        assertEquals("Color.Transparent", field.valueCode())
-    }
+        "ColorField valueCode returns predefined color name for Transparent" {
+            val field = ColorField("test", Color.Transparent)
+            field.valueCode() shouldBe "Color.Transparent"
+        }
 
-    @Test
-    fun `ColorField valueCode returns hex for custom opaque color`() {
-        val field = ColorField("test", Color(0xFF123456))
-        assertEquals("Color(0xFF123456)", field.valueCode())
-    }
+        "ColorField valueCode returns hex for custom opaque color" {
+            val field = ColorField("test", Color(0xFF123456))
+            field.valueCode() shouldBe "Color(0xFF123456)"
+        }
 
-    @Test
-    fun `ColorField valueCode returns hex with alpha for semi-transparent color`() {
-        val field = ColorField("test", Color(0x80123456))
-        assertEquals("Color(0x80123456)", field.valueCode())
-    }
-    // endregion
+        "ColorField valueCode returns hex with alpha for semi-transparent color" {
+            val field = ColorField("test", Color(0x80123456))
+            field.valueCode() shouldBe "Color(0x80123456)"
+        }
+        // endregion
 
-    // region SelectableField
-    @Test
-    fun `SelectableField valueCode uses custom valueCode function`() {
-        val field = SelectableField(
-            label = "test",
-            choices = listOf("A", "B", "C"),
-            valueCode = { "\"$it\"" },
-        )
-        assertEquals("\"A\"", field.valueCode())
-    }
+        // region SelectableField
+        "SelectableField valueCode uses custom valueCode function" {
+            val field = SelectableField(
+                label = "test",
+                choices = listOf("A", "B", "C"),
+                valueCode = { "\"$it\"" },
+            )
+            field.valueCode() shouldBe "\"A\""
+        }
 
-    @Test
-    fun `SelectableField valueCode returns default when no valueCode provided`() {
-        val field = SelectableField(
-            label = "test",
-            choices = listOf("A", "B", "C"),
-        )
-        assertEquals("/* TODO Set test value here */", field.valueCode())
-    }
-    // endregion
+        "SelectableField valueCode returns default when no valueCode provided" {
+            val field = SelectableField(
+                label = "test",
+                choices = listOf("A", "B", "C"),
+            )
+            field.valueCode() shouldBe "/* TODO Set test value here */"
+        }
+        // endregion
 
-    // region NullableField
-    @Test
-    fun `NullableField valueCode returns null for null value`() {
-        val field = StringField("test", "default").nullable()
-        field.value = null
-        assertEquals("null", field.valueCode())
-    }
+        // region NullableField
+        "NullableField valueCode returns null for null value" {
+            val field = StringField("test", "default").nullable()
+            field.value = null
+            field.valueCode() shouldBe "null"
+        }
 
-    @Test
-    fun `NullableField valueCode delegates to baseField for non-null value`() {
-        val field = StringField("test", "Hello").nullable()
-        assertEquals("\"Hello\"", field.valueCode())
-    }
-    // endregion
+        "NullableField valueCode delegates to baseField for non-null value" {
+            val field = StringField("test", "Hello").nullable()
+            field.valueCode() shouldBe "\"Hello\""
+        }
+        // endregion
 
-    // region WithTestValuesField
-    @Test
-    fun `WithTestValuesField valueCode delegates to baseField`() {
-        val field = StringField("test", "Hello").withTestValues("World", "!")
-        assertEquals("\"Hello\"", field.valueCode())
-    }
-    // endregion
+        // region WithTestValuesField
+        "WithTestValuesField valueCode delegates to baseField" {
+            val field = StringField("test", "Hello").withTestValues("World", "!")
+            field.valueCode() shouldBe "\"Hello\""
+        }
+        // endregion
 
-    // region WithHintField
-    @Test
-    fun `WithHintField valueCode delegates to baseField`() {
-        val field = StringField("test", "Hello").withHint("Hint1" to "World")
-        assertEquals("\"Hello\"", field.valueCode())
-    }
-    // endregion
+        // region WithHintField
+        "WithHintField valueCode delegates to baseField" {
+            val field = StringField("test", "Hello").withHint("Hint1" to "World")
+            field.valueCode() shouldBe "\"Hello\""
+        }
+        // endregion
 
-    // region WithValueCodeField
-    @Test
-    fun `WithValueCodeField valueCode uses custom valueCode function`() {
-        val field = StringField("test", "Hello").withValueCode { "customCode($it)" }
-        assertEquals("customCode(Hello)", field.valueCode())
-    }
-    // endregion
+        // region WithValueCodeField
+        "WithValueCodeField valueCode uses custom valueCode function" {
+            val field = StringField("test", "Hello").withValueCode { "customCode($it)" }
+            field.valueCode() shouldBe "customCode(Hello)"
+        }
+        // endregion
 
-    // region TransformField
-    @Test
-    fun `TransformField valueCode uses custom valueCode function`() {
-        val baseField = IntField("test", 100)
-        val field = TransformField(
-            baseField = baseField,
-            transform = { it.toString() },
-            reverse = { it.toInt() },
-            valueCode = { "\"$it\"" },
-        )
-        assertEquals("\"100\"", field.valueCode())
-    }
+        // region TransformField
+        "TransformField valueCode uses custom valueCode function" {
+            val baseField = IntField("test", 100)
+            val field = TransformField(
+                baseField = baseField,
+                transform = { it.toString() },
+                reverse = { it.toInt() },
+                valueCode = { "\"$it\"" },
+            )
+            field.valueCode() shouldBe "\"100\""
+        }
 
-    @Test
-    fun `TransformField valueCode returns default when no valueCode provided`() {
-        val baseField = IntField("test", 100)
-        val field = TransformField(
-            baseField = baseField,
-            transform = { it.toString() },
-            reverse = { it.toInt() },
-        )
-        assertEquals("/* TODO Set test value here */", field.valueCode())
-    }
-    // endregion
+        "TransformField valueCode returns default when no valueCode provided" {
+            val baseField = IntField("test", 100)
+            val field = TransformField(
+                baseField = baseField,
+                transform = { it.toString() },
+                reverse = { it.toInt() },
+            )
+            field.valueCode() shouldBe "/* TODO Set test value here */"
+        }
+        // endregion
 
-    // region Value change tests
-    @Test
-    fun `valueCode reflects current value after change`() {
-        val field = IntField("test", 10)
-        assertEquals("10", field.valueCode())
-        field.value = 20
-        assertEquals("20", field.valueCode())
-    }
+        // region InstantField
+        @OptIn(ExperimentalTime::class)
+        "InstantField valueCode returns Instant.fromEpochMilliseconds format" {
+            val field = InstantField("test", Instant.fromEpochMilliseconds(1234567890123L))
+            field.valueCode() shouldBe "Instant.fromEpochMilliseconds(1234567890123)"
+        }
 
-    @Test
-    fun `StringField valueCode reflects changed value with escaping`() {
-        val field = StringField("test", "initial")
-        assertEquals("\"initial\"", field.valueCode())
-        field.value = "new\nvalue"
-        assertEquals("\"new\\nvalue\"", field.valueCode())
-    }
-    // endregion
-}
+        @OptIn(ExperimentalTime::class)
+        "InstantField valueCode handles zero epoch" {
+            val field = InstantField("test", Instant.fromEpochMilliseconds(0L))
+            field.valueCode() shouldBe "Instant.fromEpochMilliseconds(0)"
+        }
+
+        @OptIn(ExperimentalTime::class)
+        "InstantField valueCode handles negative epoch" {
+            val field = InstantField("test", Instant.fromEpochMilliseconds(-1000L))
+            field.valueCode() shouldBe "Instant.fromEpochMilliseconds(-1000)"
+        }
+        // endregion
+
+        // region Value change tests
+        "valueCode reflects current value after change" {
+            val field = IntField("test", 10)
+            field.valueCode() shouldBe "10"
+            field.value = 20
+            field.valueCode() shouldBe "20"
+        }
+
+        "StringField valueCode reflects changed value with escaping" {
+            val field = StringField("test", "initial")
+            field.valueCode() shouldBe "\"initial\""
+            field.value = "new\nvalue"
+            field.valueCode() shouldBe "\"new\\nvalue\""
+        }
+        // endregion
+    })

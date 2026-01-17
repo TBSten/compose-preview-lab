@@ -98,6 +98,19 @@
     z-index: 1;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
+    /* キャッシュから即座に読み込まれた場合のちらつきを防ぐ */
+    opacity: 0;
+    animation: fadeInLoading 0.3s ease-in-out forwards;
+    animation-delay: 150ms;
+}
+
+@keyframes fadeInLoading {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 [data-theme='dark'] .loadingIndicator {

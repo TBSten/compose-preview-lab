@@ -77,6 +77,16 @@ abstract interface me.tbsten.compose.preview.lab.previewlab.inspectorspane/Inspe
     }
 }
 
+abstract interface me.tbsten.compose.preview.lab.previewlab.mcp/PreviewLabMcpBridge { // me.tbsten.compose.preview.lab.previewlab.mcp/PreviewLabMcpBridge|null[0]
+    abstract fun removeState(kotlin/String) // me.tbsten.compose.preview.lab.previewlab.mcp/PreviewLabMcpBridge.removeState|removeState(kotlin.String){}[0]
+    abstract fun updateState(kotlin/String, kotlin.collections/List<me.tbsten.compose.preview.lab/PreviewLabField<*>>, kotlin.collections/List<me.tbsten.compose.preview.lab/PreviewLabEvent>, kotlin.coroutines/SuspendFunction0<androidx.compose.ui.graphics/ImageBitmap?>, kotlin/Function2<kotlin/String, kotlin/String, kotlin/Boolean>, kotlin/Function0<kotlin/Unit>) // me.tbsten.compose.preview.lab.previewlab.mcp/PreviewLabMcpBridge.updateState|updateState(kotlin.String;kotlin.collections.List<me.tbsten.compose.preview.lab.PreviewLabField<*>>;kotlin.collections.List<me.tbsten.compose.preview.lab.PreviewLabEvent>;kotlin.coroutines.SuspendFunction0<androidx.compose.ui.graphics.ImageBitmap?>;kotlin.Function2<kotlin.String,kotlin.String,kotlin.Boolean>;kotlin.Function0<kotlin.Unit>){}[0]
+
+    final object Companion { // me.tbsten.compose.preview.lab.previewlab.mcp/PreviewLabMcpBridge.Companion|null[0]
+        final val NoOp // me.tbsten.compose.preview.lab.previewlab.mcp/PreviewLabMcpBridge.Companion.NoOp|{}NoOp[0]
+            final fun <get-NoOp>(): me.tbsten.compose.preview.lab.previewlab.mcp/PreviewLabMcpBridge // me.tbsten.compose.preview.lab.previewlab.mcp/PreviewLabMcpBridge.Companion.NoOp.<get-NoOp>|<get-NoOp>(){}[0]
+    }
+}
+
 final class me.tbsten.compose.preview.lab.previewlab.openfilehandler/GithubOpenFileHandler : me.tbsten.compose.preview.lab.previewlab.openfilehandler/UrlOpenFileHandler { // me.tbsten.compose.preview.lab.previewlab.openfilehandler/GithubOpenFileHandler|null[0]
     constructor <init>(kotlin/String, kotlin/String = ..., kotlin/String = ...) // me.tbsten.compose.preview.lab.previewlab.openfilehandler/GithubOpenFileHandler.<init>|<init>(kotlin.String;kotlin.String;kotlin.String){}[0]
 }
@@ -155,6 +165,8 @@ final val me.tbsten.compose.preview.lab.previewlab.inspectorspane/me_tbsten_comp
 final val me.tbsten.compose.preview.lab.previewlab.inspectorspane/me_tbsten_compose_preview_lab_previewlab_inspectorspane_InspectorTab_ContentContext$stableprop // me.tbsten.compose.preview.lab.previewlab.inspectorspane/me_tbsten_compose_preview_lab_previewlab_inspectorspane_InspectorTab_ContentContext$stableprop|#static{}me_tbsten_compose_preview_lab_previewlab_inspectorspane_InspectorTab_ContentContext$stableprop[0]
 final val me.tbsten.compose.preview.lab.previewlab.inspectorspane/me_tbsten_compose_preview_lab_previewlab_inspectorspane_InspectorTab_Events$stableprop // me.tbsten.compose.preview.lab.previewlab.inspectorspane/me_tbsten_compose_preview_lab_previewlab_inspectorspane_InspectorTab_Events$stableprop|#static{}me_tbsten_compose_preview_lab_previewlab_inspectorspane_InspectorTab_Events$stableprop[0]
 final val me.tbsten.compose.preview.lab.previewlab.inspectorspane/me_tbsten_compose_preview_lab_previewlab_inspectorspane_InspectorTab_Fields$stableprop // me.tbsten.compose.preview.lab.previewlab.inspectorspane/me_tbsten_compose_preview_lab_previewlab_inspectorspane_InspectorTab_Fields$stableprop|#static{}me_tbsten_compose_preview_lab_previewlab_inspectorspane_InspectorTab_Fields$stableprop[0]
+final val me.tbsten.compose.preview.lab.previewlab.mcp/LocalPreviewLabMcpBridge // me.tbsten.compose.preview.lab.previewlab.mcp/LocalPreviewLabMcpBridge|{}LocalPreviewLabMcpBridge[0]
+    final fun <get-LocalPreviewLabMcpBridge>(): androidx.compose.runtime/ProvidableCompositionLocal<me.tbsten.compose.preview.lab.previewlab.mcp/PreviewLabMcpBridge> // me.tbsten.compose.preview.lab.previewlab.mcp/LocalPreviewLabMcpBridge.<get-LocalPreviewLabMcpBridge>|<get-LocalPreviewLabMcpBridge>(){}[0]
 final val me.tbsten.compose.preview.lab.previewlab.openfilehandler/LocalOpenFileHandler // me.tbsten.compose.preview.lab.previewlab.openfilehandler/LocalOpenFileHandler|{}LocalOpenFileHandler[0]
     final fun <get-LocalOpenFileHandler>(): androidx.compose.runtime/ProvidableCompositionLocal<me.tbsten.compose.preview.lab.previewlab.openfilehandler/OpenFileHandler<out kotlin/Any?>?> // me.tbsten.compose.preview.lab.previewlab.openfilehandler/LocalOpenFileHandler.<get-LocalOpenFileHandler>|<get-LocalOpenFileHandler>(){}[0]
 final val me.tbsten.compose.preview.lab.previewlab.openfilehandler/me_tbsten_compose_preview_lab_previewlab_openfilehandler_GithubOpenFileHandler$stableprop // me.tbsten.compose.preview.lab.previewlab.openfilehandler/me_tbsten_compose_preview_lab_previewlab_openfilehandler_GithubOpenFileHandler$stableprop|#static{}me_tbsten_compose_preview_lab_previewlab_openfilehandler_GithubOpenFileHandler$stableprop[0]

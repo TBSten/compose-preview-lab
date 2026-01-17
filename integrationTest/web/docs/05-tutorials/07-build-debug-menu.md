@@ -34,13 +34,13 @@ fun DebugMenu(
     onDismiss: () -> Unit,
 ) = PreviewLab {
     val apiEndpoint by fieldState {
-        StringField("API Endpoint", "https://api.example.com")
+        StringField("apiEndpoint", "https://api.example.com")
     }
     val enableLogging by fieldState {
-        BooleanField("Enable Logging", false)
+        BooleanField("enableLogging", false)
     }
     val logLevel by fieldState {
-        EnumField("Log Level", LogLevel.INFO)
+        EnumField("logLevel", LogLevel.INFO)
     }
 
     Column(
@@ -197,15 +197,15 @@ fun DebugMenuPreview() = PreviewLab {
 @Composable
 fun DebugMenu() = PreviewLab {
     val networkSettings by fieldState {
-        GroupField("Network Settings", listOf(
-            StringField("API Endpoint", "https://api.example.com"),
-            IntField("Timeout (ms)", 5000),
+        GroupField("networkSettings", listOf(
+            StringField("apiEndpoint", "https://api.example.com"),
+            IntField("timeoutMs", 5000),
         ))
     }
     val featureFlags by fieldState {
-        GroupField("Feature Flags", listOf(
-            BooleanField("Enable Feature A", false),
-            BooleanField("Enable Feature B", true),
+        GroupField("featureFlags", listOf(
+            BooleanField("enableFeatureA", false),
+            BooleanField("enableFeatureB", true),
         ))
     }
 

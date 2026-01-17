@@ -12,7 +12,7 @@ Compose Preview Lab には多くのビルトイン Field が用意されてい�
 
 :::warning
 
-Custom Field のインターフェースは頻繁に更新される可能性があるため、**できる限り避けるべき** です。
+Custom Field のインターフェースは頻繁に更新される可能性があるため、**なるべく限り避けるのが無難** です。
 
 Custom Fields を作成する前に [組み込みのフィールドを強化する](./enhance-fields) ことで Field を作成できないか検討してください。
 

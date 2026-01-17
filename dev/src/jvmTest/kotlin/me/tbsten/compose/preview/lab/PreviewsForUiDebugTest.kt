@@ -10,6 +10,8 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runDesktopComposeUiTest
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.shouldBe
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.boolean
 import io.kotest.property.arbitrary.float
@@ -17,233 +19,223 @@ import io.kotest.property.arbitrary.int
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.arbitrary.string
 import io.kotest.property.forAll
+import me.tbsten.compose.preview.lab.PBT
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.field
-import kotlin.test.Test
 import me.tbsten.compose.preview.lab.testing.TestPreviewLab
 
-/**
- * Tests for PreviewsForUiDebug previews.
- * These tests verify that PreviewLab works correctly with various field types and UI interactions.
- */
 @OptIn(ExperimentalTestApi::class)
-class PreviewsForUiDebugTest {
+class PreviewsForUiDebugTest : StringSpec({
 
-    @Test
-    fun `Fields preview should render`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
-        // Verify that Fields preview renders without errors
-        awaitIdle()
-        // Fields preview contains various field types, just verify it renders
-    }
-
-    @Test
-    fun `IntField should update preview when value changes`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
-
-        val intField by state.field<Int>("intValue")
-
-        forAll(Arb.int().plusEdgecases(intField.testValues())) { intFieldValue ->
-            intField.value = intFieldValue
+    "Fields preview should render" {
+        runDesktopComposeUiTest {
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
             awaitIdle()
-
-            // Verify
-            onNodeWithText("intValue: $intFieldValue")
-                .isDisplayed()
         }
     }
 
-    @Test
-    fun `StringField should update preview when value changes`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
-        val stringField by state.field<String>("stringValue")
+    "IntField should update preview when value changes".config(tags = setOf(PBT)) {
+        runDesktopComposeUiTest {
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
 
-        forAll(Arb.string().plusEdgecases(stringField.testValues())) { stringFieldValue ->
-            stringField.value = stringFieldValue
-            awaitIdle()
+            val intField by state.field<Int>("intValue")
 
-            // Verify
-            onNodeWithText("stringValue: $stringFieldValue")
-                .isDisplayed()
+            forAll(Arb.int().plusEdgecases(intField.testValues())) { intFieldValue ->
+                intField.value = intFieldValue
+                awaitIdle()
+
+                onNodeWithText("intValue: $intFieldValue")
+                    .isDisplayed()
+            }
         }
     }
 
-    @Test
-    fun `BooleanField should toggle preview when value changes`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
-        val boolField by state.field<Boolean>("booleanValue")
+    "StringField should update preview when value changes".config(tags = setOf(PBT)) {
+        runDesktopComposeUiTest {
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
+            val stringField by state.field<String>("stringValue")
 
-        forAll(Arb.boolean().plusEdgecases(boolField.testValues())) { boolFieldValue ->
-            boolField.value = boolFieldValue
-            awaitIdle()
+            forAll(Arb.string().plusEdgecases(stringField.testValues())) { stringFieldValue ->
+                stringField.value = stringFieldValue
+                awaitIdle()
 
-            // Verify
-            onNodeWithText("booleanValue: $boolFieldValue")
-                .isDisplayed()
+                onNodeWithText("stringValue: $stringFieldValue")
+                    .isDisplayed()
+            }
         }
     }
 
-    @Test
-    fun `FloatField should update preview when value changes`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
-        val floatField by state.field<Float>("floatField")
+    "BooleanField should toggle preview when value changes".config(tags = setOf(PBT)) {
+        runDesktopComposeUiTest {
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
+            val boolField by state.field<Boolean>("booleanValue")
 
-        forAll(Arb.float().plusEdgecases(floatField.testValues())) { floatFieldValue ->
-            floatField.value = floatFieldValue
+            forAll(Arb.boolean().plusEdgecases(boolField.testValues())) { boolFieldValue ->
+                boolField.value = boolFieldValue
+                awaitIdle()
+
+                onNodeWithText("booleanValue: $boolFieldValue")
+                    .isDisplayed()
+            }
+        }
+    }
+
+    "FloatField should update preview when value changes".config(tags = setOf(PBT)) {
+        runDesktopComposeUiTest {
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.Fields.content() } }
+            val floatField by state.field<Float>("floatField")
+
+            forAll(Arb.float().plusEdgecases(floatField.testValues())) { floatFieldValue ->
+                floatField.value = floatFieldValue
+                awaitIdle()
+
+                onAllNodesWithText("floatField: $floatFieldValue")
+                    .fetchSemanticsNodes()
+                    .isNotEmpty()
+            }
+        }
+    }
+
+    "Events preview should render and respond to clicks" {
+        runDesktopComposeUiTest {
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.Events.content() } }
+
             awaitIdle()
 
-            // Verify
-            onAllNodesWithText("floatField: $floatFieldValue")
+            onNodeWithTag("item:0")
+                .assertExists()
+                .performClick()
+
+            awaitIdle()
+
+            onAllNodesWithText("Click item 0")
                 .fetchSemanticsNodes()
                 .isNotEmpty()
         }
     }
 
-    @Test
-    fun `Events preview should render and respond to clicks`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Events.content() } }
+    "Layouts preview should render and respond to clicks" {
+        runDesktopComposeUiTest {
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.Layouts.content() } }
 
-        awaitIdle()
+            awaitIdle()
 
-        // Verify item:0 exists and click it
-        onNodeWithTag("item:0")
-            .assertExists()
-            .performClick()
+            onNodeWithText("Layouts")
+                .assertIsDisplayed()
 
-        awaitIdle()
+            onNodeWithTag("item:0")
+                .assertExists()
+                .performClick()
 
-        // After clicking, the event should be registered and "No Events" should not be shown
-        // Verify that at least one "Click item 0" text exists (could be in list or event list)
-        onAllNodesWithText("Click item 0")
-            .fetchSemanticsNodes()
-            .isNotEmpty()
-    }
-
-    @Test
-    fun `Layouts preview should render and respond to clicks`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.Layouts.content() } }
-
-        awaitIdle()
-
-        // Verify the title is displayed
-        onNodeWithText("Layouts")
-            .assertIsDisplayed()
-
-        // Verify items are clickable
-        onNodeWithTag("item:0")
-            .assertExists()
-            .performClick()
-
-        awaitIdle()
-    }
-
-    @Test
-    fun `ScreenSize preview should render with multiple screen sizes`() = runDesktopComposeUiTest(
-        width = 1920,
-        height = 1080,
-    ) {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.ScreenSize.content() } }
-
-        awaitIdle()
-        // ScreenSize preview uses PreviewLab with AllPresets, verify it renders
-    }
-
-    @Test
-    fun `WithoutPreviewLab should render simple text`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.WithoutPreviewLab.content() } }
-
-        onNodeWithText("Without PreviewLab { }")
-            .assertIsDisplayed()
-    }
-
-    @Test
-    fun `ButtonPrimary should render and trigger event on click`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.ButtonPrimary.content() } }
-
-        awaitIdle()
-
-        onNodeWithTag("PrimaryButton", useUnmergedTree = true)
-            .assertIsDisplayed()
-            .performClick()
-
-        awaitIdle()
-
-        // Verify onEvent was triggered (check state.events instead of toast)
-        assert(state.events.any { it.title == "onClick" }) {
-            "Expected onClick event but got: ${state.events.map { it.title }}"
+            awaitIdle()
         }
     }
 
-    @Test
-    fun `ButtonSecondary should render and trigger event on click`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.ButtonSecondary.content() } }
+    "ScreenSize preview should render with multiple screen sizes" {
+        runDesktopComposeUiTest(
+            width = 1920,
+            height = 1080,
+        ) {
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.ScreenSize.content() } }
 
-        awaitIdle()
-
-        onNodeWithTag("SecondaryButton", useUnmergedTree = true)
-            .assertIsDisplayed()
-            .performClick()
-
-        awaitIdle()
-
-        // Verify onEvent was triggered (check state.events instead of toast)
-        assert(state.events.any { it.title == "SecondaryButton.onClick" }) {
-            "Expected SecondaryButton.onClick event but got: ${state.events.map { it.title }}"
+            awaitIdle()
         }
     }
 
-    @Test
-    fun `HeadingText should render with correct style`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.HeadingText.content() } }
+    "WithoutPreviewLab should render simple text" {
+        runDesktopComposeUiTest {
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.WithoutPreviewLab.content() } }
 
-        awaitIdle()
-
-        onNodeWithText("Heading Text")
-            .assertIsDisplayed()
+            onNodeWithText("Without PreviewLab { }")
+                .assertIsDisplayed()
+        }
     }
 
-    @Test
-    fun `LoginForm should render`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.LoginForm.content() } }
+    "ButtonPrimary should render and trigger event on click" {
+        runDesktopComposeUiTest {
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.ButtonPrimary.content() } }
 
-        awaitIdle()
+            awaitIdle()
 
-        onNodeWithText("Login Form Preview")
-            .assertIsDisplayed()
+            onNodeWithTag("PrimaryButton", useUnmergedTree = true)
+                .assertIsDisplayed()
+                .performClick()
+
+            awaitIdle()
+
+            state.events.any { it.title == "onClick" } shouldBe true
+        }
     }
 
-    @Test
-    fun `ProfileSettings should render`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.ProfileSettings.content() } }
+    "ButtonSecondary should render and trigger event on click" {
+        runDesktopComposeUiTest {
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.ButtonSecondary.content() } }
 
-        awaitIdle()
+            awaitIdle()
 
-        onNodeWithText("Profile Settings Preview")
-            .assertIsDisplayed()
+            onNodeWithTag("SecondaryButton", useUnmergedTree = true)
+                .assertIsDisplayed()
+                .performClick()
+
+            awaitIdle()
+
+            state.events.any { it.title == "SecondaryButton.onClick" } shouldBe true
+        }
     }
 
-    @Test
-    fun `ModifierAndComposableField should render button with fields`() = runDesktopComposeUiTest {
-        val state = PreviewLabState()
-        setContent { TestPreviewLab(state) { PreviewsForUiDebug.ModifierAndComposableField.content() } }
+    "HeadingText should render with correct style" {
+        runDesktopComposeUiTest {
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.HeadingText.content() } }
 
-        awaitIdle()
+            awaitIdle()
 
-        // ModifierAndComposableField contains a Button with ComposableField
-        // Just verify it renders without errors
+            onNodeWithText("Heading Text")
+                .assertIsDisplayed()
+        }
     }
-}
+
+    "LoginForm should render" {
+        runDesktopComposeUiTest {
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.LoginForm.content() } }
+
+            awaitIdle()
+
+            onNodeWithText("Login Form Preview")
+                .assertIsDisplayed()
+        }
+    }
+
+    "ProfileSettings should render" {
+        runDesktopComposeUiTest {
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.ProfileSettings.content() } }
+
+            awaitIdle()
+
+            onNodeWithText("Profile Settings Preview")
+                .assertIsDisplayed()
+        }
+    }
+
+    "ModifierAndComposableField should render button with fields" {
+        runDesktopComposeUiTest {
+            val state = PreviewLabState()
+            setContent { TestPreviewLab(state) { PreviewsForUiDebug.ModifierAndComposableField.content() } }
+
+            awaitIdle()
+        }
+    }
+})

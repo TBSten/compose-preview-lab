@@ -4,9 +4,9 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     alias(libs.plugins.multiplatform)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.compose)
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.androidApplication)
     alias(libs.plugins.hotReload)
     alias(libs.plugins.ksp)
 }
@@ -47,14 +47,11 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.starter)
 
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-
-            // TODO migrate retain { } (compose runtime api)
-            implementation("io.github.takahirom.rin:rin:0.3.0")
+            implementation(libs.composeRuntime)
+            implementation(libs.composeFoundation)
+            implementation(libs.composeMaterial3)
+            implementation(libs.composeComponentsResources)
+            implementation(libs.composeUiToolingPreview)
         }
 
         commonTest.dependencies {
@@ -64,28 +61,26 @@ kotlin {
 
         commonTest.dependencies {
             implementation(kotlin("test"))
-            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-            implementation(compose.uiTest)
+            implementation(libs.composeUiTest)
             implementation(libs.androidxLifecycleViewmodel)
             implementation(libs.androidxLifecycleRuntimeCompose)
         }
 
         jvmTest.dependencies {
             implementation(compose.desktop.currentOs)
-            implementation(compose.desktop.uiTestJUnit4)
+            implementation(libs.composeUiTestJunit4)
+            implementation(libs.kotestFrameworkEngine)
+            implementation(libs.kotestAssertionsCore)
+            implementation(libs.kotestRunnerJunit5)
         }
 
         androidMain.dependencies {
-            implementation(compose.uiTooling)
-            implementation(libs.androidx.activityCompose)
+            implementation(libs.composeUiTooling)
+            implementation(libs.androidxActivityCompose)
         }
 
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
-        }
-
-        jsMain.dependencies {
-            implementation(compose.html.core)
         }
     }
 }
@@ -108,8 +103,8 @@ android {
 
 // https://developer.android.com/develop/ui/compose/testing#setup
 dependencies {
-    androidTestImplementation(libs.androidx.uitest.junit4)
-    debugImplementation(libs.androidx.uitest.testManifest)
+    androidTestImplementation(libs.androidxUitestJunit4)
+    debugImplementation(libs.androidxUitestTestManifest)
 }
 
 compose.desktop {
@@ -137,4 +132,13 @@ compose.desktop {
 
 tasks.register<ComposeHotRun>("runHot") {
     mainClass.set("MainKt")
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    // Forward kotest-related system properties to the test JVM
+    // See: https://kotest.io/docs/framework/tags.html#gradle
+    System.getProperties()
+        .filter { it.key.toString().startsWith("kotest.") }
+        .forEach { (key, value) -> systemProperty(key.toString(), value) }
 }
