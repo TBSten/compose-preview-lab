@@ -79,6 +79,9 @@ kotlin {
             implementation("me.tbsten.compose.preview.lab:extension-navigation:${libs.versions.composePreviewLab.get()}")
             implementation(libs.androidxNavigation)
             implementation(libs.kotlinxSerializationCore)
+
+            implementation("me.tbsten.compose.preview.lab:extension-navigation3:${libs.versions.composePreviewLab.get()}")
+            implementation(libs.androidxNavigation3Ui)
         }
 
         commonTest.dependencies {

@@ -1,0 +1,6 @@
+public final class me/tbsten/compose/preview/lab/extension/navigation3/ComposableSingletons$NavBackStackFieldKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/extension/navigation3/ComposableSingletons$NavBackStackFieldKt;
+	public fun <init> ()V
+	public final fun getLambda$-1251548484$extension_navigation3_release ()Lkotlin/jvm/functions/Function2;
+}
+

@@ -1,0 +1,11 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <me.tbsten.compose.preview.lab:extension-navigation3>
+final val me.tbsten.compose.preview.lab.extension.navigation3/me_tbsten_compose_preview_lab_extension_navigation3_NavBackStackField$stableprop // me.tbsten.compose.preview.lab.extension.navigation3/me_tbsten_compose_preview_lab_extension_navigation3_NavBackStackField$stableprop|#static{}me_tbsten_compose_preview_lab_extension_navigation3_NavBackStackField$stableprop[0]
+
+final fun me.tbsten.compose.preview.lab.extension.navigation3/me_tbsten_compose_preview_lab_extension_navigation3_NavBackStackField$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.navigation3/me_tbsten_compose_preview_lab_extension_navigation3_NavBackStackField$stableprop_getter|me_tbsten_compose_preview_lab_extension_navigation3_NavBackStackField$stableprop_getter(){}[0]

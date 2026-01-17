@@ -69,6 +69,20 @@ public final class me/tbsten/compose/preview/lab/ui/components/ComposableSinglet
 	public final fun getLambda$869988297$ui ()Lkotlin/jvm/functions/Function2;
 }
 
+public final class me/tbsten/compose/preview/lab/ui/components/ComposableSingletons$PreviewLabBackStackListKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/ComposableSingletons$PreviewLabBackStackListKt;
+	public fun <init> ()V
+	public final fun getLambda$-1642625212$ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1163695423$ui ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$843550496$ui ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/ComposableSingletons$PreviewLabSegmentedCardKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/ComposableSingletons$PreviewLabSegmentedCardKt;
+	public fun <init> ()V
+	public final fun getLambda$-1492552430$ui ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class me/tbsten/compose/preview/lab/ui/components/ComposableSingletons$RadioButtonKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/ComposableSingletons$RadioButtonKt;
 	public fun <init> ()V
