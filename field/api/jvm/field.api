@@ -109,6 +109,13 @@ public class me/tbsten/compose/preview/lab/field/ByteField : me/tbsten/compose/p
 	public fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class me/tbsten/compose/preview/lab/field/ChildFieldScope {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Ljava/lang/Object;)V
+	public final fun getInitialValue ()Ljava/lang/Object;
+	public final fun getLabel ()Ljava/lang/String;
+}
+
 public final class me/tbsten/compose/preview/lab/field/ColorField : me/tbsten/compose/preview/lab/MutablePreviewLabField {
 	public static final field $stable I
 	public static final field Companion Lme/tbsten/compose/preview/lab/field/ColorField$Companion;
