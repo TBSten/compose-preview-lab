@@ -34,6 +34,6 @@ publishConvention {
     artifactId = "ui"
     description =
         "A component catalog library that collects and lists @Preview. \n" +
-            "By providing APIs such as Field, Event, etc., it provides not only display but also interactive preview.\n" +
-            "ui provides shared UI components and theme utilities used across PreviewLab modules."
+        "By providing APIs such as Field, Event, etc., it provides not only display but also interactive preview.\n" +
+        "ui provides shared UI components and theme utilities used across PreviewLab modules."
 }
