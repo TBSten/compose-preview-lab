@@ -2,6 +2,12 @@
 # Project
 composePreviewLab = "0.1.0-dev09"
 
+# Build Configuration
+jvmToolchain = "17"
+androidCompileSdk = "36"
+androidMinSdk = "23"
+jsTarget = "es2015"
+
 # Kotlin / Compose
 kotlin = "2.2.21"
 compose = "1.11.0-alpha01"

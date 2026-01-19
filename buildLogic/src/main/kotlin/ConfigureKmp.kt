@@ -7,6 +7,8 @@ import util.ModuleNameUtils
 import util.android
 import util.androidComponents
 import util.kotlinMultiplatform
+import util.libs
+import util.version
 
 /**
  * Configures common KMP settings shared between KmpConventionPlugin and CmpConventionPlugin.
@@ -18,10 +20,10 @@ internal fun Project.configureKmp(
     moduleBaseNameProvider: () -> String,
 ) {
     android {
-        compileSdk = 36
+        compileSdk = libs.version("androidCompileSdk").toInt()
 
         defaultConfig {
-            minSdk = 23
+            minSdk = libs.version("androidMinSdk").toInt()
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
     }
@@ -32,8 +34,10 @@ internal fun Project.configureKmp(
         }
     }
 
+    val jsTarget = libs.version("jsTarget")
+
     kotlinMultiplatform {
-        jvmToolchain(17)
+        jvmToolchain(libs.version("jvmToolchain").toInt())
 
         androidTarget {
             instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
@@ -46,7 +50,7 @@ internal fun Project.configureKmp(
             binaries.library()
             generateTypeScriptDefinitions()
             compilerOptions {
-                this.target.set("es2015")
+                this.target.set(jsTarget)
             }
         }
 
@@ -55,7 +59,7 @@ internal fun Project.configureKmp(
             binaries.library()
             generateTypeScriptDefinitions()
             compilerOptions {
-                this.target.set("es2015")
+                this.target.set(jsTarget)
             }
         }
 
