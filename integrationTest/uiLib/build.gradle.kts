@@ -4,9 +4,9 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
-    alias(libs.plugins.multiplatform)
+    alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.compose)
+    alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.ksp)
     id("me.tbsten.compose.preview.lab")

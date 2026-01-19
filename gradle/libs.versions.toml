@@ -112,6 +112,9 @@ kspGradlePlugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gr
 ktlintGradlePlugin = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlintGradle" }
 vanniktechMavenPublishGradlePlugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "vanniktechMavenPublish" }
 dokkaGradlePlugin = { module = "org.jetbrains.dokka:org.jetbrains.dokka.gradle.plugin", version.ref = "dokka" }
+androidGradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+composeGradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose" }
+hotReloadGradlePlugin = { module = "org.jetbrains.compose.hot-reload:org.jetbrains.compose.hot-reload.gradle.plugin", version.ref = "hotReload" }
 
 # IntelliJ Plugin
 jewelIdeLafBridge = { module = "org.jetbrains.jewel:jewel-ide-laf-bridge-243", version.ref = "jewelIdeLafBridge" }
@@ -155,10 +158,10 @@ androidxLifecycle = ["androidxLifecycleViewmodel", "androidxLifecycleRuntimeComp
 [plugins]
 
 # Kotlin / Compose
-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose" }
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 # Android
@@ -176,6 +179,10 @@ buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig"
 # Convention Plugins
 conventionFormat = { id = "convention-format", version = "unspecified" }
 conventionPublish = { id = "convention-publish", version = "unspecified" }
+conventionJvm = { id = "convention-jvm", version = "unspecified" }
+conventionKmp = { id = "convention-kmp", version = "unspecified" }
+conventionCmp = { id = "convention-cmp", version = "unspecified" }
+conventionCmpUi = { id = "convention-cmp-ui", version = "unspecified" }
 
 # IntelliJ Plugin
 intellijPlatform = { id = "org.jetbrains.intellij.platform", version.ref = "intellijPlatform" }

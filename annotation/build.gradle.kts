@@ -1,72 +1,12 @@
-@file:OptIn(ExperimentalKotlinGradlePluginApi::class, ExperimentalWasmDsl::class)
-
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
-
 plugins {
-    alias(libs.plugins.multiplatform)
-    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.conventionKmp)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.conventionFormat)
     alias(libs.plugins.conventionPublish)
 }
 
-kotlin {
-    jvmToolchain(17)
-    androidTarget {
-        // https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
-        instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
-    }
-
-    jvm()
-
-    js {
-        outputModuleName = "compose-preview-lab-annotation"
-        browser()
-        binaries.executable()
-    }
-
-    wasmJs {
-        outputModuleName = "compose-preview-lab-annotation"
-        browser()
-        binaries.executable()
-    }
-
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64(),
-    ).forEach {
-        it.binaries.framework {
-            baseName = "Annotation"
-            isStatic = true
-        }
-    }
-}
-
-android {
-    namespace = "me.tbsten.compose.preview.lab.annotation"
-    compileSdk = 36
-
-    defaultConfig {
-        minSdk = 23
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-}
-
-// for library development configuration
-
-kotlin {
-    applyDefaultHierarchyTemplate()
-
-    compilerOptions {
-        optIn.addAll(
-            "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
-            "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
-        )
-    }
+kmpConvention {
+    moduleBaseName = "annotation"
 }
 
 publishConvention {
@@ -74,6 +14,6 @@ publishConvention {
     artifactId = "annotation"
     description =
         "A component catalog library that collects and lists @Preview. \n" +
-        "By providing APIs such as Field, Event, etc., it provides not only display but also interactive preview.\n" +
-        "annotation provides annotations used in runtime and tooling"
+            "By providing APIs such as Field, Event, etc., it provides not only display but also interactive preview.\n" +
+            "annotation provides annotations used in runtime and tooling"
 }
