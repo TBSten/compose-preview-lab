@@ -6,6 +6,7 @@ import util.kotlinJvm
 import util.libs
 import util.plugin
 import util.plugins
+import util.version
 
 class JvmConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
@@ -14,6 +15,7 @@ class JvmConventionPlugin : Plugin<Project> {
         }
 
         kotlinJvm {
+            jvmToolchain(libs.version("jvmToolchain").toInt())
             compilerOptions {
                 optIn.addAll(COMMON_OPT_INS)
             }

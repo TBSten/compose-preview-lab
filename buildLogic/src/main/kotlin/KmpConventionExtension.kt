@@ -1,12 +1,5 @@
-import org.gradle.api.provider.Property
-
-interface KmpConventionExtension {
-    /**
-     * Base name for the module (e.g., "annotation", "core", "extension-kotlinx-datetime").
-     * This is used to generate:
-     * - androidNamespace: "me.tbsten.compose.preview.lab." + moduleBaseName.replace("-", ".")
-     * - jsOutputModuleName: "compose-preview-lab-" + moduleBaseName
-     * - iosFrameworkBaseName: "ComposePreviewLab" + toPascalCase(moduleBaseName)
-     */
-    val moduleBaseName: Property<String>
-}
+/**
+ * Extension for KmpConventionPlugin.
+ * Used for KMP modules without Compose (e.g., annotation, starter).
+ */
+interface KmpConventionExtension : ModuleConventionExtension

@@ -63,11 +63,9 @@ internal fun Project.configureKmp(
             }
         }
 
-        listOf(
-            iosX64(),
-            iosArm64(),
-            iosSimulatorArm64(),
-        )
+        iosX64()
+        iosArm64()
+        iosSimulatorArm64()
 
         applyDefaultHierarchyTemplate()
 
@@ -94,16 +92,14 @@ internal fun Project.configureKmp(
                 outputModuleName.set(jsOutputModuleName)
             }
 
-            listOf(
-                iosX64(),
-                iosArm64(),
-                iosSimulatorArm64(),
-            ).forEach {
-                it.binaries.framework {
-                    baseName = iosFrameworkBaseName
-                    isStatic = true
+            targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java)
+                .matching { it.konanTarget.family == org.jetbrains.kotlin.konan.target.Family.IOS }
+                .configureEach {
+                    binaries.framework {
+                        baseName = iosFrameworkBaseName
+                        isStatic = true
+                    }
                 }
-            }
         }
     }
 }

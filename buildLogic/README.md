@@ -12,6 +12,7 @@ Kotlin JVM プロジェクト用の基本設定を提供します。
 - `org.jetbrains.kotlin.jvm`
 
 **設定内容:**
+- `jvmToolchain` (version catalog から取得)
 - `compilerOptions.optIn` に共通の opt-in アノテーションを追加
 
 **使用例:**
@@ -66,7 +67,7 @@ kmpConvention {
 ### `convention-cmp`
 
 Compose Multiplatform プロジェクト用の基本設定を提供します。
-`convention-kmp` の設定に加えて、Compose 関連の設定を追加します。
+内部で `configureKmp()` を呼び出し、KMP 共通設定に加えて Compose 関連の設定を追加します。
 
 **適用されるプラグイン:**
 - `org.jetbrains.kotlin.multiplatform`
@@ -82,7 +83,7 @@ cmpConvention {
 ```
 
 **設定内容:**
-- `convention-kmp` の全設定
+- `configureKmp()` による KMP 共通設定
 - `commonMain` に `composeRuntime` を追加
 - `androidMain` に `composeUiTooling` を追加
 - `jvmMain` に `compose.desktop.currentOs` を追加
@@ -104,10 +105,13 @@ cmpConvention {
 ### `convention-cmp-ui`
 
 UI コンポーネントを含む Compose Multiplatform プロジェクト用の設定を提供します。
-`convention-cmp` の設定に加えて、UI 関連の依存関係を追加します。
+内部で `configureCmp()` を呼び出し、CMP 共通設定に加えて UI 関連の依存関係を追加します。
 
 **適用されるプラグイン:**
-- `convention-cmp` と同じ
+- `org.jetbrains.kotlin.multiplatform`
+- `com.android.library`
+- `org.jetbrains.kotlin.plugin.compose`
+- `org.jetbrains.compose`
 
 **Extension:**
 ```kotlin
@@ -117,7 +121,7 @@ cmpConvention {
 ```
 
 **設定内容:**
-- `convention-cmp` の全設定
+- `configureCmp()` による CMP 共通設定
 - `commonMain` に以下を追加:
   - `composeFoundation`
   - `composeComponentsResources`
@@ -223,6 +227,7 @@ buildLogic/
     ├── JvmConventionPlugin.kt
     ├── KmpConventionExtension.kt
     ├── KmpConventionPlugin.kt
+    ├── ModuleConventionExtension.kt  # 共通 Extension インターフェース
     ├── PublishConventionPlugin.kt
     └── util/
         ├── Android.kt            # Android/Kotlin 拡張関数、COMMON_OPT_INS
