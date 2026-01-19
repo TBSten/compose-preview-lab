@@ -21,8 +21,6 @@ plugins {
 }
 ```
 
-**対象モジュール:** `ksp-plugin`, `gradle-plugin`
-
 ---
 
 ### `convention-kmp`
@@ -63,8 +61,6 @@ kmpConvention {
 }
 ```
 
-**対象モジュール:** `annotation`, `starter`
-
 ---
 
 ### `convention-cmp`
@@ -103,8 +99,6 @@ cmpConvention {
 }
 ```
 
-**対象モジュール:** `extension/kotlinx-datetime`, `extension/navigation`, `extension/navigation3`
-
 ---
 
 ### `convention-cmp-ui`
@@ -140,8 +134,6 @@ cmpConvention {
     moduleBaseName = "core"
 }
 ```
-
-**対象モジュール:** `core`, `field`, `ui`, `gallery`, `preview-lab`
 
 ---
 
@@ -199,25 +191,6 @@ publishConvention {
     description = "Core module description"
 }
 ```
-
----
-
-## モジュール別プラグイン対応表
-
-| モジュール | conventionJvm | conventionKmp | conventionCmp | conventionCmpUi | conventionFormat | conventionPublish |
-|-----------|:-------------:|:-------------:|:-------------:|:---------------:|:----------------:|:-----------------:|
-| annotation | | ✓ | | | ✓ | ✓ |
-| core | | | | ✓ | ✓ | ✓ |
-| field | | | | ✓ | ✓ | ✓ |
-| ui | | | | ✓ | ✓ | ✓ |
-| gallery | | | | ✓ | ✓ | ✓ |
-| preview-lab | | | | ✓ | ✓ | ✓ |
-| starter | | ✓ | | | ✓ | ✓ |
-| ksp-plugin | ✓ | | | | ✓ | ✓ |
-| gradle-plugin | ✓ | | | | ✓ | ✓ |
-| extension/kotlinx-datetime | | | ✓ | | ✓ | ✓ |
-| extension/navigation | | | ✓ | | ✓ | ✓ |
-| extension/navigation3 | | | ✓ | | ✓ | ✓ |
 
 ---
 
