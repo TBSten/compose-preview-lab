@@ -1,17 +1,8 @@
 plugins {
-    alias(libs.plugins.jvm)
+    alias(libs.plugins.conventionJvm)
     alias(libs.plugins.conventionFormat)
     alias(libs.plugins.conventionPublish)
     `kotlin-dsl`
-}
-
-kotlin {
-    compilerOptions {
-        optIn.addAll(
-            "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
-            "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
-        )
-    }
 }
 
 dependencies {
