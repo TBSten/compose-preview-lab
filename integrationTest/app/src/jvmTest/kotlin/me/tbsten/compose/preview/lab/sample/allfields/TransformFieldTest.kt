@@ -3,12 +3,12 @@
 package me.tbsten.compose.preview.lab.sample.allfields
 
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.isDisplayed
-import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.runDesktopComposeUiTest
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.int
+import io.kotest.property.arbitrary.orNull
 import io.kotest.property.arbitrary.plusEdgecases
 import io.kotest.property.forAll
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
@@ -26,14 +26,16 @@ class TransformFieldTest : StringSpec({
             val state = PreviewLabState()
             setContent { TestPreviewLab(state) { TransformFieldExample() } }
 
-            val numberField by state.field<Int>("number")
+            val numberField by state.field<Int?>("number")
 
-            forAll(Arb.int().plusEdgecases(numberField.testValues())) { intValue ->
+            forAll(Arb.int().orNull().plusEdgecases(numberField.testValues())) { intValue ->
                 numberField.value = intValue
                 awaitIdle()
 
-                onNodeWithText("intValue: $intValue")
-                    .isDisplayed()
+                val expectedText = if (intValue != null) "intValue: $intValue" else "Invalid input (null)"
+                onAllNodesWithText(expectedText)
+                    .fetchSemanticsNodes()
+                    .isNotEmpty()
             }
 
             awaitIdle()
