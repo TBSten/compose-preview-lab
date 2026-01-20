@@ -14,6 +14,8 @@ abstract interface me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryNaviga
 final class me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState { // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState|null[0]
     constructor <init>(kotlin/Pair<kotlin/String, me.tbsten.compose.preview.lab/PreviewLabPreview>? = ...) // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.<init>|<init>(kotlin.Pair<kotlin.String,me.tbsten.compose.preview.lab.PreviewLabPreview>?){}[0]
 
+    final val initialSelectedPreview // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.initialSelectedPreview|{}initialSelectedPreview[0]
+        final fun <get-initialSelectedPreview>(): kotlin/Pair<kotlin/String, me.tbsten.compose.preview.lab/PreviewLabPreview>? // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.initialSelectedPreview.<get-initialSelectedPreview>|<get-initialSelectedPreview>(){}[0]
     final val selectedPreviews // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.selectedPreviews|{}selectedPreviews[0]
         final fun <get-selectedPreviews>(): kotlin.collections/List<me.tbsten.compose.preview.lab.gallery/SelectedPreview> // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.selectedPreviews.<get-selectedPreviews>|<get-selectedPreviews>(){}[0]
 
