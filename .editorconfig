@@ -54,6 +54,9 @@ ktlint_standard_function-expression-body = enabled
 
 ktlint_property_naming_constant_naming = pascal_case
 
+# explicit API モードでは public を明示的に指定する必要がある
+ktlint_standard_redundant-visibility-modifier = disabled
+
 [**/generated/**/*.kt]
 ktlint_standard_class-naming = disabled
 ktlint_standard_function-naming = disabled
