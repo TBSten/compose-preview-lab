@@ -7,15 +7,15 @@ import androidx.compose.ui.tooling.preview.Preview
     widthDp = LabPreview.Medium.WidthDp,
     heightDp = LabPreview.Medium.HeightDp,
 )
-annotation class LabPreview {
+public annotation class LabPreview {
     @Preview(
         widthDp = Small.WidthDp,
         heightDp = Small.HeightDp,
     )
-    annotation class Small {
-        companion object {
-            const val WidthDp = 200 + 300
-            const val HeightDp = -1
+    public annotation class Small {
+        public companion object {
+            public const val WidthDp: Int = 200 + 300
+            public const val HeightDp: Int = -1
         }
     }
 
@@ -23,10 +23,10 @@ annotation class LabPreview {
         widthDp = Medium.WidthDp,
         heightDp = Medium.HeightDp,
     )
-    annotation class Medium {
-        companion object {
-            const val WidthDp = 500 + 300
-            const val HeightDp = -1
+    public annotation class Medium {
+        public companion object {
+            public const val WidthDp: Int = 500 + 300
+            public const val HeightDp: Int = -1
         }
     }
 
@@ -34,10 +34,10 @@ annotation class LabPreview {
         widthDp = Large.WidthDp,
         heightDp = Large.HeightDp,
     )
-    annotation class Large {
-        companion object {
-            const val WidthDp = 800 + 300
-            const val HeightDp = -1
+    public annotation class Large {
+        public companion object {
+            public const val WidthDp: Int = 800 + 300
+            public const val HeightDp: Int = -1
         }
     }
 }

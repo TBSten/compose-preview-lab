@@ -28,137 +28,137 @@ import androidx.compose.ui.unit.sp
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @InternalComposePreviewLabApi
-val Black: Color = Color(0xFF000000)
+public val Black: Color = Color(0xFF000000)
 
 @InternalComposePreviewLabApi
-val Gray900: Color = Color(0xFF282828)
+public val Gray900: Color = Color(0xFF282828)
 
 @InternalComposePreviewLabApi
-val Gray800: Color = Color(0xFF4b4b4b)
+public val Gray800: Color = Color(0xFF4b4b4b)
 
 @InternalComposePreviewLabApi
-val Gray700: Color = Color(0xFF5e5e5e)
+public val Gray700: Color = Color(0xFF5e5e5e)
 
 @InternalComposePreviewLabApi
-val Gray600: Color = Color(0xFF727272)
+public val Gray600: Color = Color(0xFF727272)
 
 @InternalComposePreviewLabApi
-val Gray500: Color = Color(0xFF868686)
+public val Gray500: Color = Color(0xFF868686)
 
 @InternalComposePreviewLabApi
-val Gray400: Color = Color(0xFFC7C7C7)
+public val Gray400: Color = Color(0xFFC7C7C7)
 
 @InternalComposePreviewLabApi
-val Gray300: Color = Color(0xFFDFDFDF)
+public val Gray300: Color = Color(0xFFDFDFDF)
 
 @InternalComposePreviewLabApi
-val Gray200: Color = Color(0xFFE2E2E2)
+public val Gray200: Color = Color(0xFFE2E2E2)
 
 @InternalComposePreviewLabApi
-val Gray100: Color = Color(0xFFF7F7F7)
+public val Gray100: Color = Color(0xFFF7F7F7)
 
 @InternalComposePreviewLabApi
-val Gray50: Color = Color(0xFFFFFFFF)
+public val Gray50: Color = Color(0xFFFFFFFF)
 
 @InternalComposePreviewLabApi
-val White: Color = Color(0xFFFFFFFF)
+public val White: Color = Color(0xFFFFFFFF)
 
 @InternalComposePreviewLabApi
-val Red900: Color = Color(0xFF520810)
+public val Red900: Color = Color(0xFF520810)
 
 @InternalComposePreviewLabApi
-val Red800: Color = Color(0xFF950f22)
+public val Red800: Color = Color(0xFF950f22)
 
 @InternalComposePreviewLabApi
-val Red700: Color = Color(0xFFbb032a)
+public val Red700: Color = Color(0xFFbb032a)
 
 @InternalComposePreviewLabApi
-val Red600: Color = Color(0xFFde1135)
+public val Red600: Color = Color(0xFFde1135)
 
 @InternalComposePreviewLabApi
-val Red500: Color = Color(0xFFf83446)
+public val Red500: Color = Color(0xFFf83446)
 
 @InternalComposePreviewLabApi
-val Red400: Color = Color(0xFFfc7f79)
+public val Red400: Color = Color(0xFFfc7f79)
 
 @InternalComposePreviewLabApi
-val Red300: Color = Color(0xFFffb2ab)
+public val Red300: Color = Color(0xFFffb2ab)
 
 @InternalComposePreviewLabApi
-val Red200: Color = Color(0xFFffd2cd)
+public val Red200: Color = Color(0xFFffd2cd)
 
 @InternalComposePreviewLabApi
-val Red100: Color = Color(0xFFffe1de)
+public val Red100: Color = Color(0xFFffe1de)
 
 @InternalComposePreviewLabApi
-val Red50: Color = Color(0xFFfff0ee)
+public val Red50: Color = Color(0xFFfff0ee)
 
 @InternalComposePreviewLabApi
-val Blue900: Color = Color(0xFF276EF1)
+public val Blue900: Color = Color(0xFF276EF1)
 
 @InternalComposePreviewLabApi
-val Blue800: Color = Color(0xFF3F7EF2)
+public val Blue800: Color = Color(0xFF3F7EF2)
 
 @InternalComposePreviewLabApi
-val Blue700: Color = Color(0xFF578EF4)
+public val Blue700: Color = Color(0xFF578EF4)
 
 @InternalComposePreviewLabApi
-val Blue600: Color = Color(0xFF6F9EF5)
+public val Blue600: Color = Color(0xFF6F9EF5)
 
 @InternalComposePreviewLabApi
-val Blue500: Color = Color(0xFF87AEF7)
+public val Blue500: Color = Color(0xFF87AEF7)
 
 @InternalComposePreviewLabApi
-val Blue400: Color = Color(0xFF9FBFF8)
+public val Blue400: Color = Color(0xFF9FBFF8)
 
 @InternalComposePreviewLabApi
-val Blue300: Color = Color(0xFFB7CEFA)
+public val Blue300: Color = Color(0xFFB7CEFA)
 
 @InternalComposePreviewLabApi
-val Blue200: Color = Color(0xFFCFDEFB)
+public val Blue200: Color = Color(0xFFCFDEFB)
 
 @InternalComposePreviewLabApi
-val Blue100: Color = Color(0xFFE7EEFD)
+public val Blue100: Color = Color(0xFFE7EEFD)
 
 @InternalComposePreviewLabApi
-val Blue50: Color = Color(0xFFFFFFFF)
+public val Blue50: Color = Color(0xFFFFFFFF)
 
 @InternalComposePreviewLabApi
-val Green950: Color = Color(0xFF0B4627)
+public val Green950: Color = Color(0xFF0B4627)
 
 @InternalComposePreviewLabApi
-val Green900: Color = Color(0xFF16643B)
+public val Green900: Color = Color(0xFF16643B)
 
 @InternalComposePreviewLabApi
-val Green800: Color = Color(0xFF1A7544)
+public val Green800: Color = Color(0xFF1A7544)
 
 @InternalComposePreviewLabApi
-val Green700: Color = Color(0xFF178C4E)
+public val Green700: Color = Color(0xFF178C4E)
 
 @InternalComposePreviewLabApi
-val Green600: Color = Color(0xFF1DAF61)
+public val Green600: Color = Color(0xFF1DAF61)
 
 @InternalComposePreviewLabApi
-val Green500: Color = Color(0xFF1FC16B)
+public val Green500: Color = Color(0xFF1FC16B)
 
 @InternalComposePreviewLabApi
-val Green400: Color = Color(0xFF3EE089)
+public val Green400: Color = Color(0xFF3EE089)
 
 @InternalComposePreviewLabApi
-val Green300: Color = Color(0xFF84EBB4)
+public val Green300: Color = Color(0xFF84EBB4)
 
 @InternalComposePreviewLabApi
-val Green200: Color = Color(0xFFC2F5DA)
+public val Green200: Color = Color(0xFFC2F5DA)
 
 @InternalComposePreviewLabApi
-val Green100: Color = Color(0xFFD0FBE9)
+public val Green100: Color = Color(0xFFD0FBE9)
 
 @InternalComposePreviewLabApi
-val Green50: Color = Color(0xFFE0FAEC)
+public val Green50: Color = Color(0xFFE0FAEC)
 
 @Immutable
 @InternalComposePreviewLabApi
-data class Colors(
+public data class Colors(
     val primary: Color,
     val onPrimary: Color,
     val secondary: Color,
@@ -187,7 +187,7 @@ data class Colors(
 )
 
 @InternalComposePreviewLabApi
-val LightColors =
+public val LightColors: Colors =
     Colors(
         primary = Black,
         onPrimary = White,
@@ -217,7 +217,7 @@ val LightColors =
     )
 
 @InternalComposePreviewLabApi
-val DarkColors =
+public val DarkColors: Colors =
     Colors(
         primary = White,
         onPrimary = Black,
@@ -247,16 +247,19 @@ val DarkColors =
     )
 
 @InternalComposePreviewLabApi
-val LocalColors = staticCompositionLocalOf { LightColors }
+public val LocalColors: androidx.compose.runtime.ProvidableCompositionLocal<Colors> =
+    staticCompositionLocalOf { LightColors }
 
 @InternalComposePreviewLabApi
-val LocalContentColor = compositionLocalOf { Color.Black }
+public val LocalContentColor: androidx.compose.runtime.ProvidableCompositionLocal<Color> =
+    compositionLocalOf { Color.Black }
 
 @InternalComposePreviewLabApi
-val LocalContentAlpha = compositionLocalOf { 1f }
+public val LocalContentAlpha: androidx.compose.runtime.ProvidableCompositionLocal<Float> =
+    compositionLocalOf { 1f }
 
 @InternalComposePreviewLabApi
-fun Colors.contentColorFor(backgroundColor: Color): Color = when (backgroundColor) {
+public fun Colors.contentColorFor(backgroundColor: Color): Color = when (backgroundColor) {
     primary -> onPrimary
     secondary -> onSecondary
     tertiary -> onTertiary

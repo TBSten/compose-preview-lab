@@ -2,6 +2,7 @@ package me.tbsten.compose.preview.lab.gallery
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
 import me.tbsten.compose.preview.lab.PreviewLabPreview
 import kotlin.js.ExperimentalJsExport
@@ -9,26 +10,27 @@ import me.tbsten.compose.preview.lab.util.JsOnlyExport
 
 @OptIn(ExperimentalJsExport::class)
 @JsOnlyExport
-interface PreviewLabGalleryNavigator {
-    fun navigate(id: String)
-    fun back()
+public interface PreviewLabGalleryNavigator {
+    public fun navigate(id: String)
+    public fun back()
 }
 
 @OptIn(ExperimentalJsExport::class)
 @JsOnlyExport
-object NoOpPreviewLabGalleryNavigator : PreviewLabGalleryNavigator {
-    override fun navigate(id: String) {}
+public object NoOpPreviewLabGalleryNavigator : PreviewLabGalleryNavigator {
+    public override fun navigate(id: String) {}
 
-    override fun back() {}
+    public override fun back() {}
 }
 
-inline fun PreviewLabGalleryNavigator?.navigateOr(id: String, fallback: () -> Unit) = if (this != null) {
+public inline fun PreviewLabGalleryNavigator?.navigateOr(id: String, fallback: () -> Unit): Unit = if (this != null) {
     navigate(id = id)
 } else {
     fallback()
 }
 
-val LocalPreviewLabGalleryNavigator = staticCompositionLocalOf<PreviewLabGalleryNavigator?> { null }
+public val LocalPreviewLabGalleryNavigator: ProvidableCompositionLocal<PreviewLabGalleryNavigator?> =
+    staticCompositionLocalOf<PreviewLabGalleryNavigator?> { null }
 
 @Composable
 private fun rememberPreviewLabGalleryNavigator(onNavigatePreview: (String) -> Unit, onBack: () -> Unit) = remember {

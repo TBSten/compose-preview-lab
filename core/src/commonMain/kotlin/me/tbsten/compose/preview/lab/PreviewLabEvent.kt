@@ -37,4 +37,8 @@ import kotlin.time.Instant
 @Immutable
 @OptIn(ExperimentalTime::class)
 @ExperimentalComposePreviewLabApi
-data class PreviewLabEvent(val title: String, val description: String? = null, val createAt: Instant = Clock.System.now())
+public data class PreviewLabEvent(
+    public val title: String,
+    public val description: String? = null,
+    public val createAt: Instant = Clock.System.now(),
+)

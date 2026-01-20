@@ -26,9 +26,9 @@ import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
  * @param scaleX The scale factor for the X axis
  * @param scaleY The scale factor for the Y axis
  */
-class ScaleModifierFieldValue(scaleX: Float, scaleY: Float) : ModifierFieldValue {
-    var scaleX by mutableStateOf(scaleX)
-    var scaleY by mutableStateOf(scaleY)
+public class ScaleModifierFieldValue(scaleX: Float, scaleY: Float) : ModifierFieldValue {
+    public var scaleX: Float by mutableStateOf(scaleX)
+    public var scaleY: Float by mutableStateOf(scaleY)
 
     override fun Modifier.createModifier(): Modifier = scale(
         scaleX = scaleX,
@@ -36,7 +36,7 @@ class ScaleModifierFieldValue(scaleX: Float, scaleY: Float) : ModifierFieldValue
     )
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             appendLine(".scale(")
 
@@ -73,17 +73,17 @@ class ScaleModifierFieldValue(scaleX: Float, scaleY: Float) : ModifierFieldValue
         },
     )
 
-    class Factory(initialScaleX: Float? = null, initialScaleY: Float? = null) :
+    public class Factory(initialScaleX: Float? = null, initialScaleY: Float? = null) :
         ModifierFieldValueFactory<ScaleModifierFieldValue> {
         override val title: String = ".scale(...)"
-        var scaleX by mutableStateOf(initialScaleX)
-        var scaleY by mutableStateOf(initialScaleY)
+        public var scaleX: Float? by mutableStateOf(initialScaleX)
+        public var scaleY: Float? by mutableStateOf(initialScaleY)
 
         override val canCreate: Boolean
             get() = scaleX != null && scaleY != null
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column(
+        override fun Content(createButton: @Composable (() -> Unit)): Unit = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             TransformableTextField(
@@ -121,7 +121,7 @@ class ScaleModifierFieldValue(scaleX: Float, scaleY: Float) : ModifierFieldValue
  * @param scaleY The vertical scale factor
  * @return A new ModifierFieldValueList with scaling applied
  */
-fun ModifierFieldValueList.scale(scaleX: Float, scaleY: Float) = then(
+public fun ModifierFieldValueList.scale(scaleX: Float, scaleY: Float): ModifierFieldValueList = then(
     ScaleModifierFieldValue(
         scaleX = scaleX,
         scaleY = scaleY,
@@ -134,7 +134,7 @@ fun ModifierFieldValueList.scale(scaleX: Float, scaleY: Float) = then(
  * @param scale The scale factor to apply to both X and Y dimensions
  * @return A new ModifierFieldValueList with uniform scaling applied
  */
-fun ModifierFieldValueList.scale(scale: Float) = then(
+public fun ModifierFieldValueList.scale(scale: Float): ModifierFieldValueList = then(
     ScaleModifierFieldValue(
         scaleX = scale,
         scaleY = scale,

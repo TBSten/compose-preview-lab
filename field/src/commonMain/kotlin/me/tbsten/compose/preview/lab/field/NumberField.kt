@@ -75,7 +75,7 @@ internal fun doubleValueCode(value: Double): String = when {
  * @see FloatField
  * @see InputType
  */
-abstract class NumberField<Num : Number>(
+public abstract class NumberField<Num : Number>(
     label: String,
     initialValue: Num,
     private val fromString: (String) -> Num,
@@ -89,7 +89,7 @@ abstract class NumberField<Num : Number>(
     override fun valueCode(): String = valueCode.invoke(value)
 
     @Composable
-    override fun Content() = when (inputType) {
+    override fun Content(): Unit = when (inputType) {
         is InputType.TextField -> TextFieldContent(
             toString = {
                 toString(it)
@@ -108,15 +108,17 @@ abstract class NumberField<Num : Number>(
     /**
      * Defines the type of input UI to display for the number field.
      */
-    sealed interface InputType {
+    public sealed interface InputType {
         /**
          * Text field input with optional prefix and suffix composables.
          *
          * @param prefix Optional composable to display before the input
          * @param suffix Optional composable to display after the input
          */
-        data class TextField(val prefix: (@Composable () -> Unit)? = null, val suffix: (@Composable () -> Unit)? = null) :
-            InputType
+        public data class TextField(
+            public val prefix: (@Composable () -> Unit)? = null,
+            public val suffix: (@Composable () -> Unit)? = null
+        ) : InputType
 
         /**
          * Slider input for selecting values within a range.
@@ -124,7 +126,7 @@ abstract class NumberField<Num : Number>(
          * @param min The minimum value
          * @param max The maximum value
          */
-        data class Slider(val min: Int, val max: Int) : InputType
+        public data class Slider(public val min: Int, public val max: Int) : InputType
     }
 }
 
@@ -174,7 +176,7 @@ abstract class NumberField<Num : Number>(
  * @see NumberField
  * @see InputType
  */
-open class IntField(label: String, initialValue: Int, inputType: InputType = InputType.TextField()) :
+public open class IntField(label: String, initialValue: Int, inputType: InputType = InputType.TextField()) :
     NumberField<Int>(
         label = label,
         initialValue = initialValue,
@@ -233,7 +235,7 @@ open class IntField(label: String, initialValue: Int, inputType: InputType = Inp
  * @see NumberField
  * @see InputType
  */
-open class LongField(label: String, initialValue: Long, inputType: InputType = InputType.TextField()) :
+public open class LongField(label: String, initialValue: Long, inputType: InputType = InputType.TextField()) :
     NumberField<Long>(
         label = label,
         initialValue = initialValue,
@@ -291,7 +293,7 @@ open class LongField(label: String, initialValue: Long, inputType: InputType = I
  * @see NumberField
  * @see InputType
  */
-open class ByteField(label: String, initialValue: Byte, inputType: InputType = InputType.TextField()) :
+public open class ByteField(label: String, initialValue: Byte, inputType: InputType = InputType.TextField()) :
     NumberField<Byte>(
         label = label,
         initialValue = initialValue,
@@ -351,7 +353,7 @@ open class ByteField(label: String, initialValue: Byte, inputType: InputType = I
  * @see NumberField
  * @see InputType
  */
-open class DoubleField(label: String, initialValue: Double, inputType: InputType = InputType.TextField()) :
+public open class DoubleField(label: String, initialValue: Double, inputType: InputType = InputType.TextField()) :
     NumberField<Double>(
         label = label,
         initialValue = initialValue,
@@ -410,7 +412,7 @@ open class DoubleField(label: String, initialValue: Double, inputType: InputType
  * @see NumberField
  * @see InputType
  */
-open class FloatField(label: String, initialValue: Float, inputType: InputType = InputType.TextField()) :
+public open class FloatField(label: String, initialValue: Float, inputType: InputType = InputType.TextField()) :
     NumberField<Float>(
         label = label,
         initialValue = initialValue,

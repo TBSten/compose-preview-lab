@@ -51,7 +51,7 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  * @see ScreenSize
  * @see SelectableField.Type
  */
-open class ScreenSizeField(
+public open class ScreenSizeField(
     label: String = "ScreenSize",
     private val sizes: List<ScreenSize> = listOf(MediumSmartPhone),
     type: Type = Type.DROPDOWN,
@@ -148,7 +148,7 @@ open class ScreenSizeField(
  * @see ScreenSizeField
  * @see ScreenSize.Companion
  */
-class ScreenSize(val width: Dp, val height: Dp, val label: String = "${width}x$height") {
+public class ScreenSize(public val width: Dp, public val height: Dp, public val label: String = "${width}x$height") {
     /**
      * Creates a landscape orientation of this screen size
      *
@@ -162,7 +162,7 @@ class ScreenSize(val width: Dp, val height: Dp, val label: String = "${width}x$h
      *
      * @return New ScreenSize with swapped dimensions
      */
-    fun reversed() = ScreenSize(
+    public fun reversed(): ScreenSize = ScreenSize(
         label = label,
         width = height,
         height = width,
@@ -189,89 +189,89 @@ class ScreenSize(val width: Dp, val height: Dp, val label: String = "${width}x$h
      * ScreenSize.AllPresets       // Every available preset
      * ```
      */
-    companion object {
+    public companion object {
         // Smartphones
-        val SmallSmartPhone = ScreenSize(
+        public val SmallSmartPhone: ScreenSize = ScreenSize(
             label = "Small Smartphone (320x568)",
             width = 320.dp,
             height = 568.dp,
         )
-        val MediumSmartPhone = ScreenSize(
+        public val MediumSmartPhone: ScreenSize = ScreenSize(
             label = "Medium Smartphone (375x667)",
             width = 375.dp,
             height = 667.dp,
         )
-        val LargeSmartPhone = ScreenSize(
+        public val LargeSmartPhone: ScreenSize = ScreenSize(
             label = "Large Smartphone (430x926)",
             width = 430.dp,
             height = 926.dp,
         )
 
-        val PortraitSmartPhones = listOf(
+        public val PortraitSmartPhones: List<ScreenSize> = listOf(
             SmallSmartPhone,
             MediumSmartPhone,
             LargeSmartPhone,
         )
 
-        val LandscapeSmartPhones = PortraitSmartPhones.map {
+        public val LandscapeSmartPhones: List<ScreenSize> = PortraitSmartPhones.map {
             it.reversed()
         }
 
-        val SmartPhones = PortraitSmartPhones + LandscapeSmartPhones
+        public val SmartPhones: List<ScreenSize> = PortraitSmartPhones + LandscapeSmartPhones
 
         // Tablets
-        val SmallTablet = ScreenSize(
+        public val SmallTablet: ScreenSize = ScreenSize(
             label = "Small Tablet (600x1024)",
             width = 600.dp,
             height = 1024.dp,
         )
-        val MediumTablet = ScreenSize(
+        public val MediumTablet: ScreenSize = ScreenSize(
             label = "Medium Tablet (768x1366)",
             width = 768.dp,
             height = 1366.dp,
         )
-        val LargeTablet = ScreenSize(
+        public val LargeTablet: ScreenSize = ScreenSize(
             label = "Large Tablet (900x1440)",
             width = 900.dp,
             height = 1440.dp,
         )
 
-        val PortraitTablets = listOf(
+        public val PortraitTablets: List<ScreenSize> = listOf(
             SmallTablet,
             MediumTablet,
             LargeTablet,
         )
 
-        val LandscapeTablets = PortraitTablets.map {
+        public val LandscapeTablets: List<ScreenSize> = PortraitTablets.map {
             it.reversed()
         }
 
-        val Tablets = PortraitTablets + LandscapeTablets
+        public val Tablets: List<ScreenSize> = PortraitTablets + LandscapeTablets
 
         // Desktop PCs
-        val SmallDesktop = ScreenSize(
+        public val SmallDesktop: ScreenSize = ScreenSize(
             label = "Small Desktop (1024x768)",
             width = 1024.dp,
             height = 768.dp,
         )
-        val MediumDesktop = ScreenSize(
+        public val MediumDesktop: ScreenSize = ScreenSize(
             label = "Medium Desktop (1440x900)",
             width = 1440.dp,
             height = 900.dp,
         )
-        val LargeDesktop = ScreenSize(
+        public val LargeDesktop: ScreenSize = ScreenSize(
             label = "Large Desktop (1920x1080)",
             width = 1920.dp,
             height = 1080.dp,
         )
 
-        val Desktops = listOf(
+        public val Desktops: List<ScreenSize> = listOf(
             SmallDesktop,
             MediumDesktop,
             LargeDesktop,
         )
 
-        val SmartphoneAndDesktops = SmartPhones + Desktops
-        val AllPresets = SmartPhones + Tablets + Desktops
+        public val SmartphoneAndDesktops: List<ScreenSize> = SmartPhones + Desktops
+        public val AllPresets: List<ScreenSize> = SmartPhones + Tablets + Desktops
     }
 }

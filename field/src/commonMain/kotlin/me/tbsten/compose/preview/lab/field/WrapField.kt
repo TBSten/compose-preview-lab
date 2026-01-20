@@ -21,7 +21,7 @@ import me.tbsten.compose.preview.lab.PreviewLabField.ViewMenuItem
  * @see wrap Extension function to create a WrapField easily
  * @see WrapRange Enum defining the wrapping scope
  */
-class WrapField<Value> internal constructor(
+public class WrapField<Value> internal constructor(
     private val baseField: MutablePreviewLabField<Value>,
     private val wrapRange: WrapRange = WrapRange.OnlyContent,
     private val content: @Composable (@Composable () -> Unit) -> Unit,
@@ -82,10 +82,10 @@ class WrapField<Value> internal constructor(
  * @see WrapField
  * @see WrapRange
  */
-fun <Value> MutablePreviewLabField<Value>.wrap(
+public fun <Value> MutablePreviewLabField<Value>.wrap(
     wrapRange: WrapRange = WrapRange.OnlyContent,
     content: @Composable (@Composable () -> Unit) -> Unit,
-) = WrapField(
+): WrapField<Value> = WrapField(
     baseField = this,
     wrapRange = wrapRange,
     content = content,
@@ -99,7 +99,7 @@ fun <Value> MutablePreviewLabField<Value>.wrap(
  * @property wrapView Whether to wrap the [View] (complete field UI including label)
  * @property wrapContent Whether to wrap the [Content] (only the input area)
  */
-enum class WrapRange(internal val wrapView: Boolean, internal val wrapContent: Boolean) {
+public enum class WrapRange(internal val wrapView: Boolean, internal val wrapContent: Boolean) {
     /**
      * Wraps the entire field view including the label.
      *

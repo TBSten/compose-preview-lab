@@ -2,11 +2,12 @@ package me.tbsten.compose.preview.lab.extension.kotlinx.datetime
 
 import androidx.compose.runtime.Composable
 import kotlinx.datetime.TimeZone
+import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.component.TextFieldContent
 import me.tbsten.compose.preview.lab.field.withHint
 
-class TimeZoneField(label: String, initialValue: TimeZone) :
+public class TimeZoneField(label: String, initialValue: TimeZone) :
     MutablePreviewLabField<TimeZone>(
         label = label,
         initialValue = initialValue,
@@ -14,7 +15,7 @@ class TimeZoneField(label: String, initialValue: TimeZone) :
 
     override fun valueCode(): String = "TimeZone.of(\"${value}\")"
 
-    override fun serializer() = TimeZone.serializer()
+    override fun serializer(): KSerializer<TimeZone> = TimeZone.serializer()
 
     @Composable
     override fun Content() {
@@ -25,7 +26,7 @@ class TimeZoneField(label: String, initialValue: TimeZone) :
     }
 }
 
-fun MutablePreviewLabField<TimeZone>.withMainTimeZonesHint() = withHint(
+public fun MutablePreviewLabField<TimeZone>.withMainTimeZonesHint(): MutablePreviewLabField<TimeZone> = withHint(
     *mainTimeZones.mapNotNull { (label, id) ->
         runCatching { TimeZone.of(zoneId = id) }
             .getOrNull()
@@ -33,7 +34,7 @@ fun MutablePreviewLabField<TimeZone>.withMainTimeZonesHint() = withHint(
     }.toTypedArray(),
 )
 
-fun MutablePreviewLabField<TimeZone>.withAllTimeZonesHint() = withHint(
+public fun MutablePreviewLabField<TimeZone>.withAllTimeZonesHint(): MutablePreviewLabField<TimeZone> = withHint(
     *allTimeZones.mapNotNull { (label, id) ->
         runCatching { TimeZone.of(zoneId = id) }
             .getOrNull()

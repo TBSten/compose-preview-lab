@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
@@ -53,7 +54,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 @InternalComposePreviewLabApi
-fun Switch(
+public fun Switch(
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)?,
     modifier: Modifier = Modifier,
@@ -180,18 +181,18 @@ private fun SwitchComponent(
 }
 
 @InternalComposePreviewLabApi
-object SwitchDefaults {
-    val ThumbSize = 16.dp
-    val UncheckedThumbSize = 12.dp
-    val ThumbSizeStateOffset = ThumbSize - UncheckedThumbSize
-    val SwitchWidth = 40.dp
-    val SwitchHeight = 24.dp
-    val TrackBorderWidth = 2.dp
-    val TrackShape = RoundedCornerShape(50)
-    val RippleRadius = 20.dp
+public object SwitchDefaults {
+    public val ThumbSize: Dp = 16.dp
+    public val UncheckedThumbSize: Dp = 12.dp
+    public val ThumbSizeStateOffset: Dp = ThumbSize - UncheckedThumbSize
+    public val SwitchWidth: Dp = 40.dp
+    public val SwitchHeight: Dp = 24.dp
+    public val TrackBorderWidth: Dp = 2.dp
+    public val TrackShape: RoundedCornerShape = RoundedCornerShape(50)
+    public val RippleRadius: Dp = 20.dp
 
     @Composable
-    fun colors(
+    public fun colors(
         checkedThumbColor: Color = PreviewLabTheme.colors.onPrimary,
         checkedTrackColor: Color = PreviewLabTheme.colors.primary,
         checkedBorderColor: Color = PreviewLabTheme.colors.primary,
@@ -230,7 +231,7 @@ object SwitchDefaults {
 
 @Stable
 @InternalComposePreviewLabApi
-class SwitchColors(
+public class SwitchColors(
     private val checkedThumbColor: Color,
     private val checkedTrackColor: Color,
     private val checkedBorderColor: Color,

@@ -46,10 +46,11 @@ import me.tbsten.compose.preview.lab.PreviewLabField.ViewMenuItem
  * @see me.tbsten.compose.preview.lab.PreviewLabField.valueCode
  * @see WithValueCodeField
  */
-fun <Value> MutablePreviewLabField<Value>.withValueCode(valueCode: (Value) -> String) = WithValueCodeField(
-    baseField = this,
-    valueCode = valueCode,
-)
+public fun <Value> MutablePreviewLabField<Value>.withValueCode(valueCode: (Value) -> String): WithValueCodeField<Value> =
+    WithValueCodeField(
+        baseField = this,
+        valueCode = valueCode,
+    )
 
 /**
  * A wrapper field that customizes the [valueCode] output of another field.
@@ -65,7 +66,7 @@ fun <Value> MutablePreviewLabField<Value>.withValueCode(valueCode: (Value) -> St
  * @see withValueCode
  * @see me.tbsten.compose.preview.lab.PreviewLabField.valueCode
  */
-class WithValueCodeField<Value>(
+public class WithValueCodeField<Value>(
     private val baseField: MutablePreviewLabField<Value>,
     private val valueCode: (Value) -> String,
 ) : MutablePreviewLabField<Value>(
@@ -78,8 +79,8 @@ class WithValueCodeField<Value>(
     override fun serializer(): KSerializer<Value>? = baseField.serializer()
 
     @Composable
-    override fun View(menuItems: List<ViewMenuItem<Value>>) = baseField.View(menuItems = menuItems)
+    override fun View(menuItems: List<ViewMenuItem<Value>>): Unit = baseField.View(menuItems = menuItems)
 
     @Composable
-    override fun Content() = baseField.Content()
+    override fun Content(): Unit = baseField.Content()
 }

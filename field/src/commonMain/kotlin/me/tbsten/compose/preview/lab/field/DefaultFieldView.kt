@@ -31,7 +31,7 @@ import org.jetbrains.compose.resources.painterResource
  * @see me.tbsten.compose.preview.lab.PreviewLabField
  */
 @Composable
-fun <Value> PreviewLabField<Value>.DefaultFieldView(
+public fun <Value> PreviewLabField<Value>.DefaultFieldView(
     modifier: Modifier = Modifier,
     menuItems: List<ViewMenuItem<Value>> = ViewMenuItem.defaults<Value>(this),
     content: @Composable () -> Unit = { Content() },
@@ -52,7 +52,7 @@ fun <Value> PreviewLabField<Value>.DefaultFieldView(
  * @see PreviewLabField
  */
 @Composable
-fun <Value> PreviewLabField<Value>.FieldLabelHeader(
+public fun <Value> PreviewLabField<Value>.FieldLabelHeader(
     menuItems: List<ViewMenuItem<Value>> = ViewMenuItem.defaults<Value>(this),
 ) {
     Row(

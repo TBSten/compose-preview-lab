@@ -41,9 +41,9 @@ import me.tbsten.compose.preview.lab.ui.components.colorpicker.CommonColorPicker
  * @param color The border color
  * @param width The border width
  */
-class BorderModifierFieldValue(color: Color, width: Dp) : ModifierFieldValue {
-    var color by mutableStateOf(color)
-    var width by mutableStateOf(width)
+public class BorderModifierFieldValue(color: Color, width: Dp) : ModifierFieldValue {
+    public var color: Color by mutableStateOf(color)
+    public var width: Dp by mutableStateOf(width)
 
     override fun Modifier.createModifier(): Modifier = border(
         color = color,
@@ -52,7 +52,7 @@ class BorderModifierFieldValue(color: Color, width: Dp) : ModifierFieldValue {
     )
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             appendLine(".border(")
 
@@ -117,18 +117,18 @@ class BorderModifierFieldValue(color: Color, width: Dp) : ModifierFieldValue {
      * @param initialColor Initial border color to apply
      * @param initialWidth Initial border width to apply
      */
-    class Factory(initialColor: Color? = null, initialWidth: Dp? = null) :
+    public class Factory(initialColor: Color? = null, initialWidth: Dp? = null) :
         ModifierFieldValueFactory<BorderModifierFieldValue> {
         override val title: String = ".border(...)"
-        var color by mutableStateOf(initialColor)
-        var width by mutableStateOf(initialWidth)
+        public var color: Color? by mutableStateOf(initialColor)
+        public var width: Dp? by mutableStateOf(initialWidth)
 
         override val canCreate: Boolean
             get() =
                 color != null && width != null
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column(
+        override fun Content(createButton: @Composable (() -> Unit)): Unit = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             CommonColorPicker(
@@ -163,7 +163,7 @@ class BorderModifierFieldValue(color: Color, width: Dp) : ModifierFieldValue {
  * @param width The width of the border
  * @return A new ModifierFieldValueList with border applied
  */
-fun ModifierFieldValueList.border(color: Color, width: Dp) = then(
+public fun ModifierFieldValueList.border(color: Color, width: Dp): ModifierFieldValueList = then(
     BorderModifierFieldValue(
         color = color,
         width = width,

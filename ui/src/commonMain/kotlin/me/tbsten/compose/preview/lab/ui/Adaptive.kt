@@ -9,7 +9,7 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @InternalComposePreviewLabApi
 @Composable
-fun <T> adaptive(small: T, medium: T = small, large: T = medium): T = adaptive(
+public fun <T> adaptive(small: T, medium: T = small, large: T = medium): T = adaptive(
     small = { small },
     medium = { medium },
     large = { large },
@@ -17,7 +17,7 @@ fun <T> adaptive(small: T, medium: T = small, large: T = medium): T = adaptive(
 
 @InternalComposePreviewLabApi
 @Composable
-fun <T> adaptive(
+public fun <T> adaptive(
     small: @Composable () -> T,
     medium: @Composable () -> T = small,
     large: @Composable () -> T = medium,
@@ -33,7 +33,7 @@ fun <T> adaptive(
 
 @InternalComposePreviewLabApi
 @Composable
-fun currentBreakpoint(): Breakpoint {
+public fun currentBreakpoint(): Breakpoint {
     val screenWidth =
         with(LocalDensity.current) {
             LocalWindowInfo.current.containerSize.width.toDp()
@@ -42,17 +42,17 @@ fun currentBreakpoint(): Breakpoint {
 }
 
 @InternalComposePreviewLabApi
-enum class Breakpoint(val maxWidth: Dp) {
+public enum class Breakpoint(public val maxWidth: Dp) {
     Small(600.dp),
     Medium(1200.dp),
     Large(Dp.Infinity),
     ;
 
-    operator fun <T> invoke(block: () -> T) = DataOverBreakpoint(this, block)
-    inner class DataOverBreakpoint<T> internal constructor(val breakpoint: Breakpoint, val data: () -> T)
+    public operator fun <T> invoke(block: () -> T): DataOverBreakpoint<T> = DataOverBreakpoint(this, block)
+    public inner class DataOverBreakpoint<T> internal constructor(public val breakpoint: Breakpoint, public val data: () -> T,)
 
-    companion object {
-        fun fromWidth(width: Dp) = entries.firstOrNull {
+    public companion object {
+        public fun fromWidth(width: Dp): Breakpoint = entries.firstOrNull {
             width <= it.maxWidth
         } ?: entries.last()
     }
@@ -60,12 +60,12 @@ enum class Breakpoint(val maxWidth: Dp) {
 
 @Composable
 @InternalComposePreviewLabApi
-fun AdaptiveContainer(
+public fun AdaptiveContainer(
     small: @Composable (content: @Composable () -> Unit) -> Unit,
     medium: @Composable (content: @Composable () -> Unit) -> Unit = small,
     large: @Composable (content: @Composable () -> Unit) -> Unit = medium,
     content: @Composable () -> Unit,
-) = adaptive(
+): Unit = adaptive(
     small = small,
     medium = medium,
     large = large,
@@ -75,12 +75,12 @@ fun AdaptiveContainer(
 
 @Composable
 @InternalComposePreviewLabApi
-fun <S> AdaptiveContainer(
+public fun <S> AdaptiveContainer(
     small: @Composable (content: @Composable S.() -> Unit) -> Unit,
     medium: @Composable (content: @Composable S.() -> Unit) -> Unit = small,
     large: @Composable (content: @Composable S.() -> Unit) -> Unit = medium,
     content: @Composable S.() -> Unit,
-) = adaptive(
+): Unit = adaptive(
     small = small,
     medium = medium,
     large = large,
@@ -90,7 +90,7 @@ fun <S> AdaptiveContainer(
 
 @Composable
 @InternalComposePreviewLabApi
-fun <A, R> adaptive(arg: A, small: (A) -> R, medium: (A) -> R = small, large: (A) -> R = medium): R = adaptive(
+public fun <A, R> adaptive(arg: A, small: (A) -> R, medium: (A) -> R = small, large: (A) -> R = medium): R = adaptive(
     small = { small(arg) },
     medium = { medium(arg) },
     large = { large(arg) },
@@ -98,16 +98,21 @@ fun <A, R> adaptive(arg: A, small: (A) -> R, medium: (A) -> R = small, large: (A
 
 @Composable
 @InternalComposePreviewLabApi
-fun <A, B, R> adaptive(arg1: A, arg2: B, small: (A, B) -> R, medium: (A, B) -> R = small, large: (A, B) -> R = medium): R =
-    adaptive(
-        small = { small(arg1, arg2) },
-        medium = { medium(arg1, arg2) },
-        large = { large(arg1, arg2) },
-    )
+public fun <A, B, R> adaptive(
+    arg1: A,
+    arg2: B,
+    small: (A, B) -> R,
+    medium: (A, B) -> R = small,
+    large: (A, B) -> R = medium
+): R = adaptive(
+    small = { small(arg1, arg2) },
+    medium = { medium(arg1, arg2) },
+    large = { large(arg1, arg2) },
+)
 
 @Composable
 @InternalComposePreviewLabApi
-fun <A, B, C, R> adaptive(
+public fun <A, B, C, R> adaptive(
     arg1: A,
     arg2: B,
     arg3: C,
@@ -121,11 +126,11 @@ fun <A, B, C, R> adaptive(
 )
 
 @InternalComposePreviewLabApi
-object AdaptiveWithReceiver
+public object AdaptiveWithReceiver
 
 @Composable
 @InternalComposePreviewLabApi
-fun <T, R> T.adaptive(
+public fun <T, R> T.adaptive(
     small: T.() -> R,
     medium: T.() -> R = small,
     large: T.() -> R = medium,

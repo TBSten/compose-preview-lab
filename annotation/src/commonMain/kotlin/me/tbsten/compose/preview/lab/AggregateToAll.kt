@@ -18,4 +18,4 @@ package me.tbsten.compose.preview.lab
  * ```
  */
 @InternalComposePreviewLabApi
-annotation class AggregateToAll
+public annotation class AggregateToAll

@@ -1,87 +1,46 @@
 package me.tbsten.compose.preview.lab.field
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
-import me.tbsten.compose.preview.lab.ui.Gray50
-import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.animation.animated
-import me.tbsten.compose.preview.lab.ui.components.Surface
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.Checkbox
 
 /**
- * Field that holds a Boolean value.
- * Switch allows you to switch values.
+ * A field for editing Boolean values with a checkbox UI.
  *
  * # Usage
  *
  * ```kt
- * // Basic usage for component enabled state
  * @Preview
  * @Composable
- * fun ButtonPreview() = PreviewLab {
- *     val enabled: Boolean = fieldValue { BooleanField("enabled", true) }
- *     MyButton(
- *         text = "Click me",
- *         enabled = enabled
- *     )
+ * fun MyComponentPreview() = PreviewLab {
+ *     val checked: Boolean = fieldValue { BooleanField("Checked", false) }
+ *
+ *     MyComponent(checked = checked)
  * }
  * ```
  *
- * @param label label of the field.
- * @param initialValue initial value of the field.
- * @see me.tbsten.compose.preview.lab.MutablePreviewLabField
+ * @param label Label displayed in the UI for this field.
+ * @param initialValue Initial boolean value for this field.
+ *
+ * @see me.tbsten.compose.preview.lab.PreviewLabField
+ * @see me.tbsten.compose.preview.lab.PreviewLabScope.fieldValue
  */
-open class BooleanField(label: String, initialValue: Boolean) :
+public open class BooleanField(label: String, initialValue: Boolean) :
     MutablePreviewLabField<Boolean>(
         label = label,
         initialValue = initialValue,
     ) {
-    override fun testValues(): List<Boolean> = super.testValues() + listOf(true, false)
-    override fun valueCode(): String = "$value"
+    override fun valueCode(): String = value.toString()
+    override fun testValues(): List<Boolean> = listOf(true, false)
     override fun serializer(): KSerializer<Boolean> = Boolean.serializer()
 
     @Composable
     override fun Content() {
-        BooleanSwitch(
-            boolean = value,
-            onChange = { value = it },
+        Checkbox(
+            checked = value,
+            onCheckedChange = { value = !value },
         )
-    }
-}
-
-@Composable
-private fun BooleanSwitch(boolean: Boolean, onChange: (Boolean) -> Unit) {
-    Surface(
-        shape = RoundedCornerShape(percent = 50),
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.padding(horizontal = 4.dp, vertical = 4.dp),
-        ) {
-            listOf(true, false).forEach {
-                val isSelected = boolean == it
-
-                Surface(
-                    color = (if (isSelected) Gray50 else Color.Transparent).animated(),
-                    shape = RoundedCornerShape(percent = 50),
-                    onClick = { onChange(it) },
-                ) {
-                    Text(
-                        text = it.toString(),
-                        style = PreviewLabTheme.typography.label1,
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
-                    )
-                }
-            }
-        }
     }
 }

@@ -14,7 +14,7 @@ import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 
 @Composable
 @InternalComposePreviewLabApi
-fun CommonListHeader(title: String, actions: @Composable () -> Unit, modifier: Modifier = Modifier) {
+public fun CommonListHeader(title: String, actions: @Composable () -> Unit, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

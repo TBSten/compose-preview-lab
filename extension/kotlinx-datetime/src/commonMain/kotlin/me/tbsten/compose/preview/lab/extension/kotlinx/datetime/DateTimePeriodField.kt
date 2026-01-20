@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.DateTimePeriod
+import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.component.LocalDateEditor
 import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.component.LocalTimeEditor
@@ -16,7 +17,7 @@ import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.util.with
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Text
 
-class DateTimePeriodField(label: String, initialValue: DateTimePeriod) :
+public class DateTimePeriodField(label: String, initialValue: DateTimePeriod) :
     MutablePreviewLabField<DateTimePeriod>(
         label = label,
         initialValue = initialValue,
@@ -31,7 +32,7 @@ class DateTimePeriodField(label: String, initialValue: DateTimePeriod) :
         "nanoseconds = ${value.nanoseconds}" +
         ")"
 
-    override fun serializer() = DateTimePeriod.serializer()
+    override fun serializer(): KSerializer<DateTimePeriod> = DateTimePeriod.serializer()
 
     @Composable
     override fun Content() {

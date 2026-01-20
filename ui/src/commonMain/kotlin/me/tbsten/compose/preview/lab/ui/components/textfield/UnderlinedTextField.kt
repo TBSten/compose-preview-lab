@@ -42,7 +42,7 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.base.containerUnder
 
 @Composable
 @InternalComposePreviewLabApi
-fun UnderlinedTextField(
+public fun UnderlinedTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -120,7 +120,7 @@ fun UnderlinedTextField(
 
 @Composable
 @InternalComposePreviewLabApi
-fun UnderlinedTextField(
+public fun UnderlinedTextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier,
@@ -198,8 +198,8 @@ fun UnderlinedTextField(
 
 @Immutable
 @InternalComposePreviewLabApi
-object UnderlinedTextFieldDefaults {
-    val MinHeight = TextFieldMinHeight
+public object UnderlinedTextFieldDefaults {
+    public val MinHeight: Dp = TextFieldMinHeight
 
     private fun contentPadding(
         start: Dp = 0.dp,
@@ -235,14 +235,14 @@ object UnderlinedTextFieldDefaults {
     ): PaddingValues = PaddingValues(start, top, end, bottom)
 
     @Composable
-    fun containerBorderThickness(interactionSource: InteractionSource): Dp {
+    public fun containerBorderThickness(interactionSource: InteractionSource): Dp {
         val focused by interactionSource.collectIsFocusedAsState()
 
         return if (focused) FocusedOutlineThickness else UnfocusedOutlineThickness
     }
 
     @Composable
-    fun DecorationBox(
+    public fun DecorationBox(
         value: String,
         innerTextField: @Composable () -> Unit,
         enabled: Boolean,
@@ -286,7 +286,7 @@ object UnderlinedTextFieldDefaults {
     }
 
     @Composable
-    fun ContainerBox(
+    public fun ContainerBox(
         enabled: Boolean,
         isError: Boolean,
         interactionSource: InteractionSource,
@@ -301,7 +301,7 @@ object UnderlinedTextFieldDefaults {
     }
 
     @Composable
-    fun colors(): TextFieldColors = TextFieldColors(
+    public fun colors(): TextFieldColors = TextFieldColors(
         focusedTextColor = PreviewLabTheme.colors.text,
         unfocusedTextColor = PreviewLabTheme.colors.text,
         disabledTextColor = PreviewLabTheme.colors.onDisabled,

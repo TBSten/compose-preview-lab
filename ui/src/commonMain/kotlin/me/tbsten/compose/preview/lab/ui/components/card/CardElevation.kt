@@ -22,7 +22,7 @@ import me.tbsten.compose.preview.lab.ui.foundation.animateElevation
 
 @Immutable
 @InternalComposePreviewLabApi
-class CardElevation @InternalComposePreviewLabApi constructor(
+public class CardElevation @InternalComposePreviewLabApi constructor(
     private val defaultElevation: Dp,
     private val pressedElevation: Dp,
     private val focusedElevation: Dp,
@@ -31,7 +31,7 @@ class CardElevation @InternalComposePreviewLabApi constructor(
     private val disabledElevation: Dp,
 ) {
     @Composable
-    fun shadowElevation(enabled: Boolean, interactionSource: InteractionSource?): State<Dp> {
+    public fun shadowElevation(enabled: Boolean, interactionSource: InteractionSource?): State<Dp> {
         if (interactionSource == null) {
             return remember { mutableStateOf(defaultElevation) }
         }

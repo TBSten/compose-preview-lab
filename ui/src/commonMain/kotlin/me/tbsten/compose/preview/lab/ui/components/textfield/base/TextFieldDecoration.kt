@@ -43,7 +43,7 @@ import me.tbsten.compose.preview.lab.ui.foundation.ProvideContentColorTextStyle
 
 @Composable
 @InternalComposePreviewLabApi
-fun CommonDecorationBox(
+public fun CommonDecorationBox(
     value: String,
     innerTextField: @Composable () -> Unit,
     visualTransformation: VisualTransformation,

@@ -25,13 +25,13 @@ import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
  *
  * @param zIndex The Z-index value determining the stacking order. Higher values appear on top of lower values.
  */
-class ZIndexModifierFieldValue(zIndex: Float) : ModifierFieldValue {
-    var zIndex by mutableStateOf(zIndex)
+public class ZIndexModifierFieldValue(zIndex: Float) : ModifierFieldValue {
+    public var zIndex: Float by mutableStateOf(zIndex)
 
     override fun Modifier.createModifier(): Modifier = zIndex(zIndex = zIndex)
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             appendLine(".zIndex(")
 
@@ -61,15 +61,15 @@ class ZIndexModifierFieldValue(zIndex: Float) : ModifierFieldValue {
      *
      * @param initialZIndex Initial Z-index value for controlling the layering order
      */
-    class Factory(initialZIndex: Float? = null) : ModifierFieldValueFactory<ZIndexModifierFieldValue> {
+    public class Factory(initialZIndex: Float? = null) : ModifierFieldValueFactory<ZIndexModifierFieldValue> {
         override val title: String = ".zIndex(...)"
-        var zIndex by mutableStateOf(initialZIndex)
+        public var zIndex: Float? by mutableStateOf(initialZIndex)
 
         override val canCreate: Boolean
             get() = zIndex != null
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column(
+        override fun Content(createButton: @Composable (() -> Unit)): Unit = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             TransformableTextField(
@@ -97,7 +97,7 @@ class ZIndexModifierFieldValue(zIndex: Float) : ModifierFieldValue {
  * @param zIndex The Z-index value determining the stacking order (higher values appear on top)
  * @return A new ModifierFieldValueList with Z-index applied
  */
-fun ModifierFieldValueList.zIndex(zIndex: Float) = then(
+public fun ModifierFieldValueList.zIndex(zIndex: Float): ModifierFieldValueList = then(
     ZIndexModifierFieldValue(
         zIndex = zIndex,
     ),

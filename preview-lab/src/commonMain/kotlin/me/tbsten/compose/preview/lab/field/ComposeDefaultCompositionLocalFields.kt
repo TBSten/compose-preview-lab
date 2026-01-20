@@ -36,7 +36,7 @@ import me.tbsten.compose.preview.lab.previewlab.PreviewLabScope
  * ```
  */
 @Composable
-fun PreviewLabScope.provideDefaultCompositionLocalFields(
+public fun PreviewLabScope.provideDefaultCompositionLocalFields(
     densityField: (MutablePreviewLabField<Float>) -> MutablePreviewLabField<Float> =
         { it },
     fontScaleField: (MutablePreviewLabField<Float>) -> MutablePreviewLabField<Float> =
@@ -76,7 +76,7 @@ internal expect fun PreviewLabScope.providePlatformDefaultCompositionLocalFields
  *
  * @return [MutablePreviewLabField] with font scale hints added.
  */
-fun MutablePreviewLabField<Float>.withBasicFontScalesHint() = withHint(
+public fun MutablePreviewLabField<Float>.withBasicFontScalesHint(): MutablePreviewLabField<Float> = withHint(
     "small" to 1.0f,
     "normal" to 1.5f,
     "large" to 2.0f,

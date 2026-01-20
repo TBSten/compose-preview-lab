@@ -33,7 +33,7 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @Composable
 @InternalComposePreviewLabApi
-fun TextFieldLayout(
+public fun TextFieldLayout(
     modifier: Modifier,
     textField: @Composable () -> Unit,
     label: @Composable (() -> Unit)?,

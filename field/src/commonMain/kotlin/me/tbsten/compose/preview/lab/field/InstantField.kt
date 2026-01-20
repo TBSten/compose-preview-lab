@@ -11,7 +11,7 @@ import me.tbsten.compose.preview.lab.field.component.TextFieldContent
 import me.tbsten.compose.preview.lab.field.serializer.InstantSerializer
 import me.tbsten.compose.preview.lab.ui.components.Text
 
-class InstantField(label: String, initialValue: Instant) :
+public class InstantField(label: String, initialValue: Instant) :
     MutablePreviewLabField<Instant>(
         label = label,
         initialValue = initialValue,

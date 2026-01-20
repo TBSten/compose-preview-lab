@@ -21,7 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.RadioButtonDefaults.MinimumInteractiveSize
 import me.tbsten.compose.preview.lab.ui.components.RadioButtonDefaults.RadioAnimationDuration
@@ -33,7 +35,8 @@ import me.tbsten.compose.preview.lab.ui.foundation.ripple
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun RadioButton(
+@InternalComposePreviewLabApi
+public fun RadioButton(
     modifier: Modifier = Modifier,
     selected: Boolean,
     onClick: (() -> Unit)? = null,
@@ -110,17 +113,18 @@ fun RadioButton(
     }
 }
 
-object RadioButtonDefaults {
-    const val RadioAnimationDuration = 100
+@InternalComposePreviewLabApi
+public object RadioButtonDefaults {
+    public const val RadioAnimationDuration: Int = 100
 
-    val RadioButtonPadding = 2.dp
-    val RadioSelectedStrokeWidth = 6.dp
-    val RadioStrokeWidth = 2.dp
-    val RadioButtonIconSize = 20.dp
-    val MinimumInteractiveSize = 44.dp
+    public val RadioButtonPadding: Dp = 2.dp
+    public val RadioSelectedStrokeWidth: Dp = 6.dp
+    public val RadioStrokeWidth: Dp = 2.dp
+    public val RadioButtonIconSize: Dp = 20.dp
+    public val MinimumInteractiveSize: Dp = 44.dp
 
     @Composable
-    fun colors() = RadioButtonColors(
+    public fun colors(): RadioButtonColors = RadioButtonColors(
         selectedColor = PreviewLabTheme.colors.primary,
         unselectedColor = PreviewLabTheme.colors.primary,
         disabledSelectedColor = PreviewLabTheme.colors.disabled,
@@ -129,14 +133,15 @@ object RadioButtonDefaults {
 }
 
 @Immutable
-data class RadioButtonColors(
+@InternalComposePreviewLabApi
+public data class RadioButtonColors(
     val selectedColor: Color,
     val unselectedColor: Color,
     val disabledSelectedColor: Color,
     val disabledUnselectedColor: Color,
 ) {
     @Composable
-    internal fun radioColor(enabled: Boolean, selected: Boolean): State<Color> {
+    public fun radioColor(enabled: Boolean, selected: Boolean): State<Color> {
         val target =
             when {
                 enabled && selected -> selectedColor

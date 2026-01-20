@@ -46,7 +46,7 @@ private const val SummaryMaxItems = 5
  * @param defaultValue Factory function to create a default value when inserting new elements.
  *                     Defaults to the first element of initialValue if available.
  */
-open class ListField<Value>(
+public open class ListField<Value>(
     label: String,
     initialValue: List<Value>,
     internal val elementField: ElementFieldScope.() -> MutablePreviewLabField<Value>,
@@ -133,7 +133,7 @@ open class ListField<Value>(
      * @property label The label for the element field, representing its index in the list.
      * @property initialValue The initial value for the element.
      */
-    inner class ElementFieldScope internal constructor(val label: String, val initialValue: Value)
+    public inner class ElementFieldScope internal constructor(public val label: String, public val initialValue: Value)
 }
 
 /**
@@ -141,4 +141,5 @@ open class ListField<Value>(
  *
  * @return The field with the empty list hint added.
  */
-fun <Value> MutablePreviewLabField<List<Value>>.withEmptyHint() = withHint("Empty List" to emptyList())
+public fun <Value> MutablePreviewLabField<List<Value>>.withEmptyHint(): MutablePreviewLabField<List<Value>> =
+    withHint("Empty List" to emptyList())

@@ -45,7 +45,7 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.base.containerOutli
 
 @Composable
 @InternalComposePreviewLabApi
-fun OutlinedTextField(
+public fun OutlinedTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -123,7 +123,7 @@ fun OutlinedTextField(
 
 @Composable
 @InternalComposePreviewLabApi
-fun OutlinedTextField(
+public fun OutlinedTextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier,
@@ -203,9 +203,9 @@ fun OutlinedTextField(
 
 @Immutable
 @InternalComposePreviewLabApi
-object OutlinedTextFieldDefaults {
-    val MinHeight = TextFieldMinHeight
-    val Shape: Shape = RoundedCornerShape(8.dp)
+public object OutlinedTextFieldDefaults {
+    public val MinHeight: Dp = TextFieldMinHeight
+    public val Shape: Shape = RoundedCornerShape(8.dp)
 
     private fun contentPadding(
         start: Dp = TextFieldHorizontalPadding,
@@ -245,14 +245,14 @@ object OutlinedTextFieldDefaults {
     ): PaddingValues = PaddingValues(start, top, end, bottom)
 
     @Composable
-    fun containerBorderThickness(interactionSource: InteractionSource): Dp {
+    public fun containerBorderThickness(interactionSource: InteractionSource): Dp {
         val focused by interactionSource.collectIsFocusedAsState()
 
         return if (focused) FocusedOutlineThickness else UnfocusedOutlineThickness
     }
 
     @Composable
-    fun DecorationBox(
+    public fun DecorationBox(
         value: String,
         innerTextField: @Composable () -> Unit,
         enabled: Boolean,
@@ -297,7 +297,7 @@ object OutlinedTextFieldDefaults {
     }
 
     @Composable
-    fun ContainerBox(
+    public fun ContainerBox(
         enabled: Boolean,
         isError: Boolean,
         interactionSource: InteractionSource,
@@ -313,7 +313,7 @@ object OutlinedTextFieldDefaults {
     }
 
     @Composable
-    fun colors(): TextFieldColors = TextFieldColors(
+    public fun colors(): TextFieldColors = TextFieldColors(
         focusedTextColor = PreviewLabTheme.colors.text,
         unfocusedTextColor = PreviewLabTheme.colors.text,
         disabledTextColor = PreviewLabTheme.colors.onDisabled,

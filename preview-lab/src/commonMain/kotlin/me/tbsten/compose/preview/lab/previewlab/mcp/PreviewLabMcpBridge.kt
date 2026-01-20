@@ -13,7 +13,7 @@ import me.tbsten.compose.preview.lab.PreviewLabField
  * to external MCP (Model Context Protocol) servers without direct dependency on MCP implementation.
  */
 @ExperimentalComposePreviewLabApi
-interface PreviewLabMcpBridge {
+public interface PreviewLabMcpBridge {
     /**
      * Called when the PreviewLab state changes.
      * Implementations should update MCP resources accordingly.
@@ -25,7 +25,7 @@ interface PreviewLabMcpBridge {
      * @param onUpdateField Callback to update a field's value by label
      * @param onClearEvents Callback to clear all events
      */
-    fun updateState(
+    public fun updateState(
         previewId: String,
         fields: List<PreviewLabField<*>>,
         events: List<PreviewLabEvent>,
@@ -40,13 +40,13 @@ interface PreviewLabMcpBridge {
      *
      * @param previewId Unique identifier for the disposed PreviewLab instance
      */
-    fun removeState(previewId: String)
+    public fun removeState(previewId: String)
 
-    companion object {
+    public companion object {
         /**
          * No-op implementation for platforms that don't support MCP.
          */
-        val NoOp: PreviewLabMcpBridge = object : PreviewLabMcpBridge {
+        public val NoOp: PreviewLabMcpBridge = object : PreviewLabMcpBridge {
             override fun updateState(
                 previewId: String,
                 fields: List<PreviewLabField<*>>,
@@ -68,4 +68,5 @@ interface PreviewLabMcpBridge {
  * On JVM platforms with MCP support, this should be overridden with an actual implementation.
  */
 @ExperimentalComposePreviewLabApi
-val LocalPreviewLabMcpBridge = compositionLocalOf<PreviewLabMcpBridge> { PreviewLabMcpBridge.NoOp }
+public val LocalPreviewLabMcpBridge: androidx.compose.runtime.ProvidableCompositionLocal<PreviewLabMcpBridge> =
+    compositionLocalOf<PreviewLabMcpBridge> { PreviewLabMcpBridge.NoOp }

@@ -19,6 +19,7 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
@@ -31,6 +32,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
@@ -41,7 +43,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 @InternalComposePreviewLabApi
-fun IconButton(
+public fun IconButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     loading: Boolean = false,
@@ -110,7 +112,7 @@ private fun IconButtonComponent(
 }
 
 @InternalComposePreviewLabApi
-enum class IconButtonVariant {
+public enum class IconButtonVariant {
     Primary,
     PrimaryOutlined,
     PrimaryElevated,
@@ -127,15 +129,15 @@ enum class IconButtonVariant {
 }
 
 @InternalComposePreviewLabApi
-object IconButtonDefaults {
-    val ButtonSize = 44.dp
-    val ButtonPadding = PaddingValues(4.dp)
-    val ButtonSquareShape = RoundedCornerShape(12.dp)
-    val ButtonCircleShape = RoundedCornerShape(percent = 50)
-    val OutlineHeight = 1.dp
+public object IconButtonDefaults {
+    public val ButtonSize: Dp = 44.dp
+    public val ButtonPadding: PaddingValues = PaddingValues(4.dp)
+    public val ButtonSquareShape: RoundedCornerShape = RoundedCornerShape(12.dp)
+    public val ButtonCircleShape: RoundedCornerShape = RoundedCornerShape(percent = 50)
+    public val OutlineHeight: Dp = 1.dp
 
     @Composable
-    fun buttonElevation() = ButtonElevation(
+    public fun buttonElevation(): ButtonElevation = ButtonElevation(
         defaultElevation = 2.dp,
         pressedElevation = 2.dp,
         focusedElevation = 2.dp,
@@ -144,7 +146,7 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun styleFor(variant: IconButtonVariant, shape: Shape): IconButtonStyle = when (variant) {
+    public fun styleFor(variant: IconButtonVariant, shape: Shape): IconButtonStyle = when (variant) {
         IconButtonVariant.Primary -> primaryFilled(shape)
         IconButtonVariant.PrimaryOutlined -> primaryOutlined(shape)
         IconButtonVariant.PrimaryElevated -> primaryElevated(shape)
@@ -161,7 +163,7 @@ object IconButtonDefaults {
     }
 
     @Composable
-    fun primaryFilled(shape: Shape) = IconButtonStyle(
+    public fun primaryFilled(shape: Shape): IconButtonStyle = IconButtonStyle(
         colors =
         IconButtonColors(
             containerColor = PreviewLabTheme.colors.primary,
@@ -174,7 +176,7 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun primaryOutlined(shape: Shape) = IconButtonStyle(
+    public fun primaryOutlined(shape: Shape): IconButtonStyle = IconButtonStyle(
         colors =
         IconButtonColors(
             containerColor = PreviewLabTheme.colors.transparent,
@@ -189,7 +191,7 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun primaryElevated(shape: Shape) = IconButtonStyle(
+    public fun primaryElevated(shape: Shape): IconButtonStyle = IconButtonStyle(
         colors =
         IconButtonColors(
             containerColor = PreviewLabTheme.colors.primary,
@@ -202,7 +204,7 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun primaryGhost(shape: Shape) = IconButtonStyle(
+    public fun primaryGhost(shape: Shape): IconButtonStyle = IconButtonStyle(
         colors =
         IconButtonColors(
             containerColor = PreviewLabTheme.colors.transparent,
@@ -217,7 +219,7 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun secondaryFilled(shape: Shape) = IconButtonStyle(
+    public fun secondaryFilled(shape: Shape): IconButtonStyle = IconButtonStyle(
         colors =
         IconButtonColors(
             containerColor = PreviewLabTheme.colors.secondary,
@@ -230,7 +232,7 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun secondaryOutlined(shape: Shape) = IconButtonStyle(
+    public fun secondaryOutlined(shape: Shape): IconButtonStyle = IconButtonStyle(
         colors =
         IconButtonColors(
             containerColor = PreviewLabTheme.colors.transparent,
@@ -245,7 +247,7 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun secondaryElevated(shape: Shape) = IconButtonStyle(
+    public fun secondaryElevated(shape: Shape): IconButtonStyle = IconButtonStyle(
         colors =
         IconButtonColors(
             containerColor = PreviewLabTheme.colors.secondary,
@@ -258,7 +260,7 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun secondaryGhost(shape: Shape) = IconButtonStyle(
+    public fun secondaryGhost(shape: Shape): IconButtonStyle = IconButtonStyle(
         colors =
         IconButtonColors(
             containerColor = PreviewLabTheme.colors.transparent,
@@ -273,7 +275,7 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun destructiveFilled(shape: Shape) = IconButtonStyle(
+    public fun destructiveFilled(shape: Shape): IconButtonStyle = IconButtonStyle(
         colors =
         IconButtonColors(
             containerColor = PreviewLabTheme.colors.error,
@@ -286,7 +288,7 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun destructiveOutlined(shape: Shape) = IconButtonStyle(
+    public fun destructiveOutlined(shape: Shape): IconButtonStyle = IconButtonStyle(
         colors =
         IconButtonColors(
             containerColor = PreviewLabTheme.colors.transparent,
@@ -301,7 +303,7 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun destructiveElevated(shape: Shape) = IconButtonStyle(
+    public fun destructiveElevated(shape: Shape): IconButtonStyle = IconButtonStyle(
         colors =
         IconButtonColors(
             containerColor = PreviewLabTheme.colors.error,
@@ -314,7 +316,7 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun destructiveGhost(shape: Shape) = IconButtonStyle(
+    public fun destructiveGhost(shape: Shape): IconButtonStyle = IconButtonStyle(
         colors =
         IconButtonColors(
             containerColor = PreviewLabTheme.colors.transparent,
@@ -329,7 +331,7 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun ghost(shape: Shape) = IconButtonStyle(
+    public fun ghost(shape: Shape): IconButtonStyle = IconButtonStyle(
         colors =
         IconButtonColors(
             containerColor = PreviewLabTheme.colors.transparent,
@@ -344,7 +346,7 @@ object IconButtonDefaults {
 
 @Immutable
 @InternalComposePreviewLabApi
-data class IconButtonColors(
+public data class IconButtonColors(
     val containerColor: Color,
     val contentColor: Color,
     val borderColor: Color? = null,
@@ -353,18 +355,21 @@ data class IconButtonColors(
     val disabledBorderColor: Color? = null,
 ) {
     @Composable
-    fun containerColor(enabled: Boolean) = rememberUpdatedState(if (enabled) containerColor else disabledContainerColor)
+    public fun containerColor(enabled: Boolean): State<Color> =
+        rememberUpdatedState(if (enabled) containerColor else disabledContainerColor)
 
     @Composable
-    fun contentColor(enabled: Boolean) = rememberUpdatedState(if (enabled) contentColor else disabledContentColor)
+    public fun contentColor(enabled: Boolean): State<Color> =
+        rememberUpdatedState(if (enabled) contentColor else disabledContentColor)
 
     @Composable
-    fun borderColor(enabled: Boolean) = rememberUpdatedState(if (enabled) borderColor else disabledBorderColor)
+    public fun borderColor(enabled: Boolean): State<Color?> =
+        rememberUpdatedState(if (enabled) borderColor else disabledBorderColor)
 }
 
 @Immutable
 @InternalComposePreviewLabApi
-data class IconButtonStyle(val colors: IconButtonColors, val shape: Shape, val elevation: ButtonElevation? = null)
+public data class IconButtonStyle(val colors: IconButtonColors, val shape: Shape, val elevation: ButtonElevation? = null)
 
 @Composable
 @Preview

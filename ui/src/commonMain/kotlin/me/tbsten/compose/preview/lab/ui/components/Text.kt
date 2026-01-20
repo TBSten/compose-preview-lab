@@ -31,7 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 @InternalComposePreviewLabApi
-fun Text(
+public fun Text(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = LocalContentColor.current,
@@ -73,7 +73,7 @@ fun Text(
 
 @Composable
 @InternalComposePreviewLabApi
-fun Text(
+public fun Text(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
     color: Color = LocalContentColor.current,
@@ -122,7 +122,7 @@ fun Text(
 
 @Composable
 @InternalComposePreviewLabApi
-fun SelectableText(
+public fun SelectableText(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
     color: Color = LocalContentColor.current,
@@ -141,7 +141,7 @@ fun SelectableText(
     inlineContent: Map<String, InlineTextContent> = mapOf(),
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current,
-) = SelectionContainer {
+): Unit = SelectionContainer {
     Text(
         text = text,
         modifier = modifier,

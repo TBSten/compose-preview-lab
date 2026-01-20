@@ -37,8 +37,8 @@ import org.jetbrains.compose.resources.painterResource
  * Default configuration object for ModifierBuilder functionality.
  * Provides default sets of modifier field value factories organized by category.
  */
-object ModifierBuilderDefaults {
-    val modifierFieldValueFactories: ModifierFieldValueFactories = listOf(
+public object ModifierBuilderDefaults {
+    public val modifierFieldValueFactories: ModifierFieldValueFactories = listOf(
         // Layout
         PaddingModifierFieldValue.Factory(initialAll = 10.dp),
         // Size

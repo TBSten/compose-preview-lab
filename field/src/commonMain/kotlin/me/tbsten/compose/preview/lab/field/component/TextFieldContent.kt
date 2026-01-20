@@ -25,14 +25,14 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.OutlinedTextField
  * @param placeholder Composable to be displayed as a placeholder; if null, the label is displayed with [Text].
  */
 @Composable
-fun <Value> MutablePreviewLabField<Value>.TextFieldContent(
+public fun <Value> MutablePreviewLabField<Value>.TextFieldContent(
     toString: (Value) -> String,
     toValue: (String) -> Result<Value>,
     modifier: Modifier = Modifier,
     prefix: (@Composable () -> Unit)? = null,
     suffix: (@Composable () -> Unit)? = null,
     placeholder: (@Composable () -> Unit)? = null,
-) = TextFieldContent(
+): Unit = TextFieldContent(
     label = label,
     value = value,
     onValueChange = { value = it },
@@ -45,7 +45,7 @@ fun <Value> MutablePreviewLabField<Value>.TextFieldContent(
 )
 
 @Composable
-fun <Value> TextFieldContent(
+public fun <Value> TextFieldContent(
     label: String,
     value: Value,
     onValueChange: (Value) -> Unit,

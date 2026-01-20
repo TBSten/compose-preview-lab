@@ -22,7 +22,11 @@ import me.tbsten.compose.preview.lab.util.JsOnlyExportIgnore
 @OptIn(ExperimentalJsExport::class)
 @JsOnlyExport
 @Stable
-class PreviewLabGalleryState @JsOnlyExportIgnore constructor(initialSelectedPreview: Pair<String, PreviewLabPreview>? = null) {
+public class PreviewLabGalleryState
+@JsOnlyExportIgnore
+public constructor(
+    public val initialSelectedPreview: Pair<String, PreviewLabPreview>? = null,
+) {
     internal var selectedPreview: SelectedPreview? by mutableStateOf(
         initialSelectedPreview
             ?.let(SelectedPreview::from),
@@ -32,7 +36,7 @@ class PreviewLabGalleryState @JsOnlyExportIgnore constructor(initialSelectedPrev
     internal var comparePanelPreviews = mutableStateListOf<SelectedPreview>()
 
     @InternalComposePreviewLabApi
-    val selectedPreviews: List<SelectedPreview> by derivedStateOf {
+    public val selectedPreviews: List<SelectedPreview> by derivedStateOf {
         selectedPreview?.let { selectedPreview ->
             listOf(selectedPreview) + comparePanelPreviews
         } ?: emptyList()
@@ -40,7 +44,7 @@ class PreviewLabGalleryState @JsOnlyExportIgnore constructor(initialSelectedPrev
 
     internal val canAddToComparePanel by derivedStateOf { selectedPreviews.isNotEmpty() }
 
-    var query by mutableStateOf("")
+    public var query: String by mutableStateOf("")
         @InternalComposePreviewLabApi set
 
     /**
@@ -51,7 +55,7 @@ class PreviewLabGalleryState @JsOnlyExportIgnore constructor(initialSelectedPrev
      *
      * @param query New search query string
      */
-    fun onQueryChange(query: String) {
+    public fun onQueryChange(query: String) {
         this.query = query
     }
 
@@ -59,7 +63,7 @@ class PreviewLabGalleryState @JsOnlyExportIgnore constructor(initialSelectedPrev
      * Select Preview.
      */
     @JsOnlyExportIgnore
-    fun select(groupName: String, preview: PreviewLabPreview) {
+    public fun select(groupName: String, preview: PreviewLabPreview) {
         val newSelectedPreview = SelectedPreview(groupName, preview)
         if (selectedPreview == newSelectedPreview) {
             unselect()
@@ -71,7 +75,7 @@ class PreviewLabGalleryState @JsOnlyExportIgnore constructor(initialSelectedPrev
     /**
      * Deselects the selected Preview and returns it to the "nothing selected" state.
      */
-    fun unselect() {
+    public fun unselect() {
         selectedPreview = null
         comparePanelPreviews.clear()
     }
@@ -88,7 +92,7 @@ class PreviewLabGalleryState @JsOnlyExportIgnore constructor(initialSelectedPrev
      * @param newPreview Preview to add to the compare panel
      */
     @JsOnlyExportIgnore
-    fun addToComparePanel(groupName: String, newPreview: PreviewLabPreview) {
+    public fun addToComparePanel(groupName: String, newPreview: PreviewLabPreview) {
         val newPanelTitle = run {
             val baseTitle = newPreview.displayName
             var newPanelTitle = baseTitle
@@ -114,14 +118,18 @@ class PreviewLabGalleryState @JsOnlyExportIgnore constructor(initialSelectedPrev
      *
      * @param indexInSelectedPreviews Index position in the selected Preview list (1 or greater)
      */
-    fun removeFromComparePanel(indexInSelectedPreviews: Int) {
+    public fun removeFromComparePanel(indexInSelectedPreviews: Int) {
         val indexInComparePanelPreviews = indexInSelectedPreviews - 1
         comparePanelPreviews.removeAt(indexInComparePanelPreviews)
     }
 }
 
 @InternalComposePreviewLabApi
-class SelectedPreview(val groupName: String, val preview: PreviewLabPreview, val title: String = preview.displayName) {
+public class SelectedPreview(
+    public val groupName: String,
+    public val preview: PreviewLabPreview,
+    public val title: String = preview.displayName,
+) {
     override fun toString(): String = "SelectedPreview(groupName='$groupName', preview=$preview)"
 
     override fun equals(other: Any?): Boolean {
@@ -140,8 +148,8 @@ class SelectedPreview(val groupName: String, val preview: PreviewLabPreview, val
         return result
     }
 
-    companion object {
-        fun from(preview: Pair<String, PreviewLabPreview>) = SelectedPreview(
+    public companion object {
+        public fun from(preview: Pair<String, PreviewLabPreview>): SelectedPreview = SelectedPreview(
             groupName = preview.first,
             preview = preview.second,
         )

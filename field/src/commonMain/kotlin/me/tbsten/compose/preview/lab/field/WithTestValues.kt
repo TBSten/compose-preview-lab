@@ -6,14 +6,16 @@ import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.PreviewLabField
 import me.tbsten.compose.preview.lab.PreviewLabField.ViewMenuItem
 
-class WithTestValuesField<Value>(val baseField: PreviewLabField<Value>, private vararg val additionalTestValues: Value) :
-    PreviewLabField<Value> by baseField {
+public class WithTestValuesField<Value>(
+    public val baseField: PreviewLabField<Value>,
+    private vararg val additionalTestValues: Value
+) : PreviewLabField<Value> by baseField {
     override fun testValues(): List<Value> = super.testValues() + additionalTestValues
     override fun serializer(): KSerializer<Value>? = baseField.serializer()
 }
 
-class MutableWithTestValuesField<Value>(
-    val baseField: MutablePreviewLabField<Value>,
+public class MutableWithTestValuesField<Value>(
+    public val baseField: MutablePreviewLabField<Value>,
     private vararg val additionalTestValues: Value,
 ) : MutablePreviewLabField<Value>(
     label = baseField.label,
@@ -25,18 +27,21 @@ class MutableWithTestValuesField<Value>(
     override fun serializer(): KSerializer<Value>? = baseField.serializer()
 
     @Composable
-    override fun View(menuItems: List<ViewMenuItem<Value>>) = baseField.View(menuItems = menuItems)
+    override fun View(menuItems: List<ViewMenuItem<Value>>): Unit = baseField.View(menuItems = menuItems)
 
     @Composable
-    override fun Content() = baseField.Content()
+    override fun Content(): Unit = baseField.Content()
 }
 
-fun <Value> PreviewLabField<Value>.withTestValues(vararg additionalTestValues: Value) = WithTestValuesField(
-    baseField = this,
-    additionalTestValues = additionalTestValues,
-)
+public fun <Value> PreviewLabField<Value>.withTestValues(vararg additionalTestValues: Value): WithTestValuesField<Value> =
+    WithTestValuesField(
+        baseField = this,
+        additionalTestValues = additionalTestValues,
+    )
 
-fun <Value> MutablePreviewLabField<Value>.withTestValues(vararg additionalTestValues: Value) = MutableWithTestValuesField(
+public fun <Value> MutablePreviewLabField<Value>.withTestValues(
+    vararg additionalTestValues: Value
+): MutableWithTestValuesField<Value> = MutableWithTestValuesField(
     baseField = this,
     additionalTestValues = additionalTestValues,
 )

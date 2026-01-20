@@ -7,11 +7,11 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
  */
 @Suppress("ktlint:standard:property-naming")
 @InternalComposePreviewLabApi
-object KspArg {
-    private const val PREFIX = "composePreviewLab."
-    const val previewsListPackage = "${PREFIX}previewsListPackage"
-    const val publicPreviewList = "${PREFIX}publicPreviewList"
-    const val projectRootPath = "${PREFIX}projectRootPath"
-    const val generatePreviewList = "${PREFIX}generatePreviewList"
-    const val generatePreviewAllList = "${PREFIX}generatePreviewAllList"
+public object KspArg {
+    private const val PREFIX: String = "composePreviewLab."
+    public const val previewsListPackage: String = "${PREFIX}previewsListPackage"
+    public const val publicPreviewList: String = "${PREFIX}publicPreviewList"
+    public const val projectRootPath: String = "${PREFIX}projectRootPath"
+    public const val generatePreviewList: String = "${PREFIX}generatePreviewList"
+    public const val generatePreviewAllList: String = "${PREFIX}generatePreviewAllList"
 }

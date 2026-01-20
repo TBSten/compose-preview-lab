@@ -25,15 +25,15 @@ import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
  *
  * @param degrees The rotation angle in degrees. Positive values rotate clockwise.
  */
-class RotateModifierFieldValue(degrees: Float) : ModifierFieldValue {
-    var degrees by mutableStateOf(degrees)
+public class RotateModifierFieldValue(degrees: Float) : ModifierFieldValue {
+    public var degrees: Float by mutableStateOf(degrees)
 
     override fun Modifier.createModifier(): Modifier = rotate(
         degrees = degrees,
     )
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             appendLine(".rotate(")
 
@@ -62,15 +62,15 @@ class RotateModifierFieldValue(degrees: Float) : ModifierFieldValue {
      *
      * @param initialDegrees Initial rotation angle in degrees (positive values rotate clockwise)
      */
-    class Factory(initialDegrees: Float? = null) : ModifierFieldValueFactory<RotateModifierFieldValue> {
+    public class Factory(initialDegrees: Float? = null) : ModifierFieldValueFactory<RotateModifierFieldValue> {
         override val title: String = ".rotate(...)"
-        var degrees by mutableStateOf(initialDegrees)
+        public var degrees: Float? by mutableStateOf(initialDegrees)
 
         override val canCreate: Boolean
             get() = degrees != null
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column(
+        override fun Content(createButton: @Composable (() -> Unit)): Unit = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             TransformableTextField(
@@ -98,7 +98,7 @@ class RotateModifierFieldValue(degrees: Float) : ModifierFieldValue {
  * @param degrees The rotation angle in degrees
  * @return A new ModifierFieldValueList with rotation applied
  */
-fun ModifierFieldValueList.rotate(degrees: Float) = then(
+public fun ModifierFieldValueList.rotate(degrees: Float): ModifierFieldValueList = then(
     RotateModifierFieldValue(
         degrees = degrees,
     ),

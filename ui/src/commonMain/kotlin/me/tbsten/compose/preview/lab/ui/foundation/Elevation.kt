@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.Dp
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @InternalComposePreviewLabApi
-suspend fun Animatable<Dp, *>.animateElevation(target: Dp, from: Interaction? = null, to: Interaction? = null) {
+public suspend fun Animatable<Dp, *>.animateElevation(target: Dp, from: Interaction? = null, to: Interaction? = null) {
     val spec =
         when {
             // Moving to a new state

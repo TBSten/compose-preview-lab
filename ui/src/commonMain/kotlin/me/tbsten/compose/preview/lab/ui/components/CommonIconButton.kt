@@ -12,7 +12,7 @@ import me.tbsten.compose.preview.lab.ui.LocalContentColor
 
 @Composable
 @InternalComposePreviewLabApi
-fun CommonIconButton(
+public fun CommonIconButton(
     imageVector: ImageVector,
     contentDescription: String? = null,
     onClick: () -> Unit,
@@ -20,7 +20,7 @@ fun CommonIconButton(
     enabled: Boolean = true,
     variant: IconButtonVariant = IconButtonVariant.Ghost,
     tint: Color? = null,
-) = if (contentDescription == null) {
+): Unit = if (contentDescription == null) {
     IconButtonContent(
         imageVector = imageVector,
         contentDescription = contentDescription,
@@ -66,7 +66,7 @@ private fun IconButtonContent(
 
 @Composable
 @InternalComposePreviewLabApi
-fun CommonIconButton(
+public fun CommonIconButton(
     painter: Painter,
     contentDescription: String? = null,
     onClick: () -> Unit,
@@ -74,7 +74,7 @@ fun CommonIconButton(
     enabled: Boolean = true,
     variant: IconButtonVariant = IconButtonVariant.Ghost,
     tint: Color? = null,
-) = if (contentDescription == null) {
+): Unit = if (contentDescription == null) {
     IconButtonContent(
         painter = painter,
         contentDescription = contentDescription,
@@ -102,7 +102,7 @@ fun CommonIconButton(
 
 @Composable
 @InternalComposePreviewLabApi
-fun IconButtonContent(
+public fun IconButtonContent(
     painter: Painter,
     contentDescription: String? = null,
     onClick: () -> Unit,
@@ -110,7 +110,7 @@ fun IconButtonContent(
     variant: IconButtonVariant = IconButtonVariant.Ghost,
     tint: Color? = null,
     enabled: Boolean = true,
-) = IconButton(
+): Unit = IconButton(
     variant = variant,
     onClick = onClick,
     enabled = enabled,

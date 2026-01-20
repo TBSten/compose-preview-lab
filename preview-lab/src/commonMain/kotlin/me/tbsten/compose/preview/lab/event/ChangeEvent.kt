@@ -21,7 +21,7 @@ import me.tbsten.compose.preview.lab.previewlab.PreviewLabScope
  * @see PreviewLabScope.onEvent
  */
 @Composable
-fun <Value> PreviewLabScope.ChangeEvent(value: Value, title: String, description: String? = null) {
+public fun <Value> PreviewLabScope.ChangeEvent(value: Value, title: String, description: String? = null) {
     LaunchedEffect(value) {
         onEvent(
             title = title,
@@ -47,7 +47,11 @@ fun <Value> PreviewLabScope.ChangeEvent(value: Value, title: String, description
  * @see PreviewLabScope.onEvent
  */
 @Composable
-fun <Value> PreviewLabScope.ChangeEvent(value: Value, title: (Value) -> String, description: (Value) -> String? = { null }) {
+public fun <Value> PreviewLabScope.ChangeEvent(
+    value: Value,
+    title: (Value) -> String,
+    description: (Value) -> String? = { null },
+) {
     LaunchedEffect(value) {
         onEvent(
             title = title(value),

@@ -37,8 +37,8 @@ import me.tbsten.compose.preview.lab.ui.components.colorpicker.CommonColorPicker
  *
  * @param color The background color to apply
  */
-class BackgroundModifierFieldValue(color: Color) : ModifierFieldValue {
-    var color by mutableStateOf(color)
+public class BackgroundModifierFieldValue(color: Color) : ModifierFieldValue {
+    public var color: Color by mutableStateOf(color)
 
     override fun Modifier.createModifier(): Modifier = background(
         color = color,
@@ -46,7 +46,7 @@ class BackgroundModifierFieldValue(color: Color) : ModifierFieldValue {
     )
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             appendLine(".background(")
 
@@ -96,15 +96,15 @@ class BackgroundModifierFieldValue(color: Color) : ModifierFieldValue {
      *
      * @param initialColor Initial background color to apply
      */
-    class Factory(initialColor: Color? = null) : ModifierFieldValueFactory<BackgroundModifierFieldValue> {
+    public class Factory(initialColor: Color? = null) : ModifierFieldValueFactory<BackgroundModifierFieldValue> {
         override val title: String = ".background(...)"
-        var color by mutableStateOf(initialColor)
+        public var color: Color? by mutableStateOf(initialColor)
 
         override val canCreate: Boolean
             get() = color != null
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column(
+        override fun Content(createButton: @Composable (() -> Unit)): Unit = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             CommonColorPicker(
@@ -129,7 +129,7 @@ class BackgroundModifierFieldValue(color: Color) : ModifierFieldValue {
  * @param color The background color to apply
  * @return A new ModifierFieldValueList with background applied
  */
-fun ModifierFieldValueList.background(color: Color) = then(
+public fun ModifierFieldValueList.background(color: Color): ModifierFieldValueList = then(
     BackgroundModifierFieldValue(
         color = color,
     ),

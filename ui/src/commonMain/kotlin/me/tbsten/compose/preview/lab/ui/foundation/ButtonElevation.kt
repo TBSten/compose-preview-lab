@@ -19,7 +19,7 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @Stable
 @InternalComposePreviewLabApi
-class ButtonElevation(
+public class ButtonElevation(
     private val defaultElevation: Dp,
     private val pressedElevation: Dp,
     private val focusedElevation: Dp,

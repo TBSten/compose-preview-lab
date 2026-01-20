@@ -83,9 +83,9 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  * @param serializer Optional serializer for the value type. If provided, enables serialization support.
  *                   For enum types, consider using [EnumField] which provides automatic serialization.
  */
-open class SelectableField<Value>(
+public open class SelectableField<Value>(
     label: String,
-    val choices: List<Value>,
+    public val choices: List<Value>,
     private val choiceLabel: (Value) -> String = { it.toString() },
     type: Type = DROPDOWN,
     initialValue: Value = choices[0],
@@ -95,7 +95,7 @@ open class SelectableField<Value>(
     label = label,
     initialValue = initialValue,
 ) {
-    var type: Type by mutableStateOf(type)
+    public var type: Type by mutableStateOf(type)
         private set
 
     override fun testValues(): List<Value> = super.testValues() + choices
@@ -120,11 +120,11 @@ open class SelectableField<Value>(
         }
     }
 
-    class Builder<Value> internal constructor() {
+    public class Builder<Value> internal constructor() {
         internal val choices = mutableListOf<Pair<String, Value>>()
         internal var defaultValue: Value? = null
         internal var isDefaultValueSet = false
-        fun choice(value: Value, label: String = value.toString(), isDefault: Boolean = false) {
+        public fun choice(value: Value, label: String = value.toString(), isDefault: Boolean = false) {
             choices.add(label to value)
             if (isDefault) {
                 defaultValue = value
@@ -136,7 +136,7 @@ open class SelectableField<Value>(
     /**
      * The type of UI to select.
      */
-    enum class Type {
+    public enum class Type {
         /**
          * Dropdown menu.
          */
@@ -233,7 +233,7 @@ open class SelectableField<Value>(
  * @see SelectableField
  */
 @Suppress("UNCHECKED_CAST")
-fun <Value> SelectableField(
+public fun <Value> SelectableField(
     label: String,
     type: Type = DROPDOWN,
     builder: SelectableField.Builder<Value>.() -> Unit,
@@ -274,7 +274,7 @@ fun <Value> SelectableField(
  * @see SelectableField
  */
 @Suppress("UNCHECKED_CAST")
-fun <Value> SelectableField(
+public fun <Value> SelectableField(
     label: String,
     choices: Map<String, Value>,
     type: Type = DROPDOWN,
@@ -327,12 +327,12 @@ fun <Value> SelectableField(
  * @see SelectableField
  */
 @Suppress("FunctionName")
-inline fun <reified E : Enum<E>> EnumField(
+public inline fun <reified E : Enum<E>> EnumField(
     label: String,
     initialValue: E,
     type: Type = DROPDOWN,
     noinline choiceLabel: (E) -> String = { it.name },
-) = SelectableField<E>(
+): WithValueCodeField<E> = SelectableField<E>(
     label = label,
     choices = enumValues<E>().toList(),
     choiceLabel = choiceLabel,
@@ -374,7 +374,7 @@ inline fun <reified E : Enum<E>> EnumField(
  * }
  * ```
  */
-fun <Value> List<Value>.toField(
+public fun <Value> List<Value>.toField(
     label: String,
     choiceLabel: (Value) -> String = { it.toString() },
     type: Type = DROPDOWN,

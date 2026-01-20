@@ -20,7 +20,7 @@ package me.tbsten.compose.preview.lab
     AnnotationTarget.PROPERTY_SETTER,
     AnnotationTarget.VALUE_PARAMETER,
 )
-annotation class ExperimentalComposePreviewLabApi
+public annotation class ExperimentalComposePreviewLabApi
 
 /**
  * The API marked with this annotation is internal and should not be used outside of the Compose Preview Lab library.
@@ -42,4 +42,4 @@ annotation class ExperimentalComposePreviewLabApi
     AnnotationTarget.CONSTRUCTOR,
     AnnotationTarget.PROPERTY_SETTER,
 )
-annotation class InternalComposePreviewLabApi
+public annotation class InternalComposePreviewLabApi

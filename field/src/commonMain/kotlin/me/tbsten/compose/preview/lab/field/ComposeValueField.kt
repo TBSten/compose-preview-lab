@@ -90,7 +90,7 @@ import me.tbsten.compose.preview.lab.ui.components.colorpicker.CommonColorPicker
  * @see FloatField
  * @see SpField
  */
-class DpField(label: String, initialValue: Dp) :
+public class DpField(label: String, initialValue: Dp) :
     TransformField<Float, Dp>(
         baseField = FloatField(
             label = label,
@@ -161,7 +161,7 @@ class DpField(label: String, initialValue: Dp) :
  * @see FloatField
  * @see DpField
  */
-class SpField(label: String, initialValue: TextUnit) :
+public class SpField(label: String, initialValue: TextUnit) :
     TransformField<Float, TextUnit>(
         baseField = FloatField(
             label = label,
@@ -225,7 +225,7 @@ class SpField(label: String, initialValue: TextUnit) :
  * @see DpOffsetField
  * @see me.tbsten.compose.preview.lab.MutablePreviewLabField
  */
-class OffsetField(label: String, initialValue: Offset) :
+public class OffsetField(label: String, initialValue: Offset) :
     MutablePreviewLabField<Offset>(
         label = label,
         initialValue = initialValue,
@@ -315,7 +315,7 @@ class OffsetField(label: String, initialValue: Offset) :
  * @see OffsetField
  * @see MutablePreviewLabField
  */
-class DpOffsetField(label: String, initialValue: DpOffset) :
+public class DpOffsetField(label: String, initialValue: DpOffset) :
     MutablePreviewLabField<DpOffset>(
         label = label,
         initialValue = initialValue,
@@ -392,7 +392,7 @@ class DpOffsetField(label: String, initialValue: DpOffset) :
  * @see DpSizeField
  * @see MutablePreviewLabField
  */
-class SizeField(label: String, initialValue: Size) :
+public class SizeField(label: String, initialValue: Size) :
     MutablePreviewLabField<Size>(
         label = label,
         initialValue = initialValue,
@@ -481,7 +481,7 @@ class SizeField(label: String, initialValue: Size) :
  * @see SizeField
  * @see MutablePreviewLabField
  */
-class DpSizeField(label: String, initialValue: DpSize) :
+public class DpSizeField(label: String, initialValue: DpSize) :
     MutablePreviewLabField<DpSize>(
         label = label,
         initialValue = initialValue,
@@ -576,7 +576,7 @@ class DpSizeField(label: String, initialValue: DpSize) :
  * @param label The display label for this field
  * @param initialValue The initial color value
  */
-class ColorField(label: String, initialValue: Color) :
+public class ColorField(label: String, initialValue: Color) :
     MutablePreviewLabField<Color>(
         label = label,
         initialValue = initialValue,
@@ -610,7 +610,7 @@ class ColorField(label: String, initialValue: Color) :
         )
     }
 
-    companion object {
+    public companion object {
         /**
          * A map of predefined Compose [Color] constants to their Kotlin code representations.
          *
@@ -625,7 +625,7 @@ class ColorField(label: String, initialValue: Color) :
          * - Grays: Gray, DarkGray, LightGray
          * - Special: Transparent, Unspecified
          */
-        val predefinedColorNames = mapOf(
+        public val predefinedColorNames: Map<Color, String> = mapOf(
             Color.Red to "Color.Red",
             Color.Green to "Color.Green",
             Color.Blue to "Color.Blue",
@@ -675,7 +675,7 @@ class ColorField(label: String, initialValue: Color) :
  * @see ColorField.predefinedColorNames
  * @see withHint
  */
-fun MutablePreviewLabField<Color>.withPredefinedColorHint() = withHint(
+public fun MutablePreviewLabField<Color>.withPredefinedColorHint(): MutablePreviewLabField<Color> = withHint(
     *ColorField.predefinedColorNames
         .map { (color, name) -> name to color }
         .toTypedArray(),

@@ -13,7 +13,7 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
  */
 @Composable
 @InternalComposePreviewLabApi
-fun CommonColorPicker(color: Color, onColorSelected: (Color) -> Unit, modifier: Modifier = Modifier) {
+public fun CommonColorPicker(color: Color, onColorSelected: (Color) -> Unit, modifier: Modifier = Modifier) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(2.dp),
         modifier = modifier,

@@ -9,13 +9,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.DatePeriod
+import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.component.LocalDateEditor
 import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.util.with
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Text
 
-class DatePeriodField(label: String, initialValue: DatePeriod) :
+public class DatePeriodField(label: String, initialValue: DatePeriod) :
     MutablePreviewLabField<DatePeriod>(
         label = label,
         initialValue = initialValue,
@@ -26,7 +27,7 @@ class DatePeriodField(label: String, initialValue: DatePeriod) :
         "days = ${value.days}" +
         ")"
 
-    override fun serializer() = DatePeriod.serializer()
+    override fun serializer(): KSerializer<DatePeriod> = DatePeriod.serializer()
 
     @Composable
     override fun Content() {

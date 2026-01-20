@@ -24,14 +24,14 @@ import org.jetbrains.compose.resources.imageResource
 
 @Composable
 @InternalComposePreviewLabApi
-fun <V> SelectButton(
+public fun <V> SelectButton(
     choices: List<V>,
     currentIndex: Int,
     onSelect: (Int) -> Unit,
     title: (V) -> String,
     modifier: Modifier = Modifier,
     itemDetail: (V) -> String? = { null },
-) = SelectButton(
+): Unit = SelectButton(
     value = choices[currentIndex],
     choices = choices,
     onSelect = { onSelect(choices.indexOf(it)) },
@@ -42,7 +42,7 @@ fun <V> SelectButton(
 
 @Composable
 @InternalComposePreviewLabApi
-fun <V> SelectButton(
+public fun <V> SelectButton(
     value: V,
     choices: List<V>,
     onSelect: (V) -> Unit,

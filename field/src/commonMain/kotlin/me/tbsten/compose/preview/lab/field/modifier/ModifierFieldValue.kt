@@ -12,20 +12,20 @@ import androidx.compose.ui.Modifier
  *
  * @see ModifierFieldValueList
  */
-interface ModifierFieldValue {
+public interface ModifierFieldValue {
     /**
      * Creates a modifier from this field value.
      *
      * @return A Modifier that applies the configuration represented by this field value
      */
-    fun Modifier.createModifier(): Modifier
+    public fun Modifier.createModifier(): Modifier
 
     /**
      * Renders the UI builder interface for configuring this modifier.
      * This composable is typically displayed in the Preview Lab control panel.
      */
     @Composable
-    fun Builder()
+    public fun Builder()
 
     /**
      * Combines this modifier field value with another to create a list.
@@ -33,9 +33,9 @@ interface ModifierFieldValue {
      * @param other The modifier field value to combine with this one
      * @return A ModifierFieldValueList containing both values
      */
-    fun then(other: ModifierFieldValue): ModifierFieldValueList = ModifierFieldValueList(this, other)
+    public fun then(other: ModifierFieldValue): ModifierFieldValueList = ModifierFieldValueList(this, other)
 
-    companion object : ModifierFieldValueList()
+    public companion object : ModifierFieldValueList()
 }
 
 internal fun createModifierFrom(value: ModifierFieldValue) = Modifier.then(with(value) { Modifier.createModifier() })
@@ -48,15 +48,15 @@ internal fun createModifierFrom(value: ModifierFieldValue) = Modifier.then(with(
  *
  * @param values The list of modifier field values to combine
  */
-open class ModifierFieldValueList(private val values: List<ModifierFieldValue>) : List<ModifierFieldValue> by values {
-    constructor(vararg values: ModifierFieldValue) : this(values = values.toList())
+public open class ModifierFieldValueList(private val values: List<ModifierFieldValue>) : List<ModifierFieldValue> by values {
+    public constructor(vararg values: ModifierFieldValue) : this(values = values.toList())
 
     /**
      * Creates a combined modifier from all values in this list.
      *
      * @return A Modifier that applies all field values in sequence
      */
-    fun createModifier(): Modifier = values.fold<ModifierFieldValue, Modifier>(Modifier) { modifier, value ->
+    public fun createModifier(): Modifier = values.fold<ModifierFieldValue, Modifier>(Modifier) { modifier, value ->
         modifier.then(createModifierFrom(value))
     }
 
@@ -66,7 +66,7 @@ open class ModifierFieldValueList(private val values: List<ModifierFieldValue>) 
      * @param other The modifier field value to add
      * @return A new ModifierFieldValueList containing all existing values plus the new one
      */
-    fun then(other: ModifierFieldValue): ModifierFieldValueList = ModifierFieldValueList(
+    public fun then(other: ModifierFieldValue): ModifierFieldValueList = ModifierFieldValueList(
         this.values + other,
     )
 
@@ -76,9 +76,9 @@ open class ModifierFieldValueList(private val values: List<ModifierFieldValue>) 
      * @param other The other list to combine with this one
      * @return A new ModifierFieldValueList containing values from both lists
      */
-    fun then(other: ModifierFieldValueList): ModifierFieldValueList = ModifierFieldValueList(
+    public fun then(other: ModifierFieldValueList): ModifierFieldValueList = ModifierFieldValueList(
         this.values + other.values,
     )
 
-    companion object : ModifierFieldValueList()
+    public companion object : ModifierFieldValueList()
 }

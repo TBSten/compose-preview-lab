@@ -46,7 +46,7 @@ import org.jetbrains.compose.resources.painterResource
  * The default group name used for showing all previews in the PreviewLabGallery.
  * This group contains all previews regardless of their featured file categorization.
  */
-const val AllGroupName = "all"
+public const val AllGroupName: String = "all"
 
 /**
  * A Composable function that catalogs and displays a list of Previews. The left sidebar actually displays the list of Previews, and the selected Preview is displayed in the center of the screen.
@@ -61,7 +61,7 @@ const val AllGroupName = "all"
  * @see OpenFileHandler
  */
 @Composable
-fun PreviewLabGallery(
+public fun PreviewLabGallery(
     previewList: List<PreviewLabPreview>,
     modifier: Modifier = Modifier,
     state: PreviewLabGalleryState = remember { PreviewLabGalleryState() },
@@ -74,7 +74,7 @@ fun PreviewLabGallery(
             contentPadding = PaddingValues(adaptive(12.dp, 20.dp)),
         )
     },
-) = PreviewLabTheme {
+): Unit = PreviewLabTheme {
     val groupedPreviews by remember(previewList, featuredFileList) {
         derivedStateOf {
             previewList.groupingByFeaturedFiles(featuredFileList) +

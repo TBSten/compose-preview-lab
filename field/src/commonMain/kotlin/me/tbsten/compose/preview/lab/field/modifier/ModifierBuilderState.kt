@@ -7,29 +7,29 @@ import androidx.compose.runtime.setValue
 
 @Stable
 internal class ModifierBuilderState(initialValues: ModifierFieldValueList = ModifierFieldValueList) {
-    var values by mutableStateOf(initialValues)
+    public var values: ModifierFieldValueList by mutableStateOf(initialValues)
         private set
 
     val addMenu = MenuState()
 
-    fun addNewValue(value: ModifierFieldValue) {
+    public fun addNewValue(value: ModifierFieldValue) {
         values = ModifierFieldValueList(values + value)
     }
 
-    fun onRemove(index: Int, value: ModifierFieldValue) {
+    public fun onRemove(index: Int, value: ModifierFieldValue) {
         values = ModifierFieldValueList(values.filterIndexed { i, _ -> i != index })
     }
 }
 
-class MenuState {
-    var isAddMenuOpen by mutableStateOf(false)
+public class MenuState {
+    public var isAddMenuOpen: Boolean by mutableStateOf(false)
         private set
 
-    fun toggle() {
+    public fun toggle() {
         isAddMenuOpen = !isAddMenuOpen
     }
 
-    fun close() {
+    public fun close() {
         isAddMenuOpen = false
     }
 }

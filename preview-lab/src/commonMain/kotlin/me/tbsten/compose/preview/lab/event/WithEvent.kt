@@ -19,7 +19,7 @@ import me.tbsten.compose.preview.lab.previewlab.PreviewLabScope
  * @param description description of the event to be passed to onEvent.
  * @param block Processing to be generated after the event is sent.
  */
-fun PreviewLabScope.withEvent(title: String, description: String? = null, block: () -> Unit = {}): () -> Unit = {
+public fun PreviewLabScope.withEvent(title: String, description: String? = null, block: () -> Unit = {}): () -> Unit = {
     block()
     onEvent(
         title = title,
@@ -44,14 +44,17 @@ fun PreviewLabScope.withEvent(title: String, description: String? = null, block:
  * @param description description of the event to be passed to onEvent.
  * @param block Processing to be generated after the event is sent.
  */
-fun <Arg1> PreviewLabScope.withEvent(title: String, description: String? = null, block: (Arg1) -> Unit = {}): (Arg1) -> Unit =
-    { arg1 ->
-        block(arg1)
-        onEvent(
-            title = title,
-            description = description,
-        )
-    }
+public fun <Arg1> PreviewLabScope.withEvent(
+    title: String,
+    description: String? = null,
+    block: (Arg1) -> Unit = {}
+): (Arg1) -> Unit = { arg1 ->
+    block(arg1)
+    onEvent(
+        title = title,
+        description = description,
+    )
+}
 
 /**
  * Create a function to record events. This is simply a short-hand for the onEvent call.
@@ -70,7 +73,7 @@ fun <Arg1> PreviewLabScope.withEvent(title: String, description: String? = null,
  * @param description description of the event to be passed to onEvent.
  * @param block Processing to be generated after the event is sent.
  */
-fun <Arg1, Arg2> PreviewLabScope.withEvent(
+public fun <Arg1, Arg2> PreviewLabScope.withEvent(
     title: String,
     description: String? = null,
     block: (Arg1, Arg2) -> Unit,
@@ -99,7 +102,7 @@ fun <Arg1, Arg2> PreviewLabScope.withEvent(
  * @param description description of the event to be passed to onEvent.
  * @param block Processing to be generated after the event is sent.
  */
-fun <Arg1, Arg2, Arg3> PreviewLabScope.withEvent(
+public fun <Arg1, Arg2, Arg3> PreviewLabScope.withEvent(
     title: String,
     description: String? = null,
     block: (Arg1, Arg2, Arg3) -> Unit,

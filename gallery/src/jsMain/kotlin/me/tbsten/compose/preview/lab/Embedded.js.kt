@@ -15,7 +15,7 @@ import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.url.URLSearchParams
 
 @OptIn(ExperimentalWasmJsInterop::class)
-actual fun List<PreviewLabPreview>.findBySearchParam(previewIdQueryName: String): PreviewLabPreview? {
+public actual fun List<PreviewLabPreview>.findBySearchParam(previewIdQueryName: String): PreviewLabPreview? {
     val previewList = this
     val selectedPreviewId = URLSearchParams(window.location.search.toJsString()).get(previewIdQueryName)
     val selectedPreview = previewList.find { it.id == selectedPreviewId }
@@ -23,12 +23,12 @@ actual fun List<PreviewLabPreview>.findBySearchParam(previewIdQueryName: String)
     return selectedPreview
 }
 
-typealias DisposePreviewLabPreviewElements = () -> Unit
+public typealias DisposePreviewLabPreviewElements = () -> Unit
 
 @OptIn(ExperimentalJsExport::class, ExperimentalComposeUiApi::class)
 @ExperimentalComposePreviewLabApi
 @JsExport
-fun renderPreviewLabPreview(
+public fun renderPreviewLabPreview(
     rootElement: Element,
     preview: PreviewLabPreview,
     openFileHandler: OpenFileHandler<out Any?>? = null,
@@ -51,5 +51,5 @@ fun renderPreviewLabPreview(
 
 @OptIn(ExperimentalWasmJsInterop::class, ExperimentalJsExport::class, ExperimentalWasmJsInterop::class)
 @JsExport
-actual fun isEmbedded(isEmbeddedSearchParamName: String): Boolean =
+public actual fun isEmbedded(isEmbeddedSearchParamName: String): Boolean =
     URLSearchParams(window.location.search.toJsString()).has(isEmbeddedSearchParamName)

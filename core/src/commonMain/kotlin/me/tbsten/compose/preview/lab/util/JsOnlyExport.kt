@@ -5,7 +5,7 @@ package me.tbsten.compose.preview.lab.util
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @InternalComposePreviewLabApi
-expect annotation class JsOnlyExport()
+public expect annotation class JsOnlyExport()
 
 @InternalComposePreviewLabApi
-expect annotation class JsOnlyExportIgnore()
+public expect annotation class JsOnlyExportIgnore()

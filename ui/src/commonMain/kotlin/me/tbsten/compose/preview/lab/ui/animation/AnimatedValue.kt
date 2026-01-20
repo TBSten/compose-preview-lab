@@ -4,6 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.EaseOutExpo
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -11,25 +12,25 @@ import androidx.compose.ui.unit.Dp
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @InternalComposePreviewLabApi
-fun <T> defaultAnimationSpec() = tween<T>(durationMillis = 100, easing = EaseOutExpo)
+public fun <T> defaultAnimationSpec(): TweenSpec<T> = tween<T>(durationMillis = 100, easing = EaseOutExpo)
 
 @Composable
 @InternalComposePreviewLabApi
-fun Color.animated() = animateColorAsState(
+public fun Color.animated(): Color = animateColorAsState(
     targetValue = this,
     animationSpec = defaultAnimationSpec(),
 ).value
 
 @Composable
 @InternalComposePreviewLabApi
-fun Float.animated() = animateFloatAsState(
+public fun Float.animated(): Float = animateFloatAsState(
     targetValue = this,
     animationSpec = defaultAnimationSpec(),
 ).value
 
 @Composable
 @InternalComposePreviewLabApi
-fun Dp.animated() = animateDpAsState(
+public fun Dp.animated(): Dp = animateDpAsState(
     targetValue = this,
     animationSpec = defaultAnimationSpec(),
 ).value

@@ -19,7 +19,7 @@ import me.tbsten.compose.preview.lab.PreviewLabField
  * Mainly holds state values that have changed due to user interaction during debugging.
  */
 @Stable
-class PreviewLabState(
+public class PreviewLabState(
     initialContentOffset: Offset = Offset.Zero,
     initialContentScale: Float = 1f,
     initialIsInspectorPanelVisible: Boolean = true,
@@ -33,7 +33,7 @@ class PreviewLabState(
      * @see contentDraggableState
      */
     @ExperimentalComposePreviewLabApi
-    var contentOffset by mutableStateOf(initialContentOffset)
+    public var contentOffset: Offset by mutableStateOf(initialContentOffset)
 
     internal val contentDraggableState = Draggable2DState { contentOffset += it }
 
@@ -43,14 +43,14 @@ class PreviewLabState(
      * values less than 1.0 zoom out.
      */
     @ExperimentalComposePreviewLabApi
-    var contentScale by mutableStateOf(initialContentScale)
+    public var contentScale: Float by mutableStateOf(initialContentScale)
 
     /**
      * Controls whether the inspector panel is visible.
      * When true, the inspector panel (Fields, Events, and additional tabs) is shown on the right side.
      */
     @ExperimentalComposePreviewLabApi
-    var isInspectorPanelVisible by mutableStateOf(initialIsInspectorPanelVisible)
+    public var isInspectorPanelVisible: Boolean by mutableStateOf(initialIsInspectorPanelVisible)
 
     /**
      * The currently selected tab index in the inspector panel.
@@ -58,16 +58,18 @@ class PreviewLabState(
      * of default tabs and additional tabs.
      */
     @ExperimentalComposePreviewLabApi
-    var selectedTabIndex by mutableStateOf<Int?>(null)
+    public var selectedTabIndex: Int? by mutableStateOf<Int?>(null)
     internal var selectedEvent by mutableStateOf<PreviewLabEvent?>(null)
 
     internal val scope = PreviewLabScope(this)
 
     @ExperimentalComposePreviewLabApi
-    val fields = mutableStateListOf<PreviewLabField<*>>()
+    public val fields: androidx.compose.runtime.snapshots.SnapshotStateList<PreviewLabField<*>> =
+        mutableStateListOf<PreviewLabField<*>>()
 
     @ExperimentalComposePreviewLabApi
-    val events = mutableStateListOf<PreviewLabEvent>()
+    public val events: androidx.compose.runtime.snapshots.SnapshotStateList<PreviewLabEvent> =
+        mutableStateListOf<PreviewLabEvent>()
 
     /**
      * Deselects the currently selected tab
@@ -76,12 +78,12 @@ class PreviewLabState(
      * and returns to a state where no tab is selected.
      */
     @ExperimentalComposePreviewLabApi
-    fun deselectTab() {
+    public fun deselectTab() {
         selectedTabIndex = null
     }
 
-    companion object {
-        val Saver = mapSaver(
+    public companion object {
+        public val Saver: androidx.compose.runtime.saveable.Saver<PreviewLabState, Any> = mapSaver(
             save = {
                 mapOf(
                     "contentOffset.x" to it.contentOffset.x,
@@ -118,7 +120,7 @@ class PreviewLabState(
  */
 @Suppress("UNCHECKED_CAST")
 @ExperimentalComposePreviewLabApi
-inline fun <reified Value> PreviewLabState.fieldOrNull(label: String): Lazy<MutablePreviewLabField<Value>?> = lazy {
+public inline fun <reified Value> PreviewLabState.fieldOrNull(label: String): Lazy<MutablePreviewLabField<Value>?> = lazy {
     fields.find { it.label == label } as? MutablePreviewLabField<Value>
 }
 
@@ -137,7 +139,7 @@ inline fun <reified Value> PreviewLabState.fieldOrNull(label: String): Lazy<Muta
  * ```
  */
 @ExperimentalComposePreviewLabApi
-inline fun <reified Value> PreviewLabState.field(label: String): Lazy<MutablePreviewLabField<Value>> = lazy {
+public inline fun <reified Value> PreviewLabState.field(label: String): Lazy<MutablePreviewLabField<Value>> = lazy {
     fieldOrNull<Value>(label = label).value
         ?: error("Can not find update target field: label=$label")
 }
