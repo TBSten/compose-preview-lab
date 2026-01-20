@@ -45,11 +45,11 @@ import me.tbsten.compose.preview.lab.ui.components.card.CardDefaults
 import me.tbsten.compose.preview.lab.ui.components.card.OutlinedCard
 
 @Composable
-fun PreviewListGrid(
+public fun PreviewListGrid(
     groupedPreviewList: Map<String, List<PreviewLabPreview>>,
     onPreviewClick: (String, PreviewLabPreview) -> Unit,
     contentPadding: PaddingValues = PaddingValues.Zero,
-) = SelectionContainer {
+): Unit = SelectionContainer {
     val columnWidth = 200.dp
     val maxColumn = 5
     val itemSpacing = adaptive(12.dp, 20.dp)
@@ -109,7 +109,7 @@ private fun LazyGridScope.previewListGrid(
 
 @ExperimentalComposePreviewLabApi
 @Composable
-fun PreviewListGridCard(preview: PreviewLabPreview, onClick: () -> Unit) = OutlinedCard(
+public fun PreviewListGridCard(preview: PreviewLabPreview, onClick: () -> Unit): Unit = OutlinedCard(
     border = CardDefaults.outlinedCardBorder(),
     onClick = onClick,
 ) {

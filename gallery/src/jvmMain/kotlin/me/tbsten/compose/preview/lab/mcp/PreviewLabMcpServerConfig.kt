@@ -37,16 +37,16 @@ import io.modelcontextprotocol.kotlin.sdk.server.Server
  * @property additionalMcpServerSetting Additional configuration block for the MCP server.
  * @see PreviewLabGalleryWindows
  */
-open class PreviewLabMcpServerConfig(
-    val enabled: Boolean = true,
-    val host: String = "0.0.0.0",
-    val port: Int = 7007,
-    val additionalMcpServerSetting: Server.() -> Unit = {},
+public open class PreviewLabMcpServerConfig(
+    public val enabled: Boolean = true,
+    public val host: String = "0.0.0.0",
+    public val port: Int = 7007,
+    public val additionalMcpServerSetting: Server.() -> Unit = {},
 ) {
     /**
      * Predefined configuration to disable the MCP server.
      */
-    data object Disable : PreviewLabMcpServerConfig(enabled = false)
+    public data object Disable : PreviewLabMcpServerConfig(enabled = false)
 }
 
 internal const val McpBaseUrl = "preview-lab://"

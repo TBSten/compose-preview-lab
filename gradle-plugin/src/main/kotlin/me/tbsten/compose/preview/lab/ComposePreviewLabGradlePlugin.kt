@@ -6,7 +6,7 @@ import org.gradle.api.Project
 /**
  * A Gradle plugin for configuring the Compose Preview Lab.
  */
-class ComposePreviewLabGradlePlugin : Plugin<Project> {
+public class ComposePreviewLabGradlePlugin : Plugin<Project> {
     override fun apply(project: Project): Unit = with(project) {
         val extension = extensions.create("composePreviewLab", ComposePreviewLabExtension::class.java)
         applyToKspExtension(extension = extension)

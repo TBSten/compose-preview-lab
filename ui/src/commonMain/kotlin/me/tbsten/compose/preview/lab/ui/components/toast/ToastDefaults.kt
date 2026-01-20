@@ -10,15 +10,15 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 
 @InternalComposePreviewLabApi
-object ToastDefaults {
-    val shape: Shape = RoundedCornerShape(8.dp)
-    val shadowElevation: Dp = 4.dp
+public object ToastDefaults {
+    public val shape: Shape = RoundedCornerShape(8.dp)
+    public val shadowElevation: Dp = 4.dp
 
     /** Duration in milliseconds for toast enter/exit animations */
-    const val AnimationDurationMillis: Long = 300L
+    public const val AnimationDurationMillis: Long = 300L
 
     @Composable
-    fun containerColor(type: ToastType): Color = when (type) {
+    public fun containerColor(type: ToastType): Color = when (type) {
         ToastType.Default -> PreviewLabTheme.colors.surface
         ToastType.Success -> PreviewLabTheme.colors.success
         ToastType.Error -> PreviewLabTheme.colors.error
@@ -26,7 +26,7 @@ object ToastDefaults {
     }
 
     @Composable
-    fun contentColor(type: ToastType): Color = when (type) {
+    public fun contentColor(type: ToastType): Color = when (type) {
         ToastType.Default -> PreviewLabTheme.colors.onSurface
         ToastType.Success -> PreviewLabTheme.colors.onSuccess
         ToastType.Error -> PreviewLabTheme.colors.onError

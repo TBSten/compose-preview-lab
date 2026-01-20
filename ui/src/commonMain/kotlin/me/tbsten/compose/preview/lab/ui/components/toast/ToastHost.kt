@@ -16,7 +16,7 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @Composable
 @InternalComposePreviewLabApi
-fun ToastHost(state: ToastHostState, modifier: Modifier = Modifier, maxVisibleToasts: Int = 5) {
+public fun ToastHost(state: ToastHostState, modifier: Modifier = Modifier, maxVisibleToasts: Int = 5) {
     val visibleToasts = state.toasts.takeLast(maxVisibleToasts)
     val toastCount = visibleToasts.size
 

@@ -14,52 +14,52 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @Immutable
 @InternalComposePreviewLabApi
-class TextFieldColors(
-    val focusedTextColor: Color,
-    val unfocusedTextColor: Color,
-    val disabledTextColor: Color,
-    val errorTextColor: Color,
-    val focusedContainerColor: Color,
-    val unfocusedContainerColor: Color,
-    val disabledContainerColor: Color,
-    val errorContainerColor: Color,
-    val cursorColor: Color,
-    val errorCursorColor: Color,
-    val textSelectionColors: TextSelectionColors,
-    val focusedOutlineColor: Color,
-    val unfocusedOutlineColor: Color,
-    val disabledOutlineColor: Color,
-    val errorOutlineColor: Color,
-    val focusedLeadingIconColor: Color,
-    val unfocusedLeadingIconColor: Color,
-    val disabledLeadingIconColor: Color,
-    val errorLeadingIconColor: Color,
-    val focusedTrailingIconColor: Color,
-    val unfocusedTrailingIconColor: Color,
-    val disabledTrailingIconColor: Color,
-    val errorTrailingIconColor: Color,
-    val focusedLabelColor: Color,
-    val unfocusedLabelColor: Color,
-    val disabledLabelColor: Color,
-    val errorLabelColor: Color,
-    val focusedPlaceholderColor: Color,
-    val unfocusedPlaceholderColor: Color,
-    val disabledPlaceholderColor: Color,
-    val errorPlaceholderColor: Color,
-    val focusedSupportingTextColor: Color,
-    val unfocusedSupportingTextColor: Color,
-    val disabledSupportingTextColor: Color,
-    val errorSupportingTextColor: Color,
-    val focusedPrefixColor: Color,
-    val unfocusedPrefixColor: Color,
-    val disabledPrefixColor: Color,
-    val errorPrefixColor: Color,
-    val focusedSuffixColor: Color,
-    val unfocusedSuffixColor: Color,
-    val disabledSuffixColor: Color,
-    val errorSuffixColor: Color,
+public class TextFieldColors(
+    public val focusedTextColor: Color,
+    public val unfocusedTextColor: Color,
+    public val disabledTextColor: Color,
+    public val errorTextColor: Color,
+    public val focusedContainerColor: Color,
+    public val unfocusedContainerColor: Color,
+    public val disabledContainerColor: Color,
+    public val errorContainerColor: Color,
+    public val cursorColor: Color,
+    public val errorCursorColor: Color,
+    public val textSelectionColors: TextSelectionColors,
+    public val focusedOutlineColor: Color,
+    public val unfocusedOutlineColor: Color,
+    public val disabledOutlineColor: Color,
+    public val errorOutlineColor: Color,
+    public val focusedLeadingIconColor: Color,
+    public val unfocusedLeadingIconColor: Color,
+    public val disabledLeadingIconColor: Color,
+    public val errorLeadingIconColor: Color,
+    public val focusedTrailingIconColor: Color,
+    public val unfocusedTrailingIconColor: Color,
+    public val disabledTrailingIconColor: Color,
+    public val errorTrailingIconColor: Color,
+    public val focusedLabelColor: Color,
+    public val unfocusedLabelColor: Color,
+    public val disabledLabelColor: Color,
+    public val errorLabelColor: Color,
+    public val focusedPlaceholderColor: Color,
+    public val unfocusedPlaceholderColor: Color,
+    public val disabledPlaceholderColor: Color,
+    public val errorPlaceholderColor: Color,
+    public val focusedSupportingTextColor: Color,
+    public val unfocusedSupportingTextColor: Color,
+    public val disabledSupportingTextColor: Color,
+    public val errorSupportingTextColor: Color,
+    public val focusedPrefixColor: Color,
+    public val unfocusedPrefixColor: Color,
+    public val disabledPrefixColor: Color,
+    public val errorPrefixColor: Color,
+    public val focusedSuffixColor: Color,
+    public val unfocusedSuffixColor: Color,
+    public val disabledSuffixColor: Color,
+    public val errorSuffixColor: Color,
 ) {
-    fun copy(
+    public fun copy(
         focusedTextColor: Color = this.focusedTextColor,
         unfocusedTextColor: Color = this.unfocusedTextColor,
         disabledTextColor: Color = this.disabledTextColor,
@@ -103,7 +103,7 @@ class TextFieldColors(
         unfocusedSuffixColor: Color = this.unfocusedSuffixColor,
         disabledSuffixColor: Color = this.disabledSuffixColor,
         errorSuffixColor: Color = this.errorSuffixColor,
-    ) = TextFieldColors(
+    ): TextFieldColors = TextFieldColors(
         focusedTextColor = focusedTextColor.takeOrElse { this.focusedTextColor },
         unfocusedTextColor = unfocusedTextColor.takeOrElse { this.unfocusedTextColor },
         disabledTextColor = disabledTextColor.takeOrElse { this.disabledTextColor },
@@ -250,7 +250,7 @@ class TextFieldColors(
     }
 
     @Composable
-    internal fun containerColor(enabled: Boolean, isError: Boolean, interactionSource: InteractionSource): State<Color> {
+    public fun containerColor(enabled: Boolean, isError: Boolean, interactionSource: InteractionSource): State<Color> {
         val focused by interactionSource.collectIsFocusedAsState()
 
         return rememberUpdatedState(
@@ -264,7 +264,7 @@ class TextFieldColors(
     }
 
     @Composable
-    fun containerOutlineColor(enabled: Boolean, isError: Boolean, interactionSource: InteractionSource): State<Color> {
+    public fun containerOutlineColor(enabled: Boolean, isError: Boolean, interactionSource: InteractionSource): State<Color> {
         val focused by interactionSource.collectIsFocusedAsState()
         return rememberUpdatedState(
             when {
@@ -277,7 +277,7 @@ class TextFieldColors(
     }
 
     @Composable
-    internal fun textColor(enabled: Boolean, isError: Boolean, interactionSource: InteractionSource): State<Color> {
+    public fun textColor(enabled: Boolean, isError: Boolean, interactionSource: InteractionSource): State<Color> {
         val focused by interactionSource.collectIsFocusedAsState()
 
         return rememberUpdatedState(
@@ -291,9 +291,9 @@ class TextFieldColors(
     }
 
     @Composable
-    internal fun cursorColor(isError: Boolean): State<Color> =
+    public fun cursorColor(isError: Boolean): State<Color> =
         rememberUpdatedState(if (isError) errorCursorColor else cursorColor)
 
-    internal val selectionColors: TextSelectionColors
+    public val selectionColors: TextSelectionColors
         @Composable get() = textSelectionColors
 }

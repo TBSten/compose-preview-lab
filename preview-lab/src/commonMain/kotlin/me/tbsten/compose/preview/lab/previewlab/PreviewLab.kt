@@ -290,7 +290,7 @@ import me.tbsten.compose.preview.lab.ui.util.toDpOffset
  * @see PreviewLabScope Scope providing field and event functions
  * @see ScreenSize Device screen size configuration for multi-device testing
  */
-open class PreviewLab(
+public open class PreviewLab(
     private val defaultState: @Composable () -> PreviewLabState =
         { rememberPreviewLabStateFromUrl() },
     private val defaultScreenSizes: List<ScreenSize> = ScreenSize.SmartphoneAndDesktops,
@@ -326,7 +326,7 @@ open class PreviewLab(
      * @see PreviewLab.invoke Main invoke method with multiple screen size support
      */
     @Composable
-    operator fun invoke(
+    public operator fun invoke(
         maxWidth: Dp,
         maxHeight: Dp,
         modifier: Modifier = Modifier,
@@ -336,7 +336,7 @@ open class PreviewLab(
         isInPreviewLabGalleryCardBody: Boolean = LocalIsInPreviewLabGalleryCardBody.current,
         contentGraphicsLayer: GraphicsLayer = rememberGraphicsLayer(),
         content: @Composable PreviewLabScope.() -> Unit,
-    ) = invoke(
+    ): Unit = invoke(
         state = state,
         screenSizes = listOf(ScreenSize(maxWidth, maxHeight)),
         modifier = modifier,
@@ -473,7 +473,7 @@ open class PreviewLab(
      * @see ScreenSize Device screen size definitions and presets
      */
     @Composable
-    open operator fun invoke(
+    public open operator fun invoke(
         modifier: Modifier = Modifier,
         state: PreviewLabState = defaultState(),
         screenSizes: List<ScreenSize> = defaultScreenSizes,
@@ -615,11 +615,12 @@ open class PreviewLab(
      *
      * Equivalent to creating: `PreviewLab()` with default parameters.
      */
-    companion object : PreviewLab()
+    public companion object : PreviewLab()
 }
 
 @VisibleForTesting
-val LocalEnforcePreviewLabState = compositionLocalOf<PreviewLabState?> { null }
+public val LocalEnforcePreviewLabState: androidx.compose.runtime.ProvidableCompositionLocal<PreviewLabState?> =
+    compositionLocalOf<PreviewLabState?> { null }
 internal val LocalToastHostState = compositionLocalOf<ToastHostState> { error("No ToastHostState") }
 
 @Composable
@@ -698,14 +699,14 @@ private fun ContentSection(
     }
 }
 
-val LocalDefaultIsHeaderShow = compositionLocalOf { true }
+public val LocalDefaultIsHeaderShow: androidx.compose.runtime.ProvidableCompositionLocal<Boolean> = compositionLocalOf { true }
 
 /**
  * URLパラメータからPreviewLabStateを初期化するComposable関数。
  * contentScaleなどの状態をURLパラメータから復元する。
  */
 @Composable
-fun rememberPreviewLabStateFromUrl(): PreviewLabState {
+public fun rememberPreviewLabStateFromUrl(): PreviewLabState {
     val urlParams = rememberUrlParams()
     return rememberSaveable(saver = PreviewLabState.Saver) {
         PreviewLabState(

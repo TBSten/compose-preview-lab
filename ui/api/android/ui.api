@@ -198,7 +198,7 @@ public final class me/tbsten/compose/preview/lab/ui/Typography {
 }
 
 public final class me/tbsten/compose/preview/lab/ui/TypographyKt {
-	public static final fun fontFamily (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/text/font/SystemFontFamily;
+	public static final fun fontFamily (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/text/font/FontFamily;
 	public static final fun getLocalTextStyle ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalTypography ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun provideTypography (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/Typography;
@@ -765,6 +765,7 @@ public final class me/tbsten/compose/preview/lab/ui/components/RadioButtonColors
 	public final fun getSelectedColor-0d7_KjU ()J
 	public final fun getUnselectedColor-0d7_KjU ()J
 	public fun hashCode ()I
+	public final fun radioColor (ZZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -1000,9 +1001,11 @@ public final class me/tbsten/compose/preview/lab/ui/components/textfield/Underli
 public final class me/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors {
 	public static final field $stable I
 	public synthetic fun <init> (JJJJJJJJJJLandroidx/compose/foundation/text/selection/TextSelectionColors;JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun containerColor (ZZLandroidx/compose/foundation/interaction/InteractionSource;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
 	public final fun containerOutlineColor (ZZLandroidx/compose/foundation/interaction/InteractionSource;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
 	public final fun copy-ejIjP34 (JJJJJJJJJJLandroidx/compose/foundation/text/selection/TextSelectionColors;JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ)Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;
 	public static synthetic fun copy-ejIjP34$default (Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;JJJJJJJJJJLandroidx/compose/foundation/text/selection/TextSelectionColors;JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJIILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;
+	public final fun cursorColor (ZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
 	public final fun getCursorColor-0d7_KjU ()J
 	public final fun getDisabledContainerColor-0d7_KjU ()J
 	public final fun getDisabledLabelColor-0d7_KjU ()J
@@ -1035,6 +1038,7 @@ public final class me/tbsten/compose/preview/lab/ui/components/textfield/base/Te
 	public final fun getFocusedSupportingTextColor-0d7_KjU ()J
 	public final fun getFocusedTextColor-0d7_KjU ()J
 	public final fun getFocusedTrailingIconColor-0d7_KjU ()J
+	public final fun getSelectionColors (Landroidx/compose/runtime/Composer;I)Landroidx/compose/foundation/text/selection/TextSelectionColors;
 	public final fun getTextSelectionColors ()Landroidx/compose/foundation/text/selection/TextSelectionColors;
 	public final fun getUnfocusedContainerColor-0d7_KjU ()J
 	public final fun getUnfocusedLabelColor-0d7_KjU ()J
@@ -1046,6 +1050,7 @@ public final class me/tbsten/compose/preview/lab/ui/components/textfield/base/Te
 	public final fun getUnfocusedSupportingTextColor-0d7_KjU ()J
 	public final fun getUnfocusedTextColor-0d7_KjU ()J
 	public final fun getUnfocusedTrailingIconColor-0d7_KjU ()J
+	public final fun textColor (ZZLandroidx/compose/foundation/interaction/InteractionSource;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldDecorationKt {

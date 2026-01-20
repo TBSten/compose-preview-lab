@@ -22,13 +22,13 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  *
  * @param Value The type of value managed by the field
  */
-sealed interface HintChoice<Value> {
+public sealed interface HintChoice<Value> {
     /**
      * A hint choice that sets a specific value when selected.
      *
      * @param value The value to set when this choice is selected
      */
-    data class ValueChoice<Value>(val value: Value) : HintChoice<Value>
+    public data class ValueChoice<Value>(public val value: Value) : HintChoice<Value>
 
     /**
      * A hint choice that executes a suspend action when selected.
@@ -36,7 +36,8 @@ sealed interface HintChoice<Value> {
      * @param action The suspend action to execute when this choice is selected.
      *               The action receives the field as its receiver, allowing direct manipulation.
      */
-    data class ActionChoice<Value>(val action: suspend MutablePreviewLabField<Value>.() -> Unit) : HintChoice<Value>
+    public data class ActionChoice<Value>(public val action: suspend MutablePreviewLabField<Value>.() -> Unit) :
+        HintChoice<Value>
 }
 
 /**
@@ -96,7 +97,7 @@ sealed interface HintChoice<Value> {
  * @param choices Vararg of pairs where first is the hint label and second is the value
  * @return A WithHintField wrapper that displays the base field with hint choices
  */
-fun <Value> MutablePreviewLabField<Value>.withHint(vararg choices: Pair<String, Value>): MutablePreviewLabField<Value> =
+public fun <Value> MutablePreviewLabField<Value>.withHint(vararg choices: Pair<String, Value>): MutablePreviewLabField<Value> =
     WithHintField(
         baseField = this,
         choices = choices.associate { (label, value) -> label to HintChoice.ValueChoice(value) },
@@ -126,10 +127,11 @@ fun <Value> MutablePreviewLabField<Value>.withHint(vararg choices: Pair<String, 
  * @param choices Map of hint labels to their corresponding values
  * @return A WithHintField wrapper that displays the base field with hint choices
  */
-fun <Value> MutablePreviewLabField<Value>.withHint(choices: Map<String, Value>): MutablePreviewLabField<Value> = WithHintField(
-    baseField = this,
-    choices = choices.mapValues { (_, value) -> HintChoice.ValueChoice(value) },
-)
+public fun <Value> MutablePreviewLabField<Value>.withHint(choices: Map<String, Value>): MutablePreviewLabField<Value> =
+    WithHintField(
+        baseField = this,
+        choices = choices.mapValues { (_, value) -> HintChoice.ValueChoice(value) },
+    )
 
 /**
  * Adds hint actions to a MutablePreviewLabField, allowing users to execute custom actions.
@@ -163,7 +165,7 @@ fun <Value> MutablePreviewLabField<Value>.withHint(choices: Map<String, Value>):
  * @return A WithHintField wrapper that displays the base field with action hints
  * @see withHint
  */
-fun <Value> MutablePreviewLabField<Value>.withHintAction(
+public fun <Value> MutablePreviewLabField<Value>.withHintAction(
     vararg choices: Pair<String, suspend MutablePreviewLabField<Value>.() -> Unit>,
 ): MutablePreviewLabField<Value> = WithHintField(
     baseField = this,
@@ -194,7 +196,7 @@ fun <Value> MutablePreviewLabField<Value>.withHintAction(
  * @param action The action to execute when this hint is selected
  * @return A WithHintField wrapper that displays the base field with the action hint
  */
-fun <Value> MutablePreviewLabField<Value>.withHint(
+public fun <Value> MutablePreviewLabField<Value>.withHint(
     label: String,
     action: suspend MutablePreviewLabField<Value>.() -> Unit,
 ): MutablePreviewLabField<Value> = WithHintField(
@@ -247,7 +249,7 @@ fun <Value> MutablePreviewLabField<Value>.withHint(
  * @param baseField The underlying field to wrap with hints
  * @param choices Map of hint labels to their corresponding [HintChoice] (value or action)
  */
-class WithHintField<Value> internal constructor(
+public class WithHintField<Value> internal constructor(
     private val baseField: MutablePreviewLabField<Value>,
     private val choices: Map<String, HintChoice<Value>>,
 ) : TransformField<Value, Value>(

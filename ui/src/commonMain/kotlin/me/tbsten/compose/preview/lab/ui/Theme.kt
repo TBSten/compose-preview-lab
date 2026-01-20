@@ -13,19 +13,19 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.foundation.ripple
 
 @InternalComposePreviewLabApi
-object PreviewLabTheme {
-    val colors: Colors
+public object PreviewLabTheme {
+    public val colors: Colors
         @ReadOnlyComposable @Composable
         get() = LocalColors.current
 
-    val typography: Typography
+    public val typography: Typography
         @ReadOnlyComposable @Composable
         get() = LocalTypography.current
 }
 
 @Composable
 @InternalComposePreviewLabApi
-fun PreviewLabTheme(isDarkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+public fun PreviewLabTheme(isDarkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val rippleIndication = ripple()
     val selectionColors = rememberTextSelectionColors(LightColors)
     val typography = provideTypography()
@@ -44,11 +44,11 @@ fun PreviewLabTheme(isDarkTheme: Boolean = isSystemInDarkTheme(), content: @Comp
 
 @Composable
 @InternalComposePreviewLabApi
-fun contentColorFor(color: Color): Color = PreviewLabTheme.colors.contentColorFor(color)
+public fun contentColorFor(color: Color): Color = PreviewLabTheme.colors.contentColorFor(color)
 
 @Composable
 @InternalComposePreviewLabApi
-fun rememberTextSelectionColors(colorScheme: Colors): TextSelectionColors {
+public fun rememberTextSelectionColors(colorScheme: Colors): TextSelectionColors {
     val primaryColor = colorScheme.primary
     return remember(primaryColor) {
         TextSelectionColors(
@@ -59,4 +59,4 @@ fun rememberTextSelectionColors(colorScheme: Colors): TextSelectionColors {
 }
 
 @InternalComposePreviewLabApi
-const val TextSelectionBackgroundOpacity = 0.4f
+public const val TextSelectionBackgroundOpacity: Float = 0.4f

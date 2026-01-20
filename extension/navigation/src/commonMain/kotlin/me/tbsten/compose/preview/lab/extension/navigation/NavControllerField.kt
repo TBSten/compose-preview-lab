@@ -78,7 +78,7 @@ import org.jetbrains.compose.resources.painterResource
  * For a complete usage example, see the integration test sample.
  */
 @ExperimentalComposePreviewLabApi
-class NavControllerField(
+public class NavControllerField(
     label: String,
     private val navController: NavHostController,
     routes: List<PreviewLabField<out Any>> = emptyList(),
@@ -98,7 +98,7 @@ class NavControllerField(
     }
 
     override fun valueCode(): String = "rememberNavController()"
-    override fun serializer() = null
+    override fun serializer(): kotlinx.serialization.KSerializer<NavHostController>? = null
 
     @OptIn(InternalComposePreviewLabApi::class)
     @Composable

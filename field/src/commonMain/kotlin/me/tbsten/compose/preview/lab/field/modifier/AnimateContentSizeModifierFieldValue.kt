@@ -11,14 +11,14 @@ import androidx.compose.ui.text.buildAnnotatedString
  * When the content size changes, this modifier provides smooth animation transitions
  * instead of abrupt size changes.
  */
-class AnimateContentSizeModifierFieldValue : ModifierFieldValue {
+public class AnimateContentSizeModifierFieldValue : ModifierFieldValue {
     override fun Modifier.createModifier(): Modifier = animateContentSize(
         // TODO animationSpec
         // TODO finishedListener
     )
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             append(".animateContentSize()")
         },
@@ -29,7 +29,7 @@ class AnimateContentSizeModifierFieldValue : ModifierFieldValue {
      * Factory for creating AnimateContentSizeModifierFieldValue instances.
      * No initial configuration parameters are needed as it automatically animates content size changes.
      */
-    class Factory : ModifierFieldValueFactory<AnimateContentSizeModifierFieldValue> {
+    public class Factory : ModifierFieldValueFactory<AnimateContentSizeModifierFieldValue> {
         override val title: String = ".animateContentSize(...)"
 
         override val canCreate: Boolean = true
@@ -49,6 +49,6 @@ class AnimateContentSizeModifierFieldValue : ModifierFieldValue {
  *
  * @return A new ModifierFieldValueList with animated content size applied
  */
-fun ModifierFieldValueList.animateContentSize() = then(
+public fun ModifierFieldValueList.animateContentSize(): ModifierFieldValueList = then(
     AnimateContentSizeModifierFieldValue(),
 )

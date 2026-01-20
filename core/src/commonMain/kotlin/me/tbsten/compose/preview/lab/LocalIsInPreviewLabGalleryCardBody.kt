@@ -9,4 +9,5 @@ import androidx.compose.runtime.compositionLocalOf
  *
  * Using this CompositionLocal, you can display simple explanatory images instead of content in the PreviewLabGallery, or implement labels that appear only on the Gallery.
  */
-val LocalIsInPreviewLabGalleryCardBody = compositionLocalOf { false }
+public val LocalIsInPreviewLabGalleryCardBody: androidx.compose.runtime.ProvidableCompositionLocal<Boolean> =
+    compositionLocalOf { false }

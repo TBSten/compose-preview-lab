@@ -10,6 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.number
+import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.component.LocalDateEditor
 import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.component.LocalTimeEditor
@@ -17,7 +18,7 @@ import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.util.with
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.Text
 
-class LocalDateTimeField(label: String, initialValue: LocalDateTime) :
+public class LocalDateTimeField(label: String, initialValue: LocalDateTime) :
     MutablePreviewLabField<LocalDateTime>(
         label = label,
         initialValue = initialValue,
@@ -33,7 +34,7 @@ class LocalDateTimeField(label: String, initialValue: LocalDateTime) :
         "nanosecond = ${value.nanosecond}" +
         ")"
 
-    override fun serializer() = LocalDateTime.serializer()
+    override fun serializer(): KSerializer<LocalDateTime> = LocalDateTime.serializer()
 
     @Composable
     override fun Content() {

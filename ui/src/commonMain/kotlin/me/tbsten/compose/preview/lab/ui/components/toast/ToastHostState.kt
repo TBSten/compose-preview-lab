@@ -8,15 +8,15 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @Stable
 @InternalComposePreviewLabApi
-class ToastHostState {
+public class ToastHostState {
     private val _toasts = mutableStateListOf<ToastData>()
-    val toasts: List<ToastData> get() = _toasts
+    public val toasts: List<ToastData> get() = _toasts
 
     // Note: This counter is only accessed from the main thread (Compose UI thread),
     // so thread-safety is not required for this use case.
     private var nextId = 0L
 
-    fun show(
+    public fun show(
         message: String,
         type: ToastType = ToastType.Default,
         action: ToastAction? = null,
@@ -37,7 +37,7 @@ class ToastHostState {
         return id
     }
 
-    fun dismiss(id: Long) {
+    public fun dismiss(id: Long) {
         _toasts.removeAll { it.id == id }
     }
 
@@ -48,4 +48,4 @@ class ToastHostState {
 
 @Composable
 @InternalComposePreviewLabApi
-fun rememberToastHostState(): ToastHostState = remember { ToastHostState() }
+public fun rememberToastHostState(): ToastHostState = remember { ToastHostState() }

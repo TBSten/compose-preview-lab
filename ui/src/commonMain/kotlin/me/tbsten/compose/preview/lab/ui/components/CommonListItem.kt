@@ -27,13 +27,13 @@ private const val SelectedBorderWidth = 12
  */
 @Composable
 @InternalComposePreviewLabApi
-fun CommonListItem(
+public fun CommonListItem(
     title: String,
     isSelected: Boolean,
     onSelect: (() -> Unit)? = null,
     isEnabled: Boolean = true,
     modifier: Modifier = Modifier,
-) = CommonListItem(
+): Unit = CommonListItem(
     isSelected = isSelected,
     onSelect = onSelect,
     modifier = modifier,
@@ -60,14 +60,14 @@ fun CommonListItem(
  */
 @Composable
 @InternalComposePreviewLabApi
-fun CommonListItem(
+public fun CommonListItem(
     title: String,
     isSelected: Boolean,
     onSelect: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
     leadingContent: @Composable (() -> Unit)? = null,
-) = CommonListItem(
+): Unit = CommonListItem(
     isSelected = isSelected,
     onSelect = onSelect,
     modifier = modifier,
@@ -94,7 +94,7 @@ fun CommonListItem(
  */
 @Composable
 @InternalComposePreviewLabApi
-fun CommonListItem(
+public fun CommonListItem(
     isSelected: Boolean,
     onSelect: (() -> Unit)? = null,
     modifier: Modifier = Modifier,

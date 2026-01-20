@@ -87,10 +87,10 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
  * @param initialValue The initial ComposableFieldValue to display
  * @param choices List of available ComposableFieldValue options to choose from
  */
-open class ComposableField(
+public open class ComposableField(
     label: String,
     initialValue: ComposableFieldValue,
-    val choices: List<ComposableFieldValue> = ComposableFieldValue.DefaultChoices,
+    public val choices: List<ComposableFieldValue> = ComposableFieldValue.DefaultChoices,
 ) : ImmutablePreviewLabField<@Composable () -> Unit>(
     label = label,
     initialValue = { },
@@ -167,18 +167,18 @@ open class ComposableField(
  *
  * @see ComposableField
  */
-interface ComposableFieldValue {
+public interface ComposableFieldValue {
     /** Display label for this composable value */
-    val label: String
+    public val label: String
 
     /** Renders the composable content */
     @Composable
-    operator fun invoke()
+    public operator fun invoke()
 
     /**
      * An empty ComposableFieldValue that renders nothing.
      */
-    object Empty : ComposableFieldValue {
+    public object Empty : ComposableFieldValue {
         override val label: String = "Empty"
 
         @Composable
@@ -259,7 +259,7 @@ interface ComposableFieldValue {
      *
      * @see ComposableField
      */
-    class ColorBox private constructor(
+    public class ColorBox private constructor(
         private val color: Color,
         private val widthOrFill: Dp?,
         private val heightOrFill: Dp?,
@@ -267,35 +267,35 @@ interface ComposableFieldValue {
     ) : ComposableFieldValue {
         override val label: String = label ?: "ColorBox(${widthOrFill ?: "fill"} x ${heightOrFill ?: "fill"})"
 
-        constructor(color: Color, width: Dp, height: Dp, label: String? = null) : this(
+        public constructor(color: Color, width: Dp, height: Dp, label: String? = null) : this(
             color = color,
             widthOrFill = width,
             heightOrFill = height,
             label = label,
         )
 
-        constructor(color: Color, width: Fill, height: Dp, label: String? = null) : this(
+        public constructor(color: Color, width: Fill, height: Dp, label: String? = null) : this(
             color = color,
             widthOrFill = _fill,
             heightOrFill = height,
             label = label,
         )
 
-        constructor(color: Color, width: Dp, height: Fill, label: String? = null) : this(
+        public constructor(color: Color, width: Dp, height: Fill, label: String? = null) : this(
             color = color,
             widthOrFill = width,
             heightOrFill = _fill,
             label = label,
         )
 
-        constructor(color: Color, width: Fill, height: Fill, label: String? = null) : this(
+        public constructor(color: Color, width: Fill, height: Fill, label: String? = null) : this(
             color = color,
             widthOrFill = _fill,
             heightOrFill = _fill,
             label = label,
         )
 
-        fun copy(color: Color = this.color, label: String? = this.label) = ColorBox(
+        public fun copy(color: Color = this.color, label: String? = this.label): ColorBox = ColorBox(
             color = color,
             label = label,
             widthOrFill = widthOrFill,
@@ -314,9 +314,9 @@ interface ComposableFieldValue {
             )
         }
 
-        object Fill
+        public object Fill
 
-        companion object {
+        public companion object {
             @Suppress("ktlint:standard:backing-property-naming")
             private val _fill: Dp? = null
         }
@@ -390,8 +390,12 @@ interface ComposableFieldValue {
      * @param textStyle Optional text style to apply
      * @see ComposableField
      */
-    class Text(val text: String, val fontScale: Float = 1f, label: String? = null, private val textStyle: TextStyle? = null) :
-        ComposableFieldValue {
+    public class Text(
+        public val text: String,
+        public val fontScale: Float = 1f,
+        label: String? = null,
+        private val textStyle: TextStyle? = null
+    ) : ComposableFieldValue {
         override val label: String =
             label ?: buildString {
                 append("Text(")
@@ -418,21 +422,21 @@ interface ComposableFieldValue {
         }
     }
 
-    companion object {
-        val Red20X20 = ColorBox(Color.Red, 20.dp, 20.dp)
-        val Red32X32 = ColorBox(Color.Red, 32.dp, 32.dp)
-        val Red64X64 = ColorBox(Color.Red, 64.dp, 64.dp)
-        val Red180X80 = ColorBox(Color.Red, 180.dp, 80.dp)
-        val Red300X300 = ColorBox(Color.Red, 300.dp, 300.dp)
-        val RedFillX80 = ColorBox(Color.Red, ColorBox.Fill, 80.dp)
-        val RedFillX300 = ColorBox(Color.Red, ColorBox.Fill, 300.dp)
-        val Red80XFill = ColorBox(Color.Red, 80.dp, ColorBox.Fill)
-        val Red300XFill = ColorBox(Color.Red, 300.dp, ColorBox.Fill)
-        val RedFillXFill = ColorBox(Color.Red, ColorBox.Fill, ColorBox.Fill)
+    public companion object {
+        public val Red20X20: ColorBox = ColorBox(Color.Red, 20.dp, 20.dp)
+        public val Red32X32: ColorBox = ColorBox(Color.Red, 32.dp, 32.dp)
+        public val Red64X64: ColorBox = ColorBox(Color.Red, 64.dp, 64.dp)
+        public val Red180X80: ColorBox = ColorBox(Color.Red, 180.dp, 80.dp)
+        public val Red300X300: ColorBox = ColorBox(Color.Red, 300.dp, 300.dp)
+        public val RedFillX80: ColorBox = ColorBox(Color.Red, ColorBox.Fill, 80.dp)
+        public val RedFillX300: ColorBox = ColorBox(Color.Red, ColorBox.Fill, 300.dp)
+        public val Red80XFill: ColorBox = ColorBox(Color.Red, 80.dp, ColorBox.Fill)
+        public val Red300XFill: ColorBox = ColorBox(Color.Red, 300.dp, ColorBox.Fill)
+        public val RedFillXFill: ColorBox = ColorBox(Color.Red, ColorBox.Fill, ColorBox.Fill)
 
-        val LongText = Text(text = "Very ${"long".repeat(100)} text", label = "Long text")
-        val HeadingText = Text(text = "Hello Compose Preview Lab !", label = "HeadingText")
-        val BodyText = Text(
+        public val LongText: Text = Text(text = "Very ${"long".repeat(100)} text", label = "Long text")
+        public val HeadingText: Text = Text(text = "Hello Compose Preview Lab !", label = "HeadingText")
+        public val BodyText: Text = Text(
             text = """
             Compose Preview Lab turns @Preview into an interactive Component Playground.
             You can pass parameters to components, enabling more than just static snapshots—making manual testing easier and helping new developers understand components faster.
@@ -440,12 +444,12 @@ interface ComposableFieldValue {
             """.trimIndent(),
             label = "BodyText",
         )
-        val SimpleText = Text(text = "Simple text", label = "Simple text")
-        val ShortText = Text(text = "S", label = "Short text")
-        val BigScaledText = Text(text = "Big scaled text", fontScale = 2.0f, label = "Big scaled text")
-        val SmallScaledText = Text(text = "Small scaled text", fontScale = 0.8f, label = "Small scaled text")
+        public val SimpleText: Text = Text(text = "Simple text", label = "Simple text")
+        public val ShortText: Text = Text(text = "S", label = "Short text")
+        public val BigScaledText: Text = Text(text = "Big scaled text", fontScale = 2.0f, label = "Big scaled text")
+        public val SmallScaledText: Text = Text(text = "Small scaled text", fontScale = 0.8f, label = "Small scaled text")
 
-        val DefaultChoices: List<ComposableFieldValue> = listOf(
+        public val DefaultChoices: List<ComposableFieldValue> = listOf(
             Red20X20,
             Red32X32,
             Red64X64,
@@ -553,14 +557,15 @@ interface ComposableFieldValue {
  * @see ComposableField
  */
 @Suppress("ktlint:standard:function-naming")
-fun ComposableFieldValue(label: String, content: @Composable () -> Unit) = object : ComposableFieldValue {
-    override val label: String = label
+public fun ComposableFieldValue(label: String, content: @Composable () -> Unit): ComposableFieldValue =
+    object : ComposableFieldValue {
+        override val label: String = label
 
-    @Composable
-    override fun invoke() {
-        content()
+        @Composable
+        override fun invoke() {
+            content()
+        }
     }
-}
 
 /**
  * Converts a [PreviewParameterProvider] to a [SelectableField].
@@ -568,7 +573,7 @@ fun ComposableFieldValue(label: String, content: @Composable () -> Unit) = objec
  * # Usage
  *
  * ```kt
- * class MyButtonProperty(val text: String, val backgroundColor: Color, val contentColor: Color)
+ * class MyButtonProperty(public val text: String, public val backgroundColor: Color, public val contentColor: Color)
  * class MyButtonPreviewParameterProvider() : PreviewParameterProvider<MyButtonProperty> {
  *   override val values: Sequence<MyButtonProperty> = sequenceOf(...)
  * }
@@ -590,7 +595,7 @@ fun ComposableFieldValue(label: String, content: @Composable () -> Unit) = objec
  *
  * @see ComposableField
  */
-fun <Value> PreviewParameterProvider<Value>.toField(
+public fun <Value> PreviewParameterProvider<Value>.toField(
     label: String,
     choiceLabel: (Value) -> String = { it.toString() },
     type: Type = DROPDOWN,

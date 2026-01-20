@@ -23,13 +23,13 @@ import me.tbsten.compose.preview.lab.util.JsOnlyExport
  */
 @OptIn(ExperimentalJsExport::class)
 @JsOnlyExport
-interface OpenFileHandler<T> {
+public interface OpenFileHandler<T> {
     /**
      * If there is data that needs to be prepared in the Composable function, specify it here.
      */
     @JsExport.Ignore
     @Composable
-    fun configure(): T
+    public fun configure(): T
 
     /**
      * Open a file in the project.
@@ -37,10 +37,14 @@ interface OpenFileHandler<T> {
      * @param params A class that contains values and file information set in [configure].
      */
     @JsExport.Ignore
-    fun openFile(params: Params<T>)
+    public fun openFile(params: Params<T>)
 
     @JsExport.Ignore
-    class Params<T> internal constructor(val configuredValue: T, val filePathInProject: String, val startLineNumber: Int?)
+    public class Params<T> internal constructor(
+        public val configuredValue: T,
+        public val filePathInProject: String,
+        public val startLineNumber: Int?
+    )
 }
 
 /**
@@ -48,19 +52,20 @@ interface OpenFileHandler<T> {
  * @param openFile Function that actually opens the file.
  */
 @Suppress("ktlint:standard:function-naming")
-fun OpenFileHandler(openFile: (OpenFileHandler.Params<Unit>) -> Unit) = object : OpenFileHandler<Unit> {
-    @Composable
-    override fun configure() {
-    }
+public fun OpenFileHandler(openFile: (OpenFileHandler.Params<Unit>) -> Unit): OpenFileHandler<Unit> =
+    object : OpenFileHandler<Unit> {
+        @Composable
+        override fun configure() {
+        }
 
-    override fun openFile(params: OpenFileHandler.Params<Unit>) = openFile(
-        OpenFileHandler.Params(
-            configuredValue = Unit,
-            filePathInProject = params.filePathInProject,
-            startLineNumber = params.startLineNumber,
-        ),
-    )
-}
+        override fun openFile(params: OpenFileHandler.Params<Unit>) = openFile(
+            OpenFileHandler.Params(
+                configuredValue = Unit,
+                filePathInProject = params.filePathInProject,
+                startLineNumber = params.startLineNumber,
+            ),
+        )
+    }
 
 /**
  * OpenFileHandler, which opens a file based on a base URL.
@@ -72,7 +77,7 @@ fun OpenFileHandler(openFile: (OpenFileHandler.Params<Unit>) -> Unit) = object :
  * val githubOpenFileHandler = UrlOpenFileHandler("https://github.com/me/my-repo/blob/main/")
  * ```
  */
-open class UrlOpenFileHandler(private val baseUrl: String) : OpenFileHandler<UriHandler> {
+public open class UrlOpenFileHandler(private val baseUrl: String) : OpenFileHandler<UriHandler> {
     @Composable
     override fun configure(): UriHandler = LocalUriHandler.current
 
@@ -87,7 +92,8 @@ open class UrlOpenFileHandler(private val baseUrl: String) : OpenFileHandler<Uri
  * **This is an internal annotation for Compose Preview Lab. Don't use this api manually.**
  */
 @InternalComposePreviewLabApi
-val LocalOpenFileHandler = compositionLocalOf<OpenFileHandler<out Any?>?> { null }
+public val LocalOpenFileHandler: androidx.compose.runtime.ProvidableCompositionLocal<OpenFileHandler<out Any?>?> =
+    compositionLocalOf<OpenFileHandler<out Any?>?> { null }
 
 /**
  * An OpenFileHandler that opens files in GitHub's web interface.
@@ -99,5 +105,5 @@ val LocalOpenFileHandler = compositionLocalOf<OpenFileHandler<out Any?>?> { null
  * @param branch The branch name to link to (defaults to "main")
  * @param server The GitHub server URL (defaults to "https://github.com" for public GitHub)
  */
-class GithubOpenFileHandler(githubRepository: String, branch: String = "main", server: String = "https://github.com") :
+public class GithubOpenFileHandler(githubRepository: String, branch: String = "main", server: String = "https://github.com") :
     UrlOpenFileHandler(baseUrl = "$server/$githubRepository/blob/$branch/")

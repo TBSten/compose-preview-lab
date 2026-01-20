@@ -2,9 +2,10 @@ package me.tbsten.compose.preview.lab.extension.kotlinx.datetime
 
 import kotlinx.datetime.DayOfWeek
 import me.tbsten.compose.preview.lab.field.EnumField
+import me.tbsten.compose.preview.lab.field.WithValueCodeField
 
 @Suppress("ktlint:standard:function-naming", "FunctionName")
-fun DayOfWeekField(label: String, initialValue: DayOfWeek) = EnumField<DayOfWeek>(
+public fun DayOfWeekField(label: String, initialValue: DayOfWeek): WithValueCodeField<DayOfWeek> = EnumField<DayOfWeek>(
     label = label,
     initialValue = initialValue,
 )

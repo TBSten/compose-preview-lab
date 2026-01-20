@@ -53,7 +53,7 @@ private const val SummaryMaxItems = 5
  * @param defaultValue Factory function to create a default value when inserting new elements.
  *                     Defaults to the first element of initialValue if available.
  */
-open class SetField<Value>(
+public open class SetField<Value>(
     label: String,
     initialValue: Set<Value>,
     internal val elementField: ElementFieldScope.() -> MutablePreviewLabField<Value>,
@@ -151,7 +151,7 @@ open class SetField<Value>(
      * @property label The label for the element field, representing its index in the set.
      * @property initialValue The initial value for the element.
      */
-    inner class ElementFieldScope internal constructor(val label: String, val initialValue: Value)
+    public inner class ElementFieldScope internal constructor(public val label: String, public val initialValue: Value)
 }
 
 /**
@@ -159,4 +159,5 @@ open class SetField<Value>(
  *
  * @return The field with the empty set hint added.
  */
-fun <Value> MutablePreviewLabField<Set<Value>>.withEmptyHint() = withHint("Empty Set" to emptySet())
+public fun <Value> MutablePreviewLabField<Set<Value>>.withEmptyHint(): MutablePreviewLabField<Set<Value>> =
+    withHint("Empty Set" to emptySet())

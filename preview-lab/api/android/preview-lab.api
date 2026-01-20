@@ -19,10 +19,6 @@ public final class me/tbsten/compose/preview/lab/field/ComposeDefaultComposition
 	public static final fun withBasicFontScalesHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
 }
 
-public final class me/tbsten/compose/preview/lab/field/ComposeDefaultCompositionLocalFields_androidKt {
-	public static final fun providePlatformDefaultCompositionLocalFields (Lme/tbsten/compose/preview/lab/previewlab/PreviewLabScope;)[Landroidx/compose/runtime/ProvidedValue;
-}
-
 public final class me/tbsten/compose/preview/lab/previewlab/ComposableSingletons$PreviewLabKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/previewlab/ComposableSingletons$PreviewLabKt;
 	public fun <init> ()V

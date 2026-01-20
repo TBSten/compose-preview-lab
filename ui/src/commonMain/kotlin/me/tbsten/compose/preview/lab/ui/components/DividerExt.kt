@@ -10,11 +10,11 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @Composable
 @InternalComposePreviewLabApi
-fun ColumnScope.Divider(
+public fun ColumnScope.Divider(
     modifier: Modifier = Modifier,
     thickness: Dp = DividerDefaults.Thickness,
     color: Color = DividerDefaults.color,
-) = HorizontalDivider(
+): Unit = HorizontalDivider(
     modifier = modifier,
     thickness = thickness,
     color = color,
@@ -22,11 +22,11 @@ fun ColumnScope.Divider(
 
 @Composable
 @InternalComposePreviewLabApi
-fun RowScope.Divider(
+public fun RowScope.Divider(
     modifier: Modifier = Modifier,
     thickness: Dp = DividerDefaults.Thickness,
     color: Color = DividerDefaults.color,
-) = VerticalDivider(
+): Unit = VerticalDivider(
     modifier = modifier,
     thickness = thickness,
     color = color,

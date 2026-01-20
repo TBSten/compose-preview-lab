@@ -10,7 +10,7 @@ final class me.tbsten.compose.preview.lab.extension.navigation/NavControllerFiel
     constructor <init>(kotlin/String, androidx.navigation/NavHostController, kotlin.collections/List<me.tbsten.compose.preview.lab/PreviewLabField<out kotlin/Any>> = ...) // me.tbsten.compose.preview.lab.extension.navigation/NavControllerField.<init>|<init>(kotlin.String;androidx.navigation.NavHostController;kotlin.collections.List<me.tbsten.compose.preview.lab.PreviewLabField<out|kotlin.Any>>){}[0]
 
     final fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.extension.navigation/NavControllerField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
-    final fun serializer(): kotlin/Nothing? // me.tbsten.compose.preview.lab.extension.navigation/NavControllerField.serializer|serializer(){}[0]
+    final fun serializer(): kotlinx.serialization/KSerializer<androidx.navigation/NavHostController>? // me.tbsten.compose.preview.lab.extension.navigation/NavControllerField.serializer|serializer(){}[0]
     final fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.extension.navigation/NavControllerField.valueCode|valueCode(){}[0]
 }
 

@@ -29,9 +29,9 @@ import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
  * @param width The component width
  * @param height The component height
  */
-class SizeModifierFieldValue(width: Dp, height: Dp) : ModifierFieldValue {
-    var width by mutableStateOf(width)
-    var height by mutableStateOf(height)
+public class SizeModifierFieldValue(width: Dp, height: Dp) : ModifierFieldValue {
+    public var width: Dp by mutableStateOf(width)
+    public var height: Dp by mutableStateOf(height)
 
     override fun Modifier.createModifier(): Modifier = size(
         width = width,
@@ -39,7 +39,7 @@ class SizeModifierFieldValue(width: Dp, height: Dp) : ModifierFieldValue {
     )
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             appendLine(".size(")
 
@@ -85,17 +85,17 @@ class SizeModifierFieldValue(width: Dp, height: Dp) : ModifierFieldValue {
      * @param initialWidth Initial width value for the component
      * @param initialHeight Initial height value for the component
      */
-    class Factory(initialWidth: Dp? = null, initialHeight: Dp? = null) :
+    public class Factory(initialWidth: Dp? = null, initialHeight: Dp? = null) :
         ModifierFieldValueFactory<SizeModifierFieldValue> {
         override val title: String = ".size(...)"
-        var width by mutableStateOf(initialWidth)
-        var height by mutableStateOf(initialHeight)
+        public var width: Dp? by mutableStateOf(initialWidth)
+        public var height: Dp? by mutableStateOf(initialHeight)
 
         override val canCreate: Boolean
             get() =
                 width != null && height != null
 
-        constructor(
+        public constructor(
             initialAll: Dp? = null,
         ) : this(
             initialWidth = initialAll,
@@ -103,7 +103,7 @@ class SizeModifierFieldValue(width: Dp, height: Dp) : ModifierFieldValue {
         )
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column {
+        override fun Content(createButton: @Composable (() -> Unit)): Unit = Column {
             TransformableTextField(
                 value = width,
                 onValueChange = { width = it },
@@ -139,7 +139,7 @@ class SizeModifierFieldValue(width: Dp, height: Dp) : ModifierFieldValue {
  * @param height The component height
  * @return A new ModifierFieldValueList with size applied
  */
-fun ModifierFieldValueList.size(width: Dp = 0.dp, height: Dp = 0.dp) = then(
+public fun ModifierFieldValueList.size(width: Dp = 0.dp, height: Dp = 0.dp): ModifierFieldValueList = then(
     SizeModifierFieldValue(
         width = width,
         height = height,
@@ -152,7 +152,7 @@ fun ModifierFieldValueList.size(width: Dp = 0.dp, height: Dp = 0.dp) = then(
  * @param size The size value to apply to both width and height
  * @return A new ModifierFieldValueList with size applied
  */
-fun ModifierFieldValueList.size(size: Dp = 0.dp) = then(
+public fun ModifierFieldValueList.size(size: Dp = 0.dp): ModifierFieldValueList = then(
     SizeModifierFieldValue(
         width = size,
         height = size,
@@ -166,13 +166,13 @@ fun ModifierFieldValueList.size(size: Dp = 0.dp) = then(
  *
  * @param width The component width
  */
-class WidthModifierFieldValue(width: Dp) : ModifierFieldValue {
-    var width by mutableStateOf(width)
+public class WidthModifierFieldValue(width: Dp) : ModifierFieldValue {
+    public var width: Dp by mutableStateOf(width)
 
     override fun Modifier.createModifier(): Modifier = width(width = width)
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             appendLine(".width(")
 
@@ -203,15 +203,15 @@ class WidthModifierFieldValue(width: Dp) : ModifierFieldValue {
      *
      * @param initialWidth Initial width value for the component
      */
-    class Factory(initialWidth: Dp? = null) : ModifierFieldValueFactory<WidthModifierFieldValue> {
+    public class Factory(initialWidth: Dp? = null) : ModifierFieldValueFactory<WidthModifierFieldValue> {
         override val title: String = ".width(...)"
-        var width by mutableStateOf(initialWidth)
+        public var width: Dp? by mutableStateOf(initialWidth)
 
         override val canCreate: Boolean
             get() = width != null
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column(
+        override fun Content(createButton: @Composable (() -> Unit)): Unit = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             TransformableTextField(
@@ -239,7 +239,7 @@ class WidthModifierFieldValue(width: Dp) : ModifierFieldValue {
  * @param width The component width
  * @return A new ModifierFieldValueList with width applied
  */
-fun ModifierFieldValueList.width(width: Dp) = then(
+public fun ModifierFieldValueList.width(width: Dp): ModifierFieldValueList = then(
     WidthModifierFieldValue(
         width = width,
     ),
@@ -252,13 +252,13 @@ fun ModifierFieldValueList.width(width: Dp) = then(
  *
  * @param height The component height
  */
-class HeightModifierFieldValue(height: Dp) : ModifierFieldValue {
-    var height by mutableStateOf(height)
+public class HeightModifierFieldValue(height: Dp) : ModifierFieldValue {
+    public var height: Dp by mutableStateOf(height)
 
     override fun Modifier.createModifier(): Modifier = height(height = height)
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             appendLine(".height(")
 
@@ -289,15 +289,15 @@ class HeightModifierFieldValue(height: Dp) : ModifierFieldValue {
      *
      * @param initialHeight Initial height value for the component
      */
-    class Factory(initialHeight: Dp? = null) : ModifierFieldValueFactory<HeightModifierFieldValue> {
+    public class Factory(initialHeight: Dp? = null) : ModifierFieldValueFactory<HeightModifierFieldValue> {
         override val title: String = ".height(...)"
-        var height by mutableStateOf(initialHeight)
+        public var height: Dp? by mutableStateOf(initialHeight)
 
         override val canCreate: Boolean
             get() = height != null
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column {
+        override fun Content(createButton: @Composable (() -> Unit)): Unit = Column {
             TransformableTextField(
                 value = height,
                 onValueChange = { height = it },
@@ -323,7 +323,7 @@ class HeightModifierFieldValue(height: Dp) : ModifierFieldValue {
  * @param height The component height
  * @return A new ModifierFieldValueList with height applied
  */
-fun ModifierFieldValueList.height(height: Dp) = then(
+public fun ModifierFieldValueList.height(height: Dp): ModifierFieldValueList = then(
     HeightModifierFieldValue(
         height = height,
     ),

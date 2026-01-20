@@ -81,7 +81,7 @@ import me.tbsten.compose.preview.lab.ui.adaptive
  * @see PreviewLabMcpServerConfig
  */
 @Composable
-fun ApplicationScope.PreviewLabGalleryWindows(
+public fun ApplicationScope.PreviewLabGalleryWindows(
     previewList: List<PreviewLabPreview>,
     openFileHandler: OpenFileHandler<out Any?>? = null,
     featuredFileList: Map<String, List<String>> = emptyMap(),

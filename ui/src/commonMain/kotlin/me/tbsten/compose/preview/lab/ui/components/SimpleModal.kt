@@ -25,7 +25,7 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 @InternalComposePreviewLabApi
-fun SimpleModal(
+public fun SimpleModal(
     isVisible: Boolean,
     onDismissRequest: () -> Unit,
     contentPadding: PaddingValues = PaddingValues(12.dp),

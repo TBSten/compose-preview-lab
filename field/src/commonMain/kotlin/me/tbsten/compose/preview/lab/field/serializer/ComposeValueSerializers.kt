@@ -51,7 +51,7 @@ internal object ColorSerializer : KSerializer<Color> {
 }
 
 @Serializable
-private data class ColorData(val red: Float, val green: Float, val blue: Float, val alpha: Float)
+private data class ColorData(public val red: Float, public val green: Float, public val blue: Float, public val alpha: Float)
 
 /**
  * Serializer for Compose [Dp] values.

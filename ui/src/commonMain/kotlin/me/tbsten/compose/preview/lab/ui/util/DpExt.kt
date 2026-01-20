@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.IntSize
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @InternalComposePreviewLabApi
-fun Offset.toDpOffset(density: Density): DpOffset = with(density) {
+public fun Offset.toDpOffset(density: Density): DpOffset = with(density) {
     DpOffset(
         x = x.toDp(),
         y = y.toDp(),
@@ -16,7 +16,7 @@ fun Offset.toDpOffset(density: Density): DpOffset = with(density) {
 }
 
 @InternalComposePreviewLabApi
-fun IntSize.toDpSize(density: Density): DpSize = with(density) {
+public fun IntSize.toDpSize(density: Density): DpSize = with(density) {
     DpSize(
         width = width.toDp(),
         height = height.toDp(),

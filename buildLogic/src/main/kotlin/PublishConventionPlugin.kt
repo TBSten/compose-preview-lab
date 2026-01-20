@@ -3,6 +3,8 @@ import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPom
 import org.gradle.api.publish.maven.MavenPomDeveloperSpec
 import org.gradle.api.publish.maven.MavenPomLicenseSpec
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import util.libs
 import util.mavenPublishing
 import util.plugin
@@ -25,6 +27,14 @@ class PublishConventionPlugin : Plugin<Project> {
 
         configurePublish(publishConvention)
         configureDokka(publishConvention)
+        configureExplicitApi()
+    }
+}
+
+private fun Project.configureExplicitApi() {
+    afterEvaluate {
+        extensions.findByType(KotlinMultiplatformExtension::class.java)?.explicitApi()
+        extensions.findByType(KotlinJvmProjectExtension::class.java)?.explicitApi()
     }
 }
 

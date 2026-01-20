@@ -65,7 +65,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 @InternalComposePreviewLabApi
-fun TooltipBox(
+public fun TooltipBox(
     modifier: Modifier = Modifier,
     positionProvider: PopupPositionProvider = rememberTooltipPositionProvider(),
     tooltip: @Composable TooltipScope.() -> Unit,
@@ -101,7 +101,7 @@ fun TooltipBox(
 
 @Composable
 @InternalComposePreviewLabApi
-fun TooltipBox(
+public fun TooltipBox(
     tooltip: String,
     modifier: Modifier = Modifier,
     positionProvider: PopupPositionProvider = rememberTooltipPositionProvider(),
@@ -109,7 +109,7 @@ fun TooltipBox(
     focusable: Boolean = true,
     enableUserInput: Boolean = true,
     content: @Composable () -> Unit,
-) = TooltipBox(
+): Unit = TooltipBox(
     tooltip = { Tooltip { Text(tooltip, style = PreviewLabTheme.typography.label3) } },
     modifier = modifier,
     positionProvider = positionProvider,
@@ -121,7 +121,7 @@ fun TooltipBox(
 
 @Composable
 @InternalComposePreviewLabApi
-fun TooltipScope.Tooltip(
+public fun TooltipScope.Tooltip(
     modifier: Modifier = Modifier,
     caretSize: DpSize = TooltipDefaults.CaretSize,
     maxWidth: Dp = TooltipDefaults.MaxWidth,
@@ -171,20 +171,20 @@ fun TooltipScope.Tooltip(
 }
 
 @InternalComposePreviewLabApi
-sealed interface TooltipScope {
-    fun Modifier.drawCaret(draw: CacheDrawScope.(LayoutCoordinates?) -> DrawResult): Modifier
+public sealed interface TooltipScope {
+    public fun Modifier.drawCaret(draw: CacheDrawScope.(LayoutCoordinates?) -> DrawResult): Modifier
 }
 
 @InternalComposePreviewLabApi
-class DefaultTooltipScope(val getAnchorBounds: () -> LayoutCoordinates?) : TooltipScope {
+public class DefaultTooltipScope(public val getAnchorBounds: () -> LayoutCoordinates?) : TooltipScope {
     override fun Modifier.drawCaret(draw: CacheDrawScope.(LayoutCoordinates?) -> DrawResult): Modifier =
         this.drawWithCache { draw(getAnchorBounds()) }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @InternalComposePreviewLabApi
-interface TooltipState : BasicTooltipState {
-    val transition: MutableTransitionState<Boolean>
+public interface TooltipState : BasicTooltipState {
+    public val transition: MutableTransitionState<Boolean>
 }
 
 @Stable
@@ -233,23 +233,23 @@ private class TooltipStateImpl(
 }
 
 @InternalComposePreviewLabApi
-object TooltipDefaults {
-    val CaretSize = DpSize(12.dp, 6.dp)
-    val MaxWidth = 300.dp
-    val ShadowElevation = 4.dp
-    val SpacingBetweenTooltipAndAnchor = 4.dp
-    val MinHeight = 24.dp
-    val MinWidth = 40.dp
-    val PlainTooltipVerticalPadding = 4.dp
-    val PlainTooltipHorizontalPadding = 8.dp
-    val ContentPadding = PaddingValues(PlainTooltipHorizontalPadding, PlainTooltipVerticalPadding)
-    val Shape = RoundedCornerShape(4.dp)
+public object TooltipDefaults {
+    public val CaretSize: DpSize = DpSize(12.dp, 6.dp)
+    public val MaxWidth: Dp = 300.dp
+    public val ShadowElevation: Dp = 4.dp
+    public val SpacingBetweenTooltipAndAnchor: Dp = 4.dp
+    public val MinHeight: Dp = 24.dp
+    public val MinWidth: Dp = 40.dp
+    public val PlainTooltipVerticalPadding: Dp = 4.dp
+    public val PlainTooltipHorizontalPadding: Dp = 8.dp
+    public val ContentPadding: PaddingValues = PaddingValues(PlainTooltipHorizontalPadding, PlainTooltipVerticalPadding)
+    public val Shape: RoundedCornerShape = RoundedCornerShape(4.dp)
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 @InternalComposePreviewLabApi
-fun rememberTooltipState(
+public fun rememberTooltipState(
     initialIsVisible: Boolean = false,
     isPersistent: Boolean = false,
     mutatorMutex: MutatorMutex = BasicTooltipDefaults.GlobalMutatorMutex,
@@ -263,7 +263,7 @@ fun rememberTooltipState(
 
 @Composable
 @InternalComposePreviewLabApi
-fun rememberTooltipPositionProvider(
+public fun rememberTooltipPositionProvider(
     spacingBetweenTooltipAndAnchor: Dp = TooltipDefaults.SpacingBetweenTooltipAndAnchor,
 ): PopupPositionProvider {
     val tooltipAnchorSpacing =
@@ -294,7 +294,7 @@ fun rememberTooltipPositionProvider(
 }
 
 @InternalComposePreviewLabApi
-fun Modifier.animateTooltip(transition: Transition<Boolean>): Modifier = composed(
+public fun Modifier.animateTooltip(transition: Transition<Boolean>): Modifier = composed(
     inspectorInfo =
     debugInspectorInfo {
         name = "animateTooltip"

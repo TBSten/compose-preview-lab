@@ -27,7 +27,7 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  *
  * ```kotlin
  * // Custom data class with multiple fields
- * data class Padding(val horizontal: Dp, val vertical: Dp)
+ * data class Padding(public val horizontal: Dp, public val vertical: Dp)
  *
  * @Preview
  * @Composable
@@ -61,7 +61,7 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  * @param combine Function to combine values from sub-fields into the composite value
  * @param split Function to split a composite value back into individual sub-field values
  */
-open class CombinedField<Base, Value>(
+public open class CombinedField<Base, Value>(
     label: String,
     private val fields: List<MutablePreviewLabField<out Base>>,
     private val combine: (List<Base>) -> Value,
@@ -129,7 +129,7 @@ open class CombinedField<Base, Value>(
  * @param A Type of the value
  * @param first The split value
  */
-data class Splited1<A>(val first: A)
+public data class Splited1<A>(public val first: A)
 
 /**
  * Creates a [Splited1] instance containing a single value.
@@ -138,9 +138,9 @@ data class Splited1<A>(val first: A)
  * @param first The value
  * @return A new [Splited1] instance
  */
-fun <A> splitedOf(first: A) = Splited1(first)
+public fun <A> splitedOf(first: A): Splited1<A> = Splited1(first)
 
-open class CombinedField1<A, Value>(
+public open class CombinedField1<A, Value>(
     label: String,
     field1: MutablePreviewLabField<A>,
     private val combine: (A) -> Value,
@@ -165,7 +165,7 @@ open class CombinedField1<A, Value>(
  *
  * ```kotlin
  * // Wrapping a single field with transformation
- * data class UserId(val value: String)
+ * data class UserId(public val value: String)
  *
  * @Preview
  * @Composable
@@ -188,12 +188,12 @@ open class CombinedField1<A, Value>(
  * @param combine Function to transform the field value into the composite value
  * @param split Function to extract the field value from the composite value
  */
-fun <A, Value> combined(
+public fun <A, Value> combined(
     label: String,
     field1: MutablePreviewLabField<A>,
     combine: (A) -> Value,
     split: (Value) -> Splited1<A>,
-) = CombinedField1(
+): CombinedField1<A, Value> = CombinedField1(
     label = label,
     field1 = field1,
     combine = combine,
@@ -210,7 +210,7 @@ fun <A, Value> combined(
  * @param first The first split value
  * @param second The second split value
  */
-data class Splited2<A, B>(val first: A, val second: B)
+public data class Splited2<A, B>(public val first: A, public val second: B)
 
 /**
  * Creates a [Splited2] instance containing two values.
@@ -221,9 +221,9 @@ data class Splited2<A, B>(val first: A, val second: B)
  * @param second The second value
  * @return A new [Splited2] instance
  */
-fun <A, B> splitedOf(first: A, second: B) = Splited2(first, second)
+public fun <A, B> splitedOf(first: A, second: B): Splited2<A, B> = Splited2(first, second)
 
-open class CombinedField2<A, B, Value>(
+public open class CombinedField2<A, B, Value>(
     label: String,
     field1: MutablePreviewLabField<A>,
     field2: MutablePreviewLabField<B>,
@@ -249,7 +249,7 @@ open class CombinedField2<A, B, Value>(
  *
  * ```kotlin
  * // Point with x and y coordinates
- * data class Point(val x: Float, val y: Float)
+ * data class Point(public val x: Float, public val y: Float)
  *
  * @Preview
  * @Composable
@@ -270,7 +270,7 @@ open class CombinedField2<A, B, Value>(
  * }
  *
  * // Range with min and max
- * data class Range(val min: Int, val max: Int)
+ * data class Range(public val min: Int, public val max: Int)
  *
  * @Preview
  * @Composable
@@ -295,13 +295,13 @@ open class CombinedField2<A, B, Value>(
  * @param combine Function to combine two values into the composite value
  * @param split Function to split the composite value back into two values
  */
-fun <A, B, Value> combined(
+public fun <A, B, Value> combined(
     label: String,
     field1: MutablePreviewLabField<A>,
     field2: MutablePreviewLabField<B>,
     combine: (A, B) -> Value,
     split: (Value) -> Splited2<A, B>,
-) = CombinedField2(
+): CombinedField2<A, B, Value> = CombinedField2(
     label = label,
     field1 = field1,
     field2 = field2,
@@ -321,7 +321,7 @@ fun <A, B, Value> combined(
  * @param second The second split value
  * @param third The third split value
  */
-data class Splited3<A, B, C>(val first: A, val second: B, val third: C)
+public data class Splited3<A, B, C>(public val first: A, public val second: B, public val third: C)
 
 /**
  * Creates a [Splited3] instance containing three values.
@@ -334,9 +334,9 @@ data class Splited3<A, B, C>(val first: A, val second: B, val third: C)
  * @param third The third value
  * @return A new [Splited3] instance
  */
-fun <A, B, C> splitedOf(first: A, second: B, third: C) = Splited3(first, second, third)
+public fun <A, B, C> splitedOf(first: A, second: B, third: C): Splited3<A, B, C> = Splited3(first, second, third)
 
-open class CombinedField3<A, B, C, Value>(
+public open class CombinedField3<A, B, C, Value>(
     label: String,
     field1: MutablePreviewLabField<A>,
     field2: MutablePreviewLabField<B>,
@@ -362,7 +362,7 @@ open class CombinedField3<A, B, C, Value>(
  *
  * ```kotlin
  * // RGB color from three Int values
- * data class RgbColor(val red: Int, val green: Int, val blue: Int)
+ * data class RgbColor(public val red: Int, public val green: Int, public val blue: Int)
  *
  * @Preview
  * @Composable
@@ -386,7 +386,7 @@ open class CombinedField3<A, B, C, Value>(
  * }
  *
  * // 3D Point
- * data class Point3D(val x: Float, val y: Float, val z: Float)
+ * data class Point3D(public val x: Float, public val y: Float, public val z: Float)
  *
  * @Preview
  * @Composable
@@ -413,14 +413,14 @@ open class CombinedField3<A, B, C, Value>(
  * @param combine Function to combine three values into the composite value
  * @param split Function to split the composite value back into three values
  */
-fun <A, B, C, Value> combined(
+public fun <A, B, C, Value> combined(
     label: String,
     field1: MutablePreviewLabField<A>,
     field2: MutablePreviewLabField<B>,
     field3: MutablePreviewLabField<C>,
     combine: (A, B, C) -> Value,
     split: (Value) -> Splited3<A, B, C>,
-) = CombinedField3(
+): CombinedField3<A, B, C, Value> = CombinedField3(
     label = label,
     field1 = field1,
     field2 = field2,
@@ -443,7 +443,7 @@ fun <A, B, C, Value> combined(
  * @param third The third split value
  * @param fourth The fourth split value
  */
-data class Splited4<A, B, C, D>(val first: A, val second: B, val third: C, val fourth: D)
+public data class Splited4<A, B, C, D>(public val first: A, public val second: B, public val third: C, public val fourth: D)
 
 /**
  * Creates a [Splited4] instance containing four values.
@@ -458,9 +458,10 @@ data class Splited4<A, B, C, D>(val first: A, val second: B, val third: C, val f
  * @param fourth The fourth value
  * @return A new [Splited4] instance
  */
-fun <A, B, C, D> splitedOf(first: A, second: B, third: C, fourth: D) = Splited4(first, second, third, fourth)
+public fun <A, B, C, D> splitedOf(first: A, second: B, third: C, fourth: D): Splited4<A, B, C, D> =
+    Splited4(first, second, third, fourth)
 
-open class CombinedField4<A, B, C, D, Value>(
+public open class CombinedField4<A, B, C, D, Value>(
     label: String,
     field1: MutablePreviewLabField<A>,
     field2: MutablePreviewLabField<B>,
@@ -488,7 +489,7 @@ open class CombinedField4<A, B, C, D, Value>(
  *
  * ```kotlin
  * // RGBA color with alpha channel
- * data class RgbaColor(val red: Int, val green: Int, val blue: Int, val alpha: Float)
+ * data class RgbaColor(public val red: Int, public val green: Int, public val blue: Int, public val alpha: Float)
  *
  * @Preview
  * @Composable
@@ -513,7 +514,7 @@ open class CombinedField4<A, B, C, D, Value>(
  * }
  *
  * // Rectangle with position and size
- * data class Rectangle(val x: Dp, val y: Dp, val width: Dp, val height: Dp)
+ * data class Rectangle(public val x: Dp, public val y: Dp, public val width: Dp, public val height: Dp)
  *
  * @Preview
  * @Composable
@@ -549,7 +550,7 @@ open class CombinedField4<A, B, C, D, Value>(
  * @param combine Function to combine four values into the composite value
  * @param split Function to split the composite value back into four values
  */
-fun <A, B, C, D, Value> combined(
+public fun <A, B, C, D, Value> combined(
     label: String,
     field1: MutablePreviewLabField<A>,
     field2: MutablePreviewLabField<B>,
@@ -557,7 +558,7 @@ fun <A, B, C, D, Value> combined(
     field4: MutablePreviewLabField<D>,
     combine: (A, B, C, D) -> Value,
     split: (Value) -> Splited4<A, B, C, D>,
-) = CombinedField4(
+): CombinedField4<A, B, C, D, Value> = CombinedField4(
     label = label,
     field1 = field1,
     field2 = field2,
@@ -583,7 +584,13 @@ fun <A, B, C, D, Value> combined(
  * @param fourth The fourth split value
  * @param fifth The fifth split value
  */
-data class Splited5<A, B, C, D, E>(val first: A, val second: B, val third: C, val fourth: D, val fifth: E)
+public data class Splited5<A, B, C, D, E>(
+    public val first: A,
+    public val second: B,
+    public val third: C,
+    public val fourth: D,
+    public val fifth: E
+)
 
 /**
  * Creates a [Splited5] instance containing five values.
@@ -600,10 +607,10 @@ data class Splited5<A, B, C, D, E>(val first: A, val second: B, val third: C, va
  * @param fifth The fifth value
  * @return A new [Splited5] instance
  */
-fun <A, B, C, D, E> splitedOf(first: A, second: B, third: C, fourth: D, fifth: E) =
+public fun <A, B, C, D, E> splitedOf(first: A, second: B, third: C, fourth: D, fifth: E): Splited5<A, B, C, D, E> =
     Splited5(first, second, third, fourth, fifth)
 
-open class CombinedField5<A, B, C, D, E, Value>(
+public open class CombinedField5<A, B, C, D, E, Value>(
     label: String,
     field1: MutablePreviewLabField<A>,
     field2: MutablePreviewLabField<B>,
@@ -685,7 +692,7 @@ open class CombinedField5<A, B, C, D, E, Value>(
  * @param split Function to split the composite value back into five values
  * @return A new [CombinedField5] instance that manages the five sub-fields as a single composite value
  */
-fun <A, B, C, D, E, Value> combined(
+public fun <A, B, C, D, E, Value> combined(
     label: String,
     field1: MutablePreviewLabField<A>,
     field2: MutablePreviewLabField<B>,
@@ -694,7 +701,7 @@ fun <A, B, C, D, E, Value> combined(
     field5: MutablePreviewLabField<E>,
     combine: (A, B, C, D, E) -> Value,
     split: (Value) -> Splited5<A, B, C, D, E>,
-) = CombinedField5(
+): CombinedField5<A, B, C, D, E, Value> = CombinedField5(
     label = label,
     field1 = field1,
     field2 = field2,
@@ -723,7 +730,14 @@ fun <A, B, C, D, E, Value> combined(
  * @param fifth The fifth split value
  * @param sixth The sixth split value
  */
-data class Splited6<A, B, C, D, E, F>(val first: A, val second: B, val third: C, val fourth: D, val fifth: E, val sixth: F)
+public data class Splited6<A, B, C, D, E, F>(
+    public val first: A,
+    public val second: B,
+    public val third: C,
+    public val fourth: D,
+    public val fifth: E,
+    public val sixth: F
+)
 
 /**
  * Creates a [Splited6] instance containing six values.
@@ -742,10 +756,16 @@ data class Splited6<A, B, C, D, E, F>(val first: A, val second: B, val third: C,
  * @param sixth The sixth value
  * @return A new [Splited6] instance
  */
-fun <A, B, C, D, E, F> splitedOf(first: A, second: B, third: C, fourth: D, fifth: E, sixth: F) =
-    Splited6(first, second, third, fourth, fifth, sixth)
+public fun <A, B, C, D, E, F> splitedOf(
+    first: A,
+    second: B,
+    third: C,
+    fourth: D,
+    fifth: E,
+    sixth: F
+): Splited6<A, B, C, D, E, F> = Splited6(first, second, third, fourth, fifth, sixth)
 
-open class CombinedField6<A, B, C, D, E, F, Value>(
+public open class CombinedField6<A, B, C, D, E, F, Value>(
     label: String,
     field1: MutablePreviewLabField<A>,
     field2: MutablePreviewLabField<B>,
@@ -842,7 +862,7 @@ open class CombinedField6<A, B, C, D, E, F, Value>(
  * @param split Function to split the composite value back into six values
  * @return A new [CombinedField6] instance that manages the six sub-fields as a single composite value
  */
-fun <A, B, C, D, E, F, Value> combined(
+public fun <A, B, C, D, E, F, Value> combined(
     label: String,
     field1: MutablePreviewLabField<A>,
     field2: MutablePreviewLabField<B>,
@@ -852,7 +872,7 @@ fun <A, B, C, D, E, F, Value> combined(
     field6: MutablePreviewLabField<F>,
     combine: (A, B, C, D, E, F) -> Value,
     split: (Value) -> Splited6<A, B, C, D, E, F>,
-) = CombinedField6(
+): CombinedField6<A, B, C, D, E, F, Value> = CombinedField6(
     label = label,
     field1 = field1,
     field2 = field2,
@@ -884,14 +904,14 @@ fun <A, B, C, D, E, F, Value> combined(
  * @param sixth The sixth split value
  * @param seventh The seventh split value
  */
-data class Splited7<A, B, C, D, E, F, G>(
-    val first: A,
-    val second: B,
-    val third: C,
-    val fourth: D,
-    val fifth: E,
-    val sixth: F,
-    val seventh: G,
+public data class Splited7<A, B, C, D, E, F, G>(
+    public val first: A,
+    public val second: B,
+    public val third: C,
+    public val fourth: D,
+    public val fifth: E,
+    public val sixth: F,
+    public val seventh: G,
 )
 
 /**
@@ -913,10 +933,17 @@ data class Splited7<A, B, C, D, E, F, G>(
  * @param seventh The seventh value
  * @return A new [Splited7] instance
  */
-fun <A, B, C, D, E, F, G> splitedOf(first: A, second: B, third: C, fourth: D, fifth: E, sixth: F, seventh: G) =
-    Splited7(first, second, third, fourth, fifth, sixth, seventh)
+public fun <A, B, C, D, E, F, G> splitedOf(
+    first: A,
+    second: B,
+    third: C,
+    fourth: D,
+    fifth: E,
+    sixth: F,
+    seventh: G
+): Splited7<A, B, C, D, E, F, G> = Splited7(first, second, third, fourth, fifth, sixth, seventh)
 
-open class CombinedField7<A, B, C, D, E, F, G, Value>(
+public open class CombinedField7<A, B, C, D, E, F, G, Value>(
     label: String,
     field1: MutablePreviewLabField<A>,
     field2: MutablePreviewLabField<B>,
@@ -1020,7 +1047,7 @@ open class CombinedField7<A, B, C, D, E, F, G, Value>(
  * @param split Function to split the composite value back into seven values
  * @return A new [CombinedField7] instance that manages the seven sub-fields as a single composite value
  */
-fun <A, B, C, D, E, F, G, Value> combined(
+public fun <A, B, C, D, E, F, G, Value> combined(
     label: String,
     field1: MutablePreviewLabField<A>,
     field2: MutablePreviewLabField<B>,
@@ -1031,7 +1058,7 @@ fun <A, B, C, D, E, F, G, Value> combined(
     field7: MutablePreviewLabField<G>,
     combine: (A, B, C, D, E, F, G) -> Value,
     split: (Value) -> Splited7<A, B, C, D, E, F, G>,
-) = CombinedField7(
+): CombinedField7<A, B, C, D, E, F, G, Value> = CombinedField7(
     label = label,
     field1 = field1,
     field2 = field2,
@@ -1066,15 +1093,15 @@ fun <A, B, C, D, E, F, G, Value> combined(
  * @param seventh The seventh split value
  * @param eighth The eighth split value
  */
-data class Splited8<A, B, C, D, E, F, G, H>(
-    val first: A,
-    val second: B,
-    val third: C,
-    val fourth: D,
-    val fifth: E,
-    val sixth: F,
-    val seventh: G,
-    val eighth: H,
+public data class Splited8<A, B, C, D, E, F, G, H>(
+    public val first: A,
+    public val second: B,
+    public val third: C,
+    public val fourth: D,
+    public val fifth: E,
+    public val sixth: F,
+    public val seventh: G,
+    public val eighth: H,
 )
 
 /**
@@ -1098,10 +1125,18 @@ data class Splited8<A, B, C, D, E, F, G, H>(
  * @param eighth The eighth value
  * @return A new [Splited8] instance
  */
-fun <A, B, C, D, E, F, G, H> splitedOf(first: A, second: B, third: C, fourth: D, fifth: E, sixth: F, seventh: G, eighth: H) =
-    Splited8(first, second, third, fourth, fifth, sixth, seventh, eighth)
+public fun <A, B, C, D, E, F, G, H> splitedOf(
+    first: A,
+    second: B,
+    third: C,
+    fourth: D,
+    fifth: E,
+    sixth: F,
+    seventh: G,
+    eighth: H
+): Splited8<A, B, C, D, E, F, G, H> = Splited8(first, second, third, fourth, fifth, sixth, seventh, eighth)
 
-open class CombinedField8<A, B, C, D, E, F, G, H, Value>(
+public open class CombinedField8<A, B, C, D, E, F, G, H, Value>(
     label: String,
     field1: MutablePreviewLabField<A>,
     field2: MutablePreviewLabField<B>,
@@ -1221,7 +1256,7 @@ open class CombinedField8<A, B, C, D, E, F, G, H, Value>(
  * @param split Function to split the composite value back into eight values
  * @return A new [CombinedField8] instance that manages the eight sub-fields as a single composite value
  */
-fun <A, B, C, D, E, F, G, H, Value> combined(
+public fun <A, B, C, D, E, F, G, H, Value> combined(
     label: String,
     field1: MutablePreviewLabField<A>,
     field2: MutablePreviewLabField<B>,
@@ -1233,7 +1268,7 @@ fun <A, B, C, D, E, F, G, H, Value> combined(
     field8: MutablePreviewLabField<H>,
     combine: (A, B, C, D, E, F, G, H) -> Value,
     split: (Value) -> Splited8<A, B, C, D, E, F, G, H>,
-) = CombinedField8(
+): CombinedField8<A, B, C, D, E, F, G, H, Value> = CombinedField8(
     label = label,
     field1 = field1,
     field2 = field2,
@@ -1271,16 +1306,16 @@ fun <A, B, C, D, E, F, G, H, Value> combined(
  * @param eighth The eighth split value
  * @param ninth The ninth split value
  */
-data class Splited9<A, B, C, D, E, F, G, H, I>(
-    val first: A,
-    val second: B,
-    val third: C,
-    val fourth: D,
-    val fifth: E,
-    val sixth: F,
-    val seventh: G,
-    val eighth: H,
-    val ninth: I,
+public data class Splited9<A, B, C, D, E, F, G, H, I>(
+    public val first: A,
+    public val second: B,
+    public val third: C,
+    public val fourth: D,
+    public val fifth: E,
+    public val sixth: F,
+    public val seventh: G,
+    public val eighth: H,
+    public val ninth: I,
 )
 
 /**
@@ -1306,7 +1341,7 @@ data class Splited9<A, B, C, D, E, F, G, H, I>(
  * @param ninth The ninth value
  * @return A new [Splited9] instance
  */
-fun <A, B, C, D, E, F, G, H, I> splitedOf(
+public fun <A, B, C, D, E, F, G, H, I> splitedOf(
     first: A,
     second: B,
     third: C,
@@ -1316,9 +1351,9 @@ fun <A, B, C, D, E, F, G, H, I> splitedOf(
     seventh: G,
     eighth: H,
     ninth: I,
-) = Splited9(first, second, third, fourth, fifth, sixth, seventh, eighth, ninth)
+): Splited9<A, B, C, D, E, F, G, H, I> = Splited9(first, second, third, fourth, fifth, sixth, seventh, eighth, ninth)
 
-open class CombinedField9<A, B, C, D, E, F, G, H, I, Value>(
+public open class CombinedField9<A, B, C, D, E, F, G, H, I, Value>(
     label: String,
     field1: MutablePreviewLabField<A>,
     field2: MutablePreviewLabField<B>,
@@ -1432,7 +1467,7 @@ open class CombinedField9<A, B, C, D, E, F, G, H, I, Value>(
  * @param split Function to split the composite value back into nine values
  * @return A new [CombinedField9] instance that manages the nine sub-fields as a single composite value
  */
-fun <A, B, C, D, E, F, G, H, I, Value> combined(
+public fun <A, B, C, D, E, F, G, H, I, Value> combined(
     label: String,
     field1: MutablePreviewLabField<A>,
     field2: MutablePreviewLabField<B>,
@@ -1445,7 +1480,7 @@ fun <A, B, C, D, E, F, G, H, I, Value> combined(
     field9: MutablePreviewLabField<I>,
     combine: (A, B, C, D, E, F, G, H, I) -> Value,
     split: (Value) -> Splited9<A, B, C, D, E, F, G, H, I>,
-) = CombinedField9(
+): CombinedField9<A, B, C, D, E, F, G, H, I, Value> = CombinedField9(
     label = label,
     field1 = field1,
     field2 = field2,
@@ -1486,17 +1521,17 @@ fun <A, B, C, D, E, F, G, H, I, Value> combined(
  * @param ninth The ninth split value
  * @param tenth The tenth split value
  */
-data class Splited10<A, B, C, D, E, F, G, H, I, J>(
-    val first: A,
-    val second: B,
-    val third: C,
-    val fourth: D,
-    val fifth: E,
-    val sixth: F,
-    val seventh: G,
-    val eighth: H,
-    val ninth: I,
-    val tenth: J,
+public data class Splited10<A, B, C, D, E, F, G, H, I, J>(
+    public val first: A,
+    public val second: B,
+    public val third: C,
+    public val fourth: D,
+    public val fifth: E,
+    public val sixth: F,
+    public val seventh: G,
+    public val eighth: H,
+    public val ninth: I,
+    public val tenth: J,
 )
 
 /**
@@ -1524,7 +1559,7 @@ data class Splited10<A, B, C, D, E, F, G, H, I, J>(
  * @param tenth The tenth value
  * @return A new [Splited10] instance
  */
-fun <A, B, C, D, E, F, G, H, I, J> splitedOf(
+public fun <A, B, C, D, E, F, G, H, I, J> splitedOf(
     first: A,
     second: B,
     third: C,
@@ -1535,9 +1570,10 @@ fun <A, B, C, D, E, F, G, H, I, J> splitedOf(
     eighth: H,
     ninth: I,
     tenth: J,
-) = Splited10(first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth)
+): Splited10<A, B, C, D, E, F, G, H, I, J> =
+    Splited10(first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth)
 
-open class CombinedField10<A, B, C, D, E, F, G, H, I, J, Value>(
+public open class CombinedField10<A, B, C, D, E, F, G, H, I, J, Value>(
     label: String,
     field1: MutablePreviewLabField<A>,
     field2: MutablePreviewLabField<B>,
@@ -1658,7 +1694,7 @@ open class CombinedField10<A, B, C, D, E, F, G, H, I, J, Value>(
  * @param split Function to split the composite value back into ten values
  * @return A new [CombinedField10] instance that manages the ten sub-fields as a single composite value
  */
-fun <A, B, C, D, E, F, G, H, I, J, Value> combined(
+public fun <A, B, C, D, E, F, G, H, I, J, Value> combined(
     label: String,
     field1: MutablePreviewLabField<A>,
     field2: MutablePreviewLabField<B>,
@@ -1672,7 +1708,7 @@ fun <A, B, C, D, E, F, G, H, I, J, Value> combined(
     field10: MutablePreviewLabField<J>,
     combine: (A, B, C, D, E, F, G, H, I, J) -> Value,
     split: (Value) -> Splited10<A, B, C, D, E, F, G, H, I, J>,
-) = CombinedField10(
+): CombinedField10<A, B, C, D, E, F, G, H, I, J, Value> = CombinedField10(
     label = label,
     field1 = field1,
     field2 = field2,

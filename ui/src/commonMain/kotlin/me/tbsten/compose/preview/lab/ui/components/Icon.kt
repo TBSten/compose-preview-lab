@@ -20,13 +20,14 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
 
 @Composable
 @InternalComposePreviewLabApi
-fun Icon(
+public fun Icon(
     imageVector: ImageVector,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
@@ -42,7 +43,7 @@ fun Icon(
 
 @Composable
 @InternalComposePreviewLabApi
-fun Icon(
+public fun Icon(
     bitmap: ImageBitmap,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
@@ -59,7 +60,7 @@ fun Icon(
 
 @Composable
 @InternalComposePreviewLabApi
-fun Icon(
+public fun Icon(
     painter: Painter,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
@@ -97,6 +98,6 @@ private fun Size.isInfinite() = width.isInfinite() && height.isInfinite()
 private val DefaultIconSizeModifier = Modifier.size(IconDefaults.iconSize)
 
 @InternalComposePreviewLabApi
-object IconDefaults {
-    val iconSize = 24.dp
+public object IconDefaults {
+    public val iconSize: Dp = 24.dp
 }

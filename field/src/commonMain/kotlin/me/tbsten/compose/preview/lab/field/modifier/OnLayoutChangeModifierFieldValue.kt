@@ -53,15 +53,15 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  * @see ModifierFieldValue
  * @see captureSize
  */
-class CaptureSizeModifierFieldValue : ModifierFieldValue {
-    var capturedSize by mutableStateOf<IntSize?>(null)
+public class CaptureSizeModifierFieldValue : ModifierFieldValue {
+    public var capturedSize: IntSize? by mutableStateOf<IntSize?>(null)
 
     override fun Modifier.createModifier(): Modifier = onSizeChanged {
         capturedSize = it
     }
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             append(".onSizeChanged { ... }")
         },
@@ -93,12 +93,12 @@ class CaptureSizeModifierFieldValue : ModifierFieldValue {
      * Implements ModifierFieldValueFactory interface to handle
      * creation button display and instance generation in the UI.
      */
-    class Factory : ModifierFieldValueFactory<CaptureSizeModifierFieldValue> {
+    public class Factory : ModifierFieldValueFactory<CaptureSizeModifierFieldValue> {
         override val title: String = ".onSizeChanged { /* capture size */ }"
         override val canCreate: Boolean = true
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column(
+        override fun Content(createButton: @Composable (() -> Unit)): Unit = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) { }
 
@@ -118,7 +118,7 @@ class CaptureSizeModifierFieldValue : ModifierFieldValue {
  * @return ModifierFieldValueList with CaptureSizeModifierFieldValue added
  * @see CaptureSizeModifierFieldValue
  */
-fun ModifierFieldValueList.captureSize() = then(
+public fun ModifierFieldValueList.captureSize(): ModifierFieldValueList = then(
     CaptureSizeModifierFieldValue(),
 )
 
@@ -148,16 +148,16 @@ fun ModifierFieldValueList.captureSize() = then(
  * @see ModifierFieldValue
  * @see captureOffset
  */
-class CaptureOffsetModifierFieldValue(initialCaptureType: Type = Type.PositionInRoot) : ModifierFieldValue {
-    var capturedOffset by mutableStateOf<LayoutCoordinates?>(null)
-    var captureType by mutableStateOf<Type>(initialCaptureType)
+public class CaptureOffsetModifierFieldValue(initialCaptureType: Type = Type.PositionInRoot) : ModifierFieldValue {
+    public var capturedOffset: LayoutCoordinates? by mutableStateOf<LayoutCoordinates?>(null)
+    public var captureType: Type by mutableStateOf<Type>(initialCaptureType)
 
     override fun Modifier.createModifier(): Modifier = onPlaced {
         capturedOffset = it
     }
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             append(".onPlaced { ... }")
         },
@@ -202,7 +202,7 @@ class CaptureOffsetModifierFieldValue(initialCaptureType: Type = Type.PositionIn
      * @param label Label for UI display
      * @param getOffset Lambda to retrieve corresponding Offset from LayoutCoordinates
      */
-    enum class Type(val label: String, val getOffset: LayoutCoordinates.() -> Offset) {
+    public enum class Type(public val label: String, public val getOffset: LayoutCoordinates.() -> Offset) {
         PositionInRoot("positionInRoot", { positionInRoot() }),
         PositionOnScreen("positionOnScreen", { positionOnScreen() }),
         PositionInWindow("positionInWindow", { positionInWindow() }),
@@ -215,12 +215,12 @@ class CaptureOffsetModifierFieldValue(initialCaptureType: Type = Type.PositionIn
      * Implements ModifierFieldValueFactory interface to handle
      * creation button display and instance generation in the UI.
      */
-    class Factory : ModifierFieldValueFactory<CaptureOffsetModifierFieldValue> {
+    public class Factory : ModifierFieldValueFactory<CaptureOffsetModifierFieldValue> {
         override val title: String = ".onPlaced { /* capture offset */ }"
         override val canCreate: Boolean = true
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column(
+        override fun Content(createButton: @Composable (() -> Unit)): Unit = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) { }
 
@@ -245,7 +245,7 @@ class CaptureOffsetModifierFieldValue(initialCaptureType: Type = Type.PositionIn
  * @return ModifierFieldValueList with CaptureOffsetModifierFieldValue added
  * @see CaptureOffsetModifierFieldValue
  */
-fun ModifierFieldValueList.captureOffset(captureType: Type = Type.PositionInRoot) = then(
+public fun ModifierFieldValueList.captureOffset(captureType: Type = Type.PositionInRoot): ModifierFieldValueList = then(
     CaptureOffsetModifierFieldValue(
         initialCaptureType = captureType,
     ),
@@ -276,16 +276,16 @@ fun ModifierFieldValueList.captureOffset(captureType: Type = Type.PositionInRoot
  * @see ModifierFieldValue
  * @see captureLayoutRect
  */
-class CaptureLayoutRectModifierFieldValue(initialCaptureType: Type = Type.PositionInRoot) : ModifierFieldValue {
-    var capturedLayoutRect by mutableStateOf<RelativeLayoutBounds?>(null)
-    var captureType by mutableStateOf<Type>(initialCaptureType)
+public class CaptureLayoutRectModifierFieldValue(initialCaptureType: Type = Type.PositionInRoot) : ModifierFieldValue {
+    public var capturedLayoutRect: RelativeLayoutBounds? by mutableStateOf<RelativeLayoutBounds?>(null)
+    public var captureType: Type by mutableStateOf<Type>(initialCaptureType)
 
     override fun Modifier.createModifier(): Modifier = onLayoutRectChanged {
         capturedLayoutRect = it
     }
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             append(".onLayoutRectChanged { ... }")
         },
@@ -334,7 +334,7 @@ class CaptureLayoutRectModifierFieldValue(initialCaptureType: Type = Type.Positi
      * @param label Label for UI display
      * @param getLayoutRect Lambda to retrieve corresponding IntRect from RelativeLayoutBounds
      */
-    enum class Type(val label: String, val getLayoutRect: RelativeLayoutBounds.() -> IntRect) {
+    public enum class Type(public val label: String, public val getLayoutRect: RelativeLayoutBounds.() -> IntRect) {
         PositionInRoot("positionInRoot", { boundsInRoot }),
         PositionInScreen("positionInScreen", { boundsInScreen }),
         BoundsInWindow("boundsInWindow", { boundsInWindow }),
@@ -346,12 +346,12 @@ class CaptureLayoutRectModifierFieldValue(initialCaptureType: Type = Type.Positi
      * Implements ModifierFieldValueFactory interface to handle
      * creation button display and instance generation in the UI.
      */
-    class Factory : ModifierFieldValueFactory<CaptureLayoutRectModifierFieldValue> {
+    public class Factory : ModifierFieldValueFactory<CaptureLayoutRectModifierFieldValue> {
         override val title: String = ".onLayoutRectChanged { /* capture offset and size */ }"
         override val canCreate: Boolean = true
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column(
+        override fun Content(createButton: @Composable (() -> Unit)): Unit = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) { }
 
@@ -376,9 +376,9 @@ class CaptureLayoutRectModifierFieldValue(initialCaptureType: Type = Type.Positi
  * @return ModifierFieldValueList with CaptureLayoutRectModifierFieldValue added
  * @see CaptureLayoutRectModifierFieldValue
  */
-fun ModifierFieldValueList.captureLayoutRect(
+public fun ModifierFieldValueList.captureLayoutRect(
     captureType: CaptureLayoutRectModifierFieldValue.Type = CaptureLayoutRectModifierFieldValue.Type.PositionInRoot,
-) = then(
+): ModifierFieldValueList = then(
     CaptureLayoutRectModifierFieldValue(
         initialCaptureType = captureType,
     ),

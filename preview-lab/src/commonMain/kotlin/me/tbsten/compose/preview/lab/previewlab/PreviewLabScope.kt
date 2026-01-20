@@ -18,7 +18,7 @@ import me.tbsten.compose.preview.lab.PreviewLabField
  * @see PreviewLabEvent
  */
 @OptIn(ExperimentalTime::class)
-class PreviewLabScope(val state: PreviewLabState) {
+public class PreviewLabScope(public val state: PreviewLabState) {
     private var onEffectHandler: (Effect) -> Unit = {}
 
     // field methods
@@ -40,7 +40,7 @@ class PreviewLabScope(val state: PreviewLabState) {
      * ```
      */
     @Composable
-    fun <Value> fieldState(
+    public fun <Value> fieldState(
         key: String? = null,
         builder: FieldBuilderScope.() -> MutablePreviewLabField<Value>,
     ): MutableState<Value> {
@@ -75,7 +75,7 @@ class PreviewLabScope(val state: PreviewLabState) {
      * ```
      */
     @Composable
-    fun <Value> fieldValue(key: String? = null, builder: FieldBuilderScope.() -> PreviewLabField<out Value>): Value {
+    public fun <Value> fieldValue(key: String? = null, builder: FieldBuilderScope.() -> PreviewLabField<out Value>): Value {
         val urlParams = LocalUrlParams.current
         val field = remember(key1 = key) {
             builder(PreviewLabScope.FieldBuilderScope()).also { field ->
@@ -109,7 +109,7 @@ class PreviewLabScope(val state: PreviewLabState) {
      * @param title The title of the event. This is used for the toast display and also appears in the event list on the Events tab.
      * @param description It will not appear on the toast, but it will appear on the event tab. If you have a lot of information, use description instead of title to make the debug UI easier to read.
      */
-    fun onEvent(title: String, description: String? = null) {
+    public fun onEvent(title: String, description: String? = null) {
         val event = PreviewLabEvent(title = title, description = description)
         state.events.add(event)
         onEffectHandler.invoke(Effect.ShowEventToast(event = event))
@@ -124,7 +124,7 @@ class PreviewLabScope(val state: PreviewLabState) {
         data class ShowEventToast(val event: PreviewLabEvent) : Effect
     }
 
-    class FieldBuilderScope
+    public class FieldBuilderScope
 }
 
 private val json = Json {

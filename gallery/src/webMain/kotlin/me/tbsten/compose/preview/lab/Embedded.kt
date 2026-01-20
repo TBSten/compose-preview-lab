@@ -16,19 +16,19 @@ import me.tbsten.compose.preview.lab.previewlab.LocalDefaultIsHeaderShow
 import me.tbsten.compose.preview.lab.ui.adaptive
 
 @OptIn(ExperimentalWasmJsInterop::class)
-expect fun List<PreviewLabPreview>.findBySearchParam(previewIdQueryName: String = "previewId"): PreviewLabPreview?
+public expect fun List<PreviewLabPreview>.findBySearchParam(previewIdQueryName: String = "previewId"): PreviewLabPreview?
 
-expect fun isEmbedded(isEmbeddedSearchParamName: String = "iframe"): Boolean
+public expect fun isEmbedded(isEmbeddedSearchParamName: String = "iframe"): Boolean
 
-fun initialSelectedPreviewFromSearchParam(
+public fun initialSelectedPreviewFromSearchParam(
     previewList: List<PreviewLabPreview>,
     previewIdQueryName: String = "previewId",
     groupName: String = AllGroupName,
-) = previewList.findBySearchParam(previewIdQueryName = previewIdQueryName)
+): Pair<String, PreviewLabPreview>? = previewList.findBySearchParam(previewIdQueryName = previewIdQueryName)
     ?.let { groupName to it }
 
 @Composable
-fun EmbeddedPreviewOrGallery(
+public fun EmbeddedPreviewOrGallery(
     previewList: List<PreviewLabPreview>,
     modifier: Modifier = Modifier,
     isEmbeddedSearchParamName: String = "iframe",

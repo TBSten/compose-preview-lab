@@ -10,14 +10,14 @@ import me.tbsten.compose.preview.lab.ui.LocalTextStyle
 
 @Composable
 @InternalComposePreviewLabApi
-fun ProvideTextStyle(value: TextStyle, content: @Composable () -> Unit) {
+public fun ProvideTextStyle(value: TextStyle, content: @Composable () -> Unit) {
     val mergedStyle = LocalTextStyle.current.merge(value)
     CompositionLocalProvider(LocalTextStyle provides mergedStyle, content = content)
 }
 
 @Composable
 @InternalComposePreviewLabApi
-fun ProvideContentColorTextStyle(contentColor: Color, textStyle: TextStyle, content: @Composable () -> Unit) {
+public fun ProvideContentColorTextStyle(contentColor: Color, textStyle: TextStyle, content: @Composable () -> Unit) {
     val mergedStyle = LocalTextStyle.current.merge(textStyle)
     CompositionLocalProvider(
         LocalContentColor provides contentColor,

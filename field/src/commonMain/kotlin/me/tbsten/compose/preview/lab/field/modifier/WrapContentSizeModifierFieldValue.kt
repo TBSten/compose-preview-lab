@@ -10,14 +10,14 @@ import androidx.compose.ui.text.buildAnnotatedString
 /**
  * ModifierFieldValue that wraps the content size (both width and height) to match the content bounds.
  */
-class WrapContentSizeModifierFieldValue : ModifierFieldValue {
+public class WrapContentSizeModifierFieldValue : ModifierFieldValue {
     override fun Modifier.createModifier(): Modifier = wrapContentSize(
         // TODO align
         // TODO unbounded
     )
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             append(".wrapContentSize()")
         },
@@ -28,7 +28,7 @@ class WrapContentSizeModifierFieldValue : ModifierFieldValue {
      * Factory for creating WrapContentSizeModifierFieldValue instances.
      * No initial configuration parameters are needed as it automatically wraps to content size.
      */
-    class Factory : ModifierFieldValueFactory<WrapContentSizeModifierFieldValue> {
+    public class Factory : ModifierFieldValueFactory<WrapContentSizeModifierFieldValue> {
         override val title: String = ".wrapContentSize(...)"
 
         override val canCreate: Boolean = true
@@ -48,21 +48,21 @@ class WrapContentSizeModifierFieldValue : ModifierFieldValue {
  *
  * @return A new ModifierFieldValueList with wrap content size applied
  */
-fun ModifierFieldValueList.wrapContentSize() = then(
+public fun ModifierFieldValueList.wrapContentSize(): ModifierFieldValueList = then(
     WrapContentSizeModifierFieldValue(),
 )
 
 /**
  * ModifierFieldValue that wraps the content width to match the content bounds.
  */
-class WrapContentWidthModifierFieldValue : ModifierFieldValue {
+public class WrapContentWidthModifierFieldValue : ModifierFieldValue {
     override fun Modifier.createModifier(): Modifier = wrapContentWidth(
         // TODO align
         // TODO unbounded
     )
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             append(".wrapContentWidth()")
         },
@@ -73,7 +73,7 @@ class WrapContentWidthModifierFieldValue : ModifierFieldValue {
      * Factory for creating WrapContentWidthModifierFieldValue instances.
      * No initial configuration parameters are needed as it automatically wraps to content width.
      */
-    class Factory : ModifierFieldValueFactory<WrapContentWidthModifierFieldValue> {
+    public class Factory : ModifierFieldValueFactory<WrapContentWidthModifierFieldValue> {
         override val title: String = ".wrapContentWidth(...)"
 
         override val canCreate: Boolean = true
@@ -93,21 +93,21 @@ class WrapContentWidthModifierFieldValue : ModifierFieldValue {
  *
  * @return A new ModifierFieldValueList with wrap content width applied
  */
-fun ModifierFieldValueList.wrapContentWidth() = then(
+public fun ModifierFieldValueList.wrapContentWidth(): ModifierFieldValueList = then(
     WrapContentWidthModifierFieldValue(),
 )
 
 /**
  * ModifierFieldValue that wraps the content height to match the content bounds.
  */
-class WrapContentHeightModifierFieldValue : ModifierFieldValue {
+public class WrapContentHeightModifierFieldValue : ModifierFieldValue {
     override fun Modifier.createModifier(): Modifier = wrapContentHeight(
         // TODO align
         // TODO unbounded
     )
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             append(".wrapContentHeight()")
         },
@@ -118,7 +118,7 @@ class WrapContentHeightModifierFieldValue : ModifierFieldValue {
      * Factory for creating WrapContentHeightModifierFieldValue instances.
      * No initial configuration parameters are needed as it automatically wraps to content height.
      */
-    class Factory : ModifierFieldValueFactory<WrapContentHeightModifierFieldValue> {
+    public class Factory : ModifierFieldValueFactory<WrapContentHeightModifierFieldValue> {
         override val title: String = ".wrapContentHeight(...)"
 
         override val canCreate: Boolean = true
@@ -139,6 +139,6 @@ class WrapContentHeightModifierFieldValue : ModifierFieldValue {
  *
  * @return A new ModifierFieldValueList with wrap content height applied
  */
-fun ModifierFieldValueList.wrapContentHeight() = then(
+public fun ModifierFieldValueList.wrapContentHeight(): ModifierFieldValueList = then(
     WrapContentHeightModifierFieldValue(),
 )

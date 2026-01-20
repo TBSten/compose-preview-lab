@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.runtime.structuralEqualityPolicy
@@ -22,10 +23,10 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 @InternalComposePreviewLabApi
-fun fontFamily() = FontFamily.Default
+public fun fontFamily(): FontFamily = FontFamily.Default
 
 @InternalComposePreviewLabApi
-data class Typography(
+public data class Typography(
     val h1: TextStyle,
     val h2: TextStyle,
     val h3: TextStyle,
@@ -130,7 +131,7 @@ private val defaultTypography =
 
 @Composable
 @InternalComposePreviewLabApi
-fun provideTypography(): Typography {
+public fun provideTypography(): Typography {
     val fontFamily = fontFamily()
 
     return defaultTypography.copy(
@@ -150,10 +151,11 @@ fun provideTypography(): Typography {
 }
 
 @InternalComposePreviewLabApi
-val LocalTypography = staticCompositionLocalOf { defaultTypography }
+public val LocalTypography: ProvidableCompositionLocal<Typography> = staticCompositionLocalOf { defaultTypography }
 
 @InternalComposePreviewLabApi
-val LocalTextStyle = compositionLocalOf(structuralEqualityPolicy()) { TextStyle.Default }
+public val LocalTextStyle: ProvidableCompositionLocal<TextStyle> =
+    compositionLocalOf(structuralEqualityPolicy()) { TextStyle.Default }
 
 @Composable
 @Preview

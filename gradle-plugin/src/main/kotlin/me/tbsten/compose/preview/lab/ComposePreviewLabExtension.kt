@@ -25,7 +25,7 @@ import org.gradle.kotlin.dsl.setValue
  * }
  * ```
  */
-abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFactory, project: Project) {
+public abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFactory, project: Project) {
     /**
      * Package name for generated preview lists
      *
@@ -34,7 +34,7 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
      *
      * Example: For project "my-app", defaults to "myApp"
      */
-    var generatePackage: String by objects.property<String>()
+    public var generatePackage: String by objects.property<String>()
         .convention(
             project.name
                 .split(Regex("(\\.)|_|-"))
@@ -48,7 +48,7 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
      * When true, generates public PreviewList objects accessible from other modules.
      * When false (default), generates internal objects for module-local use only.
      */
-    var publicPreviewList: Boolean by objects.property<Boolean>()
+    public var publicPreviewList: Boolean by objects.property<Boolean>()
         .convention(false)
 
     /**
@@ -57,7 +57,7 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
      * Used to resolve relative file paths in generated previews.
      * Defaults to the root project directory.
      */
-    var projectRootPath: String by objects.property<String>()
+    public var projectRootPath: String by objects.property<String>()
         .convention(project.rootProject.projectDir.absolutePath)
 
     /**
@@ -66,7 +66,7 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
      * When true (default), generates a PreviewList object containing all previews
      * from the current module.
      */
-    var generatePreviewList: Boolean by objects.property<Boolean>()
+    public var generatePreviewList: Boolean by objects.property<Boolean>()
         .convention(true)
 
     /**
@@ -75,7 +75,7 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
      * When true (default), generates a PreviewAllList object that aggregates
      * previews from the current module and all dependencies marked with @AggregateToAll.
      */
-    var generatePreviewAllList: Boolean by objects.property<Boolean>()
+    public var generatePreviewAllList: Boolean by objects.property<Boolean>()
         .convention(true)
 
     /**
@@ -85,7 +85,7 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
      * a FeaturedFileList map grouping file paths by directory name.
      * When false (default), no FeaturedFileList is generated.
      */
-    var generateFeaturedFiles: Boolean by objects.property<Boolean>()
+    public var generateFeaturedFiles: Boolean by objects.property<Boolean>()
         .convention(false)
 }
 

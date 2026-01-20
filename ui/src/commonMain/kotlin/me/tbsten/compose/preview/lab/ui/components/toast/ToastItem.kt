@@ -34,7 +34,7 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 @InternalComposePreviewLabApi
-fun ToastItem(toast: ToastData, onDismiss: () -> Unit, modifier: Modifier = Modifier,) {
+public fun ToastItem(toast: ToastData, onDismiss: () -> Unit, modifier: Modifier = Modifier,) {
     var isVisible by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
 

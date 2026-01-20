@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
@@ -23,6 +24,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
@@ -32,7 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 @InternalComposePreviewLabApi
-fun Button(
+public fun Button(
     modifier: Modifier = Modifier,
     text: String? = null,
     isEnabled: Boolean = true,
@@ -156,7 +158,7 @@ private fun DefaultButtonContent(
 }
 
 @InternalComposePreviewLabApi
-enum class ButtonVariant {
+public enum class ButtonVariant {
     Primary,
     PrimaryOutlined,
     PrimaryElevated,
@@ -174,7 +176,7 @@ enum class ButtonVariant {
 
 @Composable
 @InternalComposePreviewLabApi
-fun buttonStyleFor(variant: ButtonVariant, isSelected: Boolean): ButtonStyle = when (variant) {
+public fun buttonStyleFor(variant: ButtonVariant, isSelected: Boolean): ButtonStyle = when (variant) {
     ButtonVariant.Primary -> ButtonDefaults.primaryFilled(isSelected = isSelected)
     ButtonVariant.PrimaryOutlined -> ButtonDefaults.primaryOutlined(isSelected = isSelected)
     ButtonVariant.PrimaryElevated -> ButtonDefaults.primaryElevated(isSelected = isSelected)
@@ -191,17 +193,17 @@ fun buttonStyleFor(variant: ButtonVariant, isSelected: Boolean): ButtonStyle = w
 }
 
 @InternalComposePreviewLabApi
-object ButtonDefaults {
+public object ButtonDefaults {
     @InternalComposePreviewLabApi
-    val MinHeight = 44.dp
+    public val MinHeight: Dp = 44.dp
 
     @InternalComposePreviewLabApi
-    val OutlineHeight = 1.dp
-    val ButtonHorizontalPadding = 16.dp
-    val ButtonVerticalPadding = 8.dp
-    val ButtonShape = RoundedCornerShape(12)
+    public val OutlineHeight: Dp = 1.dp
+    public val ButtonHorizontalPadding: Dp = 16.dp
+    public val ButtonVerticalPadding: Dp = 8.dp
+    public val ButtonShape: RoundedCornerShape = RoundedCornerShape(12)
 
-    val contentPadding =
+    public val contentPadding: PaddingValues =
         PaddingValues(
             start = ButtonHorizontalPadding,
             top = ButtonVerticalPadding,
@@ -209,12 +211,12 @@ object ButtonDefaults {
             bottom = ButtonVerticalPadding,
         )
 
-    val filledShape = ButtonShape
-    val elevatedShape = ButtonShape
-    val outlinedShape = ButtonShape
+    public val filledShape: RoundedCornerShape = ButtonShape
+    public val elevatedShape: RoundedCornerShape = ButtonShape
+    public val outlinedShape: RoundedCornerShape = ButtonShape
 
     @Composable
-    fun buttonElevation() = ButtonElevation(
+    public fun buttonElevation(): ButtonElevation = ButtonElevation(
         defaultElevation = 2.dp,
         pressedElevation = 2.dp,
         focusedElevation = 2.dp,
@@ -223,7 +225,7 @@ object ButtonDefaults {
     )
 
     @Composable
-    fun primaryFilled(isSelected: Boolean) = ButtonStyle(
+    public fun primaryFilled(isSelected: Boolean): ButtonStyle = ButtonStyle(
         colors =
         ButtonColors(
             containerColor = PreviewLabTheme.colors.primary,
@@ -238,7 +240,7 @@ object ButtonDefaults {
     )
 
     @Composable
-    fun primaryElevated(isSelected: Boolean) = ButtonStyle(
+    public fun primaryElevated(isSelected: Boolean): ButtonStyle = ButtonStyle(
         colors =
         ButtonColors(
             containerColor = PreviewLabTheme.colors.primary,
@@ -253,7 +255,7 @@ object ButtonDefaults {
     )
 
     @Composable
-    fun primaryOutlined(isSelected: Boolean) = ButtonStyle(
+    public fun primaryOutlined(isSelected: Boolean): ButtonStyle = ButtonStyle(
         colors =
         ButtonColors(
             containerColor = if (isSelected) PreviewLabTheme.colors.primary else PreviewLabTheme.colors.transparent,
@@ -269,7 +271,7 @@ object ButtonDefaults {
     )
 
     @Composable
-    fun primaryGhost(isSelected: Boolean) = ButtonStyle(
+    public fun primaryGhost(isSelected: Boolean): ButtonStyle = ButtonStyle(
         colors =
         ButtonColors(
             containerColor = if (isSelected) {
@@ -290,7 +292,7 @@ object ButtonDefaults {
     )
 
     @Composable
-    fun secondaryFilled(isSelected: Boolean) = ButtonStyle(
+    public fun secondaryFilled(isSelected: Boolean): ButtonStyle = ButtonStyle(
         colors =
         ButtonColors(
             containerColor = PreviewLabTheme.colors.secondary,
@@ -305,7 +307,7 @@ object ButtonDefaults {
     )
 
     @Composable
-    fun secondaryElevated(isSelected: Boolean) = ButtonStyle(
+    public fun secondaryElevated(isSelected: Boolean): ButtonStyle = ButtonStyle(
         colors =
         ButtonColors(
             containerColor = PreviewLabTheme.colors.secondary,
@@ -320,7 +322,7 @@ object ButtonDefaults {
     )
 
     @Composable
-    fun secondaryOutlined(isSelected: Boolean) = ButtonStyle(
+    public fun secondaryOutlined(isSelected: Boolean): ButtonStyle = ButtonStyle(
         colors =
         ButtonColors(
             containerColor = if (isSelected) PreviewLabTheme.colors.primary else PreviewLabTheme.colors.transparent,
@@ -336,7 +338,7 @@ object ButtonDefaults {
     )
 
     @Composable
-    fun secondaryGhost(isSelected: Boolean) = ButtonStyle(
+    public fun secondaryGhost(isSelected: Boolean): ButtonStyle = ButtonStyle(
         colors =
         ButtonColors(
             containerColor = if (isSelected) {
@@ -357,7 +359,7 @@ object ButtonDefaults {
     )
 
     @Composable
-    fun destructiveFilled(isSelected: Boolean) = ButtonStyle(
+    public fun destructiveFilled(isSelected: Boolean): ButtonStyle = ButtonStyle(
         colors =
         ButtonColors(
             containerColor = PreviewLabTheme.colors.error,
@@ -372,7 +374,7 @@ object ButtonDefaults {
     )
 
     @Composable
-    fun destructiveElevated(isSelected: Boolean) = ButtonStyle(
+    public fun destructiveElevated(isSelected: Boolean): ButtonStyle = ButtonStyle(
         colors =
         ButtonColors(
             containerColor = PreviewLabTheme.colors.error,
@@ -387,7 +389,7 @@ object ButtonDefaults {
     )
 
     @Composable
-    fun destructiveOutlined(isSelected: Boolean) = ButtonStyle(
+    public fun destructiveOutlined(isSelected: Boolean): ButtonStyle = ButtonStyle(
         colors =
         ButtonColors(
             containerColor = if (isSelected) PreviewLabTheme.colors.error else PreviewLabTheme.colors.transparent,
@@ -403,7 +405,7 @@ object ButtonDefaults {
     )
 
     @Composable
-    fun destructiveGhost(isSelected: Boolean) = ButtonStyle(
+    public fun destructiveGhost(isSelected: Boolean): ButtonStyle = ButtonStyle(
         colors =
         ButtonColors(
             containerColor = if (isSelected) {
@@ -424,7 +426,7 @@ object ButtonDefaults {
     )
 
     @Composable
-    fun ghost(isSelected: Boolean) = ButtonStyle(
+    public fun ghost(isSelected: Boolean): ButtonStyle = ButtonStyle(
         colors =
         ButtonColors(
             containerColor = if (isSelected) {
@@ -447,7 +449,7 @@ object ButtonDefaults {
 
 @Immutable
 @InternalComposePreviewLabApi
-data class ButtonColors(
+public data class ButtonColors(
     val containerColor: Color,
     val contentColor: Color,
     val borderColor: Color? = null,
@@ -456,19 +458,21 @@ data class ButtonColors(
     val disabledBorderColor: Color? = null,
 ) {
     @Composable
-    fun containerColor(enabled: Boolean) =
+    public fun containerColor(enabled: Boolean): State<Color> =
         rememberUpdatedState(newValue = if (enabled) containerColor else disabledContainerColor)
 
     @Composable
-    fun contentColor(enabled: Boolean) = rememberUpdatedState(newValue = if (enabled) contentColor else disabledContentColor)
+    public fun contentColor(enabled: Boolean): State<Color> =
+        rememberUpdatedState(newValue = if (enabled) contentColor else disabledContentColor)
 
     @Composable
-    fun borderColor(enabled: Boolean) = rememberUpdatedState(newValue = if (enabled) borderColor else disabledBorderColor)
+    public fun borderColor(enabled: Boolean): State<Color?> =
+        rememberUpdatedState(newValue = if (enabled) borderColor else disabledBorderColor)
 }
 
 @Immutable
 @InternalComposePreviewLabApi
-data class ButtonStyle(
+public data class ButtonStyle(
     val colors: ButtonColors,
     val shape: Shape,
     val elevation: ButtonElevation? = null,

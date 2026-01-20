@@ -27,15 +27,15 @@ import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
  *
  * @param fraction The fraction of the maximum size to fill (0.0 to 1.0)
  */
-class FillMaxSizeModifierFieldValue(fraction: Float) : ModifierFieldValue {
-    var fraction by mutableStateOf(fraction)
+public class FillMaxSizeModifierFieldValue(fraction: Float) : ModifierFieldValue {
+    public var fraction: Float by mutableStateOf(fraction)
 
     override fun Modifier.createModifier(): Modifier = fillMaxSize(
         fraction = fraction,
     )
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             appendLine(".fillMaxSize(")
 
@@ -64,15 +64,15 @@ class FillMaxSizeModifierFieldValue(fraction: Float) : ModifierFieldValue {
      *
      * @param initialFraction Initial fraction value for filling the maximum size (0.0 to 1.0)
      */
-    class Factory(initialFraction: Float? = null) : ModifierFieldValueFactory<FillMaxSizeModifierFieldValue> {
+    public class Factory(initialFraction: Float? = null) : ModifierFieldValueFactory<FillMaxSizeModifierFieldValue> {
         override val title: String = ".fillMaxSize(...)"
-        var fraction by mutableStateOf(initialFraction)
+        public var fraction: Float? by mutableStateOf(initialFraction)
 
         override val canCreate: Boolean
             get() = fraction != null
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column(
+        override fun Content(createButton: @Composable (() -> Unit)): Unit = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             TransformableTextField(
@@ -100,7 +100,7 @@ class FillMaxSizeModifierFieldValue(fraction: Float) : ModifierFieldValue {
  * @param fraction The fraction of the maximum size to fill (0.0 to 1.0)
  * @return A new ModifierFieldValueList with fillMaxSize applied
  */
-fun ModifierFieldValueList.fillMaxSize(fraction: Float = 1f) = then(
+public fun ModifierFieldValueList.fillMaxSize(fraction: Float = 1f): ModifierFieldValueList = then(
     FillMaxSizeModifierFieldValue(
         fraction = fraction,
     ),
@@ -111,15 +111,15 @@ fun ModifierFieldValueList.fillMaxSize(fraction: Float = 1f) = then(
  *
  * @param fraction The fraction of the maximum width to fill (0.0 to 1.0)
  */
-class FillMaxWidthModifierFieldValue(fraction: Float) : ModifierFieldValue {
-    var fraction by mutableStateOf(fraction)
+public class FillMaxWidthModifierFieldValue(fraction: Float) : ModifierFieldValue {
+    public var fraction: Float by mutableStateOf(fraction)
 
     override fun Modifier.createModifier(): Modifier = fillMaxWidth(
         fraction = fraction,
     )
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             appendLine(".fillMaxWidth(")
 
@@ -148,15 +148,15 @@ class FillMaxWidthModifierFieldValue(fraction: Float) : ModifierFieldValue {
      *
      * @param initialFraction Initial fraction value for filling the maximum width (0.0 to 1.0)
      */
-    class Factory(initialFraction: Float? = null) : ModifierFieldValueFactory<FillMaxWidthModifierFieldValue> {
+    public class Factory(initialFraction: Float? = null) : ModifierFieldValueFactory<FillMaxWidthModifierFieldValue> {
         override val title: String = ".fillMaxWidth(...)"
-        var fraction by mutableStateOf(initialFraction)
+        public var fraction: Float? by mutableStateOf(initialFraction)
 
         override val canCreate: Boolean
             get() = fraction != null
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column {
+        override fun Content(createButton: @Composable (() -> Unit)): Unit = Column {
             TransformableTextField(
                 value = fraction,
                 onValueChange = { fraction = it },
@@ -182,7 +182,7 @@ class FillMaxWidthModifierFieldValue(fraction: Float) : ModifierFieldValue {
  * @param fraction The fraction of the maximum width to fill (0.0 to 1.0)
  * @return A new ModifierFieldValueList with fillMaxWidth applied
  */
-fun ModifierFieldValueList.fillMaxWidth(fraction: Float = 1f) = then(
+public fun ModifierFieldValueList.fillMaxWidth(fraction: Float = 1f): ModifierFieldValueList = then(
     FillMaxWidthModifierFieldValue(
         fraction = fraction,
     ),
@@ -193,15 +193,15 @@ fun ModifierFieldValueList.fillMaxWidth(fraction: Float = 1f) = then(
  *
  * @param fraction The fraction of the maximum height to fill (0.0 to 1.0)
  */
-class FillMaxHeightModifierFieldValue(fraction: Float) : ModifierFieldValue {
-    var fraction by mutableStateOf(fraction)
+public class FillMaxHeightModifierFieldValue(fraction: Float) : ModifierFieldValue {
+    public var fraction: Float by mutableStateOf(fraction)
 
     override fun Modifier.createModifier(): Modifier = fillMaxHeight(
         fraction = fraction,
     )
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             appendLine(".fillMaxHeight(")
 
@@ -230,15 +230,15 @@ class FillMaxHeightModifierFieldValue(fraction: Float) : ModifierFieldValue {
      *
      * @param initialFraction Initial fraction value for filling the maximum height (0.0 to 1.0)
      */
-    class Factory(initialFraction: Float? = null) : ModifierFieldValueFactory<FillMaxHeightModifierFieldValue> {
+    public class Factory(initialFraction: Float? = null) : ModifierFieldValueFactory<FillMaxHeightModifierFieldValue> {
         override val title: String = ".fillMaxHeight(...)"
-        var fraction by mutableStateOf(initialFraction)
+        public var fraction: Float? by mutableStateOf(initialFraction)
 
         override val canCreate: Boolean
             get() = fraction != null
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column {
+        override fun Content(createButton: @Composable (() -> Unit)): Unit = Column {
             TransformableTextField(
                 value = fraction,
                 onValueChange = { fraction = it },
@@ -264,7 +264,7 @@ class FillMaxHeightModifierFieldValue(fraction: Float) : ModifierFieldValue {
  * @param fraction The fraction of the maximum height to fill (0.0 to 1.0)
  * @return A new ModifierFieldValueList with fillMaxHeight applied
  */
-fun ModifierFieldValueList.fillMaxHeight(fraction: Float = 1f) = then(
+public fun ModifierFieldValueList.fillMaxHeight(fraction: Float = 1f): ModifierFieldValueList = then(
     FillMaxHeightModifierFieldValue(
         fraction = fraction,
     ),

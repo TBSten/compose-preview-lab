@@ -24,7 +24,7 @@ import me.tbsten.compose.preview.lab.ui.components.CommonListItem
  * @param label The field label to include in the placeholder message
  * @return A placeholder string like `/* TODO Set Label value here */`
  */
-fun defaultValueCode(label: String) = "/* TODO Set $label value here */"
+public fun defaultValueCode(label: String): String = "/* TODO Set $label value here */"
 
 /**
  * Field class specified in PreviewLabScope.field/fieldValue.
@@ -37,13 +37,13 @@ fun defaultValueCode(label: String) = "/* TODO Set $label value here */"
  * @property initialValue Default value for this field.
  * @property value Current value of this PreviewLabField.
  */
-interface PreviewLabField<Value> {
-    var label: String
-    val initialValue: Value
-    val value: Value
-    val valueFlow: Flow<Value>
+public interface PreviewLabField<Value> {
+    public var label: String
+    public val initialValue: Value
+    public val value: Value
+    public val valueFlow: Flow<Value>
 
-    val coroutineScope: CoroutineScope
+    public val coroutineScope: CoroutineScope
 
     /**
      * Returns a Kotlin code string representing the current value of this field.
@@ -103,7 +103,7 @@ interface PreviewLabField<Value> {
      * @see me.tbsten.compose.preview.lab.field.withValueCode
      * @see defaultValueCode
      */
-    fun valueCode(): String = defaultValueCode(label)
+    public fun valueCode(): String = defaultValueCode(label)
 
     /**
      * Returns a list of representative values for this field to be used in automated testing.
@@ -173,7 +173,7 @@ interface PreviewLabField<Value> {
      * @return A list of values to use as test inputs, including edge cases and boundary values
      * @see me.tbsten.compose.preview.lab.field.withTestValues
      */
-    fun testValues(): List<Value> = listOf(initialValue)
+    public fun testValues(): List<Value> = listOf(initialValue)
 
     /**
      * Returns a [KSerializer] for this field's value type, or null if serialization is not supported.
@@ -228,7 +228,7 @@ interface PreviewLabField<Value> {
      * @return A [KSerializer] for the value type, or `null` if serialization is not supported
      * @see me.tbsten.compose.preview.lab.field.withSerializer
      */
-    fun serializer(): KSerializer<Value>? = null
+    public fun serializer(): KSerializer<Value>? = null
 
     /**
      * Composable, which displays the entire UI for this Field.
@@ -247,7 +247,7 @@ interface PreviewLabField<Value> {
      * @see Content
      */
     @Composable
-    fun View(menuItems: List<ViewMenuItem<Value>> = ViewMenuItem.defaults(this)) = DefaultFieldView(
+    public fun View(menuItems: List<ViewMenuItem<Value>> = ViewMenuItem.defaults(this)): Unit = DefaultFieldView(
         menuItems = menuItems,
     )
 
@@ -264,20 +264,20 @@ interface PreviewLabField<Value> {
      * @see View
      */
     @Composable
-    fun Content()
+    public fun Content()
 
-    fun onCleared() {
+    public fun onCleared() {
         coroutineScope.cancel()
     }
 
-    abstract class ViewMenuItem<Value>(open val field: PreviewLabField<Value>) {
-        abstract val title: String
-        open val enabled: Boolean = true
+    public abstract class ViewMenuItem<Value>(public open val field: PreviewLabField<Value>) {
+        public abstract val title: String
+        public open val enabled: Boolean = true
 
-        abstract fun onClick()
+        public abstract fun onClick()
 
         @Composable
-        open fun Content(close: () -> Unit) {
+        public open fun Content(close: () -> Unit) {
             CommonListItem(
                 title = title,
                 isSelected = false,
@@ -289,7 +289,7 @@ interface PreviewLabField<Value> {
             )
         }
 
-        class ResetValue<Value>(override val field: MutablePreviewLabField<Value>) : ViewMenuItem<Value>(field) {
+        public class ResetValue<Value>(override val field: MutablePreviewLabField<Value>) : ViewMenuItem<Value>(field) {
             override val title: String = "Reset Value"
 
             override fun onClick() {
@@ -297,19 +297,22 @@ interface PreviewLabField<Value> {
             }
         }
 
-        companion object {
-            operator fun <Value> invoke(field: PreviewLabField<Value>, title: String, onClick: () -> Unit) =
-                object : ViewMenuItem<Value>(field) {
-                    override val title: String = title
+        public companion object {
+            public operator fun <Value> invoke(
+                field: PreviewLabField<Value>,
+                title: String,
+                onClick: () -> Unit
+            ): ViewMenuItem<Value> = object : ViewMenuItem<Value>(field) {
+                override val title: String = title
 
-                    override fun onClick() = onClick()
-                }
+                override fun onClick(): Unit = onClick()
+            }
 
-            fun <Value> defaults(field: MutablePreviewLabField<Value>): List<ViewMenuItem<Value>> = listOf(
+            public fun <Value> defaults(field: MutablePreviewLabField<Value>): List<ViewMenuItem<Value>> = listOf(
                 ResetValue(field),
             )
 
-            fun <Value> defaults(field: PreviewLabField<Value>): List<ViewMenuItem<Value>> = listOf()
+            public fun <Value> defaults(field: PreviewLabField<Value>): List<ViewMenuItem<Value>> = listOf()
         }
     }
 }
@@ -321,15 +324,15 @@ interface PreviewLabField<Value> {
  *
  * @see MutablePreviewLabField
  */
-abstract class ImmutablePreviewLabField<Value> private constructor(
+public abstract class ImmutablePreviewLabField<Value> private constructor(
     label: String,
     override val initialValue: Value,
     private val state: MutableState<Value>,
 ) : PreviewLabField<Value>,
     State<Value> by state {
-    override var label by mutableStateOf(label)
+    override var label: String by mutableStateOf(label)
 
-    constructor(
+    public constructor(
         label: String,
         initialValue: Value,
     ) : this(
@@ -346,7 +349,7 @@ abstract class ImmutablePreviewLabField<Value> private constructor(
 
     override val valueFlow: Flow<Value> = snapshotFlow { state.value }
 
-    override val coroutineScope = CoroutineScope(SupervisorJob())
+    override val coroutineScope: CoroutineScope = CoroutineScope(SupervisorJob())
 }
 
 /**
@@ -356,19 +359,19 @@ abstract class ImmutablePreviewLabField<Value> private constructor(
  *
  * @see ImmutablePreviewLabField
  */
-abstract class MutablePreviewLabField<Value> private constructor(
+public abstract class MutablePreviewLabField<Value> private constructor(
     label: String,
     override val initialValue: Value,
     state: MutableState<Value>,
 ) : PreviewLabField<Value>,
     MutableState<Value> by state {
-    override var label by mutableStateOf(label)
+    override var label: String by mutableStateOf(label)
 
     override val valueFlow: Flow<Value> = snapshotFlow { state.value }
 
-    override val coroutineScope = CoroutineScope(SupervisorJob())
+    override val coroutineScope: CoroutineScope = CoroutineScope(SupervisorJob())
 
-    constructor(
+    public constructor(
         label: String,
         initialValue: Value,
     ) : this(

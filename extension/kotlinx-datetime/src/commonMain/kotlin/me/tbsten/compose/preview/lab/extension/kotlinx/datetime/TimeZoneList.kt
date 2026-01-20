@@ -1,6 +1,6 @@
 package me.tbsten.compose.preview.lab.extension.kotlinx.datetime
 
-val mainTimeZones by lazy {
+public val mainTimeZones: Map<String, String> by lazy {
     mapOf(
         "UTC" to "UTC",
 
@@ -33,7 +33,7 @@ val mainTimeZones by lazy {
     )
 }
 
-val allTimeZones by lazy {
+public val allTimeZones: Map<String, String> by lazy {
     mapOf(
         "Africa/Abidjan" to "Africa/Abidjan",
         "Africa/Accra" to "Africa/Accra",

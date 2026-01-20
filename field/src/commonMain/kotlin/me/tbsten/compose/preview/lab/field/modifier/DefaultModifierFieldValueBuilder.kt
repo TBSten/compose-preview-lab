@@ -97,11 +97,11 @@ internal fun DefaultModifierFieldValueBuilder(
 }
 
 @InternalComposePreviewLabApi
-class DefaultModifierFieldValueBuilderMenuScope
+public class DefaultModifierFieldValueBuilderMenuScope
 
 @Composable
 @InternalComposePreviewLabApi
-fun DefaultModifierFieldValueBuilderMenuScope.DefaultMenu(
+public fun DefaultModifierFieldValueBuilderMenuScope.DefaultMenu(
     content: @Composable DefaultModifierFieldValueBuilderDefaultMenuScope.() -> Unit,
 ) {
     Column(
@@ -116,8 +116,8 @@ fun DefaultModifierFieldValueBuilderMenuScope.DefaultMenu(
  * Scope class for default menu items in ModifierFieldValue builders.
  * Provides utility functions for consistent menu item styling.
  */
-class DefaultModifierFieldValueBuilderDefaultMenuScope {
-    fun Modifier.menuItemPadding() = then(Modifier.padding(horizontal = 12.dp))
+public class DefaultModifierFieldValueBuilderDefaultMenuScope {
+    public fun Modifier.menuItemPadding(): Modifier = then(Modifier.padding(horizontal = 12.dp))
 }
 
 /**
@@ -127,7 +127,7 @@ class DefaultModifierFieldValueBuilderDefaultMenuScope {
  * @param content The content composable to display alongside the label
  */
 @Composable
-fun DefaultModifierFieldValueBuilderDefaultMenuScope.DefaultMenuItem(label: String, content: @Composable () -> Unit) {
+public fun DefaultModifierFieldValueBuilderDefaultMenuScope.DefaultMenuItem(label: String, content: @Composable () -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -149,19 +149,19 @@ fun DefaultModifierFieldValueBuilderDefaultMenuScope.DefaultMenuItem(label: Stri
  * @param label The annotated string to display as label
  */
 @Composable
-fun DefaultModifierFieldValueBuilderDefaultMenuScope.Label(label: AnnotatedString) = Text(
+public fun DefaultModifierFieldValueBuilderDefaultMenuScope.Label(label: AnnotatedString): Unit = Text(
     text = label,
     style = PreviewLabTheme.typography.label1,
     modifier = Modifier.width(60.dp),
 )
 
 @Composable
-fun DefaultModifierFieldValueBuilderDefaultMenuScope.Label(label: String) = Label(
+public fun DefaultModifierFieldValueBuilderDefaultMenuScope.Label(label: String): Unit = Label(
     label = buildAnnotatedString { append(label) },
 )
 
 @Composable
-fun <Value> DefaultModifierFieldValueBuilderDefaultMenuScope.TextFieldItem(
+public fun <Value> DefaultModifierFieldValueBuilderDefaultMenuScope.TextFieldItem(
     label: String,
     value: Value,
     onValueChange: (Value) -> Unit,
@@ -190,7 +190,7 @@ fun <Value> DefaultModifierFieldValueBuilderDefaultMenuScope.TextFieldItem(
  * @param onValueChange Callback when the color changes
  */
 @Composable
-fun DefaultModifierFieldValueBuilderDefaultMenuScope.ColorPickerItem(
+public fun DefaultModifierFieldValueBuilderDefaultMenuScope.ColorPickerItem(
     label: String,
     value: Color,
     onValueChange: (Color) -> Unit,
@@ -209,7 +209,7 @@ fun DefaultModifierFieldValueBuilderDefaultMenuScope.ColorPickerItem(
 }
 
 @Composable
-fun <T> DefaultModifierFieldValueBuilderDefaultMenuScope.SelectItem(
+public fun <T> DefaultModifierFieldValueBuilderDefaultMenuScope.SelectItem(
     label: String,
     value: T,
     choices: List<T>,

@@ -42,6 +42,7 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.state.ToggleableState
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
@@ -61,7 +62,7 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @Composable
 @InternalComposePreviewLabApi
-fun Checkbox(
+public fun Checkbox(
     modifier: Modifier = Modifier,
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)? = null,
@@ -86,7 +87,7 @@ fun Checkbox(
 
 @Composable
 @InternalComposePreviewLabApi
-fun TriStateCheckbox(
+public fun TriStateCheckbox(
     state: ToggleableState,
     onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
@@ -260,19 +261,19 @@ private class CheckDrawingCache(
 )
 
 @InternalComposePreviewLabApi
-object CheckboxDefaults {
-    const val BoxInDuration = 50
-    const val BoxOutDuration = 100
-    const val CheckAnimationDuration = 100
+public object CheckboxDefaults {
+    public const val BoxInDuration: Int = 50
+    public const val BoxOutDuration: Int = 100
+    public const val CheckAnimationDuration: Int = 100
 
-    val CheckboxDefaultPadding = 2.dp
-    val CheckboxSize = 20.dp
-    val StrokeWidth = 2.dp
-    val RadiusSize = 4.dp
-    val MinimumInteractiveSize = 44.dp
+    public val CheckboxDefaultPadding: Dp = 2.dp
+    public val CheckboxSize: Dp = 20.dp
+    public val StrokeWidth: Dp = 2.dp
+    public val RadiusSize: Dp = 4.dp
+    public val MinimumInteractiveSize: Dp = 44.dp
 
     @Composable
-    fun colors() = CheckboxColors(
+    public fun colors(): CheckboxColors = CheckboxColors(
         checkedCheckmarkColor = PreviewLabTheme.colors.onPrimary,
         uncheckedCheckmarkColor = PreviewLabTheme.colors.transparent,
         checkedBoxColor = PreviewLabTheme.colors.primary,
@@ -290,7 +291,7 @@ object CheckboxDefaults {
 
 @Immutable
 @InternalComposePreviewLabApi
-data class CheckboxColors(
+public data class CheckboxColors(
     val checkedCheckmarkColor: Color,
     val uncheckedCheckmarkColor: Color,
     val checkedBoxColor: Color,
@@ -305,14 +306,14 @@ data class CheckboxColors(
     val disabledIndeterminateBorderColor: Color,
 ) {
     @Composable
-    fun checkmarkColor(state: ToggleableState): Color = if (state == ToggleableState.Off) {
+    public fun checkmarkColor(state: ToggleableState): Color = if (state == ToggleableState.Off) {
         uncheckedCheckmarkColor
     } else {
         checkedCheckmarkColor
     }
 
     @Composable
-    fun boxColor(enabled: Boolean, state: ToggleableState): State<Color> {
+    public fun boxColor(enabled: Boolean, state: ToggleableState): State<Color> {
         val target =
             if (enabled) {
                 when (state) {
@@ -336,7 +337,7 @@ data class CheckboxColors(
     }
 
     @Composable
-    fun borderColor(enabled: Boolean, state: ToggleableState): State<Color> {
+    public fun borderColor(enabled: Boolean, state: ToggleableState): State<Color> {
         val target =
             if (enabled) {
                 when (state) {

@@ -80,7 +80,7 @@ import me.tbsten.compose.preview.lab.field.modifier.padding
  * @see ModifierFieldValue
  * @see ModifierFieldValueList
  */
-class ModifierField(label: String, initialValue: ModifierFieldValueList = ModifierFieldValue.mark()) :
+public class ModifierField(label: String, initialValue: ModifierFieldValueList = ModifierFieldValue.mark()) :
     ImmutablePreviewLabField<Modifier>(
         label = label,
         initialValue = Modifier,
@@ -142,7 +142,10 @@ class ModifierField(label: String, initialValue: ModifierFieldValueList = Modifi
  * @param borderWidth The width of the border
  * @return A new ModifierFieldValueList with marking applied
  */
-fun ModifierFieldValueList.mark(color: Color = Color.Red.copy(alpha = 0.5f), borderWidth: Dp = 2.dp) = mark(
+public fun ModifierFieldValueList.mark(
+    color: Color = Color.Red.copy(alpha = 0.5f),
+    borderWidth: Dp = 2.dp
+): ModifierFieldValueList = mark(
     borderColor = color,
     backgroundColor = color.copy(alpha = color.alpha * 0.5f),
     borderWidth = borderWidth,
@@ -196,10 +199,10 @@ fun ModifierFieldValueList.mark(color: Color = Color.Red.copy(alpha = 0.5f), bor
  * @param borderWidth The width of the border
  * @return A new ModifierFieldValueList with marking applied
  */
-fun ModifierFieldValueList.mark(
+public fun ModifierFieldValueList.mark(
     borderColor: Color = Color.Red.copy(alpha = 0.75f),
     backgroundColor: Color = borderColor.copy(alpha = borderColor.alpha * 0.5f),
     borderWidth: Dp = 2.dp,
-) = border(color = borderColor, width = borderWidth)
+): ModifierFieldValueList = border(color = borderColor, width = borderWidth)
     .background(color = backgroundColor)
     .padding(all = borderWidth)

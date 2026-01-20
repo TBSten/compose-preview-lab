@@ -27,7 +27,7 @@ import me.tbsten.compose.preview.lab.defaultValueCode
  * @param transform Function to get the converted value.
  * @param reverse Function to return the converted value to its original value.
  */
-open class TransformField<BaseValue, TransformedValue>(
+public open class TransformField<BaseValue, TransformedValue>(
     private val baseField: MutablePreviewLabField<BaseValue>,
     private val transform: (BaseValue) -> TransformedValue,
     private val reverse: (TransformedValue) -> BaseValue,
@@ -78,12 +78,12 @@ open class TransformField<BaseValue, TransformedValue>(
  * @param initialValue Initial value for the transformed field. Defaults to transforming the original field's current value.
  * @return A [TransformField] that presents the transformed value type.
  */
-fun <BaseValue, TransformedValue> MutablePreviewLabField<BaseValue>.transform(
+public fun <BaseValue, TransformedValue> MutablePreviewLabField<BaseValue>.transform(
     transform: (BaseValue) -> TransformedValue,
     reverse: (TransformedValue) -> BaseValue,
     label: String = this.label,
     initialValue: TransformedValue = transform(this.value),
-) = TransformField(
+): TransformField<BaseValue, TransformedValue> = TransformField(
     baseField = this,
     transform = transform,
     reverse = reverse,

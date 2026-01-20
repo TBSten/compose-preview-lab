@@ -46,15 +46,15 @@ import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
  * @see ModifierFieldValue
  * @see alpha
  */
-class AlphaModifierFieldValue(alpha: Float) : ModifierFieldValue {
-    var alpha by mutableStateOf(alpha)
+public class AlphaModifierFieldValue(alpha: Float) : ModifierFieldValue {
+    public var alpha: Float by mutableStateOf(alpha)
 
     override fun Modifier.createModifier(): Modifier = alpha(
         alpha = alpha,
     )
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             appendLine(".alpha(")
 
@@ -86,15 +86,15 @@ class AlphaModifierFieldValue(alpha: Float) : ModifierFieldValue {
      *
      * @param initialAlpha Starting alpha value (optional)
      */
-    class Factory(initialAlpha: Float? = null) : ModifierFieldValueFactory<AlphaModifierFieldValue> {
+    public class Factory(initialAlpha: Float? = null) : ModifierFieldValueFactory<AlphaModifierFieldValue> {
         override val title: String = ".alpha(...)"
-        var alpha by mutableStateOf(initialAlpha)
+        public var alpha: Float? by mutableStateOf(initialAlpha)
 
         override val canCreate: Boolean
             get() = alpha != null
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column(
+        override fun Content(createButton: @Composable (() -> Unit)): Unit = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             TransformableTextField(
@@ -122,7 +122,7 @@ class AlphaModifierFieldValue(alpha: Float) : ModifierFieldValue {
  * @param alpha The alpha value from 0.0 (transparent) to 1.0 (opaque)
  * @return A new ModifierFieldValueList with alpha applied
  */
-fun ModifierFieldValueList.alpha(alpha: Float) = then(
+public fun ModifierFieldValueList.alpha(alpha: Float): ModifierFieldValueList = then(
     AlphaModifierFieldValue(
         alpha = alpha,
     ),

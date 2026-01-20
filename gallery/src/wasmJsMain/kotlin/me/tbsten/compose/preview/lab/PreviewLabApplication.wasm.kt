@@ -51,7 +51,7 @@ import org.w3c.dom.HTMLElement
  * @see OpenFileHandler
  */
 @OptIn(ExperimentalComposeUiApi::class)
-fun previewLabApplication(
+public fun previewLabApplication(
     previewList: List<PreviewLabPreview>,
     featuredFileList: Map<String, List<String>> = emptyMap(),
     openFileHandler: OpenFileHandler<out Any?>? = null,

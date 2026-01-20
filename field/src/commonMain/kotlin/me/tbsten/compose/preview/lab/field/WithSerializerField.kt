@@ -43,7 +43,7 @@ import me.tbsten.compose.preview.lab.PreviewLabField.ViewMenuItem
  * @see me.tbsten.compose.preview.lab.PreviewLabField.serializer
  * @see WithSerializerField
  */
-fun <Value> MutablePreviewLabField<Value>.withSerializer(serializer: KSerializer<Value>): MutablePreviewLabField<Value> =
+public fun <Value> MutablePreviewLabField<Value>.withSerializer(serializer: KSerializer<Value>): MutablePreviewLabField<Value> =
     WithSerializerField(
         baseField = this,
         serializer = serializer,
@@ -63,7 +63,7 @@ fun <Value> MutablePreviewLabField<Value>.withSerializer(serializer: KSerializer
  * @see withSerializer
  * @see me.tbsten.compose.preview.lab.PreviewLabField.serializer
  */
-class WithSerializerField<Value>(
+public class WithSerializerField<Value>(
     private val baseField: MutablePreviewLabField<Value>,
     private val serializer: KSerializer<Value>,
 ) : MutablePreviewLabField<Value>(
@@ -76,8 +76,8 @@ class WithSerializerField<Value>(
     override fun serializer(): KSerializer<Value> = serializer
 
     @Composable
-    override fun View(menuItems: List<ViewMenuItem<Value>>) = baseField.View(menuItems = menuItems)
+    override fun View(menuItems: List<ViewMenuItem<Value>>): Unit = baseField.View(menuItems = menuItems)
 
     @Composable
-    override fun Content() = baseField.Content()
+    override fun Content(): Unit = baseField.Content()
 }

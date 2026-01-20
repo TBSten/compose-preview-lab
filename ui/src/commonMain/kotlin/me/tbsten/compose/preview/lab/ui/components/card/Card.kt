@@ -32,7 +32,7 @@ import me.tbsten.compose.preview.lab.ui.components.Surface
 
 @Composable
 @InternalComposePreviewLabApi
-fun Card(
+public fun Card(
     modifier: Modifier = Modifier,
     shape: Shape = CardDefaults.Shape,
     colors: CardColors = CardDefaults.cardColors(),
@@ -58,7 +58,7 @@ fun Card(
 
 @Composable
 @InternalComposePreviewLabApi
-fun Card(
+public fun Card(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -86,13 +86,13 @@ fun Card(
 
 @Composable
 @InternalComposePreviewLabApi
-fun ElevatedCard(
+public fun ElevatedCard(
     modifier: Modifier = Modifier,
     shape: Shape = CardDefaults.ElevatedShape,
     colors: CardColors = CardDefaults.elevatedCardColors(),
     elevation: CardElevation = CardDefaults.elevatedCardElevation(),
     content: @Composable ColumnScope.() -> Unit,
-) = Card(
+): Unit = Card(
     modifier = modifier,
     shape = shape,
     border = null,
@@ -103,7 +103,7 @@ fun ElevatedCard(
 
 @Composable
 @InternalComposePreviewLabApi
-fun ElevatedCard(
+public fun ElevatedCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -112,7 +112,7 @@ fun ElevatedCard(
     elevation: CardElevation = CardDefaults.elevatedCardElevation(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable ColumnScope.() -> Unit,
-) = Card(
+): Unit = Card(
     onClick = onClick,
     modifier = modifier,
     enabled = enabled,
@@ -126,14 +126,14 @@ fun ElevatedCard(
 
 @Composable
 @InternalComposePreviewLabApi
-fun OutlinedCard(
+public fun OutlinedCard(
     modifier: Modifier = Modifier,
     shape: Shape = CardDefaults.OutlinedShape,
     colors: CardColors = CardDefaults.outlinedCardColors(),
     elevation: CardElevation = CardDefaults.outlinedCardElevation(),
     border: BorderStroke = CardDefaults.outlinedCardBorder(),
     content: @Composable ColumnScope.() -> Unit,
-) = Card(
+): Unit = Card(
     modifier = modifier,
     shape = shape,
     border = border,
@@ -144,7 +144,7 @@ fun OutlinedCard(
 
 @Composable
 @InternalComposePreviewLabApi
-fun OutlinedCard(
+public fun OutlinedCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -154,7 +154,7 @@ fun OutlinedCard(
     border: BorderStroke = CardDefaults.outlinedCardBorder(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable ColumnScope.() -> Unit,
-) = Card(
+): Unit = Card(
     onClick = onClick,
     modifier = modifier,
     enabled = enabled,
@@ -167,14 +167,14 @@ fun OutlinedCard(
 )
 
 @InternalComposePreviewLabApi
-object CardDefaults {
-    val Shape: Shape @Composable get() = RoundedCornerShape(12.0.dp)
-    val ElevatedShape: Shape @Composable get() = Shape
-    val OutlinedShape: Shape @Composable get() = Shape
-    val BorderWidth = 1.dp
+public object CardDefaults {
+    public val Shape: Shape @Composable get() = RoundedCornerShape(12.0.dp)
+    public val ElevatedShape: Shape @Composable get() = Shape
+    public val OutlinedShape: Shape @Composable get() = Shape
+    public val BorderWidth: Dp = 1.dp
 
     @Composable
-    fun cardElevation(
+    public fun cardElevation(
         defaultElevation: Dp = 0.0.dp,
         pressedElevation: Dp = 0.0.dp,
         focusedElevation: Dp = 0.0.dp,
@@ -191,7 +191,7 @@ object CardDefaults {
     )
 
     @Composable
-    fun elevatedCardElevation(
+    public fun elevatedCardElevation(
         defaultElevation: Dp = 2.0.dp,
         pressedElevation: Dp = 4.0.dp,
         focusedElevation: Dp = 4.0.dp,
@@ -208,7 +208,7 @@ object CardDefaults {
     )
 
     @Composable
-    fun outlinedCardElevation(
+    public fun outlinedCardElevation(
         defaultElevation: Dp = 0.0.dp,
         pressedElevation: Dp = 0.0.dp,
         focusedElevation: Dp = 0.0.dp,
@@ -225,7 +225,7 @@ object CardDefaults {
     )
 
     @Composable
-    fun cardColors(
+    public fun cardColors(
         containerColor: Color = PreviewLabTheme.colors.surface,
         contentColor: Color = PreviewLabTheme.colors.onSurface,
         disabledContainerColor: Color =
@@ -239,7 +239,7 @@ object CardDefaults {
     )
 
     @Composable
-    fun elevatedCardColors(
+    public fun elevatedCardColors(
         containerColor: Color = PreviewLabTheme.colors.background,
         contentColor: Color = PreviewLabTheme.colors.onBackground,
         disabledContainerColor: Color =
@@ -253,7 +253,7 @@ object CardDefaults {
     )
 
     @Composable
-    fun outlinedCardColors(
+    public fun outlinedCardColors(
         containerColor: Color = PreviewLabTheme.colors.background,
         contentColor: Color = PreviewLabTheme.colors.onBackground,
         disabledContainerColor: Color =
@@ -267,7 +267,7 @@ object CardDefaults {
     )
 
     @Composable
-    fun outlinedCardBorder(
+    public fun outlinedCardBorder(
         enabled: Boolean = true,
         color: Color =
             if (enabled) {
@@ -282,7 +282,7 @@ object CardDefaults {
 @ConsistentCopyVisibility
 @Immutable
 @InternalComposePreviewLabApi
-data class CardColors @InternalComposePreviewLabApi
+public data class CardColors @InternalComposePreviewLabApi
 constructor(
     private val containerColor: Color,
     private val contentColor: Color,
@@ -291,12 +291,13 @@ constructor(
 ) {
     @Composable
     @InternalComposePreviewLabApi
-    fun containerColor(enabled: Boolean): State<Color> =
+    public fun containerColor(enabled: Boolean): State<Color> =
         rememberUpdatedState(if (enabled) containerColor else disabledContainerColor)
 
     @Composable
     @InternalComposePreviewLabApi
-    fun contentColor(enabled: Boolean): State<Color> = rememberUpdatedState(if (enabled) contentColor else disabledContentColor)
+    public fun contentColor(enabled: Boolean): State<Color> =
+        rememberUpdatedState(if (enabled) contentColor else disabledContentColor)
 }
 
 @Composable

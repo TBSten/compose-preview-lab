@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
@@ -26,6 +27,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
@@ -37,7 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 @InternalComposePreviewLabApi
-fun Chip(
+public fun Chip(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     selected: Boolean = false,
@@ -65,7 +67,7 @@ fun Chip(
 
 @Composable
 @InternalComposePreviewLabApi
-fun ElevatedChip(
+public fun ElevatedChip(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     selected: Boolean = false,
@@ -93,7 +95,7 @@ fun ElevatedChip(
 
 @Composable
 @InternalComposePreviewLabApi
-fun OutlinedChip(
+public fun OutlinedChip(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     selected: Boolean = false,
@@ -121,7 +123,7 @@ fun OutlinedChip(
 
 @Composable
 @InternalComposePreviewLabApi
-fun ChipComponent(
+public fun ChipComponent(
     modifier: Modifier,
     enabled: Boolean = true,
     selected: Boolean = false,
@@ -170,7 +172,7 @@ fun ChipComponent(
 
 @Composable
 @InternalComposePreviewLabApi
-fun DefaultChipComponent(
+public fun DefaultChipComponent(
     modifier: Modifier = Modifier,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
@@ -207,15 +209,15 @@ fun DefaultChipComponent(
 }
 
 @InternalComposePreviewLabApi
-object ChipDefaults {
+public object ChipDefaults {
     private val ChipPaddingHorizontal = 6.dp
     private val ChipPaddingVertical = 6.dp
-    val ChipRectShape = RoundedCornerShape(12)
-    val ChipOutlineHeight = 1.dp
-    val ChipIconHorizontalPadding = 6.dp
-    val ChipIconSize = 16.dp
+    public val ChipRectShape: RoundedCornerShape = RoundedCornerShape(12)
+    public val ChipOutlineHeight: Dp = 1.dp
+    public val ChipIconHorizontalPadding: Dp = 6.dp
+    public val ChipIconSize: Dp = 16.dp
 
-    val contentPadding =
+    public val contentPadding: PaddingValues =
         PaddingValues(
             start = ChipPaddingHorizontal,
             end = ChipPaddingHorizontal,
@@ -224,7 +226,7 @@ object ChipDefaults {
         )
 
     @Composable
-    fun chipElevation() = ButtonElevation(
+    public fun chipElevation(): ButtonElevation = ButtonElevation(
         defaultElevation = 4.dp,
         pressedElevation = 4.dp,
         focusedElevation = 4.dp,
@@ -233,7 +235,7 @@ object ChipDefaults {
     )
 
     @Composable
-    fun primaryFilled(shape: Shape) = ChipStyle(
+    public fun primaryFilled(shape: Shape): ChipStyle = ChipStyle(
         colors =
         ChipColors(
             containerColor = PreviewLabTheme.colors.surface,
@@ -249,7 +251,7 @@ object ChipDefaults {
     )
 
     @Composable
-    fun primaryElevated(shape: Shape) = ChipStyle(
+    public fun primaryElevated(shape: Shape): ChipStyle = ChipStyle(
         colors =
         ChipColors(
             containerColor = PreviewLabTheme.colors.surface,
@@ -265,7 +267,7 @@ object ChipDefaults {
     )
 
     @Composable
-    fun primaryOutlined(shape: Shape) = ChipStyle(
+    public fun primaryOutlined(shape: Shape): ChipStyle = ChipStyle(
         colors =
         ChipColors(
             containerColor = PreviewLabTheme.colors.transparent,
@@ -286,7 +288,7 @@ object ChipDefaults {
 
 @Immutable
 @InternalComposePreviewLabApi
-data class ChipColors(
+public data class ChipColors(
     val containerColor: Color,
     val contentColor: Color,
     val outlineColor: Color? = null,
@@ -318,7 +320,7 @@ data class ChipColors(
     )
 
     @Composable
-    fun borderColor(enabled: Boolean, selected: Boolean) = rememberUpdatedState(
+    public fun borderColor(enabled: Boolean, selected: Boolean): State<Color?> = rememberUpdatedState(
         newValue =
         when {
             !enabled -> disabledOutlineColor
@@ -330,7 +332,7 @@ data class ChipColors(
 
 @Immutable
 @InternalComposePreviewLabApi
-data class ChipStyle(
+public data class ChipStyle(
     val colors: ChipColors,
     val shape: Shape,
     val elevation: ButtonElevation? = null,

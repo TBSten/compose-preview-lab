@@ -52,7 +52,7 @@ import me.tbsten.compose.preview.lab.field.component.TextFieldContent
  * @param prefix The slot that will be displayed as the prefix of the TextField.
  * @param suffix The slot that will be displayed as the suffix of TextField.
  */
-class StringField(
+public class StringField(
     label: String,
     initialValue: String,
     private val prefix: (@Composable () -> Unit)? = null,
@@ -89,7 +89,7 @@ class StringField(
     }
 }
 
-fun MutablePreviewLabField<String>.withTextHint() = withHint(
+public fun MutablePreviewLabField<String>.withTextHint(): MutablePreviewLabField<String> = withHint(
     "Empty" to "",
     "Short" to "Hello !",
     "Body" to """

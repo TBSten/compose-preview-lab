@@ -51,10 +51,11 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  *
  * @see NullableField
  */
-fun <Value : Any> PreviewLabField<Value>.nullable(initialValue: Value? = this.initialValue) = NullableField(
-    baseField = this,
-    initialValue = initialValue,
-)
+public fun <Value : Any> PreviewLabField<Value>.nullable(initialValue: Value? = this.initialValue): NullableField<Value> =
+    NullableField(
+        baseField = this,
+        initialValue = initialValue,
+    )
 
 /**
  * Create a PreviewLabField that makes the receiver's PreviewLabField nullable.
@@ -89,11 +90,13 @@ fun <Value : Any> PreviewLabField<Value>.nullable(initialValue: Value? = this.in
  *
  * @see nullable
  */
-class NullableField<Value : Any> internal constructor(private val baseField: PreviewLabField<Value>, initialValue: Value?) :
-    MutablePreviewLabField<Value?>(
-        label = baseField.label,
-        initialValue = initialValue,
-    ) {
+public class NullableField<Value : Any> internal constructor(
+    private val baseField: PreviewLabField<Value>,
+    initialValue: Value?
+) : MutablePreviewLabField<Value?>(
+    label = baseField.label,
+    initialValue = initialValue,
+) {
     override fun testValues(): List<Value?> = super.testValues() + listOf(null) + baseField.testValues()
 
     private var isNull by mutableStateOf(initialValue == null)

@@ -27,9 +27,9 @@ import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
  * @param x The horizontal offset in Dp. Positive values move to the right.
  * @param y The vertical offset in Dp. Positive values move downward.
  */
-class OffsetModifierFieldValue(x: Dp, y: Dp) : ModifierFieldValue {
-    var x by mutableStateOf(x)
-    var y by mutableStateOf(y)
+public class OffsetModifierFieldValue(x: Dp, y: Dp) : ModifierFieldValue {
+    public var x: Dp by mutableStateOf(x)
+    public var y: Dp by mutableStateOf(y)
 
     override fun Modifier.createModifier(): Modifier = offset(
         x = x,
@@ -37,7 +37,7 @@ class OffsetModifierFieldValue(x: Dp, y: Dp) : ModifierFieldValue {
     )
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             appendLine(".offset(")
 
@@ -83,16 +83,16 @@ class OffsetModifierFieldValue(x: Dp, y: Dp) : ModifierFieldValue {
      * @param initialX Initial horizontal offset value
      * @param initialY Initial vertical offset value
      */
-    class Factory(initialX: Dp? = null, initialY: Dp? = null) : ModifierFieldValueFactory<OffsetModifierFieldValue> {
+    public class Factory(initialX: Dp? = null, initialY: Dp? = null) : ModifierFieldValueFactory<OffsetModifierFieldValue> {
         override val title: String = ".offset(...)"
-        var x by mutableStateOf(initialX)
-        var y by mutableStateOf(initialY)
+        public var x: Dp? by mutableStateOf(initialX)
+        public var y: Dp? by mutableStateOf(initialY)
 
         override val canCreate: Boolean
             get() =
                 x != null && y != null
 
-        constructor(
+        public constructor(
             initialAll: Dp? = null,
         ) : this(
             initialX = initialAll,
@@ -100,7 +100,7 @@ class OffsetModifierFieldValue(x: Dp, y: Dp) : ModifierFieldValue {
         )
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column(
+        override fun Content(createButton: @Composable (() -> Unit)): Unit = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             TransformableTextField(
@@ -138,7 +138,7 @@ class OffsetModifierFieldValue(x: Dp, y: Dp) : ModifierFieldValue {
  * @param y The vertical offset in Dp (defaults to 0.dp)
  * @return A new ModifierFieldValueList with offset applied
  */
-fun ModifierFieldValueList.offset(x: Dp = 0.dp, y: Dp = 0.dp) = then(
+public fun ModifierFieldValueList.offset(x: Dp = 0.dp, y: Dp = 0.dp): ModifierFieldValueList = then(
     OffsetModifierFieldValue(
         x = x,
         y = y,
@@ -151,7 +151,7 @@ fun ModifierFieldValueList.offset(x: Dp = 0.dp, y: Dp = 0.dp) = then(
  * @param offset The offset value to apply to both X and Y coordinates (defaults to 0.dp)
  * @return A new ModifierFieldValueList with uniform offset applied
  */
-fun ModifierFieldValueList.offset(offset: Dp = 0.dp) = then(
+public fun ModifierFieldValueList.offset(offset: Dp = 0.dp): ModifierFieldValueList = then(
     OffsetModifierFieldValue(
         x = offset,
         y = offset,

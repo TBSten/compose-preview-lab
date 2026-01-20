@@ -65,17 +65,17 @@ import org.jetbrains.compose.resources.painterResource
  * }
  * ```
  */
-interface InspectorTab {
+public interface InspectorTab {
     /**
      * The display title of the tab
      */
-    val title: String
+    public val title: String
 
     /**
      * The icon to display for the tab.
      * If null, the tab will be displayed without an icon.
      */
-    val icon: (@Composable () -> Painter)? get() = null
+    public val icon: (@Composable () -> Painter)? get() = null
 
     /**
      * The content to display when the tab is selected.
@@ -83,21 +83,21 @@ interface InspectorTab {
      * the PreviewLabState via [ContentContext.state].
      */
     @Composable
-    fun ContentContext.Content()
+    public fun ContentContext.Content()
 
     /**
      * Context providing access to [PreviewLabState] for tab content.
      *
      * @property state The current [PreviewLabState], providing access to fields, events, and other preview state
      */
-    class ContentContext(val state: PreviewLabState, val inspectorTabs: List<InspectorTab>)
+    public class ContentContext(public val state: PreviewLabState, public val inspectorTabs: List<InspectorTab>)
 
     /**
      * Built-in Fields tab that displays all interactive fields.
      *
      * @see InspectorTab
      */
-    data object Fields : InspectorTab {
+    public data object Fields : InspectorTab {
         override val title: String = "Fields"
         override val icon: @Composable () -> Painter = { painterResource(PreviewLabUiRes.drawable.icon_edit) }
 
@@ -114,7 +114,7 @@ interface InspectorTab {
      *
      * @see InspectorTab
      */
-    data object Events : InspectorTab {
+    public data object Events : InspectorTab {
         override val title: String = "Events"
         override val icon: @Composable () -> Painter = { painterResource(PreviewLabUiRes.drawable.icon_history) }
 
@@ -129,7 +129,7 @@ interface InspectorTab {
     }
 
     @ExperimentalComposePreviewLabApi
-    data object Code : InspectorTab {
+    public data object Code : InspectorTab {
         override val title: String = "Code"
 
         @Composable
@@ -159,10 +159,10 @@ interface InspectorTab {
         }
     }
 
-    companion object {
+    public companion object {
         /**
          * Default built-in tabs: Fields and Events
          */
-        val defaults: List<InspectorTab> = listOf(Fields, Events)
+        public val defaults: List<InspectorTab> = listOf(Fields, Events)
     }
 }

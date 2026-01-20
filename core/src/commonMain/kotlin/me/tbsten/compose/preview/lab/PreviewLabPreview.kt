@@ -48,18 +48,18 @@ import me.tbsten.compose.preview.lab.util.JsOnlyExportIgnore
  *
  * @see CollectedPreview
  */
-interface PreviewLabPreview {
-    val id: String
-    val displayName: String
-    val filePath: String?
-    val startLineNumber: Int?
-    val code: String?
-    val content: @Composable () -> Unit
+public interface PreviewLabPreview {
+    public val id: String
+    public val displayName: String
+    public val filePath: String?
+    public val startLineNumber: Int?
+    public val code: String?
+    public val content: @Composable () -> Unit
 }
 
 @OptIn(InternalComposePreviewLabApi::class, ExperimentalJsExport::class)
 @JsOnlyExport
-data class CollectedPreview @JsOnlyExportIgnore constructor(
+public data class CollectedPreview @JsOnlyExportIgnore constructor(
     override val id: String,
     override val displayName: String = id,
     override val filePath: String? = null,
@@ -77,7 +77,7 @@ data class CollectedPreview @JsOnlyExportIgnore constructor(
  * @param code The source code of Preview.
  * @param content The content of Preview. You can display the content of Preview by calling invoke().
  */
-fun PreviewLabPreview(
+public fun PreviewLabPreview(
     id: String,
     displayName: String = id,
     filePath: String? = null,

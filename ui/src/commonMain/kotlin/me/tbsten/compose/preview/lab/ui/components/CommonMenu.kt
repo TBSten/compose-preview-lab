@@ -47,7 +47,7 @@ import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 
 @Composable
 @InternalComposePreviewLabApi
-fun CommonMenu(expanded: Boolean, onDismissRequest: () -> Unit, content: @Composable CommonMenuScope.() -> Unit) {
+public fun CommonMenu(expanded: Boolean, onDismissRequest: () -> Unit, content: @Composable CommonMenuScope.() -> Unit) {
     val expandedState = remember { MutableTransitionState(false) }
     expandedState.targetState = expanded
 
@@ -79,7 +79,7 @@ fun CommonMenu(expanded: Boolean, onDismissRequest: () -> Unit, content: @Compos
 }
 
 @InternalComposePreviewLabApi
-class CommonMenuScope(columnScope: ColumnScope) : ColumnScope by columnScope
+public class CommonMenuScope(columnScope: ColumnScope) : ColumnScope by columnScope
 
 // copy from androidx.compose.material3.DropdownMenu
 
@@ -207,7 +207,7 @@ internal val MenuVerticalMargin = 48.dp
  */
 @Stable
 @InternalComposePreviewLabApi
-object MenuPosition {
+public object MenuPosition {
     /**
      * An interface to calculate the vertical position of a menu with respect to its anchor and
      * window. The returned y-coordinate is relative to the window.
@@ -215,8 +215,8 @@ object MenuPosition {
      * @see PopupPositionProvider
      */
     @Stable
-    fun interface Vertical {
-        fun position(anchorBounds: IntRect, windowSize: IntSize, menuHeight: Int): Int
+    public fun interface Vertical {
+        public fun position(anchorBounds: IntRect, windowSize: IntSize, menuHeight: Int): Int
     }
 
     /**
@@ -226,8 +226,8 @@ object MenuPosition {
      * @see PopupPositionProvider
      */
     @Stable
-    fun interface Horizontal {
-        fun position(anchorBounds: IntRect, windowSize: IntSize, menuWidth: Int, layoutDirection: LayoutDirection): Int
+    public fun interface Horizontal {
+        public fun position(anchorBounds: IntRect, windowSize: IntSize, menuWidth: Int, layoutDirection: LayoutDirection): Int
     }
 
     /**
@@ -237,7 +237,7 @@ object MenuPosition {
      * The given [offset] is [LayoutDirection]-aware. It will be added to the resulting x position
      * for [LayoutDirection.Ltr] and subtracted for [LayoutDirection.Rtl].
      */
-    fun startToAnchorStart(offset: Int = 0): Horizontal = AnchorAlignmentOffsetPosition.Horizontal(
+    public fun startToAnchorStart(offset: Int = 0): Horizontal = AnchorAlignmentOffsetPosition.Horizontal(
         menuAlignment = Alignment.Start,
         anchorAlignment = Alignment.Start,
         offset = offset,
@@ -250,7 +250,7 @@ object MenuPosition {
      * The given [offset] is [LayoutDirection]-aware. It will be added to the resulting x position
      * for [LayoutDirection.Ltr] and subtracted for [LayoutDirection.Rtl].
      */
-    fun endToAnchorEnd(offset: Int = 0): Horizontal = AnchorAlignmentOffsetPosition.Horizontal(
+    public fun endToAnchorEnd(offset: Int = 0): Horizontal = AnchorAlignmentOffsetPosition.Horizontal(
         menuAlignment = Alignment.End,
         anchorAlignment = Alignment.End,
         offset = offset,
@@ -263,7 +263,7 @@ object MenuPosition {
      * The resulting x position will be coerced so that the menu remains within the area inside the
      * given [margin] from the left and right edges of the window.
      */
-    fun leftToWindowLeft(margin: Int = 0): Horizontal = WindowAlignmentMarginPosition.Horizontal(
+    public fun leftToWindowLeft(margin: Int = 0): Horizontal = WindowAlignmentMarginPosition.Horizontal(
         alignment = AbsoluteAlignment.Left,
         margin = margin,
     )
@@ -275,7 +275,7 @@ object MenuPosition {
      * The resulting x position will be coerced so that the menu remains within the area inside the
      * given [margin] from the left and right edges of the window.
      */
-    fun rightToWindowRight(margin: Int = 0): Horizontal = WindowAlignmentMarginPosition.Horizontal(
+    public fun rightToWindowRight(margin: Int = 0): Horizontal = WindowAlignmentMarginPosition.Horizontal(
         alignment = AbsoluteAlignment.Right,
         margin = margin,
     )
@@ -284,7 +284,7 @@ object MenuPosition {
      * Returns a [MenuPosition.Vertical] which aligns the top of the menu to the bottom of the
      * anchor.
      */
-    fun topToAnchorBottom(offset: Int = 0): Vertical = AnchorAlignmentOffsetPosition.Vertical(
+    public fun topToAnchorBottom(offset: Int = 0): Vertical = AnchorAlignmentOffsetPosition.Vertical(
         menuAlignment = Alignment.Top,
         anchorAlignment = Alignment.Bottom,
         offset = offset,
@@ -294,7 +294,7 @@ object MenuPosition {
      * Returns a [MenuPosition.Vertical] which aligns the bottom of the menu to the top of the
      * anchor.
      */
-    fun bottomToAnchorTop(offset: Int = 0): Vertical = AnchorAlignmentOffsetPosition.Vertical(
+    public fun bottomToAnchorTop(offset: Int = 0): Vertical = AnchorAlignmentOffsetPosition.Vertical(
         menuAlignment = Alignment.Bottom,
         anchorAlignment = Alignment.Top,
         offset = offset,
@@ -304,7 +304,7 @@ object MenuPosition {
      * Returns a [MenuPosition.Vertical] which aligns the center of the menu to the top of the
      * anchor.
      */
-    fun centerToAnchorTop(offset: Int = 0): Vertical = AnchorAlignmentOffsetPosition.Vertical(
+    public fun centerToAnchorTop(offset: Int = 0): Vertical = AnchorAlignmentOffsetPosition.Vertical(
         menuAlignment = Alignment.CenterVertically,
         anchorAlignment = Alignment.Top,
         offset = offset,
@@ -316,7 +316,7 @@ object MenuPosition {
      * The resulting y position will be coerced so that the menu remains within the area inside the
      * given [margin] from the top and bottom edges of the window.
      */
-    fun topToWindowTop(margin: Int = 0): Vertical =
+    public fun topToWindowTop(margin: Int = 0): Vertical =
         WindowAlignmentMarginPosition.Vertical(alignment = Alignment.Top, margin = margin)
 
     /**
@@ -326,7 +326,7 @@ object MenuPosition {
      * The resulting y position will be coerced so that the menu remains within the area inside the
      * given [margin] from the top and bottom edges of the window.
      */
-    fun bottomToWindowBottom(margin: Int = 0): Vertical =
+    public fun bottomToWindowBottom(margin: Int = 0): Vertical =
         WindowAlignmentMarginPosition.Vertical(alignment = Alignment.Bottom, margin = margin)
 }
 

@@ -33,11 +33,11 @@ import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
  * @param top The top padding value
  * @param bottom The bottom padding value
  */
-class PaddingModifierFieldValue(start: Dp, end: Dp, top: Dp, bottom: Dp) : ModifierFieldValue {
-    var start by mutableStateOf(start)
-    var end by mutableStateOf(end)
-    var top by mutableStateOf(top)
-    var bottom by mutableStateOf(bottom)
+public class PaddingModifierFieldValue(start: Dp, end: Dp, top: Dp, bottom: Dp) : ModifierFieldValue {
+    public var start: Dp by mutableStateOf(start)
+    public var end: Dp by mutableStateOf(end)
+    public var top: Dp by mutableStateOf(top)
+    public var bottom: Dp by mutableStateOf(bottom)
 
     override fun Modifier.createModifier(): Modifier = padding(
         start = start,
@@ -47,7 +47,7 @@ class PaddingModifierFieldValue(start: Dp, end: Dp, top: Dp, bottom: Dp) : Modif
     )
 
     @Composable
-    override fun Builder() = DefaultModifierFieldValueBuilder(
+    override fun Builder(): Unit = DefaultModifierFieldValueBuilder(
         modifierTextCode = buildAnnotatedString {
             appendLine(".padding(")
 
@@ -108,7 +108,7 @@ class PaddingModifierFieldValue(start: Dp, end: Dp, top: Dp, bottom: Dp) : Modif
      * @param initialTop Initial top padding value
      * @param initialBottom Initial bottom padding value
      */
-    open class Factory(
+    public open class Factory(
         private val initialStart: Dp? = null,
         private val initialEnd: Dp? = null,
         private val initialTop: Dp? = null,
@@ -116,10 +116,10 @@ class PaddingModifierFieldValue(start: Dp, end: Dp, top: Dp, bottom: Dp) : Modif
     ) : ModifierFieldValueFactory<PaddingModifierFieldValue> {
         override val title: String = ".padding(...)"
 
-        var start: Dp? by mutableStateOf(initialStart)
-        var end: Dp? by mutableStateOf(initialEnd)
-        var top: Dp? by mutableStateOf(initialTop)
-        var bottom: Dp? by mutableStateOf(initialBottom)
+        public var start: Dp? by mutableStateOf(initialStart)
+        public var end: Dp? by mutableStateOf(initialEnd)
+        public var top: Dp? by mutableStateOf(initialTop)
+        public var bottom: Dp? by mutableStateOf(initialBottom)
 
         override val canCreate: Boolean
             get() =
@@ -128,14 +128,14 @@ class PaddingModifierFieldValue(start: Dp, end: Dp, top: Dp, bottom: Dp) : Modif
                     top != null &&
                     bottom != null
 
-        constructor(initialAll: Dp? = null) : this(
+        public constructor(initialAll: Dp? = null) : this(
             initialStart = initialAll,
             initialEnd = initialAll,
             initialTop = initialAll,
             initialBottom = initialAll,
         )
 
-        constructor(initialHorizontal: Dp? = null, initialVertical: Dp? = null) : this(
+        public constructor(initialHorizontal: Dp? = null, initialVertical: Dp? = null) : this(
             initialStart = initialHorizontal,
             initialEnd = initialHorizontal,
             initialTop = initialVertical,
@@ -143,7 +143,7 @@ class PaddingModifierFieldValue(start: Dp, end: Dp, top: Dp, bottom: Dp) : Modif
         )
 
         @Composable
-        override fun Content(createButton: @Composable (() -> Unit)) = Column(
+        override fun Content(createButton: @Composable (() -> Unit)): Unit = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             TransformableTextField(
@@ -209,7 +209,12 @@ private fun AnnotatedString.Builder.appendDp(argName: String, dp: Dp) {
  * @param bottom The bottom padding
  * @return A new ModifierFieldValueList with padding applied
  */
-fun ModifierFieldValueList.padding(start: Dp = 0.dp, end: Dp = 0.dp, top: Dp = 0.dp, bottom: Dp = 0.dp) = then(
+public fun ModifierFieldValueList.padding(
+    start: Dp = 0.dp,
+    end: Dp = 0.dp,
+    top: Dp = 0.dp,
+    bottom: Dp = 0.dp
+): ModifierFieldValueList = then(
     PaddingModifierFieldValue(
         start = start,
         end = end,
@@ -225,7 +230,7 @@ fun ModifierFieldValueList.padding(start: Dp = 0.dp, end: Dp = 0.dp, top: Dp = 0
  * @param vertical The vertical padding (applied to top and bottom)
  * @return A new ModifierFieldValueList with padding applied
  */
-fun ModifierFieldValueList.padding(horizontal: Dp = 0.dp, vertical: Dp = 0.dp) = then(
+public fun ModifierFieldValueList.padding(horizontal: Dp = 0.dp, vertical: Dp = 0.dp): ModifierFieldValueList = then(
     PaddingModifierFieldValue(
         start = horizontal,
         end = horizontal,
@@ -240,7 +245,7 @@ fun ModifierFieldValueList.padding(horizontal: Dp = 0.dp, vertical: Dp = 0.dp) =
  * @param all The padding value to apply to all sides
  * @return A new ModifierFieldValueList with padding applied
  */
-fun ModifierFieldValueList.padding(all: Dp) = then(
+public fun ModifierFieldValueList.padding(all: Dp): ModifierFieldValueList = then(
     PaddingModifierFieldValue(
         start = all,
         end = all,
