@@ -249,7 +249,7 @@ fun DebugMenu() = PreviewLab {
 ## 7. 次のステップ
 
 - [Preview を収集して UI カタログを構築する](./preview-ui-catalog) で UI カタログの構築方法を学ぶ  
-- [All Fields](../guides/fields/all-fields) で利用可能な Field の一覧を確認する  
+- [All Builtin Fields](../guides/fields/all-builtin-fields) で利用可能な Field の一覧を確認する  
 - [Events](../guides/events) で Events 機能の詳細を学ぶ  
 - [Inspector Tab](../guides/inspector-tab) でカスタムタブを追加し、デバッグ情報を表示する
 

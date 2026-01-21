@@ -7,7 +7,7 @@ import EmbeddedPreviewLab from '@site/src/components/EmbeddedPreviewLab';
 
 # Field を強化する
 
-[All Fields](./all-fields) で紹介されている Field と組み合わせることで、カスタム Field を作成せずとも 独自の型に対応したり、Field
+[All Builtin Fields](./all-builtin-fields) で紹介されている Field と組み合わせることで、カスタム Field を作成せずとも 独自の型に対応したり、Field
 の編集 UI を簡単に作成できます。
 
 TODO サンプルの PreviewLab

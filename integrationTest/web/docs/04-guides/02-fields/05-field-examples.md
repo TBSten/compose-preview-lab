@@ -76,7 +76,7 @@ import composableFieldImage from "./field-examples-composable-field.png"
 
 <img src={composableFieldImage} width="300" />
 
-詳しくは [ComposableField のドキュメント](http://localhost:3000/compose-preview-lab/docs/guides/fields/all-fields#composablefield) をご覧ください。
+詳しくは [ComposableField のドキュメント](./all-builtin-fields#composablefield) をご覧ください。
 
 ## Modifier
 
@@ -84,7 +84,7 @@ UI Composable は通常その padding, size などを呼び出し側から変更
 
 `modifier` 引数がある Composable 関数の Preview では `ModifierField` を使って手動で Modifier を設定できるようにするのがベストプラクティスです。これにより Modifier の設定により予期しない UI になってしまうことを事前に手動テストして発見することができるようになります。
 
-詳しくは [ModifeirField のドキュメント](./all-fields#modifierfield) を参照して下さい。
+詳しくは [ModifierField のドキュメント](./all-builtin-fields#modifierfield) を参照して下さい。
 
 ## data class
 
@@ -120,7 +120,7 @@ PreviewLab {
 ```
 
 ただし combined は 結合する field の数が増えたり 複雑な Field を結合する場合、編集 UI が複雑になる場合があります。
-このような場合は代わりに [SelectableField](./all-fields#selectablefield) を利用して編集 UI をシンプルに保つこともできます。
+このような場合は代わりに [SelectableField](./all-builtin-fields#selectablefield) を利用して編集 UI をシンプルに保つこともできます。
 
 ```kt
 PreviewLab {
@@ -142,7 +142,7 @@ PreviewLab {
 }
 ```
 
-詳しくは [combined のドキュメント](./all-fields#combinedfield) を参照して下さい。
+詳しくは [CombinedField のドキュメント](./all-builtin-fields#combinedfield) を参照して下さい。
 
 ## sealed class/interface
 
@@ -184,7 +184,7 @@ PreviewLab {
 }
 ```
 
-詳しくは [PolymorphicField のドキュメント](./all-fields#polymorphicfield) を参照して下さい。
+詳しくは [PolymorphicField のドキュメント](./all-builtin-fields#polymorphicfield) を参照して下さい。
 
 ## value class
 
