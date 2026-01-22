@@ -24,6 +24,46 @@ class PreviewLabScope(val state: PreviewLabState) {
     // field methods
 
     /**
+     * Creates a field and returns the [PreviewLabField] instance itself.
+     * Unlike [fieldState], which returns a [MutableState] for use with Kotlin's property delegation,
+     * this function returns the field instance directly, giving access to field properties and methods.
+     *
+     * Use [fieldState] if you only need the value with property delegation syntax (`var x by fieldState { ... }`).
+     * Use [fieldValue] if you do not need to update the value.
+     *
+     * ```kt
+     * PreviewLab {
+     *   val myTextField = field { StringField("myText", "initialValue") }
+     *
+     *   TextField(
+     *     value = myTextField.value,
+     *     onValueChange = { myTextField.value = it },
+     *   )
+     * }
+     * ```
+     */
+    @Composable
+    fun <Field : PreviewLabField<*>> field(
+        key: String? = null,
+        builder: FieldBuilderScope.() -> Field,
+    ): Field {
+        val urlParams = LocalUrlParams.current
+        val field = remember(key1 = key) {
+            builder(FieldBuilderScope()).also { field ->
+                restoreFieldValueFromUrl(field, urlParams)
+            }
+        }
+        DisposableEffect(Unit) {
+            state.fields.add(field)
+            onDispose {
+                state.fields.remove(field)
+                field.onCleared()
+            }
+        }
+        return field
+    }
+
+    /**
      * Creates a mutable field that can be used to store and observe state in the Preview Lab.
      * Use [fieldValue] if you do not need to update the status.
      * This is useful, for example, for a `TextField`, where you want to use both the state value and its updates. For example, use the following.
@@ -46,7 +86,7 @@ class PreviewLabScope(val state: PreviewLabState) {
     ): MutableState<Value> {
         val urlParams = LocalUrlParams.current
         val field = remember(key1 = key) {
-            builder(PreviewLabScope.FieldBuilderScope()).also { field ->
+            builder(FieldBuilderScope()).also { field ->
                 restoreFieldValueFromUrl(field, urlParams)
             }
         }
