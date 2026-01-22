@@ -1,0 +1,825 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>TextFieldColors</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
+                    Compose Preview Lab
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">0.1.0-dev11
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":ui/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":ui/commonMain" data-filter=":ui/commonMain">
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    Compose Preview Lab
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="ui::me.tbsten.compose.preview.lab.ui.components.textfield.base/TextFieldColors///PointingToDeclaration//-835133537">
+  <div class="breadcrumbs"><a href="../../index.html">ui</a><span class="delimiter">/</span><a href="../index.html">me.tbsten.compose.preview.lab.ui.components.textfield.base</a><span class="delimiter">/</span><span class="current">TextFieldColors</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Text</span><wbr><span>Field</span><wbr><span><span>Colors</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Immutable.html"><span class="token annotation builtin">Immutable</span></a></div></div><span class="token keyword">class </span><a href="index.html">TextFieldColors</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>focusedTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>unfocusedTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>disabledTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>errorTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>focusedContainerColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>unfocusedContainerColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>disabledContainerColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>errorContainerColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>cursorColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>errorCursorColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>textSelectionColors<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/foundation/text/selection/TextSelectionColors.html">TextSelectionColors</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>focusedOutlineColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>unfocusedOutlineColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>disabledOutlineColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>errorOutlineColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>focusedLeadingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>unfocusedLeadingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>disabledLeadingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>errorLeadingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>focusedTrailingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>unfocusedTrailingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>disabledTrailingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>errorTrailingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>focusedLabelColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>unfocusedLabelColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>disabledLabelColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>errorLabelColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>focusedPlaceholderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>unfocusedPlaceholderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>disabledPlaceholderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>errorPlaceholderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>focusedSupportingTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>unfocusedSupportingTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>disabledSupportingTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>errorSupportingTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>focusedPrefixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>unfocusedPrefixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>disabledPrefixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>errorPrefixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>focusedSuffixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>unfocusedSuffixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>disabledSuffixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>errorSuffixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></span></span><span class="token punctuation">)</span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="-932947000%2FConstructors%2F-835133537" anchor-label="TextFieldColors" id="-932947000%2FConstructors%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-text-field-colors.html"><span>Text</span><wbr><span>Field</span><wbr><span><span>Colors</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-932947000%2FConstructors%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">focusedTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">unfocusedTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">disabledTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">errorTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">focusedContainerColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">unfocusedContainerColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">disabledContainerColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">errorContainerColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">cursorColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">errorCursorColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">textSelectionColors<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/foundation/text/selection/TextSelectionColors.html">TextSelectionColors</a><span class="token punctuation">, </span></span><span class="parameter ">focusedOutlineColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">unfocusedOutlineColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">disabledOutlineColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">errorOutlineColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">focusedLeadingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">unfocusedLeadingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">disabledLeadingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">errorLeadingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">focusedTrailingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">unfocusedTrailingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">disabledTrailingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">errorTrailingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">focusedLabelColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">unfocusedLabelColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">disabledLabelColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">errorLabelColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">focusedPlaceholderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">unfocusedPlaceholderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">disabledPlaceholderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">errorPlaceholderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">focusedSupportingTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">unfocusedSupportingTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">disabledSupportingTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">errorSupportingTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">focusedPrefixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">unfocusedPrefixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">disabledPrefixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">errorPrefixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">focusedSuffixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">unfocusedSuffixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">disabledSuffixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">errorSuffixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="-176432706%2FProperties%2F-835133537" anchor-label="cursorColor" id="-176432706%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="cursor-color.html"><span>cursor</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-176432706%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="cursor-color.html">cursorColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-657460047%2FProperties%2F-835133537" anchor-label="disabledContainerColor" id="-657460047%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disabled-container-color.html"><span>disabled</span><wbr><span>Container</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-657460047%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="disabled-container-color.html">disabledContainerColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="126424804%2FProperties%2F-835133537" anchor-label="disabledLabelColor" id="126424804%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disabled-label-color.html"><span>disabled</span><wbr><span>Label</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="126424804%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="disabled-label-color.html">disabledLabelColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2138118863%2FProperties%2F-835133537" anchor-label="disabledLeadingIconColor" id="2138118863%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disabled-leading-icon-color.html"><span>disabled</span><wbr><span>Leading</span><wbr><span>Icon</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2138118863%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="disabled-leading-icon-color.html">disabledLeadingIconColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="433583666%2FProperties%2F-835133537" anchor-label="disabledOutlineColor" id="433583666%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disabled-outline-color.html"><span>disabled</span><wbr><span>Outline</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="433583666%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="disabled-outline-color.html">disabledOutlineColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1140044637%2FProperties%2F-835133537" anchor-label="disabledPlaceholderColor" id="-1140044637%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disabled-placeholder-color.html"><span>disabled</span><wbr><span>Placeholder</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1140044637%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="disabled-placeholder-color.html">disabledPlaceholderColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1154426218%2FProperties%2F-835133537" anchor-label="disabledPrefixColor" id="-1154426218%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disabled-prefix-color.html"><span>disabled</span><wbr><span>Prefix</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1154426218%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="disabled-prefix-color.html">disabledPrefixColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1986492651%2FProperties%2F-835133537" anchor-label="disabledSuffixColor" id="-1986492651%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disabled-suffix-color.html"><span>disabled</span><wbr><span>Suffix</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1986492651%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="disabled-suffix-color.html">disabledSuffixColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1854471420%2FProperties%2F-835133537" anchor-label="disabledSupportingTextColor" id="-1854471420%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disabled-supporting-text-color.html"><span>disabled</span><wbr><span>Supporting</span><wbr><span>Text</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1854471420%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="disabled-supporting-text-color.html">disabledSupportingTextColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="334204529%2FProperties%2F-835133537" anchor-label="disabledTextColor" id="334204529%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disabled-text-color.html"><span>disabled</span><wbr><span>Text</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="334204529%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="disabled-text-color.html">disabledTextColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-484080647%2FProperties%2F-835133537" anchor-label="disabledTrailingIconColor" id="-484080647%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disabled-trailing-icon-color.html"><span>disabled</span><wbr><span>Trailing</span><wbr><span>Icon</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-484080647%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="disabled-trailing-icon-color.html">disabledTrailingIconColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-758279039%2FProperties%2F-835133537" anchor-label="errorContainerColor" id="-758279039%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="error-container-color.html"><span>error</span><wbr><span>Container</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-758279039%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="error-container-color.html">errorContainerColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1466007926%2FProperties%2F-835133537" anchor-label="errorCursorColor" id="-1466007926%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="error-cursor-color.html"><span>error</span><wbr><span>Cursor</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1466007926%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="error-cursor-color.html">errorCursorColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1986993844%2FProperties%2F-835133537" anchor-label="errorLabelColor" id="1986993844%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="error-label-color.html"><span>error</span><wbr><span>Label</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1986993844%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="error-label-color.html">errorLabelColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-259651937%2FProperties%2F-835133537" anchor-label="errorLeadingIconColor" id="-259651937%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="error-leading-icon-color.html"><span>error</span><wbr><span>Leading</span><wbr><span>Icon</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-259651937%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="error-leading-icon-color.html">errorLeadingIconColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1734035970%2FProperties%2F-835133537" anchor-label="errorOutlineColor" id="1734035970%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="error-outline-color.html"><span>error</span><wbr><span>Outline</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1734035970%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="error-outline-color.html">errorOutlineColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="757151859%2FProperties%2F-835133537" anchor-label="errorPlaceholderColor" id="757151859%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="error-placeholder-color.html"><span>error</span><wbr><span>Placeholder</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="757151859%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="error-placeholder-color.html">errorPlaceholderColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="688639174%2FProperties%2F-835133537" anchor-label="errorPrefixColor" id="688639174%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="error-prefix-color.html"><span>error</span><wbr><span>Prefix</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="688639174%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="error-prefix-color.html">errorPrefixColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-143427259%2FProperties%2F-835133537" anchor-label="errorSuffixColor" id="-143427259%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="error-suffix-color.html"><span>error</span><wbr><span>Suffix</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-143427259%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="error-suffix-color.html">errorSuffixColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="51692852%2FProperties%2F-835133537" anchor-label="errorSupportingTextColor" id="51692852%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="error-supporting-text-color.html"><span>error</span><wbr><span>Supporting</span><wbr><span>Text</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="51692852%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="error-supporting-text-color.html">errorSupportingTextColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="255675553%2FProperties%2F-835133537" anchor-label="errorTextColor" id="255675553%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="error-text-color.html"><span>error</span><wbr><span>Text</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="255675553%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="error-text-color.html">errorTextColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1800531415%2FProperties%2F-835133537" anchor-label="errorTrailingIconColor" id="-1800531415%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="error-trailing-icon-color.html"><span>error</span><wbr><span>Trailing</span><wbr><span>Icon</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1800531415%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="error-trailing-icon-color.html">errorTrailingIconColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1697570638%2FProperties%2F-835133537" anchor-label="focusedContainerColor" id="-1697570638%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="focused-container-color.html"><span>focused</span><wbr><span>Container</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1697570638%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="focused-container-color.html">focusedContainerColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1664772965%2FProperties%2F-835133537" anchor-label="focusedLabelColor" id="1664772965%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="focused-label-color.html"><span>focused</span><wbr><span>Label</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1664772965%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="focused-label-color.html">focusedLabelColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-975746416%2FProperties%2F-835133537" anchor-label="focusedLeadingIconColor" id="-975746416%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="focused-leading-icon-color.html"><span>focused</span><wbr><span>Leading</span><wbr><span>Icon</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-975746416%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="focused-leading-icon-color.html">focusedLeadingIconColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1317416563%2FProperties%2F-835133537" anchor-label="focusedOutlineColor" id="1317416563%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="focused-outline-color.html"><span>focused</span><wbr><span>Outline</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1317416563%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="focused-outline-color.html">focusedOutlineColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="41057380%2FProperties%2F-835133537" anchor-label="focusedPlaceholderColor" id="41057380%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="focused-placeholder-color.html"><span>focused</span><wbr><span>Placeholder</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="41057380%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="focused-placeholder-color.html">focusedPlaceholderColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-710273483%2FProperties%2F-835133537" anchor-label="focusedPrefixColor" id="-710273483%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="focused-prefix-color.html"><span>focused</span><wbr><span>Prefix</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-710273483%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="focused-prefix-color.html">focusedPrefixColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1542339916%2FProperties%2F-835133537" anchor-label="focusedSuffixColor" id="-1542339916%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="focused-suffix-color.html"><span>focused</span><wbr><span>Suffix</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1542339916%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="focused-suffix-color.html">focusedSuffixColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-16371805%2FProperties%2F-835133537" anchor-label="focusedSupportingTextColor" id="-16371805%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="focused-supporting-text-color.html"><span>focused</span><wbr><span>Supporting</span><wbr><span>Text</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-16371805%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="focused-supporting-text-color.html">focusedSupportingTextColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1215112656%2FProperties%2F-835133537" anchor-label="focusedTextColor" id="1215112656%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="focused-text-color.html"><span>focused</span><wbr><span>Text</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1215112656%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="focused-text-color.html">focusedTextColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1770343512%2FProperties%2F-835133537" anchor-label="focusedTrailingIconColor" id="1770343512%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="focused-trailing-icon-color.html"><span>focused</span><wbr><span>Trailing</span><wbr><span>Icon</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1770343512%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="focused-trailing-icon-color.html">focusedTrailingIconColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1394982524%2FProperties%2F-835133537" anchor-label="textSelectionColors" id="1394982524%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="text-selection-colors.html"><span>text</span><wbr><span>Selection</span><wbr><span><span>Colors</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1394982524%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="text-selection-colors.html">textSelectionColors</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/foundation/text/selection/TextSelectionColors.html">TextSelectionColors</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1715511285%2FProperties%2F-835133537" anchor-label="unfocusedContainerColor" id="-1715511285%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unfocused-container-color.html"><span>unfocused</span><wbr><span>Container</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1715511285%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="unfocused-container-color.html">unfocusedContainerColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="257441598%2FProperties%2F-835133537" anchor-label="unfocusedLabelColor" id="257441598%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unfocused-label-color.html"><span>unfocused</span><wbr><span>Label</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="257441598%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="unfocused-label-color.html">unfocusedLabelColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1036838999%2FProperties%2F-835133537" anchor-label="unfocusedLeadingIconColor" id="-1036838999%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unfocused-leading-icon-color.html"><span>unfocused</span><wbr><span>Leading</span><wbr><span>Icon</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1036838999%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="unfocused-leading-icon-color.html">unfocusedLeadingIconColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1786671116%2FProperties%2F-835133537" anchor-label="unfocusedOutlineColor" id="1786671116%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unfocused-outline-color.html"><span>unfocused</span><wbr><span>Outline</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1786671116%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="unfocused-outline-color.html">unfocusedOutlineColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-20035203%2FProperties%2F-835133537" anchor-label="unfocusedPlaceholderColor" id="-20035203%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unfocused-placeholder-color.html"><span>unfocused</span><wbr><span>Placeholder</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-20035203%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="unfocused-placeholder-color.html">unfocusedPlaceholderColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1387872900%2FProperties%2F-835133537" anchor-label="unfocusedPrefixColor" id="-1387872900%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unfocused-prefix-color.html"><span>unfocused</span><wbr><span>Prefix</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1387872900%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="unfocused-prefix-color.html">unfocusedPrefixColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2075027963%2FProperties%2F-835133537" anchor-label="unfocusedSuffixColor" id="2075027963%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unfocused-suffix-color.html"><span>unfocused</span><wbr><span>Suffix</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2075027963%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="unfocused-suffix-color.html">unfocusedSuffixColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1040621546%2FProperties%2F-835133537" anchor-label="unfocusedSupportingTextColor" id="1040621546%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unfocused-supporting-text-color.html"><span>unfocused</span><wbr><span>Supporting</span><wbr><span>Text</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1040621546%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="unfocused-supporting-text-color.html">unfocusedSupportingTextColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2016873769%2FProperties%2F-835133537" anchor-label="unfocusedTextColor" id="-2016873769%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unfocused-text-color.html"><span>unfocused</span><wbr><span>Text</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2016873769%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="unfocused-text-color.html">unfocusedTextColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-123526561%2FProperties%2F-835133537" anchor-label="unfocusedTrailingIconColor" id="-123526561%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unfocused-trailing-icon-color.html"><span>unfocused</span><wbr><span>Trailing</span><wbr><span>Icon</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-123526561%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="unfocused-trailing-icon-color.html">unfocusedTrailingIconColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1067813374%2FFunctions%2F-835133537" anchor-label="containerOutlineColor" id="-1067813374%2FFunctions%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="container-outline-color.html"><span>container</span><wbr><span>Outline</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1067813374%2FFunctions%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="container-outline-color.html"><span class="token function">containerOutlineColor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">enabled<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">isError<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">interactionSource<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/foundation/interaction/InteractionSource.html">InteractionSource</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/State.html">State</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1368639505%2FFunctions%2F-835133537" anchor-label="copy" id="-1368639505%2FFunctions%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="copy.html"><span><span>copy</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1368639505%2FFunctions%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="copy.html"><span class="token function">copy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">focusedTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.focusedTextColor<span class="token punctuation">, </span></span><span class="parameter ">unfocusedTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.unfocusedTextColor<span class="token punctuation">, </span></span><span class="parameter ">disabledTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.disabledTextColor<span class="token punctuation">, </span></span><span class="parameter ">errorTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.errorTextColor<span class="token punctuation">, </span></span><span class="parameter ">focusedContainerColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.focusedContainerColor<span class="token punctuation">, </span></span><span class="parameter ">unfocusedContainerColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.unfocusedContainerColor<span class="token punctuation">, </span></span><span class="parameter ">disabledContainerColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.disabledContainerColor<span class="token punctuation">, </span></span><span class="parameter ">errorContainerColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.errorContainerColor<span class="token punctuation">, </span></span><span class="parameter ">cursorColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.cursorColor<span class="token punctuation">, </span></span><span class="parameter ">errorCursorColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.errorCursorColor<span class="token punctuation">, </span></span><span class="parameter ">textSelectionColors<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/foundation/text/selection/TextSelectionColors.html">TextSelectionColors</a><span class="token operator">?</span><span class="token operator"> = </span>this.textSelectionColors<span class="token punctuation">, </span></span><span class="parameter ">focusedOutlineColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.focusedOutlineColor<span class="token punctuation">, </span></span><span class="parameter ">unfocusedOutlineColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.unfocusedOutlineColor<span class="token punctuation">, </span></span><span class="parameter ">disabledOutlineColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.disabledOutlineColor<span class="token punctuation">, </span></span><span class="parameter ">errorOutlineColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.errorOutlineColor<span class="token punctuation">, </span></span><span class="parameter ">focusedLeadingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.focusedLeadingIconColor<span class="token punctuation">, </span></span><span class="parameter ">unfocusedLeadingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.unfocusedLeadingIconColor<span class="token punctuation">, </span></span><span class="parameter ">disabledLeadingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.disabledLeadingIconColor<span class="token punctuation">, </span></span><span class="parameter ">errorLeadingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.errorLeadingIconColor<span class="token punctuation">, </span></span><span class="parameter ">focusedTrailingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.focusedTrailingIconColor<span class="token punctuation">, </span></span><span class="parameter ">unfocusedTrailingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.unfocusedTrailingIconColor<span class="token punctuation">, </span></span><span class="parameter ">disabledTrailingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.disabledTrailingIconColor<span class="token punctuation">, </span></span><span class="parameter ">errorTrailingIconColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.errorTrailingIconColor<span class="token punctuation">, </span></span><span class="parameter ">focusedLabelColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.focusedLabelColor<span class="token punctuation">, </span></span><span class="parameter ">unfocusedLabelColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.unfocusedLabelColor<span class="token punctuation">, </span></span><span class="parameter ">disabledLabelColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.disabledLabelColor<span class="token punctuation">, </span></span><span class="parameter ">errorLabelColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.errorLabelColor<span class="token punctuation">, </span></span><span class="parameter ">focusedPlaceholderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.focusedPlaceholderColor<span class="token punctuation">, </span></span><span class="parameter ">unfocusedPlaceholderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.unfocusedPlaceholderColor<span class="token punctuation">, </span></span><span class="parameter ">disabledPlaceholderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.disabledPlaceholderColor<span class="token punctuation">, </span></span><span class="parameter ">errorPlaceholderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.errorPlaceholderColor<span class="token punctuation">, </span></span><span class="parameter ">focusedSupportingTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.focusedSupportingTextColor<span class="token punctuation">, </span></span><span class="parameter ">unfocusedSupportingTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.unfocusedSupportingTextColor<span class="token punctuation">, </span></span><span class="parameter ">disabledSupportingTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.disabledSupportingTextColor<span class="token punctuation">, </span></span><span class="parameter ">errorSupportingTextColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.errorSupportingTextColor<span class="token punctuation">, </span></span><span class="parameter ">focusedPrefixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.focusedPrefixColor<span class="token punctuation">, </span></span><span class="parameter ">unfocusedPrefixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.unfocusedPrefixColor<span class="token punctuation">, </span></span><span class="parameter ">disabledPrefixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.disabledPrefixColor<span class="token punctuation">, </span></span><span class="parameter ">errorPrefixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.errorPrefixColor<span class="token punctuation">, </span></span><span class="parameter ">focusedSuffixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.focusedSuffixColor<span class="token punctuation">, </span></span><span class="parameter ">unfocusedSuffixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.unfocusedSuffixColor<span class="token punctuation">, </span></span><span class="parameter ">disabledSuffixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.disabledSuffixColor<span class="token punctuation">, </span></span><span class="parameter ">errorSuffixColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator"> = </span>this.errorSuffixColor</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">TextFieldColors</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
