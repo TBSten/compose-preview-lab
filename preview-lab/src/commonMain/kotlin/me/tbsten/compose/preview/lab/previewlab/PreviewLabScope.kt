@@ -43,10 +43,7 @@ class PreviewLabScope(val state: PreviewLabState) {
      * ```
      */
     @Composable
-    fun <Field : PreviewLabField<*>> field(
-        key: String? = null,
-        builder: FieldBuilderScope.() -> Field,
-    ): Field {
+    fun <Field : PreviewLabField<*>> field(key: String? = null, builder: FieldBuilderScope.() -> Field): Field {
         val urlParams = LocalUrlParams.current
         val field = remember(key1 = key) {
             builder(FieldBuilderScope()).also { field ->

@@ -56,6 +56,7 @@ public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabKt {
 public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabScope {
 	public static final field $stable I
 	public fun <init> (Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;)V
+	public final fun field (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/PreviewLabField;
 	public final fun fieldState (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/MutableState;
 	public final fun fieldValue (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Ljava/lang/Object;
 	public final fun getState ()Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;
