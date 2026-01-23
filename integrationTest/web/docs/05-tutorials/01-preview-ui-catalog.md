@@ -1,13 +1,7 @@
 ---
-title: "[TODO] Preview を収集して UI カタログを構築する"
+title: "Preview を収集して UI カタログを構築する"
 sidebar_position: 1
 ---
-
-:::warning
-
-このページは生成 AI によって自動生成されたページです。
-
-:::
 
 import EmbeddedPreviewLab from '@site/src/components/EmbeddedPreviewLab';
 
@@ -21,108 +15,86 @@ import EmbeddedPreviewLab from '@site/src/components/EmbeddedPreviewLab';
 - PreviewLabGallery を使って「UI カタログ」画面を作る  
 - 各コンポーネントのバリエーションや状態を手早く確認できるようにする
 
-## 1. プロジェクト構成の例
+TODO イメージ画像
 
-```text
-src/
-  commonMain/kotlin/
-    components/          # 実際のコンポーネント
-      Button.kt
-      TextField.kt
-      Card.kt
-    previews/            # Preview 専用
-      ButtonPreviews.kt
-      TextFieldPreviews.kt
-      CardPreviews.kt
+## 1. プロジェクトを用意して Compose Preview Lab をインストール
+
+1. Compose Multiplatform プロジェクトを用意します。[Compose Multiplatform Wizard](https://terrakok.github.io/Compose-Multiplatform-Wizard/) が便利です。
+2. [Install](../install/cmp) を参考にして Compose Preview Lab をプロジェクトにセットアップしてください。**4. (オプション) ターゲットの設定** をスキップせずに jvm, js, wasmJs の ターゲットを設定してください。
+3. アプリ内にいくつか @Preview を用意してください。
+
+## 2. Preview を収集する
+
+Compose Preview Lab の KSP plugin, Gradle plugin ではデフォルトで KSP を用いた Preview の収集機能が有効になっています。
+
+この収集機能は `モジュール名.PreviewList` という global 変数を作成し、そこから Preview にアクセスできるように収集します。
+
+`kspKotlinJvm` Gradle task などでプロジェクトをビルドして PreviewList を生成しましょう。
+
+```shell
+./gradlew kspKotlinJvm
 ```
 
-:::tip Preview 用ソースを分けるメリット
-- プロダクションコードと Preview 用コードを分離できる  
-- Previews ディレクトリを眺めるだけで「どんな UI があるか」が把握しやすくなる  
-- 不要になった Preview の整理もしやすい  
-:::
+`モジュール/build/generated/ksp/` 内を見ると PreviewList が生成されていることがわかります。
 
-## 2. 各コンポーネントの Preview を作成する
+TODO 画像
 
-例えばボタンコンポーネントのバリエーションを管理する Preview は、次のように記述できます。
+## 3. Gallery を実装
 
-```kt title="ButtonPreviews.kt"
-@Preview
-@Composable
-fun ButtonVariantsPreview() = PreviewLab {
-    val variant by fieldState {
-        EnumField("variant", ButtonVariant.Primary)
+生成した PreviewList を UI として表示します。
+
+プラットフォームごとに Gallery を表示するためのエントリーポイントとなる Composable・関数 が用意されています。
+
+Gallery を表示する Composable または関数に PreviewList を渡すことで、UI カタログを表示できます。
+
+```kt title="jvm"
+fun main() {
+    application {
+        PreviewLabGalleryWindows(
+            previewList = モジュール名.PreviewList,
+        )
     }
-    val enabled by fieldState {
-        BooleanField("enabled", true)
-    }
-
-    MyButton(
-        text = fieldValue { StringField("text", "Click me") },
-        variant = variant,
-        enabled = enabled,
-        onClick = { onEvent("Button clicked") },
-    )
 }
 ```
 
-<EmbeddedPreviewLab
-  previewId="FieldQuickSummary"
-  title="Field Quick Summary"
-/>
-
-## 3. PreviewLabGallery を使った UI カタログ画面
-
-Compose Preview Lab では、KSP によって `PreviewList` が自動生成されます。  
-これを `PreviewLabGallery` に渡すことで、簡単に UI カタログ画面を構築できます。
-
-```kt
-@Composable
-fun App() {
-    PreviewLabGallery(
+```kt title="js, wasmJs"
+fun main() {
+    previewLabApplication(
         previewList = app.PreviewList,
     )
 }
 ```
 
-`PreviewLabGallery` は以下のような機能を提供します：
-
-- 左側に Preview のリスト（カテゴリ / ファイル / displayName など）  
-- 右側に選択中の Preview を表示  
-- Inspector（Fields / Events / 追加タブ）を右ペインに表示
-
-## 4. Featured Files で重要な Preview をグループ化
-
-多数の Preview がある場合は、[Featured Files](../guides/featured-files) を使ってグループ化すると便利です。
-
-```text
-.composepreviewlab/featured/
-  Important
-  Under Review
-  Core Components
+```kt title="それ以外"
+ComposePreviewLabGallery(
+    previewList = モジュール名.PreviewList,
+)
 ```
 
-```text title=".composepreviewlab/featured/Core Components"
-src/commonMain/kotlin/com/example/ui/components/Button.kt
-src/commonMain/kotlin/com/example/ui/components/TextField.kt
-src/commonMain/kotlin/com/example/ui/components/Card.kt
+通常通りアプリケーションを実行することでアプリケーション内に Preview 一覧が表示されます。
+
+アプリケーションの実行方法は [Compose Multiplatform の公式ドキュメント](https://kotlinlang.org/docs/multiplatform/compose-multiplatform-create-first-app.html#run-your-application) に詳しく記載があります。
+
+TODO 画像
+
+Gallery の詳しいオプションについては [PreviewLabGallery の Guide](../guides/preview-lab-gallery) を参照してください。
+
+## 4. (オプション) マルチモジュールプロジェクト
+
+KSP と Compiler plugin の制約により、PreviewList はモジュールごとに生成されます。
+マルチモジュールプロジェクトでは、プロジェクト内すべての Preview を表示するには、以下のように手動で連結する必要があります。
+
+```kt
+// highlight-start
+val allPreviewList = app.PreviewList +
+  uiComponent.PreviewList +
+  featureHome.PreviewList +
+  featureMyPage.PreviewList
+// highlight-end
+
+application {
+    PreviewLabGalleryWindows(
+        previewList = allPreviewList,
+    )
+}
 ```
-
-`composePreviewLab { generateFeaturedFiles = true }` を有効にすると、  
-`FeaturedFileList` が生成され、UI カタログ画面から「重要な Preview だけを見る」といった使い方ができます。
-
-## 5. ベストプラクティス
-
-:::tip UI カタログ構築時のチェックリスト
-- 1 コンポーネントにつき **複数の Preview** を用意する（variants / states / sizes）  
-- Preview 名は用途がわかるようにする（`PrimaryEnabled` / `ErrorState` など）  
-- すべての主要な Props を Field で制御できるようにする  
-- 必要に応じて Additional Tabs（InspectorTab）を追加し、ドキュメントやコードスニペットを同じ画面に表示する  
-:::
-
-## 6. 次のステップ
-
-- [UI カタログで Review 体験を向上する](./improve-ui-review-by-ui-catalog) で PR レビューとの連携方法を学ぶ  
-- [Featured Files](../guides/featured-files) で Preview のグループ管理を詳しく知る  
-- [Inspector Tab](../guides/inspector-tab) でカスタムタブを追加し、ドキュメントや設計情報を UI カタログ内に埋め込む  
-
