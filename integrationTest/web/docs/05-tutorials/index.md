@@ -22,4 +22,3 @@ import DocCardList from '@theme/DocCardList';
 - [ライブラリドキュメントに PreviewLab を埋め込む](./embedded-playground-for-design-system-or-library-doc)
 
 <DocCardList />
-
