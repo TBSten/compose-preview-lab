@@ -1,5 +1,5 @@
 {
     "files.associations": {
-        "integrationTest/web/docs/**/*.md": "mdx"
+        "*.md": "mdx"
     }
 }
