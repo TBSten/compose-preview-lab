@@ -488,7 +488,9 @@ open class PreviewLab(
         val state = LocalEnforcePreviewLabState.current ?: state
 
         if (isInPreviewLabGalleryCardBody) {
-            content(state.scope)
+            contentRoot {
+                content(state.scope)
+            }
             return
         }
 
