@@ -1,6 +1,6 @@
 ---
 title: "[TODO] Compose Preview Lab を使った debug menu の構築"
-sidebar_position: 7
+sidebar_position: 4
 ---
 
 :::warning

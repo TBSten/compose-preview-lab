@@ -1,6 +1,6 @@
 ---
 title: "[TODO] Preview を収集して UI カタログを構築する"
-sidebar_position: 4
+sidebar_position: 1
 ---
 
 :::warning
