@@ -115,7 +115,7 @@ const config: Config = {
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
-      additionalLanguages: ['kotlin'],
+      additionalLanguages: ['kotlin', "bash", "yaml"],
     },
   } satisfies Preset.ThemeConfig,
   staticDirectories: ["static", "../app/build/web-static-content"],
