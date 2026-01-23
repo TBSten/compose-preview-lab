@@ -25,7 +25,7 @@ PreviewLabGallery(
 
 ### 1. Gradle プラグインと KSP の設定
 
-[インストール](../install) に従って Gradle Plugin, KSP Plugin をセットアップします。
+[インストール](../install/cmp) に従って Gradle Plugin, KSP Plugin をセットアップします。
 
 プロジェクトの `build.gradle.kts` に以下を追加します。
 

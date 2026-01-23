@@ -58,7 +58,7 @@ export default function QuickLinksSection() {
             <p>Start your journey with Compose Preview Lab.</p>
           </Link>
           <Link
-            to="/docs/install"
+            to="/docs/install/cmp"
             className={clsx(styles.card, styles.linkCard)}
             data-index="02">
             <Heading as="h3">Installation</Heading>

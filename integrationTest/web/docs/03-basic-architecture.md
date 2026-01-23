@@ -18,7 +18,7 @@ Compose Preview Lab は @Preview アノテーションを基盤として、Previ
 
 ## Build Tooling
 
-[インストール](./install) に従うと Gradle Plugin, KSP Plugin がセットアップされます。
+[インストール](./install/cmp) に従うと Gradle Plugin, KSP Plugin がセットアップされます。
 
 それぞれ以下のような機能があります。
 
@@ -94,6 +94,6 @@ Compose Preview Lab は以下のモジュールで構成されています。
 
 ## Next Actions
 
-- Build Tooling のセットアップ方法を [Install](./install) のドキュメントで学習してください。
+- Build Tooling のセットアップ方法を [Install](./install/cmp) のドキュメントで学習してください。
 - PreviewLab の基本機能である [Field](./guides/fields/overview), [Event](./guides/events) についてそれぞれのドキュメントで学習してください。
 - [Tutorials](./tutorials) の中から気になるもの・あなたの状況に合うものを選択して、あなたのアプリで Compose Preview Lab を活用し初めてください！
