@@ -98,3 +98,10 @@ application {
     )
 }
 ```
+
+## 次のステップ
+
+- [UI カタログで Review 体験を向上する](./improve-ui-review-by-ui-catalog) で PR レビューとの連携方法を学ぶ  
+- [PreviewLabGallery の Guide](../guides/preview-lab-gallery) で Gallery の詳細なオプション設定を確認する  
+- [Featured Files](../guides/featured-files) で Preview のグループ管理を詳しく知る  
+- [Inspector Tab](../guides/inspector-tab) でカスタムタブを追加し、ドキュメントや設計情報を UI カタログ内に埋め込む
