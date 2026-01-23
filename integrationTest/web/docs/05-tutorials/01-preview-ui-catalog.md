@@ -1,5 +1,5 @@
 ---
-title: "Preview を収集して UI カタログを構築する"
+title: "Build a UI Catalog by Collecting Previews"
 sidebar_position: 1
 ---
 
@@ -8,6 +8,10 @@ import EmbeddedPreviewLab from '@site/src/components/EmbeddedPreviewLab';
 # Preview を収集して UI カタログを構築する
 
 このページでは、Compose Preview Lab を使って **UI カタログ（コンポーネント一覧）** を構築する方法を紹介します。
+
+以下のチュートリアルに従って実装したサンプルリポジトリが Github にあるため、詰まったときは参考にしてください。
+
+TODO サンプルリポジトリへのリンク
 
 ## ゴール
 
@@ -38,6 +42,9 @@ Compose Preview Lab の KSP plugin, Gradle plugin ではデフォルトで KSP �
 `モジュール/build/generated/ksp/` 内を見ると PreviewList が生成されていることがわかります。
 
 TODO 画像
+
+[Collect Preview の Guide](../guides/collect-preview) には Preview 収集のカスタマイズ方法が示されているため必要に応じて参照してください。
+例えば PreviewList を生成するパッケージ名
 
 ## 3. Gallery を実装
 
@@ -84,7 +91,20 @@ Gallery の詳しいオプションについては [PreviewLabGallery の Guide]
 KSP と Compiler plugin の制約により、PreviewList はモジュールごとに生成されます。
 マルチモジュールプロジェクトでは、プロジェクト内すべての Preview を表示するには、以下のように手動で連結する必要があります。
 
-```kt
+ただしデフォルトでは PreviewList は internal で生成されるため、他のモジュールから参照できません。
+PreviewList を public にするには、それぞれのモジュールの build.gradle.kts に以下を追加します。
+
+```kotlin title="build.gradle.kts"
+composePreviewLab {
+    // highlight-start
+    publicPreviewList = true
+    // highlight-end
+}
+```
+
+PreviewList を public にしたら以下のようにアプリモジュールなどで PreviewList を手動で連結します。
+
+```kt title="PreviewGallery"
 // highlight-start
 val allPreviewList = app.PreviewList +
   uiComponent.PreviewList +
