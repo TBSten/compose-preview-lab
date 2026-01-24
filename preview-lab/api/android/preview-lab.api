@@ -164,6 +164,17 @@ public final class me/tbsten/compose/preview/lab/previewlab/inspectorspane/Inspe
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class me/tbsten/compose/preview/lab/previewlab/inspectorspane/InspectorTab$KDoc : me/tbsten/compose/preview/lab/previewlab/inspectorspane/InspectorTab {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/previewlab/inspectorspane/InspectorTab$KDoc;
+	public fun Content (Lme/tbsten/compose/preview/lab/previewlab/inspectorspane/InspectorTab$ContentContext;Landroidx/compose/runtime/Composer;I)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getIcon ()Lkotlin/jvm/functions/Function2;
+	public fun getTitle ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public abstract interface class me/tbsten/compose/preview/lab/previewlab/mcp/PreviewLabMcpBridge {
 	public static final field Companion Lme/tbsten/compose/preview/lab/previewlab/mcp/PreviewLabMcpBridge$Companion;
 	public abstract fun removeState (Ljava/lang/String;)V
@@ -198,7 +209,6 @@ public final class me/tbsten/compose/preview/lab/previewlab/openfilehandler/Open
 
 public final class me/tbsten/compose/preview/lab/previewlab/openfilehandler/OpenFileHandlerKt {
 	public static final fun OpenFileHandler (Lkotlin/jvm/functions/Function1;)Lme/tbsten/compose/preview/lab/previewlab/openfilehandler/OpenFileHandler;
-	public static final fun getLocalOpenFileHandler ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 }
 
 public class me/tbsten/compose/preview/lab/previewlab/openfilehandler/UrlOpenFileHandler : me/tbsten/compose/preview/lab/previewlab/openfilehandler/OpenFileHandler {

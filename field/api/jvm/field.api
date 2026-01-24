@@ -1332,17 +1332,11 @@ public final class me/tbsten/compose/preview/lab/field/modifier/DefaultModifierF
 
 public final class me/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderKt {
 	public static final fun ColorPickerItem-FNF3uiM (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Ljava/lang/String;JLkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
-	public static final fun DefaultMenu (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderMenuScope;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;I)V
 	public static final fun DefaultMenuItem (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
 	public static final fun Label (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Landroidx/compose/ui/text/AnnotatedString;Landroidx/compose/runtime/Composer;I)V
 	public static final fun Label (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Ljava/lang/String;Landroidx/compose/runtime/Composer;I)V
 	public static final fun SelectItem (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Ljava/lang/String;Ljava/lang/Object;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
 	public static final fun TextFieldItem (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Ljava/lang/String;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/ui/components/PreviewLabTransformer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class me/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderMenuScope {
-	public static final field $stable I
-	public fun <init> ()V
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/FillMaxHeightModifierFieldValue : me/tbsten/compose/preview/lab/field/modifier/ModifierFieldValue {

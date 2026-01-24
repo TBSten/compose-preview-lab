@@ -14,37 +14,14 @@ abstract interface me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryNaviga
 final class me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState { // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState|null[0]
     constructor <init>(kotlin/Pair<kotlin/String, me.tbsten.compose.preview.lab/PreviewLabPreview>? = ...) // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.<init>|<init>(kotlin.Pair<kotlin.String,me.tbsten.compose.preview.lab.PreviewLabPreview>?){}[0]
 
-    final val selectedPreviews // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.selectedPreviews|{}selectedPreviews[0]
-        final fun <get-selectedPreviews>(): kotlin.collections/List<me.tbsten.compose.preview.lab.gallery/SelectedPreview> // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.selectedPreviews.<get-selectedPreviews>|<get-selectedPreviews>(){}[0]
-
     final var query // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.query|{}query[0]
         final fun <get-query>(): kotlin/String // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.query.<get-query>|<get-query>(){}[0]
-        final fun <set-query>(kotlin/String) // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.query.<set-query>|<set-query>(kotlin.String){}[0]
 
     final fun addToComparePanel(kotlin/String, me.tbsten.compose.preview.lab/PreviewLabPreview) // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.addToComparePanel|addToComparePanel(kotlin.String;me.tbsten.compose.preview.lab.PreviewLabPreview){}[0]
     final fun onQueryChange(kotlin/String) // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.onQueryChange|onQueryChange(kotlin.String){}[0]
     final fun removeFromComparePanel(kotlin/Int) // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.removeFromComparePanel|removeFromComparePanel(kotlin.Int){}[0]
     final fun select(kotlin/String, me.tbsten.compose.preview.lab/PreviewLabPreview) // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.select|select(kotlin.String;me.tbsten.compose.preview.lab.PreviewLabPreview){}[0]
     final fun unselect() // me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryState.unselect|unselect(){}[0]
-}
-
-final class me.tbsten.compose.preview.lab.gallery/SelectedPreview { // me.tbsten.compose.preview.lab.gallery/SelectedPreview|null[0]
-    constructor <init>(kotlin/String, me.tbsten.compose.preview.lab/PreviewLabPreview, kotlin/String = ...) // me.tbsten.compose.preview.lab.gallery/SelectedPreview.<init>|<init>(kotlin.String;me.tbsten.compose.preview.lab.PreviewLabPreview;kotlin.String){}[0]
-
-    final val groupName // me.tbsten.compose.preview.lab.gallery/SelectedPreview.groupName|{}groupName[0]
-        final fun <get-groupName>(): kotlin/String // me.tbsten.compose.preview.lab.gallery/SelectedPreview.groupName.<get-groupName>|<get-groupName>(){}[0]
-    final val preview // me.tbsten.compose.preview.lab.gallery/SelectedPreview.preview|{}preview[0]
-        final fun <get-preview>(): me.tbsten.compose.preview.lab/PreviewLabPreview // me.tbsten.compose.preview.lab.gallery/SelectedPreview.preview.<get-preview>|<get-preview>(){}[0]
-    final val title // me.tbsten.compose.preview.lab.gallery/SelectedPreview.title|{}title[0]
-        final fun <get-title>(): kotlin/String // me.tbsten.compose.preview.lab.gallery/SelectedPreview.title.<get-title>|<get-title>(){}[0]
-
-    final fun equals(kotlin/Any?): kotlin/Boolean // me.tbsten.compose.preview.lab.gallery/SelectedPreview.equals|equals(kotlin.Any?){}[0]
-    final fun hashCode(): kotlin/Int // me.tbsten.compose.preview.lab.gallery/SelectedPreview.hashCode|hashCode(){}[0]
-    final fun toString(): kotlin/String // me.tbsten.compose.preview.lab.gallery/SelectedPreview.toString|toString(){}[0]
-
-    final object Companion { // me.tbsten.compose.preview.lab.gallery/SelectedPreview.Companion|null[0]
-        final fun from(kotlin/Pair<kotlin/String, me.tbsten.compose.preview.lab/PreviewLabPreview>): me.tbsten.compose.preview.lab.gallery/SelectedPreview // me.tbsten.compose.preview.lab.gallery/SelectedPreview.Companion.from|from(kotlin.Pair<kotlin.String,me.tbsten.compose.preview.lab.PreviewLabPreview>){}[0]
-    }
 }
 
 final object me.tbsten.compose.preview.lab.gallery/NoOpPreviewLabGalleryNavigator : me.tbsten.compose.preview.lab.gallery/PreviewLabGalleryNavigator { // me.tbsten.compose.preview.lab.gallery/NoOpPreviewLabGalleryNavigator|null[0]

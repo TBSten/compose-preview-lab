@@ -1,9 +1,11 @@
 package me.tbsten.compose.preview.lab.previewlab.inspectorspane
 
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -128,6 +130,31 @@ interface InspectorTab {
         }
     }
 
+    /**
+     * Built-in KDoc tab that displays preview function documentation.
+     *
+     * @see InspectorTab
+     */
+    data object KDoc : InspectorTab {
+        override val title: String = "KDoc"
+
+        @Composable
+        override fun ContentContext.Content() {
+            val kdoc = LocalPreviewLabPreview.current?.kdoc
+
+            SelectionContainer {
+                PreviewLabText(
+                    text = kdoc ?: "(No KDoc)",
+                    modifier = Modifier
+                        .horizontalScroll(rememberScrollState())
+                        .verticalScroll(rememberScrollState())
+                        .padding(12.dp)
+                        .fillMaxSize(),
+                )
+            }
+        }
+    }
+
     @ExperimentalComposePreviewLabApi
     data object Code : InspectorTab {
         override val title: String = "Code"
@@ -153,7 +180,9 @@ interface InspectorTab {
                     },
                     modifier = Modifier
                         .horizontalScroll(rememberScrollState())
-                        .padding(12.dp),
+                        .verticalScroll(rememberScrollState())
+                        .padding(12.dp)
+                        .fillMaxSize(),
                 )
             }
         }
@@ -161,8 +190,8 @@ interface InspectorTab {
 
     companion object {
         /**
-         * Default built-in tabs: Fields and Events
+         * Default built-in tabs: Fields, Events, and KDoc
          */
-        val defaults: List<InspectorTab> = listOf(Fields, Events)
+        val defaults: List<InspectorTab> = listOf(Fields, Events, KDoc)
     }
 }
