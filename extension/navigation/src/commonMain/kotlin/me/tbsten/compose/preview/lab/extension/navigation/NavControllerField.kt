@@ -51,12 +51,12 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.PreviewLabField
 import me.tbsten.compose.preview.lab.field.PolymorphicField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Button
-import me.tbsten.compose.preview.lab.ui.components.Checkbox
-import me.tbsten.compose.preview.lab.ui.components.IconButton
-import me.tbsten.compose.preview.lab.ui.components.IconButtonVariant
-import me.tbsten.compose.preview.lab.ui.components.Surface
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabCheckbox
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSurface
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_close
 import org.jetbrains.compose.resources.painterResource
@@ -111,7 +111,7 @@ class NavControllerField(
         ) {
             SegmentedCard {
                 SegmentedCardSection(isTop = true) {
-                    Text(
+                    PreviewLabText(
                         text = "BackStack",
                         style = PreviewLabTheme.typography.label1,
                         modifier = Modifier.padding(bottom = 4.dp),
@@ -126,7 +126,7 @@ class NavControllerField(
 
                 if (routeField != null) {
                     SegmentedCardSection(isTop = false) {
-                        Text(
+                        PreviewLabText(
                             text = "navigate()",
                             style = PreviewLabTheme.typography.label1,
                             modifier = Modifier.padding(bottom = 4.dp),
@@ -151,7 +151,7 @@ class NavControllerField(
 @OptIn(InternalComposePreviewLabApi::class)
 @Composable
 private fun SegmentedCard(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
-    Surface(
+    PreviewLabSurface(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         border = BorderStroke(1.dp, PreviewLabTheme.colors.outline),
@@ -178,7 +178,7 @@ private fun SegmentedCardSection(isTop: Boolean, modifier: Modifier = Modifier, 
             ),
     ) {
         if (!isTop) {
-            Surface(
+            PreviewLabSurface(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(1.dp),
@@ -208,7 +208,7 @@ private fun NavOptionsSection(onNavigate: (androidx.navigation.NavOptions?) -> U
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            Button(
+            PreviewLabButton(
                 onClick = {
                     val options = if (launchSingleTop || restoreState) {
                         navOptions {
@@ -222,12 +222,12 @@ private fun NavOptionsSection(onNavigate: (androidx.navigation.NavOptions?) -> U
                 },
                 modifier = Modifier.weight(1f),
             ) {
-                Text("Navigate")
+                PreviewLabText("Navigate")
             }
-            Button(
+            PreviewLabButton(
                 onClick = { showOptions = !showOptions },
             ) {
-                Text(
+                PreviewLabText(
                     text = ">",
                     modifier = Modifier.graphicsLayer { rotationZ = rotation },
                 )
@@ -247,11 +247,11 @@ private fun NavOptionsSection(onNavigate: (androidx.navigation.NavOptions?) -> U
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    Checkbox(
+                    PreviewLabCheckbox(
                         checked = launchSingleTop,
                         onCheckedChange = { launchSingleTop = it },
                     )
-                    Text(
+                    PreviewLabText(
                         text = "launchSingleTop",
                         style = PreviewLabTheme.typography.body2,
                     )
@@ -260,11 +260,11 @@ private fun NavOptionsSection(onNavigate: (androidx.navigation.NavOptions?) -> U
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    Checkbox(
+                    PreviewLabCheckbox(
                         checked = restoreState,
                         onCheckedChange = { restoreState = it },
                     )
-                    Text(
+                    PreviewLabText(
                         text = "restoreState",
                         style = PreviewLabTheme.typography.body2,
                     )
@@ -356,7 +356,7 @@ private fun BackStackItem(
         route.replace("{$key}", value)
     }
 
-    Surface(
+    PreviewLabSurface(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(6.dp),
         color = if (isCurrent) {
@@ -380,7 +380,7 @@ private fun BackStackItem(
                 exit = fadeOut() + shrinkHorizontally(clip = false),
             ) {
                 Row {
-                    Surface(
+                    PreviewLabSurface(
                         shape = RoundedCornerShape(3.dp),
                         color = PreviewLabTheme.colors.primary,
                         modifier = Modifier.size(6.dp),
@@ -388,7 +388,7 @@ private fun BackStackItem(
                     Spacer(Modifier.width(6.dp))
                 }
             }
-            Text(
+            PreviewLabText(
                 text = "$position. $displayText",
                 style = PreviewLabTheme.typography.body2,
                 minLines = 1,
@@ -406,9 +406,9 @@ private fun BackStackItem(
                 enter = fadeIn() + expandHorizontally(clip = false),
                 exit = fadeOut() + shrinkHorizontally(clip = false),
             ) {
-                IconButton(
+                PreviewLabIconButton(
                     onClick = onPopBack,
-                    variant = IconButtonVariant.Ghost,
+                    variant = PreviewLabIconButtonVariant.Ghost,
                     modifier = Modifier.size(24.dp),
                 ) {
                     androidx.compose.foundation.Image(

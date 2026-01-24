@@ -13,7 +13,7 @@ import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.component.LocalDateEditor
 import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.util.with
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 
 class DatePeriodField(label: String, initialValue: DatePeriod) :
     MutablePreviewLabField<DatePeriod>(
@@ -57,7 +57,7 @@ class DatePeriodField(label: String, initialValue: DatePeriod) :
             )
 
             errorMessage?.let { error ->
-                Text(
+                PreviewLabText(
                     text = error,
                     style = PreviewLabTheme.typography.body2,
                     color = PreviewLabTheme.colors.error,

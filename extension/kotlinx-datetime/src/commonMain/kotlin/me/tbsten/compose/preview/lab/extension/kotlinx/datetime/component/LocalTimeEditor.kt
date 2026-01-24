@@ -16,7 +16,7 @@ import kotlinx.datetime.LocalTime
 import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.util.with
 import me.tbsten.compose.preview.lab.field.component.TextFieldContent
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 
 @Composable
 internal fun LocalTimeEditor(
@@ -43,7 +43,7 @@ internal fun LocalTimeEditor(
             modifier = Modifier.weight(1f),
         )
 
-        Text(":")
+        PreviewLabText(":")
 
         TextFieldContent<Int>(
             label = "minute",
@@ -55,7 +55,7 @@ internal fun LocalTimeEditor(
             modifier = Modifier.weight(1f),
         )
 
-        Text(":")
+        PreviewLabText(":")
 
         TextFieldContent<Double>(
             label = "second",
@@ -101,7 +101,7 @@ internal fun LocalTimeEditor(time: LocalTime, onTimeChange: (LocalTime) -> Unit,
         )
 
         errorMessage?.let { error ->
-            Text(
+            PreviewLabText(
                 text = error,
                 style = PreviewLabTheme.typography.body2,
                 color = PreviewLabTheme.colors.error,
