@@ -11,19 +11,19 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Text
-import me.tbsten.compose.preview.lab.ui.components.card.OutlinedCard
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.card.PreviewLabOutlinedCard
 
 @Composable
 @InternalComposePreviewLabApi
 internal fun CollectionFieldSummaryCard(summaryText: String, onClick: () -> Unit, modifier: Modifier = Modifier,) {
-    OutlinedCard(
+    PreviewLabOutlinedCard(
         shape = RoundedCornerShape(4.dp),
         onClick = onClick,
         modifier = modifier,
     ) {
         Column(Modifier.padding(vertical = 4.dp, horizontal = 8.dp)) {
-            Text(
+            PreviewLabText(
                 text = summaryText,
                 style = PreviewLabTheme.typography.body3,
                 overflow = TextOverflow.Ellipsis,

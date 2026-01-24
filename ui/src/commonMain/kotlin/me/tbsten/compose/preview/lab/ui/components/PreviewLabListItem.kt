@@ -27,20 +27,20 @@ private const val SelectedBorderWidth = 12
  */
 @Composable
 @InternalComposePreviewLabApi
-fun CommonListItem(
+fun PreviewLabListItem(
     title: String,
     isSelected: Boolean,
     onSelect: (() -> Unit)? = null,
     isEnabled: Boolean = true,
     modifier: Modifier = Modifier,
-) = CommonListItem(
+) = PreviewLabListItem(
     isSelected = isSelected,
     onSelect = onSelect,
     modifier = modifier,
     isEnabled = isEnabled,
     content = {
         Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()) {
-            Text(title, style = PreviewLabTheme.typography.body3)
+            PreviewLabText(title, style = PreviewLabTheme.typography.body3)
         }
     },
 )
@@ -60,14 +60,14 @@ fun CommonListItem(
  */
 @Composable
 @InternalComposePreviewLabApi
-fun CommonListItem(
+fun PreviewLabListItem(
     title: String,
     isSelected: Boolean,
     onSelect: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
     leadingContent: @Composable (() -> Unit)? = null,
-) = CommonListItem(
+) = PreviewLabListItem(
     isSelected = isSelected,
     onSelect = onSelect,
     modifier = modifier,
@@ -75,7 +75,7 @@ fun CommonListItem(
     content = {
         leadingContent?.invoke()
         Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()) {
-            Text(title, style = PreviewLabTheme.typography.body3)
+            PreviewLabText(title, style = PreviewLabTheme.typography.body3)
         }
     },
 )
@@ -94,15 +94,15 @@ fun CommonListItem(
  */
 @Composable
 @InternalComposePreviewLabApi
-fun CommonListItem(
+fun PreviewLabListItem(
     isSelected: Boolean,
     onSelect: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
     content: @Composable () -> Unit,
 ) {
-    Button(
-        variant = ButtonVariant.PrimaryGhost,
+    PreviewLabButton(
+        variant = PreviewLabButtonVariant.PrimaryGhost,
         shape = RectangleShape,
         onClick = onSelect ?: {},
         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),

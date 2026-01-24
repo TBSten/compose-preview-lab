@@ -12,7 +12,7 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @Composable
 @InternalComposePreviewLabApi
-fun <T> TabPager(
+fun <T> PreviewLabTabPager(
     tabs: List<T>,
     title: (T) -> String,
     pagerState: PagerState,
@@ -23,13 +23,13 @@ fun <T> TabPager(
 
     Column(modifier = modifier) {
         pagerState.currentPage
-        TabRow {
+        PreviewLabTabRow {
             tabs.forEachIndexed { index, tab ->
-                Tab(
+                PreviewLabTab(
                     selected = pagerState.currentPage == index,
                     onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
                 ) {
-                    Text(title(tab))
+                    PreviewLabText(title(tab))
                 }
             }
         }

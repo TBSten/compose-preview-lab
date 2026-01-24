@@ -15,10 +15,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.FloatTransformer
-import me.tbsten.compose.preview.lab.ui.components.NullableFloatTransformer
-import me.tbsten.compose.preview.lab.ui.components.Text
-import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabFloatTransformer
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabNullableFloatTransformer
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabTransformableTextField
 
 /**
  * ModifierFieldValue that applies rotation transformation to a composable.
@@ -51,7 +51,7 @@ class RotateModifierFieldValue(degrees: Float) : ModifierFieldValue {
                     label = "degrees",
                     value = degrees,
                     onValueChange = { degrees = it },
-                    transformer = FloatTransformer,
+                    transformer = PreviewLabFloatTransformer,
                 )
             }
         },
@@ -73,12 +73,12 @@ class RotateModifierFieldValue(degrees: Float) : ModifierFieldValue {
         override fun Content(createButton: @Composable (() -> Unit)) = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            TransformableTextField(
+            PreviewLabTransformableTextField(
                 value = degrees,
                 onValueChange = { degrees = it },
-                transformer = NullableFloatTransformer,
+                transformer = PreviewLabNullableFloatTransformer,
                 textStyle = PreviewLabTheme.typography.label1,
-                prefix = { Text("degrees: ", style = PreviewLabTheme.typography.label2) },
+                prefix = { PreviewLabText("degrees: ", style = PreviewLabTheme.typography.label2) },
             )
 
             Row { createButton() }

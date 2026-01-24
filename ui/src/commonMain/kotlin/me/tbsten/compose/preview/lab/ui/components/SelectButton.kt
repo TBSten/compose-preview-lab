@@ -24,14 +24,14 @@ import org.jetbrains.compose.resources.imageResource
 
 @Composable
 @InternalComposePreviewLabApi
-fun <V> SelectButton(
+fun <V> PreviewLabSelectButton(
     choices: List<V>,
     currentIndex: Int,
     onSelect: (Int) -> Unit,
     title: (V) -> String,
     modifier: Modifier = Modifier,
     itemDetail: (V) -> String? = { null },
-) = SelectButton(
+) = PreviewLabSelectButton(
     value = choices[currentIndex],
     choices = choices,
     onSelect = { onSelect(choices.indexOf(it)) },
@@ -42,7 +42,7 @@ fun <V> SelectButton(
 
 @Composable
 @InternalComposePreviewLabApi
-fun <V> SelectButton(
+fun <V> PreviewLabSelectButton(
     value: V,
     choices: List<V>,
     onSelect: (V) -> Unit,
@@ -54,8 +54,8 @@ fun <V> SelectButton(
     var isOpenMenu by remember { mutableStateOf(false) }
 
     Column {
-        Button(
-            variant = ButtonVariant.PrimaryOutlined,
+        PreviewLabButton(
+            variant = PreviewLabButtonVariant.PrimaryOutlined,
             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
             onClick = { isOpenMenu = true },
             modifier = modifier,
@@ -63,17 +63,17 @@ fun <V> SelectButton(
             CompositionLocalProvider(
                 LocalTextStyle provides PreviewLabTheme.typography.label3,
             ) {
-                Text(title(value))
+                PreviewLabText(title(value))
             }
         }
         DisableSelection {
-            CommonMenu(
+            PreviewLabMenu(
                 expanded = isOpenMenu,
                 onDismissRequest = { isOpenMenu = false },
             ) {
                 choices.forEach { item ->
                     val isSelected = item == value
-                    CommonListItem(
+                    PreviewLabListItem(
                         isSelected = isSelected,
                         onSelect = {
                             onSelect(item)
@@ -85,15 +85,15 @@ fun <V> SelectButton(
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             if (isSelected) {
-                                Icon(
+                                PreviewLabIcon(
                                     imageResource(PreviewLabUiRes.drawable.icon_check),
                                     contentDescription = "selected",
                                 )
                             }
                             Column {
-                                Text(text = title(item), style = PreviewLabTheme.typography.body2)
+                                PreviewLabText(text = title(item), style = PreviewLabTheme.typography.body2)
                                 itemDetail(item)?.let {
-                                    Text(
+                                    PreviewLabText(
                                         text = it,
                                         style = PreviewLabTheme.typography.body3,
                                     )

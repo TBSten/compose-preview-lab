@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.PreviewLabField
-import me.tbsten.compose.preview.lab.ui.components.Divider
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabHorizontalDivider
 
 @Composable
 internal fun FieldListSection(fields: List<PreviewLabField<*>>, modifier: Modifier = Modifier) {
@@ -22,7 +22,7 @@ internal fun FieldListSection(fields: List<PreviewLabField<*>>, modifier: Modifi
         fields.forEachIndexed { index, field ->
             field.View()
             if (index != fields.lastIndex) {
-                Divider()
+                PreviewLabHorizontalDivider()
             }
         }
     }

@@ -211,257 +211,22 @@ public final class me/tbsten/compose/preview/lab/ui/animation/AnimatedValueKt {
 	public static final fun defaultAnimationSpec ()Landroidx/compose/animation/core/TweenSpec;
 }
 
-public final class me/tbsten/compose/preview/lab/ui/components/ButtonColors {
-	public static final field $stable I
-	public synthetic fun <init> (JJLandroidx/compose/ui/graphics/Color;JJLandroidx/compose/ui/graphics/Color;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun <init> (JJLandroidx/compose/ui/graphics/Color;JJLandroidx/compose/ui/graphics/Color;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun borderColor (ZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
-	public final fun component1-0d7_KjU ()J
-	public final fun component2-0d7_KjU ()J
-	public final fun component3-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
-	public final fun component4-0d7_KjU ()J
-	public final fun component5-0d7_KjU ()J
-	public final fun component6-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
-	public final fun containerColor (ZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
-	public final fun contentColor (ZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
-	public final fun copy-LdUL5aI (JJLandroidx/compose/ui/graphics/Color;JJLandroidx/compose/ui/graphics/Color;)Lme/tbsten/compose/preview/lab/ui/components/ButtonColors;
-	public static synthetic fun copy-LdUL5aI$default (Lme/tbsten/compose/preview/lab/ui/components/ButtonColors;JJLandroidx/compose/ui/graphics/Color;JJLandroidx/compose/ui/graphics/Color;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/ButtonColors;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getBorderColor-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
-	public final fun getContainerColor-0d7_KjU ()J
-	public final fun getContentColor-0d7_KjU ()J
-	public final fun getDisabledBorderColor-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
-	public final fun getDisabledContainerColor-0d7_KjU ()J
-	public final fun getDisabledContentColor-0d7_KjU ()J
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/ButtonDefaults {
-	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/ButtonDefaults;
-	public final fun buttonElevation (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;
-	public final fun destructiveElevated (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
-	public final fun destructiveFilled (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
-	public final fun destructiveGhost (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
-	public final fun destructiveOutlined (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
-	public final fun getButtonHorizontalPadding-D9Ej5fM ()F
-	public final fun getButtonShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
-	public final fun getButtonVerticalPadding-D9Ej5fM ()F
-	public final fun getContentPadding ()Landroidx/compose/foundation/layout/PaddingValues;
-	public final fun getElevatedShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
-	public final fun getFilledShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
-	public final fun getMinHeight-D9Ej5fM ()F
-	public final fun getOutlineHeight-D9Ej5fM ()F
-	public final fun getOutlinedShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
-	public final fun ghost (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
-	public final fun primaryElevated (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
-	public final fun primaryFilled (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
-	public final fun primaryGhost (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
-	public final fun primaryOutlined (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
-	public final fun secondaryElevated (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
-	public final fun secondaryFilled (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
-	public final fun secondaryGhost (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
-	public final fun secondaryOutlined (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
-}
-
 public final class me/tbsten/compose/preview/lab/ui/components/ButtonKt {
-	public static final fun Button (Landroidx/compose/ui/Modifier;Ljava/lang/String;ZZZLme/tbsten/compose/preview/lab/ui/components/ButtonVariant;Landroidx/compose/ui/graphics/Shape;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
-	public static final fun buttonStyleFor (Lme/tbsten/compose/preview/lab/ui/components/ButtonVariant;ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/ButtonStyle {
-	public static final field $stable I
-	public fun <init> (Lme/tbsten/compose/preview/lab/ui/components/ButtonColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;Landroidx/compose/foundation/layout/PaddingValues;)V
-	public synthetic fun <init> (Lme/tbsten/compose/preview/lab/ui/components/ButtonColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;Landroidx/compose/foundation/layout/PaddingValues;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1 ()Lme/tbsten/compose/preview/lab/ui/components/ButtonColors;
-	public final fun component2 ()Landroidx/compose/ui/graphics/Shape;
-	public final fun component3 ()Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;
-	public final fun component4 ()Landroidx/compose/foundation/layout/PaddingValues;
-	public final fun copy (Lme/tbsten/compose/preview/lab/ui/components/ButtonColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;Landroidx/compose/foundation/layout/PaddingValues;)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
-	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;Lme/tbsten/compose/preview/lab/ui/components/ButtonColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;Landroidx/compose/foundation/layout/PaddingValues;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/ButtonStyle;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getColors ()Lme/tbsten/compose/preview/lab/ui/components/ButtonColors;
-	public final fun getContentPadding ()Landroidx/compose/foundation/layout/PaddingValues;
-	public final fun getElevation ()Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;
-	public final fun getShape ()Landroidx/compose/ui/graphics/Shape;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/ButtonVariant : java/lang/Enum {
-	public static final field Destructive Lme/tbsten/compose/preview/lab/ui/components/ButtonVariant;
-	public static final field DestructiveElevated Lme/tbsten/compose/preview/lab/ui/components/ButtonVariant;
-	public static final field DestructiveGhost Lme/tbsten/compose/preview/lab/ui/components/ButtonVariant;
-	public static final field DestructiveOutlined Lme/tbsten/compose/preview/lab/ui/components/ButtonVariant;
-	public static final field Ghost Lme/tbsten/compose/preview/lab/ui/components/ButtonVariant;
-	public static final field Primary Lme/tbsten/compose/preview/lab/ui/components/ButtonVariant;
-	public static final field PrimaryElevated Lme/tbsten/compose/preview/lab/ui/components/ButtonVariant;
-	public static final field PrimaryGhost Lme/tbsten/compose/preview/lab/ui/components/ButtonVariant;
-	public static final field PrimaryOutlined Lme/tbsten/compose/preview/lab/ui/components/ButtonVariant;
-	public static final field Secondary Lme/tbsten/compose/preview/lab/ui/components/ButtonVariant;
-	public static final field SecondaryElevated Lme/tbsten/compose/preview/lab/ui/components/ButtonVariant;
-	public static final field SecondaryGhost Lme/tbsten/compose/preview/lab/ui/components/ButtonVariant;
-	public static final field SecondaryOutlined Lme/tbsten/compose/preview/lab/ui/components/ButtonVariant;
-	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public static fun valueOf (Ljava/lang/String;)Lme/tbsten/compose/preview/lab/ui/components/ButtonVariant;
-	public static fun values ()[Lme/tbsten/compose/preview/lab/ui/components/ButtonVariant;
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/CheckboxColors {
-	public static final field $stable I
-	public synthetic fun <init> (JJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun borderColor (ZLandroidx/compose/ui/state/ToggleableState;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
-	public final fun boxColor (ZLandroidx/compose/ui/state/ToggleableState;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
-	public final fun checkmarkColor-XeAY9LY (Landroidx/compose/ui/state/ToggleableState;Landroidx/compose/runtime/Composer;I)J
-	public final fun component1-0d7_KjU ()J
-	public final fun component10-0d7_KjU ()J
-	public final fun component11-0d7_KjU ()J
-	public final fun component12-0d7_KjU ()J
-	public final fun component2-0d7_KjU ()J
-	public final fun component3-0d7_KjU ()J
-	public final fun component4-0d7_KjU ()J
-	public final fun component5-0d7_KjU ()J
-	public final fun component6-0d7_KjU ()J
-	public final fun component7-0d7_KjU ()J
-	public final fun component8-0d7_KjU ()J
-	public final fun component9-0d7_KjU ()J
-	public final fun copy-2qZNXz8 (JJJJJJJJJJJJ)Lme/tbsten/compose/preview/lab/ui/components/CheckboxColors;
-	public static synthetic fun copy-2qZNXz8$default (Lme/tbsten/compose/preview/lab/ui/components/CheckboxColors;JJJJJJJJJJJJILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/CheckboxColors;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getCheckedBorderColor-0d7_KjU ()J
-	public final fun getCheckedBoxColor-0d7_KjU ()J
-	public final fun getCheckedCheckmarkColor-0d7_KjU ()J
-	public final fun getDisabledBorderColor-0d7_KjU ()J
-	public final fun getDisabledCheckedBoxColor-0d7_KjU ()J
-	public final fun getDisabledIndeterminateBorderColor-0d7_KjU ()J
-	public final fun getDisabledIndeterminateBoxColor-0d7_KjU ()J
-	public final fun getDisabledUncheckedBorderColor-0d7_KjU ()J
-	public final fun getDisabledUncheckedBoxColor-0d7_KjU ()J
-	public final fun getUncheckedBorderColor-0d7_KjU ()J
-	public final fun getUncheckedBoxColor-0d7_KjU ()J
-	public final fun getUncheckedCheckmarkColor-0d7_KjU ()J
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/CheckboxDefaults {
-	public static final field $stable I
-	public static final field BoxInDuration I
-	public static final field BoxOutDuration I
-	public static final field CheckAnimationDuration I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/CheckboxDefaults;
-	public final fun colors (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/CheckboxColors;
-	public final fun getCheckboxDefaultPadding-D9Ej5fM ()F
-	public final fun getCheckboxSize-D9Ej5fM ()F
-	public final fun getMinimumInteractiveSize-D9Ej5fM ()F
-	public final fun getRadiusSize-D9Ej5fM ()F
-	public final fun getStrokeWidth-D9Ej5fM ()F
+	public static final fun PreviewLabButton (Landroidx/compose/ui/Modifier;Ljava/lang/String;ZZZLme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonVariant;Landroidx/compose/ui/graphics/Shape;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
+	public static final fun previewLabButtonStyleFor (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonVariant;ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonStyle;
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/CheckboxKt {
-	public static final fun Checkbox (Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function1;ZLme/tbsten/compose/preview/lab/ui/components/CheckboxColors;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
-	public static final fun TriStateCheckbox (Landroidx/compose/ui/state/ToggleableState;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLme/tbsten/compose/preview/lab/ui/components/CheckboxColors;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/ChipColors {
-	public static final field $stable I
-	public synthetic fun <init> (JJLandroidx/compose/ui/graphics/Color;JLandroidx/compose/ui/graphics/Color;JJJLandroidx/compose/ui/graphics/Color;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun <init> (JJLandroidx/compose/ui/graphics/Color;JLandroidx/compose/ui/graphics/Color;JJJLandroidx/compose/ui/graphics/Color;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun borderColor (ZZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
-	public final fun component1-0d7_KjU ()J
-	public final fun component2-0d7_KjU ()J
-	public final fun component3-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
-	public final fun component4-0d7_KjU ()J
-	public final fun component5-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
-	public final fun component6-0d7_KjU ()J
-	public final fun component7-0d7_KjU ()J
-	public final fun component8-0d7_KjU ()J
-	public final fun component9-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
-	public final fun copy-v-JjpK0 (JJLandroidx/compose/ui/graphics/Color;JLandroidx/compose/ui/graphics/Color;JJJLandroidx/compose/ui/graphics/Color;)Lme/tbsten/compose/preview/lab/ui/components/ChipColors;
-	public static synthetic fun copy-v-JjpK0$default (Lme/tbsten/compose/preview/lab/ui/components/ChipColors;JJLandroidx/compose/ui/graphics/Color;JLandroidx/compose/ui/graphics/Color;JJJLandroidx/compose/ui/graphics/Color;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/ChipColors;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getContainerColor-0d7_KjU ()J
-	public final fun getContentColor-0d7_KjU ()J
-	public final fun getDisabledContainerColor-0d7_KjU ()J
-	public final fun getDisabledContentColor-0d7_KjU ()J
-	public final fun getDisabledOutlineColor-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
-	public final fun getOutlineColor-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
-	public final fun getSelectedContainerColor-0d7_KjU ()J
-	public final fun getSelectedContentColor-0d7_KjU ()J
-	public final fun getSelectedOutlineColor-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/ChipDefaults {
-	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/ChipDefaults;
-	public final fun chipElevation (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;
-	public final fun getChipIconHorizontalPadding-D9Ej5fM ()F
-	public final fun getChipIconSize-D9Ej5fM ()F
-	public final fun getChipOutlineHeight-D9Ej5fM ()F
-	public final fun getChipRectShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
-	public final fun getContentPadding ()Landroidx/compose/foundation/layout/PaddingValues;
-	public final fun primaryElevated (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ChipStyle;
-	public final fun primaryFilled (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ChipStyle;
-	public final fun primaryOutlined (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/ChipStyle;
+	public static final fun PreviewLabCheckbox (Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function1;ZLme/tbsten/compose/preview/lab/ui/components/PreviewLabCheckboxColors;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabTriStateCheckbox (Landroidx/compose/ui/state/ToggleableState;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLme/tbsten/compose/preview/lab/ui/components/PreviewLabCheckboxColors;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/ChipKt {
-	public static final fun Chip (Landroidx/compose/ui/Modifier;ZZLkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-	public static final fun ChipComponent (Landroidx/compose/ui/Modifier;ZZLme/tbsten/compose/preview/lab/ui/components/ChipStyle;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-	public static final fun DefaultChipComponent (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-	public static final fun ElevatedChip (Landroidx/compose/ui/Modifier;ZZLkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-	public static final fun OutlinedChip (Landroidx/compose/ui/Modifier;ZZLkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/ChipStyle {
-	public static final field $stable I
-	public fun <init> (Lme/tbsten/compose/preview/lab/ui/components/ChipColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;Landroidx/compose/foundation/layout/PaddingValues;)V
-	public synthetic fun <init> (Lme/tbsten/compose/preview/lab/ui/components/ChipColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;Landroidx/compose/foundation/layout/PaddingValues;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1 ()Lme/tbsten/compose/preview/lab/ui/components/ChipColors;
-	public final fun component2 ()Landroidx/compose/ui/graphics/Shape;
-	public final fun component3 ()Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;
-	public final fun component4 ()Landroidx/compose/foundation/layout/PaddingValues;
-	public final fun copy (Lme/tbsten/compose/preview/lab/ui/components/ChipColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;Landroidx/compose/foundation/layout/PaddingValues;)Lme/tbsten/compose/preview/lab/ui/components/ChipStyle;
-	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/ui/components/ChipStyle;Lme/tbsten/compose/preview/lab/ui/components/ChipColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;Landroidx/compose/foundation/layout/PaddingValues;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/ChipStyle;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getColors ()Lme/tbsten/compose/preview/lab/ui/components/ChipColors;
-	public final fun getContentPadding ()Landroidx/compose/foundation/layout/PaddingValues;
-	public final fun getElevation ()Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;
-	public final fun getShape ()Landroidx/compose/ui/graphics/Shape;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/CommonIconButtonKt {
-	public static final fun CommonIconButton-PIknLig (Landroidx/compose/ui/graphics/painter/Painter;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;Landroidx/compose/ui/graphics/Color;Landroidx/compose/runtime/Composer;II)V
-	public static final fun CommonIconButton-PIknLig (Landroidx/compose/ui/graphics/vector/ImageVector;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;Landroidx/compose/ui/graphics/Color;Landroidx/compose/runtime/Composer;II)V
-	public static final fun IconButtonContent-yZUFuyM (Landroidx/compose/ui/graphics/painter/Painter;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;Landroidx/compose/ui/graphics/Color;ZLandroidx/compose/runtime/Composer;II)V
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/CommonListHeaderKt {
-	public static final fun CommonListHeader (Ljava/lang/String;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/CommonListItemKt {
-	public static final fun CommonListItem (Ljava/lang/String;ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-	public static final fun CommonListItem (Ljava/lang/String;ZLkotlin/jvm/functions/Function0;ZLandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
-	public static final fun CommonListItem (ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/CommonMenuKt {
-	public static final fun CommonMenu (ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;I)V
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/CommonMenuScope : androidx/compose/foundation/layout/ColumnScope {
-	public static final field $stable I
-	public fun <init> (Landroidx/compose/foundation/layout/ColumnScope;)V
-	public fun align (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/Alignment$Horizontal;)Landroidx/compose/ui/Modifier;
-	public fun alignBy (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/layout/VerticalAlignmentLine;)Landroidx/compose/ui/Modifier;
-	public fun alignBy (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;)Landroidx/compose/ui/Modifier;
-	public fun weight (Landroidx/compose/ui/Modifier;FZ)Landroidx/compose/ui/Modifier;
+	public static final fun PreviewLabChip (Landroidx/compose/ui/Modifier;ZZLkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabChipComponent (Landroidx/compose/ui/Modifier;ZZLme/tbsten/compose/preview/lab/ui/components/PreviewLabChipStyle;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabDefaultChipComponent (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabElevatedChip (Landroidx/compose/ui/Modifier;ZZLkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabOutlinedChip (Landroidx/compose/ui/Modifier;ZZLkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/ComposableSingletons$ButtonKt {
@@ -481,58 +246,58 @@ public final class me/tbsten/compose/preview/lab/ui/components/ComposableSinglet
 public final class me/tbsten/compose/preview/lab/ui/components/ComposableSingletons$ChipKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/ComposableSingletons$ChipKt;
 	public fun <init> ()V
-	public final fun getLambda$-1031285317$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-1176207223$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-1714793886$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-4998552$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-543585215$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-543881766$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-784045629$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1408964739$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1537704924$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1839991425$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2076291587$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-226939851$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-304594755$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-366496253$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-905082916$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1047467038$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1075190558$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1281707100$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1586053701$ui_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$1753144759$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1947551402$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$2131136354$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$595739684$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$964765185$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$222044630$ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/ComposableSingletons$IconButtonKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/ComposableSingletons$IconButtonKt;
 	public fun <init> ()V
-	public final fun getLambda$-1014419163$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-111866487$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1002885089$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-100659863$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1271820859$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1300075296$ui_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1356271273$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-137996793$ui_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1467948214$ui_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1582853161$ui_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-1693029783$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-1793203996$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-1876093756$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-191156936$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1775927040$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1827526912$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1838732892$ui_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-2034860247$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-327184233$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-29077910$ui_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-334124148$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-463211530$ui_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-63993869$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-678778520$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-704908826$ui_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$-901036181$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-902286577$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-983756093$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1021957579$ui_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$1061274148$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1407334596$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1588869612$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1645831589$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1171694737$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1307722034$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1443749331$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$15563166$ui_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$1693195016$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1695227099$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$256868973$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$363009437$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$425361444$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$455045546$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$542237$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1745998305$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1889322371$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1975741993$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1997915704$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$260668472$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$403807474$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$45686625$ui_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$565079139$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$858794374$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$594226847$ui_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda$869988297$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$872789638$ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/ComposableSingletons$RadioButtonKt {
@@ -551,154 +316,36 @@ public final class me/tbsten/compose/preview/lab/ui/components/ComposableSinglet
 public final class me/tbsten/compose/preview/lab/ui/components/ComposableSingletons$TooltipKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/ComposableSingletons$TooltipKt;
 	public fun <init> ()V
-	public final fun getLambda$-1402306358$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-50530577$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1069949432$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1361033150$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1366377932$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-517797356$ui_release ()Lkotlin/jvm/functions/Function3;
 }
 
-public final class me/tbsten/compose/preview/lab/ui/components/DefaultTooltipScope : me/tbsten/compose/preview/lab/ui/components/TooltipScope {
+public final class me/tbsten/compose/preview/lab/ui/components/DefaultPreviewLabTooltipScope : me/tbsten/compose/preview/lab/ui/components/PreviewLabTooltipScope {
 	public static final field $stable I
 	public fun <init> (Lkotlin/jvm/functions/Function0;)V
 	public fun drawCaret (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;)Landroidx/compose/ui/Modifier;
 	public final fun getGetAnchorBounds ()Lkotlin/jvm/functions/Function0;
 }
 
-public final class me/tbsten/compose/preview/lab/ui/components/DividerDefaults {
-	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/DividerDefaults;
-	public final fun getColor (Landroidx/compose/runtime/Composer;I)J
-	public final fun getThickness-D9Ej5fM ()F
-}
-
 public final class me/tbsten/compose/preview/lab/ui/components/DividerExtKt {
-	public static final fun Divider-EfRbmQ0 (Landroidx/compose/foundation/layout/ColumnScope;Landroidx/compose/ui/Modifier;FJLandroidx/compose/runtime/Composer;II)V
-	public static final fun Divider-EfRbmQ0 (Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/ui/Modifier;FJLandroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabDivider-EfRbmQ0 (Landroidx/compose/foundation/layout/ColumnScope;Landroidx/compose/ui/Modifier;FJLandroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabDivider-EfRbmQ0 (Landroidx/compose/foundation/layout/RowScope;Landroidx/compose/ui/Modifier;FJLandroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/DividerKt {
-	public static final fun HorizontalDivider-9IZ8Weo (Landroidx/compose/ui/Modifier;FJLandroidx/compose/runtime/Composer;II)V
-	public static final fun VerticalDivider-9IZ8Weo (Landroidx/compose/ui/Modifier;FJLandroidx/compose/runtime/Composer;II)V
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/DpTransformer : me/tbsten/compose/preview/lab/ui/components/Transformer {
-	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/DpTransformer;
-	public synthetic fun fromString (Ljava/lang/String;)Ljava/lang/Object;
-	public fun fromString-u2uoSUM (Ljava/lang/String;)F
-	public synthetic fun toString (Ljava/lang/Object;)Ljava/lang/String;
-	public fun toString-0680j_4 (F)Ljava/lang/String;
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/FloatTransformer : me/tbsten/compose/preview/lab/ui/components/Transformer {
-	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/FloatTransformer;
-	public fun fromString (Ljava/lang/String;)Ljava/lang/Float;
-	public synthetic fun fromString (Ljava/lang/String;)Ljava/lang/Object;
-	public fun toString (F)Ljava/lang/String;
-	public synthetic fun toString (Ljava/lang/Object;)Ljava/lang/String;
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/IconButtonColors {
-	public static final field $stable I
-	public synthetic fun <init> (JJLandroidx/compose/ui/graphics/Color;JJLandroidx/compose/ui/graphics/Color;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun <init> (JJLandroidx/compose/ui/graphics/Color;JJLandroidx/compose/ui/graphics/Color;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun borderColor (ZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
-	public final fun component1-0d7_KjU ()J
-	public final fun component2-0d7_KjU ()J
-	public final fun component3-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
-	public final fun component4-0d7_KjU ()J
-	public final fun component5-0d7_KjU ()J
-	public final fun component6-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
-	public final fun containerColor (ZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
-	public final fun contentColor (ZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
-	public final fun copy-LdUL5aI (JJLandroidx/compose/ui/graphics/Color;JJLandroidx/compose/ui/graphics/Color;)Lme/tbsten/compose/preview/lab/ui/components/IconButtonColors;
-	public static synthetic fun copy-LdUL5aI$default (Lme/tbsten/compose/preview/lab/ui/components/IconButtonColors;JJLandroidx/compose/ui/graphics/Color;JJLandroidx/compose/ui/graphics/Color;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/IconButtonColors;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getBorderColor-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
-	public final fun getContainerColor-0d7_KjU ()J
-	public final fun getContentColor-0d7_KjU ()J
-	public final fun getDisabledBorderColor-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
-	public final fun getDisabledContainerColor-0d7_KjU ()J
-	public final fun getDisabledContentColor-0d7_KjU ()J
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/IconButtonDefaults {
-	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/IconButtonDefaults;
-	public final fun buttonElevation (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;
-	public final fun destructiveElevated (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/IconButtonStyle;
-	public final fun destructiveFilled (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/IconButtonStyle;
-	public final fun destructiveGhost (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/IconButtonStyle;
-	public final fun destructiveOutlined (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/IconButtonStyle;
-	public final fun getButtonCircleShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
-	public final fun getButtonPadding ()Landroidx/compose/foundation/layout/PaddingValues;
-	public final fun getButtonSize-D9Ej5fM ()F
-	public final fun getButtonSquareShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
-	public final fun getOutlineHeight-D9Ej5fM ()F
-	public final fun ghost (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/IconButtonStyle;
-	public final fun primaryElevated (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/IconButtonStyle;
-	public final fun primaryFilled (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/IconButtonStyle;
-	public final fun primaryGhost (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/IconButtonStyle;
-	public final fun primaryOutlined (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/IconButtonStyle;
-	public final fun secondaryElevated (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/IconButtonStyle;
-	public final fun secondaryFilled (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/IconButtonStyle;
-	public final fun secondaryGhost (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/IconButtonStyle;
-	public final fun secondaryOutlined (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/IconButtonStyle;
-	public final fun styleFor (Lme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/IconButtonStyle;
+	public static final fun PreviewLabHorizontalDivider-9IZ8Weo (Landroidx/compose/ui/Modifier;FJLandroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabVerticalDivider-9IZ8Weo (Landroidx/compose/ui/Modifier;FJLandroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/IconButtonKt {
-	public static final fun IconButton (Landroidx/compose/ui/Modifier;ZZLme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;Landroidx/compose/ui/graphics/Shape;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/IconButtonStyle {
-	public static final field $stable I
-	public fun <init> (Lme/tbsten/compose/preview/lab/ui/components/IconButtonColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;)V
-	public synthetic fun <init> (Lme/tbsten/compose/preview/lab/ui/components/IconButtonColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1 ()Lme/tbsten/compose/preview/lab/ui/components/IconButtonColors;
-	public final fun component2 ()Landroidx/compose/ui/graphics/Shape;
-	public final fun component3 ()Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;
-	public final fun copy (Lme/tbsten/compose/preview/lab/ui/components/IconButtonColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;)Lme/tbsten/compose/preview/lab/ui/components/IconButtonStyle;
-	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/ui/components/IconButtonStyle;Lme/tbsten/compose/preview/lab/ui/components/IconButtonColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/IconButtonStyle;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getColors ()Lme/tbsten/compose/preview/lab/ui/components/IconButtonColors;
-	public final fun getElevation ()Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;
-	public final fun getShape ()Landroidx/compose/ui/graphics/Shape;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/IconButtonVariant : java/lang/Enum {
-	public static final field Destructive Lme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;
-	public static final field DestructiveElevated Lme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;
-	public static final field DestructiveGhost Lme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;
-	public static final field DestructiveOutlined Lme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;
-	public static final field Ghost Lme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;
-	public static final field Primary Lme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;
-	public static final field PrimaryElevated Lme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;
-	public static final field PrimaryGhost Lme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;
-	public static final field PrimaryOutlined Lme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;
-	public static final field Secondary Lme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;
-	public static final field SecondaryElevated Lme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;
-	public static final field SecondaryGhost Lme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;
-	public static final field SecondaryOutlined Lme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;
-	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public static fun valueOf (Ljava/lang/String;)Lme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;
-	public static fun values ()[Lme/tbsten/compose/preview/lab/ui/components/IconButtonVariant;
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/IconDefaults {
-	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/IconDefaults;
-	public final fun getIconSize-D9Ej5fM ()F
+	public static final fun PreviewLabIconButton (Landroidx/compose/ui/Modifier;ZZLme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;Landroidx/compose/ui/graphics/Shape;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/IconKt {
-	public static final fun Icon-ww6aTOc (Landroidx/compose/ui/graphics/ImageBitmap;Landroidx/compose/ui/Modifier;Ljava/lang/String;JLandroidx/compose/runtime/Composer;II)V
-	public static final fun Icon-ww6aTOc (Landroidx/compose/ui/graphics/painter/Painter;Landroidx/compose/ui/Modifier;Ljava/lang/String;JLandroidx/compose/runtime/Composer;II)V
-	public static final fun Icon-ww6aTOc (Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/Modifier;Ljava/lang/String;JLandroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabIcon-ww6aTOc (Landroidx/compose/ui/graphics/ImageBitmap;Landroidx/compose/ui/Modifier;Ljava/lang/String;JLandroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabIcon-ww6aTOc (Landroidx/compose/ui/graphics/painter/Painter;Landroidx/compose/ui/Modifier;Ljava/lang/String;JLandroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabIcon-ww6aTOc (Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/Modifier;Ljava/lang/String;JLandroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/MenuPosition {
@@ -732,33 +379,386 @@ public abstract interface class me/tbsten/compose/preview/lab/ui/components/Menu
 	public abstract fun position-JVtK1S4 (Landroidx/compose/ui/unit/IntRect;JI)I
 }
 
-public final class me/tbsten/compose/preview/lab/ui/components/NullableDpTransformer : me/tbsten/compose/preview/lab/ui/components/Transformer {
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabButtonColors {
 	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/NullableDpTransformer;
+	public synthetic fun <init> (JJLandroidx/compose/ui/graphics/Color;JJLandroidx/compose/ui/graphics/Color;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJLandroidx/compose/ui/graphics/Color;JJLandroidx/compose/ui/graphics/Color;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun borderColor (ZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
+	public final fun component4-0d7_KjU ()J
+	public final fun component5-0d7_KjU ()J
+	public final fun component6-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
+	public final fun containerColor (ZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public final fun contentColor (ZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public final fun copy-LdUL5aI (JJLandroidx/compose/ui/graphics/Color;JJLandroidx/compose/ui/graphics/Color;)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonColors;
+	public static synthetic fun copy-LdUL5aI$default (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonColors;JJLandroidx/compose/ui/graphics/Color;JJLandroidx/compose/ui/graphics/Color;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBorderColor-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
+	public final fun getContainerColor-0d7_KjU ()J
+	public final fun getContentColor-0d7_KjU ()J
+	public final fun getDisabledBorderColor-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
+	public final fun getDisabledContainerColor-0d7_KjU ()J
+	public final fun getDisabledContentColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabButtonDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonDefaults;
+	public final fun buttonElevation (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;
+	public final fun destructiveElevated (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonStyle;
+	public final fun destructiveFilled (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonStyle;
+	public final fun destructiveGhost (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonStyle;
+	public final fun destructiveOutlined (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonStyle;
+	public final fun getButtonHorizontalPadding-D9Ej5fM ()F
+	public final fun getButtonShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
+	public final fun getButtonVerticalPadding-D9Ej5fM ()F
+	public final fun getContentPadding ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun getElevatedShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
+	public final fun getFilledShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
+	public final fun getMinHeight-D9Ej5fM ()F
+	public final fun getOutlineHeight-D9Ej5fM ()F
+	public final fun getOutlinedShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
+	public final fun ghost (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonStyle;
+	public final fun primaryElevated (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonStyle;
+	public final fun primaryFilled (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonStyle;
+	public final fun primaryGhost (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonStyle;
+	public final fun primaryOutlined (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonStyle;
+	public final fun secondaryElevated (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonStyle;
+	public final fun secondaryFilled (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonStyle;
+	public final fun secondaryGhost (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonStyle;
+	public final fun secondaryOutlined (ZLandroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonStyle;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabButtonStyle {
+	public static final field $stable I
+	public fun <init> (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;Landroidx/compose/foundation/layout/PaddingValues;)V
+	public synthetic fun <init> (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;Landroidx/compose/foundation/layout/PaddingValues;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonColors;
+	public final fun component2 ()Landroidx/compose/ui/graphics/Shape;
+	public final fun component3 ()Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;
+	public final fun component4 ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun copy (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;Landroidx/compose/foundation/layout/PaddingValues;)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonStyle;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonStyle;Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;Landroidx/compose/foundation/layout/PaddingValues;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonStyle;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getColors ()Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonColors;
+	public final fun getContentPadding ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun getElevation ()Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;
+	public final fun getShape ()Landroidx/compose/ui/graphics/Shape;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabButtonVariant : java/lang/Enum {
+	public static final field Destructive Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonVariant;
+	public static final field DestructiveElevated Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonVariant;
+	public static final field DestructiveGhost Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonVariant;
+	public static final field DestructiveOutlined Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonVariant;
+	public static final field Ghost Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonVariant;
+	public static final field Primary Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonVariant;
+	public static final field PrimaryElevated Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonVariant;
+	public static final field PrimaryGhost Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonVariant;
+	public static final field PrimaryOutlined Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonVariant;
+	public static final field Secondary Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonVariant;
+	public static final field SecondaryElevated Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonVariant;
+	public static final field SecondaryGhost Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonVariant;
+	public static final field SecondaryOutlined Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonVariant;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonVariant;
+	public static fun values ()[Lme/tbsten/compose/preview/lab/ui/components/PreviewLabButtonVariant;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabCheckboxColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun borderColor (ZLandroidx/compose/ui/state/ToggleableState;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public final fun boxColor (ZLandroidx/compose/ui/state/ToggleableState;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public final fun checkmarkColor-XeAY9LY (Landroidx/compose/ui/state/ToggleableState;Landroidx/compose/runtime/Composer;I)J
+	public final fun component1-0d7_KjU ()J
+	public final fun component10-0d7_KjU ()J
+	public final fun component11-0d7_KjU ()J
+	public final fun component12-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun component5-0d7_KjU ()J
+	public final fun component6-0d7_KjU ()J
+	public final fun component7-0d7_KjU ()J
+	public final fun component8-0d7_KjU ()J
+	public final fun component9-0d7_KjU ()J
+	public final fun copy-2qZNXz8 (JJJJJJJJJJJJ)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabCheckboxColors;
+	public static synthetic fun copy-2qZNXz8$default (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabCheckboxColors;JJJJJJJJJJJJILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabCheckboxColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCheckedBorderColor-0d7_KjU ()J
+	public final fun getCheckedBoxColor-0d7_KjU ()J
+	public final fun getCheckedCheckmarkColor-0d7_KjU ()J
+	public final fun getDisabledBorderColor-0d7_KjU ()J
+	public final fun getDisabledCheckedBoxColor-0d7_KjU ()J
+	public final fun getDisabledIndeterminateBorderColor-0d7_KjU ()J
+	public final fun getDisabledIndeterminateBoxColor-0d7_KjU ()J
+	public final fun getDisabledUncheckedBorderColor-0d7_KjU ()J
+	public final fun getDisabledUncheckedBoxColor-0d7_KjU ()J
+	public final fun getUncheckedBorderColor-0d7_KjU ()J
+	public final fun getUncheckedBoxColor-0d7_KjU ()J
+	public final fun getUncheckedCheckmarkColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabCheckboxDefaults {
+	public static final field $stable I
+	public static final field BoxInDuration I
+	public static final field BoxOutDuration I
+	public static final field CheckAnimationDuration I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/PreviewLabCheckboxDefaults;
+	public final fun colors (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabCheckboxColors;
+	public final fun getCheckboxDefaultPadding-D9Ej5fM ()F
+	public final fun getCheckboxSize-D9Ej5fM ()F
+	public final fun getMinimumInteractiveSize-D9Ej5fM ()F
+	public final fun getRadiusSize-D9Ej5fM ()F
+	public final fun getStrokeWidth-D9Ej5fM ()F
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabChipColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJLandroidx/compose/ui/graphics/Color;JLandroidx/compose/ui/graphics/Color;JJJLandroidx/compose/ui/graphics/Color;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJLandroidx/compose/ui/graphics/Color;JLandroidx/compose/ui/graphics/Color;JJJLandroidx/compose/ui/graphics/Color;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun borderColor (ZZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
+	public final fun component4-0d7_KjU ()J
+	public final fun component5-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
+	public final fun component6-0d7_KjU ()J
+	public final fun component7-0d7_KjU ()J
+	public final fun component8-0d7_KjU ()J
+	public final fun component9-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
+	public final fun copy-v-JjpK0 (JJLandroidx/compose/ui/graphics/Color;JLandroidx/compose/ui/graphics/Color;JJJLandroidx/compose/ui/graphics/Color;)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabChipColors;
+	public static synthetic fun copy-v-JjpK0$default (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabChipColors;JJLandroidx/compose/ui/graphics/Color;JLandroidx/compose/ui/graphics/Color;JJJLandroidx/compose/ui/graphics/Color;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabChipColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContainerColor-0d7_KjU ()J
+	public final fun getContentColor-0d7_KjU ()J
+	public final fun getDisabledContainerColor-0d7_KjU ()J
+	public final fun getDisabledContentColor-0d7_KjU ()J
+	public final fun getDisabledOutlineColor-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
+	public final fun getOutlineColor-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
+	public final fun getSelectedContainerColor-0d7_KjU ()J
+	public final fun getSelectedContentColor-0d7_KjU ()J
+	public final fun getSelectedOutlineColor-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabChipDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/PreviewLabChipDefaults;
+	public final fun chipElevation (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;
+	public final fun getChipIconHorizontalPadding-D9Ej5fM ()F
+	public final fun getChipIconSize-D9Ej5fM ()F
+	public final fun getChipOutlineHeight-D9Ej5fM ()F
+	public final fun getChipRectShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
+	public final fun getContentPadding ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun primaryElevated (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabChipStyle;
+	public final fun primaryFilled (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabChipStyle;
+	public final fun primaryOutlined (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabChipStyle;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabChipStyle {
+	public static final field $stable I
+	public fun <init> (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabChipColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;Landroidx/compose/foundation/layout/PaddingValues;)V
+	public synthetic fun <init> (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabChipColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;Landroidx/compose/foundation/layout/PaddingValues;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lme/tbsten/compose/preview/lab/ui/components/PreviewLabChipColors;
+	public final fun component2 ()Landroidx/compose/ui/graphics/Shape;
+	public final fun component3 ()Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;
+	public final fun component4 ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun copy (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabChipColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;Landroidx/compose/foundation/layout/PaddingValues;)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabChipStyle;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabChipStyle;Lme/tbsten/compose/preview/lab/ui/components/PreviewLabChipColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;Landroidx/compose/foundation/layout/PaddingValues;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabChipStyle;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getColors ()Lme/tbsten/compose/preview/lab/ui/components/PreviewLabChipColors;
+	public final fun getContentPadding ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun getElevation ()Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;
+	public final fun getShape ()Landroidx/compose/ui/graphics/Shape;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabDividerDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/PreviewLabDividerDefaults;
+	public final fun getColor (Landroidx/compose/runtime/Composer;I)J
+	public final fun getThickness-D9Ej5fM ()F
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabDpTransformer : me/tbsten/compose/preview/lab/ui/components/PreviewLabTransformer {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/PreviewLabDpTransformer;
+	public synthetic fun fromString (Ljava/lang/String;)Ljava/lang/Object;
+	public fun fromString-u2uoSUM (Ljava/lang/String;)F
+	public synthetic fun toString (Ljava/lang/Object;)Ljava/lang/String;
+	public fun toString-0680j_4 (F)Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabFloatTransformer : me/tbsten/compose/preview/lab/ui/components/PreviewLabTransformer {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/PreviewLabFloatTransformer;
+	public fun fromString (Ljava/lang/String;)Ljava/lang/Float;
+	public synthetic fun fromString (Ljava/lang/String;)Ljava/lang/Object;
+	public fun toString (F)Ljava/lang/String;
+	public synthetic fun toString (Ljava/lang/Object;)Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJLandroidx/compose/ui/graphics/Color;JJLandroidx/compose/ui/graphics/Color;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJLandroidx/compose/ui/graphics/Color;JJLandroidx/compose/ui/graphics/Color;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun borderColor (ZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
+	public final fun component4-0d7_KjU ()J
+	public final fun component5-0d7_KjU ()J
+	public final fun component6-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
+	public final fun containerColor (ZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public final fun contentColor (ZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public final fun copy-LdUL5aI (JJLandroidx/compose/ui/graphics/Color;JJLandroidx/compose/ui/graphics/Color;)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonColors;
+	public static synthetic fun copy-LdUL5aI$default (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonColors;JJLandroidx/compose/ui/graphics/Color;JJLandroidx/compose/ui/graphics/Color;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBorderColor-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
+	public final fun getContainerColor-0d7_KjU ()J
+	public final fun getContentColor-0d7_KjU ()J
+	public final fun getDisabledBorderColor-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
+	public final fun getDisabledContainerColor-0d7_KjU ()J
+	public final fun getDisabledContentColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonDefaults;
+	public final fun buttonElevation (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;
+	public final fun destructiveElevated (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonStyle;
+	public final fun destructiveFilled (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonStyle;
+	public final fun destructiveGhost (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonStyle;
+	public final fun destructiveOutlined (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonStyle;
+	public final fun getButtonCircleShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
+	public final fun getButtonPadding ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun getButtonSize-D9Ej5fM ()F
+	public final fun getButtonSquareShape ()Landroidx/compose/foundation/shape/RoundedCornerShape;
+	public final fun getOutlineHeight-D9Ej5fM ()F
+	public final fun ghost (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonStyle;
+	public final fun primaryElevated (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonStyle;
+	public final fun primaryFilled (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonStyle;
+	public final fun primaryGhost (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonStyle;
+	public final fun primaryOutlined (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonStyle;
+	public final fun secondaryElevated (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonStyle;
+	public final fun secondaryFilled (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonStyle;
+	public final fun secondaryGhost (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonStyle;
+	public final fun secondaryOutlined (Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonStyle;
+	public final fun styleFor (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonStyle;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonKt {
+	public static final fun PreviewLabIconButton-PIknLig (Landroidx/compose/ui/graphics/painter/Painter;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;Landroidx/compose/ui/graphics/Color;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabIconButton-PIknLig (Landroidx/compose/ui/graphics/vector/ImageVector;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;Landroidx/compose/ui/graphics/Color;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabIconButtonContent-yZUFuyM (Landroidx/compose/ui/graphics/painter/Painter;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;Landroidx/compose/ui/graphics/Color;ZLandroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonStyle {
+	public static final field $stable I
+	public fun <init> (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;)V
+	public synthetic fun <init> (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonColors;
+	public final fun component2 ()Landroidx/compose/ui/graphics/Shape;
+	public final fun component3 ()Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;
+	public final fun copy (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonStyle;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonStyle;Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonColors;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonStyle;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getColors ()Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonColors;
+	public final fun getElevation ()Lme/tbsten/compose/preview/lab/ui/foundation/ButtonElevation;
+	public final fun getShape ()Landroidx/compose/ui/graphics/Shape;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant : java/lang/Enum {
+	public static final field Destructive Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;
+	public static final field DestructiveElevated Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;
+	public static final field DestructiveGhost Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;
+	public static final field DestructiveOutlined Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;
+	public static final field Ghost Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;
+	public static final field Primary Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;
+	public static final field PrimaryElevated Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;
+	public static final field PrimaryGhost Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;
+	public static final field PrimaryOutlined Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;
+	public static final field Secondary Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;
+	public static final field SecondaryElevated Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;
+	public static final field SecondaryGhost Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;
+	public static final field SecondaryOutlined Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;
+	public static fun values ()[Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconButtonVariant;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabIconDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/PreviewLabIconDefaults;
+	public final fun getIconSize-D9Ej5fM ()F
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabListHeaderKt {
+	public static final fun PreviewLabListHeader (Ljava/lang/String;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabListItemKt {
+	public static final fun PreviewLabListItem (Ljava/lang/String;ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabListItem (Ljava/lang/String;ZLkotlin/jvm/functions/Function0;ZLandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabListItem (ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabMenuKt {
+	public static final fun PreviewLabMenu (ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabMenuScope : androidx/compose/foundation/layout/ColumnScope {
+	public static final field $stable I
+	public fun <init> (Landroidx/compose/foundation/layout/ColumnScope;)V
+	public fun align (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/Alignment$Horizontal;)Landroidx/compose/ui/Modifier;
+	public fun alignBy (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/layout/VerticalAlignmentLine;)Landroidx/compose/ui/Modifier;
+	public fun alignBy (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;)Landroidx/compose/ui/Modifier;
+	public fun weight (Landroidx/compose/ui/Modifier;FZ)Landroidx/compose/ui/Modifier;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabNullableDpTransformer : me/tbsten/compose/preview/lab/ui/components/PreviewLabTransformer {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/PreviewLabNullableDpTransformer;
 	public synthetic fun fromString (Ljava/lang/String;)Ljava/lang/Object;
 	public fun fromString-yt-Azvs (Ljava/lang/String;)Landroidx/compose/ui/unit/Dp;
 	public synthetic fun toString (Ljava/lang/Object;)Ljava/lang/String;
 	public fun toString-YLDhkOg (Landroidx/compose/ui/unit/Dp;)Ljava/lang/String;
 }
 
-public final class me/tbsten/compose/preview/lab/ui/components/NullableFloatTransformer : me/tbsten/compose/preview/lab/ui/components/Transformer {
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabNullableFloatTransformer : me/tbsten/compose/preview/lab/ui/components/PreviewLabTransformer {
 	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/NullableFloatTransformer;
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/PreviewLabNullableFloatTransformer;
 	public fun fromString (Ljava/lang/String;)Ljava/lang/Float;
 	public synthetic fun fromString (Ljava/lang/String;)Ljava/lang/Object;
 	public fun toString (Ljava/lang/Float;)Ljava/lang/String;
 	public synthetic fun toString (Ljava/lang/Object;)Ljava/lang/String;
 }
 
-public final class me/tbsten/compose/preview/lab/ui/components/RadioButtonColors {
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabRadioButtonColors {
 	public static final field $stable I
 	public synthetic fun <init> (JJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1-0d7_KjU ()J
 	public final fun component2-0d7_KjU ()J
 	public final fun component3-0d7_KjU ()J
 	public final fun component4-0d7_KjU ()J
-	public final fun copy-jRlVdoo (JJJJ)Lme/tbsten/compose/preview/lab/ui/components/RadioButtonColors;
-	public static synthetic fun copy-jRlVdoo$default (Lme/tbsten/compose/preview/lab/ui/components/RadioButtonColors;JJJJILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/RadioButtonColors;
+	public final fun copy-jRlVdoo (JJJJ)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabRadioButtonColors;
+	public static synthetic fun copy-jRlVdoo$default (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabRadioButtonColors;JJJJILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabRadioButtonColors;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDisabledSelectedColor-0d7_KjU ()J
 	public final fun getDisabledUnselectedColor-0d7_KjU ()J
@@ -768,11 +768,11 @@ public final class me/tbsten/compose/preview/lab/ui/components/RadioButtonColors
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class me/tbsten/compose/preview/lab/ui/components/RadioButtonDefaults {
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabRadioButtonDefaults {
 	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/RadioButtonDefaults;
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/PreviewLabRadioButtonDefaults;
 	public static final field RadioAnimationDuration I
-	public final fun colors (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/RadioButtonColors;
+	public final fun colors (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabRadioButtonColors;
 	public final fun getMinimumInteractiveSize-D9Ej5fM ()F
 	public final fun getRadioButtonIconSize-D9Ej5fM ()F
 	public final fun getRadioButtonPadding-D9Ej5fM ()F
@@ -780,35 +780,15 @@ public final class me/tbsten/compose/preview/lab/ui/components/RadioButtonDefaul
 	public final fun getRadioStrokeWidth-D9Ej5fM ()F
 }
 
-public final class me/tbsten/compose/preview/lab/ui/components/RadioButtonKt {
-	public static final fun RadioButton (Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function0;ZLme/tbsten/compose/preview/lab/ui/components/RadioButtonColors;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/SelectButtonKt {
-	public static final fun SelectButton (Ljava/lang/Object;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
-	public static final fun SelectButton (Ljava/util/List;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/SimpleModalKt {
-	public static final fun SimpleModal (ZLkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/ui/Alignment;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/SurfaceKt {
-	public static final fun Surface-4RylCaE (ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/ui/graphics/Shape;JJFLandroidx/compose/foundation/BorderStroke;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
-	public static final fun Surface-4RylCaE (ZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZLandroidx/compose/ui/graphics/Shape;JJFLandroidx/compose/foundation/BorderStroke;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
-	public static final fun Surface-HR_ku5s (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/ui/graphics/Shape;JJFLandroidx/compose/foundation/BorderStroke;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-	public static final fun Surface-afqeVBk (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;JJFLandroidx/compose/foundation/BorderStroke;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/SwitchColors {
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabSwitchColors {
 	public static final field $stable I
 	public synthetic fun <init> (JJJJJJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 
-public final class me/tbsten/compose/preview/lab/ui/components/SwitchDefaults {
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabSwitchDefaults {
 	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/SwitchDefaults;
-	public final fun colors-V1nXRL4 (JJJJJJJJJJJJJJJJLandroidx/compose/runtime/Composer;III)Lme/tbsten/compose/preview/lab/ui/components/SwitchColors;
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/PreviewLabSwitchDefaults;
+	public final fun colors-V1nXRL4 (JJJJJJJJJJJJJJJJLandroidx/compose/runtime/Composer;III)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabSwitchColors;
 	public final fun getRippleRadius-D9Ej5fM ()F
 	public final fun getSwitchHeight-D9Ej5fM ()F
 	public final fun getSwitchWidth-D9Ej5fM ()F
@@ -819,28 +799,9 @@ public final class me/tbsten/compose/preview/lab/ui/components/SwitchDefaults {
 	public final fun getUncheckedThumbSize-D9Ej5fM ()F
 }
 
-public final class me/tbsten/compose/preview/lab/ui/components/SwitchKt {
-	public static final fun Switch (ZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;ZLme/tbsten/compose/preview/lab/ui/components/SwitchColors;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/TabPagerKt {
-	public static final fun TabPager (Ljava/util/List;Lkotlin/jvm/functions/Function1;Landroidx/compose/foundation/pager/PagerState;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/TabRowKt {
-	public static final fun Tab (ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
-	public static final fun TabRow (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/TextKt {
-	public static final fun SelectableText-IFx5cF0 (Landroidx/compose/ui/text/AnnotatedString;Landroidx/compose/ui/Modifier;JJLandroidx/compose/ui/text/font/FontStyle;Landroidx/compose/ui/text/font/FontWeight;Landroidx/compose/ui/text/font/FontFamily;JLandroidx/compose/ui/text/style/TextDecoration;IJIZIILjava/util/Map;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;III)V
-	public static final fun Text-F-Jr8PA (Ljava/lang/String;Landroidx/compose/ui/Modifier;JJLandroidx/compose/ui/text/font/FontStyle;Landroidx/compose/ui/text/font/FontWeight;Landroidx/compose/ui/text/font/FontFamily;JLandroidx/compose/ui/text/style/TextDecoration;IJIZIILkotlin/jvm/functions/Function1;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;III)V
-	public static final fun Text-IFx5cF0 (Landroidx/compose/ui/text/AnnotatedString;Landroidx/compose/ui/Modifier;JJLandroidx/compose/ui/text/font/FontStyle;Landroidx/compose/ui/text/font/FontWeight;Landroidx/compose/ui/text/font/FontFamily;JLandroidx/compose/ui/text/style/TextDecoration;IJIZIILjava/util/Map;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;III)V
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/TooltipDefaults {
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabTooltipDefaults {
 	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/TooltipDefaults;
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/PreviewLabTooltipDefaults;
 	public final fun getCaretSize-MYxV2XQ ()J
 	public final fun getContentPadding ()Landroidx/compose/foundation/layout/PaddingValues;
 	public final fun getMaxWidth-D9Ej5fM ()F
@@ -853,66 +814,77 @@ public final class me/tbsten/compose/preview/lab/ui/components/TooltipDefaults {
 	public final fun getSpacingBetweenTooltipAndAnchor-D9Ej5fM ()F
 }
 
-public final class me/tbsten/compose/preview/lab/ui/components/TooltipKt {
-	public static final fun Tooltip-nR0zaZ8 (Lme/tbsten/compose/preview/lab/ui/components/TooltipScope;Landroidx/compose/ui/Modifier;JFLandroidx/compose/ui/graphics/Shape;JFLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-	public static final fun TooltipBox (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/window/PopupPositionProvider;Lkotlin/jvm/functions/Function3;Lme/tbsten/compose/preview/lab/ui/components/TooltipState;ZZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-	public static final fun TooltipBox (Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/window/PopupPositionProvider;Lme/tbsten/compose/preview/lab/ui/components/TooltipState;ZZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-	public static final fun animateTooltip (Landroidx/compose/ui/Modifier;Landroidx/compose/animation/core/Transition;)Landroidx/compose/ui/Modifier;
-	public static final fun rememberTooltipPositionProvider-kHDZbjc (FLandroidx/compose/runtime/Composer;II)Landroidx/compose/ui/window/PopupPositionProvider;
-	public static final fun rememberTooltipState (ZZLandroidx/compose/foundation/MutatorMutex;Landroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/TooltipState;
-}
-
-public abstract interface class me/tbsten/compose/preview/lab/ui/components/TooltipScope {
+public abstract interface class me/tbsten/compose/preview/lab/ui/components/PreviewLabTooltipScope {
 	public abstract fun drawCaret (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;)Landroidx/compose/ui/Modifier;
 }
 
-public abstract interface class me/tbsten/compose/preview/lab/ui/components/TooltipState : androidx/compose/foundation/BasicTooltipState {
+public abstract interface class me/tbsten/compose/preview/lab/ui/components/PreviewLabTooltipState : androidx/compose/foundation/BasicTooltipState {
 	public abstract fun getTransition ()Landroidx/compose/animation/core/MutableTransitionState;
 }
 
-public final class me/tbsten/compose/preview/lab/ui/components/TransformableTextFieldKt {
-	public static final fun TransformableOutlinedTextField (Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/ui/components/Transformer;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/ui/text/TextStyle;Landroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;ZIILandroidx/compose/ui/text/input/VisualTransformation;Lkotlin/jvm/functions/Function2;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Ljava/lang/Boolean;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;Landroidx/compose/ui/graphics/Brush;Landroidx/compose/runtime/Composer;IIII)V
-	public static final fun TransformableTextField (Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/ui/components/Transformer;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/ui/text/TextStyle;Landroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;ZIILandroidx/compose/ui/text/input/VisualTransformation;Lkotlin/jvm/functions/Function2;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Ljava/lang/Boolean;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;Landroidx/compose/ui/graphics/Brush;Landroidx/compose/runtime/Composer;IIII)V
-	public static final fun bindTransform (Landroidx/compose/runtime/MutableState;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/ui/components/Transformer;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/MutableState;
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/TransformableTextFieldSlotScope {
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabTransformableTextFieldSlotScope {
 	public static final field $stable I
 	public fun <init> (Z)V
 	public final fun isError ()Z
 }
 
-public abstract interface class me/tbsten/compose/preview/lab/ui/components/Transformer {
+public abstract interface class me/tbsten/compose/preview/lab/ui/components/PreviewLabTransformer {
 	public abstract fun fromString (Ljava/lang/String;)Ljava/lang/Object;
 	public abstract fun toString (Ljava/lang/Object;)Ljava/lang/String;
 }
 
-public final class me/tbsten/compose/preview/lab/ui/components/card/CardColors {
-	public static final field $stable I
-	public synthetic fun <init> (JJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun containerColor (ZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
-	public final fun contentColor (ZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
-	public final fun copy-jRlVdoo (JJJJ)Lme/tbsten/compose/preview/lab/ui/components/card/CardColors;
-	public static synthetic fun copy-jRlVdoo$default (Lme/tbsten/compose/preview/lab/ui/components/card/CardColors;JJJJILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/card/CardColors;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
+public final class me/tbsten/compose/preview/lab/ui/components/RadioButtonKt {
+	public static final fun PreviewLabRadioButton (Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function0;ZLme/tbsten/compose/preview/lab/ui/components/PreviewLabRadioButtonColors;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
-public final class me/tbsten/compose/preview/lab/ui/components/card/CardDefaults {
-	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/card/CardDefaults;
-	public final fun cardColors-ro_MJ88 (JJJJLandroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/card/CardColors;
-	public final fun cardElevation-aqJV_2Y (FFFFFFLandroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;
-	public final fun elevatedCardColors-ro_MJ88 (JJJJLandroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/card/CardColors;
-	public final fun elevatedCardElevation-aqJV_2Y (FFFFFFLandroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;
-	public final fun getBorderWidth-D9Ej5fM ()F
-	public final fun getElevatedShape (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/graphics/Shape;
-	public final fun getOutlinedShape (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/graphics/Shape;
-	public final fun getShape (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/graphics/Shape;
-	public final fun outlinedCardBorder-aM-cp0Q (ZJFLandroidx/compose/runtime/Composer;II)Landroidx/compose/foundation/BorderStroke;
-	public final fun outlinedCardColors-ro_MJ88 (JJJJLandroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/card/CardColors;
-	public final fun outlinedCardElevation-aqJV_2Y (FFFFFFLandroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;
+public final class me/tbsten/compose/preview/lab/ui/components/SelectButtonKt {
+	public static final fun PreviewLabSelectButton (Ljava/lang/Object;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabSelectButton (Ljava/util/List;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/SimpleModalKt {
+	public static final fun PreviewLabModal (ZLkotlin/jvm/functions/Function0;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/ui/Alignment;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/SurfaceKt {
+	public static final fun PreviewLabSurface-4RylCaE (ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/ui/graphics/Shape;JJFLandroidx/compose/foundation/BorderStroke;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
+	public static final fun PreviewLabSurface-4RylCaE (ZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZLandroidx/compose/ui/graphics/Shape;JJFLandroidx/compose/foundation/BorderStroke;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
+	public static final fun PreviewLabSurface-HR_ku5s (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/ui/graphics/Shape;JJFLandroidx/compose/foundation/BorderStroke;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabSurface-afqeVBk (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;JJFLandroidx/compose/foundation/BorderStroke;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/SwitchKt {
+	public static final fun PreviewLabSwitch (ZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;ZLme/tbsten/compose/preview/lab/ui/components/PreviewLabSwitchColors;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/TabPagerKt {
+	public static final fun PreviewLabTabPager (Ljava/util/List;Lkotlin/jvm/functions/Function1;Landroidx/compose/foundation/pager/PagerState;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/TabRowKt {
+	public static final fun PreviewLabTab (ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public static final fun PreviewLabTabRow (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/TextKt {
+	public static final fun PreviewLabSelectableText-IFx5cF0 (Landroidx/compose/ui/text/AnnotatedString;Landroidx/compose/ui/Modifier;JJLandroidx/compose/ui/text/font/FontStyle;Landroidx/compose/ui/text/font/FontWeight;Landroidx/compose/ui/text/font/FontFamily;JLandroidx/compose/ui/text/style/TextDecoration;IJIZIILjava/util/Map;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;III)V
+	public static final fun PreviewLabText-F-Jr8PA (Ljava/lang/String;Landroidx/compose/ui/Modifier;JJLandroidx/compose/ui/text/font/FontStyle;Landroidx/compose/ui/text/font/FontWeight;Landroidx/compose/ui/text/font/FontFamily;JLandroidx/compose/ui/text/style/TextDecoration;IJIZIILkotlin/jvm/functions/Function1;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;III)V
+	public static final fun PreviewLabText-IFx5cF0 (Landroidx/compose/ui/text/AnnotatedString;Landroidx/compose/ui/Modifier;JJLandroidx/compose/ui/text/font/FontStyle;Landroidx/compose/ui/text/font/FontWeight;Landroidx/compose/ui/text/font/FontFamily;JLandroidx/compose/ui/text/style/TextDecoration;IJIZIILjava/util/Map;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/TooltipKt {
+	public static final fun PreviewLabTooltipBox (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/window/PopupPositionProvider;Lkotlin/jvm/functions/Function3;Lme/tbsten/compose/preview/lab/ui/components/PreviewLabTooltipState;ZZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabTooltipBox (Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/window/PopupPositionProvider;Lme/tbsten/compose/preview/lab/ui/components/PreviewLabTooltipState;ZZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun Tooltip-nR0zaZ8 (Lme/tbsten/compose/preview/lab/ui/components/PreviewLabTooltipScope;Landroidx/compose/ui/Modifier;JFLandroidx/compose/ui/graphics/Shape;JFLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun animatePreviewLabTooltip (Landroidx/compose/ui/Modifier;Landroidx/compose/animation/core/Transition;)Landroidx/compose/ui/Modifier;
+	public static final fun rememberPreviewLabTooltipPositionProvider-kHDZbjc (FLandroidx/compose/runtime/Composer;II)Landroidx/compose/ui/window/PopupPositionProvider;
+	public static final fun rememberPreviewLabTooltipState (ZZLandroidx/compose/foundation/MutatorMutex;Landroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabTooltipState;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/TransformableTextFieldKt {
+	public static final fun PreviewLabTransformableOutlinedTextField (Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/ui/components/PreviewLabTransformer;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/ui/text/TextStyle;Landroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;ZIILandroidx/compose/ui/text/input/VisualTransformation;Lkotlin/jvm/functions/Function2;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Ljava/lang/Boolean;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;Landroidx/compose/ui/graphics/Brush;Landroidx/compose/runtime/Composer;IIII)V
+	public static final fun PreviewLabTransformableTextField (Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/ui/components/PreviewLabTransformer;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/ui/text/TextStyle;Landroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;ZIILandroidx/compose/ui/text/input/VisualTransformation;Lkotlin/jvm/functions/Function2;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Ljava/lang/Boolean;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;Landroidx/compose/ui/graphics/Brush;Landroidx/compose/runtime/Composer;IIII)V
+	public static final fun bindTransform (Landroidx/compose/runtime/MutableState;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/ui/components/PreviewLabTransformer;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/MutableState;
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/card/CardElevation {
@@ -924,85 +896,113 @@ public final class me/tbsten/compose/preview/lab/ui/components/card/CardElevatio
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/card/CardKt {
-	public static final fun Card (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/card/CardColors;Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;Landroidx/compose/foundation/BorderStroke;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
-	public static final fun Card (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/card/CardColors;Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;Landroidx/compose/foundation/BorderStroke;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
-	public static final fun ElevatedCard (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/card/CardColors;Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
-	public static final fun ElevatedCard (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/card/CardColors;Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
-	public static final fun OutlinedCard (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/card/CardColors;Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;Landroidx/compose/foundation/BorderStroke;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
-	public static final fun OutlinedCard (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/card/CardColors;Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;Landroidx/compose/foundation/BorderStroke;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabCard (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/card/PreviewLabCardColors;Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;Landroidx/compose/foundation/BorderStroke;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabCard (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/card/PreviewLabCardColors;Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;Landroidx/compose/foundation/BorderStroke;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabElevatedCard (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/card/PreviewLabCardColors;Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabElevatedCard (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/card/PreviewLabCardColors;Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabOutlinedCard (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/card/PreviewLabCardColors;Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;Landroidx/compose/foundation/BorderStroke;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLabOutlinedCard (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/card/PreviewLabCardColors;Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;Landroidx/compose/foundation/BorderStroke;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/card/ComposableSingletons$CardKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/card/ComposableSingletons$CardKt;
 	public fun <init> ()V
-	public final fun getLambda$-1771600374$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1005091852$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1224639632$ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1298581995$ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1367818289$ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1438881007$ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1924011883$ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-2057569768$ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-860087404$ui_release ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$1556941740$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1583885455$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$2119048208$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$829311242$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$987755219$ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$222652367$ui_release ()Lkotlin/jvm/functions/Function3;
 }
 
-public final class me/tbsten/compose/preview/lab/ui/components/colorpicker/CommonColorPickerKt {
-	public static final fun CommonColorPicker-KTwxG1Y (JLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/textfield/OutlinedTextFieldDefaults {
+public final class me/tbsten/compose/preview/lab/ui/components/card/PreviewLabCardColors {
 	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/textfield/OutlinedTextFieldDefaults;
-	public final fun ContainerBox-HYR8e34 (ZZLandroidx/compose/foundation/interaction/InteractionSource;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;Landroidx/compose/ui/graphics/Shape;FLandroidx/compose/runtime/Composer;II)V
-	public final fun DecorationBox (Ljava/lang/String;Lkotlin/jvm/functions/Function2;ZLandroidx/compose/ui/text/input/VisualTransformation;Landroidx/compose/foundation/interaction/InteractionSource;ZLkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
-	public final fun colors (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;
+	public synthetic fun <init> (JJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun containerColor (ZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public final fun contentColor (ZLandroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public final fun copy-jRlVdoo (JJJJ)Lme/tbsten/compose/preview/lab/ui/components/card/PreviewLabCardColors;
+	public static synthetic fun copy-jRlVdoo$default (Lme/tbsten/compose/preview/lab/ui/components/card/PreviewLabCardColors;JJJJILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/card/PreviewLabCardColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/card/PreviewLabCardDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/card/PreviewLabCardDefaults;
+	public final fun cardColors-ro_MJ88 (JJJJLandroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/card/PreviewLabCardColors;
+	public final fun cardElevation-aqJV_2Y (FFFFFFLandroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;
+	public final fun elevatedCardColors-ro_MJ88 (JJJJLandroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/card/PreviewLabCardColors;
+	public final fun elevatedCardElevation-aqJV_2Y (FFFFFFLandroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;
+	public final fun getBorderWidth-D9Ej5fM ()F
+	public final fun getElevatedShape (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/graphics/Shape;
+	public final fun getOutlinedShape (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/graphics/Shape;
+	public final fun getShape (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/graphics/Shape;
+	public final fun outlinedCardBorder-aM-cp0Q (ZJFLandroidx/compose/runtime/Composer;II)Landroidx/compose/foundation/BorderStroke;
+	public final fun outlinedCardColors-ro_MJ88 (JJJJLandroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/card/PreviewLabCardColors;
+	public final fun outlinedCardElevation-aqJV_2Y (FFFFFFLandroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/card/CardElevation;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/colorpicker/PreviewLabColorPickerKt {
+	public static final fun PreviewLabColorPicker-KTwxG1Y (JLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/textfield/OutlinedTextFieldKt {
+	public static final fun PreviewLabOutlinedTextField (Landroidx/compose/ui/text/input/TextFieldValue;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/ui/text/TextStyle;Landroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;ZIILandroidx/compose/ui/text/input/VisualTransformation;Lkotlin/jvm/functions/Function1;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ZLandroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;Landroidx/compose/ui/graphics/Brush;Landroidx/compose/runtime/Composer;IIII)V
+	public static final fun PreviewLabOutlinedTextField (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/ui/text/TextStyle;Landroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;ZIILandroidx/compose/ui/text/input/VisualTransformation;Lkotlin/jvm/functions/Function1;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ZLandroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;Landroidx/compose/ui/graphics/Brush;Landroidx/compose/runtime/Composer;IIII)V
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/textfield/PreviewLabOutlinedTextFieldDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/textfield/PreviewLabOutlinedTextFieldDefaults;
+	public final fun ContainerBox-HYR8e34 (ZZLandroidx/compose/foundation/interaction/InteractionSource;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;Landroidx/compose/ui/graphics/Shape;FLandroidx/compose/runtime/Composer;II)V
+	public final fun DecorationBox (Ljava/lang/String;Lkotlin/jvm/functions/Function2;ZLandroidx/compose/ui/text/input/VisualTransformation;Landroidx/compose/foundation/interaction/InteractionSource;ZLkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
+	public final fun colors (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;
 	public final fun containerBorderThickness-ccRj1GA (Landroidx/compose/foundation/interaction/InteractionSource;Landroidx/compose/runtime/Composer;I)F
 	public final fun getMinHeight-D9Ej5fM ()F
 	public final fun getShape ()Landroidx/compose/ui/graphics/Shape;
 }
 
-public final class me/tbsten/compose/preview/lab/ui/components/textfield/OutlinedTextFieldKt {
-	public static final fun OutlinedTextField (Landroidx/compose/ui/text/input/TextFieldValue;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/ui/text/TextStyle;Landroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;ZIILandroidx/compose/ui/text/input/VisualTransformation;Lkotlin/jvm/functions/Function1;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ZLandroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;Landroidx/compose/ui/graphics/Brush;Landroidx/compose/runtime/Composer;IIII)V
-	public static final fun OutlinedTextField (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/ui/text/TextStyle;Landroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;ZIILandroidx/compose/ui/text/input/VisualTransformation;Lkotlin/jvm/functions/Function1;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ZLandroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;Landroidx/compose/ui/graphics/Brush;Landroidx/compose/runtime/Composer;IIII)V
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/textfield/TextFieldDefaults {
+public final class me/tbsten/compose/preview/lab/ui/components/textfield/PreviewLabTextFieldDefaults {
 	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/textfield/TextFieldDefaults;
-	public final fun ContainerBox-HYR8e34 (ZZLandroidx/compose/foundation/interaction/InteractionSource;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;Landroidx/compose/ui/graphics/Shape;FLandroidx/compose/runtime/Composer;II)V
-	public final fun DecorationBox (Ljava/lang/String;Lkotlin/jvm/functions/Function2;ZLandroidx/compose/ui/text/input/VisualTransformation;Landroidx/compose/foundation/interaction/InteractionSource;ZLkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
-	public final fun colors (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/textfield/PreviewLabTextFieldDefaults;
+	public final fun ContainerBox-HYR8e34 (ZZLandroidx/compose/foundation/interaction/InteractionSource;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;Landroidx/compose/ui/graphics/Shape;FLandroidx/compose/runtime/Composer;II)V
+	public final fun DecorationBox (Ljava/lang/String;Lkotlin/jvm/functions/Function2;ZLandroidx/compose/ui/text/input/VisualTransformation;Landroidx/compose/foundation/interaction/InteractionSource;ZLkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
+	public final fun colors (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;
 	public final fun containerBorderThickness-ccRj1GA (Landroidx/compose/foundation/interaction/InteractionSource;Landroidx/compose/runtime/Composer;I)F
 	public final fun getMinHeight-D9Ej5fM ()F
 	public final fun getMinWidth-D9Ej5fM ()F
 	public final fun getShape ()Landroidx/compose/ui/graphics/Shape;
 }
 
-public final class me/tbsten/compose/preview/lab/ui/components/textfield/TextFieldKt {
-	public static final fun TextField (Landroidx/compose/ui/text/input/TextFieldValue;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/ui/text/TextStyle;Landroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;ZIILandroidx/compose/ui/text/input/VisualTransformation;Lkotlin/jvm/functions/Function1;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ZLandroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;Landroidx/compose/ui/graphics/Brush;Landroidx/compose/runtime/Composer;IIII)V
-	public static final fun TextField (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/ui/text/TextStyle;Landroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;ZIILandroidx/compose/ui/text/input/VisualTransformation;Lkotlin/jvm/functions/Function1;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ZLandroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;Landroidx/compose/ui/graphics/Brush;Landroidx/compose/runtime/Composer;IIII)V
-}
-
-public final class me/tbsten/compose/preview/lab/ui/components/textfield/UnderlinedTextFieldDefaults {
+public final class me/tbsten/compose/preview/lab/ui/components/textfield/PreviewLabUnderlinedTextFieldDefaults {
 	public static final field $stable I
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/textfield/UnderlinedTextFieldDefaults;
-	public final fun ContainerBox-FJfuzF0 (ZZLandroidx/compose/foundation/interaction/InteractionSource;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;FLandroidx/compose/runtime/Composer;II)V
-	public final fun DecorationBox (Ljava/lang/String;Lkotlin/jvm/functions/Function2;ZLandroidx/compose/ui/text/input/VisualTransformation;Landroidx/compose/foundation/interaction/InteractionSource;ZLkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
-	public final fun colors (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/textfield/PreviewLabUnderlinedTextFieldDefaults;
+	public final fun ContainerBox-FJfuzF0 (ZZLandroidx/compose/foundation/interaction/InteractionSource;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;FLandroidx/compose/runtime/Composer;II)V
+	public final fun DecorationBox (Ljava/lang/String;Lkotlin/jvm/functions/Function2;ZLandroidx/compose/ui/text/input/VisualTransformation;Landroidx/compose/foundation/interaction/InteractionSource;ZLkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
+	public final fun colors (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;
 	public final fun containerBorderThickness-ccRj1GA (Landroidx/compose/foundation/interaction/InteractionSource;Landroidx/compose/runtime/Composer;I)F
 	public final fun getMinHeight-D9Ej5fM ()F
 }
 
-public final class me/tbsten/compose/preview/lab/ui/components/textfield/UnderlinedTextFieldKt {
-	public static final fun UnderlinedTextField (Landroidx/compose/ui/text/input/TextFieldValue;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/ui/text/TextStyle;Landroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;ZIILandroidx/compose/ui/text/input/VisualTransformation;Lkotlin/jvm/functions/Function1;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ZLme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;Landroidx/compose/ui/graphics/Brush;Landroidx/compose/runtime/Composer;IIII)V
-	public static final fun UnderlinedTextField (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/ui/text/TextStyle;Landroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;ZIILandroidx/compose/ui/text/input/VisualTransformation;Lkotlin/jvm/functions/Function1;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ZLme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;Landroidx/compose/ui/graphics/Brush;Landroidx/compose/runtime/Composer;IIII)V
+public final class me/tbsten/compose/preview/lab/ui/components/textfield/TextFieldKt {
+	public static final fun PreviewLabTextField (Landroidx/compose/ui/text/input/TextFieldValue;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/ui/text/TextStyle;Landroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;ZIILandroidx/compose/ui/text/input/VisualTransformation;Lkotlin/jvm/functions/Function1;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ZLandroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;Landroidx/compose/ui/graphics/Brush;Landroidx/compose/runtime/Composer;IIII)V
+	public static final fun PreviewLabTextField (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/ui/text/TextStyle;Landroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;ZIILandroidx/compose/ui/text/input/VisualTransformation;Lkotlin/jvm/functions/Function1;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ZLandroidx/compose/ui/graphics/Shape;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;Landroidx/compose/ui/graphics/Brush;Landroidx/compose/runtime/Composer;IIII)V
 }
 
-public final class me/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors {
+public final class me/tbsten/compose/preview/lab/ui/components/textfield/UnderlinedTextFieldKt {
+	public static final fun PreviewLabUnderlinedTextField (Landroidx/compose/ui/text/input/TextFieldValue;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/ui/text/TextStyle;Landroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;ZIILandroidx/compose/ui/text/input/VisualTransformation;Lkotlin/jvm/functions/Function1;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ZLme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;Landroidx/compose/ui/graphics/Brush;Landroidx/compose/runtime/Composer;IIII)V
+	public static final fun PreviewLabUnderlinedTextField (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/ui/text/TextStyle;Landroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;ZIILandroidx/compose/ui/text/input/VisualTransformation;Lkotlin/jvm/functions/Function1;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ZLme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;Landroidx/compose/ui/graphics/Brush;Landroidx/compose/runtime/Composer;IIII)V
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors {
 	public static final field $stable I
 	public synthetic fun <init> (JJJJJJJJJJLandroidx/compose/foundation/text/selection/TextSelectionColors;JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun containerOutlineColor (ZZLandroidx/compose/foundation/interaction/InteractionSource;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
-	public final fun copy-ejIjP34 (JJJJJJJJJJLandroidx/compose/foundation/text/selection/TextSelectionColors;JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ)Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;
-	public static synthetic fun copy-ejIjP34$default (Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;JJJJJJJJJJLandroidx/compose/foundation/text/selection/TextSelectionColors;JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJIILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;
+	public final fun copy-ejIjP34 (JJJJJJJJJJLandroidx/compose/foundation/text/selection/TextSelectionColors;JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ)Lme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;
+	public static synthetic fun copy-ejIjP34$default (Lme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;JJJJJJJJJJLandroidx/compose/foundation/text/selection/TextSelectionColors;JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJIILjava/lang/Object;)Lme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;
 	public final fun getCursorColor-0d7_KjU ()J
 	public final fun getDisabledContainerColor-0d7_KjU ()J
 	public final fun getDisabledLabelColor-0d7_KjU ()J
@@ -1049,7 +1049,7 @@ public final class me/tbsten/compose/preview/lab/ui/components/textfield/base/Te
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldDecorationKt {
-	public static final fun CommonDecorationBox (Ljava/lang/String;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/text/input/VisualTransformation;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ZZLandroidx/compose/foundation/interaction/InteractionSource;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldColors;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
+	public static final fun CommonDecorationBox (Ljava/lang/String;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/text/input/VisualTransformation;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ZZLandroidx/compose/foundation/interaction/InteractionSource;Lme/tbsten/compose/preview/lab/ui/components/textfield/base/PreviewLabTextFieldColors;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
 }
 
 public final class me/tbsten/compose/preview/lab/ui/components/textfield/base/TextFieldLayoutKt {

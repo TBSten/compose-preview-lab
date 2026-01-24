@@ -26,13 +26,13 @@ import me.tbsten.compose.preview.lab.ui.LocalContentColor
 
 @Composable
 @InternalComposePreviewLabApi
-fun Icon(
+fun PreviewLabIcon(
     imageVector: ImageVector,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
     tint: Color = LocalContentColor.current,
 ) {
-    Icon(
+    PreviewLabIcon(
         painter = rememberVectorPainter(imageVector),
         contentDescription = contentDescription,
         modifier = modifier,
@@ -42,14 +42,14 @@ fun Icon(
 
 @Composable
 @InternalComposePreviewLabApi
-fun Icon(
+fun PreviewLabIcon(
     bitmap: ImageBitmap,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
     tint: Color = LocalContentColor.current,
 ) {
     val painter = remember(bitmap) { BitmapPainter(bitmap) }
-    Icon(
+    PreviewLabIcon(
         painter = painter,
         contentDescription = contentDescription,
         modifier = modifier,
@@ -59,7 +59,7 @@ fun Icon(
 
 @Composable
 @InternalComposePreviewLabApi
-fun Icon(
+fun PreviewLabIcon(
     painter: Painter,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
@@ -94,9 +94,9 @@ private fun Modifier.defaultSizeFor(painter: Painter) = this.then(
 
 private fun Size.isInfinite() = width.isInfinite() && height.isInfinite()
 
-private val DefaultIconSizeModifier = Modifier.size(IconDefaults.iconSize)
+private val DefaultIconSizeModifier = Modifier.size(PreviewLabIconDefaults.iconSize)
 
 @InternalComposePreviewLabApi
-object IconDefaults {
+object PreviewLabIconDefaults {
     val iconSize = 24.dp
 }

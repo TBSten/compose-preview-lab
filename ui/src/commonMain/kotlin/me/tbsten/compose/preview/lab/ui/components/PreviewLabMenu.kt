@@ -47,7 +47,7 @@ import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 
 @Composable
 @InternalComposePreviewLabApi
-fun CommonMenu(expanded: Boolean, onDismissRequest: () -> Unit, content: @Composable CommonMenuScope.() -> Unit) {
+fun PreviewLabMenu(expanded: Boolean, onDismissRequest: () -> Unit, content: @Composable PreviewLabMenuScope.() -> Unit) {
     val expandedState = remember { MutableTransitionState(false) }
     expandedState.targetState = expanded
 
@@ -79,7 +79,7 @@ fun CommonMenu(expanded: Boolean, onDismissRequest: () -> Unit, content: @Compos
 }
 
 @InternalComposePreviewLabApi
-class CommonMenuScope(columnScope: ColumnScope) : ColumnScope by columnScope
+class PreviewLabMenuScope(columnScope: ColumnScope) : ColumnScope by columnScope
 
 // copy from androidx.compose.material3.DropdownMenu
 
@@ -98,7 +98,7 @@ private fun DropdownMenuContent(
     modifier: Modifier = Modifier,
     shadowElevation: Dp = 4.dp,
     border: BorderStroke? = null,
-    content: @Composable CommonMenuScope.() -> Unit,
+    content: @Composable PreviewLabMenuScope.() -> Unit,
 ) {
     // Menu open/close animation.
     @Suppress("DEPRECATION")
@@ -116,7 +116,7 @@ private fun DropdownMenuContent(
         }
 
     val isInspecting = LocalInspectionMode.current
-    Surface(
+    PreviewLabSurface(
         modifier =
         Modifier.graphicsLayer {
             scaleX =
@@ -157,7 +157,7 @@ private fun DropdownMenuContent(
                 .width(200.dp)
                 .verticalScroll(scrollState),
         ) {
-            val menuScope = CommonMenuScope(this)
+            val menuScope = PreviewLabMenuScope(this)
 
             content(menuScope)
         }

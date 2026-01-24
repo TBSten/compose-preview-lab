@@ -22,7 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Divider
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabHorizontalDivider
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabVerticalDivider
 
 @Composable
 internal fun PreviewLabHeader(
@@ -54,14 +55,14 @@ internal fun PreviewLabHeader(
                     onScaleChange = onScaleChange,
                 )
 
-                Divider()
+                PreviewLabVerticalDivider()
 
                 InspectorPanelVisible(
                     isInspectorPanelVisible = isInspectorPanelVisible,
                     onToggle = onIsInspectorPanelVisibleToggle,
                 )
 
-                Divider()
+                PreviewLabVerticalDivider()
 
                 Screenshot(
                     modifier = Modifier.align(Alignment.CenterVertically),
@@ -70,7 +71,7 @@ internal fun PreviewLabHeader(
                 PlatformHeaders(state = state)
             }
 
-            Divider(
+            PreviewLabHorizontalDivider(
                 Modifier
                     .zIndex(2f),
             )

@@ -19,8 +19,8 @@ import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
 import me.tbsten.compose.preview.lab.previewlab.screenshot.LocalCaptureScreenshot
 import me.tbsten.compose.preview.lab.previewlab.screenshot.rememberSaveScreenshot
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Icon
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIcon
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_screenshot_frame
 import org.jetbrains.compose.resources.painterResource
@@ -51,13 +51,13 @@ internal fun Screenshot(modifier: Modifier = Modifier) {
             }
             .padding(8.dp),
     ) {
-        Icon(
+        PreviewLabIcon(
             painter = painterResource(PreviewLabUiRes.drawable.icon_screenshot_frame),
             contentDescription = null,
             modifier = Modifier.size(20.dp),
         )
 
-        Text(
+        PreviewLabText(
             text = "Screenshot",
             style = PreviewLabTheme.typography.label3,
             textAlign = TextAlign.Center,

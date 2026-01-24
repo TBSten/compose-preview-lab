@@ -17,10 +17,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.DpTransformer
-import me.tbsten.compose.preview.lab.ui.components.NullableDpTransformer
-import me.tbsten.compose.preview.lab.ui.components.Text
-import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabDpTransformer
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabNullableDpTransformer
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabTransformableTextField
 
 /**
  * A modifier field value that applies padding to a component.
@@ -72,28 +72,28 @@ class PaddingModifierFieldValue(start: Dp, end: Dp, top: Dp, bottom: Dp) : Modif
                     label = "start",
                     value = start,
                     onValueChange = { start = it },
-                    transformer = DpTransformer,
+                    transformer = PreviewLabDpTransformer,
                     suffix = ".dp",
                 )
                 TextFieldItem(
                     label = "end",
                     value = end,
                     onValueChange = { end = it },
-                    transformer = DpTransformer,
+                    transformer = PreviewLabDpTransformer,
                     suffix = ".dp",
                 )
                 TextFieldItem(
                     label = "top",
                     value = top,
                     onValueChange = { top = it },
-                    transformer = DpTransformer,
+                    transformer = PreviewLabDpTransformer,
                     suffix = ".dp",
                 )
                 TextFieldItem(
                     label = "bottom",
                     value = bottom,
                     onValueChange = { bottom = it },
-                    transformer = DpTransformer,
+                    transformer = PreviewLabDpTransformer,
                     suffix = ".dp",
                 )
             }
@@ -146,36 +146,36 @@ class PaddingModifierFieldValue(start: Dp, end: Dp, top: Dp, bottom: Dp) : Modif
         override fun Content(createButton: @Composable (() -> Unit)) = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            TransformableTextField(
+            PreviewLabTransformableTextField(
                 value = start,
                 onValueChange = { start = it },
-                transformer = NullableDpTransformer,
+                transformer = PreviewLabNullableDpTransformer,
                 textStyle = PreviewLabTheme.typography.label1,
-                prefix = { Text("start: ", style = PreviewLabTheme.typography.label2) },
+                prefix = { PreviewLabText("start: ", style = PreviewLabTheme.typography.label2) },
             )
 
-            TransformableTextField(
+            PreviewLabTransformableTextField(
                 value = end,
                 onValueChange = { end = it },
-                transformer = NullableDpTransformer,
+                transformer = PreviewLabNullableDpTransformer,
                 textStyle = PreviewLabTheme.typography.label1,
-                prefix = { Text("end: ", style = PreviewLabTheme.typography.label2) },
+                prefix = { PreviewLabText("end: ", style = PreviewLabTheme.typography.label2) },
             )
 
-            TransformableTextField(
+            PreviewLabTransformableTextField(
                 value = top,
                 onValueChange = { top = it },
-                transformer = NullableDpTransformer,
+                transformer = PreviewLabNullableDpTransformer,
                 textStyle = PreviewLabTheme.typography.label1,
-                prefix = { Text("top: ", style = PreviewLabTheme.typography.label2) },
+                prefix = { PreviewLabText("top: ", style = PreviewLabTheme.typography.label2) },
             )
 
-            TransformableTextField(
+            PreviewLabTransformableTextField(
                 value = bottom,
                 onValueChange = { bottom = it },
-                transformer = NullableDpTransformer,
+                transformer = PreviewLabNullableDpTransformer,
                 textStyle = PreviewLabTheme.typography.label1,
-                prefix = { Text("bottom: ", style = PreviewLabTheme.typography.label2) },
+                prefix = { PreviewLabText("bottom: ", style = PreviewLabTheme.typography.label2) },
             )
 
             Row { createButton() }

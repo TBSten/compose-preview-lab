@@ -13,8 +13,8 @@ import me.tbsten.compose.preview.lab.PreviewLabField.ViewMenuItem
 import me.tbsten.compose.preview.lab.field.ScreenSize.Companion.MediumSmartPhone
 import me.tbsten.compose.preview.lab.field.component.TextFieldContent
 import me.tbsten.compose.preview.lab.field.serializer.ScreenSizeSerializer
-import me.tbsten.compose.preview.lab.ui.components.SelectButton
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSelectButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 
 /**
  * A field for selecting screen sizes in the preview environment
@@ -74,7 +74,7 @@ open class ScreenSizeField(
     @Composable
     override fun Content() {
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            SelectButton(
+            PreviewLabSelectButton(
                 value = value,
                 choices = choices,
                 onSelect = { value = it },
@@ -100,7 +100,7 @@ open class ScreenSizeField(
                             )
                         }
                     },
-                    placeholder = { Text("width") },
+                    placeholder = { PreviewLabText("width") },
                     modifier = Modifier.weight(1f),
                 )
 
@@ -114,7 +114,7 @@ open class ScreenSizeField(
                             )
                         }
                     },
-                    placeholder = { Text("height") },
+                    placeholder = { PreviewLabText("height") },
                     modifier = Modifier.weight(1f),
                 )
             }

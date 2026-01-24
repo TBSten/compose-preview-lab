@@ -40,26 +40,26 @@ import kotlinx.coroutines.launch
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.SwitchDefaults.RippleRadius
-import me.tbsten.compose.preview.lab.ui.components.SwitchDefaults.SwitchHeight
-import me.tbsten.compose.preview.lab.ui.components.SwitchDefaults.SwitchWidth
-import me.tbsten.compose.preview.lab.ui.components.SwitchDefaults.ThumbSize
-import me.tbsten.compose.preview.lab.ui.components.SwitchDefaults.ThumbSizeStateOffset
-import me.tbsten.compose.preview.lab.ui.components.SwitchDefaults.TrackBorderWidth
-import me.tbsten.compose.preview.lab.ui.components.SwitchDefaults.TrackShape
-import me.tbsten.compose.preview.lab.ui.components.SwitchDefaults.UncheckedThumbSize
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSwitchDefaults.RippleRadius
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSwitchDefaults.SwitchHeight
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSwitchDefaults.SwitchWidth
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSwitchDefaults.ThumbSize
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSwitchDefaults.ThumbSizeStateOffset
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSwitchDefaults.TrackBorderWidth
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSwitchDefaults.TrackShape
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSwitchDefaults.UncheckedThumbSize
 import me.tbsten.compose.preview.lab.ui.foundation.ripple
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 @InternalComposePreviewLabApi
-fun Switch(
+fun PreviewLabSwitch(
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)?,
     modifier: Modifier = Modifier,
     thumbContent: (@Composable () -> Unit)? = null,
     enabled: Boolean = true,
-    colors: SwitchColors = SwitchDefaults.colors(),
+    colors: PreviewLabSwitchColors = PreviewLabSwitchDefaults.colors(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val scope = rememberCoroutineScope()
@@ -105,7 +105,7 @@ private fun SwitchComponent(
     modifier: Modifier,
     checked: Boolean,
     enabled: Boolean,
-    colors: SwitchColors,
+    colors: PreviewLabSwitchColors,
     interactionSource: InteractionSource,
     thumbContent: (@Composable () -> Unit)?,
     thumbPosition: Float,
@@ -180,7 +180,7 @@ private fun SwitchComponent(
 }
 
 @InternalComposePreviewLabApi
-object SwitchDefaults {
+object PreviewLabSwitchDefaults {
     val ThumbSize = 16.dp
     val UncheckedThumbSize = 12.dp
     val ThumbSizeStateOffset = ThumbSize - UncheckedThumbSize
@@ -208,7 +208,7 @@ object SwitchDefaults {
         disabledUncheckedTrackColor: Color = PreviewLabTheme.colors.transparent,
         disabledUncheckedBorderColor: Color = PreviewLabTheme.colors.disabled,
         disabledUncheckedIconColor: Color = PreviewLabTheme.colors.onDisabled,
-    ): SwitchColors = SwitchColors(
+    ): PreviewLabSwitchColors = PreviewLabSwitchColors(
         checkedThumbColor = checkedThumbColor,
         checkedTrackColor = checkedTrackColor,
         checkedBorderColor = checkedBorderColor,
@@ -230,7 +230,7 @@ object SwitchDefaults {
 
 @Stable
 @InternalComposePreviewLabApi
-class SwitchColors(
+class PreviewLabSwitchColors(
     private val checkedThumbColor: Color,
     private val checkedTrackColor: Color,
     private val checkedBorderColor: Color,
@@ -325,14 +325,14 @@ private fun SwitchPreview() {
                 }
 
             Spacer(modifier = Modifier.size(16.dp))
-            Switch(
+            PreviewLabSwitch(
                 checked = value.value,
                 onCheckedChange = {
                     value.value = it
                 },
             )
             Spacer(modifier = Modifier.size(16.dp))
-            Switch(
+            PreviewLabSwitch(
                 checked = value.value,
                 onCheckedChange = {
                     value.value = it
@@ -340,7 +340,7 @@ private fun SwitchPreview() {
             )
             Spacer(modifier = Modifier.size(16.dp))
 
-            Switch(
+            PreviewLabSwitch(
                 checked = true,
                 onCheckedChange = {
                     value.value = it
@@ -348,7 +348,7 @@ private fun SwitchPreview() {
             )
             Spacer(modifier = Modifier.size(16.dp))
 
-            Switch(
+            PreviewLabSwitch(
                 checked = false,
                 onCheckedChange = {
                     value.value = it
@@ -356,7 +356,7 @@ private fun SwitchPreview() {
             )
             Spacer(modifier = Modifier.size(16.dp))
 
-            Switch(
+            PreviewLabSwitch(
                 checked = true,
                 enabled = false,
                 onCheckedChange = {
@@ -365,7 +365,7 @@ private fun SwitchPreview() {
             )
             Spacer(modifier = Modifier.size(16.dp))
 
-            Switch(
+            PreviewLabSwitch(
                 checked = false,
                 enabled = false,
                 onCheckedChange = {

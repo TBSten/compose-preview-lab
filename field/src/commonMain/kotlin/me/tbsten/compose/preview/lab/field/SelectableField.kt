@@ -24,10 +24,10 @@ import me.tbsten.compose.preview.lab.field.SelectableField.Type
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.CHIPS
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.DROPDOWN
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.RADIO
-import me.tbsten.compose.preview.lab.ui.components.Chip
-import me.tbsten.compose.preview.lab.ui.components.RadioButton
-import me.tbsten.compose.preview.lab.ui.components.SelectButton
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabRadioButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSelectButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabChip
 
 /**
  * A field that allows selection of one option from a list of specified choices.
@@ -156,7 +156,7 @@ open class SelectableField<Value>(
     @Composable
     override fun Content() {
         when (type) {
-            DROPDOWN -> SelectButton(
+            DROPDOWN -> PreviewLabSelectButton(
                 value = value,
                 choices = choices,
                 onSelect = { value = it },
@@ -176,9 +176,9 @@ open class SelectableField<Value>(
                 .horizontalScroll(rememberScrollState()),
         ) {
             choices.forEach { choice ->
-                Chip(
+                PreviewLabChip(
                     selected = value == choice,
-                    label = { Text(choiceLabel(choice)) },
+                    label = { PreviewLabText(choiceLabel(choice)) },
                     onClick = { value = choice },
                 )
             }
@@ -199,11 +199,11 @@ open class SelectableField<Value>(
                         .fillMaxWidth()
                         .padding(vertical = 8.dp, horizontal = 4.dp),
                 ) {
-                    RadioButton(
+                    PreviewLabRadioButton(
                         selected = value == choice,
                         onClick = null,
                     )
-                    Text(choiceLabel(choice))
+                    PreviewLabText(choiceLabel(choice))
                 }
             }
         }

@@ -13,7 +13,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.field.DefaultFieldView
-import me.tbsten.compose.preview.lab.ui.components.CommonListItem
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabListItem
 
 /**
  * Returns a default placeholder code string for fields that don't have a custom [PreviewLabField.valueCode] implementation.
@@ -278,7 +278,7 @@ interface PreviewLabField<Value> {
 
         @Composable
         open fun Content(close: () -> Unit) {
-            CommonListItem(
+            PreviewLabListItem(
                 title = title,
                 isSelected = false,
                 isEnabled = enabled,

@@ -45,14 +45,14 @@ import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.CheckboxDefaults.BoxInDuration
-import me.tbsten.compose.preview.lab.ui.components.CheckboxDefaults.BoxOutDuration
-import me.tbsten.compose.preview.lab.ui.components.CheckboxDefaults.CheckAnimationDuration
-import me.tbsten.compose.preview.lab.ui.components.CheckboxDefaults.CheckboxDefaultPadding
-import me.tbsten.compose.preview.lab.ui.components.CheckboxDefaults.CheckboxSize
-import me.tbsten.compose.preview.lab.ui.components.CheckboxDefaults.MinimumInteractiveSize
-import me.tbsten.compose.preview.lab.ui.components.CheckboxDefaults.RadiusSize
-import me.tbsten.compose.preview.lab.ui.components.CheckboxDefaults.StrokeWidth
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabCheckboxDefaults.BoxInDuration
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabCheckboxDefaults.BoxOutDuration
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabCheckboxDefaults.CheckAnimationDuration
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabCheckboxDefaults.CheckboxDefaultPadding
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabCheckboxDefaults.CheckboxSize
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabCheckboxDefaults.MinimumInteractiveSize
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabCheckboxDefaults.RadiusSize
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabCheckboxDefaults.StrokeWidth
 import me.tbsten.compose.preview.lab.ui.foundation.ripple
 import androidx.compose.ui.tooling.preview.Preview
 import kotlin.math.floor
@@ -61,15 +61,15 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 
 @Composable
 @InternalComposePreviewLabApi
-fun Checkbox(
+fun PreviewLabCheckbox(
     modifier: Modifier = Modifier,
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)? = null,
     enabled: Boolean = true,
-    colors: CheckboxColors = CheckboxDefaults.colors(),
+    colors: PreviewLabCheckboxColors = PreviewLabCheckboxDefaults.colors(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
-    TriStateCheckbox(
+    PreviewLabTriStateCheckbox(
         state = ToggleableState(checked),
         onClick =
         if (onCheckedChange != null) {
@@ -86,12 +86,12 @@ fun Checkbox(
 
 @Composable
 @InternalComposePreviewLabApi
-fun TriStateCheckbox(
+fun PreviewLabTriStateCheckbox(
     state: ToggleableState,
     onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    colors: CheckboxColors = CheckboxDefaults.colors(),
+    colors: PreviewLabCheckboxColors = PreviewLabCheckboxDefaults.colors(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val toggleableModifier =
@@ -125,7 +125,7 @@ fun TriStateCheckbox(
 }
 
 @Composable
-private fun CheckboxComponent(enabled: Boolean, value: ToggleableState, modifier: Modifier, colors: CheckboxColors) {
+private fun CheckboxComponent(enabled: Boolean, value: ToggleableState, modifier: Modifier, colors: PreviewLabCheckboxColors) {
     val transition = updateTransition(value, label = "checkbox")
     val checkDrawFraction =
         transition.animateFloat(
@@ -260,7 +260,7 @@ private class CheckDrawingCache(
 )
 
 @InternalComposePreviewLabApi
-object CheckboxDefaults {
+object PreviewLabCheckboxDefaults {
     const val BoxInDuration = 50
     const val BoxOutDuration = 100
     const val CheckAnimationDuration = 100
@@ -272,7 +272,7 @@ object CheckboxDefaults {
     val MinimumInteractiveSize = 44.dp
 
     @Composable
-    fun colors() = CheckboxColors(
+    fun colors() = PreviewLabCheckboxColors(
         checkedCheckmarkColor = PreviewLabTheme.colors.onPrimary,
         uncheckedCheckmarkColor = PreviewLabTheme.colors.transparent,
         checkedBoxColor = PreviewLabTheme.colors.primary,
@@ -290,7 +290,7 @@ object CheckboxDefaults {
 
 @Immutable
 @InternalComposePreviewLabApi
-data class CheckboxColors(
+data class PreviewLabCheckboxColors(
     val checkedCheckmarkColor: Color,
     val uncheckedCheckmarkColor: Color,
     val checkedBoxColor: Color,
@@ -377,7 +377,7 @@ private fun CheckboxPreview() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Checkbox(
+                PreviewLabCheckbox(
                     checked = isChecked,
                     onCheckedChange = { isChecked = it },
                 )
@@ -389,7 +389,7 @@ private fun CheckboxPreview() {
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Column {
-                    Checkbox(
+                    PreviewLabCheckbox(
                         checked = true,
                         onCheckedChange = null,
                         enabled = false,
@@ -399,7 +399,7 @@ private fun CheckboxPreview() {
                 }
 
                 Column {
-                    Checkbox(
+                    PreviewLabCheckbox(
                         checked = false,
                         onCheckedChange = null,
                         enabled = false,
@@ -414,7 +414,7 @@ private fun CheckboxPreview() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                TriStateCheckbox(
+                PreviewLabTriStateCheckbox(
                     state = triState,
                     onClick = {
                         triState =
@@ -434,7 +434,7 @@ private fun CheckboxPreview() {
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 val customColors =
-                    CheckboxColors(
+                    PreviewLabCheckboxColors(
                         checkedCheckmarkColor = PreviewLabTheme.colors.onPrimary,
                         uncheckedCheckmarkColor = PreviewLabTheme.colors.transparent,
                         checkedBoxColor = PreviewLabTheme.colors.primary,
@@ -449,7 +449,7 @@ private fun CheckboxPreview() {
                         disabledIndeterminateBorderColor = PreviewLabTheme.colors.disabled,
                     )
 
-                Checkbox(
+                PreviewLabCheckbox(
                     checked = customColorChecked,
                     onCheckedChange = { customColorChecked = it },
                     colors = customColors,
@@ -472,7 +472,7 @@ private fun CheckboxPreview() {
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        Checkbox(
+                        PreviewLabCheckbox(
                             checked = selectedItems.contains(item),
                             onCheckedChange = { checked ->
                                 selectedItems =

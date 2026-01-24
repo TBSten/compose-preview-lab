@@ -17,10 +17,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.FloatTransformer
-import me.tbsten.compose.preview.lab.ui.components.NullableFloatTransformer
-import me.tbsten.compose.preview.lab.ui.components.Text
-import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabFloatTransformer
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabNullableFloatTransformer
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabTransformableTextField
 
 /**
  * A modifier field value that makes a component fill the maximum available size.
@@ -53,7 +53,7 @@ class FillMaxSizeModifierFieldValue(fraction: Float) : ModifierFieldValue {
                     label = "fraction",
                     value = fraction,
                     onValueChange = { fraction = it },
-                    transformer = FloatTransformer,
+                    transformer = PreviewLabFloatTransformer,
                 )
             }
         },
@@ -75,12 +75,12 @@ class FillMaxSizeModifierFieldValue(fraction: Float) : ModifierFieldValue {
         override fun Content(createButton: @Composable (() -> Unit)) = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            TransformableTextField(
+            PreviewLabTransformableTextField(
                 value = fraction,
                 onValueChange = { fraction = it },
-                transformer = NullableFloatTransformer,
+                transformer = PreviewLabNullableFloatTransformer,
                 textStyle = PreviewLabTheme.typography.label1,
-                prefix = { Text("fraction: ", style = PreviewLabTheme.typography.label2) },
+                prefix = { PreviewLabText("fraction: ", style = PreviewLabTheme.typography.label2) },
             )
 
             Row { createButton() }
@@ -137,7 +137,7 @@ class FillMaxWidthModifierFieldValue(fraction: Float) : ModifierFieldValue {
                     label = "fraction",
                     value = fraction,
                     onValueChange = { fraction = it },
-                    transformer = FloatTransformer,
+                    transformer = PreviewLabFloatTransformer,
                 )
             }
         },
@@ -157,12 +157,12 @@ class FillMaxWidthModifierFieldValue(fraction: Float) : ModifierFieldValue {
 
         @Composable
         override fun Content(createButton: @Composable (() -> Unit)) = Column {
-            TransformableTextField(
+            PreviewLabTransformableTextField(
                 value = fraction,
                 onValueChange = { fraction = it },
-                transformer = NullableFloatTransformer,
+                transformer = PreviewLabNullableFloatTransformer,
                 textStyle = PreviewLabTheme.typography.label1,
-                prefix = { Text("fraction: ", style = PreviewLabTheme.typography.label2) },
+                prefix = { PreviewLabText("fraction: ", style = PreviewLabTheme.typography.label2) },
             )
 
             Row { createButton() }
@@ -219,7 +219,7 @@ class FillMaxHeightModifierFieldValue(fraction: Float) : ModifierFieldValue {
                     label = "fraction",
                     value = fraction,
                     onValueChange = { fraction = it },
-                    transformer = FloatTransformer,
+                    transformer = PreviewLabFloatTransformer,
                 )
             }
         },
@@ -239,12 +239,12 @@ class FillMaxHeightModifierFieldValue(fraction: Float) : ModifierFieldValue {
 
         @Composable
         override fun Content(createButton: @Composable (() -> Unit)) = Column {
-            TransformableTextField(
+            PreviewLabTransformableTextField(
                 value = fraction,
                 onValueChange = { fraction = it },
-                transformer = NullableFloatTransformer,
+                transformer = PreviewLabNullableFloatTransformer,
                 textStyle = PreviewLabTheme.typography.label1,
-                prefix = { Text("fraction: ", style = PreviewLabTheme.typography.label2) },
+                prefix = { PreviewLabText("fraction: ", style = PreviewLabTheme.typography.label2) },
             )
 
             Row { createButton() }

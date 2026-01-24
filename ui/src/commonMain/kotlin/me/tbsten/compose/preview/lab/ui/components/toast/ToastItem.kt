@@ -25,9 +25,9 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
-import me.tbsten.compose.preview.lab.ui.components.Icon
-import me.tbsten.compose.preview.lab.ui.components.Surface
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIcon
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSurface
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_close
 import org.jetbrains.compose.resources.painterResource
@@ -57,7 +57,7 @@ fun ToastItem(toast: ToastData, onDismiss: () -> Unit, modifier: Modifier = Modi
         val containerColor = ToastDefaults.containerColor(toast.type)
         val contentColor = ToastDefaults.contentColor(toast.type)
 
-        Surface(
+        PreviewLabSurface(
             shape = ToastDefaults.shape,
             color = containerColor,
             contentColor = contentColor,
@@ -68,14 +68,14 @@ fun ToastItem(toast: ToastData, onDismiss: () -> Unit, modifier: Modifier = Modi
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(
+                PreviewLabText(
                     text = toast.message,
                     color = contentColor,
                     modifier = Modifier.weight(1f, fill = false),
                 )
 
                 toast.action?.let { action ->
-                    Text(
+                    PreviewLabText(
                         text = action.label,
                         color = contentColor,
                         modifier = Modifier
@@ -85,7 +85,7 @@ fun ToastItem(toast: ToastData, onDismiss: () -> Unit, modifier: Modifier = Modi
                 }
 
                 if (toast.showCloseButton) {
-                    Icon(
+                    PreviewLabIcon(
                         painter = painterResource(PreviewLabUiRes.drawable.icon_close),
                         contentDescription = "Close",
                         tint = contentColor,

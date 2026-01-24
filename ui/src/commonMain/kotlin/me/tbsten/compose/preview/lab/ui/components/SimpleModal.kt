@@ -25,7 +25,7 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 @InternalComposePreviewLabApi
-fun SimpleModal(
+fun PreviewLabModal(
     isVisible: Boolean,
     onDismissRequest: () -> Unit,
     contentPadding: PaddingValues = PaddingValues(12.dp),
@@ -52,7 +52,7 @@ fun SimpleModal(
                         .widthIn(min = 200.dp, max = 600.dp)
                         .padding(contentPadding),
                 ) {
-                    CommonIconButton(
+                    PreviewLabIconButton(
                         painter = painterResource(PreviewLabUiRes.drawable.icon_close),
                         contentDescription = "close",
                         tint = PreviewLabTheme.colors.background,
