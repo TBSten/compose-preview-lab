@@ -209,7 +209,6 @@ public final class me/tbsten/compose/preview/lab/previewlab/openfilehandler/Open
 
 public final class me/tbsten/compose/preview/lab/previewlab/openfilehandler/OpenFileHandlerKt {
 	public static final fun OpenFileHandler (Lkotlin/jvm/functions/Function1;)Lme/tbsten/compose/preview/lab/previewlab/openfilehandler/OpenFileHandler;
-	public static final fun getLocalOpenFileHandler ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 }
 
 public class me/tbsten/compose/preview/lab/previewlab/openfilehandler/UrlOpenFileHandler : me/tbsten/compose/preview/lab/previewlab/openfilehandler/OpenFileHandler {

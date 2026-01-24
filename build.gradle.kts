@@ -26,6 +26,9 @@ apiValidation {
     ignoredProjects.add(
         projects.dev.name,
     )
+    nonPublicMarkers.add(
+        "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
+    )
 }
 
 val logVersion by tasks.registering {

@@ -1,6 +1,5 @@
 // Klib ABI Dump
 // Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
-// Alias: ios => [iosArm64, iosSimulatorArm64, iosX64]
 // Rendering settings:
 // - Signature version: 2
 // - Show manifest properties: true
@@ -94,13 +93,3 @@ final fun me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compo
 final fun me.tbsten.compose.preview.lab/PreviewLabPreview(kotlin/String, kotlin/String = ..., kotlin/String? = ..., kotlin/Int? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>): me.tbsten.compose.preview.lab/PreviewLabPreview // me.tbsten.compose.preview.lab/PreviewLabPreview|PreviewLabPreview(kotlin.String;kotlin.String;kotlin.String?;kotlin.Int?;kotlin.String?;kotlin.String?;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>){}[0]
 final fun me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_CollectedPreview$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_CollectedPreview$stableprop_getter|me_tbsten_compose_preview_lab_CollectedPreview$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLabEvent$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLabEvent$stableprop_getter|me_tbsten_compose_preview_lab_PreviewLabEvent$stableprop_getter(){}[0]
-
-// Targets: [ios, wasmJs]
-open annotation class me.tbsten.compose.preview.lab.util/JsOnlyExport : kotlin/Annotation { // me.tbsten.compose.preview.lab.util/JsOnlyExport|null[0]
-    constructor <init>() // me.tbsten.compose.preview.lab.util/JsOnlyExport.<init>|<init>(){}[0]
-}
-
-// Targets: [ios, wasmJs]
-open annotation class me.tbsten.compose.preview.lab.util/JsOnlyExportIgnore : kotlin/Annotation { // me.tbsten.compose.preview.lab.util/JsOnlyExportIgnore|null[0]
-    constructor <init>() // me.tbsten.compose.preview.lab.util/JsOnlyExportIgnore.<init>|<init>(){}[0]
-}

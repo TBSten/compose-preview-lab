@@ -1,6 +1,3 @@
-public abstract interface annotation class me/tbsten/compose/preview/lab/AggregateToAll : java/lang/annotation/Annotation {
-}
-
 public abstract interface annotation class me/tbsten/compose/preview/lab/ComposePreviewLabOption : java/lang/annotation/Annotation {
 	public abstract fun displayName ()Ljava/lang/String;
 	public abstract fun id ()Ljava/lang/String;
@@ -11,14 +8,5 @@ public abstract interface annotation class me/tbsten/compose/preview/lab/Experim
 }
 
 public abstract interface annotation class me/tbsten/compose/preview/lab/InternalComposePreviewLabApi : java/lang/annotation/Annotation {
-}
-
-public final class me/tbsten/compose/preview/lab/internal/KspArg {
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/internal/KspArg;
-	public static final field generatePreviewAllList Ljava/lang/String;
-	public static final field generatePreviewList Ljava/lang/String;
-	public static final field previewsListPackage Ljava/lang/String;
-	public static final field projectRootPath Ljava/lang/String;
-	public static final field publicPreviewList Ljava/lang/String;
 }
 

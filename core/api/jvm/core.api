@@ -63,9 +63,3 @@ public final class me/tbsten/compose/preview/lab/PreviewLabPreviewKt {
 	public static synthetic fun PreviewLabPreview$default (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/PreviewLabPreview;
 }
 
-public abstract interface annotation class me/tbsten/compose/preview/lab/util/JsOnlyExport : java/lang/annotation/Annotation {
-}
-
-public abstract interface annotation class me/tbsten/compose/preview/lab/util/JsOnlyExportIgnore : java/lang/annotation/Annotation {
-}
-

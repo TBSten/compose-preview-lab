@@ -34,30 +34,15 @@ public final class me/tbsten/compose/preview/lab/gallery/PreviewLabGalleryState 
 	public synthetic fun <init> (Lkotlin/Pair;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun addToComparePanel (Ljava/lang/String;Lme/tbsten/compose/preview/lab/PreviewLabPreview;)V
 	public final fun getQuery ()Ljava/lang/String;
-	public final fun getSelectedPreviews ()Ljava/util/List;
 	public final fun onQueryChange (Ljava/lang/String;)V
 	public final fun removeFromComparePanel (I)V
 	public final fun select (Ljava/lang/String;Lme/tbsten/compose/preview/lab/PreviewLabPreview;)V
-	public final fun setQuery (Ljava/lang/String;)V
 	public final fun unselect ()V
 }
 
 public final class me/tbsten/compose/preview/lab/gallery/PreviewListGridKt {
 	public static final fun PreviewListGrid (Ljava/util/Map;Lkotlin/jvm/functions/Function2;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/runtime/Composer;II)V
 	public static final fun PreviewListGridCard (Lme/tbsten/compose/preview/lab/PreviewLabPreview;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V
-}
-
-public final class me/tbsten/compose/preview/lab/gallery/SelectedPreview {
-	public static final field $stable I
-	public static final field Companion Lme/tbsten/compose/preview/lab/gallery/SelectedPreview$Companion;
-	public fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/PreviewLabPreview;Ljava/lang/String;)V
-	public synthetic fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/PreviewLabPreview;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getGroupName ()Ljava/lang/String;
-	public final fun getPreview ()Lme/tbsten/compose/preview/lab/PreviewLabPreview;
-	public final fun getTitle ()Ljava/lang/String;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
 }
 
 public final class me/tbsten/compose/preview/lab/gallery/SelectedPreview$Companion {
