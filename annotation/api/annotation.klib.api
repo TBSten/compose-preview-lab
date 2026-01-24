@@ -24,3 +24,7 @@ open annotation class me.tbsten.compose.preview.lab/ExperimentalComposePreviewLa
 open annotation class me.tbsten.compose.preview.lab/InternalComposePreviewLabApi : kotlin/Annotation { // me.tbsten.compose.preview.lab/InternalComposePreviewLabApi|null[0]
     constructor <init>() // me.tbsten.compose.preview.lab/InternalComposePreviewLabApi.<init>|<init>(){}[0]
 }
+
+open annotation class me.tbsten.compose.preview.lab/UiComposePreviewLabApi : kotlin/Annotation { // me.tbsten.compose.preview.lab/UiComposePreviewLabApi|null[0]
+    constructor <init>() // me.tbsten.compose.preview.lab/UiComposePreviewLabApi.<init>|<init>(){}[0]
+}

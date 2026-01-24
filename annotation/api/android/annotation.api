@@ -10,3 +10,6 @@ public abstract interface annotation class me/tbsten/compose/preview/lab/Experim
 public abstract interface annotation class me/tbsten/compose/preview/lab/InternalComposePreviewLabApi : java/lang/annotation/Annotation {
 }
 
+public abstract interface annotation class me/tbsten/compose/preview/lab/UiComposePreviewLabApi : java/lang/annotation/Annotation {
+}
+
