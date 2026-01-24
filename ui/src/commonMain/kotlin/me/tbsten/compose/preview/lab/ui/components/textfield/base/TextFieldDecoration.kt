@@ -36,13 +36,13 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.foundation.ProvideContentColorTextStyle
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun CommonDecorationBox(
     value: String,
     innerTextField: @Composable () -> Unit,

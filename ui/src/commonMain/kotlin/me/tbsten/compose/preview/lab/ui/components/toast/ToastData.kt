@@ -1,8 +1,8 @@
 package me.tbsten.compose.preview.lab.ui.components.toast
 
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 enum class ToastType {
     Default,
     Success,
@@ -10,17 +10,17 @@ enum class ToastType {
     Info,
 }
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 enum class ToastDuration(val millis: kotlin.Long) {
     Short(4_000L),
     Long(10_000L),
     Indefinite(kotlin.Long.MAX_VALUE),
 }
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 data class ToastAction(val label: String, val onClick: () -> Unit,)
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 data class ToastData(
     val id: Long,
     val message: String,

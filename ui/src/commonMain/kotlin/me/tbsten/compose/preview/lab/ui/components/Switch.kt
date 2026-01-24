@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabSwitchDefaults.RippleRadius
@@ -52,7 +52,7 @@ import me.tbsten.compose.preview.lab.ui.foundation.ripple
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabSwitch(
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)?,
@@ -179,7 +179,7 @@ private fun SwitchComponent(
     }
 }
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 object PreviewLabSwitchDefaults {
     val ThumbSize = 16.dp
     val UncheckedThumbSize = 12.dp
@@ -229,7 +229,7 @@ object PreviewLabSwitchDefaults {
 }
 
 @Stable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 class PreviewLabSwitchColors(
     private val checkedThumbColor: Color,
     private val checkedTrackColor: Color,

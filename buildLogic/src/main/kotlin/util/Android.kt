@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 val COMMON_OPT_INS = listOf(
     "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
     "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
+    "me.tbsten.compose.preview.lab.UiComposePreviewLabApi",
 )
 
 /**

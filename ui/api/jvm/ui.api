@@ -1,12 +1,3 @@
-public final class me/tbsten/compose/preview/lab/ui/Breakpoint$Companion {
-	public final fun fromWidth-0680j_4 (F)Lme/tbsten/compose/preview/lab/ui/Breakpoint;
-}
-
-public final class me/tbsten/compose/preview/lab/ui/Breakpoint$DataOverBreakpoint {
-	public final fun getBreakpoint ()Lme/tbsten/compose/preview/lab/ui/Breakpoint;
-	public final fun getData ()Lkotlin/jvm/functions/Function0;
-}
-
 public final class me/tbsten/compose/preview/lab/ui/components/ComposableSingletons$ButtonKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/ComposableSingletons$ButtonKt;
 	public fun <init> ()V

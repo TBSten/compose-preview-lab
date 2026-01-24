@@ -57,10 +57,10 @@ import me.tbsten.compose.preview.lab.ui.foundation.ripple
 import androidx.compose.ui.tooling.preview.Preview
 import kotlin.math.floor
 import kotlin.math.max
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabCheckbox(
     modifier: Modifier = Modifier,
     checked: Boolean,
@@ -85,7 +85,7 @@ fun PreviewLabCheckbox(
 }
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabTriStateCheckbox(
     state: ToggleableState,
     onClick: (() -> Unit)?,
@@ -259,7 +259,7 @@ private class CheckDrawingCache(
     val pathToDraw: Path = Path(),
 )
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 object PreviewLabCheckboxDefaults {
     const val BoxInDuration = 50
     const val BoxOutDuration = 100
@@ -289,7 +289,7 @@ object PreviewLabCheckboxDefaults {
 }
 
 @Immutable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 data class PreviewLabCheckboxColors(
     val checkedCheckmarkColor: Color,
     val uncheckedCheckmarkColor: Color,

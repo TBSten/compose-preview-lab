@@ -42,11 +42,11 @@ import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
 import kotlin.math.max
 import kotlin.math.min
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabMenu(expanded: Boolean, onDismissRequest: () -> Unit, content: @Composable PreviewLabMenuScope.() -> Unit) {
     val expandedState = remember { MutableTransitionState(false) }
     expandedState.targetState = expanded
@@ -78,7 +78,7 @@ fun PreviewLabMenu(expanded: Boolean, onDismissRequest: () -> Unit, content: @Co
     }
 }
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 class PreviewLabMenuScope(columnScope: ColumnScope) : ColumnScope by columnScope
 
 // copy from androidx.compose.material3.DropdownMenu
@@ -206,7 +206,7 @@ internal val MenuVerticalMargin = 48.dp
  * for each direction individually.
  */
 @Stable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 object MenuPosition {
     /**
      * An interface to calculate the vertical position of a menu with respect to its anchor and

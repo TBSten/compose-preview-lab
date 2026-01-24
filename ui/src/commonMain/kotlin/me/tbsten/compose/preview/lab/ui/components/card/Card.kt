@@ -25,13 +25,13 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalTypography
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabSurface
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabCard(
     modifier: Modifier = Modifier,
     shape: Shape = PreviewLabCardDefaults.Shape,
@@ -57,7 +57,7 @@ fun PreviewLabCard(
 }
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -85,7 +85,7 @@ fun PreviewLabCard(
 }
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabElevatedCard(
     modifier: Modifier = Modifier,
     shape: Shape = PreviewLabCardDefaults.ElevatedShape,
@@ -102,7 +102,7 @@ fun PreviewLabElevatedCard(
 )
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabElevatedCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -125,7 +125,7 @@ fun PreviewLabElevatedCard(
 )
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabOutlinedCard(
     modifier: Modifier = Modifier,
     shape: Shape = PreviewLabCardDefaults.OutlinedShape,
@@ -143,7 +143,7 @@ fun PreviewLabOutlinedCard(
 )
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabOutlinedCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -166,7 +166,7 @@ fun PreviewLabOutlinedCard(
     content = content,
 )
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 object PreviewLabCardDefaults {
     val Shape: Shape @Composable get() = RoundedCornerShape(12.0.dp)
     val ElevatedShape: Shape @Composable get() = Shape
@@ -281,8 +281,8 @@ object PreviewLabCardDefaults {
 
 @ConsistentCopyVisibility
 @Immutable
-@InternalComposePreviewLabApi
-data class PreviewLabCardColors @InternalComposePreviewLabApi
+@UiComposePreviewLabApi
+data class PreviewLabCardColors @UiComposePreviewLabApi
 constructor(
     private val containerColor: Color,
     private val contentColor: Color,
@@ -290,12 +290,12 @@ constructor(
     private val disabledContentColor: Color,
 ) {
     @Composable
-    @InternalComposePreviewLabApi
+    @UiComposePreviewLabApi
     fun containerColor(enabled: Boolean): State<Color> =
         rememberUpdatedState(if (enabled) containerColor else disabledContainerColor)
 
     @Composable
-    @InternalComposePreviewLabApi
+    @UiComposePreviewLabApi
     fun contentColor(enabled: Boolean): State<Color> = rememberUpdatedState(if (enabled) contentColor else disabledContentColor)
 }
 

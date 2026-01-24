@@ -27,7 +27,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.CommonDecorationBox
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.FocusedOutlineThickness
@@ -41,7 +41,7 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.base.UnfocusedOutli
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.containerUnderline
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabUnderlinedTextField(
     value: String,
     onValueChange: (String) -> Unit,
@@ -119,7 +119,7 @@ fun PreviewLabUnderlinedTextField(
 }
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabUnderlinedTextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
@@ -197,7 +197,7 @@ fun PreviewLabUnderlinedTextField(
 }
 
 @Immutable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 object PreviewLabUnderlinedTextFieldDefaults {
     val MinHeight = TextFieldMinHeight
 

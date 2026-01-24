@@ -19,7 +19,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.textfield.PreviewLabOutlinedTextField
 import me.tbsten.compose.preview.lab.ui.components.textfield.PreviewLabTextField
@@ -34,7 +34,7 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.base.PreviewLabText
  *
  * @param Value The type of value being transformed
  */
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 interface PreviewLabTransformer<Value> {
     /**
      * Converts a value to its string representation.
@@ -54,7 +54,7 @@ interface PreviewLabTransformer<Value> {
 }
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun <Value> PreviewLabTransformableTextField(
     value: Value,
     onValueChange: (Value) -> Unit,
@@ -134,7 +134,7 @@ fun <Value> PreviewLabTransformableTextField(
  * @return This MutableState for chaining
  */
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun <Value> MutableState<String>.bindTransform(
     value: Value,
     onValueChange: (Value) -> Unit,
@@ -152,7 +152,7 @@ fun <Value> MutableState<String>.bindTransform(
 /**
  * Transformer for converting between Dp values and their string representation.
  */
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 object PreviewLabDpTransformer : PreviewLabTransformer<Dp> {
     override fun toString(value: Dp) = value.value.toString()
     override fun fromString(string: String) = string.toFloatOrNull()?.dp ?: error("$string is not a valid dp")
@@ -162,7 +162,7 @@ object PreviewLabDpTransformer : PreviewLabTransformer<Dp> {
  * Transformer for converting between nullable Dp values and their string representation.
  * Empty strings are converted to null values.
  */
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 object PreviewLabNullableDpTransformer : PreviewLabTransformer<Dp?> {
     override fun toString(value: Dp?) = value?.value?.toString() ?: ""
     override fun fromString(string: String) = string.toFloatOrNull()?.dp
@@ -171,7 +171,7 @@ object PreviewLabNullableDpTransformer : PreviewLabTransformer<Dp?> {
 /**
  * Transformer for converting between Float values and their string representation.
  */
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 object PreviewLabFloatTransformer : PreviewLabTransformer<Float> {
     override fun toString(value: Float) = value.toString()
     override fun fromString(string: String) = string.toFloatOrNull() ?: error("$string is not a valid float")
@@ -181,7 +181,7 @@ object PreviewLabFloatTransformer : PreviewLabTransformer<Float> {
  * Transformer for converting between nullable Float values and their string representation.
  * Empty strings are converted to null values.
  */
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 object PreviewLabNullableFloatTransformer : PreviewLabTransformer<Float?> {
     override fun toString(value: Float?) = value?.toString() ?: ""
     override fun fromString(string: String) = string.toFloatOrNull()
@@ -192,11 +192,11 @@ object PreviewLabNullableFloatTransformer : PreviewLabTransformer<Float?> {
  *
  * @param isError Whether the current field value has a transformation error
  */
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 class PreviewLabTransformableTextFieldSlotScope(val isError: Boolean)
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun <Value> PreviewLabTransformableOutlinedTextField(
     value: Value,
     onValueChange: (Value) -> Unit,

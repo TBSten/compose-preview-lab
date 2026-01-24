@@ -17,14 +17,14 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun fontFamily() = FontFamily.Default
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 data class Typography(
     val h1: TextStyle,
     val h2: TextStyle,
@@ -129,7 +129,7 @@ private val defaultTypography =
     )
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun provideTypography(): Typography {
     val fontFamily = fontFamily()
 
@@ -149,10 +149,10 @@ fun provideTypography(): Typography {
     )
 }
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 val LocalTypography = staticCompositionLocalOf { defaultTypography }
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 val LocalTextStyle = compositionLocalOf(structuralEqualityPolicy()) { TextStyle.Default }
 
 @Composable

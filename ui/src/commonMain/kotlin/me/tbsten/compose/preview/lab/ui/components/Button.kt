@@ -25,13 +25,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.foundation.ButtonElevation
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabButton(
     modifier: Modifier = Modifier,
     text: String? = null,
@@ -155,7 +155,7 @@ private fun DefaultButtonContent(
     }
 }
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 enum class PreviewLabButtonVariant {
     Primary,
     PrimaryOutlined,
@@ -173,7 +173,7 @@ enum class PreviewLabButtonVariant {
 }
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun previewLabButtonStyleFor(variant: PreviewLabButtonVariant, isSelected: Boolean): PreviewLabButtonStyle = when (variant) {
     PreviewLabButtonVariant.Primary -> PreviewLabButtonDefaults.primaryFilled(isSelected = isSelected)
     PreviewLabButtonVariant.PrimaryOutlined -> PreviewLabButtonDefaults.primaryOutlined(isSelected = isSelected)
@@ -190,12 +190,12 @@ fun previewLabButtonStyleFor(variant: PreviewLabButtonVariant, isSelected: Boole
     PreviewLabButtonVariant.Ghost -> PreviewLabButtonDefaults.ghost(isSelected = isSelected)
 }
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 object PreviewLabButtonDefaults {
-    @InternalComposePreviewLabApi
+    @UiComposePreviewLabApi
     val MinHeight = 44.dp
 
-    @InternalComposePreviewLabApi
+    @UiComposePreviewLabApi
     val OutlineHeight = 1.dp
     val ButtonHorizontalPadding = 16.dp
     val ButtonVerticalPadding = 8.dp
@@ -446,7 +446,7 @@ object PreviewLabButtonDefaults {
 }
 
 @Immutable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 data class PreviewLabButtonColors(
     val containerColor: Color,
     val contentColor: Color,
@@ -467,7 +467,7 @@ data class PreviewLabButtonColors(
 }
 
 @Immutable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 data class PreviewLabButtonStyle(
     val colors: PreviewLabButtonColors,
     val shape: Shape,

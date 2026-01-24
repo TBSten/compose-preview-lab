@@ -43,3 +43,26 @@ annotation class ExperimentalComposePreviewLabApi
     AnnotationTarget.PROPERTY_SETTER,
 )
 annotation class InternalComposePreviewLabApi
+
+/**
+ * The API marked with this annotation is the UI component API.
+ * These UI components are designed for use within the Compose Preview Lab library,
+ * but can be used by users who want to customize the UI.
+ * Binary compatibility is not guaranteed and may be changed in future versions.
+ *
+ * | User | Status |
+ * |---|---|
+ * | Users of this library | You can use these UI components if you want to customize the preview UI. |
+ * | Intermediate users who want to customize parts of this library | Use this API with caution. Please be aware that compatibility may break between versions. |
+ */
+@Suppress("ExperimentalAnnotationRetention")
+@RequiresOptIn(message = "This API is for UI components. It could change in the future without notice.")
+@Retention(AnnotationRetention.BINARY)
+@Target(
+    AnnotationTarget.CLASS,
+    AnnotationTarget.FUNCTION,
+    AnnotationTarget.PROPERTY,
+    AnnotationTarget.CONSTRUCTOR,
+    AnnotationTarget.PROPERTY_SETTER,
+)
+annotation class UiComposePreviewLabApi
