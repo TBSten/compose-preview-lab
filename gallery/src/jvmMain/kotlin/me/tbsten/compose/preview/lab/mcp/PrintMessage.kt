@@ -5,7 +5,8 @@ internal fun printStartMcpServerMessage(config: PreviewLabMcpServerConfig) = wit
         """
             ====================================================
             ==                                                ==
-            ==  🔍 Compose Preview Lab MCP Server             ==
+            ==     Compose Preview Lab MCP Server             ==
+            ==     (Experimental)                             ==
             ==     start on http://$host:$port               ==
             ==                                                ==
             ====================================================
