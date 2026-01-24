@@ -39,15 +39,15 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.adaptive
-import me.tbsten.compose.preview.lab.ui.components.Button
-import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
-import me.tbsten.compose.preview.lab.ui.components.CommonIconButton
-import me.tbsten.compose.preview.lab.ui.components.Divider
-import me.tbsten.compose.preview.lab.ui.components.SimpleModal
-import me.tbsten.compose.preview.lab.ui.components.Surface
-import me.tbsten.compose.preview.lab.ui.components.Text
-import me.tbsten.compose.preview.lab.ui.components.card.CardDefaults
-import me.tbsten.compose.preview.lab.ui.components.card.OutlinedCard
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabCommonIconButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabDivider
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabModal
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSurface
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.card.PreviewLabCardDefaults
+import me.tbsten.compose.preview.lab.ui.components.card.PreviewLabOutlinedCard
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_add
 import org.jetbrains.compose.resources.painterResource
@@ -64,13 +64,13 @@ internal fun <Value> CollectionFieldEditModal(
     isDuplicate: (MutablePreviewLabField<Value>) -> Boolean = { false },
     modifier: Modifier = Modifier,
 ) {
-    SimpleModal(
+    PreviewLabModal(
         isVisible = isVisible,
         contentAlignment = Alignment.TopCenter,
         onDismissRequest = onDismissRequest,
     ) {
         SelectionContainer {
-            Surface(
+            PreviewLabSurface(
                 color = PreviewLabTheme.colors.background,
                 contentColor = PreviewLabTheme.colors.onBackground,
                 modifier = modifier.fillMaxWidth(),
@@ -81,7 +81,7 @@ internal fun <Value> CollectionFieldEditModal(
                         .verticalScroll(rememberScrollState())
                         .padding(16.dp),
                 ) {
-                    Text(
+                    PreviewLabText(
                         text = "Edit $label (${fields.size})",
                         style = PreviewLabTheme.typography.h2,
                     )
@@ -116,7 +116,7 @@ private fun <Value> CollectionFieldElementsEditor(
 
     Column(modifier) {
         if (duplicateValues.isNotEmpty()) {
-            Text(
+            PreviewLabText(
                 text = "Duplicate values detected: ${duplicateValues.joinToString(", ")}",
                 style = PreviewLabTheme.typography.body2,
                 color = PreviewLabTheme.colors.error,
@@ -137,7 +137,7 @@ private fun <Value> CollectionFieldElementsEditor(
             isDuplicate = isDuplicate,
         )
 
-        Divider(color = PreviewLabTheme.colors.primary, thickness = 1.5.dp)
+        PreviewLabDivider(color = PreviewLabTheme.colors.primary, thickness = 1.5.dp)
 
         SelectedFieldView(
             selectedField = selectedField,
@@ -217,7 +217,7 @@ private fun <Value> CollectionFieldElementsRow(
 
 @Composable
 private fun InsertButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
-    CommonIconButton(
+    PreviewLabCommonIconButton(
         painter = painterResource(PreviewLabUiRes.drawable.icon_add),
         contentDescription = "Insert",
         onClick = onClick,
@@ -262,14 +262,14 @@ private fun <Value> SelectedFieldView(
             modifier = Modifier.fillMaxSize().padding(spacing),
         ) {
             if (field == null) {
-                Text("No selected", style = PreviewLabTheme.typography.body2)
+                PreviewLabText("No selected", style = PreviewLabTheme.typography.body2)
             } else {
                 FlowRow {
-                    Button(
-                        variant = ButtonVariant.Destructive,
+                    PreviewLabButton(
+                        variant = PreviewLabButtonVariant.Destructive,
                         onClick = onDelete,
                     ) {
-                        Text("Delete ${field.valueCode().takeEllipsis(10)}")
+                        PreviewLabText("Delete ${field.valueCode().takeEllipsis(10)}")
                     }
                 }
                 field.Content()
@@ -289,17 +289,17 @@ private fun CollectionElementCard(
     modifier: Modifier = Modifier,
 ) {
     val colors = when {
-        isError -> CardDefaults.cardColors(
+        isError -> PreviewLabCardDefaults.cardColors(
             containerColor = PreviewLabTheme.colors.error,
             contentColor = PreviewLabTheme.colors.onError,
         )
-        isSelected -> CardDefaults.cardColors()
-        else -> CardDefaults.outlinedCardColors()
+        isSelected -> PreviewLabCardDefaults.cardColors()
+        else -> PreviewLabCardDefaults.outlinedCardColors()
     }
-    OutlinedCard(
+    PreviewLabOutlinedCard(
         colors = colors,
         onClick = onClick,
-        border = CardDefaults.outlinedCardBorder(
+        border = PreviewLabCardDefaults.outlinedCardBorder(
             borderWidth = 2.dp,
             color = if (isSelected) PreviewLabTheme.colors.primary else PreviewLabTheme.colors.outline,
         ),
@@ -314,7 +314,7 @@ private fun CollectionElementCard(
                 ).height(100.dp)
                 .padding(12.dp),
         ) {
-            Text(
+            PreviewLabText(
                 text = displayText,
                 style = PreviewLabTheme.typography.body3,
                 overflow = TextOverflow.Ellipsis,

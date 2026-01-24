@@ -15,9 +15,9 @@ import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.PreviewLabField
 import me.tbsten.compose.preview.lab.PreviewLabField.ViewMenuItem
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.CommonIconButton
-import me.tbsten.compose.preview.lab.ui.components.CommonMenu
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabCommonIconButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabMenu
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_more_vert
 import org.jetbrains.compose.resources.painterResource
@@ -59,7 +59,7 @@ fun <Value> PreviewLabField<Value>.FieldLabelHeader(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(
+        PreviewLabText(
             text = label,
             style = PreviewLabTheme.typography.label2,
             modifier = Modifier.weight(1f),
@@ -68,13 +68,13 @@ fun <Value> PreviewLabField<Value>.FieldLabelHeader(
         if (menuItems.isNotEmpty()) {
             var isMenuOpen by remember { mutableStateOf(false) }
 
-            CommonIconButton(
+            PreviewLabCommonIconButton(
                 painter = painterResource(PreviewLabUiRes.drawable.icon_more_vert),
                 onClick = { isMenuOpen = !isMenuOpen },
                 modifier = Modifier.size(20.dp),
             )
 
-            CommonMenu(
+            PreviewLabMenu(
                 expanded = isMenuOpen,
                 onDismissRequest = { isMenuOpen = false },
             ) {

@@ -22,7 +22,8 @@ import me.tbsten.compose.preview.lab.ImmutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.SelectableField.Type
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.DROPDOWN
 import me.tbsten.compose.preview.lab.ui.LocalTextStyle
-import me.tbsten.compose.preview.lab.ui.components.SelectButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSelectButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.util.thenIf
 import me.tbsten.compose.preview.lab.ui.util.thenIfNotNull
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -106,7 +107,7 @@ open class ComposableField(
 
     @Composable
     override fun Content() {
-        SelectButton(
+        PreviewLabSelectButton(
             value = fieldValue,
             choices = choices,
             onSelect = { fieldValue = it },
@@ -410,7 +411,7 @@ interface ComposableFieldValue {
             CompositionLocalProvider(
                 LocalDensity provides Density(LocalDensity.current.density, fontScale = fontScale),
             ) {
-                me.tbsten.compose.preview.lab.ui.components.Text(
+                PreviewLabText(
                     text = text,
                     style = textStyle ?: LocalTextStyle.current,
                 )

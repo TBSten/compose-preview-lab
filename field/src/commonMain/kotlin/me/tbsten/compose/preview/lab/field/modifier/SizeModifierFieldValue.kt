@@ -18,10 +18,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.DpTransformer
-import me.tbsten.compose.preview.lab.ui.components.NullableDpTransformer
-import me.tbsten.compose.preview.lab.ui.components.Text
-import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabDpTransformer
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabNullableDpTransformer
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabTransformableTextField
 
 /**
  * A modifier field value that sets both width and height of a component.
@@ -65,14 +65,14 @@ class SizeModifierFieldValue(width: Dp, height: Dp) : ModifierFieldValue {
                     label = "width",
                     value = width,
                     onValueChange = { width = it },
-                    transformer = DpTransformer,
+                    transformer = PreviewLabDpTransformer,
                     suffix = ".dp",
                 )
                 TextFieldItem(
                     label = "height",
                     value = height,
                     onValueChange = { height = it },
-                    transformer = DpTransformer,
+                    transformer = PreviewLabDpTransformer,
                     suffix = ".dp",
                 )
             }
@@ -104,20 +104,20 @@ class SizeModifierFieldValue(width: Dp, height: Dp) : ModifierFieldValue {
 
         @Composable
         override fun Content(createButton: @Composable (() -> Unit)) = Column {
-            TransformableTextField(
+            PreviewLabTransformableTextField(
                 value = width,
                 onValueChange = { width = it },
-                transformer = NullableDpTransformer,
+                transformer = PreviewLabNullableDpTransformer,
                 textStyle = PreviewLabTheme.typography.label1,
-                prefix = { Text("width: ", style = PreviewLabTheme.typography.label2) },
+                prefix = { PreviewLabText("width: ", style = PreviewLabTheme.typography.label2) },
             )
 
-            TransformableTextField(
+            PreviewLabTransformableTextField(
                 value = height,
                 onValueChange = { height = it },
-                transformer = NullableDpTransformer,
+                transformer = PreviewLabNullableDpTransformer,
                 textStyle = PreviewLabTheme.typography.label1,
-                prefix = { Text("height: ", style = PreviewLabTheme.typography.label2) },
+                prefix = { PreviewLabText("height: ", style = PreviewLabTheme.typography.label2) },
             )
 
             Row { createButton() }
@@ -191,7 +191,7 @@ class WidthModifierFieldValue(width: Dp) : ModifierFieldValue {
                     label = "width",
                     value = width,
                     onValueChange = { width = it },
-                    transformer = DpTransformer,
+                    transformer = PreviewLabDpTransformer,
                     suffix = ".dp",
                 )
             }
@@ -214,12 +214,12 @@ class WidthModifierFieldValue(width: Dp) : ModifierFieldValue {
         override fun Content(createButton: @Composable (() -> Unit)) = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            TransformableTextField(
+            PreviewLabTransformableTextField(
                 value = width,
                 onValueChange = { width = it },
-                transformer = NullableDpTransformer,
+                transformer = PreviewLabNullableDpTransformer,
                 textStyle = PreviewLabTheme.typography.label1,
-                prefix = { Text("width: ", style = PreviewLabTheme.typography.label2) },
+                prefix = { PreviewLabText("width: ", style = PreviewLabTheme.typography.label2) },
             )
 
             Row { createButton() }
@@ -277,7 +277,7 @@ class HeightModifierFieldValue(height: Dp) : ModifierFieldValue {
                     label = "height",
                     value = height,
                     onValueChange = { height = it },
-                    transformer = DpTransformer,
+                    transformer = PreviewLabDpTransformer,
                     suffix = ".dp",
                 )
             }
@@ -298,12 +298,12 @@ class HeightModifierFieldValue(height: Dp) : ModifierFieldValue {
 
         @Composable
         override fun Content(createButton: @Composable (() -> Unit)) = Column {
-            TransformableTextField(
+            PreviewLabTransformableTextField(
                 value = height,
                 onValueChange = { height = it },
-                transformer = NullableDpTransformer,
+                transformer = PreviewLabNullableDpTransformer,
                 textStyle = PreviewLabTheme.typography.label1,
-                prefix = { Text("height: ", style = PreviewLabTheme.typography.label2) },
+                prefix = { PreviewLabText("height: ", style = PreviewLabTheme.typography.label2) },
             )
 
             Row { createButton() }

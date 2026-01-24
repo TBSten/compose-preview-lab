@@ -12,8 +12,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Text
-import me.tbsten.compose.preview.lab.ui.components.textfield.OutlinedTextField
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.textfield.PreviewLabOutlinedTextField
 
 /**
  * Helper for UI of Fields that can be input with TextField.
@@ -66,7 +66,7 @@ fun <Value> TextFieldContent(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         modifier = modifier,
     ) {
-        OutlinedTextField(
+        PreviewLabOutlinedTextField(
             value = textFieldText,
             onValueChange = {
                 textFieldText = it
@@ -75,7 +75,7 @@ fun <Value> TextFieldContent(
                     .onSuccess { onValueChange(it) }
             },
             placeholder = {
-                placeholder?.invoke() ?: Text(label)
+                placeholder?.invoke() ?: PreviewLabText(label)
             },
             prefix = prefix,
             suffix = suffix,

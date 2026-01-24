@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 
 /**
  * A field that combines multiple sub-fields into a single composite value.
@@ -49,7 +49,7 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  *             .background(Color.LightGray)
  *             .padding(horizontal = padding.horizontal, vertical = padding.vertical)
  *     ) {
- *         Text("Content with custom padding")
+ *         PreviewLabText("Content with custom padding")
  *     }
  * }
  * ```
@@ -105,7 +105,7 @@ open class CombinedField<Base, Value>(
                     horizontalArrangement = Arrangement.spacedBy(2.dp),
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    Text(
+                    PreviewLabText(
                         text = "$no. ${field.label}",
                         style = PreviewLabTheme.typography.label1,
                         modifier = Modifier
@@ -179,7 +179,7 @@ open class CombinedField1<A, Value>(
  *         )
  *     }
  *
- *     Text("User ID: ${userId.value}")
+ *     PreviewLabText("User ID: ${userId.value}")
  * }
  * ```
  *
@@ -285,7 +285,7 @@ open class CombinedField2<A, B, Value>(
  *         )
  *     }
  *
- *     Text("Range: ${range.min} to ${range.max}")
+ *     PreviewLabText("Range: ${range.min} to ${range.max}")
  * }
  * ```
  *
@@ -402,7 +402,7 @@ open class CombinedField3<A, B, C, Value>(
  *         )
  *     }
  *
- *     Text("Point: (${point.x}, ${point.y}, ${point.z})")
+ *     PreviewLabText("Point: (${point.x}, ${point.y}, ${point.z})")
  * }
  * ```
  *
@@ -662,9 +662,9 @@ open class CombinedField5<A, B, C, D, E, Value>(
  *     }
  *
  *     Column {
- *         Text(address.street)
- *         Text("${address.city}, ${address.state} ${address.zipCode}")
- *         Text(address.country)
+ *         PreviewLabText(address.street)
+ *         PreviewLabText("${address.city}, ${address.state} ${address.zipCode}")
+ *         PreviewLabText(address.country)
  *     }
  * }
  * ```
@@ -988,7 +988,7 @@ open class CombinedField7<A, B, C, D, E, F, G, Value>(
  *         )
  *     }
  *
- *     Text(
+ *     PreviewLabText(
  *         text = textStyle.text,
  *         fontSize = textStyle.fontSize,
  *         fontWeight = textStyle.fontWeight,
@@ -1194,7 +1194,7 @@ open class CombinedField8<A, B, C, D, E, F, G, H, Value>(
  *             .shadow(config.elevation, shape = RoundedCornerShape(config.cornerRadius)),
  *         colors = ButtonDefaults.buttonColors(containerColor = config.backgroundColor)
  *     ) {
- *         Text(config.text, color = config.textColor)
+ *         PreviewLabText(config.text, color = config.textColor)
  *     }
  * }
  * ```
@@ -1402,7 +1402,7 @@ open class CombinedField9<A, B, C, D, E, F, G, H, I, Value>(
  *         colors = CardDefaults.cardColors(containerColor = cardStyle.backgroundColor)
  *     ) {
  *         Box(modifier = Modifier.padding(cardStyle.padding)) {
- *             Text(cardStyle.title)
+ *             PreviewLabText(cardStyle.title)
  *         }
  *     }
  * }
@@ -1624,9 +1624,9 @@ open class CombinedField10<A, B, C, D, E, F, G, H, I, J, Value>(
  *         modifier = Modifier.padding(theme.spacing)
  *     ) {
  *         Column(spacing = theme.spacing) {
- *             Text("Primary", color = theme.primaryColor, fontSize = theme.fontSize, fontWeight = theme.fontWeight)
- *             Text("Secondary", color = theme.secondaryColor, fontSize = theme.fontSize, fontWeight = theme.fontWeight)
- *             Text("Text", color = theme.textColor, fontSize = theme.fontSize, fontWeight = theme.fontWeight)
+ *             PreviewLabText("Primary", color = theme.primaryColor, fontSize = theme.fontSize, fontWeight = theme.fontWeight)
+ *             PreviewLabText("Secondary", color = theme.secondaryColor, fontSize = theme.fontSize, fontWeight = theme.fontWeight)
+ *             PreviewLabText("Text", color = theme.textColor, fontSize = theme.fontSize, fontWeight = theme.fontWeight)
  *         }
  *     }
  * }

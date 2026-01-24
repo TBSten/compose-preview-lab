@@ -19,15 +19,15 @@ import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.components.toast.ToastType
 import me.tbsten.compose.preview.lab.ui.components.toast.rememberToastHostState
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Button
-import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
-import me.tbsten.compose.preview.lab.ui.components.CommonIconButton
-import me.tbsten.compose.preview.lab.ui.components.CommonListItem
-import me.tbsten.compose.preview.lab.ui.components.CommonMenu
-import me.tbsten.compose.preview.lab.ui.components.Divider
-import me.tbsten.compose.preview.lab.ui.components.Icon
-import me.tbsten.compose.preview.lab.ui.components.SimpleModal
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabCommonIconButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabDivider
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIcon
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabListItem
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabMenu
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabModal
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_add
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_remove
@@ -90,7 +90,7 @@ internal fun ModifierBuilder(
                     modifierFieldValue.Builder()
                 }
 
-                CommonIconButton(
+                PreviewLabCommonIconButton(
                     painter = painterResource(PreviewLabUiRes.drawable.icon_remove),
                     contentDescription = "Remove",
                     onClick = { state.onRemove(index, modifierFieldValue) },
@@ -99,12 +99,12 @@ internal fun ModifierBuilder(
         }
 
         Column {
-            Button(
-                variant = ButtonVariant.Ghost,
+            PreviewLabButton(
+                variant = PreviewLabButtonVariant.Ghost,
                 onClick = state.addMenu::toggle,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Icon(
+                PreviewLabIcon(
                     painter = painterResource(PreviewLabUiRes.drawable.icon_add),
                     contentDescription = "Add",
                 )
@@ -122,17 +122,17 @@ internal fun ModifierBuilder(
 private fun AddModifierMenu(state: ModifierBuilderState, selectableModifierFieldValueFactories: ModifierFieldValueFactories) {
     val toastHostState = rememberToastHostState()
 
-    CommonMenu(
+    PreviewLabMenu(
         expanded = state.addMenu.isAddMenuOpen,
         onDismissRequest = state.addMenu::toggle,
     ) {
-        Text(
+        PreviewLabText(
             text = "Add Modifier",
             style = PreviewLabTheme.typography.body2,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.defaultMinSize(minWidth = 200.dp).padding(horizontal = 8.dp, vertical = 4.dp),
         )
-        Divider()
+        PreviewLabDivider()
 
         selectableModifierFieldValueFactories.forEach { factory ->
             fun onCreate() {
@@ -154,20 +154,20 @@ private fun AddModifierMenu(state: ModifierBuilderState, selectableModifierField
             }
 
             var openDetailSettingDialog by remember { mutableStateOf(false) }
-            CommonListItem(
+            PreviewLabListItem(
                 title = factory.title,
                 isSelected = false,
                 onSelect = { if (factory.canCreate) onCreate() else openDetailSettingDialog = true },
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            SimpleModal(
+            PreviewLabModal(
                 isVisible = openDetailSettingDialog,
                 onDismissRequest = { openDetailSettingDialog = false },
             ) {
                 factory.Content(
                     createButton = {
-                        Button(
+                        PreviewLabButton(
                             text = "Create",
                             onClick = ::onCreate,
                             isEnabled = factory.canCreate,
