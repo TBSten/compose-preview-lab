@@ -1,5 +1,4 @@
 import kotlinx.validation.ExperimentalBCVApi
-import org.gradle.kotlin.dsl.registering
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform).apply(false)
@@ -26,8 +25,11 @@ apiValidation {
     ignoredProjects.add(
         projects.dev.name,
     )
-    nonPublicMarkers.add(
-        "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
+    nonPublicMarkers.addAll(
+        listOf(
+            "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
+            "me.tbsten.compose.preview.lab.UiComposePreviewLabApi",
+        ),
     )
 }
 
