@@ -14,7 +14,7 @@ import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 
 @Composable
 @InternalComposePreviewLabApi
-fun CommonListHeader(title: String, actions: @Composable () -> Unit, modifier: Modifier = Modifier) {
+fun PreviewLabListHeader(title: String, actions: @Composable () -> Unit, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -23,7 +23,7 @@ fun CommonListHeader(title: String, actions: @Composable () -> Unit, modifier: M
                 .padding(horizontal = 12.dp, vertical = 8.dp)
                 .fillMaxWidth(),
         ) {
-            Text(
+            PreviewLabText(
                 text = title,
                 style = PreviewLabTheme.typography.label2,
                 modifier = Modifier.weight(1f),
@@ -32,6 +32,6 @@ fun CommonListHeader(title: String, actions: @Composable () -> Unit, modifier: M
             actions()
         }
 
-        Divider()
+        PreviewLabDivider()
     }
 }

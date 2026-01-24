@@ -31,7 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 @InternalComposePreviewLabApi
-fun Text(
+fun PreviewLabText(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = LocalContentColor.current,
@@ -50,7 +50,7 @@ fun Text(
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current,
 ) {
-    Text(
+    PreviewLabText(
         text = AnnotatedString(text = text),
         modifier = modifier,
         color = color,
@@ -73,7 +73,7 @@ fun Text(
 
 @Composable
 @InternalComposePreviewLabApi
-fun Text(
+fun PreviewLabText(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
     color: Color = LocalContentColor.current,
@@ -122,7 +122,7 @@ fun Text(
 
 @Composable
 @InternalComposePreviewLabApi
-fun SelectableText(
+fun PreviewLabSelectableText(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
     color: Color = LocalContentColor.current,
@@ -142,7 +142,7 @@ fun SelectableText(
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current,
 ) = SelectionContainer {
-    Text(
+    PreviewLabText(
         text = text,
         modifier = modifier,
         color = color,
@@ -176,49 +176,49 @@ private fun TypographySample() {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Text(
+        PreviewLabText(
             text = "H1 Heading",
             style = typography.h1,
         )
-        Text(
+        PreviewLabText(
             text = "H2 Heading",
             style = typography.h2,
         )
-        Text(
+        PreviewLabText(
             text = "H3 Heading",
             style = typography.h3,
         )
-        Text(
+        PreviewLabText(
             text = "H4 Heading",
             style = typography.h4,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
+        PreviewLabText(
             text = "This is body1 text.",
             style = typography.body1,
         )
-        Text(
+        PreviewLabText(
             text = "This is body2 text.",
             style = typography.body2,
         )
-        Text(
+        PreviewLabText(
             text = "Body3 text for fine print.",
             style = typography.body3,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
+        PreviewLabText(
             text = "Label1: Form Label",
             style = typography.label1,
         )
-        Text(
+        PreviewLabText(
             text = "Label2: Secondary Info",
             style = typography.label2,
         )
-        Text(
+        PreviewLabText(
             text = "Label3: Tiny Details",
             style = typography.label3,
         )

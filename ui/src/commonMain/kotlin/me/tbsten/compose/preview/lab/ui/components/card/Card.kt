@@ -28,19 +28,19 @@ import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalTypography
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Surface
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSurface
 
 @Composable
 @InternalComposePreviewLabApi
-fun Card(
+fun PreviewLabCard(
     modifier: Modifier = Modifier,
-    shape: Shape = CardDefaults.Shape,
-    colors: CardColors = CardDefaults.cardColors(),
-    elevation: CardElevation = CardDefaults.cardElevation(),
+    shape: Shape = PreviewLabCardDefaults.Shape,
+    colors: PreviewLabCardColors = PreviewLabCardDefaults.cardColors(),
+    elevation: CardElevation = PreviewLabCardDefaults.cardElevation(),
     border: BorderStroke? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    Surface(
+    PreviewLabSurface(
         modifier = modifier,
         shape = shape,
         color = colors.containerColor(enabled = true).value,
@@ -58,18 +58,18 @@ fun Card(
 
 @Composable
 @InternalComposePreviewLabApi
-fun Card(
+fun PreviewLabCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = CardDefaults.Shape,
-    colors: CardColors = CardDefaults.cardColors(),
-    elevation: CardElevation = CardDefaults.cardElevation(),
+    shape: Shape = PreviewLabCardDefaults.Shape,
+    colors: PreviewLabCardColors = PreviewLabCardDefaults.cardColors(),
+    elevation: CardElevation = PreviewLabCardDefaults.cardElevation(),
     border: BorderStroke? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    Surface(
+    PreviewLabSurface(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
@@ -86,13 +86,13 @@ fun Card(
 
 @Composable
 @InternalComposePreviewLabApi
-fun ElevatedCard(
+fun PreviewLabElevatedCard(
     modifier: Modifier = Modifier,
-    shape: Shape = CardDefaults.ElevatedShape,
-    colors: CardColors = CardDefaults.elevatedCardColors(),
-    elevation: CardElevation = CardDefaults.elevatedCardElevation(),
+    shape: Shape = PreviewLabCardDefaults.ElevatedShape,
+    colors: PreviewLabCardColors = PreviewLabCardDefaults.elevatedCardColors(),
+    elevation: CardElevation = PreviewLabCardDefaults.elevatedCardElevation(),
     content: @Composable ColumnScope.() -> Unit,
-) = Card(
+) = PreviewLabCard(
     modifier = modifier,
     shape = shape,
     border = null,
@@ -103,16 +103,16 @@ fun ElevatedCard(
 
 @Composable
 @InternalComposePreviewLabApi
-fun ElevatedCard(
+fun PreviewLabElevatedCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = CardDefaults.ElevatedShape,
-    colors: CardColors = CardDefaults.elevatedCardColors(),
-    elevation: CardElevation = CardDefaults.elevatedCardElevation(),
+    shape: Shape = PreviewLabCardDefaults.ElevatedShape,
+    colors: PreviewLabCardColors = PreviewLabCardDefaults.elevatedCardColors(),
+    elevation: CardElevation = PreviewLabCardDefaults.elevatedCardElevation(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable ColumnScope.() -> Unit,
-) = Card(
+) = PreviewLabCard(
     onClick = onClick,
     modifier = modifier,
     enabled = enabled,
@@ -126,14 +126,14 @@ fun ElevatedCard(
 
 @Composable
 @InternalComposePreviewLabApi
-fun OutlinedCard(
+fun PreviewLabOutlinedCard(
     modifier: Modifier = Modifier,
-    shape: Shape = CardDefaults.OutlinedShape,
-    colors: CardColors = CardDefaults.outlinedCardColors(),
-    elevation: CardElevation = CardDefaults.outlinedCardElevation(),
-    border: BorderStroke = CardDefaults.outlinedCardBorder(),
+    shape: Shape = PreviewLabCardDefaults.OutlinedShape,
+    colors: PreviewLabCardColors = PreviewLabCardDefaults.outlinedCardColors(),
+    elevation: CardElevation = PreviewLabCardDefaults.outlinedCardElevation(),
+    border: BorderStroke = PreviewLabCardDefaults.outlinedCardBorder(),
     content: @Composable ColumnScope.() -> Unit,
-) = Card(
+) = PreviewLabCard(
     modifier = modifier,
     shape = shape,
     border = border,
@@ -144,17 +144,17 @@ fun OutlinedCard(
 
 @Composable
 @InternalComposePreviewLabApi
-fun OutlinedCard(
+fun PreviewLabOutlinedCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = CardDefaults.OutlinedShape,
-    colors: CardColors = CardDefaults.outlinedCardColors(),
-    elevation: CardElevation = CardDefaults.outlinedCardElevation(),
-    border: BorderStroke = CardDefaults.outlinedCardBorder(),
+    shape: Shape = PreviewLabCardDefaults.OutlinedShape,
+    colors: PreviewLabCardColors = PreviewLabCardDefaults.outlinedCardColors(),
+    elevation: CardElevation = PreviewLabCardDefaults.outlinedCardElevation(),
+    border: BorderStroke = PreviewLabCardDefaults.outlinedCardBorder(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable ColumnScope.() -> Unit,
-) = Card(
+) = PreviewLabCard(
     onClick = onClick,
     modifier = modifier,
     enabled = enabled,
@@ -167,7 +167,7 @@ fun OutlinedCard(
 )
 
 @InternalComposePreviewLabApi
-object CardDefaults {
+object PreviewLabCardDefaults {
     val Shape: Shape @Composable get() = RoundedCornerShape(12.0.dp)
     val ElevatedShape: Shape @Composable get() = Shape
     val OutlinedShape: Shape @Composable get() = Shape
@@ -231,7 +231,7 @@ object CardDefaults {
         disabledContainerColor: Color =
             PreviewLabTheme.colors.disabled,
         disabledContentColor: Color = PreviewLabTheme.colors.onDisabled,
-    ): CardColors = CardColors(
+    ): PreviewLabCardColors = PreviewLabCardColors(
         containerColor = containerColor,
         contentColor = contentColor,
         disabledContainerColor = disabledContainerColor,
@@ -245,7 +245,7 @@ object CardDefaults {
         disabledContainerColor: Color =
             PreviewLabTheme.colors.disabled,
         disabledContentColor: Color = PreviewLabTheme.colors.onDisabled,
-    ): CardColors = CardColors(
+    ): PreviewLabCardColors = PreviewLabCardColors(
         containerColor = containerColor,
         contentColor = contentColor,
         disabledContainerColor = disabledContainerColor,
@@ -259,7 +259,7 @@ object CardDefaults {
         disabledContainerColor: Color =
             PreviewLabTheme.colors.disabled,
         disabledContentColor: Color = PreviewLabTheme.colors.onDisabled,
-    ): CardColors = CardColors(
+    ): PreviewLabCardColors = PreviewLabCardColors(
         containerColor = containerColor,
         contentColor = contentColor,
         disabledContainerColor = disabledContainerColor,
@@ -282,7 +282,7 @@ object CardDefaults {
 @ConsistentCopyVisibility
 @Immutable
 @InternalComposePreviewLabApi
-data class CardColors @InternalComposePreviewLabApi
+data class PreviewLabCardColors @InternalComposePreviewLabApi
 constructor(
     private val containerColor: Color,
     private val contentColor: Color,
@@ -327,14 +327,14 @@ private fun CardComponentSample() {
             BasicText(text = "Default Card", style = LocalTypography.current.h3)
             Spacer(modifier = Modifier.height(8.dp))
 
-            Card(
+            PreviewLabCard(
                 modifier = cardModifier,
             ) {}
         }
 
         Column {
             BasicText(text = "Elevated Card with Action", style = LocalTypography.current.h3)
-            ElevatedCard(
+            PreviewLabElevatedCard(
                 modifier = cardModifier,
                 onClick = { /* Handle click */ },
             ) {}
@@ -343,19 +343,19 @@ private fun CardComponentSample() {
         // Outlined Card
         Column {
             BasicText(text = "Custom Outlined Card", style = LocalTypography.current.h3)
-            OutlinedCard(
+            PreviewLabOutlinedCard(
                 modifier = cardModifier,
             ) {}
         }
 
         Column {
             BasicText(text = "Disabled Card", style = LocalTypography.current.h3)
-            Card(
+            PreviewLabCard(
                 modifier = cardModifier,
                 onClick = { },
                 enabled = false,
                 colors =
-                CardDefaults.cardColors(
+                PreviewLabCardDefaults.cardColors(
                     containerColor = Color(0xFFBDBDBD),
                     contentColor = Color(0xFF9E9E9E),
                     disabledContainerColor = Color(0xFFEEEEEE),
@@ -366,10 +366,10 @@ private fun CardComponentSample() {
 
         Column {
             BasicText(text = "Custom Colored Card", style = LocalTypography.current.h3)
-            Card(
+            PreviewLabCard(
                 modifier = cardModifier,
                 colors =
-                CardDefaults.cardColors(
+                PreviewLabCardDefaults.cardColors(
                     containerColor = Color(0xFFECEFF1),
                     contentColor = Color(0xFF607D8B),
                 ),
@@ -378,17 +378,17 @@ private fun CardComponentSample() {
 
         Column {
             BasicText(text = "Outlined Card with Hover Elevation", style = LocalTypography.current.h3)
-            OutlinedCard(
+            PreviewLabOutlinedCard(
                 modifier = cardModifier,
                 onClick = { /* Handle click */ },
                 elevation =
-                CardDefaults.outlinedCardElevation(
+                PreviewLabCardDefaults.outlinedCardElevation(
                     defaultElevation = 0.dp,
                     hoveredElevation = 4.dp,
                 ),
                 border = BorderStroke(1.dp, Color(0xFFBDBDBD)),
                 colors =
-                CardDefaults.outlinedCardColors(
+                PreviewLabCardDefaults.outlinedCardColors(
                     containerColor = Color(0xFFE0E0E0),
                     contentColor = Color(0xFF616161),
                 ),
@@ -398,11 +398,11 @@ private fun CardComponentSample() {
         // Interactive Card
         Column {
             BasicText(text = "Interactive Card", style = LocalTypography.current.h3)
-            Card(
+            PreviewLabCard(
                 modifier = cardModifier,
                 onClick = { /* Handle click */ },
                 colors =
-                CardDefaults.cardColors(
+                PreviewLabCardDefaults.cardColors(
                     containerColor = Color(0xFFECEFF1),
                     contentColor = Color(0xFF455A64),
                 ),

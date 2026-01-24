@@ -16,10 +16,10 @@ import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 
 @Composable
 @InternalComposePreviewLabApi
-fun HorizontalDivider(
+fun PreviewLabHorizontalDivider(
     modifier: Modifier = Modifier,
-    thickness: Dp = DividerDefaults.Thickness,
-    color: Color = DividerDefaults.color,
+    thickness: Dp = PreviewLabDividerDefaults.Thickness,
+    color: Color = PreviewLabDividerDefaults.color,
 ) = Canvas(
     modifier
         .fillMaxWidth()
@@ -35,10 +35,10 @@ fun HorizontalDivider(
 
 @Composable
 @InternalComposePreviewLabApi
-fun VerticalDivider(
+fun PreviewLabVerticalDivider(
     modifier: Modifier = Modifier,
-    thickness: Dp = DividerDefaults.Thickness,
-    color: Color = DividerDefaults.color,
+    thickness: Dp = PreviewLabDividerDefaults.Thickness,
+    color: Color = PreviewLabDividerDefaults.color,
 ) = Canvas(
     modifier
         .fillMaxHeight()
@@ -53,7 +53,7 @@ fun VerticalDivider(
 }
 
 @InternalComposePreviewLabApi
-object DividerDefaults {
+object PreviewLabDividerDefaults {
     val Thickness: Dp = 1.dp
     val color: Color @Composable get() = PreviewLabTheme.colors.outline
 }

@@ -41,18 +41,18 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 @InternalComposePreviewLabApi
-fun IconButton(
+fun PreviewLabIconButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     loading: Boolean = false,
-    variant: IconButtonVariant = IconButtonVariant.Primary,
-    shape: Shape = IconButtonDefaults.ButtonSquareShape,
+    variant: PreviewLabIconButtonVariant = PreviewLabIconButtonVariant.Primary,
+    shape: Shape = PreviewLabIconButtonDefaults.ButtonSquareShape,
     onClick: () -> Unit = {},
-    contentPadding: PaddingValues = IconButtonDefaults.ButtonPadding,
+    contentPadding: PaddingValues = PreviewLabIconButtonDefaults.ButtonPadding,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable () -> Unit,
 ) {
-    val style = IconButtonDefaults.styleFor(variant, shape)
+    val style = PreviewLabIconButtonDefaults.styleFor(variant, shape)
 
     IconButtonComponent(
         modifier = modifier,
@@ -71,7 +71,7 @@ private fun IconButtonComponent(
     modifier: Modifier,
     enabled: Boolean,
     loading: Boolean,
-    style: IconButtonStyle,
+    style: PreviewLabIconButtonStyle,
     onClick: () -> Unit,
     contentPadding: PaddingValues,
     interactionSource: MutableInteractionSource,
@@ -80,16 +80,16 @@ private fun IconButtonComponent(
     val containerColor = style.colors.containerColor(enabled).value
     val contentColor = style.colors.contentColor(enabled).value
     val borderColor = style.colors.borderColor(enabled).value
-    val borderStroke = if (borderColor != null) BorderStroke(IconButtonDefaults.OutlineHeight, borderColor) else null
+    val borderStroke = if (borderColor != null) BorderStroke(PreviewLabIconButtonDefaults.OutlineHeight, borderColor) else null
 
     val shadowElevation = style.elevation?.shadowElevation(enabled, interactionSource)?.value ?: 0.dp
 
-    Surface(
+    PreviewLabSurface(
         onClick = onClick,
         modifier =
         modifier.defaultMinSize(
-            minWidth = IconButtonDefaults.ButtonSize,
-            minHeight = IconButtonDefaults.ButtonSize,
+            minWidth = PreviewLabIconButtonDefaults.ButtonSize,
+            minHeight = PreviewLabIconButtonDefaults.ButtonSize,
         ).semantics { role = Role.Button },
         enabled = enabled,
         shape = style.shape,
@@ -110,7 +110,7 @@ private fun IconButtonComponent(
 }
 
 @InternalComposePreviewLabApi
-enum class IconButtonVariant {
+enum class PreviewLabIconButtonVariant {
     Primary,
     PrimaryOutlined,
     PrimaryElevated,
@@ -127,7 +127,7 @@ enum class IconButtonVariant {
 }
 
 @InternalComposePreviewLabApi
-object IconButtonDefaults {
+object PreviewLabIconButtonDefaults {
     val ButtonSize = 44.dp
     val ButtonPadding = PaddingValues(4.dp)
     val ButtonSquareShape = RoundedCornerShape(12.dp)
@@ -144,26 +144,26 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun styleFor(variant: IconButtonVariant, shape: Shape): IconButtonStyle = when (variant) {
-        IconButtonVariant.Primary -> primaryFilled(shape)
-        IconButtonVariant.PrimaryOutlined -> primaryOutlined(shape)
-        IconButtonVariant.PrimaryElevated -> primaryElevated(shape)
-        IconButtonVariant.PrimaryGhost -> primaryGhost(shape)
-        IconButtonVariant.Secondary -> secondaryFilled(shape)
-        IconButtonVariant.SecondaryOutlined -> secondaryOutlined(shape)
-        IconButtonVariant.SecondaryElevated -> secondaryElevated(shape)
-        IconButtonVariant.SecondaryGhost -> secondaryGhost(shape)
-        IconButtonVariant.Destructive -> destructiveFilled(shape)
-        IconButtonVariant.DestructiveOutlined -> destructiveOutlined(shape)
-        IconButtonVariant.DestructiveElevated -> destructiveElevated(shape)
-        IconButtonVariant.DestructiveGhost -> destructiveGhost(shape)
-        IconButtonVariant.Ghost -> ghost(shape)
+    fun styleFor(variant: PreviewLabIconButtonVariant, shape: Shape): PreviewLabIconButtonStyle = when (variant) {
+        PreviewLabIconButtonVariant.Primary -> primaryFilled(shape)
+        PreviewLabIconButtonVariant.PrimaryOutlined -> primaryOutlined(shape)
+        PreviewLabIconButtonVariant.PrimaryElevated -> primaryElevated(shape)
+        PreviewLabIconButtonVariant.PrimaryGhost -> primaryGhost(shape)
+        PreviewLabIconButtonVariant.Secondary -> secondaryFilled(shape)
+        PreviewLabIconButtonVariant.SecondaryOutlined -> secondaryOutlined(shape)
+        PreviewLabIconButtonVariant.SecondaryElevated -> secondaryElevated(shape)
+        PreviewLabIconButtonVariant.SecondaryGhost -> secondaryGhost(shape)
+        PreviewLabIconButtonVariant.Destructive -> destructiveFilled(shape)
+        PreviewLabIconButtonVariant.DestructiveOutlined -> destructiveOutlined(shape)
+        PreviewLabIconButtonVariant.DestructiveElevated -> destructiveElevated(shape)
+        PreviewLabIconButtonVariant.DestructiveGhost -> destructiveGhost(shape)
+        PreviewLabIconButtonVariant.Ghost -> ghost(shape)
     }
 
     @Composable
-    fun primaryFilled(shape: Shape) = IconButtonStyle(
+    fun primaryFilled(shape: Shape) = PreviewLabIconButtonStyle(
         colors =
-        IconButtonColors(
+        PreviewLabIconButtonColors(
             containerColor = PreviewLabTheme.colors.primary,
             contentColor = PreviewLabTheme.colors.onPrimary,
             disabledContainerColor = PreviewLabTheme.colors.disabled,
@@ -174,9 +174,9 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun primaryOutlined(shape: Shape) = IconButtonStyle(
+    fun primaryOutlined(shape: Shape) = PreviewLabIconButtonStyle(
         colors =
-        IconButtonColors(
+        PreviewLabIconButtonColors(
             containerColor = PreviewLabTheme.colors.transparent,
             contentColor = PreviewLabTheme.colors.primary,
             borderColor = PreviewLabTheme.colors.primary,
@@ -189,9 +189,9 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun primaryElevated(shape: Shape) = IconButtonStyle(
+    fun primaryElevated(shape: Shape) = PreviewLabIconButtonStyle(
         colors =
-        IconButtonColors(
+        PreviewLabIconButtonColors(
             containerColor = PreviewLabTheme.colors.primary,
             contentColor = PreviewLabTheme.colors.onPrimary,
             disabledContainerColor = PreviewLabTheme.colors.disabled,
@@ -202,9 +202,9 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun primaryGhost(shape: Shape) = IconButtonStyle(
+    fun primaryGhost(shape: Shape) = PreviewLabIconButtonStyle(
         colors =
-        IconButtonColors(
+        PreviewLabIconButtonColors(
             containerColor = PreviewLabTheme.colors.transparent,
             contentColor = PreviewLabTheme.colors.primary,
             borderColor = PreviewLabTheme.colors.transparent,
@@ -217,9 +217,9 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun secondaryFilled(shape: Shape) = IconButtonStyle(
+    fun secondaryFilled(shape: Shape) = PreviewLabIconButtonStyle(
         colors =
-        IconButtonColors(
+        PreviewLabIconButtonColors(
             containerColor = PreviewLabTheme.colors.secondary,
             contentColor = PreviewLabTheme.colors.onSecondary,
             disabledContainerColor = PreviewLabTheme.colors.disabled,
@@ -230,9 +230,9 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun secondaryOutlined(shape: Shape) = IconButtonStyle(
+    fun secondaryOutlined(shape: Shape) = PreviewLabIconButtonStyle(
         colors =
-        IconButtonColors(
+        PreviewLabIconButtonColors(
             containerColor = PreviewLabTheme.colors.transparent,
             contentColor = PreviewLabTheme.colors.secondary,
             borderColor = PreviewLabTheme.colors.secondary,
@@ -245,9 +245,9 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun secondaryElevated(shape: Shape) = IconButtonStyle(
+    fun secondaryElevated(shape: Shape) = PreviewLabIconButtonStyle(
         colors =
-        IconButtonColors(
+        PreviewLabIconButtonColors(
             containerColor = PreviewLabTheme.colors.secondary,
             contentColor = PreviewLabTheme.colors.onSecondary,
             disabledContainerColor = PreviewLabTheme.colors.disabled,
@@ -258,9 +258,9 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun secondaryGhost(shape: Shape) = IconButtonStyle(
+    fun secondaryGhost(shape: Shape) = PreviewLabIconButtonStyle(
         colors =
-        IconButtonColors(
+        PreviewLabIconButtonColors(
             containerColor = PreviewLabTheme.colors.transparent,
             contentColor = PreviewLabTheme.colors.secondary,
             borderColor = PreviewLabTheme.colors.transparent,
@@ -273,9 +273,9 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun destructiveFilled(shape: Shape) = IconButtonStyle(
+    fun destructiveFilled(shape: Shape) = PreviewLabIconButtonStyle(
         colors =
-        IconButtonColors(
+        PreviewLabIconButtonColors(
             containerColor = PreviewLabTheme.colors.error,
             contentColor = PreviewLabTheme.colors.onError,
             disabledContainerColor = PreviewLabTheme.colors.disabled,
@@ -286,9 +286,9 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun destructiveOutlined(shape: Shape) = IconButtonStyle(
+    fun destructiveOutlined(shape: Shape) = PreviewLabIconButtonStyle(
         colors =
-        IconButtonColors(
+        PreviewLabIconButtonColors(
             containerColor = PreviewLabTheme.colors.transparent,
             contentColor = PreviewLabTheme.colors.error,
             borderColor = PreviewLabTheme.colors.error,
@@ -301,9 +301,9 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun destructiveElevated(shape: Shape) = IconButtonStyle(
+    fun destructiveElevated(shape: Shape) = PreviewLabIconButtonStyle(
         colors =
-        IconButtonColors(
+        PreviewLabIconButtonColors(
             containerColor = PreviewLabTheme.colors.error,
             contentColor = PreviewLabTheme.colors.onError,
             disabledContainerColor = PreviewLabTheme.colors.disabled,
@@ -314,9 +314,9 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun destructiveGhost(shape: Shape) = IconButtonStyle(
+    fun destructiveGhost(shape: Shape) = PreviewLabIconButtonStyle(
         colors =
-        IconButtonColors(
+        PreviewLabIconButtonColors(
             containerColor = PreviewLabTheme.colors.transparent,
             contentColor = PreviewLabTheme.colors.error,
             borderColor = PreviewLabTheme.colors.transparent,
@@ -329,9 +329,9 @@ object IconButtonDefaults {
     )
 
     @Composable
-    fun ghost(shape: Shape) = IconButtonStyle(
+    fun ghost(shape: Shape) = PreviewLabIconButtonStyle(
         colors =
-        IconButtonColors(
+        PreviewLabIconButtonColors(
             containerColor = PreviewLabTheme.colors.transparent,
             contentColor = LocalContentColor.current,
             disabledContainerColor = PreviewLabTheme.colors.transparent,
@@ -344,7 +344,7 @@ object IconButtonDefaults {
 
 @Immutable
 @InternalComposePreviewLabApi
-data class IconButtonColors(
+data class PreviewLabIconButtonColors(
     val containerColor: Color,
     val contentColor: Color,
     val borderColor: Color? = null,
@@ -364,7 +364,7 @@ data class IconButtonColors(
 
 @Immutable
 @InternalComposePreviewLabApi
-data class IconButtonStyle(val colors: IconButtonColors, val shape: Shape, val elevation: ButtonElevation? = null)
+data class PreviewLabIconButtonStyle(val colors: PreviewLabIconButtonColors, val shape: Shape, val elevation: ButtonElevation? = null)
 
 @Composable
 @Preview
@@ -377,16 +377,16 @@ private fun PrimaryIconButtonPreview() {
             BasicText(text = "Primary Icon Buttons", style = PreviewLabTheme.typography.h2)
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                IconButton(variant = IconButtonVariant.Primary) {
+                PreviewLabIconButton(variant = PreviewLabIconButtonVariant.Primary) {
                     DummyIconForIconButtonPreview()
                 }
-                IconButton(variant = IconButtonVariant.PrimaryOutlined) {
+                PreviewLabIconButton(variant = PreviewLabIconButtonVariant.PrimaryOutlined) {
                     DummyIconForIconButtonPreview()
                 }
-                IconButton(variant = IconButtonVariant.PrimaryElevated) {
+                PreviewLabIconButton(variant = PreviewLabIconButtonVariant.PrimaryElevated) {
                     DummyIconForIconButtonPreview()
                 }
-                IconButton(variant = IconButtonVariant.PrimaryGhost) {
+                PreviewLabIconButton(variant = PreviewLabIconButtonVariant.PrimaryGhost) {
                     DummyIconForIconButtonPreview()
                 }
             }
@@ -405,16 +405,16 @@ private fun SecondaryIconButtonPreview() {
             BasicText(text = "Secondary Icon Buttons", style = PreviewLabTheme.typography.h2)
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                IconButton(variant = IconButtonVariant.Secondary) {
+                PreviewLabIconButton(variant = PreviewLabIconButtonVariant.Secondary) {
                     DummyIconForIconButtonPreview()
                 }
-                IconButton(variant = IconButtonVariant.SecondaryOutlined) {
+                PreviewLabIconButton(variant = PreviewLabIconButtonVariant.SecondaryOutlined) {
                     DummyIconForIconButtonPreview()
                 }
-                IconButton(variant = IconButtonVariant.SecondaryElevated) {
+                PreviewLabIconButton(variant = PreviewLabIconButtonVariant.SecondaryElevated) {
                     DummyIconForIconButtonPreview()
                 }
-                IconButton(variant = IconButtonVariant.SecondaryGhost) {
+                PreviewLabIconButton(variant = PreviewLabIconButtonVariant.SecondaryGhost) {
                     DummyIconForIconButtonPreview()
                 }
             }
@@ -433,16 +433,16 @@ private fun DestructiveIconButtonPreview() {
             BasicText(text = "Destructive Icon Buttons", style = PreviewLabTheme.typography.h2)
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                IconButton(variant = IconButtonVariant.Destructive) {
+                PreviewLabIconButton(variant = PreviewLabIconButtonVariant.Destructive) {
                     DummyIconForIconButtonPreview()
                 }
-                IconButton(variant = IconButtonVariant.DestructiveOutlined) {
+                PreviewLabIconButton(variant = PreviewLabIconButtonVariant.DestructiveOutlined) {
                     DummyIconForIconButtonPreview()
                 }
-                IconButton(variant = IconButtonVariant.DestructiveElevated) {
+                PreviewLabIconButton(variant = PreviewLabIconButtonVariant.DestructiveElevated) {
                     DummyIconForIconButtonPreview()
                 }
-                IconButton(variant = IconButtonVariant.DestructiveGhost) {
+                PreviewLabIconButton(variant = PreviewLabIconButtonVariant.DestructiveGhost) {
                     DummyIconForIconButtonPreview()
                 }
             }
@@ -469,7 +469,7 @@ private fun GhostIconButtonPreview() {
                     CompositionLocalProvider(
                         LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.background),
                     ) {
-                        IconButton(variant = IconButtonVariant.Ghost) {
+                        PreviewLabIconButton(variant = PreviewLabIconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
                         }
                     }
@@ -482,7 +482,7 @@ private fun GhostIconButtonPreview() {
                     CompositionLocalProvider(
                         LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.primary),
                     ) {
-                        IconButton(variant = IconButtonVariant.Ghost) {
+                        PreviewLabIconButton(variant = PreviewLabIconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
                         }
                     }
@@ -495,7 +495,7 @@ private fun GhostIconButtonPreview() {
                     CompositionLocalProvider(
                         LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.secondary),
                     ) {
-                        IconButton(variant = IconButtonVariant.Ghost) {
+                        PreviewLabIconButton(variant = PreviewLabIconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
                         }
                     }
@@ -508,7 +508,7 @@ private fun GhostIconButtonPreview() {
                     CompositionLocalProvider(
                         LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.tertiary),
                     ) {
-                        IconButton(variant = IconButtonVariant.Ghost) {
+                        PreviewLabIconButton(variant = PreviewLabIconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
                         }
                     }
@@ -521,7 +521,7 @@ private fun GhostIconButtonPreview() {
                     CompositionLocalProvider(
                         LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.surface),
                     ) {
-                        IconButton(variant = IconButtonVariant.Ghost) {
+                        PreviewLabIconButton(variant = PreviewLabIconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
                         }
                     }
@@ -532,7 +532,7 @@ private fun GhostIconButtonPreview() {
                     contentAlignment = Alignment.Center,
                 ) {
                     CompositionLocalProvider(LocalContentColor provides contentColorFor(color = PreviewLabTheme.colors.error)) {
-                        IconButton(variant = IconButtonVariant.Ghost) {
+                        PreviewLabIconButton(variant = PreviewLabIconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
                         }
                     }
@@ -553,15 +553,15 @@ private fun IconButtonShapesPreview() {
             BasicText(text = "Square Shape", style = PreviewLabTheme.typography.h2)
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                IconButton(
-                    variant = IconButtonVariant.Primary,
-                    shape = IconButtonDefaults.ButtonSquareShape,
+                PreviewLabIconButton(
+                    variant = PreviewLabIconButtonVariant.Primary,
+                    shape = PreviewLabIconButtonDefaults.ButtonSquareShape,
                 ) {
                     DummyIconForIconButtonPreview()
                 }
-                IconButton(
-                    variant = IconButtonVariant.PrimaryOutlined,
-                    shape = IconButtonDefaults.ButtonSquareShape,
+                PreviewLabIconButton(
+                    variant = PreviewLabIconButtonVariant.PrimaryOutlined,
+                    shape = PreviewLabIconButtonDefaults.ButtonSquareShape,
                 ) {
                     DummyIconForIconButtonPreview()
                 }
@@ -570,15 +570,15 @@ private fun IconButtonShapesPreview() {
             BasicText(text = "Circle Shape", style = PreviewLabTheme.typography.h2)
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                IconButton(
-                    variant = IconButtonVariant.Primary,
-                    shape = IconButtonDefaults.ButtonCircleShape,
+                PreviewLabIconButton(
+                    variant = PreviewLabIconButtonVariant.Primary,
+                    shape = PreviewLabIconButtonDefaults.ButtonCircleShape,
                 ) {
                     DummyIconForIconButtonPreview()
                 }
-                IconButton(
-                    variant = IconButtonVariant.PrimaryOutlined,
-                    shape = IconButtonDefaults.ButtonCircleShape,
+                PreviewLabIconButton(
+                    variant = PreviewLabIconButtonVariant.PrimaryOutlined,
+                    shape = PreviewLabIconButtonDefaults.ButtonCircleShape,
                 ) {
                     DummyIconForIconButtonPreview()
                 }

@@ -57,7 +57,7 @@ fun CommonDecorationBox(
     enabled: Boolean = true,
     isError: Boolean = false,
     interactionSource: InteractionSource,
-    colors: TextFieldColors,
+    colors: PreviewLabTextFieldColors,
     contentPadding: PaddingValues,
     labelPadding: PaddingValues,
     supportingTextPadding: PaddingValues,
@@ -254,7 +254,7 @@ internal fun animateTextFieldBorderAsState(
     enabled: Boolean,
     isError: Boolean,
     interactionSource: InteractionSource,
-    colors: TextFieldColors,
+    colors: PreviewLabTextFieldColors,
     borderThickness: Dp,
 ): State<BorderStroke> {
     val indicatorColor = colors.containerOutlineColor(enabled, isError, interactionSource)
@@ -268,7 +268,7 @@ internal fun Modifier.containerOutline(
     enabled: Boolean,
     isError: Boolean,
     interactionSource: InteractionSource,
-    colors: TextFieldColors,
+    colors: PreviewLabTextFieldColors,
     borderThickness: Dp,
     shape: Shape,
 ) = composed(
@@ -295,7 +295,7 @@ internal fun Modifier.containerUnderline(
     enabled: Boolean,
     isError: Boolean,
     interactionSource: InteractionSource,
-    colors: TextFieldColors,
+    colors: PreviewLabTextFieldColors,
     borderThickness: Dp,
 ) = composed {
     val indicatorColor = colors.containerOutlineColor(enabled, isError, interactionSource)

@@ -36,7 +36,7 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.base.FocusedOutline
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.HorizontalIconPadding
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.LabelBottomPadding
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.SupportingTopPadding
-import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldColors
+import me.tbsten.compose.preview.lab.ui.components.textfield.base.PreviewLabTextFieldColors
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldHorizontalPadding
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldMinHeight
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldVerticalPadding
@@ -45,7 +45,7 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.base.containerOutli
 
 @Composable
 @InternalComposePreviewLabApi
-fun OutlinedTextField(
+fun PreviewLabOutlinedTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -68,8 +68,8 @@ fun OutlinedTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     supportingText: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
-    shape: Shape = OutlinedTextFieldDefaults.Shape,
-    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
+    shape: Shape = PreviewLabOutlinedTextFieldDefaults.Shape,
+    colors: PreviewLabTextFieldColors = PreviewLabOutlinedTextFieldDefaults.colors(),
     cursorBrush: Brush = SolidColor(colors.cursorColor(isError).value),
 ) {
     val textColor =
@@ -82,7 +82,7 @@ fun OutlinedTextField(
         BasicTextField(
             modifier =
             modifier.defaultMinSize(
-                minHeight = OutlinedTextFieldDefaults.MinHeight,
+                minHeight = PreviewLabOutlinedTextFieldDefaults.MinHeight,
             ).fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
@@ -99,7 +99,7 @@ fun OutlinedTextField(
             interactionSource = interactionSource,
             cursorBrush = cursorBrush,
             decorationBox = @Composable { innerTextField ->
-                OutlinedTextFieldDefaults.DecorationBox(
+                PreviewLabOutlinedTextFieldDefaults.DecorationBox(
                     value = value,
                     innerTextField = innerTextField,
                     visualTransformation = visualTransformation,
@@ -123,7 +123,7 @@ fun OutlinedTextField(
 
 @Composable
 @InternalComposePreviewLabApi
-fun OutlinedTextField(
+fun PreviewLabOutlinedTextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier,
@@ -146,8 +146,8 @@ fun OutlinedTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     supportingText: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
-    shape: Shape = OutlinedTextFieldDefaults.Shape,
-    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
+    shape: Shape = PreviewLabOutlinedTextFieldDefaults.Shape,
+    colors: PreviewLabTextFieldColors = PreviewLabOutlinedTextFieldDefaults.colors(),
     cursorBrush: Brush = SolidColor(colors.cursorColor(isError).value),
 ) {
     val textColor =
@@ -161,7 +161,7 @@ fun OutlinedTextField(
             modifier =
             modifier
                 .defaultMinSize(
-                    minHeight = OutlinedTextFieldDefaults.MinHeight,
+                    minHeight = PreviewLabOutlinedTextFieldDefaults.MinHeight,
                 )
                 .fillMaxWidth(),
             value = value,
@@ -179,7 +179,7 @@ fun OutlinedTextField(
             interactionSource = interactionSource,
             cursorBrush = cursorBrush,
             decorationBox = @Composable { innerTextField ->
-                OutlinedTextFieldDefaults.DecorationBox(
+                PreviewLabOutlinedTextFieldDefaults.DecorationBox(
                     value = value.text,
                     innerTextField = innerTextField,
                     visualTransformation = visualTransformation,
@@ -193,7 +193,7 @@ fun OutlinedTextField(
                     enabled = enabled,
                     isError = isError,
                     interactionSource = interactionSource,
-                    colors = OutlinedTextFieldDefaults.colors(),
+                    colors = PreviewLabOutlinedTextFieldDefaults.colors(),
                     shape = shape,
                 )
             },
@@ -203,7 +203,7 @@ fun OutlinedTextField(
 
 @Immutable
 @InternalComposePreviewLabApi
-object OutlinedTextFieldDefaults {
+object PreviewLabOutlinedTextFieldDefaults {
     val MinHeight = TextFieldMinHeight
     val Shape: Shape = RoundedCornerShape(8.dp)
 
@@ -267,7 +267,7 @@ object OutlinedTextFieldDefaults {
         suffix: @Composable (() -> Unit)? = null,
         supportingText: @Composable (() -> Unit)? = null,
         shape: Shape = Shape,
-        colors: TextFieldColors = colors(),
+        colors: PreviewLabTextFieldColors = colors(),
         container: @Composable () -> Unit = {
             ContainerBox(enabled, isError, interactionSource, colors, shape)
         },
@@ -301,7 +301,7 @@ object OutlinedTextFieldDefaults {
         enabled: Boolean,
         isError: Boolean,
         interactionSource: InteractionSource,
-        colors: TextFieldColors,
+        colors: PreviewLabTextFieldColors,
         shape: Shape = Shape,
         borderThickness: Dp = containerBorderThickness(interactionSource),
     ) {
@@ -313,7 +313,7 @@ object OutlinedTextFieldDefaults {
     }
 
     @Composable
-    fun colors(): TextFieldColors = TextFieldColors(
+    fun colors(): PreviewLabTextFieldColors = PreviewLabTextFieldColors(
         focusedTextColor = PreviewLabTheme.colors.text,
         unfocusedTextColor = PreviewLabTheme.colors.text,
         disabledTextColor = PreviewLabTheme.colors.onDisabled,

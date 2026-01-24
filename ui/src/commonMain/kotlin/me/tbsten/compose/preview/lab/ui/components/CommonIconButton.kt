@@ -12,13 +12,13 @@ import me.tbsten.compose.preview.lab.ui.LocalContentColor
 
 @Composable
 @InternalComposePreviewLabApi
-fun CommonIconButton(
+fun PreviewLabCommonIconButton(
     imageVector: ImageVector,
     contentDescription: String? = null,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    variant: IconButtonVariant = IconButtonVariant.Ghost,
+    variant: PreviewLabIconButtonVariant = PreviewLabIconButtonVariant.Ghost,
     tint: Color? = null,
 ) = if (contentDescription == null) {
     IconButtonContent(
@@ -31,7 +31,7 @@ fun CommonIconButton(
         modifier = modifier,
     )
 } else {
-    TooltipBox(
+    PreviewLabTooltipBox(
         tooltip = contentDescription,
     ) {
         IconButtonContent(
@@ -53,10 +53,10 @@ private fun IconButtonContent(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    variant: IconButtonVariant = IconButtonVariant.Ghost,
+    variant: PreviewLabIconButtonVariant = PreviewLabIconButtonVariant.Ghost,
     tint: Color? = null,
-) = IconButton(variant = variant, onClick = onClick, enabled = enabled, modifier = modifier.size(28.dp)) {
-    Icon(
+) = PreviewLabIconButton(variant = variant, onClick = onClick, enabled = enabled, modifier = modifier.size(28.dp)) {
+    PreviewLabIcon(
         imageVector = imageVector,
         contentDescription = contentDescription,
         modifier = modifier.size(20.dp),
@@ -65,14 +65,32 @@ private fun IconButtonContent(
 }
 
 @Composable
-@InternalComposePreviewLabApi
-fun CommonIconButton(
+private fun IconButtonContent(
     painter: Painter,
     contentDescription: String? = null,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    variant: IconButtonVariant = IconButtonVariant.Ghost,
+    variant: PreviewLabIconButtonVariant = PreviewLabIconButtonVariant.Ghost,
+    tint: Color? = null,
+) = PreviewLabIconButton(variant = variant, onClick = onClick, enabled = enabled, modifier = modifier.size(28.dp)) {
+    PreviewLabIcon(
+        painter = painter,
+        contentDescription = contentDescription,
+        modifier = modifier.size(20.dp),
+        tint = tint ?: LocalContentColor.current,
+    )
+}
+
+@Composable
+@InternalComposePreviewLabApi
+fun PreviewLabCommonIconButton(
+    painter: Painter,
+    contentDescription: String? = null,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    variant: PreviewLabIconButtonVariant = PreviewLabIconButtonVariant.Ghost,
     tint: Color? = null,
 ) = if (contentDescription == null) {
     IconButtonContent(
@@ -85,7 +103,7 @@ fun CommonIconButton(
         modifier = modifier,
     )
 } else {
-    TooltipBox(
+    PreviewLabTooltipBox(
         tooltip = contentDescription,
     ) {
         IconButtonContent(
@@ -102,21 +120,21 @@ fun CommonIconButton(
 
 @Composable
 @InternalComposePreviewLabApi
-fun IconButtonContent(
+fun PreviewLabIconButtonContent(
     painter: Painter,
     contentDescription: String? = null,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    variant: IconButtonVariant = IconButtonVariant.Ghost,
+    variant: PreviewLabIconButtonVariant = PreviewLabIconButtonVariant.Ghost,
     tint: Color? = null,
     enabled: Boolean = true,
-) = IconButton(
+) = PreviewLabIconButton(
     variant = variant,
     onClick = onClick,
     enabled = enabled,
     modifier = modifier.size(28.dp),
 ) {
-    Icon(
+    PreviewLabIcon(
         painter = painter,
         contentDescription = contentDescription,
         tint = tint ?: LocalContentColor.current,

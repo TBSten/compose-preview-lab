@@ -36,7 +36,7 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.base.FocusedOutline
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.HorizontalIconPadding
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.LabelBottomPadding
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.SupportingTopPadding
-import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldColors
+import me.tbsten.compose.preview.lab.ui.components.textfield.base.PreviewLabTextFieldColors
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldHorizontalPadding
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldMinHeight
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldMinWidth
@@ -46,7 +46,7 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.base.containerOutli
 
 @Composable
 @InternalComposePreviewLabApi
-fun TextField(
+fun PreviewLabTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -69,8 +69,8 @@ fun TextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     supportingText: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
-    shape: Shape = TextFieldDefaults.Shape,
-    colors: TextFieldColors = TextFieldDefaults.colors(),
+    shape: Shape = PreviewLabTextFieldDefaults.Shape,
+    colors: PreviewLabTextFieldColors = PreviewLabTextFieldDefaults.colors(),
     cursorBrush: Brush = SolidColor(colors.cursorColor(isError).value),
 ) {
     val textColor =
@@ -84,8 +84,8 @@ fun TextField(
             modifier =
             modifier
                 .defaultMinSize(
-                    minWidth = TextFieldDefaults.MinWidth,
-                    minHeight = TextFieldDefaults.MinHeight,
+                    minWidth = PreviewLabTextFieldDefaults.MinWidth,
+                    minHeight = PreviewLabTextFieldDefaults.MinHeight,
                 )
                 .fillMaxWidth(),
             value = value,
@@ -103,7 +103,7 @@ fun TextField(
             interactionSource = interactionSource,
             cursorBrush = cursorBrush,
             decorationBox = @Composable { innerTextField ->
-                TextFieldDefaults.DecorationBox(
+                PreviewLabTextFieldDefaults.DecorationBox(
                     value = value,
                     innerTextField = innerTextField,
                     visualTransformation = visualTransformation,
@@ -127,7 +127,7 @@ fun TextField(
 
 @Composable
 @InternalComposePreviewLabApi
-fun TextField(
+fun PreviewLabTextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier,
@@ -150,8 +150,8 @@ fun TextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     supportingText: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
-    shape: Shape = TextFieldDefaults.Shape,
-    colors: TextFieldColors = TextFieldDefaults.colors(),
+    shape: Shape = PreviewLabTextFieldDefaults.Shape,
+    colors: PreviewLabTextFieldColors = PreviewLabTextFieldDefaults.colors(),
     cursorBrush: Brush = SolidColor(colors.cursorColor(isError).value),
 ) {
     val textColor =
@@ -165,7 +165,7 @@ fun TextField(
             modifier =
             modifier
                 .defaultMinSize(
-                    minHeight = TextFieldDefaults.MinHeight,
+                    minHeight = PreviewLabTextFieldDefaults.MinHeight,
                 )
                 .fillMaxWidth(),
             value = value,
@@ -183,7 +183,7 @@ fun TextField(
             interactionSource = interactionSource,
             cursorBrush = cursorBrush,
             decorationBox = @Composable { innerTextField ->
-                TextFieldDefaults.DecorationBox(
+                PreviewLabTextFieldDefaults.DecorationBox(
                     value = value.text,
                     innerTextField = innerTextField,
                     visualTransformation = visualTransformation,
@@ -197,7 +197,7 @@ fun TextField(
                     enabled = enabled,
                     isError = isError,
                     interactionSource = interactionSource,
-                    colors = TextFieldDefaults.colors(),
+                    colors = PreviewLabTextFieldDefaults.colors(),
                     shape = shape,
                 )
             },
@@ -207,7 +207,7 @@ fun TextField(
 
 @Immutable
 @InternalComposePreviewLabApi
-object TextFieldDefaults {
+object PreviewLabTextFieldDefaults {
     val MinWidth = TextFieldMinWidth
     val MinHeight = TextFieldMinHeight
     val Shape: Shape = RoundedCornerShape(8.dp)
@@ -272,7 +272,7 @@ object TextFieldDefaults {
         suffix: @Composable (() -> Unit)? = null,
         supportingText: @Composable (() -> Unit)? = null,
         shape: Shape = Shape,
-        colors: TextFieldColors = colors(),
+        colors: PreviewLabTextFieldColors = colors(),
         container: @Composable () -> Unit = {
             ContainerBox(enabled, isError, interactionSource, colors, shape)
         },
@@ -306,7 +306,7 @@ object TextFieldDefaults {
         enabled: Boolean,
         isError: Boolean,
         interactionSource: InteractionSource,
-        colors: TextFieldColors,
+        colors: PreviewLabTextFieldColors,
         shape: Shape = Shape,
         borderThickness: Dp = containerBorderThickness(interactionSource),
     ) {
@@ -318,7 +318,7 @@ object TextFieldDefaults {
     }
 
     @Composable
-    fun colors(): TextFieldColors = TextFieldColors(
+    fun colors(): PreviewLabTextFieldColors = PreviewLabTextFieldColors(
         focusedTextColor = PreviewLabTheme.colors.text,
         unfocusedTextColor = PreviewLabTheme.colors.text,
         disabledTextColor = PreviewLabTheme.colors.onDisabled,

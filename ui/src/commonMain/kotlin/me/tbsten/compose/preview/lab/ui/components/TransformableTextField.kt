@@ -21,10 +21,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.textfield.OutlinedTextField
-import me.tbsten.compose.preview.lab.ui.components.textfield.TextField
-import me.tbsten.compose.preview.lab.ui.components.textfield.TextFieldDefaults
-import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldColors
+import me.tbsten.compose.preview.lab.ui.components.textfield.PreviewLabOutlinedTextField
+import me.tbsten.compose.preview.lab.ui.components.textfield.PreviewLabTextField
+import me.tbsten.compose.preview.lab.ui.components.textfield.PreviewLabTextFieldDefaults
+import me.tbsten.compose.preview.lab.ui.components.textfield.base.PreviewLabTextFieldColors
 
 /**
  * Interface for transforming values to and from string representation.
@@ -35,7 +35,7 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldColor
  * @param Value The type of value being transformed
  */
 @InternalComposePreviewLabApi
-interface Transformer<Value> {
+interface PreviewLabTransformer<Value> {
     /**
      * Converts a value to its string representation.
      *
@@ -55,10 +55,10 @@ interface Transformer<Value> {
 
 @Composable
 @InternalComposePreviewLabApi
-fun <Value> TransformableTextField(
+fun <Value> PreviewLabTransformableTextField(
     value: Value,
     onValueChange: (Value) -> Unit,
-    transformer: Transformer<Value>,
+    transformer: PreviewLabTransformer<Value>,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     readOnly: Boolean = false,
@@ -69,18 +69,18 @@ fun <Value> TransformableTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    onTextLayout: TransformableTextFieldSlotScope.(TextLayoutResult) -> Unit = {},
+    onTextLayout: PreviewLabTransformableTextFieldSlotScope.(TextLayoutResult) -> Unit = {},
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    placeholder: @Composable (TransformableTextFieldSlotScope.() -> Unit)? = null,
-    prefix: @Composable (TransformableTextFieldSlotScope.() -> Unit)? = null,
-    suffix: @Composable (TransformableTextFieldSlotScope.() -> Unit)? = null,
-    label: @Composable (TransformableTextFieldSlotScope.() -> Unit)? = null,
-    leadingIcon: @Composable (TransformableTextFieldSlotScope.() -> Unit)? = null,
-    trailingIcon: @Composable (TransformableTextFieldSlotScope.() -> Unit)? = null,
-    supportingText: @Composable (TransformableTextFieldSlotScope.() -> Unit)? = null,
+    placeholder: @Composable (PreviewLabTransformableTextFieldSlotScope.() -> Unit)? = null,
+    prefix: @Composable (PreviewLabTransformableTextFieldSlotScope.() -> Unit)? = null,
+    suffix: @Composable (PreviewLabTransformableTextFieldSlotScope.() -> Unit)? = null,
+    label: @Composable (PreviewLabTransformableTextFieldSlotScope.() -> Unit)? = null,
+    leadingIcon: @Composable (PreviewLabTransformableTextFieldSlotScope.() -> Unit)? = null,
+    trailingIcon: @Composable (PreviewLabTransformableTextFieldSlotScope.() -> Unit)? = null,
+    supportingText: @Composable (PreviewLabTransformableTextFieldSlotScope.() -> Unit)? = null,
     isError: Boolean? = null,
-    shape: Shape = TextFieldDefaults.Shape,
-    colors: TextFieldColors = TextFieldDefaults.colors(),
+    shape: Shape = PreviewLabTextFieldDefaults.Shape,
+    colors: PreviewLabTextFieldColors = PreviewLabTextFieldDefaults.colors(),
     cursorBrush: Brush = SolidColor(colors.cursorColor(isError == true).value),
 ) {
     var textFieldValue by remember { mutableStateOf(transformer.toString(value)) }
@@ -92,11 +92,11 @@ fun <Value> TransformableTextField(
     val isError = isError ?: runCatching { transformer.fromString(textFieldValue) }.isFailure
 
     val slotScope =
-        TransformableTextFieldSlotScope(
+        PreviewLabTransformableTextFieldSlotScope(
             isError = isError,
         )
 
-    TextField(
+    PreviewLabTextField(
         value = textFieldValue,
         onValueChange = { textFieldValue = it },
         modifier = modifier,
@@ -138,7 +138,7 @@ fun <Value> TransformableTextField(
 fun <Value> MutableState<String>.bindTransform(
     value: Value,
     onValueChange: (Value) -> Unit,
-    transformer: Transformer<Value>,
+    transformer: PreviewLabTransformer<Value>,
 ): MutableState<String> = this.also { textFieldValue ->
     LaunchedEffect(value) {
         textFieldValue.value = transformer.toString(value)
@@ -153,7 +153,7 @@ fun <Value> MutableState<String>.bindTransform(
  * Transformer for converting between Dp values and their string representation.
  */
 @InternalComposePreviewLabApi
-object DpTransformer : Transformer<Dp> {
+object PreviewLabDpTransformer : PreviewLabTransformer<Dp> {
     override fun toString(value: Dp) = value.value.toString()
     override fun fromString(string: String) = string.toFloatOrNull()?.dp ?: error("$string is not a valid dp")
 }
@@ -163,7 +163,7 @@ object DpTransformer : Transformer<Dp> {
  * Empty strings are converted to null values.
  */
 @InternalComposePreviewLabApi
-object NullableDpTransformer : Transformer<Dp?> {
+object PreviewLabNullableDpTransformer : PreviewLabTransformer<Dp?> {
     override fun toString(value: Dp?) = value?.value?.toString() ?: ""
     override fun fromString(string: String) = string.toFloatOrNull()?.dp
 }
@@ -172,7 +172,7 @@ object NullableDpTransformer : Transformer<Dp?> {
  * Transformer for converting between Float values and their string representation.
  */
 @InternalComposePreviewLabApi
-object FloatTransformer : Transformer<Float> {
+object PreviewLabFloatTransformer : PreviewLabTransformer<Float> {
     override fun toString(value: Float) = value.toString()
     override fun fromString(string: String) = string.toFloatOrNull() ?: error("$string is not a valid float")
 }
@@ -182,7 +182,7 @@ object FloatTransformer : Transformer<Float> {
  * Empty strings are converted to null values.
  */
 @InternalComposePreviewLabApi
-object NullableFloatTransformer : Transformer<Float?> {
+object PreviewLabNullableFloatTransformer : PreviewLabTransformer<Float?> {
     override fun toString(value: Float?) = value?.toString() ?: ""
     override fun fromString(string: String) = string.toFloatOrNull()
 }
@@ -193,14 +193,14 @@ object NullableFloatTransformer : Transformer<Float?> {
  * @param isError Whether the current field value has a transformation error
  */
 @InternalComposePreviewLabApi
-class TransformableTextFieldSlotScope(val isError: Boolean)
+class PreviewLabTransformableTextFieldSlotScope(val isError: Boolean)
 
 @Composable
 @InternalComposePreviewLabApi
-fun <Value> TransformableOutlinedTextField(
+fun <Value> PreviewLabTransformableOutlinedTextField(
     value: Value,
     onValueChange: (Value) -> Unit,
-    transformer: Transformer<Value>,
+    transformer: PreviewLabTransformer<Value>,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     readOnly: Boolean = false,
@@ -211,18 +211,18 @@ fun <Value> TransformableOutlinedTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    onTextLayout: TransformableTextFieldSlotScope.(TextLayoutResult) -> Unit = {},
+    onTextLayout: PreviewLabTransformableTextFieldSlotScope.(TextLayoutResult) -> Unit = {},
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    placeholder: @Composable (TransformableTextFieldSlotScope.() -> Unit)? = null,
-    prefix: @Composable (TransformableTextFieldSlotScope.() -> Unit)? = null,
-    suffix: @Composable (TransformableTextFieldSlotScope.() -> Unit)? = null,
-    label: @Composable (TransformableTextFieldSlotScope.() -> Unit)? = null,
-    leadingIcon: @Composable (TransformableTextFieldSlotScope.() -> Unit)? = null,
-    trailingIcon: @Composable (TransformableTextFieldSlotScope.() -> Unit)? = null,
-    supportingText: @Composable (TransformableTextFieldSlotScope.() -> Unit)? = null,
+    placeholder: @Composable (PreviewLabTransformableTextFieldSlotScope.() -> Unit)? = null,
+    prefix: @Composable (PreviewLabTransformableTextFieldSlotScope.() -> Unit)? = null,
+    suffix: @Composable (PreviewLabTransformableTextFieldSlotScope.() -> Unit)? = null,
+    label: @Composable (PreviewLabTransformableTextFieldSlotScope.() -> Unit)? = null,
+    leadingIcon: @Composable (PreviewLabTransformableTextFieldSlotScope.() -> Unit)? = null,
+    trailingIcon: @Composable (PreviewLabTransformableTextFieldSlotScope.() -> Unit)? = null,
+    supportingText: @Composable (PreviewLabTransformableTextFieldSlotScope.() -> Unit)? = null,
     isError: Boolean? = null,
-    shape: Shape = TextFieldDefaults.Shape,
-    colors: TextFieldColors = TextFieldDefaults.colors(),
+    shape: Shape = PreviewLabTextFieldDefaults.Shape,
+    colors: PreviewLabTextFieldColors = PreviewLabTextFieldDefaults.colors(),
     cursorBrush: Brush = SolidColor(colors.cursorColor(isError == true).value),
 ) {
     var textFieldValue by remember { mutableStateOf(transformer.toString(value)) }
@@ -234,11 +234,11 @@ fun <Value> TransformableOutlinedTextField(
     val isError = isError ?: runCatching { transformer.fromString(textFieldValue) }.isFailure
 
     val slotScope =
-        TransformableTextFieldSlotScope(
+        PreviewLabTransformableTextFieldSlotScope(
             isError = isError,
         )
 
-    OutlinedTextField(
+    PreviewLabOutlinedTextField(
         value = textFieldValue,
         onValueChange = { textFieldValue = it },
         modifier = modifier,

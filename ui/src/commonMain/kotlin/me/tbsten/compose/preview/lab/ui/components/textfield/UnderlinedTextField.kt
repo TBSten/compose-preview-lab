@@ -33,7 +33,7 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.base.CommonDecorati
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.FocusedOutlineThickness
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.HorizontalIconPadding
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.SupportingTopPadding
-import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldColors
+import me.tbsten.compose.preview.lab.ui.components.textfield.base.PreviewLabTextFieldColors
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldHorizontalPadding
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldMinHeight
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldVerticalPadding
@@ -42,7 +42,7 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.base.containerUnder
 
 @Composable
 @InternalComposePreviewLabApi
-fun UnderlinedTextField(
+fun PreviewLabUnderlinedTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -65,7 +65,7 @@ fun UnderlinedTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     supportingText: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
-    colors: TextFieldColors = UnderlinedTextFieldDefaults.colors(),
+    colors: PreviewLabTextFieldColors = PreviewLabUnderlinedTextFieldDefaults.colors(),
     cursorBrush: Brush = SolidColor(colors.cursorColor(isError).value),
 ) {
     val textColor =
@@ -79,7 +79,7 @@ fun UnderlinedTextField(
             modifier =
             modifier
                 .defaultMinSize(
-                    minHeight = UnderlinedTextFieldDefaults.MinHeight,
+                    minHeight = PreviewLabUnderlinedTextFieldDefaults.MinHeight,
                 )
                 .fillMaxWidth(),
             value = value,
@@ -97,7 +97,7 @@ fun UnderlinedTextField(
             interactionSource = interactionSource,
             cursorBrush = cursorBrush,
             decorationBox = @Composable { innerTextField ->
-                UnderlinedTextFieldDefaults.DecorationBox(
+                PreviewLabUnderlinedTextFieldDefaults.DecorationBox(
                     value = value,
                     innerTextField = innerTextField,
                     visualTransformation = visualTransformation,
@@ -120,7 +120,7 @@ fun UnderlinedTextField(
 
 @Composable
 @InternalComposePreviewLabApi
-fun UnderlinedTextField(
+fun PreviewLabUnderlinedTextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier,
@@ -143,7 +143,7 @@ fun UnderlinedTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     supportingText: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
-    colors: TextFieldColors = UnderlinedTextFieldDefaults.colors(),
+    colors: PreviewLabTextFieldColors = PreviewLabUnderlinedTextFieldDefaults.colors(),
     cursorBrush: Brush = SolidColor(colors.cursorColor(isError).value),
 ) {
     val textColor =
@@ -157,7 +157,7 @@ fun UnderlinedTextField(
             modifier =
             modifier
                 .defaultMinSize(
-                    minHeight = UnderlinedTextFieldDefaults.MinHeight,
+                    minHeight = PreviewLabUnderlinedTextFieldDefaults.MinHeight,
                 )
                 .fillMaxWidth(),
             value = value,
@@ -175,7 +175,7 @@ fun UnderlinedTextField(
             interactionSource = interactionSource,
             cursorBrush = cursorBrush,
             decorationBox = @Composable { innerTextField ->
-                UnderlinedTextFieldDefaults.DecorationBox(
+                PreviewLabUnderlinedTextFieldDefaults.DecorationBox(
                     value = value.text,
                     innerTextField = innerTextField,
                     visualTransformation = visualTransformation,
@@ -189,7 +189,7 @@ fun UnderlinedTextField(
                     enabled = enabled,
                     isError = isError,
                     interactionSource = interactionSource,
-                    colors = UnderlinedTextFieldDefaults.colors(),
+                    colors = PreviewLabUnderlinedTextFieldDefaults.colors(),
                 )
             },
         )
@@ -198,7 +198,7 @@ fun UnderlinedTextField(
 
 @Immutable
 @InternalComposePreviewLabApi
-object UnderlinedTextFieldDefaults {
+object PreviewLabUnderlinedTextFieldDefaults {
     val MinHeight = TextFieldMinHeight
 
     private fun contentPadding(
@@ -256,7 +256,7 @@ object UnderlinedTextFieldDefaults {
         prefix: @Composable (() -> Unit)? = null,
         suffix: @Composable (() -> Unit)? = null,
         supportingText: @Composable (() -> Unit)? = null,
-        colors: TextFieldColors = colors(),
+        colors: PreviewLabTextFieldColors = colors(),
         container: @Composable () -> Unit = {
             ContainerBox(enabled, isError, interactionSource, colors)
         },
@@ -290,7 +290,7 @@ object UnderlinedTextFieldDefaults {
         enabled: Boolean,
         isError: Boolean,
         interactionSource: InteractionSource,
-        colors: TextFieldColors,
+        colors: PreviewLabTextFieldColors,
         borderThickness: Dp = containerBorderThickness(interactionSource),
     ) {
         Box(
@@ -301,7 +301,7 @@ object UnderlinedTextFieldDefaults {
     }
 
     @Composable
-    fun colors(): TextFieldColors = TextFieldColors(
+    fun colors(): PreviewLabTextFieldColors = PreviewLabTextFieldColors(
         focusedTextColor = PreviewLabTheme.colors.text,
         unfocusedTextColor = PreviewLabTheme.colors.text,
         disabledTextColor = PreviewLabTheme.colors.onDisabled,
