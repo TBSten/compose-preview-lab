@@ -130,8 +130,13 @@ interface InspectorTab {
         }
     }
 
+    /**
+     * Built-in KDoc tab that displays preview function documentation.
+     *
+     * @see InspectorTab
+     */
     data object KDoc : InspectorTab {
-        override val title: String = "Code"
+        override val title: String = "KDoc"
 
         @Composable
         override fun ContentContext.Content() {
@@ -139,7 +144,7 @@ interface InspectorTab {
 
             SelectionContainer {
                 PreviewLabText(
-                    text = kdoc ?: "(No code KDoc)",
+                    text = kdoc ?: "(No KDoc)",
                     modifier = Modifier
                         .horizontalScroll(rememberScrollState())
                         .verticalScroll(rememberScrollState())
@@ -185,7 +190,7 @@ interface InspectorTab {
 
     companion object {
         /**
-         * Default built-in tabs: Fields and Events
+         * Default built-in tabs: Fields, Events, and KDoc
          */
         val defaults: List<InspectorTab> = listOf(Fields, Events, KDoc)
     }
