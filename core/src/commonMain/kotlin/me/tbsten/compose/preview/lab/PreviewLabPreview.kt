@@ -54,6 +54,7 @@ interface PreviewLabPreview {
     val filePath: String?
     val startLineNumber: Int?
     val code: String?
+    val kdoc: String?
     val content: @Composable () -> Unit
 }
 
@@ -65,6 +66,7 @@ data class CollectedPreview @JsOnlyExportIgnore constructor(
     override val filePath: String? = null,
     override val startLineNumber: Int? = null,
     override val code: String? = null,
+    override val kdoc: String? = null,
     override val content: @Composable () -> Unit,
 ) : PreviewLabPreview
 
@@ -83,6 +85,7 @@ fun PreviewLabPreview(
     filePath: String? = null,
     startLineNumber: Int? = null,
     code: String? = null,
+    kdoc: String? = null,
     content: @Composable () -> Unit,
 ): PreviewLabPreview = object : PreviewLabPreview {
     override val id: String = id
@@ -90,5 +93,6 @@ fun PreviewLabPreview(
     override val filePath: String? = filePath
     override val startLineNumber: Int? = startLineNumber
     override val code: String? = code
+    override val kdoc: String? = kdoc
     override val content: @Composable (() -> Unit) = content
 }
