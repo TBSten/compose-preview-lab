@@ -34,10 +34,10 @@ import me.tbsten.compose.preview.lab.previewlab.openfilehandler.LocalOpenFileHan
 import me.tbsten.compose.preview.lab.previewlab.openfilehandler.OpenFileHandler
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.adaptive
-import me.tbsten.compose.preview.lab.ui.components.CommonIconButton
-import me.tbsten.compose.preview.lab.ui.components.Divider
-import me.tbsten.compose.preview.lab.ui.components.HorizontalDivider
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabCommonIconButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabDivider
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabHorizontalDivider
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_remove
 import org.jetbrains.compose.resources.painterResource
@@ -110,7 +110,7 @@ fun PreviewLabGallery(
                                 state = state,
                             )
 
-                            Divider(color = PreviewLabTheme.colors.outline, modifier = Modifier.zIndex(9999f).fillMaxHeight())
+                            PreviewLabDivider(color = PreviewLabTheme.colors.outline, modifier = Modifier.zIndex(9999f).fillMaxHeight())
                         }
                     },
                 )
@@ -130,7 +130,7 @@ fun PreviewLabGallery(
                             )
 
                             if (selectedPreviewIndex != selectedPreviews.lastIndex) {
-                                Divider()
+                                PreviewLabDivider()
                             }
                         }
                     }
@@ -150,7 +150,7 @@ private fun Sidebar(groupedPreviews: Map<String, List<PreviewLabPreview>>, state
                 modifier = Modifier
                     .background(PreviewLabTheme.colors.background),
             )
-            HorizontalDivider()
+            PreviewLabHorizontalDivider()
         }
 
         groupedPreviews.entries.forEachIndexed { index, (groupName, previews) ->
@@ -158,7 +158,7 @@ private fun Sidebar(groupedPreviews: Map<String, List<PreviewLabPreview>>, state
 
             item {
                 SelectionContainer {
-                    Text(
+                    PreviewLabText(
                         text = buildAnnotatedString {
                             append(groupName)
                             withStyle(PreviewLabTheme.typography.label3.toSpanStyle()) {
@@ -196,7 +196,7 @@ private fun Sidebar(groupedPreviews: Map<String, List<PreviewLabPreview>>, state
             }
 
             if (index != groupedPreviews.entries.size - 1) {
-                item { HorizontalDivider() }
+                item { PreviewLabHorizontalDivider() }
             }
         }
     }
@@ -235,7 +235,7 @@ private fun SelectedPreviewTitleHeader(selectedPreview: SelectedPreview, onRemov
     Row(
         modifier = Modifier.padding(12.dp).fillMaxWidth(),
     ) {
-        Text(
+        PreviewLabText(
             text = selectedPreview.title,
             style = PreviewLabTheme.typography.body2,
             maxLines = 3,
@@ -243,7 +243,7 @@ private fun SelectedPreviewTitleHeader(selectedPreview: SelectedPreview, onRemov
             modifier = Modifier.weight(1f),
         )
 
-        CommonIconButton(
+        PreviewLabCommonIconButton(
             painter = painterResource(PreviewLabUiRes.drawable.icon_remove),
             contentDescription = "Remove ${selectedPreview.title}",
             onClick = {
@@ -252,5 +252,5 @@ private fun SelectedPreviewTitleHeader(selectedPreview: SelectedPreview, onRemov
         )
     }
 
-    Divider()
+    PreviewLabDivider()
 }

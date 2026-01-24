@@ -39,10 +39,10 @@ import me.tbsten.compose.preview.lab.LocalIsInPreviewLabGalleryCardBody
 import me.tbsten.compose.preview.lab.PreviewLabPreview
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.adaptive
-import me.tbsten.compose.preview.lab.ui.components.HorizontalDivider
-import me.tbsten.compose.preview.lab.ui.components.Text
-import me.tbsten.compose.preview.lab.ui.components.card.CardDefaults
-import me.tbsten.compose.preview.lab.ui.components.card.OutlinedCard
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabHorizontalDivider
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.card.PreviewLabCardDefaults
+import me.tbsten.compose.preview.lab.ui.components.card.PreviewLabOutlinedCard
 
 @Composable
 fun PreviewListGrid(
@@ -75,7 +75,7 @@ private fun LazyGridScope.previewListGrid(
 ) {
     groupedPreviewList.forEach { (groupName, previewList) ->
         item(span = { GridItemSpan(maxLineSpan) }, key = key to "$groupName:header") {
-            Text(
+            PreviewLabText(
                 text = buildAnnotatedString {
                     append(groupName)
                     withStyle(SpanStyle(fontWeight = FontWeight.Normal, fontSize = 0.8.em)) {
@@ -90,7 +90,7 @@ private fun LazyGridScope.previewListGrid(
 
         if (previewList.isEmpty()) {
             item(span = { GridItemSpan(maxLineSpan) }, key = key to "$groupName:empty") {
-                Text(
+                PreviewLabText(
                     text = "(No @Preview in `$groupName` group)",
                     style = PreviewLabTheme.typography.body2,
                     modifier = Modifier.padding(vertical = 20.dp),
@@ -109,8 +109,8 @@ private fun LazyGridScope.previewListGrid(
 
 @ExperimentalComposePreviewLabApi
 @Composable
-fun PreviewListGridCard(preview: PreviewLabPreview, onClick: () -> Unit) = OutlinedCard(
-    border = CardDefaults.outlinedCardBorder(),
+fun PreviewListGridCard(preview: PreviewLabPreview, onClick: () -> Unit) = PreviewLabOutlinedCard(
+    border = PreviewLabCardDefaults.outlinedCardBorder(),
     onClick = onClick,
 ) {
     Column(
@@ -123,7 +123,7 @@ fun PreviewListGridCard(preview: PreviewLabPreview, onClick: () -> Unit) = Outli
         val name = segments.last()
 
         groupName?.let {
-            Text(
+            PreviewLabText(
                 text = it,
                 style = PreviewLabTheme.typography.label3,
                 color = PreviewLabTheme.colors.textSecondary,
@@ -133,7 +133,7 @@ fun PreviewListGridCard(preview: PreviewLabPreview, onClick: () -> Unit) = Outli
             )
         }
 
-        Text(
+        PreviewLabText(
             text = name,
             style = PreviewLabTheme.typography.label1,
             minLines = 1,
@@ -142,7 +142,7 @@ fun PreviewListGridCard(preview: PreviewLabPreview, onClick: () -> Unit) = Outli
         )
     }
 
-    HorizontalDivider(color = PreviewLabTheme.colors.outline)
+    PreviewLabHorizontalDivider(color = PreviewLabTheme.colors.outline)
 
     val bodyContentPadding = adaptive(small = 4.dp, medium = 8.dp)
     PreviewLabGalleryCardBody(
