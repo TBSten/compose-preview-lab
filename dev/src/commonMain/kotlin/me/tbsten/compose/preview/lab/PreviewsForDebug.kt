@@ -77,6 +77,7 @@ enum class PreviewsForUiDebug(
     override val filePath: String? = "src/commonMain/kotlin/me/tbsten/example/$id.kt",
     override val startLineNumber: Int? = null,
     override val code: String? = null,
+    override val kdoc: String? = null,
     override val content: @Composable (() -> Unit),
 ) : PreviewLabPreview {
     Fields(
