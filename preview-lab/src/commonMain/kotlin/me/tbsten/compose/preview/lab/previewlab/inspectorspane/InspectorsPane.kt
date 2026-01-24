@@ -34,9 +34,9 @@ import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.adaptive
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonVariant
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabCommonIconButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabDivider
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabIcon
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButtonVariant
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabModal
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabTabPager
@@ -78,7 +78,7 @@ internal fun InspectorsPane(
                 ) {
                     allTabs.forEachIndexed { index, tab ->
                         tab.icon?.let { icon ->
-                            PreviewLabCommonIconButton(
+                            PreviewLabIconButton(
                                 variant = PreviewLabIconButtonVariant.PrimaryElevated,
                                 painter = icon(),
                                 contentDescription = tab.title,
@@ -112,7 +112,7 @@ internal fun InspectorsPane(
 
                     if (filePath != null && openHandler != null) {
                         val configuredValue = openHandler.configure()
-                        PreviewLabCommonIconButton(
+                        PreviewLabIconButton(
                             variant = PreviewLabIconButtonVariant.PrimaryOutlined,
                             painter = painterResource(PreviewLabUiRes.drawable.icon_code),
                             contentDescription = "Show source code",

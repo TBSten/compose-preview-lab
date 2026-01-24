@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonVariant
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabCommonIconButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabListItem
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabMenu
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
@@ -146,7 +146,7 @@ private fun PreviewView(
         }
 
         Column {
-            PreviewLabCommonIconButton(
+            PreviewLabIconButton(
                 painter = painterResource(PreviewLabUiRes.drawable.icon_more_vert),
                 contentDescription = "Open menu",
                 onClick = { isMenuOpen = true },

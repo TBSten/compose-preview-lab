@@ -34,9 +34,9 @@ import me.tbsten.compose.preview.lab.previewlab.openfilehandler.LocalOpenFileHan
 import me.tbsten.compose.preview.lab.previewlab.openfilehandler.OpenFileHandler
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.adaptive
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabCommonIconButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabDivider
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabHorizontalDivider
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_remove
@@ -112,7 +112,7 @@ fun PreviewLabGallery(
 
                             PreviewLabDivider(
                                 color = PreviewLabTheme.colors.outline,
-                                modifier = Modifier.zIndex(9999f).fillMaxHeight()
+                                modifier = Modifier.zIndex(9999f).fillMaxHeight(),
                             )
                         }
                     },
@@ -246,7 +246,7 @@ private fun SelectedPreviewTitleHeader(selectedPreview: SelectedPreview, onRemov
             modifier = Modifier.weight(1f),
         )
 
-        PreviewLabCommonIconButton(
+        PreviewLabIconButton(
             painter = painterResource(PreviewLabUiRes.drawable.icon_remove),
             contentDescription = "Remove ${selectedPreview.title}",
             onClick = {

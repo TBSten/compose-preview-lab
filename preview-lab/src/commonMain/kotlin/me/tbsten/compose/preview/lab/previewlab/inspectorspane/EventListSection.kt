@@ -32,8 +32,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.tbsten.compose.preview.lab.PreviewLabEvent
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabCommonIconButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabDivider
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabListHeader
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
@@ -71,7 +71,7 @@ internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: Prev
                     title = "${events.size} items",
                     actions = {
                         // TODO add export button
-                        PreviewLabCommonIconButton(
+                        PreviewLabIconButton(
                             painter = painterResource(PreviewLabUiRes.drawable.icon_delete),
                             contentDescription = "Clear Events",
                             enabled = events.isNotEmpty(),

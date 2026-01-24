@@ -52,7 +52,7 @@ fun PreviewLabModal(
                         .widthIn(min = 200.dp, max = 600.dp)
                         .padding(contentPadding),
                 ) {
-                    PreviewLabCommonIconButton(
+                    PreviewLabIconButton(
                         painter = painterResource(PreviewLabUiRes.drawable.icon_close),
                         contentDescription = "close",
                         tint = PreviewLabTheme.colors.background,

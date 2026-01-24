@@ -12,7 +12,7 @@ import me.tbsten.compose.preview.lab.ui.LocalContentColor
 
 @Composable
 @InternalComposePreviewLabApi
-fun PreviewLabCommonIconButton(
+fun PreviewLabIconButton(
     imageVector: ImageVector,
     contentDescription: String? = null,
     onClick: () -> Unit,
@@ -84,7 +84,7 @@ private fun IconButtonContent(
 
 @Composable
 @InternalComposePreviewLabApi
-fun PreviewLabCommonIconButton(
+fun PreviewLabIconButton(
     painter: Painter,
     contentDescription: String? = null,
     onClick: () -> Unit,

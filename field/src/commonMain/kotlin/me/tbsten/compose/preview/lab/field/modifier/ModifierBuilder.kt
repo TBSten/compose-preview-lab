@@ -16,18 +16,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.ui.components.toast.ToastType
-import me.tbsten.compose.preview.lab.ui.components.toast.rememberToastHostState
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonVariant
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabCommonIconButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabDivider
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabIcon
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabListItem
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabMenu
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabModal
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.toast.ToastType
+import me.tbsten.compose.preview.lab.ui.components.toast.rememberToastHostState
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_add
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_remove
@@ -90,7 +90,7 @@ internal fun ModifierBuilder(
                     modifierFieldValue.Builder()
                 }
 
-                PreviewLabCommonIconButton(
+                PreviewLabIconButton(
                     painter = painterResource(PreviewLabUiRes.drawable.icon_remove),
                     contentDescription = "Remove",
                     onClick = { state.onRemove(index, modifierFieldValue) },

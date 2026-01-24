@@ -41,8 +41,8 @@ import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.adaptive
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonVariant
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabCommonIconButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabDivider
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabModal
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabSurface
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
@@ -217,7 +217,7 @@ private fun <Value> CollectionFieldElementsRow(
 
 @Composable
 private fun InsertButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
-    PreviewLabCommonIconButton(
+    PreviewLabIconButton(
         painter = painterResource(PreviewLabUiRes.drawable.icon_add),
         contentDescription = "Insert",
         onClick = onClick,
