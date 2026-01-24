@@ -67,14 +67,14 @@ public final class me/tbsten/compose/preview/lab/gallery/SelectedPreview$Compani
 public final class me/tbsten/compose/preview/lab/gallery/previewlist/ComposableSingletons$PreviewListTreeKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/gallery/previewlist/ComposableSingletons$PreviewListTreeKt;
 	public fun <init> ()V
-	public final fun getLambda$-1823723456$gallery_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-1872776701$gallery_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-1921829946$gallery_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-375716609$gallery_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-424769854$gallery_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-473823099$gallery_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1023236993$gallery_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$925130503$gallery_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$974183748$gallery_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-768715554$gallery_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-817768799$gallery_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-866822044$gallery_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1980138405$gallery_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2029191650$gallery_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2078244895$gallery_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$532131558$gallery_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$581184803$gallery_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$630238048$gallery_release ()Lkotlin/jvm/functions/Function2;
 }
 
