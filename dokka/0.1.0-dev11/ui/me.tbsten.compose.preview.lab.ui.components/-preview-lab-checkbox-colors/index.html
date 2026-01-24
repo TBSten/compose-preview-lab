@@ -1,0 +1,375 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>PreviewLabCheckboxColors</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
+                    Compose Preview Lab
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">0.1.0-dev11
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":ui/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":ui/commonMain" data-filter=":ui/commonMain">
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    Compose Preview Lab
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="ui::me.tbsten.compose.preview.lab.ui.components/PreviewLabCheckboxColors///PointingToDeclaration//-835133537">
+  <div class="breadcrumbs"><a href="../../index.html">ui</a><span class="delimiter">/</span><a href="../index.html">me.tbsten.compose.preview.lab.ui.components</a><span class="delimiter">/</span><span class="current">PreviewLabCheckboxColors</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Preview</span><wbr><span>Lab</span><wbr><span>Checkbox</span><wbr><span><span>Colors</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Immutable.html"><span class="token annotation builtin">Immutable</span></a></div></div><span class="token keyword">data </span><span class="token keyword">class </span><a href="index.html">PreviewLabCheckboxColors</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>checkedCheckmarkColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>uncheckedCheckmarkColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>checkedBoxColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>uncheckedBoxColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>disabledCheckedBoxColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>disabledUncheckedBoxColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>disabledIndeterminateBoxColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>checkedBorderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>uncheckedBorderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>disabledBorderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>disabledUncheckedBorderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>disabledIndeterminateBorderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></span></span><span class="token punctuation">)</span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="-404762097%2FConstructors%2F-835133537" anchor-label="PreviewLabCheckboxColors" id="-404762097%2FConstructors%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-preview-lab-checkbox-colors.html"><span>Preview</span><wbr><span>Lab</span><wbr><span>Checkbox</span><wbr><span><span>Colors</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-404762097%2FConstructors%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">checkedCheckmarkColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">uncheckedCheckmarkColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">checkedBoxColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">uncheckedBoxColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">disabledCheckedBoxColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">disabledUncheckedBoxColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">disabledIndeterminateBoxColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">checkedBorderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">uncheckedBorderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">disabledBorderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">disabledUncheckedBorderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token punctuation">, </span></span><span class="parameter ">disabledIndeterminateBorderColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="15281752%2FProperties%2F-835133537" anchor-label="checkedBorderColor" id="15281752%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="checked-border-color.html"><span>checked</span><wbr><span>Border</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="15281752%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="checked-border-color.html">checkedBorderColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1902176685%2FProperties%2F-835133537" anchor-label="checkedBoxColor" id="-1902176685%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="checked-box-color.html"><span>checked</span><wbr><span>Box</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1902176685%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="checked-box-color.html">checkedBoxColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="772204637%2FProperties%2F-835133537" anchor-label="checkedCheckmarkColor" id="772204637%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="checked-checkmark-color.html"><span>checked</span><wbr><span>Checkmark</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="772204637%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="checked-checkmark-color.html">checkedCheckmarkColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-584181257%2FProperties%2F-835133537" anchor-label="disabledBorderColor" id="-584181257%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disabled-border-color.html"><span>disabled</span><wbr><span>Border</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-584181257%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="disabled-border-color.html">disabledBorderColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1038377967%2FProperties%2F-835133537" anchor-label="disabledCheckedBoxColor" id="1038377967%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disabled-checked-box-color.html"><span>disabled</span><wbr><span>Checked</span><wbr><span>Box</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1038377967%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="disabled-checked-box-color.html">disabledCheckedBoxColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="113401616%2FProperties%2F-835133537" anchor-label="disabledIndeterminateBorderColor" id="113401616%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disabled-indeterminate-border-color.html"><span>disabled</span><wbr><span>Indeterminate</span><wbr><span>Border</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="113401616%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="disabled-indeterminate-border-color.html">disabledIndeterminateBorderColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="715808923%2FProperties%2F-835133537" anchor-label="disabledIndeterminateBoxColor" id="715808923%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disabled-indeterminate-box-color.html"><span>disabled</span><wbr><span>Indeterminate</span><wbr><span>Box</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="715808923%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="disabled-indeterminate-box-color.html">disabledIndeterminateBoxColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-434170045%2FProperties%2F-835133537" anchor-label="disabledUncheckedBorderColor" id="-434170045%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disabled-unchecked-border-color.html"><span>disabled</span><wbr><span>Unchecked</span><wbr><span>Border</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-434170045%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="disabled-unchecked-border-color.html">disabledUncheckedBorderColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="812961096%2FProperties%2F-835133537" anchor-label="disabledUncheckedBoxColor" id="812961096%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disabled-unchecked-box-color.html"><span>disabled</span><wbr><span>Unchecked</span><wbr><span>Box</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="812961096%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="disabled-unchecked-box-color.html">disabledUncheckedBoxColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1659388767%2FProperties%2F-835133537" anchor-label="uncheckedBorderColor" id="1659388767%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unchecked-border-color.html"><span>unchecked</span><wbr><span>Border</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1659388767%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="unchecked-border-color.html">uncheckedBorderColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1028421292%2FProperties%2F-835133537" anchor-label="uncheckedBoxColor" id="1028421292%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unchecked-box-color.html"><span>unchecked</span><wbr><span>Box</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1028421292%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="unchecked-box-color.html">uncheckedBoxColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="557244918%2FProperties%2F-835133537" anchor-label="uncheckedCheckmarkColor" id="557244918%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unchecked-checkmark-color.html"><span>unchecked</span><wbr><span>Checkmark</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="557244918%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="unchecked-checkmark-color.html">uncheckedCheckmarkColor</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1692925002%2FFunctions%2F-835133537" anchor-label="borderColor" id="-1692925002%2FFunctions%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="border-color.html"><span>border</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1692925002%2FFunctions%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="border-color.html"><span class="token function">borderColor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">enabled<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">state<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/state/ToggleableState.html">ToggleableState</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/State.html">State</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1386397813%2FFunctions%2F-835133537" anchor-label="boxColor" id="-1386397813%2FFunctions%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="box-color.html"><span>box</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1386397813%2FFunctions%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="box-color.html"><span class="token function">boxColor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">enabled<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">state<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/state/ToggleableState.html">ToggleableState</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/State.html">State</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1760274619%2FFunctions%2F-835133537" anchor-label="checkmarkColor" id="1760274619%2FFunctions%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="checkmark-color.html"><span>checkmark</span><wbr><span><span>Color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1760274619%2FFunctions%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="checkmark-color.html"><span class="token function">checkmarkColor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">state<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/state/ToggleableState.html">ToggleableState</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/Color.html">Color</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
