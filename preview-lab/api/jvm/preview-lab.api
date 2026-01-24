@@ -90,7 +90,7 @@ public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabState$Comp
 public final class me/tbsten/compose/preview/lab/previewlab/header/ComposableSingletons$LinksKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/previewlab/header/ComposableSingletons$LinksKt;
 	public fun <init> ()V
-	public final fun getLambda$-437269601$preview_lab ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$512422732$preview_lab ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class me/tbsten/compose/preview/lab/previewlab/inspectorspane/ComposableSingletons$EventListSectionKt {
@@ -102,7 +102,7 @@ public final class me/tbsten/compose/preview/lab/previewlab/inspectorspane/Compo
 public final class me/tbsten/compose/preview/lab/previewlab/inspectorspane/ComposableSingletons$InspectorsPaneKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/previewlab/inspectorspane/ComposableSingletons$InspectorsPaneKt;
 	public fun <init> ()V
-	public final fun getLambda$-497615280$preview_lab ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2121507755$preview_lab ()Lkotlin/jvm/functions/Function2;
 }
 
 public abstract interface class me/tbsten/compose/preview/lab/previewlab/inspectorspane/InspectorTab {

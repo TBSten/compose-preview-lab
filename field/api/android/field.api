@@ -1244,19 +1244,19 @@ public final class me/tbsten/compose/preview/lab/field/modifier/CaptureSizeModif
 public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$AlphaModifierFieldValueKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$AlphaModifierFieldValueKt;
 	public fun <init> ()V
-	public final fun getLambda$1138601732$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-797653746$field_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$AspectRatioModifierFieldValueKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$AspectRatioModifierFieldValueKt;
 	public fun <init> ()V
-	public final fun getLambda$-820743974$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-992426012$field_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$BorderModifierFieldValueKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$BorderModifierFieldValueKt;
 	public fun <init> ()V
-	public final fun getLambda$1786220828$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$765545638$field_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$DefaultModifierFieldValueBuilderKt {
@@ -1269,59 +1269,59 @@ public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingle
 public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$FillMaxSizeModifierFieldValueKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$FillMaxSizeModifierFieldValueKt;
 	public fun <init> ()V
-	public final fun getLambda$-165920452$field_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-855156266$field_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$408572367$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-337602490$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-618603515$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1662129760$field_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$ModifierBuilderKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$ModifierBuilderKt;
 	public fun <init> ()V
-	public final fun getLambda$-1923522710$field_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1710429627$field_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$OffsetModifierBuilderValueKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$OffsetModifierBuilderValueKt;
 	public fun <init> ()V
-	public final fun getLambda$529145501$field_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$551637844$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1087168601$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$2051946974$field_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$PaddingModifierFieldValueKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$PaddingModifierFieldValueKt;
 	public fun <init> ()V
-	public final fun getLambda$-1973636971$field_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-1996129314$field_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-755357354$field_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$462922263$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-473327841$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1963231393$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$682523880$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$744951776$field_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$RotateModifierFieldValueKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$RotateModifierFieldValueKt;
 	public fun <init> ()V
-	public final fun getLambda$794480892$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-226194298$field_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$ScaleModifierFieldValueKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$ScaleModifierFieldValueKt;
 	public fun <init> ()V
-	public final fun getLambda$1371628332$field_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$241535843$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-564627146$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-779139347$field_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$SizeModifierFieldValueKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$SizeModifierFieldValueKt;
 	public fun <init> ()V
-	public final fun getLambda$-1149430788$field_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-534847902$field_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1401323799$field_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$145481203$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1790774275$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1978260346$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1477411277$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1823863916$field_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$ZIndexModifierFieldValueKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$ZIndexModifierFieldValueKt;
 	public fun <init> ()V
-	public final fun getLambda$-958045540$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1978720730$field_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope {
@@ -1337,7 +1337,7 @@ public final class me/tbsten/compose/preview/lab/field/modifier/DefaultModifierF
 	public static final fun Label (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Landroidx/compose/ui/text/AnnotatedString;Landroidx/compose/runtime/Composer;I)V
 	public static final fun Label (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Ljava/lang/String;Landroidx/compose/runtime/Composer;I)V
 	public static final fun SelectItem (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Ljava/lang/String;Ljava/lang/Object;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
-	public static final fun TextFieldItem (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Ljava/lang/String;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/ui/components/Transformer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun TextFieldItem (Lme/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderDefaultMenuScope;Ljava/lang/String;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/ui/components/PreviewLabTransformer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/DefaultModifierFieldValueBuilderMenuScope {
