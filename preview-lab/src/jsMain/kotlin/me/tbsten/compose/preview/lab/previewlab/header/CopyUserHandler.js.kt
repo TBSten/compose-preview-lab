@@ -23,7 +23,6 @@ internal actual fun copyUserHandler(params: Map<String, String>): CopyUserHandle
 
     val link = window.location.href
         .let {
-            println()
             URL(it).apply {
                 search = ""
                 params.forEach { (key, value) ->
