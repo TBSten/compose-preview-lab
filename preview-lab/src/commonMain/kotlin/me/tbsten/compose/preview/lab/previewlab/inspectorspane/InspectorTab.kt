@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_edit
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_history
@@ -137,7 +137,7 @@ interface InspectorTab {
             val code = LocalPreviewLabPreview.current?.code
 
             SelectionContainer {
-                Text(
+                PreviewLabText(
                     text = if (code != null) {
                         state.fields.fold(code) { acc, field ->
                             val valueCode = field.valueCode()

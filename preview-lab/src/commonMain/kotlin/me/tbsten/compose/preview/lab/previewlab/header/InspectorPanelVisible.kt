@@ -14,8 +14,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Icon
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIcon
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_right_panel_close
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_right_panel_open
@@ -32,7 +32,7 @@ internal fun InspectorPanelVisible(isInspectorPanelVisible: Boolean, onToggle: (
             .clickable { onToggle() }
             .padding(8.dp),
     ) {
-        Icon(
+        PreviewLabIcon(
             painter = painterResource(
                 if (isInspectorPanelVisible) {
                     PreviewLabUiRes.drawable.icon_right_panel_close
@@ -44,7 +44,7 @@ internal fun InspectorPanelVisible(isInspectorPanelVisible: Boolean, onToggle: (
             modifier = Modifier.size(20.dp),
         )
 
-        Text(
+        PreviewLabText(
             text = "Toggle\nTabs",
             style = PreviewLabTheme.typography.label3,
             textAlign = TextAlign.Center,
