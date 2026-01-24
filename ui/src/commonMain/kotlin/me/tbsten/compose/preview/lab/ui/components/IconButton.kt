@@ -32,7 +32,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.contentColorFor
@@ -40,7 +40,7 @@ import me.tbsten.compose.preview.lab.ui.foundation.ButtonElevation
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabIconButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -109,7 +109,7 @@ private fun IconButtonComponent(
     }
 }
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 enum class PreviewLabIconButtonVariant {
     Primary,
     PrimaryOutlined,
@@ -126,7 +126,7 @@ enum class PreviewLabIconButtonVariant {
     Ghost,
 }
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 object PreviewLabIconButtonDefaults {
     val ButtonSize = 44.dp
     val ButtonPadding = PaddingValues(4.dp)
@@ -343,7 +343,7 @@ object PreviewLabIconButtonDefaults {
 }
 
 @Immutable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 data class PreviewLabIconButtonColors(
     val containerColor: Color,
     val contentColor: Color,
@@ -363,7 +363,7 @@ data class PreviewLabIconButtonColors(
 }
 
 @Immutable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 data class PreviewLabIconButtonStyle(
     val colors: PreviewLabIconButtonColors,
     val shape: Shape,

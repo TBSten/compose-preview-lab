@@ -23,14 +23,14 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
 import me.tbsten.compose.preview.lab.ui.LocalTextStyle
 import me.tbsten.compose.preview.lab.ui.LocalTypography
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabText(
     text: String,
     modifier: Modifier = Modifier,
@@ -72,7 +72,7 @@ fun PreviewLabText(
 }
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabText(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
@@ -121,7 +121,7 @@ fun PreviewLabText(
 }
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabSelectableText(
     text: AnnotatedString,
     modifier: Modifier = Modifier,

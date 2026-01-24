@@ -6,10 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun ColumnScope.PreviewLabDivider(
     modifier: Modifier = Modifier,
     thickness: Dp = PreviewLabDividerDefaults.Thickness,
@@ -21,7 +21,7 @@ fun ColumnScope.PreviewLabDivider(
 )
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun RowScope.PreviewLabDivider(
     modifier: Modifier = Modifier,
     thickness: Dp = PreviewLabDividerDefaults.Thickness,

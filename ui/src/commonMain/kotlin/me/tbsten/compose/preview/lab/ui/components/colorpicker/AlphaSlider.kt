@@ -29,10 +29,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import kotlin.math.max
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 internal fun AlphaSlider(selectedColor: Color, onColorSelected: (Color) -> Unit, modifier: Modifier = Modifier) {
     val initialSelectedColor = remember { selectedColor }
     var sliderSize by remember { mutableStateOf<Size?>(null) }

@@ -12,10 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun ToastHost(state: ToastHostState, modifier: Modifier = Modifier, maxVisibleToasts: Int = 5) {
     val visibleToasts = state.toasts.takeLast(maxVisibleToasts)
     val toastCount = visibleToasts.size

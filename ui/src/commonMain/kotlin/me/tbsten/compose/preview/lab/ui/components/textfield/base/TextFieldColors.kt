@@ -12,10 +12,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.takeOrElse
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 
 @Immutable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 class PreviewLabTextFieldColors(
     val focusedTextColor: Color,
     val unfocusedTextColor: Color,

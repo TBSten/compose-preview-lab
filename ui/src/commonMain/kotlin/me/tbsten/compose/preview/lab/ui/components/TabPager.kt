@@ -8,10 +8,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.launch
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun <T> PreviewLabTabPager(
     tabs: List<T>,
     title: (T) -> String,

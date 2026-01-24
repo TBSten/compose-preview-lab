@@ -6,13 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 
 /**
  * refs: https://github.com/krizzu/kolor-picker
  */
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabColorPicker(color: Color, onColorSelected: (Color) -> Unit, modifier: Modifier = Modifier) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(2.dp),

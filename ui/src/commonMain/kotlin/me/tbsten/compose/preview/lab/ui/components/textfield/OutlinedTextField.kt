@@ -29,7 +29,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.CommonDecorationBox
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.FocusedOutlineThickness
@@ -44,7 +44,7 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.base.UnfocusedOutli
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.containerOutline
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabOutlinedTextField(
     value: String,
     onValueChange: (String) -> Unit,
@@ -122,7 +122,7 @@ fun PreviewLabOutlinedTextField(
 }
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabOutlinedTextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
@@ -202,7 +202,7 @@ fun PreviewLabOutlinedTextField(
 }
 
 @Immutable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 object PreviewLabOutlinedTextFieldDefaults {
     val MinHeight = TextFieldMinHeight
     val Shape: Shape = RoundedCornerShape(8.dp)

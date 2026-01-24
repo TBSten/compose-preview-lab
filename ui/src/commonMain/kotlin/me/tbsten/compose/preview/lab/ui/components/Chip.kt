@@ -27,7 +27,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabChipDefaults.ChipIconHorizontalPadding
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabChipDefaults.ChipIconSize
@@ -36,7 +36,7 @@ import me.tbsten.compose.preview.lab.ui.foundation.ButtonElevation
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabChip(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -64,7 +64,7 @@ fun PreviewLabChip(
 }
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabElevatedChip(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -92,7 +92,7 @@ fun PreviewLabElevatedChip(
 }
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabOutlinedChip(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -120,7 +120,7 @@ fun PreviewLabOutlinedChip(
 }
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabChipComponent(
     modifier: Modifier,
     enabled: Boolean = true,
@@ -169,7 +169,7 @@ fun PreviewLabChipComponent(
 }
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabDefaultChipComponent(
     modifier: Modifier = Modifier,
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -206,7 +206,7 @@ fun PreviewLabDefaultChipComponent(
     }
 }
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 object PreviewLabChipDefaults {
     private val ChipPaddingHorizontal = 6.dp
     private val ChipPaddingVertical = 6.dp
@@ -285,7 +285,7 @@ object PreviewLabChipDefaults {
 }
 
 @Immutable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 data class PreviewLabChipColors(
     val containerColor: Color,
     val contentColor: Color,
@@ -329,7 +329,7 @@ data class PreviewLabChipColors(
 }
 
 @Immutable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 data class PreviewLabChipStyle(
     val colors: PreviewLabChipColors,
     val shape: Shape,

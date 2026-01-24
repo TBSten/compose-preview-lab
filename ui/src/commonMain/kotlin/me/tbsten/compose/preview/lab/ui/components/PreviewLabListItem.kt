@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 
 private const val SelectedBorderWidth = 12
@@ -26,7 +26,7 @@ private const val SelectedBorderWidth = 12
  * @param modifier Modifier to apply to the item
  */
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabListItem(
     title: String,
     isSelected: Boolean,
@@ -59,7 +59,7 @@ fun PreviewLabListItem(
  * @param leadingContent Optional composable content to display before the title
  */
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabListItem(
     title: String,
     isSelected: Boolean,
@@ -93,7 +93,7 @@ fun PreviewLabListItem(
  * @param content Composable content to display within the list item
  */
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabListItem(
     isSelected: Boolean,
     onSelect: (() -> Unit)? = null,

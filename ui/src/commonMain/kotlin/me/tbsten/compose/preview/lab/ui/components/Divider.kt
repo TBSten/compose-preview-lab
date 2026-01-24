@@ -11,11 +11,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabHorizontalDivider(
     modifier: Modifier = Modifier,
     thickness: Dp = PreviewLabDividerDefaults.Thickness,
@@ -34,7 +34,7 @@ fun PreviewLabHorizontalDivider(
 }
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabVerticalDivider(
     modifier: Modifier = Modifier,
     thickness: Dp = PreviewLabDividerDefaults.Thickness,
@@ -52,7 +52,7 @@ fun PreviewLabVerticalDivider(
     )
 }
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 object PreviewLabDividerDefaults {
     val Thickness: Dp = 1.dp
     val color: Color @Composable get() = PreviewLabTheme.colors.outline

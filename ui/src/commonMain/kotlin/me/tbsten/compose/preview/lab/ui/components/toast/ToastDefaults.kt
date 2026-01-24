@@ -6,10 +6,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 object ToastDefaults {
     val shape: Shape = RoundedCornerShape(8.dp)
     val shadowElevation: Dp = 4.dp

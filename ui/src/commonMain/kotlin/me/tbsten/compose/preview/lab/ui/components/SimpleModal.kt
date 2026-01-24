@@ -17,14 +17,14 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_close
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabModal(
     isVisible: Boolean,
     onDismissRequest: () -> Unit,

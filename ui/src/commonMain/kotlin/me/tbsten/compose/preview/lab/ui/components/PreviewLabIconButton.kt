@@ -7,11 +7,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabIconButton(
     imageVector: ImageVector,
     contentDescription: String? = null,
@@ -83,7 +83,7 @@ private fun IconButtonContent(
 }
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabIconButton(
     painter: Painter,
     contentDescription: String? = null,
@@ -119,7 +119,7 @@ fun PreviewLabIconButton(
 }
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabIconButtonContent(
     painter: Painter,
     contentDescription: String? = null,

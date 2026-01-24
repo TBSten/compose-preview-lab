@@ -14,7 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalTextStyle
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.adaptive
@@ -23,7 +23,7 @@ import me.tbsten.compose.preview.lab.ui.generated.resources.icon_check
 import org.jetbrains.compose.resources.imageResource
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun <V> PreviewLabSelectButton(
     choices: List<V>,
     currentIndex: Int,
@@ -41,7 +41,7 @@ fun <V> PreviewLabSelectButton(
 )
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun <V> PreviewLabSelectButton(
     value: V,
     choices: List<V>,

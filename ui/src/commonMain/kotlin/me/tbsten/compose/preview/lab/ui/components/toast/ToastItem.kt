@@ -24,7 +24,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabIcon
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabSurface
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
@@ -33,7 +33,7 @@ import me.tbsten.compose.preview.lab.ui.generated.resources.icon_close
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun ToastItem(toast: ToastData, onDismiss: () -> Unit, modifier: Modifier = Modifier,) {
     var isVisible by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
