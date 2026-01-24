@@ -14,23 +14,36 @@ Compose Preview Lab は、Compose の `@Preview` をインタラクティブな 
 ## Build & Test Commands
 
 ```bash
-# Lint
-./gradlew ktlintCheck
+# Lint check
+./gradlew ktlintCheck --continue
+
+# Lint auto-fix
+./gradlew ktlintFormat
 
 # Binary compatibility check
-./gradlew apiCheck
+./gradlew apiCheck --continue
 
 # Run all JVM tests (excludes PBT by default in CI)
-./gradlew jvmTest
+./gradlew jvmTest --continue
 
 # Run specific test class
-./gradlew jvmTest --tests "me.tbsten.compose.preview.lab.SomeTest"
+./gradlew jvmTest --tests "me.tbsten.compose.preview.lab.SomeTest" --continue
 
 # Run tests excluding Property-Based Tests
-./gradlew jvmTest -Dkotest.tags='!PBT'
+./gradlew jvmTest -Dkotest.tags='!PBT' --continue
 
 # Run only Property-Based Tests
-./gradlew jvmTest -Dkotest.tags='PBT'
+./gradlew jvmTest -Dkotest.tags='PBT' --continue
+
+# Other platform tests (run in CI)
+./gradlew jsBrowserTest --continue           # JS
+./gradlew wasmJsBrowserTest --continue       # Wasm JS
+./gradlew testDebugUnitTest --continue       # Android Debug
+./gradlew iosSimulatorArm64Test --continue   # iOS (macOS only)
+
+# Integration tests (separate Gradle project)
+(cd integrationTest && ./gradlew jvmTest --continue)
+(cd integrationTest && ./gradlew jvmTest -Dkotest.tags='!PBT' --continue)
 
 # Update API dump (after adding public APIs)
 ./gradlew apiDump
@@ -44,8 +57,7 @@ Compose Preview Lab は、Compose の `@Preview` をインタラクティブな 
 `integrationTest/` は独立した Gradle プロジェクト（composite build ではない）:
 
 ```bash
-cd integrationTest
-./gradlew jvmTest
+(cd integrationTest && ./gradlew jvmTest)
 ```
 
 ### Dev Module
@@ -57,34 +69,6 @@ cd integrationTest
 ```
 
 ## Module Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                         starter                              │
-│              (全モジュールをバンドル、ユーザ向け)            │
-└─────────────────────────────────────────────────────────────┘
-         ↓
-┌─────────────┐  ┌─────────────┐  ┌─────────────┐
-│   gallery   │  │ preview-lab │  │    field    │
-│ (カタログUI) │  │ (PreviewLab │  │ (Field実装) │
-│             │  │  Composable) │  │             │
-└─────────────┘  └─────────────┘  └─────────────┘
-         ↓              ↓              ↓
-┌─────────────┐  ┌─────────────┐
-│     ui      │  │    core     │
-│ (共通UI)    │  │ (型定義)    │
-└─────────────┘  └─────────────┘
-                       ↓
-               ┌─────────────┐
-               │  annotation │
-               │ (@Preview等)│
-               └─────────────┘
-
-┌─────────────┐  ┌─────────────┐
-│  ksp-plugin │  │gradle-plugin│
-│(@Preview収集)│  │ (設定簡略化)│
-└─────────────┘  └─────────────┘
-```
 
 - **core**: `PreviewLabPreview`, `PreviewLabField`, `PreviewLabEvent` などの基本型
 - **field**: `StringField`, `IntField`, `BooleanField`, `SelectableField` などの Field 実装
