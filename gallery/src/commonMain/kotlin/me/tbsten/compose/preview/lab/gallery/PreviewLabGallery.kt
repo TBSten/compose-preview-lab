@@ -110,7 +110,10 @@ fun PreviewLabGallery(
                                 state = state,
                             )
 
-                            PreviewLabDivider(color = PreviewLabTheme.colors.outline, modifier = Modifier.zIndex(9999f).fillMaxHeight())
+                            PreviewLabDivider(
+                                color = PreviewLabTheme.colors.outline,
+                                modifier = Modifier.zIndex(9999f).fillMaxHeight()
+                            )
                         }
                     },
                 )

@@ -364,7 +364,11 @@ data class PreviewLabIconButtonColors(
 
 @Immutable
 @InternalComposePreviewLabApi
-data class PreviewLabIconButtonStyle(val colors: PreviewLabIconButtonColors, val shape: Shape, val elevation: ButtonElevation? = null)
+data class PreviewLabIconButtonStyle(
+    val colors: PreviewLabIconButtonColors,
+    val shape: Shape,
+    val elevation: ButtonElevation? = null
+)
 
 @Composable
 @Preview

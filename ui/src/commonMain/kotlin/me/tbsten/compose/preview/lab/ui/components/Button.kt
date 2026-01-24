@@ -23,12 +23,12 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.foundation.ButtonElevation
-import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 @InternalComposePreviewLabApi
@@ -621,7 +621,12 @@ private fun DestructiveButtonPreview() {
             }
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                PreviewLabButton(text = "DestructiveOutlined", variant = PreviewLabButtonVariant.DestructiveOutlined, onClick = {})
+                PreviewLabButton(
+                    text = "DestructiveOutlined",
+                    variant = PreviewLabButtonVariant.DestructiveOutlined,
+                    onClick = {
+                    },
+                )
 
                 PreviewLabButton(
                     text = "Disabled",
@@ -631,7 +636,12 @@ private fun DestructiveButtonPreview() {
             }
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                PreviewLabButton(text = "DestructiveElevated", variant = PreviewLabButtonVariant.DestructiveElevated, onClick = {})
+                PreviewLabButton(
+                    text = "DestructiveElevated",
+                    variant = PreviewLabButtonVariant.DestructiveElevated,
+                    onClick = {
+                    },
+                )
 
                 PreviewLabButton(
                     text = "Disabled",
