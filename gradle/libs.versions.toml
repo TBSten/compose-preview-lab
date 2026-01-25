@@ -1,6 +1,6 @@
 [versions]
 # Project
-composePreviewLab = "0.1.0-dev11"
+composePreviewLab = "0.1.0-dev12"
 
 # Build Configuration
 jvmToolchain = "17"

@@ -279,7 +279,6 @@ object PreviewLabCardDefaults {
     ): BorderStroke = remember(borderWidth, color) { BorderStroke(borderWidth, color) }
 }
 
-@ConsistentCopyVisibility
 @Immutable
 @UiComposePreviewLabApi
 data class PreviewLabCardColors @UiComposePreviewLabApi
