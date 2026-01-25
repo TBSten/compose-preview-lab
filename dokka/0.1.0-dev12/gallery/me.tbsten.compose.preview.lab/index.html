@@ -1,0 +1,306 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>me.tbsten.compose.preview.lab</title>
+<link href="../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer></script></head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../index.html" tabindex="1">
+                    Compose Preview Lab
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">0.1.0-dev12
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector js-like" data-active="" aria-pressed="true" data-filter=":gallery/jsMain">js</button>
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":gallery/jvmMain">jvm</button>
+                <button class="platform-tag platform-selector wasm-like" data-active="" aria-pressed="true" data-filter=":gallery/wasmJsMain">wasmJs</button>
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":gallery/webMain">web</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option js-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":gallery/jsMain" data-filter=":gallery/jsMain">
+                                <span class="checkbox--icon"></span>
+                                js
+                            </label>
+                        </li>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":gallery/jvmMain" data-filter=":gallery/jvmMain">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                        <li role="option" class="dropdown--option platform-selector-option wasm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":gallery/wasmJsMain" data-filter=":gallery/wasmJsMain">
+                                <span class="checkbox--icon"></span>
+                                wasmJs
+                            </label>
+                        </li>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":gallery/webMain" data-filter=":gallery/webMain">
+                                <span class="checkbox--icon"></span>
+                                web
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    Compose Preview Lab
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="package" id="content" pageids="gallery::me.tbsten.compose.preview.lab////PointingToDeclaration//1121914619">
+  <div class="breadcrumbs"><a href="../index.html">gallery</a><span class="delimiter">/</span><span class="current">me.tbsten.compose.preview.lab</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="845618866%2FClasslikes%2F1481663985" anchor-label="DisposePreviewLabPreviewElements" id="845618866%2FClasslikes%2F1481663985" data-filterable-set=":gallery/jsMain,:gallery/wasmJsMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gallery/jsMain,:gallery/wasmJsMain" data-filterable-set=":gallery/jsMain,:gallery/wasmJsMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-dispose-preview-lab-preview-elements/index.html"><span>Dispose</span><wbr><span>Preview</span><wbr><span>Lab</span><wbr><span>Preview</span><wbr><span><span>Elements</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="845618866%2FClasslikes%2F1481663985"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":gallery/jsMain" data-filterable-set=":gallery/jsMain" data-active="" data-toggle=":gallery/jsMain">js</button><button class="platform-bookmark" data-filterable-current=":gallery/wasmJsMain" data-filterable-set=":gallery/wasmJsMain" data-toggle=":gallery/wasmJsMain">wasmJs</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":gallery/jsMain"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-dispose-preview-lab-preview-elements/index.html">DisposePreviewLabPreviewElements</a><span class="token operator"> = </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></div></div><div class="content sourceset-dependent-content" data-togglable=":gallery/wasmJsMain"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-dispose-preview-lab-preview-elements/index.html">DisposePreviewLabPreviewElements</a><span class="token operator"> = </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1521178635%2FFunctions%2F1665365505" anchor-label="EmbeddedPreviewOrGallery" id="-1521178635%2FFunctions%2F1665365505" data-filterable-set=":gallery/webMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gallery/webMain" data-filterable-set=":gallery/webMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-embedded-preview-or-gallery.html"><span>Embedded</span><wbr><span>Preview</span><wbr><span>Or</span><wbr><span><span>Gallery</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1521178635%2FFunctions%2F1665365505"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":gallery/webMain" data-filterable-set=":gallery/webMain" data-active="" data-toggle=":gallery/webMain">web</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":gallery/webMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="-embedded-preview-or-gallery.html"><span class="token function">EmbeddedPreviewOrGallery</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">previewList<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../core/me.tbsten.compose.preview.lab/-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">modifier<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/Modifier.html">Modifier</a><span class="token operator"> = </span>Modifier<span class="token punctuation">, </span></span><span class="parameter ">isEmbeddedSearchParamName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">"iframe"</span><span class="token punctuation">, </span></span><span class="parameter ">previewIdQueryName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">"previewId"</span><span class="token punctuation">, </span></span><span class="parameter ">state<span class="token operator">: </span><a href="../me.tbsten.compose.preview.lab.gallery/-preview-lab-gallery-state/index.html">PreviewLabGalleryState</a><span class="token operator"> = </span>remember {
+        PreviewLabGalleryState(
+            initialSelectedPreview = initialSelectedPreviewFromSearchParam(previewList, previewIdQueryName),
+        )
+    }<span class="token punctuation">, </span></span><span class="parameter ">openFileHandler<span class="token operator">: </span><a href="../../preview-lab/me.tbsten.compose.preview.lab.previewlab.openfilehandler/-open-file-handler/index.html">OpenFileHandler</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">featuredFileList<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token operator"> = </span>emptyMap()<span class="token punctuation">, </span></span><span class="parameter ">noSelectedContents<span class="token operator">: </span><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a>&nbsp;</span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../core/me.tbsten.compose.preview.lab/-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{ groupedPreviews -&gt;
+        PreviewListGrid(
+            groupedPreviewList = groupedPreviews,
+            onPreviewClick = { group, preview -&gt; state.select(group, preview) },
+            contentPadding = PaddingValues(adaptive(12.dp, 20.dp)),
+        )
+    }</span></span><span class="token punctuation">)</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1751449597%2FFunctions%2F1689437628" anchor-label="findBySearchParam" id="1751449597%2FFunctions%2F1689437628" data-filterable-set=":gallery/webMain,:gallery/jsMain,:gallery/wasmJsMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":gallery/webMain,:gallery/jsMain,:gallery/wasmJsMain" data-filterable-set=":gallery/webMain,:gallery/jsMain,:gallery/wasmJsMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="find-by-search-param.html"><span>find</span><wbr><span>By</span><wbr><span>Search</span><wbr><span><span>Param</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1751449597%2FFunctions%2F1689437628"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":gallery/jsMain" data-filterable-set=":gallery/jsMain" data-active="" data-toggle=":gallery/jsMain">js</button><button class="platform-bookmark" data-filterable-current=":gallery/wasmJsMain" data-filterable-set=":gallery/wasmJsMain" data-toggle=":gallery/wasmJsMain">wasmJs</button><button class="platform-bookmark" data-filterable-current=":gallery/webMain" data-filterable-set=":gallery/webMain" data-toggle=":gallery/webMain">web</button></div>
+<div class="content sourceset-dependent-content" data-togglable=":gallery/jsMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../core/me.tbsten.compose.preview.lab/-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="find-by-search-param.html"><span class="token function">findBySearchParam</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">previewIdQueryName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../core/me.tbsten.compose.preview.lab/-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token operator">?</span></div></div><div class="content sourceset-dependent-content" data-togglable=":gallery/wasmJsMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../core/me.tbsten.compose.preview.lab/-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="find-by-search-param.html"><span class="token function">findBySearchParam</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">previewIdQueryName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../core/me.tbsten.compose.preview.lab/-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token operator">?</span></div></div><div class="content sourceset-dependent-content" data-active="" data-togglable=":gallery/webMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../core/me.tbsten.compose.preview.lab/-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="find-by-search-param.html"><span class="token function">findBySearchParam</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">previewIdQueryName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">"previewId"</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../core/me.tbsten.compose.preview.lab/-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token operator">?</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1818833196%2FFunctions%2F1665365505" anchor-label="initialSelectedPreviewFromSearchParam" id="1818833196%2FFunctions%2F1665365505" data-filterable-set=":gallery/webMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gallery/webMain" data-filterable-set=":gallery/webMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="initial-selected-preview-from-search-param.html"><span>initial</span><wbr><span>Selected</span><wbr><span>Preview</span><wbr><span>From</span><wbr><span>Search</span><wbr><span><span>Param</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1818833196%2FFunctions%2F1665365505"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":gallery/webMain" data-filterable-set=":gallery/webMain" data-active="" data-toggle=":gallery/webMain">web</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":gallery/webMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="initial-selected-preview-from-search-param.html"><span class="token function">initialSelectedPreviewFromSearchParam</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">previewList<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../core/me.tbsten.compose.preview.lab/-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">previewIdQueryName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">"previewId"</span><span class="token punctuation">, </span></span><span class="parameter ">groupName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>AllGroupName</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="../../core/me.tbsten.compose.preview.lab/-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token operator">&gt;</span><span class="token operator">?</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1673405894%2FFunctions%2F1689437628" anchor-label="isEmbedded" id="1673405894%2FFunctions%2F1689437628" data-filterable-set=":gallery/webMain,:gallery/jsMain,:gallery/wasmJsMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gallery/webMain,:gallery/jsMain,:gallery/wasmJsMain" data-filterable-set=":gallery/webMain,:gallery/jsMain,:gallery/wasmJsMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-embedded.html"><span>is</span><wbr><span><span>Embedded</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1673405894%2FFunctions%2F1689437628"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":gallery/jsMain" data-filterable-set=":gallery/jsMain" data-active="" data-toggle=":gallery/jsMain">js</button><button class="platform-bookmark" data-filterable-current=":gallery/wasmJsMain" data-filterable-set=":gallery/wasmJsMain" data-toggle=":gallery/wasmJsMain">wasmJs</button><button class="platform-bookmark" data-filterable-current=":gallery/webMain" data-filterable-set=":gallery/webMain" data-toggle=":gallery/webMain">web</button></div>
+<div class="content sourceset-dependent-content" data-togglable=":gallery/jsMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="is-embedded.html"><span class="token function">isEmbedded</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isEmbeddedSearchParamName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div><div class="content sourceset-dependent-content" data-togglable=":gallery/wasmJsMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="is-embedded.html"><span class="token function">isEmbedded</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isEmbeddedSearchParamName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div><div class="content sourceset-dependent-content" data-active="" data-togglable=":gallery/webMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">fun </span><a href="is-embedded.html"><span class="token function">isEmbedded</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isEmbeddedSearchParamName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">"iframe"</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-684185591%2FFunctions%2F1481663985" anchor-label="previewLabApplication" id="-684185591%2FFunctions%2F1481663985" data-filterable-set=":gallery/jsMain,:gallery/wasmJsMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gallery/jsMain,:gallery/wasmJsMain" data-filterable-set=":gallery/jsMain,:gallery/wasmJsMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../annotation/me.tbsten.compose.preview.lab/index.html"><span>preview</span><wbr><span>Lab</span><wbr><span><span>Application</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-684185591%2FFunctions%2F1481663985"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":gallery/jsMain" data-filterable-set=":gallery/jsMain" data-active="" data-toggle=":gallery/jsMain">js</button><button class="platform-bookmark" data-filterable-current=":gallery/wasmJsMain" data-filterable-set=":gallery/wasmJsMain" data-toggle=":gallery/wasmJsMain">wasmJs</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":gallery/jsMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="[js]preview-lab-application.html"><span class="token function">previewLabApplication</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">previewList<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../core/me.tbsten.compose.preview.lab/-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">featuredFileList<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token operator"> = </span>emptyMap()<span class="token punctuation">, </span></span><span class="parameter ">openFileHandler<span class="token operator">: </span><a href="../../preview-lab/me.tbsten.compose.preview.lab.previewlab.openfilehandler/-open-file-handler/index.html">OpenFileHandler</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">state<span class="token operator">: </span><a href="../../gallery/me.tbsten.compose.preview.lab.gallery/-preview-lab-gallery-state/index.html">PreviewLabGalleryState</a><span class="token operator"> = </span>PreviewLabGalleryState()<span class="token punctuation">, </span></span><span class="parameter ">rootElement<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/org.w3c.dom/-h-t-m-l-element/index.html">HTMLElement</a><span class="token operator"> = </span>document.body!!</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Launches a web application for previewing Compose components</p></div></div><div class="content sourceset-dependent-content" data-togglable=":gallery/wasmJsMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="[wasm-js]preview-lab-application.html"><span class="token function">previewLabApplication</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">previewList<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../core/me.tbsten.compose.preview.lab/-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">featuredFileList<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token operator"> = </span>emptyMap()<span class="token punctuation">, </span></span><span class="parameter ">openFileHandler<span class="token operator">: </span><a href="../../preview-lab/me.tbsten.compose.preview.lab.previewlab.openfilehandler/-open-file-handler/index.html">OpenFileHandler</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">state<span class="token operator">: </span><a href="../../gallery/me.tbsten.compose.preview.lab.gallery/-preview-lab-gallery-state/index.html">PreviewLabGalleryState</a><span class="token operator"> = </span>PreviewLabGalleryState()<span class="token punctuation">, </span></span><span class="parameter ">rootElement<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/org.w3c.dom/-h-t-m-l-element/index.html">HTMLElement</a><span class="token operator"> = </span>document.body!!</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Launches a WebAssembly application for previewing Compose components</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1002460027%2FFunctions%2F-561743797" anchor-label="PreviewLabGalleryWindows" id="1002460027%2FFunctions%2F-561743797" data-filterable-set=":gallery/jvmMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":gallery/jvmMain" data-filterable-set=":gallery/jvmMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-preview-lab-gallery-windows.html"><span>Preview</span><wbr><span>Lab</span><wbr><span>Gallery</span><wbr><span><span>Windows</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1002460027%2FFunctions%2F-561743797"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":gallery/jvmMain" data-filterable-set=":gallery/jvmMain" data-active="" data-toggle=":gallery/jvmMain">jvm</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":gallery/jvmMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/window/ApplicationScope.html">ApplicationScope</a><span class="token punctuation">.</span><a href="-preview-lab-gallery-windows.html"><span class="token function">PreviewLabGalleryWindows</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">previewList<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../core/me.tbsten.compose.preview.lab/-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">openFileHandler<span class="token operator">: </span><a href="../../preview-lab/me.tbsten.compose.preview.lab.previewlab.openfilehandler/-open-file-handler/index.html">OpenFileHandler</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">featuredFileList<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token operator"> = </span>emptyMap()<span class="token punctuation">, </span></span><span class="parameter ">state<span class="token operator">: </span><a href="../me.tbsten.compose.preview.lab.gallery/-preview-lab-gallery-state/index.html">PreviewLabGalleryState</a><span class="token operator"> = </span>remember { PreviewLabGalleryState() }<span class="token punctuation">, </span></span><span class="parameter ">noSelectedContents<span class="token operator">: </span><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a>&nbsp;</span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../core/me.tbsten.compose.preview.lab/-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{ groupedPreviews -&gt;
+        PreviewListGrid(
+            groupedPreviewList = groupedPreviews,
+            onPreviewClick = { group, preview -&gt; state.select(group, preview) },
+            contentPadding = PaddingValues(adaptive(12.dp, 20.dp)),
+        )
+    }<span class="token punctuation">, </span></span><span class="parameter ">mcpServerConfig<span class="token operator">: </span><a href="../me.tbsten.compose.preview.lab.mcp/-preview-lab-mcp-server-config/index.html">PreviewLabMcpServerConfig</a><span class="token operator"> = </span>PreviewLabMcpServerConfig()<span class="token punctuation">, </span></span><span class="parameter ">windowState<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/window/WindowState.html">WindowState</a><span class="token operator"> = </span>rememberWindowState(size = DpSize(1000.dp, 800.dp))<span class="token punctuation">, </span></span><span class="parameter ">onCloseRequest<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>::exitApplication<span class="token punctuation">, </span></span><span class="parameter ">visible<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter ">title<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">"Compose Preview Lab"</span><span class="token punctuation">, </span></span><span class="parameter ">icon<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/painter/Painter.html">Painter</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">undecorated<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter ">transparent<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter ">resizable<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter ">enabled<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter ">focusable<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter ">alwaysOnTop<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter ">onPreviewKeyEvent<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/input/key/KeyEvent.html">KeyEvent</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>{ false }<span class="token punctuation">, </span></span><span class="parameter ">onKeyEvent<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/input/key/KeyEvent.html">KeyEvent</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>{ false }</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Creates a desktop window application for previewing Compose components</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1009821219%2FFunctions%2F1481663985" anchor-label="renderPreviewLabPreview" id="-1009821219%2FFunctions%2F1481663985" data-filterable-set=":gallery/jsMain,:gallery/wasmJsMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gallery/jsMain,:gallery/wasmJsMain" data-filterable-set=":gallery/jsMain,:gallery/wasmJsMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../annotation/me.tbsten.compose.preview.lab/index.html"><span>render</span><wbr><span>Preview</span><wbr><span>Lab</span><wbr><span><span>Preview</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1009821219%2FFunctions%2F1481663985"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":gallery/jsMain" data-filterable-set=":gallery/jsMain" data-active="" data-toggle=":gallery/jsMain">js</button><button class="platform-bookmark" data-filterable-current=":gallery/wasmJsMain" data-filterable-set=":gallery/wasmJsMain" data-toggle=":gallery/wasmJsMain">wasmJs</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":gallery/jsMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="[js]render-preview-lab-preview.html"><span class="token function">renderPreviewLabPreview</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">rootElement<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/org.w3c.dom/-element/index.html">Element</a><span class="token punctuation">, </span></span><span class="parameter ">preview<span class="token operator">: </span><a href="../../core/me.tbsten.compose.preview.lab/-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token punctuation">, </span></span><span class="parameter ">openFileHandler<span class="token operator">: </span><a href="../../preview-lab/me.tbsten.compose.preview.lab.previewlab.openfilehandler/-open-file-handler/index.html">OpenFileHandler</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">navigator<span class="token operator">: </span><a href="../../gallery/me.tbsten.compose.preview.lab.gallery/-preview-lab-gallery-navigator/index.html">PreviewLabGalleryNavigator</a><span class="token operator"> = </span>NoOpPreviewLabGalleryNavigator</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-dispose-preview-lab-preview-elements/index.html">DisposePreviewLabPreviewElements</a></div></div><div class="content sourceset-dependent-content" data-togglable=":gallery/wasmJsMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="[wasm-js]render-preview-lab-preview.html"><span class="token function">renderPreviewLabPreview</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">rootElement<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/org.w3c.dom/-element/index.html">Element</a><span class="token punctuation">, </span></span><span class="parameter ">preview<span class="token operator">: </span><a href="../../core/me.tbsten.compose.preview.lab/-preview-lab-preview/index.html">PreviewLabPreview</a><span class="token punctuation">, </span></span><span class="parameter ">openFileHandler<span class="token operator">: </span><a href="../../preview-lab/me.tbsten.compose.preview.lab.previewlab.openfilehandler/-open-file-handler/index.html">OpenFileHandler</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">navigator<span class="token operator">: </span><a href="../../gallery/me.tbsten.compose.preview.lab.gallery/-preview-lab-gallery-navigator/index.html">PreviewLabGalleryNavigator</a><span class="token operator"> = </span>NoOpPreviewLabGalleryNavigator</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-dispose-preview-lab-preview-elements/index.html">DisposePreviewLabPreviewElements</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

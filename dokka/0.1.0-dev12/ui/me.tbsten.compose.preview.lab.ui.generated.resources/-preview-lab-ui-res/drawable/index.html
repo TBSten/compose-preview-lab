@@ -1,0 +1,382 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>drawable</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer></script></head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../../index.html" tabindex="1">
+                    Compose Preview Lab
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">0.1.0-dev12
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":ui/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":ui/commonMain" data-filter=":ui/commonMain">
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    Compose Preview Lab
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="ui::me.tbsten.compose.preview.lab.ui.generated.resources/PreviewLabUiRes.drawable///PointingToDeclaration//-835133537">
+  <div class="breadcrumbs"><a href="../../../index.html">ui</a><span class="delimiter">/</span><a href="../../index.html">me.tbsten.compose.preview.lab.ui.generated.resources</a><span class="delimiter">/</span><a href="../index.html">PreviewLabUiRes</a><span class="delimiter">/</span><span class="current">drawable</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>drawable</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="index.html">drawable</a></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION,EXTENSION_PROPERTY,EXTENSION_FUNCTION">Members &amp; Extensions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="EXTENSION_PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="-314218163%2FProperties%2F-835133537" anchor-label="icon_add" id="-314218163%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../icon_add.html"><span>icon_</span><wbr><span>add</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-314218163%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">PreviewLabUiRes.drawable</a><span class="token punctuation">.</span><a href="../../icon_add.html">icon_add</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.compose.resources/DrawableResource///PointingToDeclaration/">DrawableResource</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="517470760%2FProperties%2F-835133537" anchor-label="icon_arrow_drop_down" id="517470760%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../icon_arrow_drop_down.html"><span>icon_</span><wbr><span>arrow_</span><wbr><span>drop_</span><wbr><span>down</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="517470760%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">PreviewLabUiRes.drawable</a><span class="token punctuation">.</span><a href="../../icon_arrow_drop_down.html">icon_arrow_drop_down</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.compose.resources/DrawableResource///PointingToDeclaration/">DrawableResource</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-333852108%2FProperties%2F-835133537" anchor-label="icon_check" id="-333852108%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../icon_check.html"><span>icon_</span><wbr><span>check</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-333852108%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">PreviewLabUiRes.drawable</a><span class="token punctuation">.</span><a href="../../icon_check.html">icon_check</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.compose.resources/DrawableResource///PointingToDeclaration/">DrawableResource</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-953542876%2FProperties%2F-835133537" anchor-label="icon_close" id="-953542876%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../icon_close.html"><span>icon_</span><wbr><span>close</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-953542876%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">PreviewLabUiRes.drawable</a><span class="token punctuation">.</span><a href="../../icon_close.html">icon_close</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.compose.resources/DrawableResource///PointingToDeclaration/">DrawableResource</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1259358055%2FProperties%2F-835133537" anchor-label="icon_code" id="1259358055%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../icon_code.html"><span>icon_</span><wbr><span>code</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1259358055%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">PreviewLabUiRes.drawable</a><span class="token punctuation">.</span><a href="../../icon_code.html">icon_code</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.compose.resources/DrawableResource///PointingToDeclaration/">DrawableResource</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-139455936%2FProperties%2F-835133537" anchor-label="icon_dashboard" id="-139455936%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../icon_dashboard.html"><span>icon_</span><wbr><span>dashboard</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-139455936%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">PreviewLabUiRes.drawable</a><span class="token punctuation">.</span><a href="../../icon_dashboard.html">icon_dashboard</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.compose.resources/DrawableResource///PointingToDeclaration/">DrawableResource</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1552388379%2FProperties%2F-835133537" anchor-label="icon_delete" id="-1552388379%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../icon_delete.html"><span>icon_</span><wbr><span>delete</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1552388379%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">PreviewLabUiRes.drawable</a><span class="token punctuation">.</span><a href="../../icon_delete.html">icon_delete</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.compose.resources/DrawableResource///PointingToDeclaration/">DrawableResource</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1055153724%2FProperties%2F-835133537" anchor-label="icon_edit" id="-1055153724%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../icon_edit.html"><span>icon_</span><wbr><span>edit</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1055153724%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">PreviewLabUiRes.drawable</a><span class="token punctuation">.</span><a href="../../icon_edit.html">icon_edit</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.compose.resources/DrawableResource///PointingToDeclaration/">DrawableResource</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1773154944%2FProperties%2F-835133537" anchor-label="icon_history" id="1773154944%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../icon_history.html"><span>icon_</span><wbr><span>history</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1773154944%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">PreviewLabUiRes.drawable</a><span class="token punctuation">.</span><a href="../../icon_history.html">icon_history</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.compose.resources/DrawableResource///PointingToDeclaration/">DrawableResource</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="367770183%2FProperties%2F-835133537" anchor-label="icon_more_vert" id="367770183%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../icon_more_vert.html"><span>icon_</span><wbr><span>more_</span><wbr><span>vert</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="367770183%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">PreviewLabUiRes.drawable</a><span class="token punctuation">.</span><a href="../../icon_more_vert.html">icon_more_vert</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.compose.resources/DrawableResource///PointingToDeclaration/">DrawableResource</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1901511801%2FProperties%2F-835133537" anchor-label="icon_refresh" id="-1901511801%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../icon_refresh.html"><span>icon_</span><wbr><span>refresh</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1901511801%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">PreviewLabUiRes.drawable</a><span class="token punctuation">.</span><a href="../../icon_refresh.html">icon_refresh</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.compose.resources/DrawableResource///PointingToDeclaration/">DrawableResource</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1337700094%2FProperties%2F-835133537" anchor-label="icon_remove" id="1337700094%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../icon_remove.html"><span>icon_</span><wbr><span>remove</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1337700094%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">PreviewLabUiRes.drawable</a><span class="token punctuation">.</span><a href="../../icon_remove.html">icon_remove</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.compose.resources/DrawableResource///PointingToDeclaration/">DrawableResource</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-972978042%2FProperties%2F-835133537" anchor-label="icon_right_panel_close" id="-972978042%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../icon_right_panel_close.html"><span>icon_</span><wbr><span>right_</span><wbr><span>panel_</span><wbr><span>close</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-972978042%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">PreviewLabUiRes.drawable</a><span class="token punctuation">.</span><a href="../../icon_right_panel_close.html">icon_right_panel_close</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.compose.resources/DrawableResource///PointingToDeclaration/">DrawableResource</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1386871710%2FProperties%2F-835133537" anchor-label="icon_right_panel_open" id="-1386871710%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../icon_right_panel_open.html"><span>icon_</span><wbr><span>right_</span><wbr><span>panel_</span><wbr><span>open</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1386871710%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">PreviewLabUiRes.drawable</a><span class="token punctuation">.</span><a href="../../icon_right_panel_open.html">icon_right_panel_open</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.compose.resources/DrawableResource///PointingToDeclaration/">DrawableResource</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1773596914%2FProperties%2F-835133537" anchor-label="icon_screenshot_frame" id="-1773596914%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../icon_screenshot_frame.html"><span>icon_</span><wbr><span>screenshot_</span><wbr><span>frame</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1773596914%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">PreviewLabUiRes.drawable</a><span class="token punctuation">.</span><a href="../../icon_screenshot_frame.html">icon_screenshot_frame</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.compose.resources/DrawableResource///PointingToDeclaration/">DrawableResource</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1250883901%2FProperties%2F-835133537" anchor-label="icon_zoom_in" id="1250883901%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../icon_zoom_in.html"><span>icon_</span><wbr><span>zoom_</span><wbr><span>in</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1250883901%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">PreviewLabUiRes.drawable</a><span class="token punctuation">.</span><a href="../../icon_zoom_in.html">icon_zoom_in</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.compose.resources/DrawableResource///PointingToDeclaration/">DrawableResource</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1085415652%2FProperties%2F-835133537" anchor-label="icon_zoom_out" id="-1085415652%2FProperties%2F-835133537" data-filterable-set=":ui/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":ui/commonMain" data-filterable-set=":ui/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../icon_zoom_out.html"><span>icon_</span><wbr><span>zoom_</span><wbr><span>out</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1085415652%2FProperties%2F-835133537"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">PreviewLabUiRes.drawable</a><span class="token punctuation">.</span><a href="../../icon_zoom_out.html">icon_zoom_out</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.compose.resources/DrawableResource///PointingToDeclaration/">DrawableResource</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
