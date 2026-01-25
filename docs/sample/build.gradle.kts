@@ -1,10 +1,15 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.INT
 import org.jetbrains.compose.reload.gradle.ComposeHotRun
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.androidApplication)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.buildkonfig)
@@ -14,6 +19,11 @@ plugins {
 
 kotlin {
     jvmToolchain(17)
+
+    // for Preview
+    androidTarget {
+        instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
+    }
 
     jvm()
 
@@ -48,6 +58,11 @@ kotlin {
             implementation(project(":uiLib"))
         }
 
+        androidMain.dependencies {
+            implementation(libs.composeUiTooling)
+            implementation(libs.androidxActivityCompose)
+        }
+
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
         }
@@ -65,7 +80,26 @@ kotlin {
     }
 }
 
+android {
+    namespace = "me.tbsten.compose.preview.lab.docs"
+    compileSdk = 36
+
+    defaultConfig {
+        minSdk = 23
+        targetSdk = 36
+
+        applicationId = "me.tbsten.compose.preview.lab.docs.androidApp"
+        versionCode = 1
+        versionName = "1.0.0"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+}
+
 dependencies {
+    androidTestImplementation(libs.androidxUitestJunit4)
+    debugImplementation(libs.androidxUitestTestManifest)
+
     val composePreviewLabKspPlugin =
         "me.tbsten.compose.preview.lab:ksp-plugin:${libs.versions.composePreviewLab.get()}"
     add("kspCommonMainMetadata", composePreviewLabKspPlugin)
