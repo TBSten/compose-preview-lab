@@ -89,6 +89,10 @@ jobs:
       - name: Test Integration Test
         shell: bash
         run: cd ./integrationTest && ./gradlew ${{ matrix.test_task }} ${{ matrix.kotest_tags && format('-Dkotest.tags="{0}"', matrix.kotest_tags) || '' }}
+      - name: Test Docs
+        if: matrix.test_task == 'jvmTest'
+        shell: bash
+        run: cd ./docs && ./gradlew jvmTest ${{ matrix.kotest_tags && format('-Dkotest.tags="{0}"', matrix.kotest_tags) || '' }}
   publish-to-maven-local:
     name: Publish to Maven Local
     runs-on: ubuntu-latest
