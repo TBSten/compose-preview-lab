@@ -25,6 +25,7 @@ class PreviewLabState(
     initialContentOffset: Offset = Offset.Zero,
     initialContentScale: Float = 1f,
     initialIsInspectorPanelVisible: Boolean = true,
+    initialGridSize: Dp? = 40.dp,
 ) {
     internal var contentRootOffsetInAppRoot by mutableStateOf<DpOffset?>(null)
 
@@ -48,7 +49,7 @@ class PreviewLabState(
     var contentScale by mutableStateOf(initialContentScale)
 
     @ExperimentalComposePreviewLabApi
-    var gridSize by mutableStateOf<Dp?>(40.dp)
+    var gridSize by mutableStateOf<Dp?>(initialGridSize)
 
     /**
      * Controls whether the inspector panel is visible.
