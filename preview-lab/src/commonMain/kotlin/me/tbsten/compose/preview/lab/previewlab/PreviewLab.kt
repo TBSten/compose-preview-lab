@@ -3,7 +3,6 @@ package me.tbsten.compose.preview.lab.previewlab
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.draggable2D
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,8 +23,6 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.TransformOrigin
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
@@ -647,18 +644,11 @@ private fun ContentSection(
             )
         }
 
-    Box(
+    ZoomableContent(
+        state = state,
         modifier = modifier
             .zIndex(-1f)
             .contentSectionBackground(state.contentOffset, state.contentScale, state.gridSize)
-            .draggable2D(state.contentDraggableState)
-            .graphicsLayer {
-                translationX = state.contentOffset.x
-                translationY = state.contentOffset.y
-                scaleX = state.contentScale
-                scaleY = state.contentScale
-                transformOrigin = TransformOrigin(0f, 0f)
-            }
             .fillMaxSize(),
     ) {
         Box(
