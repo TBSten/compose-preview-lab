@@ -50,7 +50,7 @@ internal fun HueSlider(selectedColor: Color, onColorSelected: (Color) -> Unit, m
         val newColor = hueDegreeToColor(hueDegreeAtPosition)
 
         thumbPositionY = newPosition
-        updateColor(newColor)
+        updateColor(newColor.copy(alpha = selectedColor.alpha))
     }
 
     LaunchedEffect(sliderSize, initialSelectedHue) {
