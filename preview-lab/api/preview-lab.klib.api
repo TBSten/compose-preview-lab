@@ -118,7 +118,7 @@ final class me.tbsten.compose.preview.lab.previewlab/PreviewLabScope { // me.tbs
 }
 
 final class me.tbsten.compose.preview.lab.previewlab/PreviewLabState { // me.tbsten.compose.preview.lab.previewlab/PreviewLabState|null[0]
-    constructor <init>(androidx.compose.ui.geometry/Offset = ..., kotlin/Float = ..., kotlin/Boolean = ...) // me.tbsten.compose.preview.lab.previewlab/PreviewLabState.<init>|<init>(androidx.compose.ui.geometry.Offset;kotlin.Float;kotlin.Boolean){}[0]
+    constructor <init>(androidx.compose.ui.geometry/Offset = ..., kotlin/Float = ..., kotlin/Boolean = ..., androidx.compose.ui.unit/Dp? = ...) // me.tbsten.compose.preview.lab.previewlab/PreviewLabState.<init>|<init>(androidx.compose.ui.geometry.Offset;kotlin.Float;kotlin.Boolean;androidx.compose.ui.unit.Dp?){}[0]
 
     final val events // me.tbsten.compose.preview.lab.previewlab/PreviewLabState.events|{}events[0]
         final fun <get-events>(): androidx.compose.runtime.snapshots/SnapshotStateList<me.tbsten.compose.preview.lab/PreviewLabEvent> // me.tbsten.compose.preview.lab.previewlab/PreviewLabState.events.<get-events>|<get-events>(){}[0]
