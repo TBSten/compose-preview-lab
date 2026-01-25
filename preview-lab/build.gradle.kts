@@ -18,6 +18,14 @@ kotlin {
             it.get().dependsOn(otherWeb)
         }
 
+        // Zoomable ライブラリ対応プラットフォーム用 (JS以外)
+        val zoomableMain by creating {
+            dependsOn(commonMain.get())
+        }
+        listOf(androidMain, jvmMain, iosMain, wasmJsMain).forEach {
+            it.get().dependsOn(zoomableMain)
+        }
+
         commonMain.dependencies {
             api(projects.core)
             api(projects.ui)
@@ -25,6 +33,9 @@ kotlin {
             implementation(libs.kotlinxSerializationJson)
             implementation(libs.filekitCore)
             implementation(libs.filekitDialogs)
+        }
+        zoomableMain.dependencies {
+            implementation(libs.zoomable)
         }
         jvmTest.dependencies {
             implementation(libs.kotestProperty)

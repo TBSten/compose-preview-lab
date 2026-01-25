@@ -53,6 +53,9 @@ jewelIdeLafBridge = "0.27.0"
 hotReload = "1.1.0-alpha03"
 lumoUi = "1.2.5"
 
+# Zoomable
+zoomable = "2.9.0"
+
 # ================================
 # Extension Dependencies
 # ================================
@@ -109,6 +112,9 @@ kotlinxCoroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-tes
 androidxActivityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivityCompose" }
 androidxUitestTestManifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "androidxUiTest" }
 androidxUitestJunit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidxUiTest" }
+
+# Zoomable
+zoomable = { module = "net.engawapg.lib:zoomable", version.ref = "zoomable" }
 
 # Build Logic
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
