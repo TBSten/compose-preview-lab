@@ -8,6 +8,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.field.BooleanField
@@ -17,10 +18,9 @@ import me.tbsten.compose.preview.lab.field.splitedOf
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.sample.component.previewLab
 import me.tbsten.compose.preview.lab.sample.component.rememberCodeTab
-import androidx.compose.ui.tooling.preview.Preview
 
-@Preview
 @ComposePreviewLabOption(id = "FieldCombined")
+@Preview
 @Composable
 private fun FieldCombined() = previewLab(
     inspectorTabs = InspectorTab.defaults +
