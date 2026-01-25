@@ -79,16 +79,24 @@ public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabState {
 	public final fun getContentScale ()F
 	public final fun getEvents ()Landroidx/compose/runtime/snapshots/SnapshotStateList;
 	public final fun getFields ()Landroidx/compose/runtime/snapshots/SnapshotStateList;
+	public final fun getGridSize-lTKBWiU ()Landroidx/compose/ui/unit/Dp;
 	public final fun getSelectedTabIndex ()Ljava/lang/Integer;
 	public final fun isInspectorPanelVisible ()Z
 	public final fun setContentOffset-k-4lQ0M (J)V
 	public final fun setContentScale (F)V
+	public final fun setGridSize-YLDhkOg (Landroidx/compose/ui/unit/Dp;)V
 	public final fun setInspectorPanelVisible (Z)V
 	public final fun setSelectedTabIndex (Ljava/lang/Integer;)V
 }
 
 public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabState$Companion {
 	public final fun getSaver ()Landroidx/compose/runtime/saveable/Saver;
+}
+
+public final class me/tbsten/compose/preview/lab/previewlab/header/ComposableSingletons$GridSizeKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/previewlab/header/ComposableSingletons$GridSizeKt;
+	public fun <init> ()V
+	public final fun getLambda$1355484122$preview_lab_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class me/tbsten/compose/preview/lab/previewlab/header/ComposableSingletons$LinksKt {
