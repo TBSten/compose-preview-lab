@@ -1,0 +1,111 @@
+.navbarHideable {
+  transition: transform var(--ifm-transition-fast) ease;
+}
+
+.navbarHidden {
+  transform: translate3d(0, calc(-100% - 2px), 0);
+}
+
+/* Custom Glassmorphism Navbar Styles */
+:global(.navbar) {
+  background: rgba(15, 12, 41, 0.8) !important;
+  border-bottom: 1px solid rgba(168, 85, 247, 0.2) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05) inset !important;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+  overflow: hidden;
+}
+
+:global(.navbar)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(168, 85, 247, 0.5),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+:global(.navbar):hover::before {
+  opacity: 1;
+}
+
+:global(.navbar):hover {
+  border-bottom-color: rgba(168, 85, 247, 0.5) !important;
+  box-shadow: 0 4px 30px rgba(168, 85, 247, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1) inset !important;
+}
+
+/* Navbar Items Hover Effect */
+:global(.navbar__item) {
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  position: relative;
+}
+
+:global(.navbar__item)::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--neon-accent), var(--ifm-color-primary));
+  transition: width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+:global(.navbar__item:hover) {
+  transform: translateY(-2px) !important;
+  color: var(--ifm-color-primary-light) !important;
+}
+
+:global(.navbar__item:hover)::after {
+  width: 100%;
+}
+
+/* Navbar Brand/Logo */
+:global(.navbar__brand) {
+  transition: all 0.3s ease !important;
+}
+
+:global(.navbar__brand:hover) {
+  transform: scale(1.05) !important;
+  filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.5)) !important;
+}
+
+/* Light Mode Navbar */
+[data-theme='light'] :global(.navbar) {
+  background: rgba(245, 243, 255, 0.8) !important;
+  border-bottom-color: rgba(126, 34, 206, 0.2) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05) inset !important;
+}
+
+[data-theme='light'] :global(.navbar):hover {
+  border-bottom-color: rgba(126, 34, 206, 0.4) !important;
+  box-shadow: 0 4px 30px rgba(126, 34, 206, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.08) inset !important;
+}
+
+[data-theme='light'] :global(.navbar__item:hover) {
+  color: var(--ifm-color-primary-dark) !important;
+}
+
+[data-theme='light'] :global(.navbar__item)::after {
+  background: linear-gradient(90deg, var(--ifm-color-primary-dark), var(--ifm-color-primary));
+}
+
+/* Mobile Sidebar Toggle Button */
+:global(.navbar__toggle) {
+  transition: all 0.3s ease !important;
+}
+
+:global(.navbar__toggle:hover) {
+  transform: scale(1.1) !important;
+  color: var(--ifm-color-primary-light) !important;
+}

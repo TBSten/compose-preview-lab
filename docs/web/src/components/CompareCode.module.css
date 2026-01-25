@@ -1,0 +1,27 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: var(--ifm-leading);
+}
+
+@media (max-width: 996px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* overflow対策 */
+}
+
+.label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: var(--ifm-color-content-secondary);
+}
+
+/* CodeBlock内のマージン調整などがもし必要ならここに記述 */
+
