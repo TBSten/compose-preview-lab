@@ -11,7 +11,7 @@ import org.w3c.dom.Element
 
 @OptIn(ExperimentalJsExport::class, ExperimentalWasmJsInterop::class)
 @JsExport
-val appPreviewList = (app.PreviewList + uiLib.PreviewList)
+val appPreviewList = (app.PreviewList)
     .toJsArray()
 
 @OptIn(ExperimentalJsExport::class, ExperimentalWasmJsInterop::class, ExperimentalComposePreviewLabApi::class)
@@ -30,11 +30,7 @@ fun main() {
             state = remember {
                 PreviewLabGalleryState(
                     initialSelectedPreview =
-                        initialSelectedPreviewFromSearchParam(appPreviewList.toList()),
-//                            ?: (
-//                                FeaturedFileList.hello_compose_preview_lab.first() to
-//                                    PreviewList.AboutComposePreviewLab
-//                                ),
+                    initialSelectedPreviewFromSearchParam(appPreviewList.toList()),
                 )
             },
         )

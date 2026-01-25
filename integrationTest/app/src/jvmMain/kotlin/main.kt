@@ -6,7 +6,7 @@ import me.tbsten.compose.preview.lab.previewlab.openfilehandler.UrlOpenFileHandl
 
 fun main(): Unit = application {
     PreviewLabGalleryWindows(
-        previewList = app.PreviewList + uiLib.PreviewList,
+        previewList = app.PreviewList,
         featuredFileList = app.FeaturedFileList,
         openFileHandler = UrlOpenFileHandler(
             baseUrl = "https://github.com/TBSten/compose-preview-lab/blob/main/integrationTest/",

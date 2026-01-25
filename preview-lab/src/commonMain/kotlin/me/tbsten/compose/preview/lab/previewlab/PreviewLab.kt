@@ -738,7 +738,7 @@ private fun Modifier.contentSectionBackground(
 
             val gridYStart = contentOffset.y - floor(contentOffset.y / gridSize) * gridSize
             var gridY = gridYStart
-            while (gridY <= size.width) {
+            while (gridY <= size.height) {
                 drawLine(
                     color = color,
                     start = Offset(0f, gridY),

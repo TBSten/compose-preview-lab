@@ -18,5 +18,6 @@ Pods/
 .claude/settings.local.json
 integrationTest/.claude/settings.local.json
 integrationTest/web/.claude/settings.local.json
+docs/web/.claude/settings.local.json
 
 .local/

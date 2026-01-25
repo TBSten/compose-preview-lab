@@ -56,17 +56,18 @@ jobs:
         with:
           node-version: "22"
           cache: "npm"
-          cache-dependency-path: ./integrationTest/web/package-lock.json
+          cache-dependency-path: ./docs/web/package-lock.json
       - name: Setup safe-chain
         run: |
           npm i -g @aikidosec/safe-chain
           safe-chain setup-ci
       - run: mkdir -p ./public
-      - name: Build publish wasmJs contents
-        run: cd integrationTest && ./gradlew :app:buildProductionPreviewLabGallery
-      - run: echo 'config.baseUrl = "/compose-preview-lab/integrationTest/main/js"' >> ./integrationTest/web/docusaurus.config.ts
-      - run: cd integrationTest/web && npm ci && npm run build
-      - run: cp -r ./integrationTest/web/build ./public/js
+      - name: Build PreviewLabGallery JS contents
+        run: cd docs && ./gradlew :sample:buildProductionPreviewLabGallery
+      - name: Build Docusaurus
+        run: cd docs/web && npm ci && npm run build
+      - name: Copy web documentation to public
+        run: cp -r ./docs/web/build/* ./public/
       - name: Upload web documentation artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -108,8 +109,7 @@ jobs:
         run: |
           mkdir -p ./public/dokka/${{ steps.get_version.outputs.version }}
           cp -r ./dokka-docs/* ./public/dokka/${{ steps.get_version.outputs.version }}/
-          mkdir -p ./public/integrationTest/main
-          cp -r ./web-docs/* ./public/integrationTest/main/
+          cp -r ./web-docs/* ./public/
       - name: Publish to Github Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
