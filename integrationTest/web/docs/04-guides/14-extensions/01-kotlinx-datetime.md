@@ -268,6 +268,6 @@ PreviewLab {
 ## 関連リンク
 
 - [Fields Overview](../fields/overview) - Field の基本的な使い方
-- [All Builtin Fields](../fields/all-builtin-fields) - ビルトインの Field 一覧
+- [Primitive Fields](../fields/primitive-fields)、[Enhance Fields](../fields/enhance-fields)、[Compose Value Fields](../fields/compose-value-fields)、[Collection Fields](../fields/collection-fields) - ビルトインの Field 一覧
 - [kotlinx-datetime GitHub](https://github.com/Kotlin/kotlinx-datetime) - kotlinx-datetime ライブラリ
 - [kotlinx-datetime API Reference](https://kotlinlang.org/api/kotlinx-datetime/) - kotlinx-datetime API ドキュメント

@@ -166,7 +166,7 @@ fun main() = previewLabApplication(
 
 ## 次のステップ
 
-- [Fields](./fields/all-builtin-fields) で Preview をインタラクティブにする
+- [Fields Overview](./fields/overview) で Preview をインタラクティブにする
 - [Events](./events) でイベントハンドリングを学ぶ
 - [Collect Preview](./collect-preview) で PreviewList の自動生成について詳しく学ぶ
 

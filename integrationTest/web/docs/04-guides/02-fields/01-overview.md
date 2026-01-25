@@ -174,7 +174,11 @@ Compose Preview Lab には、多くのビルトイン Field が用意されて�
 ただしここにある Field はほんの一部です。
 自分で作成することもできます。
 
-すべての Field の完全なリストは、[All Builtin Fields](./all-builtin-fields) を参照してください。
+すべての Field の完全なリストは、以下のページを参照してください：
+- [Primitive Fields](./primitive-fields)
+- [Enhance Fields](./enhance-fields)
+- [Compose Value Fields](./compose-value-fields)
+- [Collection Fields](./collection-fields)
 
 ## Field のラベルと初期値
 
@@ -216,7 +220,7 @@ Compose Preview Lab の Field は、ビルトインではない独自の型（�
 
 ## 次のステップ
 
-- [All Builtin Fields](./all-builtin-fields) で利用可能なすべての Field を確認してください。
+- [Primitive Fields](./primitive-fields)、[Enhance Fields](./enhance-fields)、[Compose Value Fields](./compose-value-fields)、[Collection Fields](./collection-fields) で利用可能なすべての Field を確認してください。
 - [Enhance Fields](./enhance-fields) で Field の強化方法を学んでください。
 - [Custom Fields](./custom-fields) で独自の Field を作成する方法を学んでください。
 
