@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
@@ -31,6 +32,8 @@ internal fun PreviewLabHeader(
     isHeaderShow: Boolean,
     scale: Float,
     onScaleChange: (Float) -> Unit,
+    onOffsetReset: () -> Unit,
+    onGridSizeChange: (Dp?) -> Unit,
     isInspectorPanelVisible: Boolean,
     onIsInspectorPanelVisibleToggle: () -> Unit,
     modifier: Modifier = Modifier,
@@ -53,6 +56,14 @@ internal fun PreviewLabHeader(
                 Zoom(
                     scale = scale,
                     onScaleChange = onScaleChange,
+                    onOffsetReset = onOffsetReset,
+                )
+
+                PreviewLabVerticalDivider()
+
+                GridSize(
+                    gridSize = state.gridSize,
+                    onGridSizeChange = onGridSizeChange,
                 )
 
                 PreviewLabVerticalDivider()

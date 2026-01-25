@@ -20,7 +20,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.layer.GraphicsLayer
@@ -33,6 +36,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import kotlin.math.floor
 import kotlinx.serialization.json.Json
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.LocalIsInPreviewLabGalleryCardBody
@@ -50,6 +54,7 @@ import me.tbsten.compose.preview.lab.ui.components.toast.ToastAction
 import me.tbsten.compose.preview.lab.ui.components.toast.ToastHost
 import me.tbsten.compose.preview.lab.ui.components.toast.ToastHostState
 import me.tbsten.compose.preview.lab.ui.components.toast.rememberToastHostState
+import me.tbsten.compose.preview.lab.ui.util.thenIfNotNull
 import me.tbsten.compose.preview.lab.ui.util.toDpOffset
 
 /**
@@ -525,6 +530,8 @@ open class PreviewLab(
                         isHeaderShow = isHeaderShow,
                         scale = state.contentScale,
                         onScaleChange = { state.contentScale = it },
+                        onOffsetReset = { state.contentOffset = Offset.Zero },
+                        onGridSizeChange = { state.gridSize = it },
                         isInspectorPanelVisible = state.isInspectorPanelVisible,
                         onIsInspectorPanelVisibleToggle = { state.isInspectorPanelVisible = !state.isInspectorPanelVisible },
                     ) {
@@ -643,6 +650,7 @@ private fun ContentSection(
     Box(
         modifier = modifier
             .zIndex(-1f)
+            .contentSectionBackground(state.contentOffset, state.contentScale, state.gridSize)
             .draggable2D(state.contentDraggableState)
             .graphicsLayer {
                 translationX = state.contentOffset.x
@@ -650,7 +658,8 @@ private fun ContentSection(
                 scaleX = state.contentScale
                 scaleY = state.contentScale
                 transformOrigin = TransformOrigin(0f, 0f)
-            }.fillMaxSize(),
+            }
+            .fillMaxSize(),
     ) {
         Box(
             modifier = Modifier
@@ -695,6 +704,49 @@ private fun ContentSection(
                     },
             ) {
                 content(state.scope)
+            }
+        }
+    }
+}
+
+@Composable
+private fun Modifier.contentSectionBackground(
+    contentOffset: Offset,
+    contentScale: Float,
+    gridSize: Dp?,
+    color: Color = PreviewLabTheme.colors.outlineSecondary,
+) = thenIfNotNull(gridSize) { gridSize ->
+    if (gridSize.value <= 0) {
+        this
+    } else {
+        drawBehind {
+            val gridSize = gridSize.toPx() * contentScale
+
+            // grid
+            val gridXStart = contentOffset.x - floor(contentOffset.x / gridSize) * gridSize
+            var gridX = gridXStart
+            while (gridX <= size.width) {
+                drawLine(
+                    color = color,
+                    start = Offset(gridX, 0f),
+                    end = Offset(gridX, size.height),
+                    strokeWidth = 1.dp.toPx(),
+                )
+
+                gridX += gridSize
+            }
+
+            val gridYStart = contentOffset.y - floor(contentOffset.y / gridSize) * gridSize
+            var gridY = gridYStart
+            while (gridY <= size.width) {
+                drawLine(
+                    color = color,
+                    start = Offset(0f, gridY),
+                    end = Offset(size.width, gridY),
+                    strokeWidth = 1.dp.toPx(),
+                )
+
+                gridY += gridSize
             }
         }
     }
