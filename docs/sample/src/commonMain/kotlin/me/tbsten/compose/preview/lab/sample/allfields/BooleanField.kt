@@ -15,6 +15,7 @@ import me.tbsten.compose.preview.lab.sample.OnValueChange
 import me.tbsten.compose.preview.lab.sample.SpeechBubbleBox
 import me.tbsten.compose.preview.lab.sample.speechBubble
 import androidx.compose.ui.tooling.preview.Preview
+import me.tbsten.compose.preview.lab.event.withEvent
 
 internal enum class BooleanFieldExampleSteps {
     ToggleSwitch,
@@ -35,29 +36,29 @@ internal fun BooleanFieldExample() = PreviewLab {
 
     val enabled = fieldState {
         BooleanField("enabled", true)
-            .speechBubble(
-                bubbleText = "1. Toggle the switch",
-                alignment = Alignment.BottomStart,
-                visible = { step == BooleanFieldExampleSteps.ToggleSwitch },
-            )
+//            .speechBubble(
+//                bubbleText = "1. Toggle the switch",
+//                alignment = Alignment.BottomStart,
+//                visible = { step == BooleanFieldExampleSteps.ToggleSwitch },
+//            )
     }.also { enabled ->
         OnValueChange(enabled) {
             step = BooleanFieldExampleSteps.SeeButtonState
         }
     }
 
-    SpeechBubbleBox(
-        bubbleText = "2. Button UI changed!",
-        visible = step == BooleanFieldExampleSteps.SeeButtonState,
-        alignment = Alignment.BottomCenter,
-    ) {
-        BooleanFieldMyButton(enabled = enabled.value)
-    }
+//    SpeechBubbleBox(
+//        bubbleText = "2. Button UI changed!",
+//        visible = step == BooleanFieldExampleSteps.SeeButtonState,
+//        alignment = Alignment.BottomCenter,
+//    ) {
+        BooleanFieldMyButton(enabled = enabled.value, onClick = withEvent("onClick"))
+//    }
 }
 
 @Composable
-internal fun BooleanFieldMyButton(enabled: Boolean) {
-    Button(onClick = {}, enabled = enabled) {
+internal fun BooleanFieldMyButton(enabled: Boolean, onClick: ()->Unit) {
+    Button(onClick = onClick, enabled = enabled) {
         Text("Button")
     }
 }
