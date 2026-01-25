@@ -1,6 +1,5 @@
 ---
 title: "Custom Fields"
-sidebar_position: 4
 ---
 
 import EmbeddedPreviewLab from '@site/src/components/EmbeddedPreviewLab';

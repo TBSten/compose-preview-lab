@@ -1,6 +1,5 @@
 ---
 title: "Examples of Field usage"
-sidebar_position: 5
 ---
 
 # Examples of Field usage

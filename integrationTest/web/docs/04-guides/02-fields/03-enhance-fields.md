@@ -1,135 +1,220 @@
 ---
 title: Enhance fields
-sidebar_position: 3
 ---
 
 import EmbeddedPreviewLab from '@site/src/components/EmbeddedPreviewLab';
+import KDocLink from '@site/src/components/KDocLink';
 
 # Field を強化する
 
-[All Builtin Fields](./all-builtin-fields) で紹介されている Field と組み合わせることで、カスタム Field を作成せずとも 独自の型に対応したり、Field
-の編集 UI を簡単に作成できます。
+既存のフィールドを拡張・強化するためのフィールドです。選択肢から選ぶフィールド、複数のフィールドを組み合わせるフィールド、既存のフィールドを拡張するユーティリティフィールドが含まれます。
 
-TODO サンプルの PreviewLab
+## <KDocLink path="core/me.tbsten.compose.preview.lab.field/-selectable-field/index.html">SelectableField</KDocLink>
 
-## SelectableField: 複数の選択肢から1つ選ぶ
+<table>
+    <tr>
+        <th>対応する 型</th>
+        <td> 任意の型 </td>
+    </tr>
+    <tr>
+        <th>利用頻度</th>
+        <td> ⭐⭐⭐ </td>
+    </tr>
+    <tr>
+        <th>KDoc</th>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-selectable-field/index.html">SelectableField</KDocLink> </td>
+    </tr>
+</table>
 
-SelectableField を使用することで、選択式で編集できる編集 UI を簡単に作成できます。
-SelectableField の choices には任意の型を渡せます。
+指定された選択肢のリストから1つのオプションを選択するためのフィールドです。ドロップダウンまたはチップ形式で表示できます。
 
 ```kt
-val theme =
-    fieldValue {
-        // highlight-next-line
-        SelectableField(
-            label = "theme",
+PreviewLab {
+    MyApp(
+        theme = fieldValue {
+            // highlight-start
+            SelectableField(
+                label = "theme",
+                choices = listOf("Light", "Dark", "Auto")
+            )
+            // highlight-end
+        },
+    )
+}
+```
+
+<EmbeddedPreviewLab 
+ previewId="SelectableFieldExample"
+ title="SelectableField Example"
+/>
+
+<details>
+<summary><code>type</code> で表示形式を変更する</summary>
+
+`type` パラメータで `SelectableField.Type.CHIPS` を指定すると、チップ形式で表示されます。
+
+```kt
+PreviewLab {
+    MyApp(
+        theme = fieldValue {
+            SelectableField(
+                label = "theme",
+                choices = listOf("Light", "Dark", "Auto"),
+                // highlight-next-line
+                type = SelectableField.Type.CHIPS
+            )
+        },
+    )
+}
+```
+
+<EmbeddedPreviewLab
+ previewId="SelectableFieldChipsExample"
+ title="SelectableField Chips Example"
+/>
+
+</details>
+
+<details>
+<summary>Map から作成する</summary>
+
+Map から作成すると、キーがラベル、値が選択肢の値として使用されます。
+
+```kt
+PreviewLab {
+    MyApp(
+        theme = fieldValue {
+            // highlight-start
+            SelectableField(
+                label = "theme",
+                choices = mapOf(
+                    "Light Mode" to "Light",
+                    "Dark Mode" to "Dark",
+                    "Auto (System)" to "Auto"
+                )
+            )
+            // highlight-end
+        },
+    )
+}
+```
+
+<EmbeddedPreviewLab
+ previewId="SelectableFieldMapExample"
+ title="SelectableField Map Example"
+/>
+
+</details>
+
+<details>
+<summary>ビルダー構文から作成する</summary>
+
+ビルダー構文を使用すると、各選択肢にラベルを設定したり、デフォルト値を指定したりできます。
+
+```kt
+PreviewLab {
+    MyApp(
+        theme = fieldValue {
+            // highlight-start
+            SelectableField<String>(label = "theme") {
+                choice("Light", label = "Light Mode", isDefault = true)
+                choice("Dark", label = "Dark Mode")
+                choice("Auto", label = "Auto (System)")
+            }
+            // highlight-end
+        },
+    )
+}
+```
+
+<EmbeddedPreviewLab
+ previewId="SelectableFieldBuilderExample"
+ title="SelectableField Builder Example"
+/>
+
+</details>
+
+### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-enum-field.html">EnumField</KDocLink>
+
+<table>
+    <tr>
+        <th>対応する 型</th>
+        <td> `kotlin.Enum` </td>
+    </tr>
+    <tr>
+        <th>利用頻度</th>
+        <td> ⭐⭐⭐ </td>
+    </tr>
+    <tr>
+        <th>KDoc</th>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-enum-field.html">EnumField</KDocLink> </td>
+    </tr>
+</table>
+
+Enum クラスの値から選択するためのフィールドです。`SelectableField` のショートハンドとして実装されています。
+
+```kt
+enum class ButtonVariant { Primary, Secondary, Tertiary }
+
+PreviewLab {
+    MyButton(
+        variant = fieldValue {
             // highlight-next-line
-            choices = listOf("Light", "Dark", "Auto")
-        )
-    }
+            EnumField("variant", ButtonVariant.Primary)
+        },
+    )
+}
 ```
 
-<EmbeddedPreviewLab
-previewId="FieldSelectable"
-title="SelectableField Example"
+<EmbeddedPreviewLab 
+ previewId="EnumFieldExample"
+ title="EnumField Example"
 />
 
-デフォルトでは選択肢のテキストは `選択肢.toString()` が使用されますが、SelectableField には label を設定できるオーバーライドも存在します。
-toString() すると長くなってしまう値は適宜 label を設定すると便利です。
+## <KDocLink path="core/me.tbsten.compose.preview.lab.field/-with-hint-field/index.html">WithHintField</KDocLink> / `.withHint()`
+
+<table>
+    <tr>
+        <th>対応する 型</th>
+        <td> 元のフィールドと同じ型 </td>
+    </tr>
+    <tr>
+        <th>利用頻度</th>
+        <td> ⭐⭐ </td>
+    </tr>
+    <tr>
+        <th>KDoc</th>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-with-hint-field/index.html">WithHintField</KDocLink> </td>
+    </tr>
+</table>
+
+既存のフィールドにヒント選択肢を追加するフィールドです。定義済みの値から素早く選択できるチップが表示されます。
 
 ```kt
-fieldValue {
-    SelectableField(label = "theme") {
-        choice(MyUiState(isLoading = true, isError = true), label = "loading")
-        choice(MyUiState(isLoading = false, isError = true), label = "error")
-        choice(MyUiState(isLoading = false, isError = false), label = "success", isDefault = true)
-    }
-}
-```
-
-### 利用例
-
-<details>
-<summary>UiState を受け取る Screen Composable の Preview</summary>
-
-```kt
-@Preview
-@Composable
-private fun ThemeButtonPreview() = PreviewLab {
-    val theme = fieldValue {
-        SelectableField(
-            label = "theme",
-            choices = listOf("Light", "Dark", "Auto")
-        )
-    }
-    MyThemeButton(theme = theme)
-}
-```
-
-</details>
-
-<details>
-<summary>複雑な data model を受け取る必要がある Composable に渡す値をあらかじめ定義された値のみにして PreviewLab をシンプルにする</summary>
-
-```kt
-@Preview
-@Composable
-private fun UiStateButtonPreview() = PreviewLab {
-    val state = fieldValue {
-        SelectableField(label = "state") {
-            choice(MyUiState(isLoading = true, isError = true), label = "loading")
-            choice(MyUiState(isLoading = false, isError = true), label = "error")
-            choice(MyUiState(isLoading = false, isError = false), label = "success", isDefault = true)
-        }
-    }
-    MyUiStateButton(state = state)
-}
-```
-
-</details>
-
-<details>
-<summary>PreviewParameterProvider を利用していた Preview に渡す引数を選択可能にする</summary>
-
-```kt
-@Preview
-@Composable
-private fun PreviewParameterProviderButtonPreview() = PreviewLab {
-    val argument = fieldValue {
-        MyPreviewParameterProvider().toField(label = "argument")
-    }
-    MyPreviewWithParameter(argument = argument)
-}
-```
-
-[PreviewParameterProvider.toField()](https://github.com/TBSten/compose-preview-lab/blob/908ae45aa87e477263de2c4d6a30eb6f21e5f4bc/core/src/commonMain/kotlin/me/tbsten/compose/preview/lab/field/ComposableField.kt#L591)
-が用意されているため、必要に応じて活用してください。
-
-</details>
-
-## Field.withHint(): 候補の選択肢を提示
-
-`Field.withHint()` を使用すると、よく使う設定値を Field の下に表示できます。
-
-```kt
-val email = fieldValue {
-    StringField("email", "user@example.com")
-        // highlight-start
-        .withHint(
-            "User" to "user@example.com",
-            "Admin" to "admin@example.com",
-            "Test" to "test@example.com",
-        )
-    // highlight-end
+PreviewLab {
+    Text(
+        text = "Sample Text",
+        fontSize = fieldValue {
+            SpField(label = "fontSize", initialValue = 16.sp)
+                // highlight-start
+                .withHint(
+                    "Small" to 12.sp,
+                    "Medium" to 16.sp,
+                    "Large" to 20.sp,
+                    "XLarge" to 24.sp,
+                )
+                // highlight-end
+        },
+    )
 }
 ```
 
 <EmbeddedPreviewLab
-previewId="FieldWithHint"
-title="Field with Hint Example"
+ previewId="WithHintFieldExample"
+ title="WithHintField Example"
 />
 
-Field.withHint() はあくまでも既存の Field の編集 UI によくある選択肢を追加するだけです。
+`Field.withHint()` はあくまでも既存の Field の編集 UI によくある選択肢を追加するだけです。
 事前に設定した値以外を渡したくない場合は SelectableField の使用を検討してください。
 
 ### 利用例
@@ -257,7 +342,40 @@ val text = fieldValue {
 
 </details>
 
-## Field.nullable(): Nullable 型をサポート
+## <KDocLink path="core/me.tbsten.compose.preview.lab.field/-nullable-field/index.html">NullableField</KDocLink> / `.nullable()`
+
+<table>
+    <tr>
+        <th>対応する 型</th>
+        <td> 任意の Nullable 型 </td>
+    </tr>
+    <tr>
+        <th>利用頻度</th>
+        <td> ⭐⭐ </td>
+    </tr>
+    <tr>
+        <th>KDoc</th>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-nullable-field/index.html">NullableField</KDocLink> </td>
+    </tr>
+</table>
+
+既存のフィールドを Nullable にするためのフィールドです。チェックボックスで null と値の切り替えができます。
+
+```kt
+PreviewLab {
+    UserName(
+        userName = fieldValue {
+            // highlight-next-line
+            StringField("userName", "John Doe").nullable()
+        },
+    )
+}
+```
+
+<EmbeddedPreviewLab 
+ previewId="NullableFieldExample"
+ title="NullableField Example"
+/>
 
 任意の Field から nullable 型を簡単に作成できます。
 
@@ -277,30 +395,70 @@ val timeout: Int? = fieldValue {
 }
 ```
 
-<EmbeddedPreviewLab
-previewId="FieldNullable"
-title="Nullable Field Example"
+## <KDocLink path="core/me.tbsten.compose.preview.lab.field/-combined-field/index.html">CombinedField</KDocLink>
+
+<table>
+    <tr>
+        <th>対応する 型</th>
+        <td> 任意の複合型 </td>
+    </tr>
+    <tr>
+        <th>利用頻度</th>
+        <td> ⭐⭐ </td>
+    </tr>
+    <tr>
+        <th>KDoc</th>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-combined-field/index.html">CombinedField</KDocLink> </td>
+    </tr>
+</table>
+
+複数のサブフィールドを1つの複合値に結合するフィールドです。`combine` 関数と `split` 関数を使用して、複数のフィールドを1つの値にまとめます。
+
+```kt
+data class Padding(val horizontal: Dp, val vertical: Dp)
+
+PreviewLab {
+    val padding: Padding = fieldValue {
+        // highlight-start
+        combined(
+            label = "padding",
+            field1 = DpField("horizontal", 16.dp),
+            field2 = DpField("vertical", 8.dp),
+            combine = { horizontal, vertical -> Padding(horizontal, vertical) },
+            split = { listOf(it.horizontal, it.vertical) },
+        )
+        // highlight-end
+    }
+
+    Box(
+        modifier = Modifier
+            .background(Color.LightGray)
+            .padding(horizontal = padding.horizontal, vertical = padding.vertical),
+    ) {
+        Text("Content")
+    }
+}
+```
+
+<EmbeddedPreviewLab 
+ previewId="CombinedFieldExample"
+ title="CombinedField Example"
 />
 
-## CombinedField: 複数の Field を組み合わせる
+<details>
+<summary><code>combine</code> と <code>split</code> 引数について</summary>
+
+`combine` 関数は、複数のサブフィールドの値を1つの複合値に結合する関数です。`split` 関数は、複合値を元のサブフィールドの値のリストに分解する関数です。
+
+- `combine`: `List<Any> -> T` の形式で、サブフィールドの値のリストを受け取り、複合型の値を返します
+- `split`: `T -> List<Any>` の形式で、複合型の値を受け取り、サブフィールドの値のリストを返します
+
+これらの関数は、`CombinedField` がサブフィールドの値と複合値の間で変換を行うために使用されます。
+
+</details>
 
 複数の Field を合体して、1つの Field として扱うことができます。
 複数のプロパティを持つ data class に対応する、完全に操作可能な Field を簡単に作成することができます。
-
-**1つのフィールドを変換する例：**
-
-```kt
-data class UserId(val value: String)
-
-val userId: UserId = fieldValue {
-    combined(
-        label = "userId",
-        field1 = StringField("id", "user-001"),
-        combine = { id -> UserId(id) },
-        split = { splitedOf(it.value) }
-    )
-}
-```
 
 **複数のフィールドを結合する例：**
 
@@ -319,21 +477,13 @@ val uiState = fieldValue {
             "description",
             "...",
         ),
-        field3 = BooleanField("isLoading", ...
-    ),
-    combine = { title, description, isLoading -> MyUiState(title, description, isLoading) },
-    split = { splitedOf(it.title, it.description, it.isLoading) },
+        field3 = BooleanField("isLoading", ...),
+        combine = { title, description, isLoading -> MyUiState(title, description, isLoading) },
+        split = { splitedOf(it.title, it.description, it.isLoading) },
     )
 }
 ```
 
-<EmbeddedPreviewLab
-previewId="FieldCombined"
-title="Combined Field Example"
-/>
-
-- `combine` は それぞれの Field の値 -> 合体した値に変換する関数です。それぞれの Field の値から現在の CombinedField の値を取得するために
-- `split` は 合体した値 -> それぞれの Field に分割する関数です。それぞれの編集 UI を表示する際に使用されます。
 - 標準では `combined` 関数が CombinedField1~10 まで用意されているため最大10個まで合体させることができます。11個以上の場合はライブラリの
   CombinedField 実装を参考に独自実装するか、型安全性が失われるものの任意の Field を合体させることができる CombinedField 合体する
   Field を List を受け取るバージョンの CombinedField を利用してください。
@@ -352,12 +502,47 @@ CombinedField の自動生成機能も検討しています。
 
 :::
 
-## TransformField: Field を変換する
+## <KDocLink path="core/me.tbsten.compose.preview.lab.field/-transform-field/index.html">TransformField</KDocLink>
 
-<EmbeddedPreviewLab
-previewId="FieldTransform"
-title="Transform Field Example"
+<table>
+    <tr>
+        <th>対応する 型</th>
+        <td> 変換後の任意の型 </td>
+    </tr>
+    <tr>
+        <th>利用頻度</th>
+        <td> ⭐ </td>
+    </tr>
+    <tr>
+        <th>KDoc</th>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-transform-field/index.html">TransformField</KDocLink> </td>
+    </tr>
+</table>
+
+既存のフィールドの値を別の型に変換するためのフィールドです。`transform` 関数と `reverse` 関数を使用して型変換を行います。
+
+```kt
+PreviewLab {
+    val intValue = fieldValue {
+        StringField("number", "42")
+            // highlight-start
+            .transform(
+                transform = { it.toIntOrNull() ?: 0 },
+                reverse = { it.toString() }
+            )
+            // highlight-end
+    }
+}
+```
+
+<EmbeddedPreviewLab 
+ previewId="TransformFieldExample"
+ title="TransformField Example"
 />
+
+## <KDocLink path="core/me.tbsten.compose.preview.lab.field/-with-value-code-field/index.html">WithValueCodeField</KDocLink> / `.withValueCode()`
+
+任意の Field に対して、Inspector の Code タブに表示されるコード表現だけを差し替えるユーティリティです。UI や値の型はそのままに、コードスニペットを自分のプロジェクトの API 形式に合わせたいときに使用します。
 
 ## Field.withValueCode(): Code タブに出力されるコードをカスタマイズ
 
@@ -422,6 +607,44 @@ val fontSize = fieldValue {
 
 詳細については、[Inspector Tab の Code タブの説明](../inspector-tab#inspectortabcode)も参照してください。
 
+## <KDocLink path="field/me.tbsten.compose.preview.lab.field/-with-serializer-field/index.html">WithSerializerField</KDocLink> / `.withSerializer()`
+
+<table>
+    <tr>
+        <th>対応する 型</th>
+        <td> 元のフィールドと同じ型 </td>
+    </tr>
+    <tr>
+        <th>利用頻度</th>
+        <td> ⭐⭐ </td>
+    </tr>
+    <tr>
+        <th>KDoc</th>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-with-serializer-field/index.html">WithSerializerField</KDocLink> </td>
+    </tr>
+</table>
+
+任意の Field にカスタムシリアライザを設定するユーティリティです。`SelectableField` で enum や sealed class を使用する場合など、デフォルトでシリアライザを持たない Field にシリアライズ機能を追加したいときに使用します。
+
+```kt
+@Serializable
+enum class Theme { Light, Dark, System }
+
+PreviewLab {
+    val theme = fieldValue {
+        SelectableField(
+            label = "theme",
+            choices = Theme.entries,
+            choiceLabel = { it.name },
+        )
+            // highlight-next-line
+            .withSerializer(Theme.serializer())
+    }
+
+    AppTheme(theme = theme)
+}
+```
+
 ## Field.withSerializer(): Field のシリアライザを設定する
 
 `withSerializer()` を使用すると、Field にカスタムシリアライザを設定できます。
@@ -483,6 +706,107 @@ val theme = fieldValue {
 - `ModifierField`
 
 その場合 `SelectableField` で enum を使用する場合は、`.withSerializer()` を使用してシリアライザを設定することで、値の永続化や共有が可能になります。
+
+## <KDocLink path="core/me.tbsten.compose.preview.lab.field/-polymorphic-field/index.html">PolymorphicField</KDocLink>
+
+<table>
+    <tr>
+        <th>対応する 型</th>
+        <td> 複数の型から選択可能な型 </td>
+    </tr>
+    <tr>
+        <th>利用頻度</th>
+        <td> ⭐⭐ </td>
+    </tr>
+    <tr>
+        <th>KDoc</th>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-polymorphic-field/index.html">PolymorphicField</KDocLink> </td>
+    </tr>
+</table>
+
+複数のフィールドから1つを選択して使用するフィールドです。値の型に応じて適切なフィールドが自動的に選択され、編集UIが切り替わります。sealed interface や sealed class など、継承階層があるクラスのField化に特に有用です。
+
+```kt
+sealed interface UiState {
+    data object Loading : UiState
+    data class Success(val data: String) : UiState
+    data class Error(val message: String) : UiState
+}
+
+PreviewLab {
+    val uiState: UiState = fieldValue {
+        // highlight-start
+        PolymorphicField(
+            label = "uiState",
+            initialValue = UiState.Loading,
+            fields = listOf(
+                FixedField("loading", UiState.Loading),
+                combined(
+                    label = "success",
+                    field1 = StringField("data", "Sample data"),
+                    combine = { data -> UiState.Success(data) },
+                    split = { splitedOf(it.data) }
+                ),
+                combined(
+                    label = "error",
+                    field1 = StringField("message", "Something went wrong"),
+                    combine = { message -> UiState.Error(message) },
+                    split = { splitedOf(it.message) }
+                )
+            )
+        )
+        // highlight-end
+    }
+
+    // ...
+}
+```
+
+<EmbeddedPreviewLab 
+ previewId="PolymorphicFieldExample"
+ title="PolymorphicField Example"
+/>
+
+## <KDocLink path="core/me.tbsten.compose.preview.lab.field/-fixed-field/index.html">FixedField</KDocLink>
+
+<table>
+    <tr>
+        <th>対応する 型</th>
+        <td> 任意の型（固定値） </td>
+    </tr>
+    <tr>
+        <th>利用頻度</th>
+        <td> ⭐ </td>
+    </tr>
+    <tr>
+        <th>KDoc</th>
+        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-fixed-field/index.html">FixedField</KDocLink> </td>
+    </tr>
+</table>
+
+編集不可の固定値を持つフィールドです。`PolymorphicField` 内で固定値の選択肢を提供する場合などに使用します。
+
+```kt
+sealed interface FixedFieldExampleUiState {
+    data object Initial : FixedFieldExampleUiState
+    data object Stable : FixedFieldExampleUiState
+}
+
+PreviewLab {
+    val value = fieldValue {
+        PolymorphicField(
+            label = "value",
+            initialValue = FixedFieldExampleUiState.Initial,
+            fields = listOf(
+                // highlight-start
+                FixedField("initial", FixedFieldExampleUiState.Initial),
+                FixedField("stable", FixedFieldExampleUiState.Stable),
+                // highlight-end
+            )
+        )
+    }
+}
+```
 
 ## 不十分ですか？
 
