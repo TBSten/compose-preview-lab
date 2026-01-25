@@ -25,6 +25,17 @@ kotlin {
 
     jvm()
 
+    js {
+        browser()
+        binaries.executable()
+        binaries.library()
+        generateTypeScriptDefinitions()
+
+        compilerOptions {
+            target = "es2015"
+        }
+    }
+
     @Suppress("OPT_IN_USAGE")
     wasmJs {
         browser()
@@ -119,6 +130,7 @@ dependencies {
     ksp(composePreviewLabKspPlugin)
     add("kspAndroid", composePreviewLabKspPlugin)
     add("kspJvm", composePreviewLabKspPlugin)
+    add("kspJs", composePreviewLabKspPlugin)
     add("kspWasmJs", composePreviewLabKspPlugin)
 }
 
