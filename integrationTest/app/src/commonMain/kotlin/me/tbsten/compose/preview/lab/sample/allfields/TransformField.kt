@@ -27,6 +27,12 @@ internal enum class TransformFieldExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates [transform] extension for converting between field and target types.
+ *
+ * Enter a number as text; it's parsed to Int (or null if invalid).
+ * Useful when you need string-based UI but typed values in code.
+ */
 @Preview
 @ComposePreviewLabOption(id = "TransformFieldExample")
 @Composable

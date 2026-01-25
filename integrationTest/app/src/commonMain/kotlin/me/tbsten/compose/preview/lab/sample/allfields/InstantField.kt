@@ -11,6 +11,12 @@ import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.field.InstantField
 import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 
+/**
+ * Demonstrates [InstantField] for editing Kotlin time [kotlin.time.Instant] values.
+ *
+ * Edit the timestamp to test date/time-sensitive UI components.
+ * Uses Kotlin's standard library Instant type (not kotlinx.datetime).
+ */
 @Preview
 @ComposePreviewLabOption(id = "InstantFieldExample")
 @Composable

@@ -29,6 +29,12 @@ internal enum class SelectableFieldExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates basic [SelectableField] with a list of string choices.
+ *
+ * Select a theme (Light, Dark, Auto) from the dropdown.
+ * The app's color scheme changes based on the selection.
+ */
 @Preview
 @ComposePreviewLabOption(id = "SelectableFieldExample")
 @Composable
@@ -56,6 +62,12 @@ internal fun SelectableFieldExample() = PreviewLab {
     )
 }
 
+/**
+ * Demonstrates [SelectableField] with chip-style UI using [SelectableField.Type.CHIPS].
+ *
+ * Select a theme by tapping one of the chips.
+ * Chips provide a compact, touch-friendly selection interface.
+ */
 @Preview
 @ComposePreviewLabOption(id = "SelectableFieldChipsExample")
 @Composable
@@ -84,6 +96,12 @@ internal fun SelectableFieldChipsExample() = PreviewLab {
     )
 }
 
+/**
+ * Demonstrates [SelectableField] with a Map for custom display labels.
+ *
+ * The map allows different display text ("Light Mode") from actual values ("Light").
+ * Useful when you need user-friendly labels for internal values.
+ */
 @Preview
 @ComposePreviewLabOption(id = "SelectableFieldMapExample")
 @Composable
@@ -115,6 +133,12 @@ internal fun SelectableFieldMapExample() = PreviewLab {
     )
 }
 
+/**
+ * Demonstrates [SelectableField] using the builder DSL for fine-grained control.
+ *
+ * Use `choice()` to define each option with custom labels and default selection.
+ * The builder pattern offers maximum flexibility for complex selection scenarios.
+ */
 @Preview
 @ComposePreviewLabOption(id = "SelectableFieldBuilderExample")
 @Composable

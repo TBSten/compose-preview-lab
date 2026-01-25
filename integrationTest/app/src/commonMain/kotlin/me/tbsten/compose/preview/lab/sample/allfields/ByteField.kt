@@ -20,6 +20,12 @@ internal enum class ByteFieldExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates [ByteField] for editing byte values (-128 to 127).
+ *
+ * Enter a byte value to update the flag display.
+ * Useful for low-level data manipulation and flag testing.
+ */
 @Preview
 @ComposePreviewLabOption(id = "ByteFieldExample")
 @Composable

@@ -25,6 +25,12 @@ internal enum class DpFieldExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates [DpField] for editing dimension values in dp units.
+ *
+ * Adjust the padding value to see real-time layout changes.
+ * Ideal for testing spacing, sizing, and layout adjustments.
+ */
 @Preview
 @ComposePreviewLabOption(id = "DpFieldExample")
 @Composable

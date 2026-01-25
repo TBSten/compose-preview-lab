@@ -10,6 +10,12 @@ import me.tbsten.compose.preview.lab.field.mark
 import me.tbsten.compose.preview.lab.field.modifier.ModifierFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 
+/**
+ * Demonstrates [ModifierField] for dynamically adjusting Modifier properties.
+ *
+ * Modify padding, size, background color, and other Modifier attributes
+ * to see real-time changes on the button.
+ */
 @Preview
 @ComposePreviewLabOption(id = "ModifierFieldExample")
 @Composable
@@ -22,6 +28,12 @@ internal fun ModifierFieldExample() = PreviewLab {
     }
 }
 
+/**
+ * Demonstrates [ModifierField] with [ModifierFieldValue.mark] initial value.
+ *
+ * The mark mode highlights the target element with a visual indicator,
+ * making it easy to identify which component the modifier applies to.
+ */
 @Preview
 @ComposePreviewLabOption(id = "ModifierFieldWithMarkExample")
 @Composable

@@ -28,6 +28,12 @@ internal enum class LongFieldExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates [LongField] for editing large integer values.
+ *
+ * Enter file size in bytes; see human-readable conversion (KB, MB, GB).
+ * Includes quota visualization and upload time estimation.
+ */
 @Preview
 @ComposePreviewLabOption(id = "LongFieldExample")
 @Composable

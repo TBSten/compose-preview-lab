@@ -36,6 +36,12 @@ internal object DocsTab : InspectorTab {
     }
 }
 
+/**
+ * Demonstrates adding a custom "Docs" tab to the inspector.
+ *
+ * Create custom [InspectorTab] implementations to display
+ * component documentation, usage guidelines, or design specs.
+ */
 @Preview
 @ComposePreviewLabOption(id = "InspectorTabDocsExample")
 @Composable
@@ -81,6 +87,14 @@ internal object DebugTab : InspectorTab {
     }
 }
 
+/**
+ * Demonstrates a custom "Debug" tab with programmatic field access.
+ *
+ * Shows how to:
+ * - Access all registered fields via `state.fields`
+ * - Programmatically modify field values via `state.field<T>(label)`
+ * - Create debug utilities for testing edge cases
+ */
 @Preview
 @ComposePreviewLabOption(id = "InspectorTabDebugExample")
 @Composable
@@ -103,7 +117,12 @@ internal fun InspectorTabDebugExample() = PreviewLab(
     }
 }
 
-// Code Tab
+/**
+ * Demonstrates the built-in "Code" tab for viewing generated code snippets.
+ *
+ * The Code tab shows how to reproduce the current field values in code,
+ * making it easy to copy configurations for use in actual implementations.
+ */
 @Preview
 @ComposePreviewLabOption(id = "InspectorTabCodeExample")
 @Composable

@@ -21,6 +21,12 @@ internal enum class NullableFieldExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates the [nullable] extension for making any field nullable.
+ *
+ * Toggle the null checkbox to switch between null and a [StringField] value.
+ * Tests how your UI handles optional/nullable data.
+ */
 @Preview
 @ComposePreviewLabOption(id = "NullableFieldExample")
 @Composable

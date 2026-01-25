@@ -26,6 +26,12 @@ internal enum class ColorFieldExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates [ColorField] with [withPredefinedColorHint] for color selection.
+ *
+ * Pick a color from the predefined palette or enter ARGB values directly.
+ * The selected color is applied to the box background.
+ */
 @Preview
 @ComposePreviewLabOption(id = "ColorFieldExample")
 @Composable

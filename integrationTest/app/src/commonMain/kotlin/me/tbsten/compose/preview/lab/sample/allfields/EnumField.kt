@@ -25,6 +25,12 @@ internal enum class EnumFieldExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates [EnumField] for selecting from enum values.
+ *
+ * Select a button variant (Primary, Secondary, Tertiary) from the dropdown.
+ * Enum entries are automatically detected and displayed as options.
+ */
 @Preview
 @ComposePreviewLabOption(id = "EnumFieldExample")
 @Composable

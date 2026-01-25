@@ -10,6 +10,12 @@ import me.tbsten.compose.preview.lab.field.withEmptyHint
 import me.tbsten.compose.preview.lab.field.withHint
 import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 
+/**
+ * Demonstrates [SetField] for editing a unique collection of values.
+ *
+ * Add or remove fruits from the set (duplicates are automatically prevented).
+ * Includes hints for quick population with predefined sets.
+ */
 @Preview
 @ComposePreviewLabOption(id = "SetFieldExample")
 @Composable

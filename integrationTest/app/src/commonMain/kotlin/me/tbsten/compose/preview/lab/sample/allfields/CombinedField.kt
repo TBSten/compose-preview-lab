@@ -32,6 +32,12 @@ internal enum class CombinedFieldExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates [CombinedField] for grouping multiple fields into a single value.
+ *
+ * Combines horizontal and vertical [DpField]s into a [CombinedFieldPadding] data class.
+ * Useful when you need to edit related values as a cohesive unit.
+ */
 @Preview
 @ComposePreviewLabOption(id = "CombinedFieldExample")
 @Composable

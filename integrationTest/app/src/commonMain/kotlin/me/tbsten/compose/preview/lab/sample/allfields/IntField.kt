@@ -21,6 +21,12 @@ internal enum class IntFieldExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates basic [IntField] for editing integer values.
+ *
+ * Change the count value using the number input.
+ * Supports increment/decrement buttons and direct text input.
+ */
 @Preview
 @ComposePreviewLabOption(id = "IntFieldExample")
 @Composable
@@ -54,6 +60,12 @@ internal enum class IntFieldWithPrefixSuffixExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates [IntField] with prefix/suffix using [NumberField.InputType.TextField].
+ *
+ * Shows "$" prefix and "yen" suffix to indicate currency context.
+ * Useful when you need visual hints for numeric input.
+ */
 @Preview
 @ComposePreviewLabOption(id = "IntFieldWithPrefixSuffixExample")
 @Composable

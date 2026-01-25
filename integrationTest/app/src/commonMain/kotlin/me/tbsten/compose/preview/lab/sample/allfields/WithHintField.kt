@@ -27,6 +27,12 @@ internal enum class WithHintFieldExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates [withHint] extension for adding quick-select value hints.
+ *
+ * Click hint chips (Small, Medium, Large, XLarge) to quickly set predefined font sizes.
+ * Hints provide shortcuts while still allowing manual input.
+ */
 @Preview
 @ComposePreviewLabOption(id = "WithHintFieldExample")
 @Composable
@@ -74,6 +80,12 @@ internal enum class WithHintActionExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates [withHintAction] for adding action-based hints.
+ *
+ * Unlike value hints, action hints execute custom logic when clicked.
+ * Example: "Add 3 items" appends items, "Clear all" empties the list.
+ */
 @Preview
 @ComposePreviewLabOption(id = "WithHintActionExample")
 @Composable

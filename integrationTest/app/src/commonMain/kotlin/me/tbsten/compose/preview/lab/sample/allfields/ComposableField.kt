@@ -19,6 +19,12 @@ import me.tbsten.compose.preview.lab.field.ComposableFieldValue
 import me.tbsten.compose.preview.lab.sample.SpeechBubbleBox
 import androidx.compose.ui.tooling.preview.Preview
 
+/**
+ * Demonstrates [ComposableField] for switching between composable content.
+ *
+ * Select different composable implementations (Red box, Text, Empty)
+ * to test how your container handles various child content.
+ */
 @Preview
 @ComposePreviewLabOption(id = "ComposableFieldExample")
 @Composable
@@ -42,6 +48,12 @@ internal fun ComposableFieldExample() = PreviewLab {
     }
 }
 
+/**
+ * Demonstrates [ComposableField] with predefined choices.
+ *
+ * Choose from a curated list of composable content options.
+ * Restricts selection to only the predefined values for consistency.
+ */
 @Preview
 @ComposePreviewLabOption(id = "ComposableFieldWithPredefinedValuesExample")
 @Composable

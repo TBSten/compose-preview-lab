@@ -20,6 +20,12 @@ internal enum class DoubleFieldExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates [DoubleField] for editing double-precision values.
+ *
+ * Enter a price value with decimal precision.
+ * Suitable for currency, measurements, and other high-precision numbers.
+ */
 @Preview
 @ComposePreviewLabOption(id = "DoubleFieldExample")
 @Composable

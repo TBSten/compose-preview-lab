@@ -39,6 +39,12 @@ internal enum class PolymorphicFieldExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates [PolymorphicField] for selecting between sealed class variants.
+ *
+ * Switch between Loading, Success, and Error UI states.
+ * Each variant can have its own editable fields (e.g., Success has data, Error has message).
+ */
 @Preview
 @ComposePreviewLabOption(id = "PolymorphicFieldExample")
 @Composable
@@ -105,6 +111,12 @@ sealed interface FixedFieldExampleUiState {
     data object Stable : FixedFieldExampleUiState
 }
 
+/**
+ * Demonstrates [FixedField] for selecting from fixed, non-editable values.
+ *
+ * Unlike combined fields, [FixedField] has no editable sub-fields.
+ * Useful for simple sealed objects or singleton states.
+ */
 @Preview
 @ComposePreviewLabOption(id = "FixedFieldExample")
 @Composable

@@ -21,6 +21,12 @@ internal enum class BooleanFieldExampleSteps {
     SeeButtonState,
 }
 
+/**
+ * Demonstrates [BooleanField] for toggling a boolean value.
+ *
+ * Toggle the switch to enable/disable the button.
+ * The button's `enabled` state is controlled by the field value.
+ */
 @Preview
 @ComposePreviewLabOption(id = "BooleanFieldExample")
 @Composable

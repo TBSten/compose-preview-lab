@@ -27,6 +27,14 @@ import me.tbsten.compose.preview.lab.field.SizeField
 import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 import androidx.compose.ui.tooling.preview.Preview
 
+/**
+ * Demonstrates [OffsetField], [DpOffsetField], [SizeField], and [DpSizeField].
+ *
+ * - [OffsetField]: Float-based coordinates (x, y) for Canvas/graphics
+ * - [DpOffsetField]: Dp-based offset for layout positioning
+ * - [SizeField]: Float-based dimensions for Canvas drawing
+ * - [DpSizeField]: Dp-based dimensions for component sizing
+ */
 @Preview
 @ComposePreviewLabOption(id = "OffsetAndSizeFieldExample")
 @Composable

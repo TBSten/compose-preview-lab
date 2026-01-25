@@ -22,6 +22,12 @@ internal enum class SpFieldExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates [SpField] for editing text size in sp (scalable pixels).
+ *
+ * Adjust the font size to see text scaling in real-time.
+ * Sp units respect user's font size preferences for accessibility.
+ */
 @Preview
 @ComposePreviewLabOption(id = "SpFieldExample")
 @Composable

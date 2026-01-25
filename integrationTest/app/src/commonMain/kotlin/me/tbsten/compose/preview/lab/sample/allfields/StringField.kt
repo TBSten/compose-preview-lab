@@ -22,6 +22,11 @@ internal enum class StringFieldExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates basic [StringField] usage for editing text.
+ *
+ * Edit the text field to change the button label dynamically.
+ */
 @Preview
 @ComposePreviewLabOption(id = "StringFieldExample")
 @Composable
@@ -55,6 +60,12 @@ internal enum class StringFieldWithPrefixSuffixExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates [StringField] with prefix and suffix decorations.
+ *
+ * The input field displays "$" prefix and "USD" suffix
+ * to provide visual context for the expected input format.
+ */
 @Preview
 @ComposePreviewLabOption(id = "StringFieldWithPrefixSuffixExample")
 @Composable
@@ -92,6 +103,12 @@ internal enum class StringFieldWithTextHintExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates [StringField] with [withTextHint] for predefined text suggestions.
+ *
+ * Click the hint chips to quickly insert common text patterns
+ * like "Short", "Medium", or "Long" text samples.
+ */
 @Preview
 @ComposePreviewLabOption(id = "StringFieldWithTextHintExample")
 @Composable

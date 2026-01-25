@@ -31,6 +31,12 @@ internal enum class FloatFieldExampleSteps {
     SeeResult,
 }
 
+/**
+ * Demonstrates [FloatField] for editing floating-point values.
+ *
+ * Adjust the alpha value (0.0-1.0) to control the box's transparency.
+ * Shows both raw and clamped values with a visual progress bar.
+ */
 @Preview
 @ComposePreviewLabOption(id = "FloatFieldExample")
 @Composable

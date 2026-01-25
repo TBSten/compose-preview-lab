@@ -127,6 +127,12 @@ private fun KotlinxDateTimeExamples() = PreviewLab {
 
 // Individual Field Examples for Documentation
 
+/**
+ * Demonstrates [LocalDateTimeField] for editing date and time together.
+ *
+ * Edit year, month, day, hour, minute, second, and nanosecond components.
+ * Uses kotlinx.datetime [LocalDateTime] type.
+ */
 @ComposePreviewLabOption(id = "LocalDateTimeFieldExample")
 @Preview
 @Composable
@@ -140,6 +146,12 @@ private fun LocalDateTimeFieldExample() = PreviewLab {
     Text("Created at: $createdAt", modifier = Modifier.padding(16.dp))
 }
 
+/**
+ * Demonstrates [LocalDateField] for editing date values.
+ *
+ * Edit year, month, and day components independently.
+ * Uses kotlinx.datetime [LocalDate] type.
+ */
 @ComposePreviewLabOption(id = "LocalDateFieldExample")
 @Preview
 @Composable
@@ -153,6 +165,12 @@ private fun LocalDateFieldExample() = PreviewLab {
     Text("Birthday: $birthday", modifier = Modifier.padding(16.dp))
 }
 
+/**
+ * Demonstrates [LocalTimeField] for editing time values.
+ *
+ * Edit hour, minute, second, and nanosecond components.
+ * Uses kotlinx.datetime [LocalTime] type.
+ */
 @ComposePreviewLabOption(id = "LocalTimeFieldExample")
 @Preview
 @Composable
@@ -166,6 +184,12 @@ private fun LocalTimeFieldExample() = PreviewLab {
     Text("Meeting time: $meetingTime", modifier = Modifier.padding(16.dp))
 }
 
+/**
+ * Demonstrates [TimeZoneField] with [withMainTimeZonesHint] for timezone selection.
+ *
+ * Select from common timezones via hints or enter any valid timezone ID.
+ * Uses kotlinx.datetime [TimeZone] type.
+ */
 @ComposePreviewLabOption(id = "TimeZoneFieldExample")
 @Preview
 @Composable
@@ -179,6 +203,12 @@ private fun TimeZoneFieldExample() = PreviewLab {
     Text("TimeZone: $timeZone", modifier = Modifier.padding(16.dp))
 }
 
+/**
+ * Demonstrates [MonthField] for selecting a month.
+ *
+ * Select from JANUARY through DECEMBER via dropdown.
+ * Uses kotlinx.datetime [Month] enum.
+ */
 @ComposePreviewLabOption(id = "MonthFieldExample")
 @Preview
 @Composable
@@ -192,6 +222,12 @@ private fun MonthFieldExample() = PreviewLab {
     Text("Month: $month", modifier = Modifier.padding(16.dp))
 }
 
+/**
+ * Demonstrates [DayOfWeekField] for selecting a day of the week.
+ *
+ * Select from MONDAY through SUNDAY via dropdown.
+ * Uses kotlinx.datetime [DayOfWeek] enum.
+ */
 @ComposePreviewLabOption(id = "DayOfWeekFieldExample")
 @Preview
 @Composable
@@ -205,6 +241,12 @@ private fun DayOfWeekFieldExample() = PreviewLab {
     Text("Regular closing day: $dayOfWeek", modifier = Modifier.padding(16.dp))
 }
 
+/**
+ * Demonstrates [DatePeriodField] for editing date-based durations.
+ *
+ * Edit years, months, and days components of a period.
+ * Uses kotlinx.datetime [DatePeriod] type.
+ */
 @ComposePreviewLabOption(id = "DatePeriodFieldExample")
 @Preview
 @Composable
@@ -218,6 +260,12 @@ private fun DatePeriodFieldExample() = PreviewLab {
     Text("Subscription period: $datePeriod", modifier = Modifier.padding(16.dp))
 }
 
+/**
+ * Demonstrates [DateTimePeriodField] for editing date-time durations.
+ *
+ * Edit years, months, days, hours, minutes, seconds, and nanoseconds.
+ * Uses kotlinx.datetime [DateTimePeriod] type for precise duration specification.
+ */
 @ComposePreviewLabOption(id = "DateTimePeriodFieldExample")
 @Preview
 @Composable

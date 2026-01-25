@@ -46,11 +46,14 @@ data class Profile(val userId: String)
 data object Settings
 
 /**
- * Example showing how to use NavControllerField with type-safe routes.
- * This preview demonstrates:
- * - NavGraph structure visualization
- * - BackStack tracking
- * - Route selection via PolymorphicField with editable parameters
+ * Demonstrates [NavControllerField] for navigation testing with type-safe routes.
+ *
+ * Features:
+ * - **Route Selection**: Switch between Home, Profile, and Settings screens
+ * - **Parameter Editing**: Edit Profile's userId directly in the field
+ * - **BackStack Visualization**: See the current navigation stack
+ *
+ * Useful for testing navigation flows without manually clicking through screens.
  */
 @OptIn(ExperimentalComposePreviewLabApi::class)
 @ComposePreviewLabOption(id = "NavControllerFieldExample")

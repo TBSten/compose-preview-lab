@@ -10,6 +10,12 @@ import me.tbsten.compose.preview.lab.field.withEmptyHint
 import me.tbsten.compose.preview.lab.field.withHint
 import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 
+/**
+ * Demonstrates [ListField] for editing a dynamic list of values.
+ *
+ * Add, remove, or reorder string items in the list.
+ * Includes hints for quick population (1, 10, or 100 items).
+ */
 @Preview
 @ComposePreviewLabOption(id = "ListFieldExample")
 @Composable
