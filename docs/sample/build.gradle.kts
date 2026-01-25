@@ -1,8 +1,12 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.INT
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.buildkonfig)
     id("me.tbsten.compose.preview.lab")
 }
 
@@ -30,11 +34,31 @@ kotlin {
             implementation(libs.composeUiToolingPreview)
             implementation("me.tbsten.compose.preview.lab:starter:${libs.versions.composePreviewLab.get()}")
 
+            // kotlinx-datetime extension
+            implementation("me.tbsten.compose.preview.lab:extension-kotlinx-datetime:${libs.versions.composePreviewLab.get()}")
+            implementation(libs.kotlinxDatetime)
+
+            // navigation extension
+            implementation("me.tbsten.compose.preview.lab:extension-navigation:${libs.versions.composePreviewLab.get()}")
+            implementation(libs.androidxNavigation)
+            implementation(libs.kotlinxSerializationCore)
+
             implementation(project(":uiLib"))
         }
 
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
+        }
+
+        jvmTest.dependencies {
+            implementation(compose.desktop.currentOs)
+            implementation(libs.composeUiTestJunit4)
+            implementation(libs.kotestFrameworkEngine)
+            implementation(libs.kotestAssertionsCore)
+            implementation(libs.kotestRunnerJunit5)
+            implementation(libs.kotestProperty)
+            implementation(libs.androidxLifecycleViewmodel)
+            implementation(libs.androidxLifecycleRuntimeCompose)
         }
     }
 }
@@ -49,6 +73,24 @@ dependencies {
 
 composePreviewLab {
     generateFeaturedFiles = true
+}
+
+buildkonfig {
+    packageName = "me.tbsten.compose.preview.lab.sample"
+
+    defaultConfigs {
+        val iterations = findProperty("test.property.iterations")?.toString()?.toIntOrNull() ?: 20
+        buildConfigField(INT, "PROPERTY_TEST_ITERATIONS", iterations.toString())
+    }
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    // Forward kotest-related system properties to the test JVM
+    // See: https://kotest.io/docs/framework/tags.html#gradle
+    System.getProperties()
+        .filter { it.key.toString().startsWith("kotest.") }
+        .forEach { (key, value) -> systemProperty(key.toString(), value) }
 }
 
 val cleanPreviewLabGallery by tasks.registering(Delete::class) {
