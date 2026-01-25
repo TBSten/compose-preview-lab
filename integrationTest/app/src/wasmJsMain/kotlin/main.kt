@@ -9,7 +9,7 @@ import me.tbsten.compose.preview.lab.initialSelectedPreviewFromSearchParam
 
 @OptIn(ExperimentalComposePreviewLabApi::class, ExperimentalComposeUiApi::class, ExperimentalWasmJsInterop::class)
 fun main() {
-    val previewList = app.PreviewList + uiLib.PreviewList
+    val previewList = app.PreviewList
 
     ComposeViewport(document.body!!) {
         EmbeddedPreviewOrGallery(
