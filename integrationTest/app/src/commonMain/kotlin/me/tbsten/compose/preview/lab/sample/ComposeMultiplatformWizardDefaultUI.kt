@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import compose_preview_lab_integration_test.app.generated.resources.IndieFlower_Regular
 import compose_preview_lab_integration_test.app.generated.resources.Res
@@ -44,14 +45,13 @@ import compose_preview_lab_integration_test.app.generated.resources.stop
 import compose_preview_lab_integration_test.app.generated.resources.theme
 import kotlinx.coroutines.isActive
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 import me.tbsten.compose.preview.lab.field.BooleanField
+import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 import me.tbsten.compose.preview.lab.sample.theme.AppTheme
 import me.tbsten.compose.preview.lab.sample.theme.LocalThemeIsDark
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 
 // ref: https://terrakok.github.io/Compose-Multiplatform-Wizard/
 @Composable
