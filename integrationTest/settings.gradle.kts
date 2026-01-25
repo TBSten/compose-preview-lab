@@ -42,4 +42,3 @@ plugins {
 
 includeBuild("../")
 include(":app")
-include(":uiLib")
