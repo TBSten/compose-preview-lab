@@ -19,15 +19,24 @@ public final class me/tbsten/compose/preview/lab/field/ComposeDefaultComposition
 	public static final fun withBasicFontScalesHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
 }
 
-public final class me/tbsten/compose/preview/lab/previewlab/ComposableSingletons$PreviewLabKt {
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/previewlab/ComposableSingletons$PreviewLabKt;
+public final class me/tbsten/compose/preview/lab/previewlab/ComposableSingletons$PreviewLabDefaultsKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/previewlab/ComposableSingletons$PreviewLabDefaultsKt;
 	public fun <init> ()V
-	public final fun getLambda$-35369109$preview_lab ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1923409225$preview_lab ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1322040124$preview_lab ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/previewlab/ContentSectionKt {
 	public static final fun getLocalEnforcePreviewLabState ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+}
+
+public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/previewlab/PreviewLabDefaults;
+	public final fun getContentRoot ()Lkotlin/jvm/functions/Function3;
+	public final fun getEnable (Landroidx/compose/runtime/Composer;I)Z
+	public final fun getInspectorTabs ()Ljava/util/List;
+	public final fun getScreenSizes ()Ljava/util/List;
+	public final fun isHeaderShow (Landroidx/compose/runtime/Composer;I)Z
 }
 
 public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabKt {
