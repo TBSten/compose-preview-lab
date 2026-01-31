@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
@@ -248,6 +249,28 @@ import me.tbsten.compose.preview.lab.ui.components.toast.rememberToastHostState
  *   ) { ... }
  *   ```
  *
+ * @param enable
+ *   Controls whether PreviewLab UI is enabled. When set to false, only the content is rendered
+ *   without the PreviewLab wrapper (header, inspector panel, screen size controls, etc.).
+ *   Defaults to `!LocalInspectionMode.current`, which means PreviewLab UI is disabled during
+ *   Android Studio preview and enabled during normal runtime.
+ *
+ *   Usage examples:
+ *   ```kt
+ *   // Default - disabled in Android Studio preview, enabled at runtime
+ *   PreviewLab { ... }
+ *
+ *   // Always enable PreviewLab UI
+ *   PreviewLab(
+ *     enable = true
+ *   ) { ... }
+ *
+ *   // Always disable PreviewLab UI (only content is shown)
+ *   PreviewLab(
+ *     enable = false
+ *   ) { ... }
+ *   ```
+ *
  * @param content
  *   Preview content lambda with PreviewLabScope receiver. Within this scope you have access to:
  *   - **fieldState { ... }**: Create mutable state fields
@@ -272,6 +295,7 @@ fun PreviewLab(
     isHeaderShow: Boolean = LocalDefaultIsHeaderShow.current,
     inspectorTabs: List<InspectorTab> = InspectorTab.defaults,
     contentRoot: @Composable (content: @Composable () -> Unit) -> Unit = { it() },
+    enable: Boolean = !LocalInspectionMode.current,
     isInPreviewLabGalleryCardBody: Boolean = LocalIsInPreviewLabGalleryCardBody.current,
     contentGraphicsLayer: GraphicsLayer = rememberGraphicsLayer(),
     content: @Composable PreviewLabScope.() -> Unit,
@@ -280,7 +304,7 @@ fun PreviewLab(
     @Suppress("NAME_SHADOWING", "VisibleForTests")
     val state = LocalEnforcePreviewLabState.current ?: state
 
-    if (isInPreviewLabGalleryCardBody) {
+    if (!enable || isInPreviewLabGalleryCardBody) {
         contentRoot {
             content(state.scope)
         }
@@ -384,6 +408,7 @@ fun PreviewLab(
  * @param isHeaderShow Controls whether the PreviewLab header is visible
  * @param inspectorTabs List of tabs to display in the inspector panel
  * @param contentRoot Wrapper composable for custom themes or composition locals
+ * @param enable Controls whether PreviewLab UI is enabled. Defaults to `!LocalInspectionMode.current`
  * @param content Preview content within PreviewLabScope
  * @see PreviewLab Main PreviewLab function with multiple screen size support
  */
@@ -396,6 +421,7 @@ fun PreviewLab(
     isHeaderShow: Boolean = LocalDefaultIsHeaderShow.current,
     inspectorTabs: List<InspectorTab> = InspectorTab.defaults,
     contentRoot: @Composable (content: @Composable () -> Unit) -> Unit = { it() },
+    enable: Boolean = !LocalInspectionMode.current,
     isInPreviewLabGalleryCardBody: Boolean = LocalIsInPreviewLabGalleryCardBody.current,
     contentGraphicsLayer: GraphicsLayer = rememberGraphicsLayer(),
     content: @Composable PreviewLabScope.() -> Unit,
@@ -406,6 +432,7 @@ fun PreviewLab(
     isHeaderShow = isHeaderShow,
     inspectorTabs = inspectorTabs,
     contentRoot = contentRoot,
+    enable = enable,
     isInPreviewLabGalleryCardBody = isInPreviewLabGalleryCardBody,
     contentGraphicsLayer = contentGraphicsLayer,
     content = content,

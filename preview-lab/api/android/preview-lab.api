@@ -26,8 +26,8 @@ public final class me/tbsten/compose/preview/lab/field/ComposeDefaultComposition
 public final class me/tbsten/compose/preview/lab/previewlab/ComposableSingletons$PreviewLabKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/previewlab/ComposableSingletons$PreviewLabKt;
 	public fun <init> ()V
-	public final fun getLambda$-1085557433$preview_lab_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$196544805$preview_lab_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-35369109$preview_lab_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1923409225$preview_lab_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/previewlab/ContentSectionKt {
@@ -35,8 +35,8 @@ public final class me/tbsten/compose/preview/lab/previewlab/ContentSectionKt {
 }
 
 public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabKt {
-	public static final fun PreviewLab (Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;Ljava/util/List;ZLjava/util/List;Lkotlin/jvm/functions/Function3;ZLandroidx/compose/ui/graphics/layer/GraphicsLayer;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
-	public static final fun PreviewLab-HBwkHgE (FFLandroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;ZLjava/util/List;Lkotlin/jvm/functions/Function3;ZLandroidx/compose/ui/graphics/layer/GraphicsLayer;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLab (Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;Ljava/util/List;ZLjava/util/List;Lkotlin/jvm/functions/Function3;ZZLandroidx/compose/ui/graphics/layer/GraphicsLayer;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreviewLab-RnOwUx0 (FFLandroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;ZLjava/util/List;Lkotlin/jvm/functions/Function3;ZZLandroidx/compose/ui/graphics/layer/GraphicsLayer;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
 	public static final fun getLocalDefaultIsHeaderShow ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun rememberPreviewLabStateFromUrl (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;
 }

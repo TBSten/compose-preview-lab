@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalInspectionMode
 import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabScope
@@ -14,6 +15,7 @@ import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 @Composable
 fun CustomizedPreviewLab(
     modifier: Modifier = Modifier,
+    enable: Boolean = !LocalInspectionMode.current,
     content: @Composable PreviewLabScope.() -> Unit,
 ) = PreviewLab(
     modifier = modifier,
@@ -29,5 +31,6 @@ fun CustomizedPreviewLab(
             c()
         }
     },
+    enable = enable,
     content = content,
 )

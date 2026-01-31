@@ -2,6 +2,7 @@ package me.tbsten.compose.preview.lab.sample.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.previewlab.PreviewLab
@@ -12,10 +13,12 @@ import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 fun SamplePreviewLab(
     modifier: Modifier = Modifier,
     inspectorTabs: List<InspectorTab> = InspectorTab.defaults,
+    enable: Boolean = !LocalInspectionMode.current,
     content: @Composable PreviewLabScope.() -> Unit,
 ) = PreviewLab(
     modifier = modifier,
     screenSizes = listOf(ScreenSize(320.dp, 400.dp)) + ScreenSize.SmartphoneAndDesktops,
     inspectorTabs = inspectorTabs,
+    enable = enable,
     content = content,
 )
