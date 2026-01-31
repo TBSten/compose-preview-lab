@@ -16,13 +16,13 @@ import me.tbsten.compose.preview.lab.field.CombinedField3
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.splitedOf
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
-import me.tbsten.compose.preview.lab.sample.component.previewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.sample.component.rememberCodeTab
 
 @ComposePreviewLabOption(id = "FieldCombined")
 @Preview
 @Composable
-private fun FieldCombined() = previewLab(
+private fun FieldCombined() = SamplePreviewLab(
     inspectorTabs = InspectorTab.defaults +
         listOf(
             rememberCodeTab(

@@ -13,13 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.field.SelectableField
-import me.tbsten.compose.preview.lab.sample.component.previewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import androidx.compose.ui.tooling.preview.Preview
 
 @ComposePreviewLabOption(id = "FieldSelectable")
 @Preview
 @Composable
-private fun FieldSelectable() = previewLab {
+private fun FieldSelectable() = SamplePreviewLab {
     val theme =
         fieldValue {
             SelectableField(

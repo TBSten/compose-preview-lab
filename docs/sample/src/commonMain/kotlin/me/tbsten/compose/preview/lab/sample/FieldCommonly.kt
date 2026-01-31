@@ -34,13 +34,13 @@ import me.tbsten.compose.preview.lab.field.SelectableField
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.modifier.ModifierFieldValue
 import me.tbsten.compose.preview.lab.field.modifier.padding
-import me.tbsten.compose.preview.lab.sample.component.previewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import androidx.compose.ui.tooling.preview.Preview
 
 @ComposePreviewLabOption(id = "FieldCommonly")
 @Preview
 @Composable
-private fun FieldCommonly() = previewLab {
+private fun FieldCommonly() = SamplePreviewLab {
     // StringField - TextField による文字列入力
     var userName by fieldState { StringField("userName", "John Doe") }
 

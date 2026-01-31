@@ -12,7 +12,7 @@ import me.tbsten.compose.preview.lab.field.modifier.ModifierFieldValue
 import me.tbsten.compose.preview.lab.field.withHint
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.sample.component.MyButton
-import me.tbsten.compose.preview.lab.sample.component.previewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.sample.component.rememberCodeTab
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Preview
 @ComposePreviewLabOption(id = "GetStarted")
 @Composable
-private fun GetStartedPreview() = previewLab(
+private fun GetStartedPreview() = SamplePreviewLab(
     inspectorTabs = InspectorTab.defaults +
         listOf(
             rememberCodeTab(

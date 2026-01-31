@@ -9,14 +9,14 @@ import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.transform
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
-import me.tbsten.compose.preview.lab.sample.component.previewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.sample.component.rememberCodeTab
 import androidx.compose.ui.tooling.preview.Preview
 
 @Preview
 @ComposePreviewLabOption(id = "FieldTransform")
 @Composable
-private fun FieldTransform() = previewLab(
+private fun FieldTransform() = SamplePreviewLab(
     inspectorTabs = InspectorTab.defaults +
         listOf(
             rememberCodeTab(

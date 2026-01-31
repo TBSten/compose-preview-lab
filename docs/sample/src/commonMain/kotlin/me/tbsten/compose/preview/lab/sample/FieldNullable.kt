@@ -31,14 +31,14 @@ import me.tbsten.compose.preview.lab.field.IntField
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.nullable
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
-import me.tbsten.compose.preview.lab.sample.component.previewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.sample.component.rememberCodeTab
 import androidx.compose.ui.tooling.preview.Preview
 
 @Preview
 @ComposePreviewLabOption(id = "FieldNullable")
 @Composable
-private fun FieldNullable() = previewLab(
+private fun FieldNullable() = SamplePreviewLab(
     inspectorTabs = InspectorTab.defaults +
         listOf(
             rememberCodeTab(

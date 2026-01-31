@@ -30,7 +30,7 @@ fun MyButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
 )
 @Preview
 @Composable
-private fun MyButtonPreview() = customizedPreviewLab {
+private fun MyButtonPreview() = CustomizedPreviewLab {
     val previewLabGalleryNavigator = LocalPreviewLabGalleryNavigator.current
 
     MyButton(
