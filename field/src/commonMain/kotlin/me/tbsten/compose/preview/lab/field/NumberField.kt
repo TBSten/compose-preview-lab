@@ -1,6 +1,7 @@
 package me.tbsten.compose.preview.lab.field
 
 import androidx.compose.runtime.Composable
+import kotlin.jvm.JvmName
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
@@ -421,3 +422,78 @@ open class FloatField(label: String, initialValue: Float, inputType: InputType =
     ) {
     override fun serializer(): KSerializer<Float> = Float.serializer()
 }
+
+// Int
+@JvmName("withIntIncrementHint")
+fun MutablePreviewLabField<Int>.withIncrementHint() = withHintAction(
+    "Increment" to { value += 1 },
+)
+
+@JvmName("withIntDecrementHint")
+fun MutablePreviewLabField<Int>.withDecrementHint() = withHintAction(
+    "Decrement" to { value -= 1 },
+)
+
+@JvmName("withIntIncrementDecrementHint")
+fun MutablePreviewLabField<Int>.withIncrementDecrementHint() = withIncrementHint()
+    .withDecrementHint()
+
+// Long
+@JvmName("withLongIncrementHint")
+fun MutablePreviewLabField<Long>.withIncrementHint() = withHintAction(
+    "Increment" to { value += 1L },
+)
+
+@JvmName("withLongDecrementHint")
+fun MutablePreviewLabField<Long>.withDecrementHint() = withHintAction(
+    "Decrement" to { value -= 1L },
+)
+
+@JvmName("withLongIncrementDecrementHint")
+fun MutablePreviewLabField<Long>.withIncrementDecrementHint() = withIncrementHint()
+    .withDecrementHint()
+
+// Byte
+@JvmName("withByteIncrementHint")
+fun MutablePreviewLabField<Byte>.withIncrementHint() = withHintAction(
+    "Increment" to { value = (value + 1).toByte() },
+)
+
+@JvmName("withByteDecrementHint")
+fun MutablePreviewLabField<Byte>.withDecrementHint() = withHintAction(
+    "Decrement" to { value = (value - 1).toByte() },
+)
+
+@JvmName("withByteIncrementDecrementHint")
+fun MutablePreviewLabField<Byte>.withIncrementDecrementHint() = withIncrementHint()
+    .withDecrementHint()
+
+// Double
+@JvmName("withDoubleIncrementHint")
+fun MutablePreviewLabField<Double>.withIncrementHint() = withHintAction(
+    "Increment" to { value += 1.0 },
+)
+
+@JvmName("withDoubleDecrementHint")
+fun MutablePreviewLabField<Double>.withDecrementHint() = withHintAction(
+    "Decrement" to { value -= 1.0 },
+)
+
+@JvmName("withDoubleIncrementDecrementHint")
+fun MutablePreviewLabField<Double>.withIncrementDecrementHint() = withIncrementHint()
+    .withDecrementHint()
+
+// Float
+@JvmName("withFloatIncrementHint")
+fun MutablePreviewLabField<Float>.withIncrementHint() = withHintAction(
+    "+ Increment" to { value += 1f },
+)
+
+@JvmName("withFloatDecrementHint")
+fun MutablePreviewLabField<Float>.withDecrementHint() = withHintAction(
+    "- Decrement" to { value -= 1f },
+)
+
+@JvmName("withFloatIncrementDecrementHint")
+fun MutablePreviewLabField<Float>.withIncrementDecrementHint() = withIncrementHint()
+    .withDecrementHint()
