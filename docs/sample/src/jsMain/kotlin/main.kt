@@ -8,7 +8,7 @@ import me.tbsten.compose.preview.lab.EmbeddedPreviewOrGallery
 import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
 import me.tbsten.compose.preview.lab.initialSelectedPreviewFromSearchParam
 
-val appPreviewList = (sample.PreviewList + uiLib.PreviewList)
+private val appPreviewList = (sample.PreviewList)
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
