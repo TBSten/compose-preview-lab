@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.field.SpField
 import me.tbsten.compose.preview.lab.sample.OnValueChange
 import me.tbsten.compose.preview.lab.sample.SpeechBubbleBox
@@ -31,7 +31,7 @@ internal enum class SpFieldExampleSteps {
 @Preview
 @ComposePreviewLabOption(id = "SpFieldExample")
 @Composable
-internal fun SpFieldExample() = PreviewLab {
+internal fun SpFieldExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(SpFieldExampleSteps.EditValue) }
 
     val fontSize = fieldState {

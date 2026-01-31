@@ -16,6 +16,7 @@ import me.tbsten.compose.preview.lab.sample.SpeechBubbleBox
 import me.tbsten.compose.preview.lab.sample.speechBubble
 import androidx.compose.ui.tooling.preview.Preview
 import me.tbsten.compose.preview.lab.event.withEvent
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 
 internal enum class BooleanFieldExampleSteps {
     ToggleSwitch,
@@ -31,7 +32,7 @@ internal enum class BooleanFieldExampleSteps {
 @Preview
 @ComposePreviewLabOption(id = "BooleanFieldExample")
 @Composable
-internal fun BooleanFieldExample() = PreviewLab {
+internal fun BooleanFieldExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(BooleanFieldExampleSteps.ToggleSwitch) }
 
     val enabled = fieldState {

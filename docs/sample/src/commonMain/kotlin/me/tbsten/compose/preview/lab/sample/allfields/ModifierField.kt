@@ -4,7 +4,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.field.ModifierField
 import me.tbsten.compose.preview.lab.field.mark
 import me.tbsten.compose.preview.lab.field.modifier.ModifierFieldValue
@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Preview
 @ComposePreviewLabOption(id = "ModifierFieldExample")
 @Composable
-internal fun ModifierFieldExample() = PreviewLab {
+internal fun ModifierFieldExample() = SamplePreviewLab {
     Button(
         onClick = { },
         modifier = fieldValue { ModifierField("Button modifier") },
@@ -37,7 +37,7 @@ internal fun ModifierFieldExample() = PreviewLab {
 @Preview
 @ComposePreviewLabOption(id = "ModifierFieldWithMarkExample")
 @Composable
-internal fun ModifierFieldWithMarkExample() = PreviewLab {
+internal fun ModifierFieldWithMarkExample() = SamplePreviewLab {
     Button(
         onClick = { },
         modifier = fieldValue {

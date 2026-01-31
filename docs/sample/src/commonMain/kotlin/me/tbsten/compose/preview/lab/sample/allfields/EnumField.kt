@@ -11,7 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.field.EnumField
 import me.tbsten.compose.preview.lab.sample.OnValueChange
 import me.tbsten.compose.preview.lab.sample.SpeechBubbleBox
@@ -34,7 +34,7 @@ internal enum class EnumFieldExampleSteps {
 @Preview
 @ComposePreviewLabOption(id = "EnumFieldExample")
 @Composable
-internal fun EnumFieldExample() = PreviewLab {
+internal fun EnumFieldExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(EnumFieldExampleSteps.SelectVariant) }
 
     val variant = fieldState {

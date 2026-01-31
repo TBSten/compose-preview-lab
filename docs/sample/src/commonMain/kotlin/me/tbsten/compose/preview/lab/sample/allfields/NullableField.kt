@@ -8,7 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.nullable
 import me.tbsten.compose.preview.lab.sample.OnValueChange
@@ -30,7 +30,7 @@ internal enum class NullableFieldExampleSteps {
 @Preview
 @ComposePreviewLabOption(id = "NullableFieldExample")
 @Composable
-internal fun NullableFieldExample() = PreviewLab {
+internal fun NullableFieldExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(NullableFieldExampleSteps.EditValue) }
 
     val userName = fieldState {

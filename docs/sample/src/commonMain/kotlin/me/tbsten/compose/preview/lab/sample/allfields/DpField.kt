@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.field.DpField
 import me.tbsten.compose.preview.lab.sample.OnValueChange
 import me.tbsten.compose.preview.lab.sample.SpeechBubbleBox
@@ -34,7 +34,7 @@ internal enum class DpFieldExampleSteps {
 @Preview
 @ComposePreviewLabOption(id = "DpFieldExample")
 @Composable
-internal fun DpFieldExample() = PreviewLab {
+internal fun DpFieldExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(DpFieldExampleSteps.EditValue) }
 
     val padding = fieldState {

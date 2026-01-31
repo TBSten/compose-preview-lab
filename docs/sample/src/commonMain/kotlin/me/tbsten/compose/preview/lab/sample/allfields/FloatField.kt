@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.field.FloatField
 import me.tbsten.compose.preview.lab.sample.OnValueChange
 import me.tbsten.compose.preview.lab.sample.SpeechBubbleBox
@@ -40,7 +40,7 @@ internal enum class FloatFieldExampleSteps {
 @Preview
 @ComposePreviewLabOption(id = "FloatFieldExample")
 @Composable
-internal fun FloatFieldExample() = PreviewLab {
+internal fun FloatFieldExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(FloatFieldExampleSteps.EditValue) }
 
     val alpha = fieldState {

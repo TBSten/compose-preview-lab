@@ -17,7 +17,7 @@ import me.tbsten.compose.preview.lab.field.SpField
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.withHint
 import me.tbsten.compose.preview.lab.field.withHintAction
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.sample.OnValueChange
 import me.tbsten.compose.preview.lab.sample.SpeechBubbleBox
 import me.tbsten.compose.preview.lab.sample.speechBubble
@@ -36,7 +36,7 @@ internal enum class WithHintFieldExampleSteps {
 @Preview
 @ComposePreviewLabOption(id = "WithHintFieldExample")
 @Composable
-internal fun WithHintFieldExample() = PreviewLab {
+internal fun WithHintFieldExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(WithHintFieldExampleSteps.SelectHint) }
 
     val fontSize = fieldState {
@@ -89,7 +89,7 @@ internal enum class WithHintActionExampleSteps {
 @Preview
 @ComposePreviewLabOption(id = "WithHintActionExample")
 @Composable
-internal fun WithHintActionExample() = PreviewLab {
+internal fun WithHintActionExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(WithHintActionExampleSteps.SelectAction) }
 
     val items = fieldState {

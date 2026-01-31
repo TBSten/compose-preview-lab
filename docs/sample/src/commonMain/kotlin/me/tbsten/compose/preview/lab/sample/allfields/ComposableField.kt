@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.field.ComposableField
 import me.tbsten.compose.preview.lab.field.ComposableFieldValue
 import me.tbsten.compose.preview.lab.sample.SpeechBubbleBox
@@ -28,7 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Preview
 @ComposePreviewLabOption(id = "ComposableFieldExample")
 @Composable
-internal fun ComposableFieldExample() = PreviewLab {
+internal fun ComposableFieldExample() = SamplePreviewLab {
     var showBubble by remember { mutableStateOf(true) }
 
     SpeechBubbleBox(
@@ -57,7 +57,7 @@ internal fun ComposableFieldExample() = PreviewLab {
 @Preview
 @ComposePreviewLabOption(id = "ComposableFieldWithPredefinedValuesExample")
 @Composable
-internal fun ComposableFieldWithPredefinedValuesExample() = PreviewLab {
+internal fun ComposableFieldWithPredefinedValuesExample() = SamplePreviewLab {
     var showBubble by remember { mutableStateOf(true) }
 
     SpeechBubbleBox(

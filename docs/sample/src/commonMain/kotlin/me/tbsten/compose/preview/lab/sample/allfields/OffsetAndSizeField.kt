@@ -24,7 +24,7 @@ import me.tbsten.compose.preview.lab.field.DpOffsetField
 import me.tbsten.compose.preview.lab.field.DpSizeField
 import me.tbsten.compose.preview.lab.field.OffsetField
 import me.tbsten.compose.preview.lab.field.SizeField
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import androidx.compose.ui.tooling.preview.Preview
 
 /**
@@ -38,7 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Preview
 @ComposePreviewLabOption(id = "OffsetAndSizeFieldExample")
 @Composable
-internal fun OffsetAndSizeFieldExample() = PreviewLab {
+internal fun OffsetAndSizeFieldExample() = SamplePreviewLab {
     // OffsetField: Float 単位の座標
     val offset = fieldValue { OffsetField("Position", Offset(20f, 10f)) }
 

@@ -26,11 +26,11 @@ import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.LocalTimeField
 import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.MonthField
 import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.TimeZoneField
 import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.withMainTimeZonesHint
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 
 @Preview
 @Composable
-private fun KotlinxDateTimeExamples() = PreviewLab {
+private fun KotlinxDateTimeExamples() = SamplePreviewLab {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.padding(20.dp),
@@ -136,7 +136,7 @@ private fun KotlinxDateTimeExamples() = PreviewLab {
 @ComposePreviewLabOption(id = "LocalDateTimeFieldExample")
 @Preview
 @Composable
-private fun LocalDateTimeFieldExample() = PreviewLab {
+private fun LocalDateTimeFieldExample() = SamplePreviewLab {
     val createdAt = fieldValue {
         LocalDateTimeField(
             label = "createdAt",
@@ -155,7 +155,7 @@ private fun LocalDateTimeFieldExample() = PreviewLab {
 @ComposePreviewLabOption(id = "LocalDateFieldExample")
 @Preview
 @Composable
-private fun LocalDateFieldExample() = PreviewLab {
+private fun LocalDateFieldExample() = SamplePreviewLab {
     val birthday = fieldValue {
         LocalDateField(
             label = "birthday",
@@ -174,7 +174,7 @@ private fun LocalDateFieldExample() = PreviewLab {
 @ComposePreviewLabOption(id = "LocalTimeFieldExample")
 @Preview
 @Composable
-private fun LocalTimeFieldExample() = PreviewLab {
+private fun LocalTimeFieldExample() = SamplePreviewLab {
     val meetingTime = fieldValue {
         LocalTimeField(
             label = "meetingTime",
@@ -193,7 +193,7 @@ private fun LocalTimeFieldExample() = PreviewLab {
 @ComposePreviewLabOption(id = "TimeZoneFieldExample")
 @Preview
 @Composable
-private fun TimeZoneFieldExample() = PreviewLab {
+private fun TimeZoneFieldExample() = SamplePreviewLab {
     val timeZone = fieldValue {
         TimeZoneField(
             label = "timeZone",
@@ -212,7 +212,7 @@ private fun TimeZoneFieldExample() = PreviewLab {
 @ComposePreviewLabOption(id = "MonthFieldExample")
 @Preview
 @Composable
-private fun MonthFieldExample() = PreviewLab {
+private fun MonthFieldExample() = SamplePreviewLab {
     val month = fieldValue {
         MonthField(
             label = "month",
@@ -231,7 +231,7 @@ private fun MonthFieldExample() = PreviewLab {
 @ComposePreviewLabOption(id = "DayOfWeekFieldExample")
 @Preview
 @Composable
-private fun DayOfWeekFieldExample() = PreviewLab {
+private fun DayOfWeekFieldExample() = SamplePreviewLab {
     val dayOfWeek = fieldValue {
         DayOfWeekField(
             label = "regularClosingDay",
@@ -250,7 +250,7 @@ private fun DayOfWeekFieldExample() = PreviewLab {
 @ComposePreviewLabOption(id = "DatePeriodFieldExample")
 @Preview
 @Composable
-private fun DatePeriodFieldExample() = PreviewLab {
+private fun DatePeriodFieldExample() = SamplePreviewLab {
     val datePeriod = fieldValue {
         DatePeriodField(
             label = "subscriptionPeriod",
@@ -269,7 +269,7 @@ private fun DatePeriodFieldExample() = PreviewLab {
 @ComposePreviewLabOption(id = "DateTimePeriodFieldExample")
 @Preview
 @Composable
-private fun DateTimePeriodFieldExample() = PreviewLab {
+private fun DateTimePeriodFieldExample() = SamplePreviewLab {
     val dateTimePeriod = fieldValue {
         DateTimePeriodField(
             label = "duration",

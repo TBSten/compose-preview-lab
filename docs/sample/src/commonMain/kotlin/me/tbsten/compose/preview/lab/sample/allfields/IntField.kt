@@ -8,7 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.field.IntField
 import me.tbsten.compose.preview.lab.field.NumberField
 import me.tbsten.compose.preview.lab.sample.OnValueChange
@@ -30,7 +30,7 @@ internal enum class IntFieldExampleSteps {
 @Preview
 @ComposePreviewLabOption(id = "IntFieldExample")
 @Composable
-internal fun IntFieldExample() = PreviewLab {
+internal fun IntFieldExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(IntFieldExampleSteps.EditValue) }
 
     val count = fieldState {
@@ -69,7 +69,7 @@ internal enum class IntFieldWithPrefixSuffixExampleSteps {
 @Preview
 @ComposePreviewLabOption(id = "IntFieldWithPrefixSuffixExample")
 @Composable
-internal fun IntFieldWithPrefixSuffixExample() = PreviewLab {
+internal fun IntFieldWithPrefixSuffixExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(IntFieldWithPrefixSuffixExampleSteps.EditValue) }
 
     val count = fieldState {

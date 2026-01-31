@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.field.CombinedField
 import me.tbsten.compose.preview.lab.field.DpField
 import me.tbsten.compose.preview.lab.field.combined
@@ -41,7 +41,7 @@ internal enum class CombinedFieldExampleSteps {
 @Preview
 @ComposePreviewLabOption(id = "CombinedFieldExample")
 @Composable
-internal fun CombinedFieldExample() = PreviewLab {
+internal fun CombinedFieldExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(CombinedFieldExampleSteps.EditValue) }
 
     val padding = fieldState {

@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.transform
 import me.tbsten.compose.preview.lab.sample.OnValueChange
@@ -36,7 +36,7 @@ internal enum class TransformFieldExampleSteps {
 @Preview
 @ComposePreviewLabOption(id = "TransformFieldExample")
 @Composable
-internal fun TransformFieldExample() = PreviewLab {
+internal fun TransformFieldExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(TransformFieldExampleSteps.EditValue) }
 
     val intValue = fieldState {

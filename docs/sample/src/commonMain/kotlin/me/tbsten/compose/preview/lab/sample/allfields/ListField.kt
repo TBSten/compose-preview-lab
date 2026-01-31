@@ -8,7 +8,7 @@ import me.tbsten.compose.preview.lab.field.ListField
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.withEmptyHint
 import me.tbsten.compose.preview.lab.field.withHint
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 
 /**
  * Demonstrates [ListField] for editing a dynamic list of values.
@@ -19,7 +19,7 @@ import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 @Preview
 @ComposePreviewLabOption(id = "ListFieldExample")
 @Composable
-internal fun ListFieldExample() = PreviewLab {
+internal fun ListFieldExample() = SamplePreviewLab {
     Text(
         text = fieldValue {
             val initial = List(100) {

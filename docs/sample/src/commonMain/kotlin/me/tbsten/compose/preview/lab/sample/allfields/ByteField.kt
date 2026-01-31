@@ -14,6 +14,7 @@ import me.tbsten.compose.preview.lab.sample.OnValueChange
 import me.tbsten.compose.preview.lab.sample.SpeechBubbleBox
 import me.tbsten.compose.preview.lab.sample.speechBubble
 import androidx.compose.ui.tooling.preview.Preview
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 
 internal enum class ByteFieldExampleSteps {
     EditValue,
@@ -29,7 +30,7 @@ internal enum class ByteFieldExampleSteps {
 @Preview
 @ComposePreviewLabOption(id = "ByteFieldExample")
 @Composable
-internal fun ByteFieldExample() = PreviewLab {
+internal fun ByteFieldExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(ByteFieldExampleSteps.EditValue) }
 
     val flag = fieldState {

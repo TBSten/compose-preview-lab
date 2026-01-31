@@ -8,7 +8,7 @@ import me.tbsten.compose.preview.lab.field.SetField
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.withEmptyHint
 import me.tbsten.compose.preview.lab.field.withHint
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 
 /**
  * Demonstrates [SetField] for editing a unique collection of values.
@@ -19,7 +19,7 @@ import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 @Preview
 @ComposePreviewLabOption(id = "SetFieldExample")
 @Composable
-internal fun SetFieldExample() = PreviewLab {
+internal fun SetFieldExample() = SamplePreviewLab {
     Text(
         text = fieldValue {
             val initial = setOf("Apple", "Banana", "Cherry", "Date", "Elderberry")

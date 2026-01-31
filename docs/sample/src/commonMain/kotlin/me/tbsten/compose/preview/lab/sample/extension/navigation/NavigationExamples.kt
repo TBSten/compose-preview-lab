@@ -33,7 +33,7 @@ import me.tbsten.compose.preview.lab.field.FixedField
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.combined
 import me.tbsten.compose.preview.lab.field.splitedOf
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 
 // Type-safe route definitions
 @Serializable
@@ -59,7 +59,7 @@ data object Settings
 @ComposePreviewLabOption(id = "NavControllerFieldExample")
 @Preview
 @Composable
-private fun NavControllerFieldExample() = PreviewLab {
+private fun NavControllerFieldExample() = SamplePreviewLab {
     @Suppress("ktlint:standard:backing-property-naming", "LocalVariableName")
     val _navController = rememberNavController()
     val navController = fieldValue("navController") {

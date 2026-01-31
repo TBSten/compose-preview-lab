@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.field.ColorField
 import me.tbsten.compose.preview.lab.field.withPredefinedColorHint
 import me.tbsten.compose.preview.lab.sample.OnValueChange
@@ -35,7 +35,7 @@ internal enum class ColorFieldExampleSteps {
 @Preview
 @ComposePreviewLabOption(id = "ColorFieldExample")
 @Composable
-internal fun ColorFieldExample() = PreviewLab {
+internal fun ColorFieldExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(ColorFieldExampleSteps.SelectColor) }
 
     val color = fieldState {

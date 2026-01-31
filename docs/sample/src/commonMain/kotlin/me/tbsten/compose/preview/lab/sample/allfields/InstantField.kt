@@ -9,7 +9,7 @@ import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.field.InstantField
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 
 /**
  * Demonstrates [InstantField] for editing Kotlin time [kotlin.time.Instant] values.
@@ -20,7 +20,7 @@ import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 @Preview
 @ComposePreviewLabOption(id = "InstantFieldExample")
 @Composable
-internal fun InstantFieldExample() = PreviewLab {
+internal fun InstantFieldExample() = SamplePreviewLab {
     Text(
         text = "Create at: ${
             fieldValue { InstantField("createAt", Clock.System.now()) }

@@ -17,7 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.field.SelectableField
 import me.tbsten.compose.preview.lab.sample.OnValueChange
 import me.tbsten.compose.preview.lab.sample.SpeechBubbleBox
@@ -38,7 +38,7 @@ internal enum class SelectableFieldExampleSteps {
 @Preview
 @ComposePreviewLabOption(id = "SelectableFieldExample")
 @Composable
-internal fun SelectableFieldExample() = PreviewLab {
+internal fun SelectableFieldExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(SelectableFieldExampleSteps.SelectValue) }
 
     val theme = fieldState {
@@ -71,7 +71,7 @@ internal fun SelectableFieldExample() = PreviewLab {
 @Preview
 @ComposePreviewLabOption(id = "SelectableFieldChipsExample")
 @Composable
-internal fun SelectableFieldChipsExample() = PreviewLab {
+internal fun SelectableFieldChipsExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(SelectableFieldExampleSteps.SelectValue) }
 
     val theme = fieldState {
@@ -105,7 +105,7 @@ internal fun SelectableFieldChipsExample() = PreviewLab {
 @Preview
 @ComposePreviewLabOption(id = "SelectableFieldMapExample")
 @Composable
-internal fun SelectableFieldMapExample() = PreviewLab {
+internal fun SelectableFieldMapExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(SelectableFieldExampleSteps.SelectValue) }
 
     val theme = fieldState {
@@ -142,7 +142,7 @@ internal fun SelectableFieldMapExample() = PreviewLab {
 @Preview
 @ComposePreviewLabOption(id = "SelectableFieldBuilderExample")
 @Composable
-internal fun SelectableFieldBuilderExample() = PreviewLab {
+internal fun SelectableFieldBuilderExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(SelectableFieldExampleSteps.SelectValue) }
 
     val theme = fieldState {

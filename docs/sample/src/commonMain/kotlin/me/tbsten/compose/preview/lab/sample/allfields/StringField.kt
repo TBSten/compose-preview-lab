@@ -9,7 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.withTextHint
 import me.tbsten.compose.preview.lab.sample.OnValueChange
@@ -30,7 +30,7 @@ internal enum class StringFieldExampleSteps {
 @Preview
 @ComposePreviewLabOption(id = "StringFieldExample")
 @Composable
-internal fun StringFieldExample() = PreviewLab {
+internal fun StringFieldExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(StringFieldExampleSteps.EditValue) }
 
     val text = fieldState {
@@ -69,7 +69,7 @@ internal enum class StringFieldWithPrefixSuffixExampleSteps {
 @Preview
 @ComposePreviewLabOption(id = "StringFieldWithPrefixSuffixExample")
 @Composable
-internal fun StringFieldWithPrefixSuffixExample() = PreviewLab {
+internal fun StringFieldWithPrefixSuffixExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(StringFieldWithPrefixSuffixExampleSteps.EditValue) }
 
     val text = fieldState {
@@ -112,7 +112,7 @@ internal enum class StringFieldWithTextHintExampleSteps {
 @Preview
 @ComposePreviewLabOption(id = "StringFieldWithTextHintExample")
 @Composable
-internal fun StringFieldWithTextHintExample() = PreviewLab {
+internal fun StringFieldWithTextHintExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(StringFieldWithTextHintExampleSteps.EditValue) }
 
     val description = fieldState {

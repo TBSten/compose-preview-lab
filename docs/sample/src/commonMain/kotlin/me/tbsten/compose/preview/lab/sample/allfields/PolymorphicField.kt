@@ -22,7 +22,7 @@ import me.tbsten.compose.preview.lab.field.PolymorphicField
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.field.combined
 import me.tbsten.compose.preview.lab.field.splitedOf
-import me.tbsten.compose.preview.lab.previewlab.PreviewLab
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.sample.OnValueChange
 import me.tbsten.compose.preview.lab.sample.SpeechBubbleBox
 import me.tbsten.compose.preview.lab.sample.speechBubble
@@ -48,7 +48,7 @@ internal enum class PolymorphicFieldExampleSteps {
 @Preview
 @ComposePreviewLabOption(id = "PolymorphicFieldExample")
 @Composable
-internal fun PolymorphicFieldExample() = PreviewLab {
+internal fun PolymorphicFieldExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(PolymorphicFieldExampleSteps.EditValue) }
 
     val uiState by fieldState {
@@ -120,7 +120,7 @@ sealed interface FixedFieldExampleUiState {
 @Preview
 @ComposePreviewLabOption(id = "FixedFieldExample")
 @Composable
-internal fun FixedFieldExample() = PreviewLab {
+internal fun FixedFieldExample() = SamplePreviewLab {
     var step by remember { mutableStateOf(PolymorphicFieldExampleSteps.EditValue) }
 
     val value = fieldState {
