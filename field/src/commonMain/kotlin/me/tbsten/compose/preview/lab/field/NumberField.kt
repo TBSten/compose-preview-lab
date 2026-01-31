@@ -426,12 +426,12 @@ open class FloatField(label: String, initialValue: Float, inputType: InputType =
 // Int
 @JvmName("withIntIncrementHint")
 fun MutablePreviewLabField<Int>.withIncrementHint() = withHintAction(
-    "Increment" to { value += 1 },
+    "+ Increment" to { value += 1 },
 )
 
 @JvmName("withIntDecrementHint")
 fun MutablePreviewLabField<Int>.withDecrementHint() = withHintAction(
-    "Decrement" to { value -= 1 },
+    "- Decrement" to { value -= 1 },
 )
 
 @JvmName("withIntIncrementDecrementHint")
@@ -441,12 +441,12 @@ fun MutablePreviewLabField<Int>.withIncrementDecrementHint() = withIncrementHint
 // Long
 @JvmName("withLongIncrementHint")
 fun MutablePreviewLabField<Long>.withIncrementHint() = withHintAction(
-    "Increment" to { value += 1L },
+    "+ Increment" to { value += 1L },
 )
 
 @JvmName("withLongDecrementHint")
 fun MutablePreviewLabField<Long>.withDecrementHint() = withHintAction(
-    "Decrement" to { value -= 1L },
+    "- Decrement" to { value -= 1L },
 )
 
 @JvmName("withLongIncrementDecrementHint")
@@ -456,12 +456,12 @@ fun MutablePreviewLabField<Long>.withIncrementDecrementHint() = withIncrementHin
 // Byte
 @JvmName("withByteIncrementHint")
 fun MutablePreviewLabField<Byte>.withIncrementHint() = withHintAction(
-    "Increment" to { value = (value + 1).toByte() },
+    "+ Increment" to { value = (value + 1).toByte() },
 )
 
 @JvmName("withByteDecrementHint")
 fun MutablePreviewLabField<Byte>.withDecrementHint() = withHintAction(
-    "Decrement" to { value = (value - 1).toByte() },
+    "- Decrement" to { value = (value - 1).toByte() },
 )
 
 @JvmName("withByteIncrementDecrementHint")
@@ -471,12 +471,12 @@ fun MutablePreviewLabField<Byte>.withIncrementDecrementHint() = withIncrementHin
 // Double
 @JvmName("withDoubleIncrementHint")
 fun MutablePreviewLabField<Double>.withIncrementHint() = withHintAction(
-    "Increment" to { value += 1.0 },
+    "+ Increment" to { value += 1.0 },
 )
 
 @JvmName("withDoubleDecrementHint")
 fun MutablePreviewLabField<Double>.withDecrementHint() = withHintAction(
-    "Decrement" to { value -= 1.0 },
+    "- Decrement" to { value -= 1.0 },
 )
 
 @JvmName("withDoubleIncrementDecrementHint")
