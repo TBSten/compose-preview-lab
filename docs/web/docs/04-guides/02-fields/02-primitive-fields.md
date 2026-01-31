@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 
 Kotlin の基本的なプリミティブ型（String、Boolean、数値型など）に対応するフィールドです。最も基本的で頻繁に使用されるフィールド群です。
 
-### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-string-field/index.html">StringField</KDocLink>
+### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-string-field/index.html">StringField</KDocLink>
 
 <table>
     <tr>
@@ -24,7 +24,7 @@ Kotlin の基本的なプリミティブ型（String、Boolean、数値型など
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-string-field/index.html">StringField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-string-field/index.html">StringField</KDocLink> </td>
     </tr>
 </table>
 
@@ -104,7 +104,7 @@ PreviewLab {
 
 </details>
 
-### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-boolean-field/index.html">BooleanField</KDocLink>
+### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-boolean-field/index.html">BooleanField</KDocLink>
 
 <table>
     <tr>
@@ -117,7 +117,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-boolean-field/index.html">BooleanField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-boolean-field/index.html">BooleanField</KDocLink> </td>
     </tr>
 </table>
 
@@ -152,31 +152,31 @@ Kotlin の数値型（Int、Long、Byte、Double、Float）に対応するフィ
         <td> IntField </td>
         <td> `kotlin.Int` </td>
         <td> ⭐⭐⭐ </td>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-int-field/index.html">IntField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-int-field/index.html">IntField</KDocLink> </td>
     </tr>
     <tr>
         <td> LongField </td>
         <td> `kotlin.Long` </td>
         <td> ⭐⭐ </td>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-long-field/index.html">LongField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-long-field/index.html">LongField</KDocLink> </td>
     </tr>
     <tr>
         <td> ByteField </td>
         <td> `kotlin.Byte` </td>
         <td> ⭐ </td>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-byte-field/index.html">ByteField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-byte-field/index.html">ByteField</KDocLink> </td>
     </tr>
     <tr>
         <td> DoubleField </td>
         <td> `kotlin.Double` </td>
         <td> ⭐⭐ </td>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-double-field/index.html">DoubleField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-double-field/index.html">DoubleField</KDocLink> </td>
     </tr>
     <tr>
         <td> FloatField </td>
         <td> `kotlin.Float` </td>
         <td> ⭐⭐ </td>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-float-field/index.html">FloatField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-float-field/index.html">FloatField</KDocLink> </td>
     </tr>
 </table>
 

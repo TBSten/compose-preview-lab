@@ -9,7 +9,7 @@ import KDocLink from '@site/src/components/KDocLink';
 
 既存のフィールドを拡張・強化するためのフィールドです。選択肢から選ぶフィールド、複数のフィールドを組み合わせるフィールド、既存のフィールドを拡張するユーティリティフィールドが含まれます。
 
-## <KDocLink path="core/me.tbsten.compose.preview.lab.field/-selectable-field/index.html">SelectableField</KDocLink>
+## <KDocLink path="field/me.tbsten.compose.preview.lab.field/-selectable-field/index.html">SelectableField</KDocLink>
 
 <table>
     <tr>
@@ -22,7 +22,7 @@ import KDocLink from '@site/src/components/KDocLink';
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-selectable-field/index.html">SelectableField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-selectable-field/index.html">SelectableField</KDocLink> </td>
     </tr>
 </table>
 
@@ -134,7 +134,7 @@ PreviewLab {
 
 </details>
 
-### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-enum-field.html">EnumField</KDocLink>
+### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-enum-field.html">EnumField</KDocLink>
 
 <table>
     <tr>
@@ -147,7 +147,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-enum-field.html">EnumField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-enum-field.html">EnumField</KDocLink> </td>
     </tr>
 </table>
 
@@ -171,7 +171,7 @@ PreviewLab {
  title="EnumField Example"
 />
 
-## <KDocLink path="core/me.tbsten.compose.preview.lab.field/-with-hint-field/index.html">WithHintField</KDocLink> / `.withHint()`
+## <KDocLink path="field/me.tbsten.compose.preview.lab.field/-with-hint-field/index.html">WithHintField</KDocLink> / `.withHint()`
 
 <table>
     <tr>
@@ -184,7 +184,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-with-hint-field/index.html">WithHintField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-with-hint-field/index.html">WithHintField</KDocLink> </td>
     </tr>
 </table>
 
@@ -342,7 +342,7 @@ val text = fieldValue {
 
 </details>
 
-## <KDocLink path="core/me.tbsten.compose.preview.lab.field/-nullable-field/index.html">NullableField</KDocLink> / `.nullable()`
+## <KDocLink path="field/me.tbsten.compose.preview.lab.field/-nullable-field/index.html">NullableField</KDocLink> / `.nullable()`
 
 <table>
     <tr>
@@ -355,7 +355,7 @@ val text = fieldValue {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-nullable-field/index.html">NullableField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-nullable-field/index.html">NullableField</KDocLink> </td>
     </tr>
 </table>
 
@@ -395,7 +395,7 @@ val timeout: Int? = fieldValue {
 }
 ```
 
-## <KDocLink path="core/me.tbsten.compose.preview.lab.field/-combined-field/index.html">CombinedField</KDocLink>
+## <KDocLink path="field/me.tbsten.compose.preview.lab.field/-combined-field/index.html">CombinedField</KDocLink>
 
 <table>
     <tr>
@@ -408,7 +408,7 @@ val timeout: Int? = fieldValue {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-combined-field/index.html">CombinedField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-combined-field/index.html">CombinedField</KDocLink> </td>
     </tr>
 </table>
 
@@ -502,7 +502,7 @@ CombinedField の自動生成機能も検討しています。
 
 :::
 
-## <KDocLink path="core/me.tbsten.compose.preview.lab.field/-transform-field/index.html">TransformField</KDocLink>
+## <KDocLink path="field/me.tbsten.compose.preview.lab.field/-transform-field/index.html">TransformField</KDocLink>
 
 <table>
     <tr>
@@ -515,7 +515,7 @@ CombinedField の自動生成機能も検討しています。
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-transform-field/index.html">TransformField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-transform-field/index.html">TransformField</KDocLink> </td>
     </tr>
 </table>
 
@@ -540,7 +540,7 @@ PreviewLab {
  title="TransformField Example"
 />
 
-## <KDocLink path="core/me.tbsten.compose.preview.lab.field/-with-value-code-field/index.html">WithValueCodeField</KDocLink> / `.withValueCode()`
+## <KDocLink path="field/me.tbsten.compose.preview.lab.field/-with-value-code-field/index.html">WithValueCodeField</KDocLink> / `.withValueCode()`
 
 任意の Field に対して、Inspector の Code タブに表示されるコード表現だけを差し替えるユーティリティです。UI や値の型はそのままに、コードスニペットを自分のプロジェクトの API 形式に合わせたいときに使用します。
 
@@ -707,7 +707,7 @@ val theme = fieldValue {
 
 その場合 `SelectableField` で enum を使用する場合は、`.withSerializer()` を使用してシリアライザを設定することで、値の永続化や共有が可能になります。
 
-## <KDocLink path="core/me.tbsten.compose.preview.lab.field/-polymorphic-field/index.html">PolymorphicField</KDocLink>
+## <KDocLink path="field/me.tbsten.compose.preview.lab.field/-polymorphic-field/index.html">PolymorphicField</KDocLink>
 
 <table>
     <tr>
@@ -720,7 +720,7 @@ val theme = fieldValue {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-polymorphic-field/index.html">PolymorphicField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-polymorphic-field/index.html">PolymorphicField</KDocLink> </td>
     </tr>
 </table>
 
@@ -767,7 +767,7 @@ PreviewLab {
  title="PolymorphicField Example"
 />
 
-## <KDocLink path="core/me.tbsten.compose.preview.lab.field/-fixed-field/index.html">FixedField</KDocLink>
+## <KDocLink path="field/me.tbsten.compose.preview.lab.field/-fixed-field/index.html">FixedField</KDocLink>
 
 <table>
     <tr>
@@ -780,7 +780,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-fixed-field/index.html">FixedField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-fixed-field/index.html">FixedField</KDocLink> </td>
     </tr>
 </table>
 

@@ -9,7 +9,7 @@ import KDocLink from '@site/src/components/KDocLink';
 
 Compose 固有の値型（Dp、Sp、Color、Offset、Size、Modifier、Composable など）に対応するフィールドです。Compose UI の構築に特化した型を扱います。
 
-### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-dp-field/index.html">DpField</KDocLink>
+### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-dp-field/index.html">DpField</KDocLink>
 
 <table>
     <tr>
@@ -22,7 +22,7 @@ Compose 固有の値型（Dp、Sp、Color、Offset、Size、Modifier、Composabl
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-dp-field/index.html">DpField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-dp-field/index.html">DpField</KDocLink> </td>
     </tr>
 </table>
 
@@ -45,7 +45,7 @@ PreviewLab {
  title="DpField Example"
 />
 
-### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-sp-field/index.html">SpField</KDocLink>
+### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-sp-field/index.html">SpField</KDocLink>
 
 <table>
     <tr>
@@ -58,7 +58,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-sp-field/index.html">SpField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-sp-field/index.html">SpField</KDocLink> </td>
     </tr>
 </table>
 
@@ -79,7 +79,7 @@ PreviewLab {
  title="SpField Example"
 />
 
-### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-color-field/index.html">ColorField</KDocLink>
+### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-color-field/index.html">ColorField</KDocLink>
 
 <table>
     <tr>
@@ -92,7 +92,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-color-field/index.html">ColorField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-color-field/index.html">ColorField</KDocLink> </td>
     </tr>
 </table>
 
@@ -161,25 +161,25 @@ PreviewLab {
         <td> OffsetField </td>
         <td> `androidx.compose.ui.geometry.Offset` </td>
         <td> ⭐⭐ </td>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-offset-field/index.html">OffsetField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-offset-field/index.html">OffsetField</KDocLink> </td>
     </tr>
     <tr>
         <td> DpOffsetField </td>
         <td> `androidx.compose.ui.unit.DpOffset` </td>
         <td> ⭐⭐ </td>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-dp-offset-field/index.html">DpOffsetField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-dp-offset-field/index.html">DpOffsetField</KDocLink> </td>
     </tr>
     <tr>
         <td> SizeField </td>
         <td> `androidx.compose.ui.geometry.Size` </td>
         <td> ⭐⭐ </td>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-size-field/index.html">SizeField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-size-field/index.html">SizeField</KDocLink> </td>
     </tr>
     <tr>
         <td> DpSizeField </td>
         <td> `androidx.compose.ui.unit.DpSize` </td>
         <td> ⭐⭐ </td>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-dp-size-field/index.html">DpSizeField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-dp-size-field/index.html">DpSizeField</KDocLink> </td>
     </tr>
 </table>
 
@@ -233,7 +233,7 @@ PreviewLab {
  title="Offset and Size Field Example"
 />
 
-### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-modifier-field/index.html">ModifierField</KDocLink>
+### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-modifier-field/index.html">ModifierField</KDocLink>
 
 <table>
     <tr>
@@ -246,7 +246,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-modifier-field/index.html">ModifierField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-modifier-field/index.html">ModifierField</KDocLink> </td>
     </tr>
 </table>
 
@@ -298,7 +298,7 @@ PreviewLab {
 
 </details>
 
-### <KDocLink path="core/me.tbsten.compose.preview.lab.field/-composable-field/index.html">ComposableField</KDocLink>
+### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-composable-field/index.html">ComposableField</KDocLink>
 
 <table>
     <tr>
@@ -311,7 +311,7 @@ PreviewLab {
     </tr>
     <tr>
         <th>KDoc</th>
-        <td> <KDocLink path="core/me.tbsten.compose.preview.lab.field/-composable-field/index.html">ComposableField</KDocLink> </td>
+        <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-composable-field/index.html">ComposableField</KDocLink> </td>
     </tr>
 </table>
 
