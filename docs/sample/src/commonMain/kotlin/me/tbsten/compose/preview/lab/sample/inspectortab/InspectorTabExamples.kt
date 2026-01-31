@@ -22,6 +22,7 @@ import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 import me.tbsten.compose.preview.lab.previewlab.field
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import androidx.compose.ui.tooling.preview.Preview
+import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 
 // Docs Tab
 internal object DocsTab : InspectorTab {
@@ -45,7 +46,7 @@ internal object DocsTab : InspectorTab {
 @Preview
 @ComposePreviewLabOption(id = "InspectorTabDocsExample")
 @Composable
-internal fun InspectorTabDocsExample() = PreviewLab(
+internal fun InspectorTabDocsExample() = SamplePreviewLab(
     inspectorTabs = InspectorTab.defaults + DocsTab,
 ) {
     LaunchedEffect(Unit) {
