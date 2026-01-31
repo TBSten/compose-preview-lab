@@ -157,20 +157,13 @@ open class me.tbsten.compose.preview.lab.previewlab.openfilehandler/UrlOpenFileH
 }
 
 final object me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults { // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults|null[0]
-    final val contentRoot // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.contentRoot|{}contentRoot[0]
-        final fun <get-contentRoot>(): kotlin/Function3<kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit> // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.contentRoot.<get-contentRoot>|<get-contentRoot>(){}[0]
-    final val enable // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.enable|{}enable[0]
-        final fun <get-enable>(androidx.compose.runtime/Composer?, kotlin/Int): kotlin/Boolean // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.enable.<get-enable>|<get-enable>(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
-    final val inspectorTabs // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.inspectorTabs|{}inspectorTabs[0]
-        final fun <get-inspectorTabs>(): kotlin.collections/List<me.tbsten.compose.preview.lab.previewlab.inspectorspane/InspectorTab> // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.inspectorTabs.<get-inspectorTabs>|<get-inspectorTabs>(){}[0]
-    final val isHeaderShow // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.isHeaderShow|{}isHeaderShow[0]
-        final fun <get-isHeaderShow>(androidx.compose.runtime/Composer?, kotlin/Int): kotlin/Boolean // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.isHeaderShow.<get-isHeaderShow>|<get-isHeaderShow>(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
-    final val isInPreviewLabGalleryCardBody // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.isInPreviewLabGalleryCardBody|{}isInPreviewLabGalleryCardBody[0]
-        final fun <get-isInPreviewLabGalleryCardBody>(androidx.compose.runtime/Composer?, kotlin/Int): kotlin/Boolean // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.isInPreviewLabGalleryCardBody.<get-isInPreviewLabGalleryCardBody>|<get-isInPreviewLabGalleryCardBody>(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
-    final val screenSizes // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.screenSizes|{}screenSizes[0]
-        final fun <get-screenSizes>(): kotlin.collections/List<me.tbsten.compose.preview.lab.field/ScreenSize> // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.screenSizes.<get-screenSizes>|<get-screenSizes>(){}[0]
-
     final fun contentGraphicsLayer(androidx.compose.runtime/Composer?, kotlin/Int): androidx.compose.ui.graphics.layer/GraphicsLayer // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.contentGraphicsLayer|contentGraphicsLayer(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun contentRoot(): kotlin/Function3<kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit> // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.contentRoot|contentRoot(){}[0]
+    final fun enable(androidx.compose.runtime/Composer?, kotlin/Int): kotlin/Boolean // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.enable|enable(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun inspectorTabs(): kotlin.collections/List<me.tbsten.compose.preview.lab.previewlab.inspectorspane/InspectorTab> // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.inspectorTabs|inspectorTabs(){}[0]
+    final fun isHeaderShow(androidx.compose.runtime/Composer?, kotlin/Int): kotlin/Boolean // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.isHeaderShow|isHeaderShow(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun isInPreviewLabGalleryCardBody(androidx.compose.runtime/Composer?, kotlin/Int): kotlin/Boolean // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.isInPreviewLabGalleryCardBody|isInPreviewLabGalleryCardBody(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun screenSizes(): kotlin.collections/List<me.tbsten.compose.preview.lab.field/ScreenSize> // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.screenSizes|screenSizes(){}[0]
     final fun state(androidx.compose.runtime/Composer?, kotlin/Int): me.tbsten.compose.preview.lab.previewlab/PreviewLabState // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.state|state(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
 }
 
