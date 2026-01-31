@@ -287,14 +287,14 @@ import me.tbsten.compose.preview.lab.ui.components.toast.rememberToastHostState
 @Composable
 fun PreviewLab(
     modifier: Modifier = Modifier,
-    state: PreviewLabState = PreviewLabDefaults.state,
+    state: PreviewLabState = PreviewLabDefaults.state(),
     screenSizes: List<ScreenSize> = PreviewLabDefaults.screenSizes,
     isHeaderShow: Boolean = PreviewLabDefaults.isHeaderShow,
     inspectorTabs: List<InspectorTab> = PreviewLabDefaults.inspectorTabs,
     contentRoot: @Composable (content: @Composable () -> Unit) -> Unit = PreviewLabDefaults.contentRoot,
     enable: Boolean = PreviewLabDefaults.enable,
     isInPreviewLabGalleryCardBody: Boolean = PreviewLabDefaults.isInPreviewLabGalleryCardBody,
-    contentGraphicsLayer: GraphicsLayer = PreviewLabDefaults.contentGraphicsLayer,
+    contentGraphicsLayer: GraphicsLayer = PreviewLabDefaults.contentGraphicsLayer(),
     content: @Composable PreviewLabScope.() -> Unit,
 ) {
     // Use LocalEnforcePreviewLabState if provided (e.g., from TestPreviewLab)
@@ -414,13 +414,13 @@ fun PreviewLab(
     maxWidth: Dp,
     maxHeight: Dp,
     modifier: Modifier = Modifier,
-    state: PreviewLabState = PreviewLabDefaults.state,
+    state: PreviewLabState = PreviewLabDefaults.state(),
     isHeaderShow: Boolean = PreviewLabDefaults.isHeaderShow,
     inspectorTabs: List<InspectorTab> = PreviewLabDefaults.inspectorTabs,
     contentRoot: @Composable (content: @Composable () -> Unit) -> Unit = PreviewLabDefaults.contentRoot,
     enable: Boolean = PreviewLabDefaults.enable,
     isInPreviewLabGalleryCardBody: Boolean = PreviewLabDefaults.isInPreviewLabGalleryCardBody,
-    contentGraphicsLayer: GraphicsLayer = PreviewLabDefaults.contentGraphicsLayer,
+    contentGraphicsLayer: GraphicsLayer = PreviewLabDefaults.contentGraphicsLayer(),
     content: @Composable PreviewLabScope.() -> Unit,
 ) = PreviewLab(
     modifier = modifier,

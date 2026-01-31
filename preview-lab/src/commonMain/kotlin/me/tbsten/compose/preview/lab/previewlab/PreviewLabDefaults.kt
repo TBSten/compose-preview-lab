@@ -88,8 +88,8 @@ object PreviewLabDefaults {
      * Uses [rememberPreviewLabStateFromUrl] which initializes state from URL parameters
      * and persists across recompositions using rememberSaveable.
      */
-    val state: PreviewLabState
-        @Composable get() = rememberPreviewLabStateFromUrl()
+    @Composable
+    fun state(): PreviewLabState = rememberPreviewLabStateFromUrl()
 
     /**
      * Default value indicating whether PreviewLab is inside a Gallery card body.
@@ -105,6 +105,6 @@ object PreviewLabDefaults {
      *
      * Uses [rememberGraphicsLayer] to create a new GraphicsLayer instance.
      */
-    val contentGraphicsLayer: GraphicsLayer
-        @Composable get() = rememberGraphicsLayer()
+    @Composable
+    fun contentGraphicsLayer(): GraphicsLayer = rememberGraphicsLayer()
 }
