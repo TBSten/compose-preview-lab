@@ -38,4 +38,3 @@ dependencyResolutionManagement {
 
 includeBuild("../")
 include(":sample")
-include(":uiLib")
