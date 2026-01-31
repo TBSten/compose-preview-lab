@@ -20,8 +20,8 @@ import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
  * @Composable
  * fun MyCustomPreviewLab(
  *     modifier: Modifier = Modifier,
- *     screenSizes: List<ScreenSize> = PreviewLabDefaults.screenSizes,
- *     isHeaderShow: Boolean = PreviewLabDefaults.isHeaderShow,
+ *     screenSizes: List<ScreenSize> = PreviewLabDefaults.screenSizes(),
+ *     isHeaderShow: Boolean = PreviewLabDefaults.isHeaderShow(),
  *     content: @Composable PreviewLabScope.() -> Unit,
  * ) = PreviewLab(
  *     modifier = modifier,
@@ -41,7 +41,7 @@ object PreviewLabDefaults {
      * Uses [ScreenSize.SmartphoneAndDesktops] which includes common smartphone
      * and desktop screen sizes for responsive testing.
      */
-    val screenSizes: List<ScreenSize> = ScreenSize.SmartphoneAndDesktops
+    fun screenSizes(): List<ScreenSize> = ScreenSize.SmartphoneAndDesktops
 
     /**
      * Default visibility for the PreviewLab header.
@@ -52,15 +52,15 @@ object PreviewLabDefaults {
      * This value respects [LocalDefaultIsHeaderShow] CompositionLocal,
      * allowing embedded contexts to override the default.
      */
-    val isHeaderShow: Boolean
-        @Composable get() = LocalDefaultIsHeaderShow.current
+    @Composable
+    fun isHeaderShow(): Boolean = LocalDefaultIsHeaderShow.current
 
     /**
      * Default inspector tabs for PreviewLab.
      *
      * Uses [InspectorTab.defaults] which includes the built-in Fields and Events tabs.
      */
-    val inspectorTabs: List<InspectorTab> = InspectorTab.defaults
+    fun inspectorTabs(): List<InspectorTab> = InspectorTab.defaults
 
     /**
      * Default content root wrapper.
@@ -68,7 +68,7 @@ object PreviewLabDefaults {
      * Simply invokes the content without any additional wrapping.
      * Override this to provide custom themes or composition locals.
      */
-    val contentRoot: @Composable (content: @Composable () -> Unit) -> Unit = { it() }
+    fun contentRoot(): @Composable (content: @Composable () -> Unit) -> Unit = { it() }
 
     /**
      * Default enable state for PreviewLab UI.
@@ -79,8 +79,8 @@ object PreviewLabDefaults {
      * This allows previews to render quickly in Android Studio while
      * providing full PreviewLab functionality at runtime.
      */
-    val enable: Boolean
-        @Composable get() = !LocalInspectionMode.current
+    @Composable
+    fun enable(): Boolean = !LocalInspectionMode.current
 
     /**
      * Default state for PreviewLab.
@@ -97,8 +97,8 @@ object PreviewLabDefaults {
      * When `true`, PreviewLab renders only the content without the full UI wrapper.
      * This value is read from [LocalIsInPreviewLabGalleryCardBody] CompositionLocal.
      */
-    val isInPreviewLabGalleryCardBody: Boolean
-        @Composable get() = LocalIsInPreviewLabGalleryCardBody.current
+    @Composable
+    fun isInPreviewLabGalleryCardBody(): Boolean = LocalIsInPreviewLabGalleryCardBody.current
 
     /**
      * Default graphics layer for capturing screenshots.
