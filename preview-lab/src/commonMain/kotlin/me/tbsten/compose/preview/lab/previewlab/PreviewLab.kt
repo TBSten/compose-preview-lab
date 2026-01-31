@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
@@ -291,11 +290,11 @@ import me.tbsten.compose.preview.lab.ui.components.toast.rememberToastHostState
 fun PreviewLab(
     modifier: Modifier = Modifier,
     state: PreviewLabState = rememberPreviewLabStateFromUrl(),
-    screenSizes: List<ScreenSize> = ScreenSize.SmartphoneAndDesktops,
-    isHeaderShow: Boolean = LocalDefaultIsHeaderShow.current,
-    inspectorTabs: List<InspectorTab> = InspectorTab.defaults,
-    contentRoot: @Composable (content: @Composable () -> Unit) -> Unit = { it() },
-    enable: Boolean = !LocalInspectionMode.current,
+    screenSizes: List<ScreenSize> = PreviewLabDefaults.screenSizes,
+    isHeaderShow: Boolean = PreviewLabDefaults.isHeaderShow,
+    inspectorTabs: List<InspectorTab> = PreviewLabDefaults.inspectorTabs,
+    contentRoot: @Composable (content: @Composable () -> Unit) -> Unit = PreviewLabDefaults.contentRoot,
+    enable: Boolean = PreviewLabDefaults.enable,
     isInPreviewLabGalleryCardBody: Boolean = LocalIsInPreviewLabGalleryCardBody.current,
     contentGraphicsLayer: GraphicsLayer = rememberGraphicsLayer(),
     content: @Composable PreviewLabScope.() -> Unit,
@@ -418,10 +417,10 @@ fun PreviewLab(
     maxHeight: Dp,
     modifier: Modifier = Modifier,
     state: PreviewLabState = rememberPreviewLabStateFromUrl(),
-    isHeaderShow: Boolean = LocalDefaultIsHeaderShow.current,
-    inspectorTabs: List<InspectorTab> = InspectorTab.defaults,
-    contentRoot: @Composable (content: @Composable () -> Unit) -> Unit = { it() },
-    enable: Boolean = !LocalInspectionMode.current,
+    isHeaderShow: Boolean = PreviewLabDefaults.isHeaderShow,
+    inspectorTabs: List<InspectorTab> = PreviewLabDefaults.inspectorTabs,
+    contentRoot: @Composable (content: @Composable () -> Unit) -> Unit = PreviewLabDefaults.contentRoot,
+    enable: Boolean = PreviewLabDefaults.enable,
     isInPreviewLabGalleryCardBody: Boolean = LocalIsInPreviewLabGalleryCardBody.current,
     contentGraphicsLayer: GraphicsLayer = rememberGraphicsLayer(),
     content: @Composable PreviewLabScope.() -> Unit,
