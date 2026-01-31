@@ -14,11 +14,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.layer.GraphicsLayer
-import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
-import me.tbsten.compose.preview.lab.LocalIsInPreviewLabGalleryCardBody
 import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
 import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.previewlab.header.PreviewLabHeader
@@ -289,14 +287,14 @@ import me.tbsten.compose.preview.lab.ui.components.toast.rememberToastHostState
 @Composable
 fun PreviewLab(
     modifier: Modifier = Modifier,
-    state: PreviewLabState = rememberPreviewLabStateFromUrl(),
+    state: PreviewLabState = PreviewLabDefaults.state,
     screenSizes: List<ScreenSize> = PreviewLabDefaults.screenSizes,
     isHeaderShow: Boolean = PreviewLabDefaults.isHeaderShow,
     inspectorTabs: List<InspectorTab> = PreviewLabDefaults.inspectorTabs,
     contentRoot: @Composable (content: @Composable () -> Unit) -> Unit = PreviewLabDefaults.contentRoot,
     enable: Boolean = PreviewLabDefaults.enable,
-    isInPreviewLabGalleryCardBody: Boolean = LocalIsInPreviewLabGalleryCardBody.current,
-    contentGraphicsLayer: GraphicsLayer = rememberGraphicsLayer(),
+    isInPreviewLabGalleryCardBody: Boolean = PreviewLabDefaults.isInPreviewLabGalleryCardBody,
+    contentGraphicsLayer: GraphicsLayer = PreviewLabDefaults.contentGraphicsLayer,
     content: @Composable PreviewLabScope.() -> Unit,
 ) {
     // Use LocalEnforcePreviewLabState if provided (e.g., from TestPreviewLab)
@@ -416,13 +414,13 @@ fun PreviewLab(
     maxWidth: Dp,
     maxHeight: Dp,
     modifier: Modifier = Modifier,
-    state: PreviewLabState = rememberPreviewLabStateFromUrl(),
+    state: PreviewLabState = PreviewLabDefaults.state,
     isHeaderShow: Boolean = PreviewLabDefaults.isHeaderShow,
     inspectorTabs: List<InspectorTab> = PreviewLabDefaults.inspectorTabs,
     contentRoot: @Composable (content: @Composable () -> Unit) -> Unit = PreviewLabDefaults.contentRoot,
     enable: Boolean = PreviewLabDefaults.enable,
-    isInPreviewLabGalleryCardBody: Boolean = LocalIsInPreviewLabGalleryCardBody.current,
-    contentGraphicsLayer: GraphicsLayer = rememberGraphicsLayer(),
+    isInPreviewLabGalleryCardBody: Boolean = PreviewLabDefaults.isInPreviewLabGalleryCardBody,
+    contentGraphicsLayer: GraphicsLayer = PreviewLabDefaults.contentGraphicsLayer,
     content: @Composable PreviewLabScope.() -> Unit,
 ) = PreviewLab(
     modifier = modifier,

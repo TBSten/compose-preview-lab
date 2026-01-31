@@ -1,7 +1,10 @@
 package me.tbsten.compose.preview.lab.previewlab
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.layer.GraphicsLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalInspectionMode
+import me.tbsten.compose.preview.lab.LocalIsInPreviewLabGalleryCardBody
 import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 
@@ -78,4 +81,30 @@ object PreviewLabDefaults {
      */
     val enable: Boolean
         @Composable get() = !LocalInspectionMode.current
+
+    /**
+     * Default state for PreviewLab.
+     *
+     * Uses [rememberPreviewLabStateFromUrl] which initializes state from URL parameters
+     * and persists across recompositions using rememberSaveable.
+     */
+    val state: PreviewLabState
+        @Composable get() = rememberPreviewLabStateFromUrl()
+
+    /**
+     * Default value indicating whether PreviewLab is inside a Gallery card body.
+     *
+     * When `true`, PreviewLab renders only the content without the full UI wrapper.
+     * This value is read from [LocalIsInPreviewLabGalleryCardBody] CompositionLocal.
+     */
+    val isInPreviewLabGalleryCardBody: Boolean
+        @Composable get() = LocalIsInPreviewLabGalleryCardBody.current
+
+    /**
+     * Default graphics layer for capturing screenshots.
+     *
+     * Uses [rememberGraphicsLayer] to create a new GraphicsLayer instance.
+     */
+    val contentGraphicsLayer: GraphicsLayer
+        @Composable get() = rememberGraphicsLayer()
 }
