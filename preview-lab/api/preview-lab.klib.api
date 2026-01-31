@@ -157,8 +157,6 @@ open class me.tbsten.compose.preview.lab.previewlab.openfilehandler/UrlOpenFileH
 }
 
 final object me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults { // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults|null[0]
-    final val contentGraphicsLayer // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.contentGraphicsLayer|{}contentGraphicsLayer[0]
-        final fun <get-contentGraphicsLayer>(androidx.compose.runtime/Composer?, kotlin/Int): androidx.compose.ui.graphics.layer/GraphicsLayer // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.contentGraphicsLayer.<get-contentGraphicsLayer>|<get-contentGraphicsLayer>(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
     final val contentRoot // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.contentRoot|{}contentRoot[0]
         final fun <get-contentRoot>(): kotlin/Function3<kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit> // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.contentRoot.<get-contentRoot>|<get-contentRoot>(){}[0]
     final val enable // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.enable|{}enable[0]
@@ -171,8 +169,9 @@ final object me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults { // me
         final fun <get-isInPreviewLabGalleryCardBody>(androidx.compose.runtime/Composer?, kotlin/Int): kotlin/Boolean // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.isInPreviewLabGalleryCardBody.<get-isInPreviewLabGalleryCardBody>|<get-isInPreviewLabGalleryCardBody>(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
     final val screenSizes // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.screenSizes|{}screenSizes[0]
         final fun <get-screenSizes>(): kotlin.collections/List<me.tbsten.compose.preview.lab.field/ScreenSize> // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.screenSizes.<get-screenSizes>|<get-screenSizes>(){}[0]
-    final val state // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.state|{}state[0]
-        final fun <get-state>(androidx.compose.runtime/Composer?, kotlin/Int): me.tbsten.compose.preview.lab.previewlab/PreviewLabState // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.state.<get-state>|<get-state>(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+
+    final fun contentGraphicsLayer(androidx.compose.runtime/Composer?, kotlin/Int): androidx.compose.ui.graphics.layer/GraphicsLayer // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.contentGraphicsLayer|contentGraphicsLayer(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun state(androidx.compose.runtime/Composer?, kotlin/Int): me.tbsten.compose.preview.lab.previewlab/PreviewLabState // me.tbsten.compose.preview.lab.previewlab/PreviewLabDefaults.state|state(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
 }
 
 final val me.tbsten.compose.preview.lab.previewlab.generated.resources/me_tbsten_compose_preview_lab_previewlab_generated_resources_Res_array$stableprop // me.tbsten.compose.preview.lab.previewlab.generated.resources/me_tbsten_compose_preview_lab_previewlab_generated_resources_Res_array$stableprop|#static{}me_tbsten_compose_preview_lab_previewlab_generated_resources_Res_array$stableprop[0]
