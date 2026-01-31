@@ -107,18 +107,23 @@ internal fun MyPreviewWithTab() = PreviewLab(
 ```
 
 ```kt title="プロジェクト全体で表示するタブを制御する"
-val myProjectPreviewLab = PreviewLab(
+@Composable
+fun MyProjectPreviewLab(
+    modifier: Modifier = Modifier,
+    content: @Composable PreviewLabScope.() -> Unit,
+) = PreviewLab(
+    modifier = modifier,
     inspectorTabs = InspectorTab.defaults,
-    // or 
-    inspectorTabs = emptyList(), // タブを一切表示しない
+    // or
+    // inspectorTabs = emptyList(), // タブを一切表示しない
+    content = content,
 )
 
 @Preview
 @Composable
-internal fun MyPreviewWithTab() = myProjectPreviewLab {
+internal fun MyPreviewWithTab() = MyProjectPreviewLab {
     // ...
 }
-
 ```
 
 ## カスタムタブの実装
