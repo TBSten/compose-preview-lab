@@ -40,17 +40,22 @@ internal val LocalToastHostState = compositionLocalOf<ToastHostState> { error("N
 internal fun ContentSection(
     state: PreviewLabState,
     screenSizes: List<ScreenSize>,
+    showScreenSizeField: Boolean,
     graphicsLayer: GraphicsLayer,
     modifier: Modifier = Modifier,
     content: @Composable PreviewLabScope.() -> Unit,
 ) {
     val density = LocalDensity.current
-    val screenSize = state.scope
-        .fieldValue {
-            ScreenSizeField(
-                sizes = screenSizes,
-            )
-        }
+    val screenSize = if (showScreenSizeField) {
+        state.scope
+            .fieldValue {
+                ScreenSizeField(
+                    sizes = screenSizes,
+                )
+            }
+    } else {
+        screenSizes.firstOrNull() ?: ScreenSize.MediumSmartPhone
+    }
 
     Box(
         modifier = modifier
