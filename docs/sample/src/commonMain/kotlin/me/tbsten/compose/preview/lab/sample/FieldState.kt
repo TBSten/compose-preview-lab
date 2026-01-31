@@ -6,9 +6,9 @@ import androidx.compose.runtime.setValue
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
+import me.tbsten.compose.preview.lab.sample.component.MyTextField
 import me.tbsten.compose.preview.lab.sample.component.SamplePreviewLab
 import me.tbsten.compose.preview.lab.sample.component.rememberCodeTab
-import me.tbsten.compose.preview.lab.sample.lib.MyTextField
 import androidx.compose.ui.tooling.preview.Preview
 
 @ComposePreviewLabOption(id = "FieldState")

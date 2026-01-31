@@ -54,8 +54,6 @@ kotlin {
             implementation("me.tbsten.compose.preview.lab:extension-navigation:${libs.versions.composePreviewLab.get()}")
             implementation(libs.androidxNavigation)
             implementation(libs.kotlinxSerializationCore)
-
-            implementation(project(":uiLib"))
         }
 
         androidMain.dependencies {
