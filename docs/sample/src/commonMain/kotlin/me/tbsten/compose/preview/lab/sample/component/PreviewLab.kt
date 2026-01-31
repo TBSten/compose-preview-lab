@@ -12,12 +12,12 @@ import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 @Composable
 fun SamplePreviewLab(
     modifier: Modifier = Modifier,
-    inspectorTabs: List<InspectorTab> = PreviewLabDefaults.inspectorTabs,
-    enable: Boolean = PreviewLabDefaults.enable,
+    inspectorTabs: List<InspectorTab> = PreviewLabDefaults.inspectorTabs(),
+    enable: Boolean = PreviewLabDefaults.enable(),
     content: @Composable PreviewLabScope.() -> Unit,
 ) = PreviewLab(
     modifier = modifier,
-    screenSizes = listOf(ScreenSize(320.dp, 400.dp)) + PreviewLabDefaults.screenSizes,
+    screenSizes = listOf(ScreenSize(320.dp, 400.dp)) + PreviewLabDefaults.screenSizes(),
     inspectorTabs = inspectorTabs,
     enable = enable,
     content = content,

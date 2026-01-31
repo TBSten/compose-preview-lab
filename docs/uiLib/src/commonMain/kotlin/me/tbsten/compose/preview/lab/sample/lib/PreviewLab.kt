@@ -15,7 +15,7 @@ import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 @Composable
 fun CustomizedPreviewLab(
     modifier: Modifier = Modifier,
-    enable: Boolean = PreviewLabDefaults.enable,
+    enable: Boolean = PreviewLabDefaults.enable(),
     content: @Composable PreviewLabScope.() -> Unit,
 ) = PreviewLab(
     modifier = modifier,
