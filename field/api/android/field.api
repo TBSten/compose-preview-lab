@@ -537,6 +537,24 @@ public final class me/tbsten/compose/preview/lab/field/NumberField$InputType$Tex
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class me/tbsten/compose/preview/lab/field/NumberFieldKt {
+	public static final fun withByteDecrementHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+	public static final fun withByteIncrementDecrementHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+	public static final fun withByteIncrementHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+	public static final fun withDoubleDecrementHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+	public static final fun withDoubleIncrementDecrementHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+	public static final fun withDoubleIncrementHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+	public static final fun withFloatDecrementHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+	public static final fun withFloatIncrementDecrementHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+	public static final fun withFloatIncrementHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+	public static final fun withIntDecrementHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+	public static final fun withIntIncrementDecrementHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+	public static final fun withIntIncrementHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+	public static final fun withLongDecrementHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+	public static final fun withLongIncrementDecrementHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+	public static final fun withLongIncrementHint (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/MutablePreviewLabField;
+}
+
 public final class me/tbsten/compose/preview/lab/field/OffsetField : me/tbsten/compose/preview/lab/MutablePreviewLabField {
 	public static final field $stable I
 	public synthetic fun <init> (Ljava/lang/String;JLkotlin/jvm/internal/DefaultConstructorMarker;)V
