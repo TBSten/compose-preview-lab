@@ -435,6 +435,58 @@ fun PreviewLab(
     content = content,
 )
 
+/**
+ * Convenience overload for single screen size preview using a [ScreenSize] object.
+ *
+ * Use this when you want to test with a specific screen size preset instead of multiple sizes.
+ * This is equivalent to calling the main PreviewLab function with a single-item screenSizes list.
+ *
+ * ```kt
+ * @Preview
+ * @Composable
+ * private fun PhonePreview() = PreviewLab(
+ *   screenSize = ScreenSize.Phone
+ * ) {
+ *   MyResponsiveComponent()
+ * }
+ * ```
+ *
+ * @param screenSize The screen size to use for the preview
+ * @param modifier Modifier to apply to the PreviewLab container
+ * @param state PreviewLabState instance to use for this preview
+ * @param isHeaderShow Controls whether the PreviewLab header is visible
+ * @param inspectorTabs List of tabs to display in the inspector panel
+ * @param contentRoot Wrapper composable for custom themes or composition locals
+ * @param enable Controls whether PreviewLab UI is enabled. Defaults to `!LocalInspectionMode.current`
+ * @param content Preview content within PreviewLabScope
+ * @see PreviewLab Main PreviewLab function with multiple screen size support
+ * @see ScreenSize Device screen size definitions and presets
+ */
+@Composable
+fun PreviewLab(
+    screenSize: ScreenSize,
+    modifier: Modifier = Modifier,
+    state: PreviewLabState = PreviewLabDefaults.state(),
+    isHeaderShow: Boolean = PreviewLabDefaults.isHeaderShow(),
+    inspectorTabs: List<InspectorTab> = PreviewLabDefaults.inspectorTabs(),
+    contentRoot: @Composable (content: @Composable () -> Unit) -> Unit = PreviewLabDefaults.contentRoot(),
+    enable: Boolean = PreviewLabDefaults.enable(),
+    isInPreviewLabGalleryCardBody: Boolean = PreviewLabDefaults.isInPreviewLabGalleryCardBody(),
+    contentGraphicsLayer: GraphicsLayer = PreviewLabDefaults.contentGraphicsLayer(),
+    content: @Composable PreviewLabScope.() -> Unit,
+) = PreviewLab(
+    modifier = modifier,
+    state = state,
+    screenSizes = listOf(screenSize),
+    isHeaderShow = isHeaderShow,
+    inspectorTabs = inspectorTabs,
+    contentRoot = contentRoot,
+    enable = enable,
+    isInPreviewLabGalleryCardBody = isInPreviewLabGalleryCardBody,
+    contentGraphicsLayer = contentGraphicsLayer,
+    content = content,
+)
+
 @OptIn(ExperimentalComposePreviewLabApi::class)
 @Composable
 private fun PreviewLabProviders(
