@@ -32,11 +32,14 @@ public final class me/tbsten/compose/preview/lab/previewlab/ContentSectionKt {
 public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabDefaults {
 	public static final field $stable I
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/previewlab/PreviewLabDefaults;
+	public final fun getContentGraphicsLayer (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/graphics/layer/GraphicsLayer;
 	public final fun getContentRoot ()Lkotlin/jvm/functions/Function3;
 	public final fun getEnable (Landroidx/compose/runtime/Composer;I)Z
 	public final fun getInspectorTabs ()Ljava/util/List;
 	public final fun getScreenSizes ()Ljava/util/List;
+	public final fun getState (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/previewlab/PreviewLabState;
 	public final fun isHeaderShow (Landroidx/compose/runtime/Composer;I)Z
+	public final fun isInPreviewLabGalleryCardBody (Landroidx/compose/runtime/Composer;I)Z
 }
 
 public final class me/tbsten/compose/preview/lab/previewlab/PreviewLabKt {
