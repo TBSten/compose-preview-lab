@@ -17,6 +17,7 @@ fun SamplePreviewLab(
     content: @Composable PreviewLabScope.() -> Unit,
 ) = PreviewLab(
     modifier = modifier,
+    showScreenSizeField = false,
     screenSizes = listOf(ScreenSize(320.dp, 400.dp)) + PreviewLabDefaults.screenSizes(),
     inspectorTabs = inspectorTabs,
     enable = enable,
