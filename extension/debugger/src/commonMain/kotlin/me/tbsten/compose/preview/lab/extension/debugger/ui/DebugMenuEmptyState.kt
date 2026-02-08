@@ -43,7 +43,7 @@ internal fun DebugMenuEmptyState(modifier: Modifier = Modifier) {
 
                 appendLink(
                     url = DebuggerDocsUrl,
-                    text = "debugger documentations",
+                    text = "debugger documentation",
                 )
 
                 append(".")

@@ -24,7 +24,7 @@ import me.tbsten.compose.preview.lab.extension.debugger.DebugTool
  *
  * Usage:
  * ```kotlin
- * AppDebugMenu.logger.info("Something happened")
+ * AppDebugMenu.logger.log("Something happened")
  * ```
  */
 class SimpleDebugMenuLogger : DebugTool {

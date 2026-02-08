@@ -35,7 +35,6 @@ internal fun DrawerTitleBar(
     onPositionChange: (DebugMenuDrawerPosition) -> Unit,
     onCloseRequest: () -> Unit,
 ) {
-    val contentColor = DebugMenuTheme.contentColor
     var showPositionSelector by remember { mutableStateOf(false) }
 
     Column {

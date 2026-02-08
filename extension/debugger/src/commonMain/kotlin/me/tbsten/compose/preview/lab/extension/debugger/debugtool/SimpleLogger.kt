@@ -205,22 +205,22 @@ class SimpleLogger(var printLog: Boolean = false, private val onLog: (LogEntry) 
     /**
      * Logs a debug-level message.
      */
-    fun debug(vararg messages: Any?) = log(level = Level.Debug, messages = messages)
+    fun debug(vararg messages: Any?) = log(level = Level.Debug, messages = *messages)
 
     /**
      * Logs an info-level message.
      */
-    fun info(vararg messages: Any?) = log(level = Level.Info, messages = messages)
+    fun info(vararg messages: Any?) = log(level = Level.Info, messages = *messages)
 
     /**
      * Logs a warning-level message.
      */
-    fun warn(vararg messages: Any?) = log(level = Level.WARN, messages = messages)
+    fun warn(vararg messages: Any?) = log(level = Level.WARN, messages = *messages)
 
     /**
      * Logs an error-level message with an optional throwable.
      */
-    fun error(vararg messages: Any?, error: Throwable? = null) = log(level = Level.ERROR, messages = messages, error = error)
+    fun error(vararg messages: Any?, error: Throwable? = null) = log(level = Level.ERROR, messages = *messages, error = error)
 
     /**
      * Clears all log entries.
