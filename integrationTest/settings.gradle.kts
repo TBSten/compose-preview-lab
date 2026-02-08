@@ -42,4 +42,5 @@ plugins {
 
 includeBuild("../")
 include(":app")
+include(":debugmenu")
 include(":uiLib")
