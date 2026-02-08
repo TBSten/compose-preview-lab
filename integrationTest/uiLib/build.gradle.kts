@@ -1,20 +1,64 @@
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlinxSerialization)
     id("me.tbsten.compose.preview.lab")
 }
 
 kotlin {
     jvmToolchain(17)
 
+    androidTarget {
+        // https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
+        @Suppress("OPT_IN_USAGE")
+        instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
+    }
+
     jvm()
 
-    js { browser() }
+    js {
+        browser()
+        binaries.executable()
+        binaries.library()
+        generateTypeScriptDefinitions()
+
+        compilerOptions {
+            target = "es2015"
+        }
+    }
+
+    @Suppress("OPT_IN_USAGE")
+    wasmJs {
+        browser()
+        binaries.executable()
+        binaries.library()
+        generateTypeScriptDefinitions()
+
+        compilerOptions {
+            target = "es2015"
+        }
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64(),
+    ).forEach {
+        it.binaries.framework {
+            baseName = "UiLib"
+            isStatic = true
+        }
+    }
 
     sourceSets {
         commonMain.dependencies {
+            implementation(projects.debugmenu)
+
             implementation(libs.composeRuntime)
             implementation(libs.composeFoundation)
             implementation(libs.composeMaterial3)
@@ -27,7 +71,20 @@ kotlin {
             implementation("me.tbsten.compose.preview.lab:extension-navigation:${libs.versions.composePreviewLab.get()}")
             implementation(libs.androidxNavigation)
             implementation(libs.kotlinxSerializationCore)
+
+            implementation("me.tbsten.compose.preview.lab:extension-debugger:${libs.versions.composePreviewLab.get()}")
         }
+    }
+}
+
+android {
+    namespace = "me.tbsten.compose.preview.lab.sample.uiLib"
+    compileSdk = 36
+
+    defaultConfig {
+        minSdk = 23
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 }
 
@@ -37,6 +94,7 @@ dependencies {
     add("kspCommonMainMetadata", composePreviewLabKspPlugin)
     add("kspJvm", composePreviewLabKspPlugin)
     add("kspJs", composePreviewLabKspPlugin)
+    add("kspAndroid", composePreviewLabKspPlugin)
 }
 
 composePreviewLab {
