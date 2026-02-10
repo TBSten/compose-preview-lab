@@ -20,17 +20,20 @@ import me.tbsten.compose.preview.lab.ui.components.PreviewLabSelectButton
  * Composable that displays all debug tools from a [DebugMenu] using dropdown layout.
  *
  * This component renders a dropdown selector at the top, with the selected tool's
- * content displayed below. This provides a compact layout.
+ * content displayed below. This layout is ideal when you need a compact display.
  *
  * Example usage:
  * ```kotlin
  * @Composable
- * fun AppDebugMenuScreen() {
+ * fun DebugScreen() {
  *     AppDebugMenu.DropdownView()
  * }
  * ```
  *
  * @param modifier Modifier to be applied to the root layout
+ *
+ * @see DebugMenu.TabsView
+ * @see DebugMenu.Dialog
  */
 @Composable
 fun DebugMenu.DropdownView(modifier: Modifier = Modifier) {

@@ -17,33 +17,41 @@ import me.tbsten.compose.preview.lab.extension.debugger.DebugMenu
 /**
  * A dialog composable that displays the debug menu with built-in trigger support.
  *
- * This dialog automatically includes platform-specific trigger detection:
- * - **Android**: Device shake detection
- * - **iOS**: Device shake detection
+ * This is the recommended way to display a debug menu. The dialog automatically
+ * includes platform-specific trigger detection:
+ * - **Android**, **iOS**: Device shake
  * - **JS/WasmJS**: Keyboard shortcut (Shift+D)
  * - **JVM Desktop**: No default trigger (use explicit UI or [DebugMenuWindow])
  *
- * Example usage:
+ * # Basic Usage
+ *
  * ```kotlin
  * @Composable
  * fun App() {
- *     val debugMenuDialogState = rememberDebugMenuDialogState()
+ *     // Application UI
+ *     MainContent()
  *
- *     // Your app content
- *     AppContent()
+ *     // Debug menu dialog (shown via shake or Shift+D)
+ *     AppDebugMenu.Dialog()
+ * }
+ * ```
  *
- *     // Debug menu with auto-trigger support
- *     AppDebugMenu.Dialog(state = debugMenuDialogState)
+ * # Manual Control
  *
- *     // Or with custom trigger (JS/WasmJS)
+ * You can disable the automatic trigger and control visibility manually:
+ *
+ * ```kotlin
+ * @Composable
+ * fun App() {
+ *     val dialogState = rememberDebugMenuDialogState()
+ *
+ *     Button(onClick = { dialogState.show() }) {
+ *         Text("Open Debug Menu")
+ *     }
+ *
+ *     // Disable trigger and control manually
  *     AppDebugMenu.Dialog(
- *         state = debugMenuDialogState,
- *         trigger = DebugMenuTrigger.KeyboardShortcut(key = "M"),
- *     )
- *
- *     // Or disable trigger
- *     AppDebugMenu.Dialog(
- *         state = debugMenuDialogState,
+ *         state = dialogState,
  *         trigger = DebugMenuTrigger.None,
  *     )
  * }
@@ -52,6 +60,9 @@ import me.tbsten.compose.preview.lab.extension.debugger.DebugMenu
  * @param state The state object for controlling dialog visibility
  * @param trigger The trigger to use for showing the dialog (default: platform default)
  * @param properties Dialog properties for customization
+ *
+ * @see DebugMenuTrigger
+ * @see rememberDebugMenuDialogState
  */
 @Composable
 fun DebugMenu.Dialog(

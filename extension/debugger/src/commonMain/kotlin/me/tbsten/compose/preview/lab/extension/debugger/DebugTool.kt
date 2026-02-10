@@ -5,31 +5,44 @@ import androidx.compose.runtime.Composable
 /**
  * A debug tool that provides a configurable UI for debugging purposes.
  *
- * Each [DebugTool] has:
- * - [title]: A human-readable title for display in the debug menu
- * - [Content]: A Composable function that renders the tool's UI
+ * Each [DebugTool] corresponds to a tab in the [DebugMenu] UI, providing:
+ * - [title]: A human-readable title displayed as the tab name
+ * - [Content]: A Composable function that renders the tool's UI when the tab is selected
  *
- * # Creating custom DebugTool implementations
+ * # Creating Custom DebugTool
+ *
+ * You can create custom DebugTool implementations by implementing this interface:
  *
  * ```kotlin
- * class KtorInspector : DebugTool {
- *     override val title = "API Inspector"
- *
- *     val requestLogs: List<RequestLog> = mutableListOf()
+ * class MyLogger(
+ *     override val title: String = "Logger",
+ * ) : DebugTool {
+ *     private var logs by mutableStateListOf<String>()
  *
  *     @Composable
  *     override fun Content() {
- *         Column {
- *             Text("Request count: ${requestLogs.size}")
- *             // Custom UI for inspecting requests
- *         }
+ *         LogList(logList = logs)
+ *     }
+ *
+ *     fun log(message: String) {
+ *         logs.add(message)
  *     }
  * }
  *
  * object AppDebugMenu : DebugMenu() {
- *     val apiClient: KtorInspector by tool { KtorInspector() }
+ *     val logger = tool { MyLogger() }
  * }
  * ```
+ *
+ * You can call methods on the tool to update internal state and reflect changes in the debug menu:
+ *
+ * ```kotlin
+ * AppDebugMenu.logger.log("Hello!")
+ * ```
+ *
+ * @see DebugMenu
+ * @see SimpleLogger
+ * @see basicFunctionDebugBehavior
  */
 interface DebugTool {
     /**
@@ -42,8 +55,8 @@ interface DebugTool {
     /**
      * Composable function that renders the UI for this debug tool.
      *
-     * This is called by [DebugMenu.View] to display the tool's content.
-     * Custom implementations can provide any UI they need.
+     * This is called by [DebugMenu.TabsView] or [DebugMenu.DropdownView] to display
+     * the tool's content when selected.
      */
     @Composable
     fun Content()

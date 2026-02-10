@@ -14,25 +14,22 @@ import me.tbsten.compose.preview.lab.ui.components.PreviewLabTabPager
 /**
  * Composable that displays all debug tools from a [DebugMenu] using tabs layout.
  *
- * This component renders tool titles as tabs with swipeable content.
- * When a tab is selected, the corresponding tool's
- * [Content][DebugTool.Content]
- * is displayed with a smooth page transition.
- *
- * Each [DebugTool][DebugTool] provides
- * its own UI through the [Content][DebugTool.Content] method, allowing for both field-based tools
- * (created via [toDebugTool][me.tbsten.compose.preview.lab.extension.debugger.debugtool.toDebugTool])
- * and custom tool implementations.
+ * This component renders tool titles as horizontally swipeable tabs. When a tab
+ * is selected, the corresponding tool's [Content][DebugTool.Content] is displayed.
+ * This layout is ideal when you want to focus on one tool at a time.
  *
  * Example usage:
  * ```kotlin
  * @Composable
- * fun AppDebugMenuScreen() {
+ * fun DebugScreen() {
  *     AppDebugMenu.TabsView()
  * }
  * ```
  *
  * @param modifier Modifier to be applied to the root layout
+ *
+ * @see DebugMenu.DropdownView
+ * @see DebugMenu.Dialog
  */
 @Composable
 fun DebugMenu.TabsView(modifier: Modifier = Modifier) {

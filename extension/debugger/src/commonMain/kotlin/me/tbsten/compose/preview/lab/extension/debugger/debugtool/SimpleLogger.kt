@@ -35,21 +35,26 @@ import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 /**
  * A simple logger [DebugTool] that displays log messages in the debug menu.
  *
+ * This is a built-in debug tool that works as a logger and displays messages
+ * in the debug menu UI.
+ *
  * Example usage:
  * ```kotlin
  * object AppDebugMenu : DebugMenu() {
- *     val logger = tool { SimpleLogger(printLog = true) }
+ *     val logger = tool { SimpleLogger() }
  * }
  *
  * // Log messages from anywhere in your app
- * AppDebugMenu.logger.debug("Debug message")
- * AppDebugMenu.logger.info("Info message")
- * AppDebugMenu.logger.warn("Warning message")
- * AppDebugMenu.logger.error("Error message", error = exception)
+ * AppDebugMenu.logger.info("Updated")
+ * AppDebugMenu.logger.warn("Invalid state", currentState)
+ * AppDebugMenu.logger.error("Error", error = error)
  * ```
  *
  * @param printLog If true, logs will also be printed to the console via `println()`.
  * @param onLog Callback invoked when a log entry is added. Can be used for custom logging integrations.
+ *
+ * @see DebugTool
+ * @see DebugMenu.tool
  */
 class SimpleLogger(var printLog: Boolean = false, private val onLog: (LogEntry) -> Unit = {}) : DebugTool {
     override val title: String = "Logger"

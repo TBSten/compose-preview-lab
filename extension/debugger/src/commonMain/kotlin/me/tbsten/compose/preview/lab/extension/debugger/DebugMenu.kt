@@ -8,36 +8,45 @@ import me.tbsten.compose.preview.lab.extension.debugger.ui.TabsView
 /**
  * Base class for creating a debug menu with configurable debug tools.
  *
- * Extend this class to define your application's debug menu with [DebugTool]s
- * that can be configured at runtime through a UI.
+ * DebugMenu is a container that holds multiple [DebugTool]s. Each DebugTool
+ * corresponds to a tab in the debug menu UI, providing specific debugging functionality.
  *
- * # Custom DebugTool implementations
+ * ```
+ * DebugMenu
+ * ├── DebugTool-1 (corresponds to each tab in the debug menu)
+ * ├── DebugTool-2
+ * └── ...
+ * ```
  *
- * You can create and register custom [DebugTool] implementations that provide
- * additional properties and methods:
+ * # Basic Usage
+ *
+ * Define your application's debug menu by extending this class:
  *
  * ```kotlin
- * class KtorInspector : DebugTool {
- *     override val title = "API Inspector"
- *
- *     val requestLogs: List<RequestLog> = mutableListOf()
- *
- *     @Composable
- *     override fun Content() {
- *         Text("Logs: ${requestLogs.size}")
- *     }
- * }
- *
  * object AppDebugMenu : DebugMenu() {
- *     val apiClient = tool { KtorInspector() }
+ *     val logger = tool { SimpleLogger() }
  * }
+ * ```
  *
- * // Access custom properties:
- * val logs = AppDebugMenu.apiClient.requestLogs
+ * # Displaying the Debug Menu
+ *
+ * Use [Dialog] for automatic platform-specific trigger support (shake on mobile,
+ * keyboard shortcut on web), or use [TabsView]/[DropdownView] for direct embedding.
+ *
+ * ```kotlin
+ * @Composable
+ * fun App() {
+ *     MainContent()
+ *
+ *     // Debug menu dialog (shown via shake or Shift+D)
+ *     AppDebugMenu.Dialog()
+ * }
  * ```
  *
  * @see DebugTool
+ * @see DebugMenu.Dialog
  * @see DebugMenu.TabsView
+ * @see DebugMenu.DropdownView
  */
 abstract class DebugMenu : DebugToolRegistry {
 

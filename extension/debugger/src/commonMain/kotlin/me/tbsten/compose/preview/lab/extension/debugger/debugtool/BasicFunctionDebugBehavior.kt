@@ -17,6 +17,58 @@ import me.tbsten.compose.preview.lab.field.transform
 import me.tbsten.compose.preview.lab.field.withHint
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 
+/**
+ * Creates a [DebugTool] that allows modifying the behavior of a suspend function from the debug menu.
+ *
+ * This can be thought of as an advanced alternative to Fakes in unit testing.
+ * For example, you can test the behavior of ViewModels by modifying the behavior
+ * of UseCase or Repository methods from the debug menu.
+ *
+ * # Example
+ *
+ * ```kotlin
+ * object AppDebugMenu : DebugMenu() {
+ *     val getItemListUseCaseBehavior = tool {
+ *         basicFunctionDebugBehavior(
+ *             label = "getItemListUseCaseBehavior",
+ *             returnValueField = EnumField<GetItemListUseCaseDebugBehavior>(
+ *                 "Result",
+ *                 GetItemListUseCaseDebugBehavior.Normal,
+ *             ),
+ *         )
+ *     }
+ * }
+ *
+ * enum class GetItemListUseCaseDebugBehavior {
+ *     EmptyFake,
+ *     ManyListFake,
+ * }
+ * ```
+ *
+ * Use [debuggableBasic] to wrap your function and apply the debug behavior:
+ *
+ * ```kotlin
+ * class DebugGetItemListUseCase(
+ *     private val default: GetItemListUseCase,
+ * ) : GetItemListUseCase {
+ *     override fun execute(): List<Item> = suspend { default.execute() }
+ *         .debuggableBasic(AppDebugMenu.getItemListUseCaseBehavior) { behavior ->
+ *             when(behavior) {
+ *                 EmptyFake -> emptyList()
+ *                 ManyListFake -> Item.manyListFake()
+ *             }
+ *         }.invoke()
+ * }
+ * ```
+ *
+ * @param label The label displayed in the debug menu
+ * @param returnValueField Field for configuring the return value type
+ * @param errorMessageField Field for configuring error message when simulating errors
+ * @param cancelMessageField Field for configuring cancel message when simulating cancellation
+ *
+ * @see debuggableBasic
+ * @see DebugTool
+ */
 fun <Result> basicFunctionDebugBehavior(
     label: String,
     returnValueField: MutablePreviewLabField<Result>?,
@@ -142,6 +194,18 @@ object BasicFunctionDebugBehaviorResultFields {
         )
 }
 
+/**
+ * Wraps this suspend function to make it controllable from the debug menu.
+ *
+ * When the debug menu is configured, this function will apply the specified behavior
+ * (delay, return value override, error simulation, or cancellation) instead of
+ * executing the original function.
+ *
+ * @param debugger The debug tool created by [basicFunctionDebugBehavior]
+ * @param onResult Transform function to convert the debug behavior result to the actual return type
+ *
+ * @see basicFunctionDebugBehavior
+ */
 fun <ResultType, Result> (suspend () -> Result).debuggableBasic(
     debugger: FieldDebugTool<out BasicFunctionDebugBehavior<ResultType>>,
     onResult: (ResultType) -> Result,
