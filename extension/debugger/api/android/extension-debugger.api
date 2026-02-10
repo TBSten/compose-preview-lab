@@ -1,0 +1,279 @@
+public abstract class me/tbsten/compose/preview/lab/extension/debugger/DebugMenu : me/tbsten/compose/preview/lab/extension/debugger/DebugToolRegistry {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun getTools ()Ljava/util/List;
+	public fun tool (Lkotlin/jvm/functions/Function0;)Lme/tbsten/compose/preview/lab/extension/debugger/DebugTool;
+}
+
+public abstract interface class me/tbsten/compose/preview/lab/extension/debugger/DebugTool {
+	public abstract fun Content (Landroidx/compose/runtime/Composer;I)V
+	public abstract fun getTitle ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/DebugToolEntry {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/extension/debugger/DebugTool;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lme/tbsten/compose/preview/lab/extension/debugger/DebugTool;
+	public final fun copy (Ljava/lang/String;Lme/tbsten/compose/preview/lab/extension/debugger/DebugTool;)Lme/tbsten/compose/preview/lab/extension/debugger/DebugToolEntry;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/extension/debugger/DebugToolEntry;Ljava/lang/String;Lme/tbsten/compose/preview/lab/extension/debugger/DebugTool;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/extension/debugger/DebugToolEntry;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getTool ()Lme/tbsten/compose/preview/lab/extension/debugger/DebugTool;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class me/tbsten/compose/preview/lab/extension/debugger/DebugToolGroup : me/tbsten/compose/preview/lab/extension/debugger/DebugTool, me/tbsten/compose/preview/lab/extension/debugger/DebugToolRegistry {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun getTitle ()Ljava/lang/String;
+	public fun getTools ()Ljava/util/List;
+	public fun tool (Lkotlin/jvm/functions/Function0;)Lme/tbsten/compose/preview/lab/extension/debugger/DebugTool;
+}
+
+public abstract interface class me/tbsten/compose/preview/lab/extension/debugger/DebugToolRegistry {
+	public abstract fun getTools ()Ljava/util/List;
+	public abstract fun tool (Lkotlin/jvm/functions/Function0;)Lme/tbsten/compose/preview/lab/extension/debugger/DebugTool;
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior {
+	public static final field $stable I
+	public synthetic fun <init> (JLme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-UwyO8pc ()J
+	public final fun component2 ()Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result;
+	public final fun copy-VtjQ1oo (JLme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result;)Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior;
+	public static synthetic fun copy-VtjQ1oo$default (Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior;JLme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDelay-UwyO8pc ()J
+	public final fun getResult ()Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class me/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result {
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result$Cancel : me/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lkotlin/jvm/functions/Function0;)V
+	public synthetic fun <init> (Lkotlin/jvm/functions/Function0;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lkotlin/jvm/functions/Function0;
+	public final fun copy (Lkotlin/jvm/functions/Function0;)Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result$Cancel;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result$Cancel;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result$Cancel;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getException ()Lkotlin/jvm/functions/Function0;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result$Default : me/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result {
+	public static final field $stable I
+	public fun <init> ()V
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result$Error : me/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result {
+	public static final field $stable I
+	public fun <init> (Lkotlin/jvm/functions/Function0;)V
+	public final fun component1 ()Lkotlin/jvm/functions/Function0;
+	public final fun copy (Lkotlin/jvm/functions/Function0;)Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result$Error;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result$Error;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result$Error;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getThrowable ()Lkotlin/jvm/functions/Function0;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result$Return : me/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result$Return;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result$Return;Ljava/lang/Object;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehavior$Result$Return;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getResultType ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehaviorKt {
+	public static final fun BasicFunctionDebugBehaviorResultField (Ljava/lang/String;Lme/tbsten/compose/preview/lab/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/field/PolymorphicField;
+	public static synthetic fun BasicFunctionDebugBehaviorResultField$default (Ljava/lang/String;Lme/tbsten/compose/preview/lab/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/MutablePreviewLabField;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/PolymorphicField;
+	public static final fun basicFunctionDebugBehavior (Ljava/lang/String;Lme/tbsten/compose/preview/lab/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/FieldDebugTool;
+	public static final fun basicFunctionDebugBehavior (Ljava/lang/String;Lme/tbsten/compose/preview/lab/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/FieldDebugTool;
+	public static synthetic fun basicFunctionDebugBehavior$default (Ljava/lang/String;Lme/tbsten/compose/preview/lab/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/MutablePreviewLabField;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/FieldDebugTool;
+	public static synthetic fun basicFunctionDebugBehavior$default (Ljava/lang/String;Lme/tbsten/compose/preview/lab/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/MutablePreviewLabField;Lme/tbsten/compose/preview/lab/MutablePreviewLabField;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/FieldDebugTool;
+	public static final fun debuggable (Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/FieldDebugTool;Lkotlin/jvm/functions/Function3;)Lkotlin/jvm/functions/Function1;
+	public static final fun debuggableBasic (Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/FieldDebugTool;)Lkotlin/jvm/functions/Function1;
+	public static final fun debuggableBasic (Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/FieldDebugTool;Lkotlin/jvm/functions/Function1;)Lkotlin/jvm/functions/Function1;
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehaviorResultFields {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehaviorResultFields;
+	public final fun CancelField (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/field/TransformField;
+	public static synthetic fun CancelField$default (Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehaviorResultFields;Lme/tbsten/compose/preview/lab/MutablePreviewLabField;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/TransformField;
+	public final fun DefaultCancelFieldMessageField (Ljava/lang/String;)Lme/tbsten/compose/preview/lab/field/NullableField;
+	public static synthetic fun DefaultCancelFieldMessageField$default (Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehaviorResultFields;Ljava/lang/String;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/NullableField;
+	public final fun DefaultErrorFieldMessageField (Ljava/lang/String;)Lme/tbsten/compose/preview/lab/field/NullableField;
+	public static synthetic fun DefaultErrorFieldMessageField$default (Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehaviorResultFields;Ljava/lang/String;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/NullableField;
+	public final fun DefaultField ()Lme/tbsten/compose/preview/lab/field/FixedField;
+	public final fun ErrorField (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/field/TransformField;
+	public static synthetic fun ErrorField$default (Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/BasicFunctionDebugBehaviorResultFields;Lme/tbsten/compose/preview/lab/MutablePreviewLabField;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/field/TransformField;
+	public final fun ReturnField (Lme/tbsten/compose/preview/lab/MutablePreviewLabField;)Lme/tbsten/compose/preview/lab/field/TransformField;
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/ComposableSingletons$BasicFunctionDebugBehaviorKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/ComposableSingletons$BasicFunctionDebugBehaviorKt;
+	public fun <init> ()V
+	public final fun getLambda$104979991$extension_debugger_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/DebuggableBehavior {
+	public static final field $stable I
+	public fun <init> (Lkotlin/jvm/functions/Function1;)V
+	public final fun getRunDefault ()Lkotlin/jvm/functions/Function1;
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/FieldDebugTool : me/tbsten/compose/preview/lab/extension/debugger/DebugTool {
+	public static final field $stable I
+	public fun <init> (Lme/tbsten/compose/preview/lab/PreviewLabField;)V
+	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public final fun getField ()Lme/tbsten/compose/preview/lab/PreviewLabField;
+	public fun getTitle ()Ljava/lang/String;
+	public final fun getValue ()Ljava/lang/Object;
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/FieldDebugToolKt {
+	public static final fun debuggable (Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/FieldDebugTool;Lkotlin/jvm/functions/Function3;)Lkotlin/jvm/functions/Function1;
+	public static final fun toDebugTool (Lme/tbsten/compose/preview/lab/PreviewLabField;)Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/FieldDebugTool;
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger : me/tbsten/compose/preview/lab/extension/debugger/DebugTool {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (ZLkotlin/jvm/functions/Function1;)V
+	public synthetic fun <init> (ZLkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public final fun clear ()V
+	public final fun debug ([Ljava/lang/Object;)V
+	public final fun error ([Ljava/lang/Object;Ljava/lang/Throwable;)V
+	public static synthetic fun error$default (Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger;[Ljava/lang/Object;Ljava/lang/Throwable;ILjava/lang/Object;)V
+	public final fun getLogs ()Ljava/util/List;
+	public final fun getPrintLog ()Z
+	public fun getTitle ()Ljava/lang/String;
+	public final fun info ([Ljava/lang/Object;)V
+	public final fun log (Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;[Ljava/lang/Object;Ljava/lang/Throwable;)V
+	public static synthetic fun log$default (Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger;Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;[Ljava/lang/Object;Ljava/lang/Throwable;ILjava/lang/Object;)V
+	public final fun setPrintLog (Z)V
+	public final fun warn ([Ljava/lang/Object;)V
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level : java/lang/Enum {
+	public static final field Debug Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;
+	public static final field ERROR Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;
+	public static final field Info Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;
+	public static final field WARN Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;
+	public static fun values ()[Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$LogEntry {
+	public static final field $stable I
+	public fun <init> (JLme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;Ljava/util/List;Ljava/lang/Throwable;)V
+	public final fun component1 ()J
+	public final fun component2 ()Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Ljava/lang/Throwable;
+	public final fun copy (JLme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;Ljava/util/List;Ljava/lang/Throwable;)Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$LogEntry;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$LogEntry;JLme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;Ljava/util/List;Ljava/lang/Throwable;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$LogEntry;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun format ()Ljava/lang/String;
+	public final fun getError ()Ljava/lang/Throwable;
+	public final fun getId ()J
+	public final fun getLevel ()Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;
+	public final fun getMessages ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/ui/ComposableSingletons$DebugMenuTabsViewKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/extension/debugger/ui/ComposableSingletons$DebugMenuTabsViewKt;
+	public fun <init> ()V
+	public final fun getLambda$1121693959$extension_debugger_release ()Lkotlin/jvm/functions/Function3;
+}
+
+public abstract interface class me/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuDialogState {
+	public abstract fun isVisible ()Z
+	public abstract fun onDismissRequest ()V
+	public abstract fun show ()V
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuDrawerKt {
+	public static final fun DebugMenuDrawer-HYR8e34 (Lme/tbsten/compose/preview/lab/extension/debugger/DebugMenu;ZLkotlin/jvm/functions/Function0;Lme/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuDrawerPosition;Ljava/lang/String;FLandroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuDrawerPosition : java/lang/Enum {
+	public static final field Bottom Lme/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuDrawerPosition;
+	public static final field Left Lme/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuDrawerPosition;
+	public static final field Right Lme/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuDrawerPosition;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lme/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuDrawerPosition;
+	public static fun values ()[Lme/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuDrawerPosition;
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuDropdownViewKt {
+	public static final fun DropdownView (Lme/tbsten/compose/preview/lab/extension/debugger/DebugMenu;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuTabsViewKt {
+	public static final fun TabsView (Lme/tbsten/compose/preview/lab/extension/debugger/DebugMenu;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuTheme {
+	public static final field $stable I
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuTheme;
+	public final fun getBackgroundColor (Landroidx/compose/runtime/Composer;I)J
+	public final fun getColors (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/ui/Colors;
+	public final fun getContentColor (Landroidx/compose/runtime/Composer;I)J
+}
+
+public abstract interface class me/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuTrigger {
+	public static final field Companion Lme/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuTrigger$Companion;
+	public abstract fun Effect (Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuTrigger$Companion {
+	public final fun default ()Lme/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuTrigger;
+	public final fun getNone ()Lme/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuTrigger;
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuTrigger$Shake : me/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuTrigger {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (FJ)V
+	public synthetic fun <init> (FJILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun Effect (Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V
+	public final fun component1 ()F
+	public final fun component2 ()J
+	public final fun copy (FJ)Lme/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuTrigger$Shake;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuTrigger$Shake;FJILjava/lang/Object;)Lme/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuTrigger$Shake;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSlopTime ()J
+	public final fun getThreshold ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuTriggerKt {
+	public static final fun DebugMenuTrigger (Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/ui/DialogKt {
+	public static final fun Dialog (Lme/tbsten/compose/preview/lab/extension/debugger/DebugMenu;Lme/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuDialogState;Lme/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuTrigger;Landroidx/compose/ui/window/DialogProperties;Landroidx/compose/runtime/Composer;II)V
+	public static final fun rememberDebugMenuDialogState (Landroidx/compose/runtime/Composer;I)Lme/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuDialogState;
+}
+
