@@ -269,17 +269,17 @@ enum class GetItemListUseCaseDebugBehavior {
 
 ```kotlin
 interface GetItemListUseCase {
-    fun execute(): List<Item>
+    suspend fun execute(): List<Item>
 }
 
-interface GetItemListUseCaseImpl : GetItemListUseCase {
-    override fun execute(): List<Item> { /* TODO */ }
+class GetItemListUseCaseImpl : GetItemListUseCase {
+    override suspend fun execute(): List<Item> { /* 実際の実装 */ }
 }
 
 class DebugGetItemListUseCase(
-    override private val default: GetItemListUseCase,
+    private val default: GetItemListUseCase,
 ) : GetItemListUseCase {
-    override fun execute(): List<Item> = suspend { default.execute() }
+    override suspend fun execute(): List<Item> = suspend { default.execute() }
         // highlight-start
         .debuggableBasic(AppDebugMenu.getItemListUseCaseBehavior) { behavior: GetItemListUseCaseDebugBehavior ->
             when(behavior) {
@@ -288,14 +288,6 @@ class DebugGetItemListUseCase(
             }
         }.invoke()
         // highlight-end
-}
-
-interface DebugDIModule {
-    fun provide(impl: GetItemListUseCaseImpl): GetItemListUseCase
-}
-
-interface ProductionDIModule {
-    fun provide(impl: DebugGetItemListUseCase): GetItemListUseCase
 }
 ```
 
