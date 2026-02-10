@@ -93,8 +93,22 @@ Compose Preview Lab は、Compose の `@Preview` をインタラクティブな 
 ## Testing
 
 - テストフレームワーク: **Kotest**
+- テストスタイル: **StringSpec** を使用（DescribeSpec は使用しない）
 - Property-Based Test は `PBT` タグ付き（CI では nightly 実行）
 - Compose UI テストは `jvmTest` で実行可能
+
+```kotlin
+// 例: StringSpec を使用したテスト
+class SomeTest : StringSpec({
+    "should do something" {
+        result shouldBe expected
+    }
+
+    "should handle edge case" {
+        // test code
+    }
+})
+```
 
 ## Key Types
 
