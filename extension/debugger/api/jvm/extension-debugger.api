@@ -183,9 +183,9 @@ public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/Si
 
 public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level : java/lang/Enum {
 	public static final field Debug Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;
-	public static final field ERROR Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;
+	public static final field Error Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;
 	public static final field Info Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;
-	public static final field WARN Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;
+	public static final field Warn Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;
 	public static fun values ()[Lme/tbsten/compose/preview/lab/extension/debugger/debugtool/SimpleLogger$Level;

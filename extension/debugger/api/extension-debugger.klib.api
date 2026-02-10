@@ -221,9 +221,9 @@ final class me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLog
 
     final enum class Level : kotlin/Enum<me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level> { // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level|null[0]
         enum entry Debug // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level.Debug|null[0]
-        enum entry ERROR // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level.ERROR|null[0]
+        enum entry Error // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level.Error|null[0]
         enum entry Info // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level.Info|null[0]
-        enum entry WARN // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level.WARN|null[0]
+        enum entry Warn // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level.Warn|null[0]
 
         final val entries // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level.entries|#static{}entries[0]
             final fun <get-entries>(): kotlin.enums/EnumEntries<me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level.entries.<get-entries>|<get-entries>#static(){}[0]

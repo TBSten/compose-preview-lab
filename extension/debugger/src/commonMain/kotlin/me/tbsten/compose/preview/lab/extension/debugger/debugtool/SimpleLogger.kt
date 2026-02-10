@@ -182,8 +182,8 @@ class SimpleLogger(var printLog: Boolean = false, private val onLog: (LogEntry) 
     private fun Level.colors(): Pair<Color, Color> = when (this) {
         Level.Debug -> PreviewLabTheme.colors.surface to PreviewLabTheme.colors.textSecondary
         Level.Info -> Blue700.copy(alpha = 0.1f) to Blue700
-        Level.WARN -> Color(0xFFFFA500).copy(alpha = 0.1f) to Color(0xFFCC8400)
-        Level.ERROR -> PreviewLabTheme.colors.error.copy(alpha = 0.1f) to PreviewLabTheme.colors.error
+        Level.Warn -> Color(0xFFFFA500).copy(alpha = 0.1f) to Color(0xFFCC8400)
+        Level.Error -> PreviewLabTheme.colors.error.copy(alpha = 0.1f) to PreviewLabTheme.colors.error
     }
 
     /**
@@ -220,12 +220,12 @@ class SimpleLogger(var printLog: Boolean = false, private val onLog: (LogEntry) 
     /**
      * Logs a warning-level message.
      */
-    fun warn(vararg messages: Any?) = log(Level.WARN, *messages)
+    fun warn(vararg messages: Any?) = log(Level.Warn, *messages)
 
     /**
      * Logs an error-level message with an optional throwable.
      */
-    fun error(vararg messages: Any?, error: Throwable? = null) = log(Level.ERROR, *messages, error = error)
+    fun error(vararg messages: Any?, error: Throwable? = null) = log(Level.Error, *messages, error = error)
 
     /**
      * Clears all log entries.
@@ -243,9 +243,7 @@ class SimpleLogger(var printLog: Boolean = false, private val onLog: (LogEntry) 
          */
         fun format(): String = buildString {
             append("[${level.name}] ")
-            messages.forEach { message ->
-                append(message)
-            }
+            append(messages.joinToString(" "))
             if (error != null) {
                 append("\n")
                 append(error.stackTraceToString())
@@ -259,7 +257,7 @@ class SimpleLogger(var printLog: Boolean = false, private val onLog: (LogEntry) 
     enum class Level {
         Debug,
         Info,
-        WARN,
-        ERROR,
+        Warn,
+        Error,
     }
 }
