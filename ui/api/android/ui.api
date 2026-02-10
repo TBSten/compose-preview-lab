@@ -1,3 +1,9 @@
+public final class me/tbsten/compose/preview/lab/ui/components/AccordionKt {
+	public static final fun PreviewLabAccordion (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/Modifier;Lme/tbsten/compose/preview/lab/ui/components/PreviewLabAccordionState;ZLandroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun rememberPreviewLabAccordionGroupState (IZLandroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabAccordionGroupState;
+	public static final fun rememberPreviewLabAccordionState (ZZZLkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabAccordionState;
+}
+
 public final class me/tbsten/compose/preview/lab/ui/components/ComposableSingletons$ButtonKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/ComposableSingletons$ButtonKt;
 	public fun <init> ()V
@@ -98,6 +104,32 @@ public abstract interface class me/tbsten/compose/preview/lab/ui/components/Menu
 	public abstract fun position-JVtK1S4 (Landroidx/compose/ui/unit/IntRect;JI)I
 }
 
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabAccordionGroupState {
+	public static final field $stable I
+	public fun <init> (IZ)V
+	public final fun collapseAll ()V
+	public final fun expand (I)V
+	public final fun getState (I)Lme/tbsten/compose/preview/lab/ui/components/PreviewLabAccordionState;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabAccordionState {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (ZZZLkotlin/jvm/functions/Function1;)V
+	public synthetic fun <init> (ZZZLkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun collapse ()V
+	public final fun getAnimationProgress ()F
+	public final fun getClickable ()Z
+	public final fun getEnabled ()Z
+	public final fun getExpanded ()Z
+	public final fun getOnExpandedChange ()Lkotlin/jvm/functions/Function1;
+	public final fun setClickable (Z)V
+	public final fun setEnabled (Z)V
+	public final fun setOnExpandedChange (Lkotlin/jvm/functions/Function1;)V
+	public final fun toggle ()V
+	public final fun updateProgress (F)V
+}
+
 public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabRadioButtonColors {
 	public static final field $stable I
 	public synthetic fun <init> (JJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -156,6 +188,8 @@ public final class me/tbsten/compose/preview/lab/ui/generated/resources/ActualRe
 public final class me/tbsten/compose/preview/lab/ui/generated/resources/Drawable0_commonMainKt {
 	public static final fun getIcon_add (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
 	public static final fun getIcon_arrow_drop_down (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_arrow_left (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_arrow_right (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
 	public static final fun getIcon_check (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
 	public static final fun getIcon_close (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
 	public static final fun getIcon_code (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
