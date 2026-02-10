@@ -236,9 +236,9 @@ AppDebugMenu.logger.warn("Invalid state", currentState)
 AppDebugMenu.logger.error("Error", error = error)
 ```
 
-import DebuggerSimpleLogerImage from "./debugger-simple-loger.png"
+import DebuggerSimpleLoggerImage from "./debugger-simple-logger.png"
 
-<img src={DebuggerSimpleLogerImage} width="300" />
+<img src={DebuggerSimpleLoggerImage} width="300" />
 
 #### basicFunctionDebugBehavior
 
@@ -247,7 +247,7 @@ import DebuggerSimpleLogerImage from "./debugger-simple-loger.png"
 例えばデバッグメニューから アプリ内の UseCase や Repository のメソッドの挙動をデバッグメニューから変更することで、それを利用する ViewModel などの挙動をテストすることができるようになります。
 
 ```kotlin
-object AppDebugMenu : DebugMenu {
+object AppDebugMenu : DebugMenu() {
     val getItemListUseCaseBehavior = tool {
         // highlight-start
         basicFunctionDebugBehavior(
