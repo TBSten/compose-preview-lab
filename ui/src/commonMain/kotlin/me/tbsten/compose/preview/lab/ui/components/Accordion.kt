@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -54,7 +55,9 @@ fun PreviewLabAccordion(
             Modifier
                 .fillMaxWidth()
                 .semantics {
-                    role = Role.Button
+                    if (state.clickable && state.enabled) {
+                        role = Role.Button
+                    }
                     stateDescription = if (expanded) "Expanded" else "Collapsed"
                 }
                 .then(headerModifier)
@@ -69,11 +72,13 @@ fun PreviewLabAccordion(
                 enter = expandVertically(),
                 exit = shrinkVertically(),
             ) {
-                val progress by transition.animateFloat(label = "accordion transition") { state ->
-                    if (state == EnterExitState.Visible) 1f else 0f
+                val progress by transition.animateFloat(label = "accordion transition") { animState ->
+                    if (animState == EnterExitState.Visible) 1f else 0f
                 }
 
-                state.updateProgress(progress)
+                LaunchedEffect(progress) {
+                    state.updateProgress(progress)
+                }
 
                 bodyContent()
             }
@@ -118,7 +123,10 @@ class PreviewLabAccordionState(
     }
 
     fun collapse() {
-        expanded = false
+        if (expanded) {
+            expanded = false
+            onExpandedChange?.invoke(false)
+        }
     }
 }
 
@@ -157,7 +165,7 @@ class PreviewLabAccordionGroupState(count: Int, private val allowMultipleOpen: B
     }
 
     fun expand(index: Int) {
-        if (index in states.indices) {
+        if (index in states.indices && !states[index].expanded) {
             states[index].toggle()
         }
     }
