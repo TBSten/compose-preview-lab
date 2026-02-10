@@ -13,7 +13,6 @@ public abstract class me/tbsten/compose/preview/lab/extension/debugger/DebugMenu
 
 public final class me/tbsten/compose/preview/lab/extension/debugger/DebugMenuWindowKt {
 	public static final fun DebugMenuWindow (Landroidx/compose/ui/window/ApplicationScope;Lme/tbsten/compose/preview/lab/extension/debugger/DebugMenu;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/window/WindowState;Landroidx/compose/ui/window/WindowState;ZLjava/lang/String;Landroidx/compose/ui/graphics/painter/Painter;ZZZZZZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
-	public static final fun Window (Lme/tbsten/compose/preview/lab/extension/debugger/DebugMenu;Landroidx/compose/ui/window/ApplicationScope;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/window/WindowState;Landroidx/compose/ui/window/WindowState;ZLjava/lang/String;Landroidx/compose/ui/graphics/painter/Painter;ZZZZZZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;III)V
 }
 
 public abstract interface class me/tbsten/compose/preview/lab/extension/debugger/DebugTool {

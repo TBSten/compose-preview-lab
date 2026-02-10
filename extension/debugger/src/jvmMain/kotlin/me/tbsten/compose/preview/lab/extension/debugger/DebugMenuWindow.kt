@@ -121,62 +121,6 @@ fun ApplicationScope.DebugMenuWindow(
 }
 
 /**
- * Creates a desktop window for displaying this [DebugMenu].
- *
- * This is a convenience extension that allows calling `DebugMenuWindow` directly on a [DebugMenu] instance.
- *
- * @see DebugMenuWindow
- */
-@Deprecated(
-    message = "Use DebugMenuWindow(debugMenu = ...) instead",
-    replaceWith = ReplaceWith(
-        "DebugMenuWindow(debugMenu = this, onCloseRequest = onCloseRequest, baseWindowState = baseWindowState, " +
-            "windowState = windowState, visible = visible, title = title, icon = icon, undecorated = undecorated, " +
-            "transparent = transparent, resizable = resizable, enabled = enabled, focusable = focusable, " +
-            "alwaysOnTop = alwaysOnTop, onPreviewKeyEvent = onPreviewKeyEvent, onKeyEvent = onKeyEvent)",
-        "me.tbsten.compose.preview.lab.extension.debugger.DebugMenuWindow",
-    ),
-)
-@Composable
-fun DebugMenu.Window(
-    applicationScope: ApplicationScope,
-    onCloseRequest: () -> Unit,
-    baseWindowState: WindowState? = null,
-    windowState: WindowState = rememberWindowState(size = DpSize(400.dp, 600.dp)),
-    visible: Boolean = true,
-    title: String = "Debug Menu",
-    icon: Painter? = null,
-    undecorated: Boolean = false,
-    transparent: Boolean = false,
-    resizable: Boolean = true,
-    enabled: Boolean = true,
-    focusable: Boolean = true,
-    alwaysOnTop: Boolean = false,
-    onPreviewKeyEvent: (KeyEvent) -> Boolean = { false },
-    onKeyEvent: (KeyEvent) -> Boolean = { false },
-) {
-    with(applicationScope) {
-        DebugMenuWindow(
-            debugMenu = this@Window,
-            onCloseRequest = onCloseRequest,
-            baseWindowState = baseWindowState,
-            windowState = windowState,
-            visible = visible,
-            title = title,
-            icon = icon,
-            undecorated = undecorated,
-            transparent = transparent,
-            resizable = resizable,
-            enabled = enabled,
-            focusable = focusable,
-            alwaysOnTop = alwaysOnTop,
-            onPreviewKeyEvent = onPreviewKeyEvent,
-            onKeyEvent = onKeyEvent,
-        )
-    }
-}
-
-/**
  * Composable that follows the position of a base window.
  *
  * When [baseWindowState] is provided, [windowState] will be updated
