@@ -96,14 +96,14 @@ fun rememberPreviewLabAccordionState(
     enabled: Boolean = true,
     clickable: Boolean = true,
     onExpandedChange: ((Boolean) -> Unit)? = null,
-) = remember {
+) = remember(expanded, enabled, clickable) {
     PreviewLabAccordionState(expanded, enabled, clickable, onExpandedChange)
 }
 
 class PreviewLabAccordionState(
     expanded: Boolean = false,
-    var enabled: Boolean = true,
-    var clickable: Boolean = true,
+    val enabled: Boolean = true,
+    val clickable: Boolean = true,
     var onExpandedChange: ((Boolean) -> Unit)? = null,
 ) {
     var expanded by mutableStateOf(expanded)
@@ -132,7 +132,7 @@ class PreviewLabAccordionState(
 
 @Composable
 fun rememberPreviewLabAccordionGroupState(count: Int, allowMultipleOpen: Boolean = false): PreviewLabAccordionGroupState =
-    remember { PreviewLabAccordionGroupState(count, allowMultipleOpen) }
+    remember(count, allowMultipleOpen) { PreviewLabAccordionGroupState(count, allowMultipleOpen) }
 
 class PreviewLabAccordionGroupState(count: Int, private val allowMultipleOpen: Boolean) {
     private val states = List(count) { PreviewLabAccordionState() }
