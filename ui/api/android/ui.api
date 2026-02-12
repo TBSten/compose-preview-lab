@@ -123,8 +123,6 @@ public final class me/tbsten/compose/preview/lab/ui/components/PreviewLabAccordi
 	public final fun getEnabled ()Z
 	public final fun getExpanded ()Z
 	public final fun getOnExpandedChange ()Lkotlin/jvm/functions/Function1;
-	public final fun setClickable (Z)V
-	public final fun setEnabled (Z)V
 	public final fun setOnExpandedChange (Lkotlin/jvm/functions/Function1;)V
 	public final fun toggle ()V
 	public final fun updateProgress (F)V
