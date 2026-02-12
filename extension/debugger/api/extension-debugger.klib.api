@@ -31,7 +31,21 @@ abstract interface me.tbsten.compose.preview.lab.extension.debugger/DebugTool { 
     abstract val title // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.title|{}title[0]
         abstract fun <get-title>(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.title.<get-title>|<get-title>(){}[0]
 
-    abstract fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    abstract fun Content(me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext, androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.Content|Content(me.tbsten.compose.preview.lab.extension.debugger.DebugTool.ContentContext;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+
+    final class ContentContext { // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext|null[0]
+        constructor <init>(kotlin/String) // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext.<init>|<init>(kotlin.String){}[0]
+
+        final val searchText // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext.searchText|{}searchText[0]
+            final fun <get-searchText>(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext.searchText.<get-searchText>|<get-searchText>(){}[0]
+
+        final fun component1(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext.component1|component1(){}[0]
+        final fun copy(kotlin/String = ...): me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext.copy|copy(kotlin.String){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext.hashCode|hashCode(){}[0]
+        final fun isHit(kotlin/String): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext.isHit|isHit(kotlin.String){}[0]
+        final fun toString(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext.toString|toString(){}[0]
+    }
 }
 
 abstract interface me.tbsten.compose.preview.lab.extension.debugger/DebugToolRegistry { // me.tbsten.compose.preview.lab.extension.debugger/DebugToolRegistry|null[0]
@@ -115,7 +129,7 @@ abstract class me.tbsten.compose.preview.lab.extension.debugger/DebugToolGroup :
         open fun <get-tools>(): kotlin.collections/List<me.tbsten.compose.preview.lab.extension.debugger/DebugToolEntry> // me.tbsten.compose.preview.lab.extension.debugger/DebugToolGroup.tools.<get-tools>|<get-tools>(){}[0]
 
     open fun <#A1: me.tbsten.compose.preview.lab.extension.debugger/DebugTool> tool(kotlin/Function0<#A1>): #A1 // me.tbsten.compose.preview.lab.extension.debugger/DebugToolGroup.tool|tool(kotlin.Function0<0:0>){0§<me.tbsten.compose.preview.lab.extension.debugger.DebugTool>}[0]
-    open fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger/DebugToolGroup.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    open fun Content(me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext, androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger/DebugToolGroup.Content|Content(me.tbsten.compose.preview.lab.extension.debugger.DebugTool.ContentContext;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
 }
 
 final class <#A: kotlin/Any?> me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior { // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior|null[0]
@@ -196,7 +210,7 @@ final class <#A: kotlin/Any?> me.tbsten.compose.preview.lab.extension.debugger.d
     final val value // me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool.value|{}value[0]
         final fun <get-value>(): #A // me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool.value.<get-value>|<get-value>(){}[0]
 
-    final fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun Content(me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext, androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool.Content|Content(me.tbsten.compose.preview.lab.extension.debugger.DebugTool.ContentContext;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
 }
 
 final class me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger : me.tbsten.compose.preview.lab.extension.debugger/DebugTool { // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger|null[0]
@@ -211,7 +225,7 @@ final class me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLog
         final fun <get-printLog>(): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.printLog.<get-printLog>|<get-printLog>(){}[0]
         final fun <set-printLog>(kotlin/Boolean) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.printLog.<set-printLog>|<set-printLog>(kotlin.Boolean){}[0]
 
-    final fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun Content(me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext, androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Content|Content(me.tbsten.compose.preview.lab.extension.debugger.DebugTool.ContentContext;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
     final fun clear() // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.clear|clear(){}[0]
     final fun debug(kotlin/Array<out kotlin/Any?>...) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.debug|debug(kotlin.Array<out|kotlin.Any?>...){}[0]
     final fun error(kotlin/Array<out kotlin/Any?>..., kotlin/Throwable? = ...) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.error|error(kotlin.Array<out|kotlin.Any?>...;kotlin.Throwable?){}[0]
@@ -304,6 +318,7 @@ final val me.tbsten.compose.preview.lab.extension.debugger.ui/me_tbsten_compose_
 final val me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugMenu$stableprop // me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugMenu$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_DebugMenu$stableprop[0]
 final val me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugToolEntry$stableprop // me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugToolEntry$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_DebugToolEntry$stableprop[0]
 final val me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugToolGroup$stableprop // me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugToolGroup$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_DebugToolGroup$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugTool_ContentContext$stableprop // me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugTool_ContentContext$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_DebugTool_ContentContext$stableprop[0]
 final val me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_array$stableprop // me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_array$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_array$stableprop[0]
 final val me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_drawable$stableprop // me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_drawable$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_drawable$stableprop[0]
 final val me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_font$stableprop // me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_font$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_font$stableprop[0]
@@ -338,6 +353,7 @@ final fun me.tbsten.compose.preview.lab.extension.debugger.ui/rememberDebugMenuD
 final fun me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugMenu$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugMenu$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_DebugMenu$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugToolEntry$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugToolEntry$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_DebugToolEntry$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugToolGroup$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugToolGroup$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_DebugToolGroup$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugTool_ContentContext$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugTool_ContentContext$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_DebugTool_ContentContext$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_array$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_array$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_array$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_drawable$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_drawable$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_drawable$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_font$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_font$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_font$stableprop_getter(){}[0]

@@ -16,8 +16,21 @@ public final class me/tbsten/compose/preview/lab/extension/debugger/DebugMenuWin
 }
 
 public abstract interface class me/tbsten/compose/preview/lab/extension/debugger/DebugTool {
-	public abstract fun Content (Landroidx/compose/runtime/Composer;I)V
+	public abstract fun Content (Lme/tbsten/compose/preview/lab/extension/debugger/DebugTool$ContentContext;Landroidx/compose/runtime/Composer;I)V
 	public abstract fun getTitle ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/extension/debugger/DebugTool$ContentContext {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lme/tbsten/compose/preview/lab/extension/debugger/DebugTool$ContentContext;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/extension/debugger/DebugTool$ContentContext;Ljava/lang/String;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/extension/debugger/DebugTool$ContentContext;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSearchText ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isHit (Ljava/lang/String;)Z
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class me/tbsten/compose/preview/lab/extension/debugger/DebugToolEntry {
@@ -37,7 +50,7 @@ public final class me/tbsten/compose/preview/lab/extension/debugger/DebugToolEnt
 public abstract class me/tbsten/compose/preview/lab/extension/debugger/DebugToolGroup : me/tbsten/compose/preview/lab/extension/debugger/DebugTool, me/tbsten/compose/preview/lab/extension/debugger/DebugToolRegistry {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;)V
-	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun Content (Lme/tbsten/compose/preview/lab/extension/debugger/DebugTool$ContentContext;Landroidx/compose/runtime/Composer;I)V
 	public fun getTitle ()Ljava/lang/String;
 	public fun getTools ()Ljava/util/List;
 	public fun tool (Lkotlin/jvm/functions/Function0;)Lme/tbsten/compose/preview/lab/extension/debugger/DebugTool;
@@ -150,7 +163,7 @@ public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/De
 public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/FieldDebugTool : me/tbsten/compose/preview/lab/extension/debugger/DebugTool {
 	public static final field $stable I
 	public fun <init> (Lme/tbsten/compose/preview/lab/PreviewLabField;)V
-	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun Content (Lme/tbsten/compose/preview/lab/extension/debugger/DebugTool$ContentContext;Landroidx/compose/runtime/Composer;I)V
 	public final fun getField ()Lme/tbsten/compose/preview/lab/PreviewLabField;
 	public fun getTitle ()Ljava/lang/String;
 	public final fun getValue ()Ljava/lang/Object;
@@ -166,7 +179,7 @@ public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/Si
 	public fun <init> ()V
 	public fun <init> (ZLkotlin/jvm/functions/Function1;)V
 	public synthetic fun <init> (ZLkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun Content (Lme/tbsten/compose/preview/lab/extension/debugger/DebugTool$ContentContext;Landroidx/compose/runtime/Composer;I)V
 	public final fun clear ()V
 	public final fun debug ([Ljava/lang/Object;)V
 	public final fun error ([Ljava/lang/Object;Ljava/lang/Throwable;)V
@@ -208,12 +221,6 @@ public final class me/tbsten/compose/preview/lab/extension/debugger/debugtool/Si
 	public final fun getMessages ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-}
-
-public final class me/tbsten/compose/preview/lab/extension/debugger/ui/ComposableSingletons$DebugMenuTabsViewKt {
-	public static final field INSTANCE Lme/tbsten/compose/preview/lab/extension/debugger/ui/ComposableSingletons$DebugMenuTabsViewKt;
-	public fun <init> ()V
-	public final fun getLambda$1121693959$extension_debugger ()Lkotlin/jvm/functions/Function3;
 }
 
 public abstract interface class me/tbsten/compose/preview/lab/extension/debugger/ui/DebugMenuDialogState {
