@@ -314,7 +314,7 @@ class MyLogger(
 
     @Composable
     // highlight-start
-    override fun Content() {
+    override fun Content(context: DebugTool.ContentContext) {
         LogList(
             logList = logs,
         )
