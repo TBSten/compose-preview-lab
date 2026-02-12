@@ -37,13 +37,15 @@ abstract class DebugToolGroup(override val title: String) :
     }
 
     @Composable
-    override fun Content() {
+    override fun Content(context: DebugTool.ContentContext) {
+        val filteredTools = tools.filter { context.isHit(it.name) }
+
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier.verticalScroll(rememberScrollState()).padding(12.dp),
         ) {
-            tools.forEachIndexed { index, toolEntry ->
-                toolEntry.tool.Content()
+            filteredTools.forEachIndexed { index, toolEntry ->
+                toolEntry.tool.Content(context)
 
                 if (index != tools.lastIndex) PreviewLabDivider(modifier = Modifier.padding(horizontal = 8.dp))
             }

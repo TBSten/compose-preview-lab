@@ -13,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.extension.debugger.DebugMenu
+import me.tbsten.compose.preview.lab.extension.debugger.DebugTool
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabSelectButton
 
@@ -69,7 +70,11 @@ private fun DebugMenuDropdownContent(debugMenu: DebugMenu, modifier: Modifier = 
                 )
 
                 Box(modifier = Modifier.fillMaxSize()) {
-                    tools[selectedIndex].tool.Content()
+                    tools[selectedIndex].tool.Content(
+                        context = DebugTool.ContentContext(
+                            searchText = "", // TODO
+                        ),
+                    )
                 }
             }
         }

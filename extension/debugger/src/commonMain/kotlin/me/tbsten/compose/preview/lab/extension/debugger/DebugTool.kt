@@ -59,5 +59,17 @@ interface DebugTool {
      * the tool's content when selected.
      */
     @Composable
-    fun Content()
+    fun Content(context: ContentContext)
+
+    data class ContentContext(val searchText: String) {
+        fun isHit(text: String) = searchText.trim()
+            .let {
+                if (it.isBlank()) {
+                    true
+                } else {
+                    it.split(Regex("""\s+"""))
+                        .any { text.contains(it) }
+                }
+            }
+    }
 }

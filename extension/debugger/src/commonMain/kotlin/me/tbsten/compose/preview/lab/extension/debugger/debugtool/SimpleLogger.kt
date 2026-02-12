@@ -76,7 +76,7 @@ class SimpleLogger(var printLog: Boolean = false, private val onLog: (LogEntry) 
 
     @OptIn(ExperimentalLayoutApi::class)
     @Composable
-    override fun Content() {
+    override fun Content(context: DebugTool.ContentContext) {
         SelectionContainer {
             Column(
                 modifier = Modifier.fillMaxSize(),

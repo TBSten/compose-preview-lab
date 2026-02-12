@@ -9,7 +9,7 @@ class FieldDebugTool<Value>(val field: PreviewLabField<Value>) : DebugTool {
     val value by field::value
 
     @Composable
-    override fun Content() {
+    override fun Content(context: DebugTool.ContentContext) {
         field.View()
     }
 }
