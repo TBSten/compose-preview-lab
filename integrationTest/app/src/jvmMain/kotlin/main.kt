@@ -10,7 +10,6 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import me.tbsten.compose.preview.lab.PreviewLabGalleryWindows
 import me.tbsten.compose.preview.lab.extension.debugger.DebugMenuWindow
-import me.tbsten.compose.preview.lab.extension.debugger.ui.DropdownView
 import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
 import me.tbsten.compose.preview.lab.previewlab.openfilehandler.UrlOpenFileHandler
 import me.tbsten.compose.preview.lab.sample.debugmenu.AppDebugMenu
@@ -37,6 +36,6 @@ fun main(): Unit = application {
             baseWindowState = mainWindowState,
             onCloseRequest = { showDebugMenu = false },
             title = "App Debug Menu",
-        ) { DropdownView() }
+        )
     }
 }

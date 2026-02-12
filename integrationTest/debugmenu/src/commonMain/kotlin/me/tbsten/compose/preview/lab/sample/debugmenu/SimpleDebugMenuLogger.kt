@@ -47,7 +47,7 @@ class SimpleDebugMenuLogger : DebugTool {
     }
 
     @Composable
-    override fun Content() {
+    override fun Content(context: DebugTool.ContentContext) {
         LazyColumn {
             stickyHeader {
                 Row {
