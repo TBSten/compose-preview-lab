@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import app.FeaturedFileList
+import me.tbsten.compose.preview.lab.extension.debugger.ui.Dialog
 import me.tbsten.compose.preview.lab.gallery.PreviewLabGallery
 import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
+import me.tbsten.compose.preview.lab.sample.debugmenu.AppDebugMenu
 
 class AppActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,12 +23,15 @@ class AppActivity : ComponentActivity() {
                 state = remember {
                     PreviewLabGalleryState()
                 },
-                previewList = app.PreviewList,
+                previewList = app.PreviewList + uiLib.PreviewList,
                 featuredFileList = FeaturedFileList,
                 modifier = Modifier
                     .systemBarsPadding()
                     .displayCutoutPadding(),
             )
+
+            // デバッグメニューダイアログ (シェイクで表示)
+            AppDebugMenu.Dialog()
         }
     }
 }

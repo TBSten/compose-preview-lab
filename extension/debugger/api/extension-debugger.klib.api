@@ -1,0 +1,373 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
+// Alias: ios => [iosArm64, iosSimulatorArm64, iosX64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <me.tbsten.compose.preview.lab:extension-debugger>
+final enum class me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDrawerPosition : kotlin/Enum<me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDrawerPosition> { // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDrawerPosition|null[0]
+    enum entry Bottom // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDrawerPosition.Bottom|null[0]
+    enum entry Left // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDrawerPosition.Left|null[0]
+    enum entry Right // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDrawerPosition.Right|null[0]
+
+    final val entries // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDrawerPosition.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDrawerPosition> // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDrawerPosition.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDrawerPosition // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDrawerPosition.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDrawerPosition> // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDrawerPosition.values|values#static(){}[0]
+}
+
+abstract interface me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDialogState { // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDialogState|null[0]
+    abstract val isVisible // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDialogState.isVisible|{}isVisible[0]
+        abstract fun <get-isVisible>(): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDialogState.isVisible.<get-isVisible>|<get-isVisible>(){}[0]
+
+    abstract fun onDismissRequest() // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDialogState.onDismissRequest|onDismissRequest(){}[0]
+    abstract fun show() // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDialogState.show|show(){}[0]
+}
+
+abstract interface me.tbsten.compose.preview.lab.extension.debugger/DebugTool { // me.tbsten.compose.preview.lab.extension.debugger/DebugTool|null[0]
+    abstract val title // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.title|{}title[0]
+        abstract fun <get-title>(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.title.<get-title>|<get-title>(){}[0]
+
+    abstract fun Content(me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext, androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.Content|Content(me.tbsten.compose.preview.lab.extension.debugger.DebugTool.ContentContext;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+
+    final class ContentContext { // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext|null[0]
+        constructor <init>(kotlin/String) // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext.<init>|<init>(kotlin.String){}[0]
+
+        final val searchText // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext.searchText|{}searchText[0]
+            final fun <get-searchText>(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext.searchText.<get-searchText>|<get-searchText>(){}[0]
+
+        final fun component1(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext.component1|component1(){}[0]
+        final fun copy(kotlin/String = ...): me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext.copy|copy(kotlin.String){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext.hashCode|hashCode(){}[0]
+        final fun isHit(kotlin/String): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext.isHit|isHit(kotlin.String){}[0]
+        final fun toString(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext.toString|toString(){}[0]
+    }
+}
+
+abstract interface me.tbsten.compose.preview.lab.extension.debugger/DebugToolRegistry { // me.tbsten.compose.preview.lab.extension.debugger/DebugToolRegistry|null[0]
+    abstract val tools // me.tbsten.compose.preview.lab.extension.debugger/DebugToolRegistry.tools|{}tools[0]
+        abstract fun <get-tools>(): kotlin.collections/List<me.tbsten.compose.preview.lab.extension.debugger/DebugToolEntry> // me.tbsten.compose.preview.lab.extension.debugger/DebugToolRegistry.tools.<get-tools>|<get-tools>(){}[0]
+
+    abstract fun <#A1: me.tbsten.compose.preview.lab.extension.debugger/DebugTool> tool(kotlin/Function0<#A1>): #A1 // me.tbsten.compose.preview.lab.extension.debugger/DebugToolRegistry.tool|tool(kotlin.Function0<0:0>){0§<me.tbsten.compose.preview.lab.extension.debugger.DebugTool>}[0]
+}
+
+sealed interface me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger { // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger|null[0]
+    abstract fun Effect(kotlin/Function0<kotlin/Unit>, androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.Effect|Effect(kotlin.Function0<kotlin.Unit>;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+
+    final object Companion { // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.Companion|null[0]
+        final val None // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.Companion.None|{}None[0]
+            final fun <get-None>(): me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.Companion.None.<get-None>|<get-None>(){}[0]
+
+        final fun default(): me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.Companion.default|default(){}[0]
+    }
+
+    // Targets: [ios]
+    final class Shake : me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger { // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.Shake|null[0]
+        constructor <init>(kotlin/Double = ..., kotlin/Long = ...) // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.Shake.<init>|<init>(kotlin.Double;kotlin.Long){}[0]
+
+        final val slopTime // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.Shake.slopTime|{}slopTime[0]
+            final fun <get-slopTime>(): kotlin/Long // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.Shake.slopTime.<get-slopTime>|<get-slopTime>(){}[0]
+        final val threshold // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.Shake.threshold|{}threshold[0]
+            final fun <get-threshold>(): kotlin/Double // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.Shake.threshold.<get-threshold>|<get-threshold>(){}[0]
+
+        final fun Effect(kotlin/Function0<kotlin/Unit>, androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.Shake.Effect|Effect(kotlin.Function0<kotlin.Unit>;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+        final fun component1(): kotlin/Double // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.Shake.component1|component1(){}[0]
+        final fun component2(): kotlin/Long // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.Shake.component2|component2(){}[0]
+        final fun copy(kotlin/Double = ..., kotlin/Long = ...): me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.Shake // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.Shake.copy|copy(kotlin.Double;kotlin.Long){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.Shake.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.Shake.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.Shake.toString|toString(){}[0]
+    }
+
+    // Targets: [js, wasmJs]
+    final class KeyboardShortcut : me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger { // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut|null[0]
+        constructor <init>(kotlin/String = ..., kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ...) // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.<init>|<init>(kotlin.String;kotlin.Boolean;kotlin.Boolean;kotlin.Boolean;kotlin.Boolean){}[0]
+
+        final val alt // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.alt|{}alt[0]
+            final fun <get-alt>(): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.alt.<get-alt>|<get-alt>(){}[0]
+        final val ctrl // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.ctrl|{}ctrl[0]
+            final fun <get-ctrl>(): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.ctrl.<get-ctrl>|<get-ctrl>(){}[0]
+        final val key // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.key|{}key[0]
+            final fun <get-key>(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.key.<get-key>|<get-key>(){}[0]
+        final val meta // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.meta|{}meta[0]
+            final fun <get-meta>(): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.meta.<get-meta>|<get-meta>(){}[0]
+        final val shift // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.shift|{}shift[0]
+            final fun <get-shift>(): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.shift.<get-shift>|<get-shift>(){}[0]
+
+        final fun Effect(kotlin/Function0<kotlin/Unit>, androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.Effect|Effect(kotlin.Function0<kotlin.Unit>;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+        final fun component1(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.component1|component1(){}[0]
+        final fun component2(): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.component2|component2(){}[0]
+        final fun component3(): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.component3|component3(){}[0]
+        final fun component4(): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.component4|component4(){}[0]
+        final fun component5(): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.component5|component5(){}[0]
+        final fun copy(kotlin/String = ..., kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ...): me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.copy|copy(kotlin.String;kotlin.Boolean;kotlin.Boolean;kotlin.Boolean;kotlin.Boolean){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger.KeyboardShortcut.toString|toString(){}[0]
+    }
+}
+
+abstract class me.tbsten.compose.preview.lab.extension.debugger/DebugMenu : me.tbsten.compose.preview.lab.extension.debugger/DebugToolRegistry { // me.tbsten.compose.preview.lab.extension.debugger/DebugMenu|null[0]
+    constructor <init>() // me.tbsten.compose.preview.lab.extension.debugger/DebugMenu.<init>|<init>(){}[0]
+
+    open val tools // me.tbsten.compose.preview.lab.extension.debugger/DebugMenu.tools|{}tools[0]
+        open fun <get-tools>(): kotlin.collections/List<me.tbsten.compose.preview.lab.extension.debugger/DebugToolEntry> // me.tbsten.compose.preview.lab.extension.debugger/DebugMenu.tools.<get-tools>|<get-tools>(){}[0]
+
+    open fun <#A1: me.tbsten.compose.preview.lab.extension.debugger/DebugTool> tool(kotlin/Function0<#A1>): #A1 // me.tbsten.compose.preview.lab.extension.debugger/DebugMenu.tool|tool(kotlin.Function0<0:0>){0§<me.tbsten.compose.preview.lab.extension.debugger.DebugTool>}[0]
+}
+
+abstract class me.tbsten.compose.preview.lab.extension.debugger/DebugToolGroup : me.tbsten.compose.preview.lab.extension.debugger/DebugTool, me.tbsten.compose.preview.lab.extension.debugger/DebugToolRegistry { // me.tbsten.compose.preview.lab.extension.debugger/DebugToolGroup|null[0]
+    constructor <init>(kotlin/String) // me.tbsten.compose.preview.lab.extension.debugger/DebugToolGroup.<init>|<init>(kotlin.String){}[0]
+
+    open val title // me.tbsten.compose.preview.lab.extension.debugger/DebugToolGroup.title|{}title[0]
+        open fun <get-title>(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger/DebugToolGroup.title.<get-title>|<get-title>(){}[0]
+    open val tools // me.tbsten.compose.preview.lab.extension.debugger/DebugToolGroup.tools|{}tools[0]
+        open fun <get-tools>(): kotlin.collections/List<me.tbsten.compose.preview.lab.extension.debugger/DebugToolEntry> // me.tbsten.compose.preview.lab.extension.debugger/DebugToolGroup.tools.<get-tools>|<get-tools>(){}[0]
+
+    open fun <#A1: me.tbsten.compose.preview.lab.extension.debugger/DebugTool> tool(kotlin/Function0<#A1>): #A1 // me.tbsten.compose.preview.lab.extension.debugger/DebugToolGroup.tool|tool(kotlin.Function0<0:0>){0§<me.tbsten.compose.preview.lab.extension.debugger.DebugTool>}[0]
+    open fun Content(me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext, androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger/DebugToolGroup.Content|Content(me.tbsten.compose.preview.lab.extension.debugger.DebugTool.ContentContext;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+}
+
+final class <#A: kotlin/Any?> me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior { // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior|null[0]
+    constructor <init>(kotlin.time/Duration, me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result<#A>) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.<init>|<init>(kotlin.time.Duration;me.tbsten.compose.preview.lab.extension.debugger.debugtool.BasicFunctionDebugBehavior.Result<1:0>){}[0]
+
+    final val delay // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.delay|{}delay[0]
+        final fun <get-delay>(): kotlin.time/Duration // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.delay.<get-delay>|<get-delay>(){}[0]
+    final val result // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.result|{}result[0]
+        final fun <get-result>(): me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result<#A> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.result.<get-result>|<get-result>(){}[0]
+
+    final fun component1(): kotlin.time/Duration // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.component1|component1(){}[0]
+    final fun component2(): me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result<#A> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.component2|component2(){}[0]
+    final fun copy(kotlin.time/Duration = ..., me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result<#A> = ...): me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior<#A> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.copy|copy(kotlin.time.Duration;me.tbsten.compose.preview.lab.extension.debugger.debugtool.BasicFunctionDebugBehavior.Result<1:0>){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.toString|toString(){}[0]
+
+    sealed interface <#A1: kotlin/Any?> Result { // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result|null[0]
+        final class <#A2: kotlin/Any?> Cancel : me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result<#A2> { // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Cancel|null[0]
+            constructor <init>(kotlin/Function0<kotlin.coroutines.cancellation/CancellationException> = ...) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Cancel.<init>|<init>(kotlin.Function0<kotlin.coroutines.cancellation.CancellationException>){}[0]
+
+            final val exception // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Cancel.exception|{}exception[0]
+                final fun <get-exception>(): kotlin/Function0<kotlin.coroutines.cancellation/CancellationException> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Cancel.exception.<get-exception>|<get-exception>(){}[0]
+
+            final fun component1(): kotlin/Function0<kotlin.coroutines.cancellation/CancellationException> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Cancel.component1|component1(){}[0]
+            final fun copy(kotlin/Function0<kotlin.coroutines.cancellation/CancellationException> = ...): me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Cancel<#A2> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Cancel.copy|copy(kotlin.Function0<kotlin.coroutines.cancellation.CancellationException>){}[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Cancel.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Cancel.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Cancel.toString|toString(){}[0]
+        }
+
+        final class <#A2: kotlin/Any?> Default : me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result<#A2> { // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Default|null[0]
+            constructor <init>() // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Default.<init>|<init>(){}[0]
+        }
+
+        final class <#A2: kotlin/Any?> Error : me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result<#A2> { // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Error|null[0]
+            constructor <init>(kotlin/Function0<kotlin/Throwable>) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Error.<init>|<init>(kotlin.Function0<kotlin.Throwable>){}[0]
+
+            final val throwable // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Error.throwable|{}throwable[0]
+                final fun <get-throwable>(): kotlin/Function0<kotlin/Throwable> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Error.throwable.<get-throwable>|<get-throwable>(){}[0]
+
+            final fun component1(): kotlin/Function0<kotlin/Throwable> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Error.component1|component1(){}[0]
+            final fun copy(kotlin/Function0<kotlin/Throwable> = ...): me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Error<#A2> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Error.copy|copy(kotlin.Function0<kotlin.Throwable>){}[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Error.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Error.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Error.toString|toString(){}[0]
+        }
+
+        final class <#A2: kotlin/Any?> Return : me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result<#A2> { // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Return|null[0]
+            constructor <init>(#A2) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Return.<init>|<init>(1:0){}[0]
+
+            final val resultType // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Return.resultType|{}resultType[0]
+                final fun <get-resultType>(): #A2 // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Return.resultType.<get-resultType>|<get-resultType>(){}[0]
+
+            final fun component1(): #A2 // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Return.component1|component1(){}[0]
+            final fun copy(#A2 = ...): me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Return<#A2> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Return.copy|copy(1:0){}[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Return.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Return.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Return.toString|toString(){}[0]
+        }
+    }
+}
+
+final class <#A: kotlin/Any?> me.tbsten.compose.preview.lab.extension.debugger.debugtool/DebuggableBehavior { // me.tbsten.compose.preview.lab.extension.debugger.debugtool/DebuggableBehavior|null[0]
+    constructor <init>(kotlin.coroutines/SuspendFunction0<#A>) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/DebuggableBehavior.<init>|<init>(kotlin.coroutines.SuspendFunction0<1:0>){}[0]
+
+    final val runDefault // me.tbsten.compose.preview.lab.extension.debugger.debugtool/DebuggableBehavior.runDefault|{}runDefault[0]
+        final fun <get-runDefault>(): kotlin.coroutines/SuspendFunction0<#A> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/DebuggableBehavior.runDefault.<get-runDefault>|<get-runDefault>(){}[0]
+}
+
+final class <#A: kotlin/Any?> me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool : me.tbsten.compose.preview.lab.extension.debugger/DebugTool { // me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool|null[0]
+    constructor <init>(me.tbsten.compose.preview.lab/PreviewLabField<#A>) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool.<init>|<init>(me.tbsten.compose.preview.lab.PreviewLabField<1:0>){}[0]
+
+    final val field // me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool.field|{}field[0]
+        final fun <get-field>(): me.tbsten.compose.preview.lab/PreviewLabField<#A> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool.field.<get-field>|<get-field>(){}[0]
+    final val title // me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool.title|{}title[0]
+        final fun <get-title>(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool.title.<get-title>|<get-title>(){}[0]
+    final val value // me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool.value|{}value[0]
+        final fun <get-value>(): #A // me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool.value.<get-value>|<get-value>(){}[0]
+
+    final fun Content(me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext, androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool.Content|Content(me.tbsten.compose.preview.lab.extension.debugger.DebugTool.ContentContext;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+}
+
+final class me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger : me.tbsten.compose.preview.lab.extension.debugger/DebugTool { // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger|null[0]
+    constructor <init>(kotlin/Boolean = ..., kotlin/Function1<me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry, kotlin/Unit> = ...) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.<init>|<init>(kotlin.Boolean;kotlin.Function1<me.tbsten.compose.preview.lab.extension.debugger.debugtool.SimpleLogger.LogEntry,kotlin.Unit>){}[0]
+
+    final val logs // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.logs|{}logs[0]
+        final fun <get-logs>(): kotlin.collections/List<me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.logs.<get-logs>|<get-logs>(){}[0]
+    final val title // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.title|{}title[0]
+        final fun <get-title>(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.title.<get-title>|<get-title>(){}[0]
+
+    final var printLog // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.printLog|{}printLog[0]
+        final fun <get-printLog>(): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.printLog.<get-printLog>|<get-printLog>(){}[0]
+        final fun <set-printLog>(kotlin/Boolean) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.printLog.<set-printLog>|<set-printLog>(kotlin.Boolean){}[0]
+
+    final fun Content(me.tbsten.compose.preview.lab.extension.debugger/DebugTool.ContentContext, androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Content|Content(me.tbsten.compose.preview.lab.extension.debugger.DebugTool.ContentContext;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun clear() // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.clear|clear(){}[0]
+    final fun debug(kotlin/Array<out kotlin/Any?>...) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.debug|debug(kotlin.Array<out|kotlin.Any?>...){}[0]
+    final fun error(kotlin/Array<out kotlin/Any?>..., kotlin/Throwable? = ...) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.error|error(kotlin.Array<out|kotlin.Any?>...;kotlin.Throwable?){}[0]
+    final fun info(kotlin/Array<out kotlin/Any?>...) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.info|info(kotlin.Array<out|kotlin.Any?>...){}[0]
+    final fun log(me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level, kotlin/Array<out kotlin/Any?>..., kotlin/Throwable? = ...) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.log|log(me.tbsten.compose.preview.lab.extension.debugger.debugtool.SimpleLogger.Level;kotlin.Array<out|kotlin.Any?>...;kotlin.Throwable?){}[0]
+    final fun warn(kotlin/Array<out kotlin/Any?>...) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.warn|warn(kotlin.Array<out|kotlin.Any?>...){}[0]
+
+    final enum class Level : kotlin/Enum<me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level> { // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level|null[0]
+        enum entry Debug // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level.Debug|null[0]
+        enum entry Error // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level.Error|null[0]
+        enum entry Info // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level.Info|null[0]
+        enum entry Warn // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level.Warn|null[0]
+
+        final val entries // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level.entries|#static{}entries[0]
+            final fun <get-entries>(): kotlin.enums/EnumEntries<me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level.entries.<get-entries>|<get-entries>#static(){}[0]
+
+        final fun valueOf(kotlin/String): me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level.valueOf|valueOf#static(kotlin.String){}[0]
+        final fun values(): kotlin/Array<me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level.values|values#static(){}[0]
+    }
+
+    final class LogEntry { // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry|null[0]
+        constructor <init>(kotlin/Long, me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level, kotlin.collections/List<kotlin/String>, kotlin/Throwable?) // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry.<init>|<init>(kotlin.Long;me.tbsten.compose.preview.lab.extension.debugger.debugtool.SimpleLogger.Level;kotlin.collections.List<kotlin.String>;kotlin.Throwable?){}[0]
+
+        final val error // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry.error|{}error[0]
+            final fun <get-error>(): kotlin/Throwable? // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry.error.<get-error>|<get-error>(){}[0]
+        final val id // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry.id|{}id[0]
+            final fun <get-id>(): kotlin/Long // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry.id.<get-id>|<get-id>(){}[0]
+        final val level // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry.level|{}level[0]
+            final fun <get-level>(): me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry.level.<get-level>|<get-level>(){}[0]
+        final val messages // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry.messages|{}messages[0]
+            final fun <get-messages>(): kotlin.collections/List<kotlin/String> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry.messages.<get-messages>|<get-messages>(){}[0]
+
+        final fun component1(): kotlin/Long // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry.component1|component1(){}[0]
+        final fun component2(): me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry.component2|component2(){}[0]
+        final fun component3(): kotlin.collections/List<kotlin/String> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry.component3|component3(){}[0]
+        final fun component4(): kotlin/Throwable? // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry.component4|component4(){}[0]
+        final fun copy(kotlin/Long = ..., me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.Level = ..., kotlin.collections/List<kotlin/String> = ..., kotlin/Throwable? = ...): me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry.copy|copy(kotlin.Long;me.tbsten.compose.preview.lab.extension.debugger.debugtool.SimpleLogger.Level;kotlin.collections.List<kotlin.String>;kotlin.Throwable?){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry.equals|equals(kotlin.Any?){}[0]
+        final fun format(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry.format|format(){}[0]
+        final fun hashCode(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger.debugtool/SimpleLogger.LogEntry.toString|toString(){}[0]
+    }
+}
+
+final class me.tbsten.compose.preview.lab.extension.debugger/DebugToolEntry { // me.tbsten.compose.preview.lab.extension.debugger/DebugToolEntry|null[0]
+    constructor <init>(kotlin/String, me.tbsten.compose.preview.lab.extension.debugger/DebugTool) // me.tbsten.compose.preview.lab.extension.debugger/DebugToolEntry.<init>|<init>(kotlin.String;me.tbsten.compose.preview.lab.extension.debugger.DebugTool){}[0]
+
+    final val name // me.tbsten.compose.preview.lab.extension.debugger/DebugToolEntry.name|{}name[0]
+        final fun <get-name>(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger/DebugToolEntry.name.<get-name>|<get-name>(){}[0]
+    final val tool // me.tbsten.compose.preview.lab.extension.debugger/DebugToolEntry.tool|{}tool[0]
+        final fun <get-tool>(): me.tbsten.compose.preview.lab.extension.debugger/DebugTool // me.tbsten.compose.preview.lab.extension.debugger/DebugToolEntry.tool.<get-tool>|<get-tool>(){}[0]
+
+    final fun component1(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger/DebugToolEntry.component1|component1(){}[0]
+    final fun component2(): me.tbsten.compose.preview.lab.extension.debugger/DebugTool // me.tbsten.compose.preview.lab.extension.debugger/DebugToolEntry.component2|component2(){}[0]
+    final fun copy(kotlin/String = ..., me.tbsten.compose.preview.lab.extension.debugger/DebugTool = ...): me.tbsten.compose.preview.lab.extension.debugger/DebugToolEntry // me.tbsten.compose.preview.lab.extension.debugger/DebugToolEntry.copy|copy(kotlin.String;me.tbsten.compose.preview.lab.extension.debugger.DebugTool){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // me.tbsten.compose.preview.lab.extension.debugger/DebugToolEntry.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger/DebugToolEntry.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // me.tbsten.compose.preview.lab.extension.debugger/DebugToolEntry.toString|toString(){}[0]
+}
+
+final object me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehaviorResultFields { // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehaviorResultFields|null[0]
+    final fun <#A1: kotlin/Any?> CancelField(me.tbsten.compose.preview.lab/MutablePreviewLabField<kotlin/String?> = ...): me.tbsten.compose.preview.lab.field/TransformField<kotlin/String?, me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Cancel<#A1>> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehaviorResultFields.CancelField|CancelField(me.tbsten.compose.preview.lab.MutablePreviewLabField<kotlin.String?>){0§<kotlin.Any?>}[0]
+    final fun <#A1: kotlin/Any?> DefaultField(): me.tbsten.compose.preview.lab.field/FixedField<me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Default<#A1>> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehaviorResultFields.DefaultField|DefaultField(){0§<kotlin.Any?>}[0]
+    final fun <#A1: kotlin/Any?> ErrorField(me.tbsten.compose.preview.lab/MutablePreviewLabField<kotlin/String?> = ...): me.tbsten.compose.preview.lab.field/TransformField<kotlin/String?, me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Error<#A1>> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehaviorResultFields.ErrorField|ErrorField(me.tbsten.compose.preview.lab.MutablePreviewLabField<kotlin.String?>){0§<kotlin.Any?>}[0]
+    final fun <#A1: kotlin/Any?> ReturnField(me.tbsten.compose.preview.lab/MutablePreviewLabField<#A1>): me.tbsten.compose.preview.lab.field/TransformField<#A1, me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result.Return<#A1>> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehaviorResultFields.ReturnField|ReturnField(me.tbsten.compose.preview.lab.MutablePreviewLabField<0:0>){0§<kotlin.Any?>}[0]
+    final fun DefaultCancelFieldMessageField(kotlin/String? = ...): me.tbsten.compose.preview.lab.field/NullableField<kotlin/String> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehaviorResultFields.DefaultCancelFieldMessageField|DefaultCancelFieldMessageField(kotlin.String?){}[0]
+    final fun DefaultErrorFieldMessageField(kotlin/String? = ...): me.tbsten.compose.preview.lab.field/NullableField<kotlin/String> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehaviorResultFields.DefaultErrorFieldMessageField|DefaultErrorFieldMessageField(kotlin.String?){}[0]
+}
+
+final object me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTheme { // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTheme|null[0]
+    final val backgroundColor // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTheme.backgroundColor|{}backgroundColor[0]
+        final fun <get-backgroundColor>(androidx.compose.runtime/Composer?, kotlin/Int): androidx.compose.ui.graphics/Color // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTheme.backgroundColor.<get-backgroundColor>|<get-backgroundColor>(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final val colors // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTheme.colors|{}colors[0]
+        final fun <get-colors>(androidx.compose.runtime/Composer?, kotlin/Int): me.tbsten.compose.preview.lab.ui/Colors // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTheme.colors.<get-colors>|<get-colors>(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final val contentColor // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTheme.contentColor|{}contentColor[0]
+        final fun <get-contentColor>(androidx.compose.runtime/Composer?, kotlin/Int): androidx.compose.ui.graphics/Color // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTheme.contentColor.<get-contentColor>|<get-contentColor>(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+}
+
+final val me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior$stableprop // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehaviorResultFields$stableprop // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehaviorResultFields$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehaviorResultFields$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Cancel$stableprop // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Cancel$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Cancel$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Default$stableprop // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Default$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Default$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Error$stableprop // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Error$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Error$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Return$stableprop // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Return$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Return$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_DebuggableBehavior$stableprop // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_DebuggableBehavior$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_debugtool_DebuggableBehavior$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_FieldDebugTool$stableprop // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_FieldDebugTool$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_debugtool_FieldDebugTool$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_SimpleLogger$stableprop // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_SimpleLogger$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_debugtool_SimpleLogger$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_SimpleLogger_LogEntry$stableprop // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_SimpleLogger_LogEntry$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_debugtool_SimpleLogger_LogEntry$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension.debugger.ui/me_tbsten_compose_preview_lab_extension_debugger_ui_DebugMenuTheme$stableprop // me.tbsten.compose.preview.lab.extension.debugger.ui/me_tbsten_compose_preview_lab_extension_debugger_ui_DebugMenuTheme$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_ui_DebugMenuTheme$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugMenu$stableprop // me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugMenu$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_DebugMenu$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugToolEntry$stableprop // me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugToolEntry$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_DebugToolEntry$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugToolGroup$stableprop // me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugToolGroup$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_DebugToolGroup$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugTool_ContentContext$stableprop // me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugTool_ContentContext$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_DebugTool_ContentContext$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_array$stableprop // me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_array$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_array$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_drawable$stableprop // me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_drawable$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_drawable$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_font$stableprop // me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_font$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_font$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_plurals$stableprop // me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_plurals$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_plurals$stableprop[0]
+final val me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_string$stableprop // me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_string$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_string$stableprop[0]
+
+final fun (kotlin.coroutines/SuspendFunction0<kotlin/Unit>).me.tbsten.compose.preview.lab.extension.debugger.debugtool/debuggableBasic(me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool<out me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior<kotlin/Unit>>): kotlin.coroutines/SuspendFunction0<kotlin/Unit> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/debuggableBasic|debuggableBasic@kotlin.coroutines.SuspendFunction0<kotlin.Unit>(me.tbsten.compose.preview.lab.extension.debugger.debugtool.FieldDebugTool<out|me.tbsten.compose.preview.lab.extension.debugger.debugtool.BasicFunctionDebugBehavior<kotlin.Unit>>){}[0]
+final fun (me.tbsten.compose.preview.lab.extension.debugger/DebugMenu).me.tbsten.compose.preview.lab.extension.debugger.ui/Dialog(me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDialogState?, me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger?, androidx.compose.ui.window/DialogProperties?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger.ui/Dialog|Dialog@me.tbsten.compose.preview.lab.extension.debugger.DebugMenu(me.tbsten.compose.preview.lab.extension.debugger.ui.DebugMenuDialogState?;me.tbsten.compose.preview.lab.extension.debugger.ui.DebugMenuTrigger?;androidx.compose.ui.window.DialogProperties?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun (me.tbsten.compose.preview.lab.extension.debugger/DebugMenu).me.tbsten.compose.preview.lab.extension.debugger.ui/DropdownView(androidx.compose.ui/Modifier?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger.ui/DropdownView|DropdownView@me.tbsten.compose.preview.lab.extension.debugger.DebugMenu(androidx.compose.ui.Modifier?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun (me.tbsten.compose.preview.lab.extension.debugger/DebugMenu).me.tbsten.compose.preview.lab.extension.debugger.ui/TabsView(androidx.compose.ui/Modifier?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger.ui/TabsView|TabsView@me.tbsten.compose.preview.lab.extension.debugger.DebugMenu(androidx.compose.ui.Modifier?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun <#A: kotlin/Any?, #B: kotlin/Any?> (kotlin.coroutines/SuspendFunction0<#B>).me.tbsten.compose.preview.lab.extension.debugger.debugtool/debuggable(me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool<#A>, kotlin.coroutines/SuspendFunction2<me.tbsten.compose.preview.lab.extension.debugger.debugtool/DebuggableBehavior<#B>, #A, #B>): kotlin.coroutines/SuspendFunction0<#B> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/debuggable|debuggable@kotlin.coroutines.SuspendFunction0<0:1>(me.tbsten.compose.preview.lab.extension.debugger.debugtool.FieldDebugTool<0:0>;kotlin.coroutines.SuspendFunction2<me.tbsten.compose.preview.lab.extension.debugger.debugtool.DebuggableBehavior<0:1>,0:0,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?, #B: kotlin/Any?> (kotlin.coroutines/SuspendFunction0<#B>).me.tbsten.compose.preview.lab.extension.debugger.debugtool/debuggableBasic(me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool<out me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior<#A>>, kotlin/Function1<#A, #B>): kotlin.coroutines/SuspendFunction0<#B> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/debuggableBasic|debuggableBasic@kotlin.coroutines.SuspendFunction0<0:1>(me.tbsten.compose.preview.lab.extension.debugger.debugtool.FieldDebugTool<out|me.tbsten.compose.preview.lab.extension.debugger.debugtool.BasicFunctionDebugBehavior<0:0>>;kotlin.Function1<0:0,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?, #B: me.tbsten.compose.preview.lab/PreviewLabField<#A>> (#B).me.tbsten.compose.preview.lab.extension.debugger.debugtool/toDebugTool(): me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool<#A> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/toDebugTool|toDebugTool@0:1(){0§<kotlin.Any?>;1§<me.tbsten.compose.preview.lab.PreviewLabField<0:0>>}[0]
+final fun <#A: kotlin/Any?> (kotlin.coroutines/SuspendFunction0<#A>).me.tbsten.compose.preview.lab.extension.debugger.debugtool/debuggable(me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool<me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior<#A>>, kotlin.coroutines/SuspendFunction2<me.tbsten.compose.preview.lab.extension.debugger.debugtool/DebuggableBehavior<#A>, me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior<#A>, #A>): kotlin.coroutines/SuspendFunction0<#A> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/debuggable|debuggable@kotlin.coroutines.SuspendFunction0<0:0>(me.tbsten.compose.preview.lab.extension.debugger.debugtool.FieldDebugTool<me.tbsten.compose.preview.lab.extension.debugger.debugtool.BasicFunctionDebugBehavior<0:0>>;kotlin.coroutines.SuspendFunction2<me.tbsten.compose.preview.lab.extension.debugger.debugtool.DebuggableBehavior<0:0>,me.tbsten.compose.preview.lab.extension.debugger.debugtool.BasicFunctionDebugBehavior<0:0>,0:0>){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehaviorResultField(kotlin/String, me.tbsten.compose.preview.lab/MutablePreviewLabField<#A>?, me.tbsten.compose.preview.lab/MutablePreviewLabField<kotlin/String?> = ..., me.tbsten.compose.preview.lab/MutablePreviewLabField<kotlin/String?> = ...): me.tbsten.compose.preview.lab.field/PolymorphicField<me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior.Result<#A>> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehaviorResultField|BasicFunctionDebugBehaviorResultField(kotlin.String;me.tbsten.compose.preview.lab.MutablePreviewLabField<0:0>?;me.tbsten.compose.preview.lab.MutablePreviewLabField<kotlin.String?>;me.tbsten.compose.preview.lab.MutablePreviewLabField<kotlin.String?>){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> me.tbsten.compose.preview.lab.extension.debugger.debugtool/basicFunctionDebugBehavior(kotlin/String, me.tbsten.compose.preview.lab/MutablePreviewLabField<#A>?, me.tbsten.compose.preview.lab/MutablePreviewLabField<kotlin/String?> = ..., me.tbsten.compose.preview.lab/MutablePreviewLabField<kotlin/String?> = ...): me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool<me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior<#A>> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/basicFunctionDebugBehavior|basicFunctionDebugBehavior(kotlin.String;me.tbsten.compose.preview.lab.MutablePreviewLabField<0:0>?;me.tbsten.compose.preview.lab.MutablePreviewLabField<kotlin.String?>;me.tbsten.compose.preview.lab.MutablePreviewLabField<kotlin.String?>){0§<kotlin.Any?>}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger.debugtool/basicFunctionDebugBehavior(kotlin/String, me.tbsten.compose.preview.lab/MutablePreviewLabField<kotlin/String?> = ..., me.tbsten.compose.preview.lab/MutablePreviewLabField<kotlin/String?> = ...): me.tbsten.compose.preview.lab.extension.debugger.debugtool/FieldDebugTool<me.tbsten.compose.preview.lab.extension.debugger.debugtool/BasicFunctionDebugBehavior<kotlin/Unit>> // me.tbsten.compose.preview.lab.extension.debugger.debugtool/basicFunctionDebugBehavior|basicFunctionDebugBehavior(kotlin.String;me.tbsten.compose.preview.lab.MutablePreviewLabField<kotlin.String?>;me.tbsten.compose.preview.lab.MutablePreviewLabField<kotlin.String?>){}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehaviorResultFields$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehaviorResultFields$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehaviorResultFields$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Cancel$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Cancel$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Cancel$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Default$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Default$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Default$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Error$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Error$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Error$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Return$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Return$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_debugtool_BasicFunctionDebugBehavior_Result_Return$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_DebuggableBehavior$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_DebuggableBehavior$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_debugtool_DebuggableBehavior$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_FieldDebugTool$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_FieldDebugTool$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_debugtool_FieldDebugTool$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_SimpleLogger$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_SimpleLogger$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_debugtool_SimpleLogger$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_SimpleLogger_LogEntry$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.debugtool/me_tbsten_compose_preview_lab_extension_debugger_debugtool_SimpleLogger_LogEntry$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_debugtool_SimpleLogger_LogEntry$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDrawer(me.tbsten.compose.preview.lab.extension.debugger/DebugMenu, kotlin/Boolean, kotlin/Function0<kotlin/Unit>, me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDrawerPosition?, kotlin/String?, androidx.compose.ui.unit/Dp, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDrawer|DebugMenuDrawer(me.tbsten.compose.preview.lab.extension.debugger.DebugMenu;kotlin.Boolean;kotlin.Function0<kotlin.Unit>;me.tbsten.compose.preview.lab.extension.debugger.ui.DebugMenuDrawerPosition?;kotlin.String?;androidx.compose.ui.unit.Dp;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger(kotlin/Function0<kotlin/Unit>, androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuTrigger|DebugMenuTrigger(kotlin.Function0<kotlin.Unit>;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger.ui/me_tbsten_compose_preview_lab_extension_debugger_ui_DebugMenuTheme$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.ui/me_tbsten_compose_preview_lab_extension_debugger_ui_DebugMenuTheme$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_ui_DebugMenuTheme$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger.ui/rememberDebugMenuDialogState(androidx.compose.runtime/Composer?, kotlin/Int): me.tbsten.compose.preview.lab.extension.debugger.ui/DebugMenuDialogState // me.tbsten.compose.preview.lab.extension.debugger.ui/rememberDebugMenuDialogState|rememberDebugMenuDialogState(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugMenu$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugMenu$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_DebugMenu$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugToolEntry$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugToolEntry$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_DebugToolEntry$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugToolGroup$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugToolGroup$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_DebugToolGroup$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugTool_ContentContext$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger/me_tbsten_compose_preview_lab_extension_debugger_DebugTool_ContentContext$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_DebugTool_ContentContext$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_array$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_array$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_array$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_drawable$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_drawable$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_drawable$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_font$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_font$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_font$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_plurals$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_plurals$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_plurals$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_string$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension_debugger.generated.resources/me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_string$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_generated_resources_Res_string$stableprop_getter(){}[0]
+
+// Targets: [ios]
+final val me.tbsten.compose.preview.lab.extension.debugger.ui/me_tbsten_compose_preview_lab_extension_debugger_ui_DebugMenuTrigger_Shake$stableprop // me.tbsten.compose.preview.lab.extension.debugger.ui/me_tbsten_compose_preview_lab_extension_debugger_ui_DebugMenuTrigger_Shake$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_ui_DebugMenuTrigger_Shake$stableprop[0]
+
+// Targets: [ios]
+final fun me.tbsten.compose.preview.lab.extension.debugger.ui/me_tbsten_compose_preview_lab_extension_debugger_ui_DebugMenuTrigger_Shake$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.ui/me_tbsten_compose_preview_lab_extension_debugger_ui_DebugMenuTrigger_Shake$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_ui_DebugMenuTrigger_Shake$stableprop_getter(){}[0]
+
+// Targets: [js, wasmJs]
+final val me.tbsten.compose.preview.lab.extension.debugger.ui/me_tbsten_compose_preview_lab_extension_debugger_ui_DebugMenuTrigger_KeyboardShortcut$stableprop // me.tbsten.compose.preview.lab.extension.debugger.ui/me_tbsten_compose_preview_lab_extension_debugger_ui_DebugMenuTrigger_KeyboardShortcut$stableprop|#static{}me_tbsten_compose_preview_lab_extension_debugger_ui_DebugMenuTrigger_KeyboardShortcut$stableprop[0]
+
+// Targets: [js, wasmJs]
+final fun me.tbsten.compose.preview.lab.extension.debugger.ui/me_tbsten_compose_preview_lab_extension_debugger_ui_DebugMenuTrigger_KeyboardShortcut$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.extension.debugger.ui/me_tbsten_compose_preview_lab_extension_debugger_ui_DebugMenuTrigger_KeyboardShortcut$stableprop_getter|me_tbsten_compose_preview_lab_extension_debugger_ui_DebugMenuTrigger_KeyboardShortcut$stableprop_getter(){}[0]
