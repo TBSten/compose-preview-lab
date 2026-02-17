@@ -9,7 +9,6 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.hotReload)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.buildkonfig)
     alias(libs.plugins.kotlinxSerialization)
     id("me.tbsten.compose.preview.lab")
@@ -123,15 +122,6 @@ android {
 dependencies {
     androidTestImplementation(libs.androidxUitestJunit4)
     debugImplementation(libs.androidxUitestTestManifest)
-
-    val composePreviewLabKspPlugin =
-        "me.tbsten.compose.preview.lab:ksp-plugin:${libs.versions.composePreviewLab.get()}"
-    add("kspCommonMainMetadata", composePreviewLabKspPlugin)
-    ksp(composePreviewLabKspPlugin)
-    add("kspAndroid", composePreviewLabKspPlugin)
-    add("kspJvm", composePreviewLabKspPlugin)
-    add("kspJs", composePreviewLabKspPlugin)
-    add("kspWasmJs", composePreviewLabKspPlugin)
 }
 
 compose.desktop {

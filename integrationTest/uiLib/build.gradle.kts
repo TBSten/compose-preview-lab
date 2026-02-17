@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.ksp)
     id("me.tbsten.compose.preview.lab")
 }
 
@@ -29,14 +28,6 @@ kotlin {
             implementation(libs.kotlinxSerializationCore)
         }
     }
-}
-
-dependencies {
-    val composePreviewLabKspPlugin =
-        "me.tbsten.compose.preview.lab:ksp-plugin:${libs.versions.composePreviewLab.get()}"
-    add("kspCommonMainMetadata", composePreviewLabKspPlugin)
-    add("kspJvm", composePreviewLabKspPlugin)
-    add("kspJs", composePreviewLabKspPlugin)
 }
 
 composePreviewLab {
