@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:filename")
+
 package me.tbsten.compose.preview.lab.ui.components.textfield.base
 
 import androidx.compose.foundation.interaction.InteractionSource
@@ -10,11 +12,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.takeOrElse
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 
 @Immutable
-@InternalComposePreviewLabApi
-class TextFieldColors(
+@UiComposePreviewLabApi
+class PreviewLabTextFieldColors(
     val focusedTextColor: Color,
     val unfocusedTextColor: Color,
     val disabledTextColor: Color,
@@ -103,7 +105,7 @@ class TextFieldColors(
         unfocusedSuffixColor: Color = this.unfocusedSuffixColor,
         disabledSuffixColor: Color = this.disabledSuffixColor,
         errorSuffixColor: Color = this.errorSuffixColor,
-    ) = TextFieldColors(
+    ) = PreviewLabTextFieldColors(
         focusedTextColor = focusedTextColor.takeOrElse { this.focusedTextColor },
         unfocusedTextColor = unfocusedTextColor.takeOrElse { this.unfocusedTextColor },
         disabledTextColor = disabledTextColor.takeOrElse { this.disabledTextColor },

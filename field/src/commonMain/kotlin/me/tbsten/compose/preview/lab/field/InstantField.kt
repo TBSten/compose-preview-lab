@@ -9,7 +9,7 @@ import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.component.TextFieldContent
 import me.tbsten.compose.preview.lab.field.serializer.InstantSerializer
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 
 class InstantField(label: String, initialValue: Instant) :
     MutablePreviewLabField<Instant>(
@@ -25,7 +25,7 @@ class InstantField(label: String, initialValue: Instant) :
         TextFieldContent(
             toString = { it.toEpochMilliseconds().toString() },
             toValue = { runCatching { Instant.fromEpochMilliseconds(it.toLong()) } },
-            placeholder = { Text("EpochMilliseconds") },
+            placeholder = { PreviewLabText("EpochMilliseconds") },
         )
     }
 }

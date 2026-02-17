@@ -8,7 +8,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.PreviewLabEvent
@@ -23,6 +25,7 @@ class PreviewLabState(
     initialContentOffset: Offset = Offset.Zero,
     initialContentScale: Float = 1f,
     initialIsInspectorPanelVisible: Boolean = true,
+    initialGridSize: Dp? = 40.dp,
 ) {
     internal var contentRootOffsetInAppRoot by mutableStateOf<DpOffset?>(null)
 
@@ -44,6 +47,9 @@ class PreviewLabState(
      */
     @ExperimentalComposePreviewLabApi
     var contentScale by mutableStateOf(initialContentScale)
+
+    @ExperimentalComposePreviewLabApi
+    var gridSize by mutableStateOf<Dp?>(initialGridSize)
 
     /**
      * Controls whether the inspector panel is visible.
@@ -88,6 +94,7 @@ class PreviewLabState(
                     "contentOffset.y" to it.contentOffset.y,
                     "contentScale" to it.contentScale,
                     "selectedTabIndex" to it.selectedTabIndex,
+                    "gridSize" to it.gridSize?.value,
                 )
             },
             restore = {
@@ -95,6 +102,7 @@ class PreviewLabState(
                     contentOffset = Offset(it["contentOffset.x"] as Float, it["contentOffset.y"] as Float)
                     contentScale = it["contentScale"] as Float
                     selectedTabIndex = it["selectedTabIndex"] as Int?
+                    gridSize = (it["gridSize"] as Float?)?.dp
                 }
             },
         )

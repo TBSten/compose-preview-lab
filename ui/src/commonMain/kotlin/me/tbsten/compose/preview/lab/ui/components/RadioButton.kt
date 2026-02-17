@@ -23,22 +23,22 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.RadioButtonDefaults.MinimumInteractiveSize
-import me.tbsten.compose.preview.lab.ui.components.RadioButtonDefaults.RadioAnimationDuration
-import me.tbsten.compose.preview.lab.ui.components.RadioButtonDefaults.RadioButtonIconSize
-import me.tbsten.compose.preview.lab.ui.components.RadioButtonDefaults.RadioButtonPadding
-import me.tbsten.compose.preview.lab.ui.components.RadioButtonDefaults.RadioSelectedStrokeWidth
-import me.tbsten.compose.preview.lab.ui.components.RadioButtonDefaults.RadioStrokeWidth
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabRadioButtonDefaults.MinimumInteractiveSize
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabRadioButtonDefaults.RadioAnimationDuration
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabRadioButtonDefaults.RadioButtonIconSize
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabRadioButtonDefaults.RadioButtonPadding
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabRadioButtonDefaults.RadioSelectedStrokeWidth
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabRadioButtonDefaults.RadioStrokeWidth
 import me.tbsten.compose.preview.lab.ui.foundation.ripple
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun RadioButton(
+fun PreviewLabRadioButton(
     modifier: Modifier = Modifier,
     selected: Boolean,
     onClick: (() -> Unit)? = null,
     enabled: Boolean = true,
-    colors: RadioButtonColors = RadioButtonDefaults.colors(),
+    colors: PreviewLabRadioButtonColors = PreviewLabRadioButtonDefaults.colors(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable (() -> Unit)? = null,
 ) {
@@ -110,7 +110,7 @@ fun RadioButton(
     }
 }
 
-object RadioButtonDefaults {
+object PreviewLabRadioButtonDefaults {
     const val RadioAnimationDuration = 100
 
     val RadioButtonPadding = 2.dp
@@ -120,7 +120,7 @@ object RadioButtonDefaults {
     val MinimumInteractiveSize = 44.dp
 
     @Composable
-    fun colors() = RadioButtonColors(
+    fun colors() = PreviewLabRadioButtonColors(
         selectedColor = PreviewLabTheme.colors.primary,
         unselectedColor = PreviewLabTheme.colors.primary,
         disabledSelectedColor = PreviewLabTheme.colors.disabled,
@@ -129,7 +129,7 @@ object RadioButtonDefaults {
 }
 
 @Immutable
-data class RadioButtonColors(
+data class PreviewLabRadioButtonColors(
     val selectedColor: Color,
     val unselectedColor: Color,
     val disabledSelectedColor: Color,
@@ -158,11 +158,11 @@ data class RadioButtonColors(
 private fun RadioButtonPreview() {
     PreviewLabTheme {
         Row {
-            RadioButton(
+            PreviewLabRadioButton(
                 selected = true,
                 onClick = {},
             )
-            RadioButton(
+            PreviewLabRadioButton(
                 selected = false,
                 onClick = {},
             )
@@ -175,12 +175,12 @@ private fun RadioButtonPreview() {
 private fun DisabledRadioButtonPreview() {
     PreviewLabTheme {
         Row {
-            RadioButton(
+            PreviewLabRadioButton(
                 selected = true,
                 onClick = {},
                 enabled = false,
             )
-            RadioButton(
+            PreviewLabRadioButton(
                 selected = false,
                 onClick = {},
                 enabled = false,

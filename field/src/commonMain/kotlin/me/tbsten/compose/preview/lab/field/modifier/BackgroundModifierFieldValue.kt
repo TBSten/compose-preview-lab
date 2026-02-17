@@ -27,7 +27,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlin.math.roundToInt
-import me.tbsten.compose.preview.lab.ui.components.colorpicker.CommonColorPicker
+import me.tbsten.compose.preview.lab.ui.components.colorpicker.PreviewLabColorPicker
 
 /**
  * A modifier field value that applies a background color to a component.
@@ -107,7 +107,7 @@ class BackgroundModifierFieldValue(color: Color) : ModifierFieldValue {
         override fun Content(createButton: @Composable (() -> Unit)) = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            CommonColorPicker(
+            PreviewLabColorPicker(
                 color = color ?: Color.Unspecified,
                 onColorSelected = { color = it },
             )

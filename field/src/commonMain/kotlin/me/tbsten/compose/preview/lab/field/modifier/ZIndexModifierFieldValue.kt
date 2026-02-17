@@ -15,10 +15,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.FloatTransformer
-import me.tbsten.compose.preview.lab.ui.components.NullableFloatTransformer
-import me.tbsten.compose.preview.lab.ui.components.Text
-import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabFloatTransformer
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabNullableFloatTransformer
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabTransformableTextField
 
 /**
  * ModifierFieldValue that controls the layering order (Z-index) of a composable.
@@ -50,7 +50,7 @@ class ZIndexModifierFieldValue(zIndex: Float) : ModifierFieldValue {
                     label = "zIndex",
                     value = zIndex,
                     onValueChange = { zIndex = it },
-                    transformer = FloatTransformer,
+                    transformer = PreviewLabFloatTransformer,
                 )
             }
         },
@@ -72,12 +72,12 @@ class ZIndexModifierFieldValue(zIndex: Float) : ModifierFieldValue {
         override fun Content(createButton: @Composable (() -> Unit)) = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            TransformableTextField(
+            PreviewLabTransformableTextField(
                 value = zIndex,
                 onValueChange = { zIndex = it },
-                transformer = NullableFloatTransformer,
+                transformer = PreviewLabNullableFloatTransformer,
                 textStyle = PreviewLabTheme.typography.label1,
-                prefix = { Text("zIndex: ", style = PreviewLabTheme.typography.label2) },
+                prefix = { PreviewLabText("zIndex: ", style = PreviewLabTheme.typography.label2) },
             )
 
             Row { createButton() }

@@ -3,9 +3,9 @@ import org.jetbrains.compose.reload.gradle.ComposeHotRun
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
-    alias(libs.plugins.multiplatform)
+    alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.compose)
+    alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.hotReload)
     alias(libs.plugins.ksp)

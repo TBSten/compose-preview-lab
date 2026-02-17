@@ -17,15 +17,15 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_close
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-@InternalComposePreviewLabApi
-fun SimpleModal(
+@UiComposePreviewLabApi
+fun PreviewLabModal(
     isVisible: Boolean,
     onDismissRequest: () -> Unit,
     contentPadding: PaddingValues = PaddingValues(12.dp),
@@ -52,7 +52,7 @@ fun SimpleModal(
                         .widthIn(min = 200.dp, max = 600.dp)
                         .padding(contentPadding),
                 ) {
-                    CommonIconButton(
+                    PreviewLabIconButton(
                         painter = painterResource(PreviewLabUiRes.drawable.icon_close),
                         contentDescription = "close",
                         tint = PreviewLabTheme.colors.background,

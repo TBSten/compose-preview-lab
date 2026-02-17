@@ -24,12 +24,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Button
-import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
-import me.tbsten.compose.preview.lab.ui.components.CommonIconButton
-import me.tbsten.compose.preview.lab.ui.components.CommonListItem
-import me.tbsten.compose.preview.lab.ui.components.CommonMenu
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabListItem
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabMenu
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_more_vert
 import org.jetbrains.compose.resources.painterResource
@@ -79,8 +79,8 @@ private fun GroupView(group: PreviewTreeNode.Group, children: @Composable () -> 
     Column {
         fun <T> toggleAnimationSpec() = tween<T>(durationMillis = 220)
 
-        Button(
-            variant = ButtonVariant.PrimaryGhost,
+        PreviewLabButton(
+            variant = PreviewLabButtonVariant.PrimaryGhost,
             onClick = { isOpen = !isOpen },
             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
             modifier = modifier.fillMaxWidth(),
@@ -89,7 +89,7 @@ private fun GroupView(group: PreviewTreeNode.Group, children: @Composable () -> 
                 horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.Start),
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text(
+                PreviewLabText(
                     "▶︎",
                     style = PreviewLabTheme.typography.body3,
                     modifier = Modifier
@@ -100,7 +100,7 @@ private fun GroupView(group: PreviewTreeNode.Group, children: @Composable () -> 
                             ).value,
                         ),
                 )
-                Text(text = group.groupName, style = PreviewLabTheme.typography.body3)
+                PreviewLabText(text = group.groupName, style = PreviewLabTheme.typography.body3)
             }
         }
 
@@ -132,8 +132,8 @@ private fun PreviewView(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        Button(
-            variant = ButtonVariant.PrimaryGhost,
+        PreviewLabButton(
+            variant = PreviewLabButtonVariant.PrimaryGhost,
             onClick = onSelect,
             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
             isSelected = isSelected,
@@ -141,29 +141,29 @@ private fun PreviewView(
         ) {
             Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()) {
                 val previewName = preview.preview.displayName.split(".").last()
-                Text(previewName, style = PreviewLabTheme.typography.body3)
+                PreviewLabText(previewName, style = PreviewLabTheme.typography.body3)
             }
         }
 
         Column {
-            CommonIconButton(
+            PreviewLabIconButton(
                 painter = painterResource(PreviewLabUiRes.drawable.icon_more_vert),
                 contentDescription = "Open menu",
                 onClick = { isMenuOpen = true },
                 modifier = Modifier.size(20.dp),
             )
 
-            CommonMenu(
+            PreviewLabMenu(
                 expanded = isMenuOpen,
                 onDismissRequest = { isMenuOpen = false },
             ) {
-                CommonListItem(
+                PreviewLabListItem(
                     title = "Open",
                     isSelected = false,
                     onSelect = onSelect,
                 )
 
-                CommonListItem(
+                PreviewLabListItem(
                     title = "Add to compare panel",
                     isSelected = false,
                     onSelect = onAddToComparePanel,

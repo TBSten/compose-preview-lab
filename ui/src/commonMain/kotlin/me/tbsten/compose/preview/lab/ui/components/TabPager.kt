@@ -8,11 +8,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.launch
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 
 @Composable
-@InternalComposePreviewLabApi
-fun <T> TabPager(
+@UiComposePreviewLabApi
+fun <T> PreviewLabTabPager(
     tabs: List<T>,
     title: (T) -> String,
     pagerState: PagerState,
@@ -23,13 +23,13 @@ fun <T> TabPager(
 
     Column(modifier = modifier) {
         pagerState.currentPage
-        TabRow {
+        PreviewLabTabRow {
             tabs.forEachIndexed { index, tab ->
-                Tab(
+                PreviewLabTab(
                     selected = pagerState.currentPage == index,
                     onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
                 ) {
-                    Text(title(tab))
+                    PreviewLabText(title(tab))
                 }
             }
         }

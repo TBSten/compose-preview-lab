@@ -1,39 +1,14 @@
-@file:OptIn(ExperimentalKotlinGradlePluginApi::class, ExperimentalWasmDsl::class)
-
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
-
 plugins {
-    alias(libs.plugins.multiplatform)
-    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.conventionKmp)
     alias(libs.plugins.conventionFormat)
     alias(libs.plugins.conventionPublish)
 }
 
+kmpConvention {
+    moduleBaseName = "starter"
+}
+
 kotlin {
-    jvmToolchain(17)
-    androidTarget {
-        instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
-    }
-
-    jvm()
-
-    js {
-        outputModuleName = "compose-previewl-lab-starter"
-        browser()
-    }
-
-    wasmJs {
-        outputModuleName = "compose-previewl-lab-starter"
-        browser()
-    }
-
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
-
-    applyDefaultHierarchyTemplate()
     sourceSets {
         commonMain.dependencies {
             api(projects.core)
@@ -41,15 +16,6 @@ kotlin {
             api(projects.previewLab)
             api(projects.gallery)
         }
-    }
-}
-
-android {
-    namespace = "me.tbsten.compose.preview.lab.starter"
-    compileSdk = 36
-
-    defaultConfig {
-        minSdk = 23
     }
 }
 

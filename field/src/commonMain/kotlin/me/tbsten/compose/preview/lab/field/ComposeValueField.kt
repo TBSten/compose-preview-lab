@@ -28,8 +28,8 @@ import me.tbsten.compose.preview.lab.field.serializer.DpSizeSerializer
 import me.tbsten.compose.preview.lab.field.serializer.OffsetSerializer
 import me.tbsten.compose.preview.lab.field.serializer.SizeSerializer
 import me.tbsten.compose.preview.lab.field.serializer.TextUnitSerializer
-import me.tbsten.compose.preview.lab.ui.components.Text
-import me.tbsten.compose.preview.lab.ui.components.colorpicker.CommonColorPicker
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.colorpicker.PreviewLabColorPicker
 
 /**
  * Field for editing Compose density-independent pixel (Dp) values
@@ -96,7 +96,7 @@ class DpField(label: String, initialValue: Dp) :
             label = label,
             initialValue = initialValue.value,
             inputType = InputType.TextField(
-                suffix = { Text("dp") },
+                suffix = { PreviewLabText("dp") },
             ),
         ),
         transform = { it.dp },
@@ -167,7 +167,7 @@ class SpField(label: String, initialValue: TextUnit) :
             label = label,
             initialValue = initialValue.value,
             inputType = InputType.TextField(
-                suffix = { Text("sp") },
+                suffix = { PreviewLabText("sp") },
             ),
         ),
         transform = { it.sp },
@@ -242,14 +242,14 @@ class OffsetField(label: String, initialValue: Offset) :
             TextFieldContent(
                 toString = { it.x.toString() },
                 toValue = { runCatching { Offset(x = it.toFloat(), y = value.y) } },
-                placeholder = { Text("x") },
+                placeholder = { PreviewLabText("x") },
                 modifier = Modifier.weight(1f),
             )
 
             TextFieldContent(
                 toString = { it.y.toString() },
                 toValue = { runCatching { Offset(x = value.x, y = it.toFloat()) } },
-                placeholder = { Text("y") },
+                placeholder = { PreviewLabText("y") },
                 modifier = Modifier.weight(1f),
             )
         }
@@ -332,13 +332,13 @@ class DpOffsetField(label: String, initialValue: DpOffset) :
             TextFieldContent(
                 toString = { it.x.value.toString() },
                 toValue = { runCatching { DpOffset(x = it.toFloat().dp, y = value.y) } },
-                placeholder = { Text("x") },
+                placeholder = { PreviewLabText("x") },
                 modifier = Modifier.weight(1f),
             )
 
             TextFieldContent(
                 toString = { it.y.value.toString() },
-                placeholder = { Text("y") },
+                placeholder = { PreviewLabText("y") },
                 toValue = { runCatching { DpOffset(x = value.x, y = it.toFloat().dp) } },
                 modifier = Modifier.weight(1f),
             )
@@ -409,14 +409,14 @@ class SizeField(label: String, initialValue: Size) :
             TextFieldContent(
                 toString = { it.width.toString() },
                 toValue = { runCatching { Size(width = it.toFloat(), height = value.height) } },
-                placeholder = { Text("width") },
+                placeholder = { PreviewLabText("width") },
                 modifier = Modifier.weight(1f),
             )
 
             TextFieldContent(
                 toString = { it.height.toString() },
                 toValue = { runCatching { Size(width = value.width, height = it.toFloat()) } },
-                placeholder = { Text("height") },
+                placeholder = { PreviewLabText("height") },
                 modifier = Modifier.weight(1f),
             )
         }
@@ -505,14 +505,14 @@ class DpSizeField(label: String, initialValue: DpSize) :
                         )
                     }
                 },
-                placeholder = { Text("width") },
+                placeholder = { PreviewLabText("width") },
                 modifier = Modifier.weight(1f),
             )
 
             TextFieldContent(
                 toString = { it.height.value.toString() },
                 toValue = { runCatching { DpSize(width = value.width, height = it.toFloat().dp) } },
-                placeholder = { Text("height") },
+                placeholder = { PreviewLabText("height") },
                 modifier = Modifier.weight(1f),
             )
         }
@@ -600,7 +600,7 @@ class ColorField(label: String, initialValue: Color) :
 
     @Composable
     override fun Content() {
-        CommonColorPicker(
+        PreviewLabColorPicker(
             color = value,
             onColorSelected = { value = it },
             modifier = Modifier

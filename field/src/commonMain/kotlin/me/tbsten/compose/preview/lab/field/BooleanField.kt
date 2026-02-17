@@ -14,8 +14,8 @@ import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.ui.Gray50
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.animation.animated
-import me.tbsten.compose.preview.lab.ui.components.Surface
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSurface
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 
 /**
  * Field that holds a Boolean value.
@@ -60,7 +60,7 @@ open class BooleanField(label: String, initialValue: Boolean) :
 
 @Composable
 private fun BooleanSwitch(boolean: Boolean, onChange: (Boolean) -> Unit) {
-    Surface(
+    PreviewLabSurface(
         shape = RoundedCornerShape(percent = 50),
     ) {
         Row(
@@ -70,12 +70,12 @@ private fun BooleanSwitch(boolean: Boolean, onChange: (Boolean) -> Unit) {
             listOf(true, false).forEach {
                 val isSelected = boolean == it
 
-                Surface(
+                PreviewLabSurface(
                     color = (if (isSelected) Gray50 else Color.Transparent).animated(),
                     shape = RoundedCornerShape(percent = 50),
                     onClick = { onChange(it) },
                 ) {
-                    Text(
+                    PreviewLabText(
                         text = it.toString(),
                         style = PreviewLabTheme.typography.label1,
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),

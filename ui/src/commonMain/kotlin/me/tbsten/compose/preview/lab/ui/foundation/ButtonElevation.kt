@@ -15,10 +15,10 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 
 @Stable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 class ButtonElevation(
     private val defaultElevation: Dp,
     private val pressedElevation: Dp,

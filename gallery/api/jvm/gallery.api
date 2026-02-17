@@ -38,30 +38,15 @@ public final class me/tbsten/compose/preview/lab/gallery/PreviewLabGalleryState 
 	public synthetic fun <init> (Lkotlin/Pair;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun addToComparePanel (Ljava/lang/String;Lme/tbsten/compose/preview/lab/PreviewLabPreview;)V
 	public final fun getQuery ()Ljava/lang/String;
-	public final fun getSelectedPreviews ()Ljava/util/List;
 	public final fun onQueryChange (Ljava/lang/String;)V
 	public final fun removeFromComparePanel (I)V
 	public final fun select (Ljava/lang/String;Lme/tbsten/compose/preview/lab/PreviewLabPreview;)V
-	public final fun setQuery (Ljava/lang/String;)V
 	public final fun unselect ()V
 }
 
 public final class me/tbsten/compose/preview/lab/gallery/PreviewListGridKt {
 	public static final fun PreviewListGrid (Ljava/util/Map;Lkotlin/jvm/functions/Function2;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/runtime/Composer;II)V
 	public static final fun PreviewListGridCard (Lme/tbsten/compose/preview/lab/PreviewLabPreview;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V
-}
-
-public final class me/tbsten/compose/preview/lab/gallery/SelectedPreview {
-	public static final field $stable I
-	public static final field Companion Lme/tbsten/compose/preview/lab/gallery/SelectedPreview$Companion;
-	public fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/PreviewLabPreview;Ljava/lang/String;)V
-	public synthetic fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/PreviewLabPreview;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getGroupName ()Ljava/lang/String;
-	public final fun getPreview ()Lme/tbsten/compose/preview/lab/PreviewLabPreview;
-	public final fun getTitle ()Ljava/lang/String;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
 }
 
 public final class me/tbsten/compose/preview/lab/gallery/SelectedPreview$Companion {
@@ -71,15 +56,15 @@ public final class me/tbsten/compose/preview/lab/gallery/SelectedPreview$Compani
 public final class me/tbsten/compose/preview/lab/gallery/previewlist/ComposableSingletons$PreviewListTreeKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/gallery/previewlist/ComposableSingletons$PreviewListTreeKt;
 	public fun <init> ()V
-	public final fun getLambda$-1823723456$gallery ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-1872776701$gallery ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-1921829946$gallery ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-375716609$gallery ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-424769854$gallery ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-473823099$gallery ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1023236993$gallery ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$925130503$gallery ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$974183748$gallery ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-768715554$gallery ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-817768799$gallery ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-866822044$gallery ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1980138405$gallery ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2029191650$gallery ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2078244895$gallery ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$532131558$gallery ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$581184803$gallery ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$630238048$gallery ()Lkotlin/jvm/functions/Function2;
 }
 
 public class me/tbsten/compose/preview/lab/mcp/PreviewLabMcpServerConfig {

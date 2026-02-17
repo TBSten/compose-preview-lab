@@ -1,0 +1,16 @@
+# Gradle
+.gradle
+build
+*/build
+.kotlin
+
+# IDE
+.idea
+*.iml
+
+# Node
+node_modules
+
+# Claude local settings
+.claude/settings.local.json
+web/.claude/settings.local.json

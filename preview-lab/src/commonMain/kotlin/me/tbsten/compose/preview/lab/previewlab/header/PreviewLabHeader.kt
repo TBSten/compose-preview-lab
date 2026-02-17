@@ -18,11 +18,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Divider
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabHorizontalDivider
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabVerticalDivider
 
 @Composable
 internal fun PreviewLabHeader(
@@ -30,6 +32,8 @@ internal fun PreviewLabHeader(
     isHeaderShow: Boolean,
     scale: Float,
     onScaleChange: (Float) -> Unit,
+    onOffsetReset: () -> Unit,
+    onGridSizeChange: (Dp?) -> Unit,
     isInspectorPanelVisible: Boolean,
     onIsInspectorPanelVisibleToggle: () -> Unit,
     modifier: Modifier = Modifier,
@@ -52,16 +56,24 @@ internal fun PreviewLabHeader(
                 Zoom(
                     scale = scale,
                     onScaleChange = onScaleChange,
+                    onOffsetReset = onOffsetReset,
                 )
 
-                Divider()
+                PreviewLabVerticalDivider()
+
+                GridSize(
+                    gridSize = state.gridSize,
+                    onGridSizeChange = onGridSizeChange,
+                )
+
+                PreviewLabVerticalDivider()
 
                 InspectorPanelVisible(
                     isInspectorPanelVisible = isInspectorPanelVisible,
                     onToggle = onIsInspectorPanelVisibleToggle,
                 )
 
-                Divider()
+                PreviewLabVerticalDivider()
 
                 Screenshot(
                     modifier = Modifier.align(Alignment.CenterVertically),
@@ -70,7 +82,7 @@ internal fun PreviewLabHeader(
                 PlatformHeaders(state = state)
             }
 
-            Divider(
+            PreviewLabHorizontalDivider(
                 Modifier
                     .zIndex(2f),
             )

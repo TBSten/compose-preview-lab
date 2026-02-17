@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.field.modifier.CaptureOffsetModifierFieldValue.Type
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 
 // captureSize
 
@@ -46,7 +46,7 @@ import me.tbsten.compose.preview.lab.ui.components.Text
  *
  * // Usage in components
  * Box(modifier = modifier.apply { createModifier() }) {
- *     Text("Hello World")
+ *     PreviewLabText("Hello World")
  * }
  * ```
  *
@@ -73,7 +73,7 @@ class CaptureSizeModifierFieldValue : ModifierFieldValue {
                             capturedSize.width.toDp().value to capturedSize.height.toDp().value
                         }
 
-                    Text(
+                    PreviewLabText(
                         text = buildAnnotatedString {
                             append("    → width: $width.dp")
                             appendLine()
@@ -171,7 +171,7 @@ class CaptureOffsetModifierFieldValue(initialCaptureType: Type = Type.PositionIn
                                 getOffset.invoke(capturedOffset).y.toDp().value
                         }
 
-                    Text(
+                    PreviewLabText(
                         text = buildAnnotatedString {
                             append("    → x: $x.dp")
                             appendLine()
@@ -298,7 +298,7 @@ class CaptureLayoutRectModifierFieldValue(initialCaptureType: Type = Type.Positi
                             getLayoutRect.invoke(capturedLayoutRect)
                         }
 
-                        Text(
+                        PreviewLabText(
                             text = buildAnnotatedString {
                                 append("    → x: ${x.toDp().value}.dp")
                                 appendLine()

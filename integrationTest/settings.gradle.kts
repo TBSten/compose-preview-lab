@@ -43,5 +43,4 @@ plugins {
 includeBuild("../")
 include(":app")
 include(":uiLib")
-include(":helloComposePreviewLab")
 include(":autoGenerateFieldTest")

@@ -15,10 +15,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.FloatTransformer
-import me.tbsten.compose.preview.lab.ui.components.NullableFloatTransformer
-import me.tbsten.compose.preview.lab.ui.components.Text
-import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabFloatTransformer
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabNullableFloatTransformer
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabTransformableTextField
 
 /**
  * ModifierFieldValue that applies an aspect ratio constraint to a composable.
@@ -50,7 +50,7 @@ class AspectRatioModifierFieldValue(ratio: Float) : ModifierFieldValue {
                     label = "ratio",
                     value = ratio,
                     onValueChange = { ratio = it },
-                    transformer = FloatTransformer,
+                    transformer = PreviewLabFloatTransformer,
                 )
             }
         },
@@ -72,12 +72,12 @@ class AspectRatioModifierFieldValue(ratio: Float) : ModifierFieldValue {
         override fun Content(createButton: @Composable (() -> Unit)) = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            TransformableTextField(
+            PreviewLabTransformableTextField(
                 value = ratio,
                 onValueChange = { ratio = it },
-                transformer = NullableFloatTransformer,
+                transformer = PreviewLabNullableFloatTransformer,
                 textStyle = PreviewLabTheme.typography.label1,
-                prefix = { Text("ratio: ", style = PreviewLabTheme.typography.label2) },
+                prefix = { PreviewLabText("ratio: ", style = PreviewLabTheme.typography.label2) },
             )
 
             Row { createButton() }

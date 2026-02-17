@@ -34,13 +34,13 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.CommonMenu
-import me.tbsten.compose.preview.lab.ui.components.SelectButton
-import me.tbsten.compose.preview.lab.ui.components.Surface
-import me.tbsten.compose.preview.lab.ui.components.Text
-import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
-import me.tbsten.compose.preview.lab.ui.components.Transformer
-import me.tbsten.compose.preview.lab.ui.components.colorpicker.CommonColorPicker
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabMenu
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSelectButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSurface
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabTransformableTextField
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabTransformer
+import me.tbsten.compose.preview.lab.ui.components.colorpicker.PreviewLabColorPicker
 import me.tbsten.compose.preview.lab.ui.util.thenIfNotNull
 
 @Composable
@@ -65,7 +65,7 @@ internal fun DefaultModifierFieldValueBuilder(
                 .padding(vertical = 4.dp, horizontal = 8.dp),
         ) {
             header()
-            Text(
+            PreviewLabText(
                 text = modifierTextCode,
                 inlineContent = inlineContent,
                 style = PreviewLabTheme.typography.body3,
@@ -75,7 +75,7 @@ internal fun DefaultModifierFieldValueBuilder(
         }
 
         if (menuContent != null) {
-            CommonMenu(
+            PreviewLabMenu(
                 expanded = isMenuOpen,
                 onDismissRequest = { isMenuOpen = false },
             ) {
@@ -84,7 +84,7 @@ internal fun DefaultModifierFieldValueBuilder(
                     focusRequester.requestFocus()
                 }
 
-                Surface(
+                PreviewLabSurface(
                     color = PreviewLabTheme.colors.background,
                     contentColor = PreviewLabTheme.colors.onBackground,
                     modifier = Modifier.focusable().focusRequester(focusRequester),
@@ -149,7 +149,7 @@ fun DefaultModifierFieldValueBuilderDefaultMenuScope.DefaultMenuItem(label: Stri
  * @param label The annotated string to display as label
  */
 @Composable
-fun DefaultModifierFieldValueBuilderDefaultMenuScope.Label(label: AnnotatedString) = Text(
+fun DefaultModifierFieldValueBuilderDefaultMenuScope.Label(label: AnnotatedString) = PreviewLabText(
     text = label,
     style = PreviewLabTheme.typography.label1,
     modifier = Modifier.width(60.dp),
@@ -165,18 +165,18 @@ fun <Value> DefaultModifierFieldValueBuilderDefaultMenuScope.TextFieldItem(
     label: String,
     value: Value,
     onValueChange: (Value) -> Unit,
-    transformer: Transformer<Value>,
+    transformer: PreviewLabTransformer<Value>,
     suffix: String? = null,
 ) {
     DefaultMenuItem(
         label = label,
     ) {
-        TransformableTextField(
+        PreviewLabTransformableTextField(
             value = value,
             onValueChange = onValueChange,
             transformer = transformer,
             textStyle = PreviewLabTheme.typography.label1,
-            suffix = suffix?.let { { Text(it, style = PreviewLabTheme.typography.label2) } },
+            suffix = suffix?.let { { PreviewLabText(it, style = PreviewLabTheme.typography.label2) } },
             modifier = Modifier.defaultMinSize(minWidth = 120.dp),
         )
     }
@@ -198,7 +198,7 @@ fun DefaultModifierFieldValueBuilderDefaultMenuScope.ColorPickerItem(
     DefaultMenuItem(
         label = label,
     ) {
-        CommonColorPicker(
+        PreviewLabColorPicker(
             color = value,
             onColorSelected = onValueChange,
             modifier = Modifier
@@ -219,7 +219,7 @@ fun <T> DefaultModifierFieldValueBuilderDefaultMenuScope.SelectItem(
     DefaultMenuItem(
         label = label,
     ) {
-        SelectButton(
+        PreviewLabSelectButton(
             value = value,
             choices = choices,
             onSelect = onValueChange,

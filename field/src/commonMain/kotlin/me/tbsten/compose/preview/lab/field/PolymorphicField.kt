@@ -13,7 +13,7 @@ import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.ImmutablePreviewLabField
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.PreviewLabField
-import me.tbsten.compose.preview.lab.ui.components.SelectButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSelectButton
 
 fun <Value> sameType(fields: List<PreviewLabField<out Value>>): (Value) -> PreviewLabField<out Value> = { value: Value ->
     fields.firstOrNull { it.value::class.isInstance(value) }
@@ -52,7 +52,7 @@ open class PolymorphicField<Value>(
     @Composable
     override fun Content() {
         Column {
-            SelectButton(
+            PreviewLabSelectButton(
                 value = selectedField,
                 choices = fields,
                 onSelect = { selectedField = it },

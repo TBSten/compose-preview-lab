@@ -2,7 +2,7 @@
 
 # Compose Preview Lab
 
-<img src="./docs/cover.png" width="1024" />
+<img src="cover.png" width="1024" />
 
 <p align="center">
 <a href="./README.md">English</a>
@@ -178,7 +178,7 @@ private fun MyButtonPreview() = PreviewLab {
 }
 ```
 
-<img src="./docs/demo.gif" width="350" />
+<img src="demo.gif" width="350" />
 
 ## 2つのコアコンセプト
 

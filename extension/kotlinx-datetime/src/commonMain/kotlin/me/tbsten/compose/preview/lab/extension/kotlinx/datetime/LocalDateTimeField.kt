@@ -15,7 +15,7 @@ import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.component.LocalD
 import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.component.LocalTimeEditor
 import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.util.with
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 
 class LocalDateTimeField(label: String, initialValue: LocalDateTime) :
     MutablePreviewLabField<LocalDateTime>(
@@ -61,7 +61,7 @@ class LocalDateTimeField(label: String, initialValue: LocalDateTime) :
             )
 
             errorMessage?.let { error ->
-                Text(
+                PreviewLabText(
                     text = error,
                     style = PreviewLabTheme.typography.body2,
                     color = PreviewLabTheme.colors.error,

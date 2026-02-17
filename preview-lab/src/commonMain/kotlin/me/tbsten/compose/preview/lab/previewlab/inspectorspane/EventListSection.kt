@@ -32,10 +32,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.tbsten.compose.preview.lab.PreviewLabEvent
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.CommonIconButton
-import me.tbsten.compose.preview.lab.ui.components.CommonListHeader
-import me.tbsten.compose.preview.lab.ui.components.Divider
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabDivider
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabListHeader
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_delete
 import org.jetbrains.compose.resources.painterResource
@@ -67,11 +67,11 @@ internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: Prev
     SelectionContainer {
         LazyColumn(state = listState) {
             stickyHeader {
-                CommonListHeader(
+                PreviewLabListHeader(
                     title = "${events.size} items",
                     actions = {
                         // TODO add export button
-                        CommonIconButton(
+                        PreviewLabIconButton(
                             painter = painterResource(PreviewLabUiRes.drawable.icon_delete),
                             contentDescription = "Clear Events",
                             enabled = events.isNotEmpty(),
@@ -147,12 +147,12 @@ internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: Prev
                             .fillMaxWidth()
                             .animateItem(),
                     ) {
-                        Text(
+                        PreviewLabText(
                             text = event.title,
                             fontWeight = FontWeight.Bold,
                             style = PreviewLabTheme.typography.body2,
                         )
-                        Text(
+                        PreviewLabText(
                             text = "${now - event.createAt.epochSeconds} seconds ago",
                             style = PreviewLabTheme.typography.body2,
                         )
@@ -162,7 +162,7 @@ internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: Prev
                         visible = showDetail,
                         modifier = Modifier,
                     ) {
-                        Text(
+                        PreviewLabText(
                             text = event.description ?: "No Detail",
                             style = PreviewLabTheme.typography.body2,
                             modifier = Modifier
@@ -170,7 +170,7 @@ internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: Prev
                         )
                     }
 
-                    Divider()
+                    PreviewLabDivider()
                 }
             }
         }
@@ -180,12 +180,12 @@ internal fun EventListSection(events: List<PreviewLabEvent>, selectedEvent: Prev
 @Composable
 private fun NoEvents() {
     Column(modifier = Modifier.padding(12.dp)) {
-        Text(
+        PreviewLabText(
             text = "No Events",
             fontWeight = FontWeight.Bold,
             style = PreviewLabTheme.typography.h2,
         )
-        Text(
+        PreviewLabText(
             text = "No events have been issued by onEvent(\"title\") yet.",
             style = PreviewLabTheme.typography.body2,
         )

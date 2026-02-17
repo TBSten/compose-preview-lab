@@ -9,8 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.CommonIconButton
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_refresh
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_zoom_in
@@ -18,9 +18,9 @@ import me.tbsten.compose.preview.lab.ui.generated.resources.icon_zoom_out
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-internal fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, modifier: Modifier = Modifier) {
+internal fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, onOffsetReset: () -> Unit, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
-        Text("Zoom", style = PreviewLabTheme.typography.label2)
+        PreviewLabText("Zoom", style = PreviewLabTheme.typography.label2)
 
         Row(
             modifier = Modifier
@@ -29,7 +29,7 @@ internal fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, modifier: Modifi
                 .padding(vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            CommonIconButton(
+            PreviewLabIconButton(
                 painter = painterResource(PreviewLabUiRes.drawable.icon_zoom_in),
                 contentDescription = "Zoom In",
                 enabled = scale < MaxZoomScale,
@@ -38,7 +38,7 @@ internal fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, modifier: Modifi
                 },
             )
 
-            CommonIconButton(
+            PreviewLabIconButton(
                 painter = painterResource(PreviewLabUiRes.drawable.icon_zoom_out),
                 contentDescription = "Zoom Out",
                 enabled = MinZoomScale < scale,
@@ -48,11 +48,12 @@ internal fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, modifier: Modifi
                 modifier = Modifier.weight(1f),
             )
 
-            CommonIconButton(
+            PreviewLabIconButton(
                 painter = painterResource(PreviewLabUiRes.drawable.icon_refresh),
                 contentDescription = "Zoom Reset",
                 onClick = {
                     onScaleChange(1.00f)
+                    onOffsetReset()
                 },
             )
         }

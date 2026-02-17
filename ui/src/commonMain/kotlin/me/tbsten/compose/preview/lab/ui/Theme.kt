@@ -9,10 +9,10 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.foundation.ripple
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 object PreviewLabTheme {
     val colors: Colors
         @ReadOnlyComposable @Composable
@@ -24,7 +24,7 @@ object PreviewLabTheme {
 }
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun PreviewLabTheme(isDarkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val rippleIndication = ripple()
     val selectionColors = rememberTextSelectionColors(LightColors)
@@ -43,11 +43,11 @@ fun PreviewLabTheme(isDarkTheme: Boolean = isSystemInDarkTheme(), content: @Comp
 }
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun contentColorFor(color: Color): Color = PreviewLabTheme.colors.contentColorFor(color)
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun rememberTextSelectionColors(colorScheme: Colors): TextSelectionColors {
     val primaryColor = colorScheme.primary
     return remember(primaryColor) {
@@ -58,5 +58,5 @@ fun rememberTextSelectionColors(colorScheme: Colors): TextSelectionColors {
     }
 }
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 const val TextSelectionBackgroundOpacity = 0.4f

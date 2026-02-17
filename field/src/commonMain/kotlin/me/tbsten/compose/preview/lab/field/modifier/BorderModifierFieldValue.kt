@@ -29,11 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlin.math.roundToInt
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.DpTransformer
-import me.tbsten.compose.preview.lab.ui.components.NullableDpTransformer
-import me.tbsten.compose.preview.lab.ui.components.Text
-import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
-import me.tbsten.compose.preview.lab.ui.components.colorpicker.CommonColorPicker
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabDpTransformer
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabNullableDpTransformer
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabTransformableTextField
+import me.tbsten.compose.preview.lab.ui.components.colorpicker.PreviewLabColorPicker
 
 /**
  * A modifier field value that applies a border to a component.
@@ -104,7 +104,7 @@ class BorderModifierFieldValue(color: Color, width: Dp) : ModifierFieldValue {
                     label = "width",
                     value = width,
                     onValueChange = { width = it },
-                    transformer = DpTransformer,
+                    transformer = PreviewLabDpTransformer,
                     suffix = ".dp",
                 )
             }
@@ -131,17 +131,17 @@ class BorderModifierFieldValue(color: Color, width: Dp) : ModifierFieldValue {
         override fun Content(createButton: @Composable (() -> Unit)) = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            CommonColorPicker(
+            PreviewLabColorPicker(
                 color = color ?: Color.Unspecified,
                 onColorSelected = { color = it },
             )
 
-            TransformableTextField(
+            PreviewLabTransformableTextField(
                 value = width,
                 onValueChange = { width = it },
-                transformer = NullableDpTransformer,
+                transformer = PreviewLabNullableDpTransformer,
                 textStyle = PreviewLabTheme.typography.label1,
-                prefix = { Text("width: ", style = PreviewLabTheme.typography.label2) },
+                prefix = { PreviewLabText("width: ", style = PreviewLabTheme.typography.label2) },
             )
 
             Row { createButton() }

@@ -14,8 +14,8 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.KSerializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Chip
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabChip
 
 /**
  * Represents a hint choice that can be either a value or an action.
@@ -314,9 +314,9 @@ class WithHintField<Value> internal constructor(
                         is HintChoice.ValueChoice -> value == choice.value
                         is HintChoice.ActionChoice -> false
                     }
-                    Chip(
+                    PreviewLabChip(
                         selected = isSelected,
-                        label = { Text(label, style = PreviewLabTheme.typography.label2) },
+                        label = { PreviewLabText(label, style = PreviewLabTheme.typography.label2) },
                         onClick = {
                             coroutineScope.launch {
                                 onSelected(choice)

@@ -36,3 +36,7 @@ jobs:
       - name: Run Integration Test PBT
         shell: bash
         run: cd ./integrationTest && ./gradlew :app:jvmTest -Dkotest.tags="PBT" -Ptest.property.iterations=${{ inputs.iterations || '5000' }}
+
+      - name: Run Docs PBT
+        shell: bash
+        run: cd ./docs && ./gradlew jvmTest -Dkotest.tags="PBT" -Ptest.property.iterations=${{ inputs.iterations || '5000' }}

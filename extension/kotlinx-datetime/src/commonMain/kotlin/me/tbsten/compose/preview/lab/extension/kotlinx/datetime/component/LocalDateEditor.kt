@@ -17,7 +17,7 @@ import kotlinx.datetime.number
 import me.tbsten.compose.preview.lab.extension.kotlinx.datetime.util.with
 import me.tbsten.compose.preview.lab.field.component.TextFieldContent
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 
 @Composable
 internal fun LocalDateEditor(
@@ -44,7 +44,7 @@ internal fun LocalDateEditor(
             modifier = Modifier.weight(1f),
         )
 
-        Text("/")
+        PreviewLabText("/")
 
         TextFieldContent<Int>(
             label = "month",
@@ -56,7 +56,7 @@ internal fun LocalDateEditor(
             modifier = Modifier.weight(1f),
         )
 
-        Text("/")
+        PreviewLabText("/")
 
         TextFieldContent<Int>(
             label = "day",
@@ -99,7 +99,7 @@ internal fun LocalDateEditor(date: LocalDate, onDateChange: (LocalDate) -> Unit,
         )
 
         errorMessage?.let { error ->
-            Text(
+            PreviewLabText(
                 text = error,
                 style = PreviewLabTheme.typography.body2,
                 color = PreviewLabTheme.colors.error,

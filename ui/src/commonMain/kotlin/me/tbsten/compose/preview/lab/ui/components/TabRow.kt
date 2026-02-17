@@ -12,15 +12,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
 import me.tbsten.compose.preview.lab.ui.LocalTextStyle
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.util.thenIf
 
 @Composable
-@InternalComposePreviewLabApi
-fun TabRow(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+@UiComposePreviewLabApi
+fun PreviewLabTabRow(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     Column {
         Row(
             modifier = modifier
@@ -28,13 +28,13 @@ fun TabRow(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
         ) {
             content()
         }
-        Divider()
+        PreviewLabDivider()
     }
 }
 
 @Composable
-@InternalComposePreviewLabApi
-fun Tab(selected: Boolean, onClick: () -> Unit, text: @Composable () -> Unit) {
+@UiComposePreviewLabApi
+fun PreviewLabTab(selected: Boolean, onClick: () -> Unit, text: @Composable () -> Unit) {
     Row(
         modifier = Modifier
             .clickable(onClick = onClick)

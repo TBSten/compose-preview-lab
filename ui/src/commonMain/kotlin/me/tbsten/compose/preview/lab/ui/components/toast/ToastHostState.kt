@@ -4,10 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 
 @Stable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 class ToastHostState {
     private val _toasts = mutableStateListOf<ToastData>()
     val toasts: List<ToastData> get() = _toasts
@@ -47,5 +47,5 @@ class ToastHostState {
 }
 
 @Composable
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 fun rememberToastHostState(): ToastHostState = remember { ToastHostState() }

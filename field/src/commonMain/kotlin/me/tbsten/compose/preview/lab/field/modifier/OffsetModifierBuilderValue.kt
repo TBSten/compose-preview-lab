@@ -16,10 +16,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.DpTransformer
-import me.tbsten.compose.preview.lab.ui.components.NullableDpTransformer
-import me.tbsten.compose.preview.lab.ui.components.Text
-import me.tbsten.compose.preview.lab.ui.components.TransformableTextField
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabDpTransformer
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabNullableDpTransformer
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabTransformableTextField
 
 /**
  * ModifierFieldValue that applies positional offset to a composable.
@@ -63,14 +63,14 @@ class OffsetModifierFieldValue(x: Dp, y: Dp) : ModifierFieldValue {
                     label = "x",
                     value = x,
                     onValueChange = { x = it },
-                    transformer = DpTransformer,
+                    transformer = PreviewLabDpTransformer,
                     suffix = ".dp",
                 )
                 TextFieldItem(
                     label = "y",
                     value = y,
                     onValueChange = { y = it },
-                    transformer = DpTransformer,
+                    transformer = PreviewLabDpTransformer,
                     suffix = ".dp",
                 )
             }
@@ -103,20 +103,20 @@ class OffsetModifierFieldValue(x: Dp, y: Dp) : ModifierFieldValue {
         override fun Content(createButton: @Composable (() -> Unit)) = Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            TransformableTextField(
+            PreviewLabTransformableTextField(
                 value = x,
                 onValueChange = { x = it },
-                transformer = NullableDpTransformer,
+                transformer = PreviewLabNullableDpTransformer,
                 textStyle = PreviewLabTheme.typography.label1,
-                prefix = { Text("x: ", style = PreviewLabTheme.typography.label2) },
+                prefix = { PreviewLabText("x: ", style = PreviewLabTheme.typography.label2) },
             )
 
-            TransformableTextField(
+            PreviewLabTransformableTextField(
                 value = y,
                 onValueChange = { y = it },
-                transformer = NullableDpTransformer,
+                transformer = PreviewLabNullableDpTransformer,
                 textStyle = PreviewLabTheme.typography.label1,
-                prefix = { Text("y: ", style = PreviewLabTheme.typography.label2) },
+                prefix = { PreviewLabText("y: ", style = PreviewLabTheme.typography.label2) },
             )
 
             Row { createButton() }

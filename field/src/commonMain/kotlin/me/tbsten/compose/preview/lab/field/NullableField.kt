@@ -17,8 +17,8 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.nullable
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.PreviewLabField
-import me.tbsten.compose.preview.lab.ui.components.Checkbox
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabCheckbox
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 
 /**
  * Create a PreviewLabField that makes the receiver's PreviewLabField nullable.
@@ -126,15 +126,15 @@ class NullableField<Value : Any> internal constructor(private val baseField: Pre
         ) { isNull ->
             if (!isNull) {
                 Row {
-                    SwitchIsNullCheckbox()
+                    SwitchIsNullPreviewLabCheckbox()
                     baseField.Content()
                 }
             } else {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    SwitchIsNullCheckbox()
-                    Text(
+                    SwitchIsNullPreviewLabCheckbox()
+                    PreviewLabText(
                         text = "null",
                         modifier = Modifier.weight(1f),
                     )
@@ -144,8 +144,8 @@ class NullableField<Value : Any> internal constructor(private val baseField: Pre
     }
 
     @Composable
-    private fun SwitchIsNullCheckbox() {
-        Checkbox(
+    private fun SwitchIsNullPreviewLabCheckbox() {
+        PreviewLabCheckbox(
             checked = !isNull,
             onCheckedChange = { this@NullableField.isNull = !isNull },
         )

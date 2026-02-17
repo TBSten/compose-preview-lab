@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.jvm)
+    alias(libs.plugins.kotlinJvm)
     `kotlin-dsl`
 }
 
@@ -13,6 +13,22 @@ gradlePlugin {
             id = "convention-publish"
             implementationClass = "PublishConventionPlugin"
         }
+        create("jvm") {
+            id = "convention-jvm"
+            implementationClass = "JvmConventionPlugin"
+        }
+        create("kmp") {
+            id = "convention-kmp"
+            implementationClass = "KmpConventionPlugin"
+        }
+        create("cmp") {
+            id = "convention-cmp"
+            implementationClass = "CmpConventionPlugin"
+        }
+        create("cmpUi") {
+            id = "convention-cmp-ui"
+            implementationClass = "CmpUiConventionPlugin"
+        }
     }
 }
 
@@ -22,4 +38,7 @@ dependencies {
     implementation(libs.ktlintGradlePlugin)
     implementation(libs.vanniktechMavenPublishGradlePlugin)
     implementation(libs.dokkaGradlePlugin)
+    implementation(libs.androidGradlePlugin)
+    implementation(libs.composeGradlePlugin)
+    implementation(libs.hotReloadGradlePlugin)
 }

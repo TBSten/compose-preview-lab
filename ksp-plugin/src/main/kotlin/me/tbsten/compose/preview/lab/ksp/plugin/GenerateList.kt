@@ -45,16 +45,31 @@ internal fun generateList(
             }
             it.appendLine("        filePath = ${str(filePath)},")
             it.appendLine("        startLineNumber = ${preview.startLineNumber ?: "null"},")
-            it.appendLine(
-                "        code = ${
-                    preview.code
-                        ?.replace("\\", "\\\\")
-                        ?.replace("\n", "\\n")
-                        ?.replace("\"", "\\\"")
-                        ?.replace("$", "\\$")
-                        ?.let { "\"$it\"" }
-                },",
-            )
+            preview.code?.let { code ->
+                it.appendLine(
+                    "        code = ${
+                        code
+                            .replace("\\", "\\\\")
+                            .replace("\n", "\\n")
+                            .replace("\"", "\\\"")
+                            .replace("$", "\\$")
+                            .let { "\"$it\"" }
+                    },",
+                )
+            }
+
+            preview.kdoc?.let { kdoc ->
+                it.appendLine(
+                    "        kdoc = ${
+                        kdoc
+                            .replace("\\", "\\\\")
+                            .replace("\n", "\\n")
+                            .replace("\"", "\\\"")
+                            .replace("$", "\\$")
+                            .let { "\"$it\"" }
+                    },",
+                )
+            }
             it.appendLine("    ) { ${preview.fullCopyName}() },")
         }
         it.appendLine(").sortedBy { it.displayName }) {")

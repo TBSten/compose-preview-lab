@@ -23,7 +23,7 @@ import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.contentColorFor
@@ -31,8 +31,8 @@ import me.tbsten.compose.preview.lab.ui.foundation.ripple
 
 @Composable
 @NonRestartableComposable
-@InternalComposePreviewLabApi
-fun Surface(
+@UiComposePreviewLabApi
+fun PreviewLabSurface(
     modifier: Modifier = Modifier,
     shape: Shape = RectangleShape,
     color: Color = PreviewLabTheme.colors.surface,
@@ -66,8 +66,8 @@ fun Surface(
 
 @Composable
 @NonRestartableComposable
-@InternalComposePreviewLabApi
-fun Surface(
+@UiComposePreviewLabApi
+fun PreviewLabSurface(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -106,8 +106,8 @@ fun Surface(
 
 @Composable
 @NonRestartableComposable
-@InternalComposePreviewLabApi
-fun Surface(
+@UiComposePreviewLabApi
+fun PreviewLabSurface(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -148,8 +148,8 @@ fun Surface(
 
 @Composable
 @NonRestartableComposable
-@InternalComposePreviewLabApi
-fun Surface(
+@UiComposePreviewLabApi
+fun PreviewLabSurface(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,

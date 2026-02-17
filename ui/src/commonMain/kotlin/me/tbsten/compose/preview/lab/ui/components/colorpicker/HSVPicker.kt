@@ -24,8 +24,9 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 internal fun HSVPicker(selectedColor: Color, onColorSelected: (Color) -> Unit, modifier: Modifier = Modifier) {
-    val selectedColor = selectedColor.copy(alpha = 1f)
-    val initialSelectedHue = remember { selectedColor }
+    @Suppress("ktlint:standard:backing-property-naming", "LocalVariableName")
+    val _selectedColor = selectedColor.copy(alpha = 1f)
+    val initialSelectedHue = remember { _selectedColor }
     var rectSize by remember { mutableStateOf(IntSize.Zero) }
     var selectorPosition by remember { mutableStateOf(Offset.Zero) }
     val thumbSizePx = with(LocalDensity.current) { 6.dp.toPx() }
@@ -39,15 +40,15 @@ internal fun HSVPicker(selectedColor: Color, onColorSelected: (Color) -> Unit, m
             )
     }
 
-    LaunchedEffect(rectSize, selectorPosition, selectedColor) {
+    LaunchedEffect(rectSize, selectorPosition, _selectedColor) {
         if (rectSize == IntSize.Zero || selectorPosition == Offset.Zero) {
             return@LaunchedEffect
         }
-        val hue = selectedColor.toHueDegree()
+        val hue = _selectedColor.toHueDegree()
         val saturation = selectorPosition.x / (rectSize.width - thumbSizePx / 2)
         val value = 1f - selectorPosition.y / (rectSize.height - thumbSizePx / 2)
         val color = Color.fromHsv(hue, saturation, value)
-        onColorSelected(color)
+        onColorSelected(color.copy(alpha = selectedColor.alpha))
     }
 
     LaunchedEffect(rectSize, initialSelectedHue) {
@@ -73,7 +74,7 @@ internal fun HSVPicker(selectedColor: Color, onColorSelected: (Color) -> Unit, m
         val cornerRadius = 4.dp.toPx()
 
         drawRoundRect(
-            Brush.horizontalGradient(listOf(Color.White, selectedColor)),
+            Brush.horizontalGradient(listOf(Color.White, _selectedColor)),
             cornerRadius = CornerRadius(x = cornerRadius, y = cornerRadius),
         )
         drawRoundRect(

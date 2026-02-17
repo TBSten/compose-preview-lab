@@ -32,15 +32,15 @@ import me.tbsten.compose.preview.lab.previewlab.openfilehandler.LocalOpenFileHan
 import me.tbsten.compose.preview.lab.previewlab.openfilehandler.OpenFileHandler
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.adaptive
-import me.tbsten.compose.preview.lab.ui.components.Button
-import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
-import me.tbsten.compose.preview.lab.ui.components.CommonIconButton
-import me.tbsten.compose.preview.lab.ui.components.Divider
-import me.tbsten.compose.preview.lab.ui.components.Icon
-import me.tbsten.compose.preview.lab.ui.components.IconButtonVariant
-import me.tbsten.compose.preview.lab.ui.components.SimpleModal
-import me.tbsten.compose.preview.lab.ui.components.TabPager
-import me.tbsten.compose.preview.lab.ui.components.Text
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabDivider
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIcon
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabModal
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabTabPager
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_code
 import org.jetbrains.compose.resources.painterResource
@@ -78,15 +78,15 @@ internal fun InspectorsPane(
                 ) {
                     allTabs.forEachIndexed { index, tab ->
                         tab.icon?.let { icon ->
-                            CommonIconButton(
-                                variant = IconButtonVariant.PrimaryElevated,
+                            PreviewLabIconButton(
+                                variant = PreviewLabIconButtonVariant.PrimaryElevated,
                                 painter = icon(),
                                 contentDescription = tab.title,
                                 onClick = { state.selectedTabIndex = index },
                             )
                         }
 
-                        SimpleModal(
+                        PreviewLabModal(
                             isVisible = state.selectedTabIndex == index,
                             onDismissRequest = { state.deselectTab() },
                             contentPadding = PaddingValues(20.dp),
@@ -112,8 +112,8 @@ internal fun InspectorsPane(
 
                     if (filePath != null && openHandler != null) {
                         val configuredValue = openHandler.configure()
-                        CommonIconButton(
-                            variant = IconButtonVariant.PrimaryOutlined,
+                        PreviewLabIconButton(
+                            variant = PreviewLabIconButtonVariant.PrimaryOutlined,
                             painter = painterResource(PreviewLabUiRes.drawable.icon_code),
                             contentDescription = "Show source code",
                             onClick = {
@@ -136,14 +136,14 @@ internal fun InspectorsPane(
 
             Row {
                 content()
-                Divider()
+                PreviewLabDivider()
                 Column(
                     modifier = Modifier
                         .background(PreviewLabTheme.colors.background)
                         .width(250.dp)
                         .fillMaxHeight(),
                 ) {
-                    TabPager(
+                    PreviewLabTabPager(
                         tabs = allTabs,
                         title = { it.title },
                         pagerState = rememberPagerState { allTabs.size }
@@ -174,11 +174,11 @@ internal fun InspectorsPane(
                     val filePath = LocalPreviewLabPreview.current?.filePath
                     val openHandler = LocalOpenFileHandler.current
                     if (filePath != null && openHandler != null) {
-                        Divider()
+                        PreviewLabDivider()
 
                         val configuredValue = openHandler.configure()
-                        Button(
-                            variant = ButtonVariant.PrimaryOutlined,
+                        PreviewLabButton(
+                            variant = PreviewLabButtonVariant.PrimaryOutlined,
                             onClick = {
                                 @Suppress("UNCHECKED_CAST")
                                 (openHandler as OpenFileHandler<in Any?>).openFile(
@@ -191,12 +191,12 @@ internal fun InspectorsPane(
                             },
                             modifier = Modifier.padding(vertical = 4.dp, horizontal = 12.dp).fillMaxWidth(),
                         ) {
-                            Icon(
+                            PreviewLabIcon(
                                 painter = painterResource(PreviewLabUiRes.drawable.icon_code),
                                 contentDescription = null,
                             )
                             Spacer(Modifier.width(8.dp))
-                            Text(
+                            PreviewLabText(
                                 text = "Source Code",
                             )
                         }

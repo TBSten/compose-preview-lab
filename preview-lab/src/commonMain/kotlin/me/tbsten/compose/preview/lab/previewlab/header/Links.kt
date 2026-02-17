@@ -6,22 +6,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalClipboard
-import me.tbsten.compose.preview.lab.ui.components.Button
-import me.tbsten.compose.preview.lab.ui.components.SimpleModal
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabModal
 
 @Composable
 internal fun Links() {
     var isShareDialogShow by remember { mutableStateOf(false) }
 
     val clipboard = LocalClipboard.current
-    Button(
+    PreviewLabButton(
         text = "Copy link",
         onClick = {
             val url = "https://example.com"
         },
     )
 
-    SimpleModal(
+    PreviewLabModal(
         isVisible = isShareDialogShow,
         onDismissRequest = { isShareDialogShow = false },
     ) {

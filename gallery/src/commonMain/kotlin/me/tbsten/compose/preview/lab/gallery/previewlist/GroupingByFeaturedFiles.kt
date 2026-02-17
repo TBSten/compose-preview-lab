@@ -11,4 +11,7 @@ internal fun List<PreviewLabPreview>.groupingByFeaturedFiles(
     }
 }
 
-private fun PreviewLabPreview.isInGroup(files: List<String>) = this.filePath in files
+private fun PreviewLabPreview.isInGroup(patterns: List<String>): Boolean {
+    val filePath = this.filePath ?: return false
+    return patterns.any { pattern -> matchesGlob(filePath, pattern) }
+}

@@ -21,18 +21,18 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.LocalContentColor
 
 @Composable
-@InternalComposePreviewLabApi
-fun Icon(
+@UiComposePreviewLabApi
+fun PreviewLabIcon(
     imageVector: ImageVector,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
     tint: Color = LocalContentColor.current,
 ) {
-    Icon(
+    PreviewLabIcon(
         painter = rememberVectorPainter(imageVector),
         contentDescription = contentDescription,
         modifier = modifier,
@@ -41,15 +41,15 @@ fun Icon(
 }
 
 @Composable
-@InternalComposePreviewLabApi
-fun Icon(
+@UiComposePreviewLabApi
+fun PreviewLabIcon(
     bitmap: ImageBitmap,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
     tint: Color = LocalContentColor.current,
 ) {
     val painter = remember(bitmap) { BitmapPainter(bitmap) }
-    Icon(
+    PreviewLabIcon(
         painter = painter,
         contentDescription = contentDescription,
         modifier = modifier,
@@ -58,8 +58,8 @@ fun Icon(
 }
 
 @Composable
-@InternalComposePreviewLabApi
-fun Icon(
+@UiComposePreviewLabApi
+fun PreviewLabIcon(
     painter: Painter,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
@@ -94,9 +94,9 @@ private fun Modifier.defaultSizeFor(painter: Painter) = this.then(
 
 private fun Size.isInfinite() = width.isInfinite() && height.isInfinite()
 
-private val DefaultIconSizeModifier = Modifier.size(IconDefaults.iconSize)
+private val DefaultIconSizeModifier = Modifier.size(PreviewLabIconDefaults.iconSize)
 
-@InternalComposePreviewLabApi
-object IconDefaults {
+@UiComposePreviewLabApi
+object PreviewLabIconDefaults {
     val iconSize = 24.dp
 }

@@ -73,6 +73,7 @@ internal fun copyPreview(context: CopyPreviewContext, preview: ValidPreview, cod
             ?: throw IllegalStateException("Preview containing file is null"),
         startLineNumber = startLineNumber,
         code = null,
+        kdoc = preview.previewFun.docString,
         placeholderedDisplayName = preview.placeholderedDisplayName,
         placeholderedId = preview.placeholderedId,
     )
@@ -176,6 +177,7 @@ internal data class CopiedPreview(
     val baseFile: KSFile,
     val startLineNumber: Int?,
     val code: String?,
+    val kdoc: String?,
     val placeholderedDisplayName: String,
     val placeholderedId: String,
 ) {

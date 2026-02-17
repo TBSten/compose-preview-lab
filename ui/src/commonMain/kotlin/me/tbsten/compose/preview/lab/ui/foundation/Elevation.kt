@@ -12,9 +12,9 @@ import androidx.compose.foundation.interaction.HoverInteraction
 import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.ui.unit.Dp
-import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 
-@InternalComposePreviewLabApi
+@UiComposePreviewLabApi
 suspend fun Animatable<Dp, *>.animateElevation(target: Dp, from: Interaction? = null, to: Interaction? = null) {
     val spec =
         when {

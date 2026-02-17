@@ -40,16 +40,16 @@ import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
 import me.tbsten.compose.preview.lab.PreviewLabField
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.Button
-import me.tbsten.compose.preview.lab.ui.components.ButtonDefaults
-import me.tbsten.compose.preview.lab.ui.components.ButtonVariant
-import me.tbsten.compose.preview.lab.ui.components.Checkbox
-import me.tbsten.compose.preview.lab.ui.components.Icon
-import me.tbsten.compose.preview.lab.ui.components.SelectButton
-import me.tbsten.compose.preview.lab.ui.components.SimpleModal
-import me.tbsten.compose.preview.lab.ui.components.Surface
-import me.tbsten.compose.preview.lab.ui.components.Text
-import me.tbsten.compose.preview.lab.ui.components.textfield.OutlinedTextField
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonDefaults
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabCheckbox
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIcon
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabModal
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSelectButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabSurface
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.textfield.PreviewLabOutlinedTextField
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_arrow_drop_down
 import org.jetbrains.compose.resources.painterResource
@@ -134,23 +134,23 @@ internal actual fun RowScope.PlatformHeaders(state: PreviewLabState) {
     Row(
         modifier = Modifier.align(Alignment.CenterVertically),
     ) {
-        Button(
+        PreviewLabButton(
             text = "Copy",
-            variant = ButtonVariant.PrimaryOutlined,
+            variant = PreviewLabButtonVariant.PrimaryOutlined,
             onClick = { copyUrl() },
-            shape = ButtonDefaults.ButtonShape.copy(topEnd = CornerSize(0), bottomEnd = CornerSize(0)),
+            shape = PreviewLabButtonDefaults.ButtonShape.copy(topEnd = CornerSize(0), bottomEnd = CornerSize(0)),
         )
 
-        Button(
-            variant = ButtonVariant.PrimaryOutlined,
+        PreviewLabButton(
+            variant = PreviewLabButtonVariant.PrimaryOutlined,
             onClick = { isDetailDialogOpen = !isDetailDialogOpen },
-            shape = ButtonDefaults.ButtonShape.copy(topStart = CornerSize(0), bottomStart = CornerSize(0)),
+            shape = PreviewLabButtonDefaults.ButtonShape.copy(topStart = CornerSize(0), bottomStart = CornerSize(0)),
             contentPadding = PaddingValues(
-                horizontal = ButtonDefaults.contentPadding.calculateTopPadding(),
-                vertical = ButtonDefaults.contentPadding.calculateTopPadding(),
+                horizontal = PreviewLabButtonDefaults.contentPadding.calculateTopPadding(),
+                vertical = PreviewLabButtonDefaults.contentPadding.calculateTopPadding(),
             ),
         ) {
-            Icon(
+            PreviewLabIcon(
                 painter = painterResource(PreviewLabUiRes.drawable.icon_arrow_drop_down),
                 modifier = Modifier.size(16.dp),
             )
@@ -158,12 +158,12 @@ internal actual fun RowScope.PlatformHeaders(state: PreviewLabState) {
     }
 
     DisableSelection {
-        SimpleModal(
+        PreviewLabModal(
             isVisible = isDetailDialogOpen,
             onDismissRequest = ::closeDetailDialog,
         ) {
             SelectionContainer {
-                Surface(
+                PreviewLabSurface(
                     color = PreviewLabTheme.colors.background,
                     contentColor = PreviewLabTheme.colors.onBackground,
                     modifier = Modifier.fillMaxWidth(),
@@ -171,7 +171,7 @@ internal actual fun RowScope.PlatformHeaders(state: PreviewLabState) {
                     Column(
                         modifier = Modifier.verticalScroll(rememberScrollState()),
                     ) {
-                        Text(
+                        PreviewLabText(
                             text = "Copy setting",
                             style = PreviewLabTheme.typography.h1,
                             modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
@@ -183,7 +183,7 @@ internal actual fun RowScope.PlatformHeaders(state: PreviewLabState) {
                             verticalArrangement = Arrangement.spacedBy(16.dp),
                             modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
                         ) {
-                            SelectButton(
+                            PreviewLabSelectButton(
                                 value = selectType,
                                 choices = CopyType.entries,
                                 onSelect = { selectType = it },
@@ -225,14 +225,14 @@ private fun OnlyIdContent(close: () -> Unit) {
 
         Column(Modifier.fillMaxWidth()) {
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                OutlinedTextField(
+                PreviewLabOutlinedTextField(
                     value = copy.link,
                     onValueChange = { },
                     enabled = true,
                     maxLines = 3,
                     modifier = Modifier.weight(1f),
                 )
-                Button(
+                PreviewLabButton(
                     text = "Copy",
                     onClick = {
                         copy()
@@ -275,14 +275,14 @@ private fun WithDetailsContent(state: PreviewLabState, close: () -> Unit) {
             val textStyle = PreviewLabTheme.typography.body1
                 .copy(color = if (param.canSerialize) PreviewLabTheme.colors.text else PreviewLabTheme.colors.onDisabled)
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(
+                PreviewLabCheckbox(
                     checked = selected[param] ?: false,
                     enabled = param.canSerialize,
                     onCheckedChange = { selected[param] = !selected.getValue(param) },
                 )
                 Spacer(Modifier.width(4.dp))
 
-                Text(
+                PreviewLabText(
                     text = param.displayLabel,
                     style = textStyle,
                     modifier = Modifier.widthIn(min = 100.dp),
@@ -290,7 +290,7 @@ private fun WithDetailsContent(state: PreviewLabState, close: () -> Unit) {
 
                 Spacer(Modifier.width(16.dp))
 
-                Text(
+                PreviewLabText(
                     text = param.serialize() ?: "(Can not include)",
                     style = textStyle,
                     modifier = Modifier.weight(1f),
@@ -300,14 +300,14 @@ private fun WithDetailsContent(state: PreviewLabState, close: () -> Unit) {
 
         Column(Modifier.fillMaxWidth()) {
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                OutlinedTextField(
+                PreviewLabOutlinedTextField(
                     value = copy.link,
                     onValueChange = { },
                     enabled = true,
                     maxLines = 3,
                     modifier = Modifier.weight(1f),
                 )
-                Button(
+                PreviewLabButton(
                     text = "Copy",
                     onClick = {
                         copy()
@@ -331,14 +331,14 @@ private fun FullContent(state: PreviewLabState, close: () -> Unit) {
 
     Column(Modifier.fillMaxWidth()) {
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
-            OutlinedTextField(
+            PreviewLabOutlinedTextField(
                 value = copy.link,
                 onValueChange = { },
                 enabled = true,
                 maxLines = 3,
                 modifier = Modifier.weight(1f),
             )
-            Button(
+            PreviewLabButton(
                 text = "Copy",
                 onClick = {
                     copy()
