@@ -1,11 +1,13 @@
 public abstract class me/tbsten/compose/preview/lab/ComposePreviewLabExtension {
 	public fun <init> (Lorg/gradle/api/model/ObjectFactory;Lorg/gradle/api/Project;)V
+	public final fun getCollectPreviewsExport ()Ljava/lang/String;
 	public final fun getGenerateFeaturedFiles ()Z
 	public final fun getGeneratePackage ()Ljava/lang/String;
 	public final fun getGeneratePreviewAllList ()Z
 	public final fun getGeneratePreviewList ()Z
 	public final fun getProjectRootPath ()Ljava/lang/String;
 	public final fun getPublicPreviewList ()Z
+	public final fun setCollectPreviewsExport (Ljava/lang/String;)V
 	public final fun setGenerateFeaturedFiles (Z)V
 	public final fun setGeneratePackage (Ljava/lang/String;)V
 	public final fun setGeneratePreviewAllList (Z)V
@@ -18,5 +20,16 @@ public final class me/tbsten/compose/preview/lab/ComposePreviewLabGradlePlugin :
 	public fun <init> ()V
 	public synthetic fun apply (Ljava/lang/Object;)V
 	public fun apply (Lorg/gradle/api/Project;)V
+}
+
+public final class me/tbsten/compose/preview/lab/ComposePreviewLabSubplugin : org/jetbrains/kotlin/gradle/plugin/KotlinCompilerPluginSupportPlugin {
+	public fun <init> ()V
+	public synthetic fun apply (Ljava/lang/Object;)V
+	public fun apply (Lorg/gradle/api/Project;)V
+	public fun applyToCompilation (Lorg/jetbrains/kotlin/gradle/plugin/KotlinCompilation;)Lorg/gradle/api/provider/Provider;
+	public fun getCompilerPluginId ()Ljava/lang/String;
+	public fun getPluginArtifact ()Lorg/jetbrains/kotlin/gradle/plugin/SubpluginArtifact;
+	public fun getPluginArtifactForNative ()Lorg/jetbrains/kotlin/gradle/plugin/SubpluginArtifact;
+	public fun isApplicable (Lorg/jetbrains/kotlin/gradle/plugin/KotlinCompilation;)Z
 }
 
