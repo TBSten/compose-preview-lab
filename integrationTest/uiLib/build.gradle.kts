@@ -1,17 +1,48 @@
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.androidLibrary)
+    // NOTE: "me.tbsten.compose.preview.lab" must be applied BEFORE composeCompiler
+    id("me.tbsten.compose.preview.lab")
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.ksp)
-    id("me.tbsten.compose.preview.lab")
 }
 
 kotlin {
     jvmToolchain(17)
 
+    androidTarget {
+        // https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
+        @Suppress("OPT_IN_USAGE")
+        instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
+    }
+
     jvm()
 
-    js { browser() }
+    js {
+        browser()
+    }
+
+    @Suppress("OPT_IN_USAGE")
+    wasmJs {
+        browser()
+
+        compilerOptions {
+            target = "es2015"
+        }
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64(),
+    ).forEach {
+        it.binaries.framework {
+            baseName = "ComposeApp"
+            isStatic = true
+        }
+    }
 
     sourceSets {
         commonMain.dependencies {
@@ -31,14 +62,12 @@ kotlin {
     }
 }
 
-dependencies {
-    val composePreviewLabKspPlugin =
-        "me.tbsten.compose.preview.lab:ksp-plugin:${libs.versions.composePreviewLab.get()}"
-    add("kspCommonMainMetadata", composePreviewLabKspPlugin)
-    add("kspJvm", composePreviewLabKspPlugin)
-    add("kspJs", composePreviewLabKspPlugin)
+android {
+    namespace = "me.tbsten.compose.preview.lab.sample.uiLib"
+    compileSdk = 36
 }
 
 composePreviewLab {
     publicPreviewList = true
+    collectPreviewsExport = "uiLib.uiLibPreviews"
 }

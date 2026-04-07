@@ -1,6 +1,7 @@
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
+import app.appPreviews
 import kotlinx.browser.document
 import me.tbsten.compose.preview.lab.EmbeddedPreviewOrGallery
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
@@ -11,7 +12,7 @@ import org.w3c.dom.Element
 
 @OptIn(ExperimentalJsExport::class, ExperimentalWasmJsInterop::class)
 @JsExport
-val appPreviewList = (app.PreviewList)
+val appPreviewList = appPreviews
     .toJsArray()
 
 @OptIn(ExperimentalJsExport::class, ExperimentalWasmJsInterop::class, ExperimentalComposePreviewLabApi::class)
