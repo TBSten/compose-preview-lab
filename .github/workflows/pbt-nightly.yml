@@ -14,8 +14,24 @@ on:
 
 jobs:
   pbt:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - kotlin_version: ''
+            compose_version: ''
+            gradle_version: ''
+            name: 'default'
+          - kotlin_version: '2.3.20'
+            compose_version: '1.11.0-beta01'
+            gradle_version: ''
+            name: 'Kotlin 2.3.20'
+          - kotlin_version: '2.4.0-Beta1'
+            compose_version: '1.11.0-beta01'
+            gradle_version: '9.4.1'
+            name: 'Kotlin 2.4.0-Beta1'
     runs-on: ubuntu-latest
-    name: PBT (${{ inputs.iterations || '5000' }} iterations)
+    name: PBT ${{ matrix.name }} (${{ inputs.iterations || '5000' }} iterations)
     steps:
       - uses: actions/checkout@v4
 
@@ -29,9 +45,29 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
 
+      - name: Switch Kotlin / Compose version
+        if: matrix.kotlin_version
+        shell: bash
+        run: |
+          sed -i "s/^kotlin = .*/kotlin = \"${{ matrix.kotlin_version }}\"/" gradle/libs.versions.toml
+          sed -i "s/^compose = .*/compose = \"${{ matrix.compose_version }}\"/" gradle/libs.versions.toml
+          echo "Updated versions:"
+          grep -E "^(kotlin|compose) = " gradle/libs.versions.toml
+
+      - name: Upgrade Gradle wrapper
+        if: matrix.gradle_version
+        shell: bash
+        run: |
+          sed -i "s|gradle-.*-bin.zip|gradle-${{ matrix.gradle_version }}-bin.zip|" gradle/wrapper/gradle-wrapper.properties
+
       - name: Run Library PBT
         shell: bash
         run: ./gradlew jvmTest -Dkotest.tags="PBT"
+
+      - name: Publish to Maven Local
+        if: matrix.kotlin_version
+        shell: bash
+        run: ./gradlew publishToMavenLocal
 
       - name: Run Integration Test PBT
         shell: bash

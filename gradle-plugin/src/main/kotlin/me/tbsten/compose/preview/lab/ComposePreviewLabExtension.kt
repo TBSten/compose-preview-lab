@@ -1,9 +1,6 @@
 package me.tbsten.compose.preview.lab
 
 import javax.inject.Inject
-import me.tbsten.compose.preview.lab.internal.KspArg
-import me.tbsten.compose.preview.lab.util.invoke
-import me.tbsten.compose.preview.lab.util.ksp
 import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory
 import org.gradle.kotlin.dsl.getValue
@@ -73,10 +70,26 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
      * Controls generation of PreviewAllList aggregated object
      *
      * When true (default), generates a PreviewAllList object that aggregates
-     * previews from the current module and all dependencies marked with @AggregateToAll.
+     * previews from the current module and all dependencies configured via
+     * `collectPreviewsExport` / `collectAllModulePreviews()`.
      */
     var generatePreviewAllList: Boolean by objects.property<Boolean>()
         .convention(true)
+
+    /**
+     * Fully qualified name of the `@CollectPreviews` property exported by this module.
+     *
+     * Set this to allow downstream modules using `collectAllModulePreviews()` to
+     * automatically discover and include this module's previews.
+     *
+     * ```kotlin
+     * composePreviewLab {
+     *     collectPreviewsExport = "uiLib.uiLibPreviews"
+     * }
+     * ```
+     */
+    var collectPreviewsExport: String by objects.property<String>()
+        .convention("")
 
     /**
      * Controls generation of FeaturedFileList from .composepreviewlab/featured/ directory
@@ -87,16 +100,4 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
      */
     var generateFeaturedFiles: Boolean by objects.property<Boolean>()
         .convention(false)
-}
-
-internal fun Project.applyToKspExtension(extension: ComposePreviewLabExtension) {
-    afterEvaluate {
-        ksp {
-            arg(KspArg.previewsListPackage, extension.generatePackage)
-            arg(KspArg.publicPreviewList, extension.publicPreviewList.toString())
-            arg(KspArg.projectRootPath, extension.projectRootPath)
-            arg(KspArg.generatePreviewList, extension.generatePreviewList.toString())
-            arg(KspArg.generatePreviewAllList, extension.generatePreviewAllList.toString())
-        }
-    }
 }

@@ -18,7 +18,6 @@ androidxActivityCompose = "1.11.0"
 androidxUiTest = "1.9.4"
 
 # Gradle Plugins
-ksp = "2.3.2"
 vanniktechMavenPublish = "0.35.0"
 dokka = "2.1.0"
 binaryCompatibilityValidator = "0.18.1"
@@ -44,6 +43,7 @@ slf4j = "2.0.16"
 
 # Test
 kotest = "6.0.5"
+kctfork = "0.12.1"
 
 # IntelliJ Plugin
 intellijPlatform = "2.6.0"
@@ -103,6 +103,7 @@ kotestProperty = { module = "io.kotest:kotest-property", version.ref = "kotest" 
 kotestFrameworkEngine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
 kotestAssertionsCore = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 kotestRunnerJunit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+kctfork = { module = "dev.zacsweers.kctfork:core", version.ref = "kctfork" }
 kotlinxCoroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 
 # Android
@@ -113,8 +114,6 @@ androidxUitestJunit4 = { module = "androidx.compose.ui:ui-test-junit4", version.
 # Build Logic
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlinCompilerEmbeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
-kspApi = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
-kspGradlePlugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 ktlintGradlePlugin = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlintGradle" }
 vanniktechMavenPublishGradlePlugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "vanniktechMavenPublish" }
 dokkaGradlePlugin = { module = "org.jetbrains.dokka:org.jetbrains.dokka.gradle.plugin", version.ref = "dokka" }
@@ -175,7 +174,6 @@ androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 
 # Build / Publish
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 vanniktechMavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktechMavenPublish" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 binaryCompatibilityValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binaryCompatibilityValidator" }

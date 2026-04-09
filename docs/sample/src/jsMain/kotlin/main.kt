@@ -7,8 +7,9 @@ import kotlinx.browser.document
 import me.tbsten.compose.preview.lab.EmbeddedPreviewOrGallery
 import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
 import me.tbsten.compose.preview.lab.initialSelectedPreviewFromSearchParam
+import sample.samplePreviews
 
-private val appPreviewList = (sample.PreviewList)
+private val appPreviewList = samplePreviews
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {

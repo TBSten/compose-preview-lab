@@ -42,7 +42,8 @@ import me.tbsten.compose.preview.lab.util.JsOnlyExportIgnore
  *
  * @property displayName The value set to displayName of the ComposePreviewLabOption annotation.
  * @property filePath The file where Preview exists.
- * @property startLineNumber The starting line number of Preview.
+ * @property startLineNumber The starting line number of Preview (1-based).
+ * @property endLineNumber The ending line number of Preview (1-based, inclusive).
  * @property code The source code of Preview.
  * @property content The content of Preview. You can display the content of Preview by calling invoke().
  *
@@ -53,6 +54,7 @@ interface PreviewLabPreview {
     val displayName: String
     val filePath: String?
     val startLineNumber: Int?
+    val endLineNumber: Int?
     val code: String?
     val kdoc: String?
     val content: @Composable () -> Unit
@@ -65,6 +67,7 @@ data class CollectedPreview @JsOnlyExportIgnore constructor(
     override val displayName: String = id,
     override val filePath: String? = null,
     override val startLineNumber: Int? = null,
+    override val endLineNumber: Int? = null,
     override val code: String? = null,
     override val kdoc: String? = null,
     override val content: @Composable () -> Unit,
@@ -75,7 +78,8 @@ data class CollectedPreview @JsOnlyExportIgnore constructor(
  *
  * @param displayName The value set to displayName of the ComposePreviewLabOption annotation.
  * @param filePath The file where Preview exists.
- * @param startLineNumber The starting line number of Preview.
+ * @param startLineNumber The starting line number of Preview (1-based).
+ * @param endLineNumber The ending line number of Preview (1-based, inclusive).
  * @param code The source code of Preview.
  * @param content The content of Preview. You can display the content of Preview by calling invoke().
  */
@@ -84,6 +88,7 @@ fun PreviewLabPreview(
     displayName: String = id,
     filePath: String? = null,
     startLineNumber: Int? = null,
+    endLineNumber: Int? = null,
     code: String? = null,
     kdoc: String? = null,
     content: @Composable () -> Unit,
@@ -92,6 +97,7 @@ fun PreviewLabPreview(
     override val displayName: String = displayName
     override val filePath: String? = filePath
     override val startLineNumber: Int? = startLineNumber
+    override val endLineNumber: Int? = endLineNumber
     override val code: String? = code
     override val kdoc: String? = kdoc
     override val content: @Composable (() -> Unit) = content

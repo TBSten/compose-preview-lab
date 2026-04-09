@@ -51,7 +51,7 @@ include(":preview-lab")
 include(":ui")
 include(":starter")
 include(":annotation")
-include(":ksp-plugin")
+include(":compiler-plugin")
 include(":gradle-plugin")
 include(":dokkaDocs")
 

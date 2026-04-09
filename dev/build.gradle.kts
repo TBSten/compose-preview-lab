@@ -8,7 +8,6 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.hotReload)
-    alias(libs.plugins.ksp)
 }
 
 kotlin {

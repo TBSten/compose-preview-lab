@@ -5,14 +5,16 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
+    // NOTE: "me.tbsten.compose.preview.lab" must be applied BEFORE composeCompiler so that
+    // our IrGenerationExtension runs first and Compose can then process the @Composable lambdas
+    // we generate via ComposableLambdaLowering.
+    id("me.tbsten.compose.preview.lab")
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.hotReload)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.buildkonfig)
     alias(libs.plugins.kotlinxSerialization)
-    id("me.tbsten.compose.preview.lab")
 }
 
 kotlin {
@@ -30,6 +32,8 @@ kotlin {
         binaries.executable()
         binaries.library()
         generateTypeScriptDefinitions()
+
+        outputModuleName = "app"
 
         compilerOptions {
             target = "es2015"
@@ -61,6 +65,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            implementation(projects.uiLib)
+
             implementation(libs.composeRuntime)
             implementation(libs.composeFoundation)
             implementation(libs.composeMaterial3)
@@ -123,15 +129,6 @@ android {
 dependencies {
     androidTestImplementation(libs.androidxUitestJunit4)
     debugImplementation(libs.androidxUitestTestManifest)
-
-    val composePreviewLabKspPlugin =
-        "me.tbsten.compose.preview.lab:ksp-plugin:${libs.versions.composePreviewLab.get()}"
-    add("kspCommonMainMetadata", composePreviewLabKspPlugin)
-    ksp(composePreviewLabKspPlugin)
-    add("kspAndroid", composePreviewLabKspPlugin)
-    add("kspJvm", composePreviewLabKspPlugin)
-    add("kspJs", composePreviewLabKspPlugin)
-    add("kspWasmJs", composePreviewLabKspPlugin)
 }
 
 compose.desktop {
