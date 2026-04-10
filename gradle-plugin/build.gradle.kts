@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     alias(libs.plugins.conventionFormat)
     alias(libs.plugins.conventionPublish)
@@ -15,6 +18,18 @@ kotlin {
             "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
             "me.tbsten.compose.preview.lab.UiComposePreviewLabApi",
         )
+    }
+}
+
+// kotlin-dsl は language/api version を 1.8 に固定するが、
+// Kotlin 2.3+ では 1.8 が廃止されているため明示的に 2.1 以上に上書きする。
+// kotlin.compilerOptions では kotlin-dsl の afterEvaluate 設定を
+// 上書きできないため、task 単位で設定する。
+// https://kotl.in/gradle/kotlin-dsl-version-compatibility
+tasks.withType<KotlinCompile>().configureEach {
+    compilerOptions {
+        apiVersion.set(KotlinVersion.KOTLIN_2_1)
+        languageVersion.set(KotlinVersion.KOTLIN_2_1)
     }
 }
 
