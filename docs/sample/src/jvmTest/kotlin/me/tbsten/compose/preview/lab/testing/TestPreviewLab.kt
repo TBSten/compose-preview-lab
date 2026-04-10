@@ -42,24 +42,19 @@ internal fun TestPreviewLab(
 }
 
 @Composable
-private fun defaultTestViewModelStoreOwner() = runCatching {
-    LocalViewModelStoreOwner.current
-}.getOrNull() ?: remember {
-    object : ViewModelStoreOwner {
-        override val viewModelStore: ViewModelStore = ViewModelStore()
+private fun defaultTestViewModelStoreOwner(): ViewModelStoreOwner =
+    LocalViewModelStoreOwner.current ?: remember {
+        object : ViewModelStoreOwner {
+            override val viewModelStore: ViewModelStore = ViewModelStore()
+        }
     }
-}
 
 @Composable
-private fun defaultTestLifecycleOwner() = runCatching {
-    LocalLifecycleOwner.current
-}.getOrElse {
-    remember {
-        object : LifecycleOwner {
-            override val lifecycle: Lifecycle =
-                LifecycleRegistry(this).apply {
-                    handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
-                }
-        }
+private fun defaultTestLifecycleOwner(): LifecycleOwner = remember {
+    object : LifecycleOwner {
+        override val lifecycle: Lifecycle =
+            LifecycleRegistry(this).apply {
+                handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
+            }
     }
 }
