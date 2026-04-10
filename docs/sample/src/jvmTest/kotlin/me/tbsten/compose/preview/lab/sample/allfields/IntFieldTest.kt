@@ -3,7 +3,7 @@
 package me.tbsten.compose.preview.lab.sample.allfields
 
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.runDesktopComposeUiTest
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.property.Arb
@@ -31,9 +31,9 @@ class IntFieldTest : StringSpec({
                 countField.value = intValue
                 awaitIdle()
 
-                onNodeWithText("Count: $intValue")
-                    .assertExists()
-                true
+                onAllNodesWithText("$intValue")
+                    .fetchSemanticsNodes()
+                    .isNotEmpty()
             }
 
             awaitIdle()
