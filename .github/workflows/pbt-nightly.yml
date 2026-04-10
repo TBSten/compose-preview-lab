@@ -23,11 +23,11 @@ jobs:
             gradle_version: ''
             name: 'default'
           - kotlin_version: '2.3.20'
-            compose_version: '1.11.0-alpha05'
+            compose_version: '1.11.0-alpha04'
             gradle_version: ''
             name: 'Kotlin 2.3.20'
           - kotlin_version: '2.4.0-Beta1'
-            compose_version: '1.11.0-alpha05'
+            compose_version: '1.11.0-alpha04'
             gradle_version: '9.4.1'
             name: 'Kotlin 2.4.0-Beta1'
     runs-on: ubuntu-latest
@@ -53,19 +53,6 @@ jobs:
           sed -i "s/^compose = .*/compose = \"${{ matrix.compose_version }}\"/" gradle/libs.versions.toml
           echo "Updated versions:"
           grep -E "^(kotlin|compose) = " gradle/libs.versions.toml
-
-      - name: Add Compose Multiplatform dev repository
-        if: matrix.kotlin_version
-        shell: bash
-        run: |
-          # matrix で指定する compose version (beta 等) は Maven Central に存在しない場合があるため、
-          # JetBrains の compose dev リポジトリを dependencyResolutionManagement に追加する
-          sed -i '/dependencyResolutionManagement {/,/^}/ {
-            /mavenCentral()/a\
-            maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-          }' settings.gradle.kts
-          echo "Updated settings.gradle.kts:"
-          grep -A1 "mavenCentral\|compose/dev" settings.gradle.kts
 
       - name: Upgrade Gradle wrapper
         if: matrix.gradle_version
