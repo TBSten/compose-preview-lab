@@ -23,11 +23,11 @@ jobs:
             gradle_version: ''
             name: 'default'
           - kotlin_version: '2.3.20'
-            compose_version: '1.11.0-beta01'
+            compose_version: '1.11.0-alpha05'
             gradle_version: ''
             name: 'Kotlin 2.3.20'
           - kotlin_version: '2.4.0-Beta1'
-            compose_version: '1.11.0-beta01'
+            compose_version: '1.11.0-alpha05'
             gradle_version: '9.4.1'
             name: 'Kotlin 2.4.0-Beta1'
     runs-on: ubuntu-latest
