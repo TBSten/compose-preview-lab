@@ -1,8 +1,21 @@
 plugins {
-    alias(libs.plugins.conventionJvm)
     alias(libs.plugins.conventionFormat)
     alias(libs.plugins.conventionPublish)
     `kotlin-dsl`
+}
+
+// kotlin-dsl が提供する embedded Kotlin を使うため、
+// conventionJvm (libs の kotlinJvm を明示的に適用する) は付与しない。
+// conventionJvm が提供していた toolchain / opt-ins 設定を手動で行う。
+kotlin {
+    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
+    compilerOptions {
+        optIn.addAll(
+            "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
+            "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
+            "me.tbsten.compose.preview.lab.UiComposePreviewLabApi",
+        )
+    }
 }
 
 val generateBuildConfig by tasks.registering {

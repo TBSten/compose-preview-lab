@@ -53,8 +53,9 @@ class ComposePreviewLabSubplugin : KotlinCompilerPluginSupportPlugin {
         .flatMap { it.allDependencies }
         .filterIsInstance<ProjectDependency>()
         .mapNotNull { dep ->
-            @Suppress("DEPRECATION")
-            val depProject = dep.dependencyProject
+            // Kotlin Gradle Plugin 2.4+ では ProjectDependency.dependencyProject が削除されたため、
+            // path から rootProject.findProject で解決する
+            val depProject = project.rootProject.findProject(dep.path) ?: return@mapNotNull null
             depProject.extensions.findByType(ComposePreviewLabExtension::class.java)
                 ?.collectPreviewsExport
                 ?.takeIf { it.isNotBlank() }
