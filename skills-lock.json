@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "skills": {
+    "kotlin-compiler-plugin-dev": {
+      "source": "tbsten/skills",
+      "sourceType": "github",
+      "computedHash": "7502bd8fbc973f644f51c3cd00dcf35aca258bb94866ab75948f3d4da8bc878d"
+    },
+    "kotlin-compiler-plugin-setup": {
+      "source": "tbsten/skills",
+      "sourceType": "github",
+      "computedHash": "ad546aac8398ee5b51cd9af889c74e6e798b44e645b4f848e0ff5bbc7e5ebee4"
+    },
+    "local-ticket-system": {
+      "source": "tbsten/skills",
+      "sourceType": "github",
+      "computedHash": "42a1fa3436b2eb8d62f6b4158d07c15a66be2b2c813c4cb4b1e5c8c56c41de69"
+    }
+  }
+}
