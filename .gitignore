@@ -21,3 +21,4 @@ integrationTest/web/.claude/settings.local.json
 docs/web/.claude/settings.local.json
 
 .local/
+.agents/
