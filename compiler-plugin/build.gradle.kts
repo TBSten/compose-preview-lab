@@ -19,12 +19,19 @@ dependencies {
 }
 
 // Kotlin バージョンに応じた source directory を選択
-// 2.3+ は kotlin-2.3/ (FirFunction, pluginId), それ以前は kotlin-pre-2.3/ (FirSimpleFunction)
+// - 2.4+ は kotlin-2.4/ (IrAnnotation/IrAnnotationImpl)
+// - 2.3 は kotlin-2.3/ (FirFunction, pluginId, IrConstructorCallImpl annotations)
+// - 2.2 以前は kotlin-pre-2.3/ (FirSimpleFunction, IrConstructorCallImpl annotations)
 val kotlinVersionStr = libs.versions.kotlin.get()
 val kotlinMajor = kotlinVersionStr.substringBefore(".").toIntOrNull() ?: 0
 val kotlinMinor = kotlinVersionStr.substringAfter(".").substringBefore(".").toIntOrNull() ?: 0
-val activeVersionDir = if (kotlinMajor > 2 || (kotlinMajor == 2 && kotlinMinor >= 3)) "kotlin-2.3" else "kotlin-pre-2.3"
-val inactiveVersionDir = if (activeVersionDir == "kotlin-2.3") "kotlin-pre-2.3" else "kotlin-2.3"
+val activeVersionDir = when {
+    kotlinMajor > 2 || (kotlinMajor == 2 && kotlinMinor >= 4) -> "kotlin-2.4"
+    kotlinMajor == 2 && kotlinMinor == 3 -> "kotlin-2.3"
+    else -> "kotlin-pre-2.3"
+}
+val allVersionDirs = listOf("kotlin-2.4", "kotlin-2.3", "kotlin-pre-2.3")
+val inactiveVersionDirs = allVersionDirs - activeVersionDir
 
 kotlin {
     compilerOptions {
@@ -36,7 +43,7 @@ kotlin {
 // ビルドで使わない方を IDE から除外 (同名クラスの衝突を防ぐ)
 idea {
     module {
-        excludeDirs = excludeDirs + files("src/main/$inactiveVersionDir")
+        excludeDirs = excludeDirs + files(inactiveVersionDirs.map { "src/main/$it" })
     }
 }
 

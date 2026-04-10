@@ -2,8 +2,7 @@
 
 package me.tbsten.compose.preview.lab.compiler.ir
 
-import me.tbsten.compose.preview.lab.compiler.compat.getAnnotationsList
-import me.tbsten.compose.preview.lab.compiler.compat.setAnnotationsList
+import me.tbsten.compose.preview.lab.compiler.compat.addConstructorCallAnnotation
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
@@ -127,14 +126,9 @@ internal class CollectedPreviewIrBuilder(private val pluginContext: IrPluginCont
         )
         val composableClass = pluginContext.referenceClass(composableClassId) ?: return
         val ctor = composableClass.constructors.firstOrNull() ?: return
-        val annotation = IrConstructorCallImpl(
-            startOffset = SYNTHETIC_OFFSET,
-            endOffset = SYNTHETIC_OFFSET,
+        func.addConstructorCallAnnotation(
             type = composableClass.defaultType,
-            symbol = ctor,
-            typeArgumentsCount = 0,
-            constructorTypeArgumentsCount = 0,
+            constructorSymbol = ctor,
         )
-        func.setAnnotationsList(func.getAnnotationsList() + annotation)
     }
 }
