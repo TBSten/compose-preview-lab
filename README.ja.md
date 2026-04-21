@@ -30,12 +30,8 @@ Compose Multiplatformに対応しています。
 
 ## セットアップ
 
-<a href="https://central.sonatype.com/artifact/me.tbsten.compose.preview.lab/core">
-<img src="https://img.shields.io/maven-central/v/me.tbsten.compose.preview.lab/core?label=compose-preview-lab" alt="Maven Central"/>
-</a>
-<a href="https://central.sonatype.com/artifact/com.google.devtools.ksp/symbol-processing-api">
-<img src="https://img.shields.io/maven-central/v/com.google.devtools.ksp/symbol-processing-api?label=ksp" alt="KSP Version"/>
-</a>
+<a href="https://central.sonatype.com/artifact/me.tbsten.compose.preview.lab/core"><img src="https://img.shields.io/maven-central/v/me.tbsten.compose.preview.lab/core?label=compose-preview-lab" alt="Maven Central"/></a>
+<a href="https://central.sonatype.com/artifact/com.google.devtools.ksp/symbol-processing-api"><img src="https://img.shields.io/maven-central/v/com.google.devtools.ksp/symbol-processing-api?label=ksp" alt="KSP Version"/></a>
 
 <details>
 <summary> [推奨] Compose Multiplatformプロジェクト - Starterを使用した簡単セットアップ</summary>
