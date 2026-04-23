@@ -12,6 +12,7 @@ import KDocLink from '@site/src/components/KDocLink';
 ## <KDocLink path="field/me.tbsten.compose.preview.lab.field/-selectable-field/index.html">SelectableField</KDocLink>
 
 <table>
+<tbody>
     <tr>
         <th>対応する 型</th>
         <td> 任意の型 </td>
@@ -24,6 +25,7 @@ import KDocLink from '@site/src/components/KDocLink';
         <th>KDoc</th>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-selectable-field/index.html">SelectableField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 指定された選択肢のリストから1つのオプションを選択するためのフィールドです。ドロップダウンまたはチップ形式で表示できます。
@@ -137,6 +139,7 @@ PreviewLab {
 ### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-enum-field.html">EnumField</KDocLink>
 
 <table>
+<tbody>
     <tr>
         <th>対応する 型</th>
         <td> `kotlin.Enum` </td>
@@ -149,6 +152,7 @@ PreviewLab {
         <th>KDoc</th>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-enum-field.html">EnumField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 Enum クラスの値から選択するためのフィールドです。`SelectableField` のショートハンドとして実装されています。
@@ -174,6 +178,7 @@ PreviewLab {
 ## <KDocLink path="field/me.tbsten.compose.preview.lab.field/-with-hint-field/index.html">WithHintField</KDocLink> / `.withHint()`
 
 <table>
+<tbody>
     <tr>
         <th>対応する 型</th>
         <td> 元のフィールドと同じ型 </td>
@@ -186,6 +191,7 @@ PreviewLab {
         <th>KDoc</th>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-with-hint-field/index.html">WithHintField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 既存のフィールドにヒント選択肢を追加するフィールドです。定義済みの値から素早く選択できるチップが表示されます。
@@ -345,6 +351,7 @@ val text = fieldValue {
 ## <KDocLink path="field/me.tbsten.compose.preview.lab.field/-nullable-field/index.html">NullableField</KDocLink> / `.nullable()`
 
 <table>
+<tbody>
     <tr>
         <th>対応する 型</th>
         <td> 任意の Nullable 型 </td>
@@ -357,6 +364,7 @@ val text = fieldValue {
         <th>KDoc</th>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-nullable-field/index.html">NullableField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 既存のフィールドを Nullable にするためのフィールドです。チェックボックスで null と値の切り替えができます。
@@ -398,6 +406,7 @@ val timeout: Int? = fieldValue {
 ## <KDocLink path="field/me.tbsten.compose.preview.lab.field/-combined-field/index.html">CombinedField</KDocLink>
 
 <table>
+<tbody>
     <tr>
         <th>対応する 型</th>
         <td> 任意の複合型 </td>
@@ -410,6 +419,7 @@ val timeout: Int? = fieldValue {
         <th>KDoc</th>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-combined-field/index.html">CombinedField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 複数のサブフィールドを1つの複合値に結合するフィールドです。`combine` 関数と `split` 関数を使用して、複数のフィールドを1つの値にまとめます。
@@ -505,6 +515,7 @@ CombinedField の自動生成機能も検討しています。
 ## <KDocLink path="field/me.tbsten.compose.preview.lab.field/-transform-field/index.html">TransformField</KDocLink>
 
 <table>
+<tbody>
     <tr>
         <th>対応する 型</th>
         <td> 変換後の任意の型 </td>
@@ -517,6 +528,7 @@ CombinedField の自動生成機能も検討しています。
         <th>KDoc</th>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-transform-field/index.html">TransformField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 既存のフィールドの値を別の型に変換するためのフィールドです。`transform` 関数と `reverse` 関数を使用して型変換を行います。
@@ -610,6 +622,7 @@ val fontSize = fieldValue {
 ## <KDocLink path="field/me.tbsten.compose.preview.lab.field/-with-serializer-field/index.html">WithSerializerField</KDocLink> / `.withSerializer()`
 
 <table>
+<tbody>
     <tr>
         <th>対応する 型</th>
         <td> 元のフィールドと同じ型 </td>
@@ -622,6 +635,7 @@ val fontSize = fieldValue {
         <th>KDoc</th>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-with-serializer-field/index.html">WithSerializerField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 任意の Field にカスタムシリアライザを設定するユーティリティです。`SelectableField` で enum や sealed class を使用する場合など、デフォルトでシリアライザを持たない Field にシリアライズ機能を追加したいときに使用します。
@@ -710,6 +724,7 @@ val theme = fieldValue {
 ## <KDocLink path="field/me.tbsten.compose.preview.lab.field/-polymorphic-field/index.html">PolymorphicField</KDocLink>
 
 <table>
+<tbody>
     <tr>
         <th>対応する 型</th>
         <td> 複数の型から選択可能な型 </td>
@@ -722,6 +737,7 @@ val theme = fieldValue {
         <th>KDoc</th>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-polymorphic-field/index.html">PolymorphicField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 複数のフィールドから1つを選択して使用するフィールドです。値の型に応じて適切なフィールドが自動的に選択され、編集UIが切り替わります。sealed interface や sealed class など、継承階層があるクラスのField化に特に有用です。
@@ -770,6 +786,7 @@ PreviewLab {
 ## <KDocLink path="field/me.tbsten.compose.preview.lab.field/-fixed-field/index.html">FixedField</KDocLink>
 
 <table>
+<tbody>
     <tr>
         <th>対応する 型</th>
         <td> 任意の型（固定値） </td>
@@ -782,6 +799,7 @@ PreviewLab {
         <th>KDoc</th>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-fixed-field/index.html">FixedField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 編集不可の固定値を持つフィールドです。`PolymorphicField` 内で固定値の選択肢を提供する場合などに使用します。

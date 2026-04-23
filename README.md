@@ -1,5 +1,3 @@
-[FIXME WIP DOCUMENTATION]
-
 # Compose Preview Lab
 
 <img src="cover.png" width="1024" />
@@ -217,20 +215,14 @@ The table below shows the differences between the two.
 
 ## More information
 
-- [WIP] [Documentation Site]()
+- [Documentation](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/)
+- [Getting Started](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/docs/get-started)
+- [Installation](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/docs/category/installation)
+- [Guides](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/docs/guides)
+- [Tutorials](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/docs/tutorials)
+- [DeepWiki](https://deepwiki.com/TBSten/compose-preview-lab)
 
-### Practical Guides for Each Use Case
-
-- [WIP] [Improve Review Experience on Pull Request by using Compose Preview Lab](https://github.com/TBSten/compose-preview-lab/blob/main/docs/improve-review-experience-on-pull-request.md)
-- [WIP] [Improve documentation of component library](https://github.com/TBSten/compose-preview-lab/blob/main/docs/improve-documentation-of-component-library.md)
-
-### Gain a Deeper Understanding of Compose Preview Lab
-
-- [WIP] [Tips for Compose Preview Lab](https://github.com/TBSten/compose-preview-lab/blob/main/docs/tips.md)
-- [WIP] [Customize and extend fields](https://github.com/TBSten/compose-preview-lab/blob/main/docs/customize-field.md)
-- [WIP] [Design Documents](https://github.com/TBSten/compose-preview-lab/blob/main/docs/design/index.md)
-
-### For those who contribute to development
+### For Contributors
 
 - [Online Sample](https://tbsten.github.io/compose-preview-lab/integrationTest/main/js/compose-preview-lab-gallery/)
-- [WIP] [Contribution Guide](https://github.com/TBSten/compose-preview-lab/blob/main/docs/contribute-guide.md)
+- [Repository](https://github.com/TBSten/compose-preview-lab)

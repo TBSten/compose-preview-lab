@@ -12,6 +12,7 @@ import KDocLink from '@site/src/components/KDocLink';
 ### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-list-field/index.html">ListField</KDocLink>
 
 <table>
+<tbody>
     <tr>
         <th>対応する 型</th>
         <td> `kotlin.collections.List` </td>
@@ -24,6 +25,7 @@ import KDocLink from '@site/src/components/KDocLink';
         <th>KDoc</th>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-list-field/index.html">ListField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 リスト値を編集するためのフィールドです。要素の追加・削除・挿入が可能で、各要素は `elementField` で指定したフィールドとして編集できます。
@@ -95,6 +97,7 @@ PreviewLab {
 ### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-set-field/index.html">SetField</KDocLink>
 
 <table>
+<tbody>
     <tr>
         <th>対応する 型</th>
         <td> `kotlin.collections.Set` </td>
@@ -107,6 +110,7 @@ PreviewLab {
         <th>KDoc</th>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-set-field/index.html">SetField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 セット値を編集するためのフィールドです。`ListField` と同様に要素の追加・削除が可能ですが、重複する値がある場合はエラーインジケーターで警告されます。

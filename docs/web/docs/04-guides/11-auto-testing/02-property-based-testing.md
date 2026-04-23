@@ -32,10 +32,12 @@ kotest の property 依存関係をセットアップします。
   <TabItem value="cmp" label="Compose Multiplatform">
 
 <table>
+<tbody>
 <tr>
 <th> `<kotest-version>` </th>
 <td> [See Kotest release note](https://github.com/kotest/kotest/releases) </td>
 </tr>
+</tbody>
 </table>
 
 ```kt
@@ -52,10 +54,12 @@ kotlin {
   <TabItem value="android-jvm" label="Android / JVM">
 
 <table>
+<tbody>
 <tr>
 <th> `<kotest-version>` </th>
 <td> [See Kotest release note](https://github.com/kotest/kotest/releases) </td>
 </tr>
+</tbody>
 </table>
 
 ```kt

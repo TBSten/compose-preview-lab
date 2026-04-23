@@ -14,6 +14,7 @@ Kotlin の基本的なプリミティブ型（String、Boolean、数値型など
 ### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-string-field/index.html">StringField</KDocLink>
 
 <table>
+<tbody>
     <tr>
         <th>対応する 型</th>
         <td> `kotlin.String` </td>
@@ -26,6 +27,7 @@ Kotlin の基本的なプリミティブ型（String、Boolean、数値型など
         <th>KDoc</th>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-string-field/index.html">StringField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 文字列を入力するためのフィールドです。TextField による文字列入力が可能です。
@@ -107,6 +109,7 @@ PreviewLab {
 ### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-boolean-field/index.html">BooleanField</KDocLink>
 
 <table>
+<tbody>
     <tr>
         <th>対応する 型</th>
         <td> `kotlin.Boolean` </td>
@@ -119,6 +122,7 @@ PreviewLab {
         <th>KDoc</th>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-boolean-field/index.html">BooleanField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 Boolean 値を切り替えるためのフィールドです。トグルスイッチで `true` と `false` を選択できます。
@@ -142,6 +146,7 @@ PreviewLab {
 Kotlin の数値型（Int、Long、Byte、Double、Float）に対応するフィールドです。数値入力が可能です。
 
 <table>
+<tbody>
     <tr>
         <th>フィールド</th>
         <th>対応する 型</th>
@@ -178,6 +183,7 @@ Kotlin の数値型（Int、Long、Byte、Double、Float）に対応するフィ
         <td> ⭐⭐ </td>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-float-field/index.html">FloatField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 数値型の値を入力するためのフィールドです。TextField による数値入力が可能です。
@@ -269,6 +275,7 @@ PreviewLab {
 ### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-instant-field/index.html">InstantField</KDocLink>
 
 <table>
+<tbody>
     <tr>
         <th>対応する 型</th>
         <td> `kotlin.time.Instant` </td>
@@ -281,6 +288,7 @@ PreviewLab {
         <th>KDoc</th>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-instant-field/index.html">InstantField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 `kotlin.time.Instant` を編集するためのフィールドです。

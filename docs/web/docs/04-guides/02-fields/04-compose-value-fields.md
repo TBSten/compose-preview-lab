@@ -12,6 +12,7 @@ Compose 固有の値型（Dp、Sp、Color、Offset、Size、Modifier、Composabl
 ### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-dp-field/index.html">DpField</KDocLink>
 
 <table>
+<tbody>
     <tr>
         <th>対応する 型</th>
         <td> `androidx.compose.ui.unit.Dp` </td>
@@ -24,6 +25,7 @@ Compose 固有の値型（Dp、Sp、Color、Offset、Size、Modifier、Composabl
         <th>KDoc</th>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-dp-field/index.html">DpField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 Compose の Dp（密度非依存ピクセル）値を編集するためのフィールドです。自動的に "dp" サフィックスが付きます。
@@ -48,6 +50,7 @@ PreviewLab {
 ### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-sp-field/index.html">SpField</KDocLink>
 
 <table>
+<tbody>
     <tr>
         <th>対応する 型</th>
         <td> `androidx.compose.ui.unit.TextUnit` </td>
@@ -60,6 +63,7 @@ PreviewLab {
         <th>KDoc</th>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-sp-field/index.html">SpField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 Compose の Sp（スケーラブルピクセル）値を編集するためのフィールドです。フォントサイズなどのテキスト関連の寸法に使用します。自動的に "sp" サフィックスが付きます。
@@ -82,6 +86,7 @@ PreviewLab {
 ### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-color-field/index.html">ColorField</KDocLink>
 
 <table>
+<tbody>
     <tr>
         <th>対応する 型</th>
         <td> `androidx.compose.ui.graphics.Color` </td>
@@ -94,6 +99,7 @@ PreviewLab {
         <th>KDoc</th>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-color-field/index.html">ColorField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 Compose の Color を選択するためのフィールドです。インタラクティブなカラーピッカーで HSV スライダーとアルファチャンネルコントロールを使用して色を選択できます。
@@ -151,6 +157,7 @@ PreviewLab {
 座標やサイズを編集するためのフィールドです。各座標や寸法を独立して編集できます。
 
 <table>
+<tbody>
     <tr>
         <th>フィールド</th>
         <th>対応する 型</th>
@@ -181,6 +188,7 @@ PreviewLab {
         <td> ⭐⭐ </td>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-dp-size-field/index.html">DpSizeField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 ```kt
@@ -236,6 +244,7 @@ PreviewLab {
 ### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-modifier-field/index.html">ModifierField</KDocLink>
 
 <table>
+<tbody>
     <tr>
         <th>対応する 型</th>
         <td> `androidx.compose.ui.Modifier` </td>
@@ -248,6 +257,7 @@ PreviewLab {
         <th>KDoc</th>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-modifier-field/index.html">ModifierField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 Compose の Modifier チェーンを構築・編集するためのインタラクティブなフィールドです。ビルダーパターンで複雑な Modifier チェーンを視覚的に構築できます。
@@ -301,6 +311,7 @@ PreviewLab {
 ### <KDocLink path="field/me.tbsten.compose.preview.lab.field/-composable-field/index.html">ComposableField</KDocLink>
 
 <table>
+<tbody>
     <tr>
         <th>対応する 型</th>
         <td> `@Composable () -> Unit` </td>
@@ -313,6 +324,7 @@ PreviewLab {
         <th>KDoc</th>
         <td> <KDocLink path="field/me.tbsten.compose.preview.lab.field/-composable-field/index.html">ComposableField</KDocLink> </td>
     </tr>
+</tbody>
 </table>
 
 定義済みの Composable コンテンツオプションから選択するためのフィールドです。

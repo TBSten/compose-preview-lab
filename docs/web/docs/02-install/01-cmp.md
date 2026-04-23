@@ -36,10 +36,12 @@ Compose Multiplatform プロジェクトを新しく作成する場合は、[Com
 :::
 
 <table>
+<tbody>
   <tr>
     <th><code>&lt;compose-preview-lab-version&gt;</code></th>
     <td><ComposePreviewLabVersion /></td>
   </tr>
+</tbody>
 </table>
 
 ```kotlin title="build.gradle.kts"
