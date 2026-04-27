@@ -126,9 +126,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
-      - name: Smoke test compiler-plugin against Kotlin ${{ matrix.kotlin }}
+      - name: Test compiler-plugin against Kotlin ${{ matrix.kotlin }}
         shell: bash
-        run: ./scripts/smoke-test.sh "${{ matrix.kotlin }}"
+        run: ./scripts/compiler-plugin-test.sh "${{ matrix.kotlin }}"
   publish-to-maven-local:
     name: Publish to Maven Local
     runs-on: ubuntu-latest

@@ -13,7 +13,7 @@ dispatching at runtime via ServiceLoader.
 | 2.4.0-Beta2         |   ✅   | `compat-k240_beta2` swaps in `IrAnnotationImpl`; `IrAnnotationCompat` covers `getAnnotation`    |
 | 2.2.x and earlier   |   ❌   | Out of scope (only used as a workaround for Issue #149)                                         |
 
-The single source of truth that the CI matrix and smoke-test scripts read:
+The single source of truth that the CI matrix and test scripts read:
 [`scripts/supported-kotlin-versions.txt`](../scripts/supported-kotlin-versions.txt).
 
 ## Architecture
@@ -40,7 +40,7 @@ At runtime:
 ### A) Patch release without API drift (e.g. 2.3.30)
 
 1. Append a line to `scripts/supported-kotlin-versions.txt`.
-2. Verify locally with `./scripts/smoke-test.sh 2.3.30`.
+2. Verify locally with `./scripts/compiler-plugin-test.sh 2.3.30`.
 3. Open the PR. The CI matrix reads the SSOT, so the new version is exercised automatically.
 
 ### B) Minor / major release with API drift
@@ -56,14 +56,14 @@ At runtime:
 3. Add `add(embedded.name, projects.compilerPluginCompatKxyz)` to the `embedded` configuration
    in `compiler-plugin/build.gradle.kts`.
 4. Append the new version to `scripts/supported-kotlin-versions.txt`.
-5. Verify with `./scripts/smoke-test.sh X.Y.Z`.
+5. Verify with `./scripts/compiler-plugin-test.sh X.Y.Z`.
 6. Open the PR.
 
 ### Reference implementations (cloned locally)
 
 - Metro: `.local/tmp/metro/compiler-compat/` (`CompatContext`, `KotlinToolingVersion`, k* sub-modules)
 - debuggable-compiler-plugin: `.local/tmp/debuggable-compiler-plugin/debuggable-compiler/compat/`
-  (3-layer test strategy / smoke-test scripts)
+  (3-layer test strategy / compiler-plugin-test scripts)
 
 ## Binary incompatibilities absorbed via reflection
 
