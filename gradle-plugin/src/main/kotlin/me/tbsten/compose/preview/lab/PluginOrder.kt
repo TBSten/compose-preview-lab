@@ -17,9 +17,15 @@ internal data class KotlinSemVer(val major: Int, val minor: Int, val patch: Int)
 
     companion object {
         fun parse(raw: String): KotlinSemVer? {
-            val parts = raw.substringBefore('-').split('.').mapNotNull(String::toIntOrNull)
+            val coreVersion = raw.substringBefore('-').substringBefore('+')
+            val parts = coreVersion.split('.')
             if (parts.size < 2) return null
-            return KotlinSemVer(parts[0], parts[1], parts.getOrElse(2) { 0 })
+
+            val major = parts[0].toIntOrNull() ?: return null
+            val minor = parts[1].toIntOrNull() ?: return null
+            val patch = parts.getOrNull(2)?.toIntOrNull() ?: 0
+
+            return KotlinSemVer(major, minor, patch)
         }
     }
 }
