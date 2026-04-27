@@ -13,7 +13,9 @@ class ComposePreviewLabGradlePlugin : Plugin<Project> {
         pluginManager.apply(ComposePreviewLabSubplugin::class.java)
         val extension = extensions.getByType(ComposePreviewLabExtension::class.java)
         configureFeaturedFiles(extension = extension)
-        validatePluginOrder()
+        if (!supportsCompilerPluginOrder()) {
+            validatePluginOrder()
+        }
     }
 
     /**
@@ -29,7 +31,8 @@ class ComposePreviewLabGradlePlugin : Plugin<Project> {
             throw GradleException(
                 "Compose Preview Lab plugin (me.tbsten.compose.preview.lab) must be applied " +
                     "BEFORE the Compose Compiler plugin ($composeCompilerPluginId) in build.gradle.kts. " +
-                    "The current order may cause runtime errors with @Composable lambdas.",
+                    "The current order may cause runtime errors with @Composable lambdas. " +
+                    "Upgrading to Kotlin 2.3 or later removes this restriction automatically.",
             )
         }
     }
