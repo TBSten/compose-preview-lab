@@ -3,6 +3,7 @@
 package me.tbsten.compose.preview.lab.compiler.ir
 
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
+import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
@@ -43,8 +44,9 @@ internal class PreviewListIrBuilder(
     private val pluginContext: IrPluginContext,
     private val previews: List<PreviewFunctionInfo>,
     private val config: PluginConfig,
+    private val compatContext: CompatContext,
 ) {
-    private val previewBuilder = CollectedPreviewIrBuilder(pluginContext)
+    private val previewBuilder = CollectedPreviewIrBuilder(pluginContext, compatContext)
 
     private val collectedPreviewType get() = previewBuilder.collectedPreviewType
 

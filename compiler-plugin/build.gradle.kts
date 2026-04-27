@@ -47,6 +47,8 @@ dependencies {
     api(projects.annotation)
 
     add(embedded.name, projects.compilerPlugin.compat)
+    add(embedded.name, projects.compilerPluginCompatK222)
+    add(embedded.name, projects.compilerPluginCompatK2220)
     add(embedded.name, projects.compilerPluginCompatK230)
     add(embedded.name, projects.compilerPluginCompatK240Beta2)
 
