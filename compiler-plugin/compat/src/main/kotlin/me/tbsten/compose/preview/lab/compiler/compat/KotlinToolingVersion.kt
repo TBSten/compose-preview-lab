@@ -52,12 +52,12 @@ public class KotlinToolingVersion(
         // For STABLE: a missing classifier ranks higher than "release-N".
         if (this.classifier == null && other.classifier != null) return 1
         if (this.classifier != null && other.classifier == null) return -1
-        val a = classifierNumber
-        val b = other.classifierNumber
-        if (a != null && b != null) (a - b).takeIf { it != 0 }?.let { return it }
-        val ab = buildNumber
-        val bb = other.buildNumber
-        if (ab != null && bb != null) (ab - bb).takeIf { it != 0 }?.let { return it }
+        val a = classifierNumber ?: 0
+        val b = other.classifierNumber ?: 0
+        (a - b).takeIf { it != 0 }?.let { return it }
+        val ab = buildNumber ?: 0
+        val bb = other.buildNumber ?: 0
+        (ab - bb).takeIf { it != 0 }?.let { return it }
         return 0
     }
 
@@ -81,6 +81,13 @@ public fun KotlinToolingVersion(versionString: String): KotlinToolingVersion {
     val base = versionString.substringBefore('-')
     val classifier = if ('-' in versionString) versionString.substringAfter('-') else null
     val parts = base.split('.')
+    val isValid = parts.size == 3 && parts.all { it.toIntOrNull() != null }
+    if (!isValid) {
+        System.err.println(
+            "WARNING: [ComposePreviewLab] Unrecognised Kotlin version string '$versionString'; " +
+                "falling back to 0.0.0. Factory selection may be incorrect.",
+        )
+    }
     return KotlinToolingVersion(
         major = parts.getOrNull(0)?.toIntOrNull() ?: 0,
         minor = parts.getOrNull(1)?.toIntOrNull() ?: 0,
