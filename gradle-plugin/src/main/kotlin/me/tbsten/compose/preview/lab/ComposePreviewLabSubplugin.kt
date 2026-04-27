@@ -14,7 +14,7 @@ class ComposePreviewLabSubplugin : KotlinCompilerPluginSupportPlugin {
     override fun apply(target: Project) {
     }
 
-    override fun getCompilerPluginId(): String = "me.tbsten.compose.preview.lab.compiler"
+    override fun getCompilerPluginId(): String = PreviewLabCompilerPluginId
 
     override fun getPluginArtifact(): SubpluginArtifact = SubpluginArtifact(
         groupId = PluginGroupId,
