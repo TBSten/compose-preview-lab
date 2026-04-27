@@ -9,6 +9,7 @@ dependencies {
     testImplementation(libs.kotestFrameworkEngine)
     testImplementation(libs.kotestAssertionsCore)
     testImplementation(libs.kotestRunnerJunit5)
+    testImplementation(libs.kotestProperty)
     testImplementation(libs.kotlinCompilerEmbeddable)
 }
 
