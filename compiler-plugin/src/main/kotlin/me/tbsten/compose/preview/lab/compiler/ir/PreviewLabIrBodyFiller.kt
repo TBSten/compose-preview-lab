@@ -99,7 +99,10 @@ internal class PreviewLabIrBodyFiller(
         // (The Kotlin 2.3+ JVM backend asserts on lambdas whose parent is an IrFile via
         // `MethodSignatureMapper.mapToMethodHandle` with "Unexpected parent: FILE".)
         val lambdaParent: IrDeclarationParent = property.getter
-            ?: error("collectModulePreviews/collectAllModulePreviews delegate must be on a property with a getter, not a backing field")
+            ?: error(
+                "collectModulePreviews/collectAllModulePreviews delegate must be on a property" +
+                    " with a getter, not a backing field",
+            )
 
         val thisModulePreviews = irBuilder.buildPreviewsListExpr(builder, lambdaParent)
         val previewListExpr = if (isAll) {
