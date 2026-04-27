@@ -5,12 +5,8 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 
 /**
- * Loader unit test. The full resolve logic is exercised end-to-end once the compat
- * modules are in place, so here we only verify behavior against the actual classpath
- * via `CompatContext.load(knownVersion)`.
- *
- * In this module's classpath there are no Factory implementations, so the test
- * confirms that a "No factories" error is raised.
+ * Tests the error path when no [CompatContext.Factory] implementations are on the classpath.
+ * (The compat module itself registers no factory; factories live in compiler-plugin-compat-* modules.)
  */
 class CompatContextLoaderTest :
     StringSpec({
