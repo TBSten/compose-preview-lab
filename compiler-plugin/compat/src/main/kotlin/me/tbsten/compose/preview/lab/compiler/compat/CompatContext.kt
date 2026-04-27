@@ -6,37 +6,40 @@ import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
 import org.jetbrains.kotlin.ir.types.IrType
 
 /**
- * Kotlin compiler API の version-specific 差異を吸収する SPI。
+ * SPI that absorbs version-specific differences in the Kotlin compiler API.
  *
- * 実装は [Factory] として `META-INF/services/.../CompatContext$Factory` で登録され、
- * [CompatContextLoader] が runtime に Kotlin バージョンを判定して最適な実装を選択する。
+ * Implementations are registered as a [Factory] in
+ * `META-INF/services/.../CompatContext$Factory`, and [CompatContextLoader]
+ * picks the best one at runtime based on the current Kotlin compiler version.
  *
- * 新しい Kotlin バージョンで API drift が発生したら、ここに抽象メソッドを追加し、
- * 各 compat module ([Factory.minVersion]) で実装する。
+ * When a new Kotlin version introduces API drift, add an abstract method here
+ * and implement it in each compat module ([Factory.minVersion]).
  */
 public interface CompatContext {
     /**
-     * FIR declaration が関数かを判定する。
+     * Returns whether the FIR declaration is a function.
      *
-     * - Kotlin 2.2 以前: `FirSimpleFunction`
-     * - Kotlin 2.3 以降: `FirFunction` (FirSimpleFunction が統合された)
+     * - Kotlin 2.2 and earlier: `FirSimpleFunction`
+     * - Kotlin 2.3 and later: `FirFunction` (FirSimpleFunction has been merged in)
      */
     public fun isFirFunction(declaration: FirDeclaration): Boolean
 
     /**
-     * 指定された constructor symbol からアノテーションを生成して関数に追加する。
+     * Builds an annotation from the given constructor symbol and adds it to the function.
      *
-     * - Kotlin 2.3 以前: `IrConstructorCallImpl` を直接 annotations に追加
-     * - Kotlin 2.4 以降: `IrAnnotationImpl` を使用 (`IrSimpleFunction.annotations` の要素型変更)
+     * - Kotlin 2.3 and earlier: append `IrConstructorCallImpl` directly to `annotations`
+     * - Kotlin 2.4 and later: use `IrAnnotationImpl` (the element type of
+     *   `IrSimpleFunction.annotations` was changed)
      */
-    public fun addConstructorCallAnnotation(function: IrSimpleFunction, type: IrType, constructorSymbol: IrConstructorSymbol,)
+    public fun addConstructorCallAnnotation(function: IrSimpleFunction, type: IrType, constructorSymbol: IrConstructorSymbol)
 
     /**
-     * compat 実装の factory。各 k* module は自身の [minVersion] を持つ実装を
-     * `META-INF/services/me.tbsten.compose.preview.lab.compiler.compat.CompatContext${'$'}Factory` に登録する。
+     * Factory for compat implementations. Each k* module registers its implementation
+     * (with its own [minVersion]) in
+     * `META-INF/services/me.tbsten.compose.preview.lab.compiler.compat.CompatContext${'$'}Factory`.
      */
     public interface Factory {
-        /** この実装が対応する最小 Kotlin バージョン (例: "2.3.0", "2.4.0-Beta2")。 */
+        /** The minimum Kotlin version this implementation supports (e.g. "2.3.0", "2.4.0-Beta2"). */
         public val minVersion: String
 
         public fun create(): CompatContext
@@ -44,9 +47,10 @@ public interface CompatContext {
 
     public companion object {
         /**
-         * 現在の Kotlin compiler バージョンに最適な [CompatContext] 実装をロードする。
+         * Loads the [CompatContext] implementation that best matches the current Kotlin compiler version.
          *
-         * @param knownVersion テストや明示指定用。null なら META-INF/compiler.version から自動検出。
+         * @param knownVersion for tests / explicit selection. When null, detected automatically
+         *                     from META-INF/compiler.version.
          */
         public fun load(knownVersion: KotlinToolingVersion? = null): CompatContext = CompatContextLoader.load(knownVersion)
     }

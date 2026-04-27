@@ -5,15 +5,16 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 
 /**
- * Loader 単体テスト。実 ServiceLoader を使うのではなく、resolve ロジック自体は
- * Phase 4 以降に compat module が揃うと統合テストできるため、ここでは
- * `CompatContext.load(knownVersion)` 経由で実 classpath ベースの動作だけ確認する。
+ * Loader unit test. The full resolve logic is exercised end-to-end once the compat
+ * modules are in place, so here we only verify behavior against the actual classpath
+ * via `CompatContext.load(knownVersion)`.
  *
- * Phase 1 時点では classpath に Factory 実装が無いので "No factories" エラーが出ることを確認。
+ * In this module's classpath there are no Factory implementations, so the test
+ * confirms that a "No factories" error is raised.
  */
 class CompatContextLoaderTest :
     StringSpec({
-        "factory が無いと error" {
+        "throws when no factory is available" {
             val ex = shouldThrow<IllegalStateException> {
                 CompatContext.load(KotlinToolingVersion("2.3.21"))
             }

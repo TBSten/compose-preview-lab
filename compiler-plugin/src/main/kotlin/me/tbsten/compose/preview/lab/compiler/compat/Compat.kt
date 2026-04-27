@@ -6,23 +6,23 @@ import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
 import org.jetbrains.kotlin.ir.types.IrType
 
 /**
- * Version-specific Kotlin compiler API へのアクセスポイント。
+ * Access point for the version-specific Kotlin compiler API.
  *
- * 実際の差分実装は [CompatContext] を実装した compat module
- * (`compiler-plugin-compat-k230`, `compiler-plugin-compat-k240_beta2` 等) に閉じ込められており、
- * 実行時に [ServiceLoader] 経由で現在の Kotlin compiler バージョンに合うものが選ばれる。
+ * The actual differences live in compat modules that implement [CompatContext]
+ * (`compiler-plugin-compat-k230`, `compiler-plugin-compat-k240_beta2`, ...).
+ * At runtime, ServiceLoader picks the one that matches the current Kotlin compiler.
  *
- * 呼び出し側のコード変更を最小化するため、これまで `kotlin-2.3/` 等の sourceSet で定義されていた
- * extension function と同じシグネチャを維持している。
+ * The extension-function shapes here intentionally mirror the ones that used to live
+ * in the per-version sourceSets (`kotlin-2.3/`, ...) so call sites do not need to change.
  */
 private val compatContext: CompatContext by lazy { CompatContext.load() }
 
-/** FIR declaration が関数かを判定する。バージョン別実装は [CompatContext.isFirFunction] を参照。 */
+/** Returns whether the FIR declaration is a function. See [CompatContext.isFirFunction]. */
 internal fun FirDeclaration.isFirFunction(): Boolean = compatContext.isFirFunction(this)
 
 /**
- * 指定された constructor symbol からアノテーションを生成して関数に追加する。
- * バージョン別実装は [CompatContext.addConstructorCallAnnotation] を参照。
+ * Builds an annotation from the given constructor symbol and adds it to the function.
+ * See [CompatContext.addConstructorCallAnnotation].
  */
-internal fun IrSimpleFunction.addConstructorCallAnnotation(type: IrType, constructorSymbol: IrConstructorSymbol,) =
+internal fun IrSimpleFunction.addConstructorCallAnnotation(type: IrType, constructorSymbol: IrConstructorSymbol) =
     compatContext.addConstructorCallAnnotation(this, type, constructorSymbol)

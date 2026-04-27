@@ -40,7 +40,7 @@ public class KotlinToolingVersion(
     }
 
     private val buildNumber: Int? by lazy {
-        // dev-2124 など末尾の数字
+        // Trailing number such as in "dev-2124".
         classifier?.let { Regex("""-(\d+)$""").find(it) }?.groupValues?.get(1)?.toIntOrNull()
     }
 
@@ -49,7 +49,7 @@ public class KotlinToolingVersion(
         (this.minor - other.minor).takeIf { it != 0 }?.let { return it }
         (this.patch - other.patch).takeIf { it != 0 }?.let { return it }
         (this.maturity.ordinal - other.maturity.ordinal).takeIf { it != 0 }?.let { return it }
-        // STABLE は classifier null > release-N
+        // For STABLE: a missing classifier ranks higher than "release-N".
         if (this.classifier == null && other.classifier != null) return 1
         if (this.classifier != null && other.classifier == null) return -1
         val a = classifierNumber
@@ -76,7 +76,7 @@ public class KotlinToolingVersion(
     public enum class Maturity { SNAPSHOT, DEV, MILESTONE, ALPHA, BETA, RC, STABLE }
 }
 
-/** "2.3.0", "2.4.0-Beta2", "2.4.0-dev-2124" 形式の文字列をパース。 */
+/** Parses a string of the form "2.3.0", "2.4.0-Beta2", or "2.4.0-dev-2124". */
 public fun KotlinToolingVersion(versionString: String): KotlinToolingVersion {
     val base = versionString.substringBefore('-')
     val classifier = if ('-' in versionString) versionString.substringAfter('-') else null

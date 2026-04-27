@@ -33,11 +33,11 @@ import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.SpecialNames
 
 /**
- * Preview リスト全体の IR 構築を担当する。
+ * Builds the IR for the full preview list.
  *
- * - `listOf(CollectedPreview(...), ...)` / `emptyList()` の構築
- * - `lazy { ... }` ラッパーの構築
- * - cross-module 結合 (`mutableListOf().apply { addAll(...) }`)
+ * - `listOf(CollectedPreview(...), ...)` / `emptyList()` construction
+ * - `lazy { ... }` wrapping
+ * - cross-module concatenation (`mutableListOf().apply { addAll(...) }`)
  */
 internal class PreviewListIrBuilder(
     private val pluginContext: IrPluginContext,
@@ -54,9 +54,9 @@ internal class PreviewListIrBuilder(
         )!!.typeWith(collectedPreviewType)
     }
 
-    // ----- Preview リスト構築 -----
+    // ----- Preview list construction -----
 
-    /** `listOf(CollectedPreview(...), ...)` または `emptyList()` を構築する。 */
+    /** Builds either `listOf(CollectedPreview(...), ...)` or `emptyList()`. */
     fun buildPreviewsListExpr(builder: DeclarationIrBuilder, parent: IrDeclarationParent): IrExpression {
         if (previews.isEmpty()) return buildEmptyListCall(builder)
 
@@ -89,9 +89,9 @@ internal class PreviewListIrBuilder(
         return builder.irCall(emptyListFun, listOfCollectedPreviewType, listOf(collectedPreviewType))
     }
 
-    // ----- Lazy ラッパー -----
+    // ----- Lazy wrapper -----
 
-    /** `lazy { valueExpr }` の IR を構築する。 */
+    /** Builds the IR for `lazy { valueExpr }`. */
     fun buildLazyCall(builder: DeclarationIrBuilder, valueExpr: IrExpression, parent: IrDeclarationParent,): IrExpression {
         val lazyFun = pluginContext.referenceFunctions(
             CallableId(FqName("kotlin"), Name.identifier("lazy")),
@@ -134,12 +134,13 @@ internal class PreviewListIrBuilder(
         }
     }
 
-    // ----- Cross-module 結合 -----
+    // ----- Cross-module concatenation -----
 
     /**
-     * 自モジュールの Preview + 依存モジュールの Preview を結合した式を構築する。
+     * Builds an expression that concatenates this module's previews with previews from
+     * dependency modules.
      *
-     * `mutableListOf<CollectedPreview>().apply { addAll(this); addAll(dep) }` を生成。
+     * Generates `mutableListOf<CollectedPreview>().apply { addAll(this); addAll(dep) }`.
      */
     fun buildConcatenatedPreviewsExpr(builder: DeclarationIrBuilder, thisModulePreviews: IrExpression,): IrExpression {
         val depProperties = collectDependencyProperties()

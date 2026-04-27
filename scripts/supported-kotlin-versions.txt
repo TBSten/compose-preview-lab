@@ -1,12 +1,12 @@
-# compose-preview-lab がサポートする Kotlin バージョンの SSOT。
-# 各行 1 バージョン (空行 / # で始まる行はコメント)。
-# CI workflow / smoke-test スクリプトはここから読み込む。
+# SSOT for the Kotlin versions that compose-preview-lab supports.
+# One version per line (blank lines and lines starting with `#` are comments).
+# CI workflows and smoke-test scripts read this file.
 #
-# 追加するときは:
-#   1. 行を追記する
-#   2. ./scripts/smoke-test.sh <new-version> でローカル検証
-#   3. 必要なら API drift を吸収する compat module を追加
-#      (compiler-plugin-compat-k* / settings.gradle.kts / META-INF/services を更新)
+# To add a new version:
+#   1. Append a line below.
+#   2. Verify locally with `./scripts/smoke-test.sh <new-version>`.
+#   3. If API drift requires it, add a new compat module
+#      (compiler-plugin-compat-k* / settings.gradle.kts / META-INF/services).
 2.3.0
 2.3.10
 2.3.20

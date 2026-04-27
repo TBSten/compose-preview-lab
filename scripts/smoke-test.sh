@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 単一の Kotlin バージョンに対して compiler-plugin の test を実行する。
+# Run the compiler-plugin tests against a single Kotlin version.
 #
 # Usage: ./scripts/smoke-test.sh <kotlin-version>
 # Example: ./scripts/smoke-test.sh 2.3.21
@@ -17,8 +17,8 @@ LOG="$LOG_DIR/smoke-${VERSION}-$(date +%s).log"
 echo "[smoke] === Kotlin $VERSION ==="
 echo "[smoke] log: $LOG"
 
-# kctfork が使う kotlin-compiler-embeddable のバージョンを test.kotlin で上書き。
-# compiler-plugin/build.gradle.kts 側で resolutionStrategy.force にこの値が反映される。
+# Override the kotlin-compiler-embeddable version that kctfork drives via -Ptest.kotlin.
+# compiler-plugin/build.gradle.kts feeds this into resolutionStrategy.force.
 ./gradlew \
     :compiler-plugin:test \
     --rerun-tasks \

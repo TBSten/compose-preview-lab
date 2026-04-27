@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# `scripts/supported-kotlin-versions.txt` に列挙された全 Kotlin バージョンに対して
-# smoke-test.sh を順次実行する。
+# Run smoke-test.sh sequentially for every Kotlin version listed in
+# `scripts/supported-kotlin-versions.txt`.
 #
 # Usage: ./scripts/smoke-test-all.sh
 set -euo pipefail

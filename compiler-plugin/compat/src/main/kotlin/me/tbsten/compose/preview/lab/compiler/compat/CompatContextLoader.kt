@@ -3,19 +3,19 @@ package me.tbsten.compose.preview.lab.compiler.compat
 import java.util.ServiceLoader
 
 /**
- * [CompatContext.Factory] を ServiceLoader 経由で発見し、
- * 現在の Kotlin compiler バージョンに最適な実装を返す。
+ * Discovers [CompatContext.Factory] implementations via ServiceLoader and
+ * returns the one that best matches the current Kotlin compiler version.
  */
 internal object CompatContextLoader {
 
     /**
-     * 現在の Kotlin バージョンに対して `currentVersion >= minVersion` を満たす
-     * factory のうち、`minVersion` が最大のものを選ぶ。
+     * Among the factories whose `minVersion` is `<= currentVersion`, picks the one
+     * with the largest `minVersion`.
      *
-     * 例: factories = [k230 (2.3.0), k240_beta2 (2.4.0-Beta2)]
-     *   - currentVersion = 2.3.21 → k230
-     *   - currentVersion = 2.4.0-Beta2 → k240_beta2
-     *   - currentVersion = 2.4.0 (stable) → k240_beta2 (Beta < STABLE なので互換)
+     * Example: factories = [k230 (2.3.0), k240_beta2 (2.4.0-Beta2)]
+     *   - currentVersion = 2.3.21        → k230
+     *   - currentVersion = 2.4.0-Beta2   → k240_beta2
+     *   - currentVersion = 2.4.0 stable  → k240_beta2 (Beta < STABLE so still compatible)
      */
     fun load(knownVersion: KotlinToolingVersion? = null): CompatContext {
         val factories = ServiceLoader
@@ -54,8 +54,8 @@ internal object CompatContextLoader {
     }
 
     /**
-     * `META-INF/compiler.version` ファイルから Kotlin compiler バージョンを取得する。
-     * このファイルは `kotlin-compiler-embeddable` jar に同梱されている。
+     * Reads the Kotlin compiler version from `META-INF/compiler.version`.
+     * That file is shipped inside the `kotlin-compiler-embeddable` jar.
      */
     private fun detectCurrentKotlinVersion(): KotlinToolingVersion? {
         val classLoader = CompatContextLoader::class.java.classLoader ?: return null

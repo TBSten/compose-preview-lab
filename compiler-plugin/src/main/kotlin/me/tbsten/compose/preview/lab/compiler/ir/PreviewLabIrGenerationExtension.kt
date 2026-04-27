@@ -15,10 +15,10 @@ import org.jetbrains.kotlin.ir.util.file
 import org.jetbrains.kotlin.name.FqName
 
 /**
- * Compose Preview Lab の IR generation extension。
+ * IR generation extension for Compose Preview Lab.
  *
- * モジュール内の @Preview 関数を収集し、
- * `collectModulePreviews()` / `collectAllModulePreviews()` の呼び出し箇所に注入する。
+ * Collects every @Preview function in the module and injects them at the
+ * `collectModulePreviews()` / `collectAllModulePreviews()` call sites.
  */
 class PreviewLabIrGenerationExtension(private val config: PluginConfig) : IrGenerationExtension {
 

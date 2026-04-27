@@ -8,35 +8,38 @@ plugins {
 }
 
 /**
- * 配布される compiler-plugin の jar には全 compat module を bundle する。
- * gradle-plugin が SubpluginArtifact 経由でこの 1 つの artifact を参照するだけで、
- * runtime に Kotlin compiler バージョンを ServiceLoader で判定して最適な実装が選ばれる。
+ * The published compiler-plugin jar bundles every compat module so the gradle-plugin
+ * only has to point at this single artifact via SubpluginArtifact. ServiceLoader picks
+ * the implementation that matches the Kotlin compiler at runtime.
  *
- * Metro (https://github.com/ZacSweers/metro/blob/main/compiler/build.gradle.kts) の
- * embedded configuration + ShadowJar パターンを縮小移植している。
+ * This is a trimmed port of the embedded-configuration + ShadowJar pattern used in
+ * Metro (https://github.com/ZacSweers/metro/blob/main/compiler/build.gradle.kts).
  */
 val embedded by configurations.dependencyScope("embedded")
 val embeddedClasspath by configurations.resolvable("embeddedClasspath") { extendsFrom(embedded) }
 
-// embedded を compile / test classpath にも見せる
+// Make the embedded modules visible from the compile / test classpath as well.
 configurations.named("compileOnly").configure { extendsFrom(embedded) }
 configurations.named("testImplementation").configure { extendsFrom(embedded) }
 
-// `-Ptest.kotlin=X.Y.Z` で smoke-test.sh などから kctfork が動かす kotlin-compiler-embeddable を切替可能。
-// `scripts/supported-kotlin-versions.txt` に列挙された各バージョンに対する compat 検証に使う。
+// `-Ptest.kotlin=X.Y.Z` lets smoke-test.sh swap the kotlin-compiler-embeddable that
+// kctfork drives. It is used to verify each version listed in
+// `scripts/supported-kotlin-versions.txt`.
 val testKotlinVersion: String = (findProperty("test.kotlin") as String?) ?: libs.versions.kotlin.get()
 
-// Kotlin 2.4 系は新しい kctfork が必要。
+// Kotlin 2.4 needs a newer kctfork release.
 val kctforkVersion: String = when {
     testKotlinVersion.startsWith("2.4") -> "0.13.0-alpha01"
     else -> libs.versions.kctfork.get()
 }
 
-// compiler-plugin main をコンパイルする時の Kotlin compiler API バージョン。
-// CompatContext で吸収していない部分 (lambda 生成、IR builder 等) は Kotlin の internal API を直接使うため、
-// このバージョンと runtime のバージョンとで binary incompatible があると NoSuchMethodError 等になる。
-// → 当面は libs.versions.kotlin と一致させ、これと一致するか forward-compat なバージョンのみサポート。
-// (compat module で吸収できない API drift については `.local/ticket/` でフォローアップ ticket 化)
+// Kotlin compiler API version against which the compiler-plugin main module is compiled.
+// Anything that CompatContext does not abstract (lambda creation, IR builders, ...) calls
+// into Kotlin compiler internal API directly, so a binary mismatch between this version
+// and the runtime version surfaces as NoSuchMethodError etc.
+// → Pin this to libs.versions.kotlin and only support versions that match it or are
+//   forward-compatible with it. API drift that the compat modules cannot absorb is tracked
+//   as follow-up tickets under `.local/ticket/`.
 val compilerPluginBaselineKotlin: String = libs.versions.kotlin.get()
 
 dependencies {
@@ -59,9 +62,9 @@ dependencies {
 kotlin {
     compilerOptions {
         optIn.add("org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi")
-        // -Ptest.kotlin で 2.4-Beta などを指定された場合、test classpath には新しい
-        // kotlin-compiler-embeddable metadata が混在する。compileTest は KGP 2.3.21 で走るので
-        // metadata version mismatch が出るのを回避。
+        // When -Ptest.kotlin selects 2.4-Beta or similar, the test classpath ends up with newer
+        // kotlin-compiler-embeddable metadata. compileTestKotlin runs with KGP 2.3.21, so this
+        // suppresses the resulting metadata-version mismatch errors.
         freeCompilerArgs.addAll(
             "-Xskip-prerelease-check",
             "-Xskip-metadata-version-check",
@@ -69,10 +72,11 @@ kotlin {
     }
 }
 
-// kotlin-compiler-embeddable の version 強制は test classpath だけに限定する。
-// 全 configuration に適用すると KGP 自体が使う classpath にも影響して
-// "Could not initialize class org.jetbrains.kotlin.buildtools.internal..." エラーになる。
-// main の compileOnly は compilerPluginBaselineKotlin に固定しているので main 側には影響なし。
+// Restrict the kotlin-compiler-embeddable version override to the test classpath only.
+// Applying it to every configuration also affects the classpath that KGP itself uses,
+// which leads to "Could not initialize class org.jetbrains.kotlin.buildtools.internal..." errors.
+// The main compileOnly is already pinned to compilerPluginBaselineKotlin, so the main classpath
+// is not affected.
 listOf("testCompileClasspath", "testRuntimeClasspath").forEach { name ->
     configurations.named(name).configure {
         resolutionStrategy {
@@ -83,8 +87,8 @@ listOf("testCompileClasspath", "testRuntimeClasspath").forEach { name ->
 
 tasks.withType<Test> {
     useJUnitPlatform()
-    // kctfork 内部の kotlin-compiler-embeddable が Java 26 の version 文字列を
-    // 解析できないため、テスト JVM は Java 21 で実行する
+    // kctfork bundles a kotlin-compiler-embeddable that cannot parse Java 26 version
+    // strings, so the test JVM has to run on Java 21.
     javaLauncher.set(
         javaToolchains.launcherFor {
             languageVersion.set(JavaLanguageVersion.of(21))
@@ -92,7 +96,7 @@ tasks.withType<Test> {
     )
 }
 
-// デフォルト jar task は無効化し、shadowJar を main artifact として publish する
+// Disable the default jar task; shadowJar takes its place as the published artifact.
 tasks.named<Jar>("jar") {
     enabled = false
 }
@@ -102,10 +106,10 @@ val shadowJar = tasks.named<ShadowJar>("shadowJar") {
     from(java.sourceSets["main"].output)
     configurations = listOf(embeddedClasspath)
 
-    // 各 compat module の META-INF/services/.../CompatContext$Factory をマージ
+    // Merge each compat module's META-INF/services/.../CompatContext$Factory entries.
     mergeServiceFiles()
 
-    // Kotlin / IDE の共有依存は除外 (compileOnly で外から渡される想定)
+    // Exclude shared Kotlin / IDE dependencies; they come in via compileOnly from the outside.
     dependencies {
         exclude(dependency("org.jetbrains.kotlin:.*"))
         exclude(dependency("org.jetbrains:annotations"))
@@ -114,13 +118,13 @@ val shadowJar = tasks.named<ShadowJar>("shadowJar") {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
-// publish される artifact (apiElements, runtimeElements) を shadowJar に差し替える
+// Replace the published artifacts (apiElements / runtimeElements) with the shadow jar.
 arrayOf("apiElements", "runtimeElements").forEach { name ->
     configurations.named(name).configure { artifacts.removeIf { true } }
     artifacts.add(name, shadowJar)
 }
 
-// assemble / build からも shadowJar を生成するように依存追加 (jar が disabled なため)
+// `assemble` / `build` should still produce shadowJar even though the default jar task is disabled.
 tasks.named("assemble") { dependsOn(shadowJar) }
 
 publishConvention {

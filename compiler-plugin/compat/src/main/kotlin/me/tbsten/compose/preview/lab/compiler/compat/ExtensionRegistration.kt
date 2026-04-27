@@ -3,17 +3,17 @@ package me.tbsten.compose.preview.lab.compiler.compat
 import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
 
 /**
- * `CompilerPluginRegistrar.ExtensionStorage.registerExtension(companion, extension)` を
- * reflection 経由で呼び出す helper。
+ * Reflection-based helper that calls
+ * `CompilerPluginRegistrar.ExtensionStorage.registerExtension(companion, extension)`.
  *
- * Kotlin 2.4.0-Beta1 で `FirExtensionRegistrarAdapter.Companion` の親クラスが
- * `ProjectExtensionDescriptor` から `ExtensionPointDescriptor` に変わったため、
- * 直接呼ぶと `ClassCastException` が起きる。reflection で実行時にシグネチャを判定すれば
- * 2.3 / 2.4 両方で動作する。
+ * In Kotlin 2.4.0-Beta1 the parent class of `FirExtensionRegistrarAdapter.Companion`
+ * changed from `ProjectExtensionDescriptor` to `ExtensionPointDescriptor`, so calling
+ * the method directly throws `ClassCastException`. Resolving the signature reflectively
+ * at runtime keeps both Kotlin 2.3 and 2.4 working.
  *
- * 参考: debuggable-compiler-plugin の `compat/ExtensionRegistration.kt`
+ * Reference: `compat/ExtensionRegistration.kt` in debuggable-compiler-plugin.
  */
-public fun CompilerPluginRegistrar.ExtensionStorage.registerExtensionCompat(companion: Any, extension: Any,) {
+public fun CompilerPluginRegistrar.ExtensionStorage.registerExtensionCompat(companion: Any, extension: Any) {
     val storageClass = this::class.java
     val method = storageClass.methods.firstOrNull { m ->
         m.name == "registerExtension" &&

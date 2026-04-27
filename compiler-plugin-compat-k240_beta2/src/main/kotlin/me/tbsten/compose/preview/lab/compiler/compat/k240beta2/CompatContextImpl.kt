@@ -9,14 +9,15 @@ import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 
 /**
- * Kotlin 2.4.0-Beta2+ compatibility layer.
+ * Compatibility layer for Kotlin 2.4.0-Beta2 and later.
  *
- * 2.4 では `IrSimpleFunction.annotations` の要素型が `List<IrConstructorCall>` から
- * `List<IrAnnotation>` に変更された。`IrConstructorCallImpl` は `IrAnnotation` のサブタイプではないため、
- * annotations リストに直接追加するとランタイムで ClassCastException となる。
- * このクラスでは [IrAnnotationImpl] を生成する実装に override する。
+ * In 2.4 the element type of `IrSimpleFunction.annotations` was changed from
+ * `List<IrConstructorCall>` to `List<IrAnnotation>`. `IrConstructorCallImpl` is not a
+ * subtype of `IrAnnotation`, so appending it directly throws `ClassCastException` at
+ * runtime. This class overrides annotation construction to use [IrAnnotationImpl].
  *
- * その他の API ([isFirFunction]) は 2.3 と同じ仕様なので [K230CompatContextImpl] に委譲する。
+ * Other APIs (such as [isFirFunction]) behave the same as in 2.3, so we delegate to
+ * [K230CompatContextImpl] for them.
  */
 public class CompatContextImpl : CompatContext by K230CompatContextImpl() {
 

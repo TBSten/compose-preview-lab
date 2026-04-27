@@ -32,7 +32,7 @@ import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.SpecialNames
 
 /**
- * 個々の [CollectedPreview] インスタンスの IR 構築を担当する。
+ * Builds the IR for individual [CollectedPreview] instances.
  */
 internal class CollectedPreviewIrBuilder(private val pluginContext: IrPluginContext,) {
     val collectedPreviewClass by lazy {
@@ -43,7 +43,7 @@ internal class CollectedPreviewIrBuilder(private val pluginContext: IrPluginCont
     val collectedPreviewType by lazy { collectedPreviewClass.defaultType }
 
     /**
-     * `CollectedPreview(id, displayName, ...) { previewFun() }` の IR を構築する。
+     * Builds the IR for `CollectedPreview(id, displayName, ...) { previewFun() }`.
      */
     fun buildCollectedPreviewCall(
         preview: PreviewFunctionInfo,
@@ -88,7 +88,7 @@ internal class CollectedPreviewIrBuilder(private val pluginContext: IrPluginCont
     }
 
     /**
-     * `{ previewFun() }` の @Composable IR ラムダを生成する。
+     * Builds the @Composable IR lambda for `{ previewFun() }`.
      */
     private fun buildContentLambda(
         previewFunc: IrSimpleFunction,

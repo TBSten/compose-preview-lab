@@ -6,19 +6,19 @@ import org.jetbrains.kotlin.ir.types.classFqName
 import org.jetbrains.kotlin.name.FqName
 
 /**
- * `IrAnnotationContainer` から特定の annotation を取得する helper。
+ * Helper that fetches a specific annotation from an `IrAnnotationContainer`.
  *
- * 標準ライブラリの `IrUtilsKt.getAnnotation(...)` は Kotlin 2.4 で戻り値型が
- * `IrConstructorCall?` から `IrAnnotation?` に変わったため `NoSuchMethodError` を起こす。
- * 本実装は `IrAnnotationContainer.annotations` (version 不変な list) を直接走査することで、
- * 2.3 / 2.4 双方で動作する。
+ * The standard library's `IrUtilsKt.getAnnotation(...)` had its return type changed
+ * from `IrConstructorCall?` to `IrAnnotation?` in Kotlin 2.4, so calling it triggers
+ * `NoSuchMethodError`. This implementation walks `IrAnnotationContainer.annotations`
+ * (a list whose shape is unchanged across versions), so it works on both 2.3 and 2.4.
  *
- * 注: 戻り値型は `IrConstructorCall?`。Kotlin 2.4 の `IrAnnotation` は `IrConstructorCall` の
- * サブタイプなので問題なくダウンキャストできる。
+ * Note: the return type stays `IrConstructorCall?`. Kotlin 2.4's `IrAnnotation` is a
+ * subtype of `IrConstructorCall`, so the downcast is safe.
  */
 public fun IrAnnotationContainer.getAnnotationCompat(fqName: FqName): IrConstructorCall? =
     annotations.firstOrNull { call -> call.type.classFqName == fqName }
 
-/** [getAnnotationCompat] の boolean 版。 */
+/** Boolean variant of [getAnnotationCompat]. */
 public fun IrAnnotationContainer.hasAnnotationCompat(fqName: FqName): Boolean =
     annotations.any { call -> call.type.classFqName == fqName }

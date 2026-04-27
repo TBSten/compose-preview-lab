@@ -92,11 +92,12 @@ internal class PreviewLabIrBodyFiller(
         val isAll = isCollectAllCall(delegateField)
         val builder = DeclarationIrBuilder(pluginContext, property.symbol)
 
-        // 生成する lambda の parent は IrFunction でなければならない。
-        // property の delegate field initializer は static initializer (`<clinit>`) で実行されるが、
-        // その IrFunction はまだこの phase で存在しないため、property の getter を仮の親として使う。
-        // (Kotlin 2.3 以降の JVM backend は parent が IrFile の lambda で
-        // `MethodSignatureMapper.mapToMethodHandle` の "Unexpected parent: FILE" assert を投げる)
+        // The synthetic lambda needs an IrFunction as its parent.
+        // The delegate field initializer ultimately runs inside a static initializer (`<clinit>`),
+        // but that IrFunction does not exist yet at this phase, so we use the property's getter
+        // as a stand-in parent.
+        // (The Kotlin 2.3+ JVM backend asserts on lambdas whose parent is an IrFile via
+        // `MethodSignatureMapper.mapToMethodHandle` with "Unexpected parent: FILE".)
         val lambdaParent: IrDeclarationParent = property.getter ?: property.parent
 
         val thisModulePreviews = irBuilder.buildPreviewsListExpr(builder, lambdaParent)

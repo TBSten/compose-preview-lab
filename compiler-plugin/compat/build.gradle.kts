@@ -20,8 +20,8 @@ kotlin {
 
 tasks.withType<Test> {
     useJUnitPlatform()
-    // kctfork 内部の kotlin-compiler-embeddable が Java 26 の version 文字列を
-    // 解析できないため、テスト JVM は Java 21 で実行する
+    // kctfork bundles a kotlin-compiler-embeddable that cannot parse Java 26 version
+    // strings, so the test JVM has to run on Java 21.
     javaLauncher.set(
         javaToolchains.launcherFor {
             languageVersion.set(JavaLanguageVersion.of(21))

@@ -10,13 +10,14 @@ import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 
 /**
- * Kotlin 2.3.x compatibility layer.
+ * Compatibility layer for Kotlin 2.3.x.
  *
- * - FIR: 2.3 で `FirSimpleFunction` が `FirFunction` に統合されたため、`FirFunction` で判定する。
- * - IR: 2.3 では `IrSimpleFunction.annotations` の要素型がまだ `List<IrConstructorCall>` なので、
- *       `IrConstructorCallImpl` を直接 annotations に追加できる。
+ * - FIR: in 2.3 `FirSimpleFunction` was merged into `FirFunction`, so we check against
+ *   `FirFunction`.
+ * - IR: in 2.3 the element type of `IrSimpleFunction.annotations` is still
+ *   `List<IrConstructorCall>`, so `IrConstructorCallImpl` can be appended directly.
  *
- * 2.3.0 / 2.3.10 / 2.3.20 / 2.3.21 の patch 間でこれら API は同じ。
+ * These APIs are identical across the 2.3.0 / 2.3.10 / 2.3.20 / 2.3.21 patches.
  */
 public class CompatContextImpl : CompatContext {
 

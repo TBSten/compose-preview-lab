@@ -16,8 +16,8 @@ class ComposePreviewLabCompilerPluginRegistrar : CompilerPluginRegistrar() {
 
     override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
         val config = PluginConfig.from(configuration)
-        // Kotlin 2.3 / 2.4 で FirExtensionRegistrarAdapter / IrGenerationExtension の Companion の
-        // 親クラスが変わったため、`registerExtension(...)` の解決を reflection で行う。
+        // The parent class of the FirExtensionRegistrarAdapter / IrGenerationExtension companions
+        // changed between Kotlin 2.3 and 2.4, so resolve `registerExtension(...)` reflectively.
         registerExtensionCompat(
             FirExtensionRegistrarAdapter.Companion,
             PreviewLabFirExtensionRegistrar(config),
