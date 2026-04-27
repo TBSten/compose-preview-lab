@@ -94,7 +94,7 @@ jobs:
         shell: bash
         run: cd ./docs && ./gradlew jvmTest ${{ matrix.kotest_tags && format('-Dkotest.tags="{0}"', matrix.kotest_tags) || '' }}
   # Expand the supported Kotlin versions from the SSOT (scripts/supported-kotlin-versions.txt).
-  resolve-kotlin-versions:
+  resolve-supported-kotlin-versions:
     name: Resolve Kotlin compat versions
     runs-on: ubuntu-latest
     outputs:
@@ -108,14 +108,14 @@ jobs:
           list=$(grep -vE '^\s*(#|$)' scripts/supported-kotlin-versions.txt | jq -R . | jq -sc .)
           echo "list=$list" >> "$GITHUB_OUTPUT"
           echo "Supported Kotlin versions: $list"
-  smoke-test-kotlin:
-    needs: resolve-kotlin-versions
+  compiler-plugin-test:
+    needs: resolve-supported-kotlin-versions
     strategy:
       fail-fast: false
       matrix:
-        kotlin: ${{ fromJSON(needs.resolve-kotlin-versions.outputs.list) }}
+        kotlin: ${{ fromJSON(needs.resolve-supported-kotlin-versions.outputs.list) }}
     runs-on: ubuntu-latest
-    name: Smoke Kotlin ${{ matrix.kotlin }}
+    name: Compiler Plugin Kotlin ${{ matrix.kotlin }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup Java for Gradle
