@@ -24,12 +24,12 @@ internal data class KotlinSemVer(val major: Int, val minor: Int, val patch: Int)
     }
 }
 
-internal val KOTLIN_2_3_0 = KotlinSemVer(2, 3, 0)
+private val kotlin230 = KotlinSemVer(2, 3, 0)
 
 internal fun Project.detectedKotlinVersion(): KotlinSemVer? =
     runCatching { getKotlinPluginVersion() }.getOrNull()?.let(KotlinSemVer::parse)
 
 internal fun Project.supportsCompilerPluginOrder(): Boolean {
     val version = detectedKotlinVersion() ?: return false
-    return version >= KOTLIN_2_3_0
+    return version >= kotlin230
 }
