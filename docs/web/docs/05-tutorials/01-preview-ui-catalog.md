@@ -23,15 +23,13 @@ import EmbeddedPreviewLab from '@site/src/components/EmbeddedPreviewLab';
 
 ## 2. Preview の収集ポイントを宣言する
 
-`@CollectPreviews` と `collectModulePreviews()` を使って Preview の収集ポイントを宣言します。
+`collectModulePreviews()` を使って Preview の収集ポイントを宣言します。
 
 ```kt title="src/commonMain/kotlin/Previews.kt"
 package app
 
-import me.tbsten.compose.preview.lab.CollectPreviews
 import me.tbsten.compose.preview.lab.collectModulePreviews
 
-@CollectPreviews
 val appPreviews by collectModulePreviews()
 ```
 
@@ -80,12 +78,11 @@ Gallery の詳しいオプションについては [PreviewLabGallery の Guide]
 `collectModulePreviews()` はモジュールごとに Preview を収集します。
 マルチモジュールプロジェクトでは、`collectAllModulePreviews()` を使うことで依存モジュールの Preview を自動的に含めることができます。
 
-### Step 1: 各依存モジュールで `@CollectPreviews` を宣言し、Gradle で export 設定
+### Step 1: 各依存モジュールで収集ポイントを宣言し、Gradle で export 設定
 
 ```kt title="uiLib/src/commonMain/kotlin/Previews.kt"
 package uiLib
 
-@CollectPreviews
 val uiLibPreviews by collectModulePreviews()
 ```
 
@@ -102,7 +99,6 @@ composePreviewLab {
 ```kt title="app/src/commonMain/kotlin/Previews.kt"
 package app
 
-@CollectPreviews
 val appPreviews by collectAllModulePreviews()
 // ↑ app 自身 + uiLib の Preview が自動的に含まれる
 ```

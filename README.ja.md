@@ -29,19 +29,22 @@ Compose Multiplatformに対応しています。
 ## セットアップ
 
 <a href="https://central.sonatype.com/artifact/me.tbsten.compose.preview.lab/core"><img src="https://img.shields.io/maven-central/v/me.tbsten.compose.preview.lab/core?label=compose-preview-lab" alt="Maven Central"/></a>
-<a href="https://central.sonatype.com/artifact/com.google.devtools.ksp/symbol-processing-api"><img src="https://img.shields.io/maven-central/v/com.google.devtools.ksp/symbol-processing-api?label=ksp" alt="KSP Version"/></a>
+
+> [!NOTE]
+> Compose Preview Lab は `@Preview` の収集に Kotlin Compiler Plugin を使用するようになりました。**KSP は不要です**。
 
 <details>
 <summary> [推奨] Compose Multiplatformプロジェクト - Starterを使用した簡単セットアップ</summary>
 
 最も簡単な始め方です。`starter`モジュールはすべてのコアモジュール（core, field, ui, preview-lab, gallery）を単一の依存関係にバンドルしています。
 
+> ⚠️ `me.tbsten.compose.preview.lab` プラグインは Compose Compiler プラグインより **前** に記述してください。
+
 ```kts
 plugins {
-    // ⭐️ @Previewを収集するためにKSPを追加
-    id("com.google.devtools.ksp") version "<ksp-version>"
-    // ⭐️ Compose Preview Lab Gradleプラグインを追加
+    // ⭐️ Compose Preview Lab Gradleプラグインを追加（composeCompiler より前に記述）
     id("me.tbsten.compose.preview.lab") version "<compose-preview-lab-version>"
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 kotlin {
@@ -52,22 +55,17 @@ kotlin {
         }
     }
 }
+```
 
-dependencies {
-    // ⭐️ Compose Preview Lab KSPプラグインを追加
-    val composePreviewLabKspPlugin =
-        "me.tbsten.compose.preview.lab:ksp-plugin:<compose-preview-lab-version>"
-    add("kspCommonMainMetadata", composePreviewLabKspPlugin)
-    // 各プラットフォーム
-    add("kspAndroid", composePreviewLabKspPlugin)
-    add("kspJvm", composePreviewLabKspPlugin)
-    add("kspJs", composePreviewLabKspPlugin)
-    add("kspWasmJs", composePreviewLabKspPlugin)
-    // iOSターゲット（必要に応じて）
-    // add("kspIosX64", composePreviewLabKspPlugin)
-    // add("kspIosArm64", composePreviewLabKspPlugin)
-    // add("kspIosSimulatorArm64", composePreviewLabKspPlugin)
-}
+その上で、`commonMain` に Preview の収集ポイントとなる `val` プロパティを宣言します。プロジェクトをビルドすると、Compiler Plugin が `@Preview` 関数を検出してこのプロパティに自動的に注入します。
+
+```kt
+// src/commonMain/kotlin/Previews.kt
+package app
+
+import me.tbsten.compose.preview.lab.collectModulePreviews
+
+val appPreviews by collectModulePreviews()
 ```
 
 </details>
@@ -79,10 +77,9 @@ dependencies {
 
 ```kts
 plugins {
-    // ⭐️ @Previewを収集するためにKSPを追加
-    id("com.google.devtools.ksp") version "<ksp-version>"
-    // ⭐️ Compose Preview Lab Gradleプラグインを追加
+    // ⭐️ Compose Preview Lab Gradleプラグインを追加（composeCompiler より前に記述）
     id("me.tbsten.compose.preview.lab") version "<compose-preview-lab-version>"
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 kotlin {
@@ -96,22 +93,6 @@ kotlin {
             implementation("me.tbsten.compose.preview.lab:gallery:<compose-preview-lab-version>")
         }
     }
-}
-
-dependencies {
-    // ⭐️ Compose Preview Lab KSPプラグインを追加
-    val composePreviewLabKspPlugin =
-        "me.tbsten.compose.preview.lab:ksp-plugin:<compose-preview-lab-version>"
-    add("kspCommonMainMetadata", composePreviewLabKspPlugin)
-    // 各プラットフォーム
-    add("kspAndroid", composePreviewLabKspPlugin)
-    add("kspJvm", composePreviewLabKspPlugin)
-    add("kspJs", composePreviewLabKspPlugin)
-    add("kspWasmJs", composePreviewLabKspPlugin)
-    // iOSターゲット（必要に応じて）
-    // add("kspIosX64", composePreviewLabKspPlugin)
-    // add("kspIosArm64", composePreviewLabKspPlugin)
-    // add("kspIosSimulatorArm64", composePreviewLabKspPlugin)
 }
 ```
 
@@ -138,16 +119,14 @@ dependencies {
 
 ```kts
 plugins {
-    // ⭐️ @Previewを収集するためにKSPを追加
-    id("com.google.devtools.ksp") version "<ksp-version>"
-    // ⭐️ Compose Preview Lab Gradleプラグインを追加
+    // ⭐️ Compose Preview Lab Gradleプラグインを追加（composeCompiler より前に記述）
     id("me.tbsten.compose.preview.lab") version "<compose-preview-lab-version>"
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 dependencies {
     // ⭐️ 簡単セットアップにはstarterを使用（必要に応じて個別モジュールも可）
     implementation("me.tbsten.compose.preview.lab:starter:<compose-preview-lab-version>")
-    ksp("me.tbsten.compose.preview.lab:ksp-plugin:<compose-preview-lab-version>")
 }
 ```
 

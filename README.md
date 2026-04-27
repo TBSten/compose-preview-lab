@@ -33,9 +33,9 @@ Compose Multiplatform is supported.
 <a href="https://central.sonatype.com/artifact/me.tbsten.compose.preview.lab/core">
 <img src="https://img.shields.io/maven-central/v/me.tbsten.compose.preview.lab/core?label=compose-preview-lab" alt="Maven Central"/>
 </a>
-<a href="https://central.sonatype.com/artifact/com.google.devtools.ksp/symbol-processing-api">
-<img src="https://img.shields.io/maven-central/v/com.google.devtools.ksp/symbol-processing-api?label=ksp" alt="KSP Version"/>
-</a>
+
+> [!NOTE]
+> Compose Preview Lab uses a Kotlin Compiler Plugin to collect `@Preview` functions. KSP is **no longer required**.
 
 <details>
 <summary> [Recommended] Compose Multiplatform Project - Simple Setup with Starter</summary>
@@ -43,12 +43,13 @@ Compose Multiplatform is supported.
 The easiest way to get started. The `starter` module bundles all core modules (core, field, ui, preview-lab, gallery) into a
 single dependency.
 
+> ⚠️ The `me.tbsten.compose.preview.lab` plugin must be applied **before** the Compose Compiler plugin.
+
 ```kts
 plugins {
-    // ⭐️ Add KSP for collect `@Preview`
-    id("com.google.devtools.ksp") version "<ksp-version>"
-    // ⭐️ Add Compose Preview Lab Gradle plugin
+    // ⭐️ Add Compose Preview Lab Gradle plugin (apply BEFORE composeCompiler)
     id("me.tbsten.compose.preview.lab") version "<compose-preview-lab-version>"
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 kotlin {
@@ -59,22 +60,17 @@ kotlin {
         }
     }
 }
+```
 
-dependencies {
-    // ⭐️ Add Compose Preview Lab KSP plugin
-    val composePreviewLabKspPlugin =
-        "me.tbsten.compose.preview.lab:ksp-plugin:<compose-preview-lab-version>"
-    add("kspCommonMainMetadata", composePreviewLabKspPlugin)
-    // each platform
-    add("kspAndroid", composePreviewLabKspPlugin)
-    add("kspJvm", composePreviewLabKspPlugin)
-    add("kspJs", composePreviewLabKspPlugin)
-    add("kspWasmJs", composePreviewLabKspPlugin)
-    // iOS targets (if needed)
-    // add("kspIosX64", composePreviewLabKspPlugin)
-    // add("kspIosArm64", composePreviewLabKspPlugin)
-    // add("kspIosSimulatorArm64", composePreviewLabKspPlugin)
-}
+Then declare a collection point in `commonMain`. The Compiler Plugin will inject every `@Preview` it finds into this property.
+
+```kt
+// src/commonMain/kotlin/Previews.kt
+package app
+
+import me.tbsten.compose.preview.lab.collectModulePreviews
+
+val appPreviews by collectModulePreviews()
 ```
 
 </details>
@@ -86,35 +82,22 @@ If you need fine-grained control over dependencies, you can add individual modul
 
 ```kts
 plugins {
-    // ⭐️ Add KSP for collect `@Preview`
-    id("com.google.devtools.ksp") version "<ksp-version>"
-    // ⭐️ Add Compose Preview Lab Gradle plugin
+    // ⭐️ Add Compose Preview Lab Gradle plugin (apply BEFORE composeCompiler)
     id("me.tbsten.compose.preview.lab") version "<compose-preview-lab-version>"
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 kotlin {
     sourceSets {
         commonMain.dependencies {
             // ⭐️ Add individual modules as needed
-            implementation("me.tbsten.compose.preview.lab:starter:<compose-preview-lab-version>")
+            implementation("me.tbsten.compose.preview.lab:core:<compose-preview-lab-version>")
+            implementation("me.tbsten.compose.preview.lab:field:<compose-preview-lab-version>")
+            implementation("me.tbsten.compose.preview.lab:ui:<compose-preview-lab-version>")
+            implementation("me.tbsten.compose.preview.lab:preview-lab:<compose-preview-lab-version>")
+            implementation("me.tbsten.compose.preview.lab:gallery:<compose-preview-lab-version>")
         }
     }
-}
-
-dependencies {
-    // ⭐️ Add Compose Preview Lab KSP plugin
-    val composePreviewLabKspPlugin =
-        "me.tbsten.compose.preview.lab:ksp-plugin:<compose-preview-lab-version>"
-    add("kspCommonMainMetadata", composePreviewLabKspPlugin)
-    // each platform
-    add("kspAndroid", composePreviewLabKspPlugin)
-    add("kspJvm", composePreviewLabKspPlugin)
-    add("kspJs", composePreviewLabKspPlugin)
-    add("kspWasmJs", composePreviewLabKspPlugin)
-    // iOS targets (if needed)
-    // add("kspIosX64", composePreviewLabKspPlugin)
-    // add("kspIosArm64", composePreviewLabKspPlugin)
-    // add("kspIosSimulatorArm64", composePreviewLabKspPlugin)
 }
 ```
 
@@ -144,16 +127,14 @@ dependencies {
 
 ```kts
 plugins {
-    // ⭐️ add ksp for collect `@Preview`
-    id("com.google.devtools.ksp") version "<ksp-version>"
-    // ⭐️ Add Compose Preview Lab Gradle plugin
+    // ⭐️ Add Compose Preview Lab Gradle plugin (apply BEFORE composeCompiler)
     id("me.tbsten.compose.preview.lab") version "<compose-preview-lab-version>"
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 dependencies {
     // ⭐️ Use starter for simple setup (or individual modules if needed)
     implementation("me.tbsten.compose.preview.lab:starter:<compose-preview-lab-version>")
-    ksp("me.tbsten.compose.preview.lab:ksp-plugin:<compose-preview-lab-version>")
 }
 ```
 
