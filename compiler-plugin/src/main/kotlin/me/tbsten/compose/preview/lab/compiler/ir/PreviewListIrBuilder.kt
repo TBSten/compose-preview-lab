@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.ir.builders.irCall
 import org.jetbrains.kotlin.ir.builders.irGet
 import org.jetbrains.kotlin.ir.builders.irReturn
 import org.jetbrains.kotlin.ir.builders.irTemporary
-import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
+import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrProperty
@@ -104,7 +104,7 @@ internal class PreviewListIrBuilder(
             endOffset = SYNTHETIC_OFFSET
             name = SpecialNames.ANONYMOUS
             returnType = listOfCollectedPreviewType
-            origin = IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA
+            origin = IrDeclarationOriginCompat.LOCAL_FUNCTION_FOR_LAMBDA
             visibility = DescriptorVisibilities.LOCAL
         }.also { lambda ->
             lambda.parent = parent

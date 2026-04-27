@@ -2,6 +2,7 @@
 
 package me.tbsten.compose.preview.lab.compiler.ir
 
+import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
 import me.tbsten.compose.preview.lab.compiler.compat.addConstructorCallAnnotation
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
@@ -11,7 +12,6 @@ import org.jetbrains.kotlin.ir.builders.irBlockBody
 import org.jetbrains.kotlin.ir.builders.irCall
 import org.jetbrains.kotlin.ir.builders.irReturn
 import org.jetbrains.kotlin.ir.builders.irString
-import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
@@ -100,7 +100,7 @@ internal class CollectedPreviewIrBuilder(private val pluginContext: IrPluginCont
             endOffset = SYNTHETIC_OFFSET
             name = SpecialNames.ANONYMOUS
             returnType = pluginContext.irBuiltIns.unitType
-            origin = IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA
+            origin = IrDeclarationOriginCompat.LOCAL_FUNCTION_FOR_LAMBDA
             visibility = DescriptorVisibilities.LOCAL
         }.also { lambda ->
             lambda.parent = parent

@@ -10,7 +10,8 @@ import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.builders.irBlockBody
 import org.jetbrains.kotlin.ir.builders.irReturn
 import org.jetbrains.kotlin.ir.declarations.IrClass
-import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
+import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
+import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.declarations.IrField
 import org.jetbrains.kotlin.ir.declarations.IrProperty
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
@@ -91,13 +92,20 @@ internal class PreviewLabIrBodyFiller(
         val isAll = isCollectAllCall(delegateField)
         val builder = DeclarationIrBuilder(pluginContext, property.symbol)
 
-        val thisModulePreviews = irBuilder.buildPreviewsListExpr(builder, property.parent)
+        // 生成する lambda の parent は IrFunction でなければならない。
+        // property の delegate field initializer は static initializer (`<clinit>`) で実行されるが、
+        // その IrFunction はまだこの phase で存在しないため、property の getter を仮の親として使う。
+        // (Kotlin 2.3 以降の JVM backend は parent が IrFile の lambda で
+        // `MethodSignatureMapper.mapToMethodHandle` の "Unexpected parent: FILE" assert を投げる)
+        val lambdaParent: IrDeclarationParent = property.getter ?: property.parent
+
+        val thisModulePreviews = irBuilder.buildPreviewsListExpr(builder, lambdaParent)
         val previewListExpr = if (isAll) {
             irBuilder.buildConcatenatedPreviewsExpr(builder, thisModulePreviews)
         } else {
             thisModulePreviews
         }
-        val lazyExpr = irBuilder.buildLazyCall(builder, previewListExpr, property.parent)
+        val lazyExpr = irBuilder.buildLazyCall(builder, previewListExpr, lambdaParent)
 
         delegateField.initializer = pluginContext.irFactory.createExpressionBody(
             startOffset = property.startOffset,
@@ -139,7 +147,7 @@ internal class PreviewLabIrBodyFiller(
     private fun replaceDelegateInitializer(objectClass: IrClass) {
         val delegateField = objectClass.declarations
             .filterIsInstance<IrField>()
-            .firstOrNull { it.origin == IrDeclarationOrigin.DELEGATE }
+            .firstOrNull { it.origin == IrDeclarationOriginCompat.DELEGATE }
             ?: return
 
         val builder = DeclarationIrBuilder(pluginContext, objectClass.thisReceiver!!.symbol)
