@@ -11,11 +11,6 @@ internal object CompatContextLoader {
     /**
      * Among the factories whose `minVersion` is `<= currentVersion`, picks the one
      * with the largest `minVersion`.
-     *
-     * Example: factories = [k230 (2.3.0), k240_beta2 (2.4.0-Beta2)]
-     *   - currentVersion = 2.3.21        → k230
-     *   - currentVersion = 2.4.0-Beta2   → k240_beta2
-     *   - currentVersion = 2.4.0 stable  → k240_beta2 (Beta < STABLE so still compatible)
      */
     fun load(knownVersion: KotlinToolingVersion? = null): CompatContext {
         val factories = ServiceLoader

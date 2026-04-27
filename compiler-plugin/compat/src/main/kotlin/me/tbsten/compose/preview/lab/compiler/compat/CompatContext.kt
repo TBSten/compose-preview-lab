@@ -19,17 +19,16 @@ public interface CompatContext {
     /**
      * Returns whether the FIR declaration is a function.
      *
-     * - Kotlin 2.2 and earlier: `FirSimpleFunction`
-     * - Kotlin 2.3 and later: `FirFunction` (FirSimpleFunction has been merged in)
+     * The concrete FIR type used to represent functions has changed across Kotlin versions
+     * (e.g. `FirSimpleFunction` vs `FirFunction`); this method abstracts that away.
      */
     public fun isFirFunction(declaration: FirDeclaration): Boolean
 
     /**
-     * Builds an annotation from the given constructor symbol and adds it to the function.
+     * Builds an annotation from the given constructor symbol and adds it to [function].
      *
-     * - Kotlin 2.3 and earlier: append `IrConstructorCallImpl` directly to `annotations`
-     * - Kotlin 2.4 and later: use `IrAnnotationImpl` (the element type of
-     *   `IrSimpleFunction.annotations` was changed)
+     * The IR annotation element type used in [IrSimpleFunction.annotations] has changed
+     * across Kotlin versions; this method abstracts the correct construction.
      */
     public fun addConstructorCallAnnotation(function: IrSimpleFunction, type: IrType, constructorSymbol: IrConstructorSymbol)
 
