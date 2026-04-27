@@ -58,6 +58,12 @@ public class KotlinToolingVersion(
         val ab = buildNumber ?: 0
         val bb = other.buildNumber ?: 0
         (ab - bb).takeIf { it != 0 }?.let { return it }
+        // Tiebreaker: compare classifier strings so that compareTo == 0 implies equals.
+        val ac = this.classifier?.lowercase()
+        val bc = other.classifier?.lowercase()
+        if (ac != bc) {
+            return ac?.compareTo(bc ?: return 1) ?: -1
+        }
         return 0
     }
 
