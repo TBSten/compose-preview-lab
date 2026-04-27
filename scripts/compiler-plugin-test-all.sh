@@ -12,7 +12,9 @@ VERSIONS_FILE="scripts/supported-kotlin-versions.txt"
 
 failed=()
 while IFS= read -r v; do
-    [[ -z "$v" || "$v" =~ ^[[:space:]]*# ]] && continue
+    v="${v#"${v%%[![:space:]]*}"}"  # ltrim
+    v="${v%"${v##*[![:space:]]}"}"  # rtrim
+    [[ -z "$v" || "$v" =~ ^# ]] && continue
     if ./scripts/compiler-plugin-test.sh "$v"; then
         :
     else
