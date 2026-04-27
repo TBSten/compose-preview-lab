@@ -3,6 +3,8 @@
 package me.tbsten.compose.preview.lab.compiler.ir
 
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
+import me.tbsten.compose.preview.lab.compiler.compat.getAnnotationCompat
+import me.tbsten.compose.preview.lab.compiler.compat.hasAnnotationCompat
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
@@ -10,15 +12,13 @@ import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.IrConst
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.util.file
-import org.jetbrains.kotlin.ir.util.getAnnotation
-import org.jetbrains.kotlin.ir.util.hasAnnotation
 import org.jetbrains.kotlin.name.FqName
 
 /**
- * Compose Preview Lab の IR generation extension。
+ * IR generation extension for Compose Preview Lab.
  *
- * モジュール内の @Preview 関数を収集し、
- * `collectModulePreviews()` / `collectAllModulePreviews()` の呼び出し箇所に注入する。
+ * Collects every @Preview function in the module and injects them at the
+ * `collectModulePreviews()` / `collectAllModulePreviews()` call sites.
  */
 class PreviewLabIrGenerationExtension(private val config: PluginConfig) : IrGenerationExtension {
 
@@ -47,9 +47,9 @@ class PreviewLabIrGenerationExtension(private val config: PluginConfig) : IrGene
     }
 
     private fun buildPreviewInfo(func: IrSimpleFunction): PreviewFunctionInfo? {
-        if (!func.hasAnnotation(CMP_PREVIEW_FQ) && !func.hasAnnotation(ANDROID_PREVIEW_FQ)) return null
+        if (!func.hasAnnotationCompat(CMP_PREVIEW_FQ) && !func.hasAnnotationCompat(ANDROID_PREVIEW_FQ)) return null
 
-        val optionAnno = func.getAnnotation(CPL_OPTION_FQ)
+        val optionAnno = func.getAnnotationCompat(CPL_OPTION_FQ)
         val ignore = (optionAnno?.arguments?.getOrNull(1) as? IrConst)?.value as? Boolean ?: false
         if (ignore) return null
 

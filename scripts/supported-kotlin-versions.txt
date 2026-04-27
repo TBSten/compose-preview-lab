@@ -1,0 +1,14 @@
+# SSOT for the Kotlin versions that compose-preview-lab supports.
+# One version per line (blank lines and lines starting with `#` are comments).
+# CI workflows and compiler-plugin-test scripts read this file.
+#
+# To add a new version:
+#   1. Append a line below.
+#   2. Verify locally with `./scripts/compiler-plugin-test.sh <new-version>`.
+#   3. If API drift requires it, add a new compat module
+#      (compiler-plugin-compat-k* / settings.gradle.kts / META-INF/services).
+2.3.0
+2.3.10
+2.3.20
+2.3.21
+2.4.0-Beta2

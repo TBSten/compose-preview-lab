@@ -1,0 +1,12 @@
+public final class me/tbsten/compose/preview/lab/compiler/compat/k240beta2/CompatContextImpl : me/tbsten/compose/preview/lab/compiler/compat/CompatContext {
+	public fun <init> ()V
+	public fun addConstructorCallAnnotation (Lorg/jetbrains/kotlin/ir/declarations/IrSimpleFunction;Lorg/jetbrains/kotlin/ir/types/IrType;Lorg/jetbrains/kotlin/ir/symbols/IrConstructorSymbol;)V
+	public fun isFirFunction (Lorg/jetbrains/kotlin/fir/declarations/FirDeclaration;)Z
+}
+
+public final class me/tbsten/compose/preview/lab/compiler/compat/k240beta2/CompatContextImpl$Factory : me/tbsten/compose/preview/lab/compiler/compat/CompatContext$Factory {
+	public fun <init> ()V
+	public fun create ()Lme/tbsten/compose/preview/lab/compiler/compat/CompatContext;
+	public fun getMinVersion ()Ljava/lang/String;
+}
+

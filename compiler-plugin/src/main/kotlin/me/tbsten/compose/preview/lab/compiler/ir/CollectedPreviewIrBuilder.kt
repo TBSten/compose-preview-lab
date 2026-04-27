@@ -2,6 +2,7 @@
 
 package me.tbsten.compose.preview.lab.compiler.ir
 
+import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
 import me.tbsten.compose.preview.lab.compiler.compat.addConstructorCallAnnotation
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
@@ -11,7 +12,6 @@ import org.jetbrains.kotlin.ir.builders.irBlockBody
 import org.jetbrains.kotlin.ir.builders.irCall
 import org.jetbrains.kotlin.ir.builders.irReturn
 import org.jetbrains.kotlin.ir.builders.irString
-import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
@@ -32,7 +32,7 @@ import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.SpecialNames
 
 /**
- * 個々の [CollectedPreview] インスタンスの IR 構築を担当する。
+ * Builds the IR for individual [CollectedPreview] instances.
  */
 internal class CollectedPreviewIrBuilder(private val pluginContext: IrPluginContext,) {
     val collectedPreviewClass by lazy {
@@ -43,7 +43,7 @@ internal class CollectedPreviewIrBuilder(private val pluginContext: IrPluginCont
     val collectedPreviewType by lazy { collectedPreviewClass.defaultType }
 
     /**
-     * `CollectedPreview(id, displayName, ...) { previewFun() }` の IR を構築する。
+     * Builds the IR for `CollectedPreview(id, displayName, ...) { previewFun() }`.
      */
     fun buildCollectedPreviewCall(
         preview: PreviewFunctionInfo,
@@ -88,7 +88,7 @@ internal class CollectedPreviewIrBuilder(private val pluginContext: IrPluginCont
     }
 
     /**
-     * `{ previewFun() }` の @Composable IR ラムダを生成する。
+     * Builds the @Composable IR lambda for `{ previewFun() }`.
      */
     private fun buildContentLambda(
         previewFunc: IrSimpleFunction,
@@ -100,7 +100,7 @@ internal class CollectedPreviewIrBuilder(private val pluginContext: IrPluginCont
             endOffset = SYNTHETIC_OFFSET
             name = SpecialNames.ANONYMOUS
             returnType = pluginContext.irBuiltIns.unitType
-            origin = IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA
+            origin = IrDeclarationOriginCompat.LOCAL_FUNCTION_FOR_LAMBDA
             visibility = DescriptorVisibilities.LOCAL
         }.also { lambda ->
             lambda.parent = parent
