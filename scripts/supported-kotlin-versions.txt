@@ -1,6 +1,6 @@
 # SSOT for the Kotlin versions that compose-preview-lab supports.
 # One version per line (blank lines and lines starting with `#` are comments).
-# CI workflows and smoke-test scripts read this file.
+# CI workflows and compiler-plugin-test scripts read this file.
 #
 # To add a new version:
 #   1. Append a line below.
