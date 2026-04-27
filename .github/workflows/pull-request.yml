@@ -105,7 +105,7 @@ jobs:
         shell: bash
         run: |
           # Drop blank lines and comments, then turn the remaining lines into a JSON array via jq.
-          list=$(grep -vE '^\s*(#|$)' scripts/supported-kotlin-versions.txt | jq -R . | jq -sc .)
+          list=$(grep -vE '^[[:space:]]*(#|$)' scripts/supported-kotlin-versions.txt | jq -R . | jq -sc .)
           echo "list=$list" >> "$GITHUB_OUTPUT"
           echo "Supported Kotlin versions: $list"
   compiler-plugin-test:
