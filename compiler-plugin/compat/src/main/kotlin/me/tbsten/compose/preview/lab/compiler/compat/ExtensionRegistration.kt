@@ -18,7 +18,8 @@ public fun CompilerPluginRegistrar.ExtensionStorage.registerExtensionCompat(comp
     val method = storageClass.methods.firstOrNull { m ->
         m.name == "registerExtension" &&
             m.parameterCount == 2 &&
-            m.parameterTypes[0].isInstance(companion)
+            m.parameterTypes[0].isInstance(companion) &&
+            m.parameterTypes[1].isInstance(extension)
     } ?: error(
         "No compatible registerExtension(companion, extension) method on ${storageClass.name} " +
             "for companion type ${companion::class.java.name}",

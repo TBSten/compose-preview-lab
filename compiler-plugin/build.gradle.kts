@@ -1,4 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.conventionJvm)
@@ -62,13 +63,22 @@ dependencies {
 kotlin {
     compilerOptions {
         optIn.add("org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi")
-        // When -Ptest.kotlin selects 2.4-Beta or similar, the test classpath ends up with newer
-        // kotlin-compiler-embeddable metadata. compileTestKotlin runs with KGP 2.3.21, so this
-        // suppresses the resulting metadata-version mismatch errors.
-        freeCompilerArgs.addAll(
-            "-Xskip-prerelease-check",
-            "-Xskip-metadata-version-check",
-        )
+    }
+}
+
+// When -Ptest.kotlin selects 2.4-Beta or similar, the test classpath ends up with newer
+// kotlin-compiler-embeddable metadata. compileTestKotlin runs with KGP 2.3.21, so this
+// suppresses the resulting metadata-version mismatch errors.
+// Only apply when testKotlinVersion differs from the baseline to avoid weakening the main
+// compilation safety checks.
+if (testKotlinVersion != compilerPluginBaselineKotlin) {
+    tasks.named<KotlinCompile>("compileTestKotlin") {
+        compilerOptions {
+            freeCompilerArgs.addAll(
+                "-Xskip-prerelease-check",
+                "-Xskip-metadata-version-check",
+            )
+        }
     }
 }
 
