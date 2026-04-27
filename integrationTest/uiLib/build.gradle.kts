@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-    // NOTE: "me.tbsten.compose.preview.lab" must be applied BEFORE composeCompiler
     id("me.tbsten.compose.preview.lab")
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeMultiplatform)

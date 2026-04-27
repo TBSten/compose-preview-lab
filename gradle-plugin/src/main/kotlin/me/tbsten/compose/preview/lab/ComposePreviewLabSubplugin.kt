@@ -26,6 +26,15 @@ class ComposePreviewLabSubplugin : KotlinCompilerPluginSupportPlugin {
 
     override fun applyToCompilation(kotlinCompilation: KotlinCompilation<*>): Provider<List<SubpluginOption>> {
         val project = kotlinCompilation.target.project
+
+        if (project.supportsCompilerPluginOrder()) {
+            kotlinCompilation.compileTaskProvider.configure {
+                compilerOptions.freeCompilerArgs.add(
+                    "-Xcompiler-plugin-order=$PreviewLabCompilerPluginId>$ComposeCompilerPluginId",
+                )
+            }
+        }
+
         val extension = project.extensions.getByType<ComposePreviewLabExtension>()
 
         return project.provider {
