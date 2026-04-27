@@ -93,19 +93,29 @@ jobs:
         if: matrix.test_task == 'jvmTest'
         shell: bash
         run: cd ./docs && ./gradlew jvmTest ${{ matrix.kotest_tags && format('-Dkotest.tags="{0}"', matrix.kotest_tags) || '' }}
-  test-kotlin-compat:
+  # サポートされる Kotlin バージョン一覧を SSOT (scripts/supported-kotlin-versions.txt) から展開する
+  resolve-kotlin-versions:
+    name: Resolve Kotlin compat versions
+    runs-on: ubuntu-latest
+    outputs:
+      list: ${{ steps.read.outputs.list }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: read
+        shell: bash
+        run: |
+          # 空行 / コメント行を除いて jq で JSON 配列に
+          list=$(grep -vE '^\s*(#|$)' scripts/supported-kotlin-versions.txt | jq -R . | jq -sc .)
+          echo "list=$list" >> "$GITHUB_OUTPUT"
+          echo "Supported Kotlin versions: $list"
+  smoke-test-kotlin:
+    needs: resolve-kotlin-versions
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - kotlin_version: '2.3.20'
-            compose_version: '1.11.0-alpha04'
-            gradle_version: '8.14.4'
-          - kotlin_version: '2.4.0-Beta1'
-            compose_version: '1.11.0-alpha04'
-            gradle_version: '9.4.1'
+        kotlin: ${{ fromJSON(needs.resolve-kotlin-versions.outputs.list) }}
     runs-on: ubuntu-latest
-    name: Compat Kotlin ${{ matrix.kotlin_version }}
+    name: Smoke Kotlin ${{ matrix.kotlin }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup Java for Gradle
@@ -116,24 +126,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
-      - name: Switch Kotlin / Compose version
+      - name: Smoke test compiler-plugin against Kotlin ${{ matrix.kotlin }}
         shell: bash
-        run: |
-          sed -i "s/^kotlin = .*/kotlin = \"${{ matrix.kotlin_version }}\"/" gradle/libs.versions.toml
-          sed -i "s/^compose = .*/compose = \"${{ matrix.compose_version }}\"/" gradle/libs.versions.toml
-          # buildLogic の kotlin-dsl は embedded-kotlin を使うため、
-          # プロジェクトの kotlinJvm プラグインを除去して衝突を回避
-          sed -i '/alias(libs.plugins.kotlinJvm)/d' buildLogic/build.gradle.kts
-          echo "Updated versions:"
-          grep -E "^(kotlin|compose) = " gradle/libs.versions.toml
-      - name: Upgrade Gradle wrapper
-        if: matrix.gradle_version
-        shell: bash
-        run: |
-          sed -i "s|gradle-.*-bin.zip|gradle-${{ matrix.gradle_version }}-bin.zip|" gradle/wrapper/gradle-wrapper.properties
-      - name: Verify compiler-plugin compiles
-        shell: bash
-        run: ./gradlew :compiler-plugin:compileKotlin --no-configuration-cache
+        run: ./scripts/smoke-test.sh "${{ matrix.kotlin }}"
   publish-to-maven-local:
     name: Publish to Maven Local
     runs-on: ubuntu-latest
