@@ -37,6 +37,9 @@ Compose Multiplatform is supported.
 > [!NOTE]
 > Compose Preview Lab uses a Kotlin Compiler Plugin to collect `@Preview` functions. KSP is **no longer required**.
 
+> [!IMPORTANT]
+> Requires **Kotlin 2.1.20 or later**. See [`scripts/supported-kotlin-versions.txt`](./scripts/supported-kotlin-versions.txt) for the exact list of versions verified by CI.
+
 <details>
 <summary> [Recommended] Compose Multiplatform Project - Simple Setup with Starter</summary>
 
