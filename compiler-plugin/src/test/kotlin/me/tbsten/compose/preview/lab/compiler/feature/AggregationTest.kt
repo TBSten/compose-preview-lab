@@ -4,79 +4,63 @@ import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import me.tbsten.compose.preview.lab.compiler.CompilerPluginTestBase
+import me.tbsten.compose.preview.lab.compiler.loadCollectedPreviews
 
 class AggregationTest :
     FunSpec({
         val base = CompilerPluginTestBase()
 
-        test("PreviewAllList が生成される") {
-            val source = SourceFile.kotlin(
-                "Preview.kt",
-                """
-            package test.source
+        test("collectAllModulePreviews() に @Preview 関数が収集される") {
+            val result = base.compile(
+                SourceFile.kotlin(
+                    "Preview.kt",
+                    """
+                    package test.source
 
-            @org.jetbrains.compose.ui.tooling.preview.Preview
-            fun AggPreview() {}
-            """,
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun AggPreview() {}
+                    """,
+                ),
+                base.collectAllModulePreviewsEntry(),
             )
-            val result = base.compile(source)
             result.exitCode shouldBe KotlinCompilation.ExitCode.OK
 
-            val previewAllList = result.classLoader
-                .loadClass("test.generated.PreviewAllList")
-                .kotlin.objectInstance as? List<*>
-            previewAllList shouldNotBe null
-            previewAllList!!.size shouldBe 1
+            result.loadCollectedPreviews(propertyName = "allPreviews").size shouldBe 1
         }
 
-        test("単一モジュールで PreviewAllList が PreviewList と同じ内容になる") {
-            val source = SourceFile.kotlin(
-                "Preview.kt",
-                """
-            package test.source
+        test("単一モジュールで collectAllModulePreviews() が collectModulePreviews() と同じ内容になる") {
+            val result = base.compile(
+                SourceFile.kotlin(
+                    "Preview.kt",
+                    """
+                    package test.source
 
-            @org.jetbrains.compose.ui.tooling.preview.Preview
-            fun SingleModulePreview() {}
-            """,
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun SingleModulePreview() {}
+                    """,
+                ),
+                SourceFile.kotlin(
+                    "Entry.kt",
+                    """
+                    package test.entry
+
+                    import me.tbsten.compose.preview.lab.collectModulePreviews
+                    import me.tbsten.compose.preview.lab.collectAllModulePreviews
+
+                    val previews by collectModulePreviews()
+                    val allPreviews by collectAllModulePreviews()
+                    """,
+                ),
             )
-            val result = base.compile(source)
             result.exitCode shouldBe KotlinCompilation.ExitCode.OK
 
-            val previewList = result.classLoader
-                .loadClass("test.generated.PreviewList")
-                .kotlin.objectInstance as List<*>
-            val previewAllList = result.classLoader
-                .loadClass("test.generated.PreviewAllList")
-                .kotlin.objectInstance as List<*>
+            val previews = result.loadCollectedPreviews(propertyName = "previews")
+            val allPreviews = result.loadCollectedPreviews(propertyName = "allPreviews")
 
-            previewList.size shouldBe previewAllList.size
-            val listIds = previewList.map { p -> p!!::class.members.find { it.name == "id" }!!.call(p) as String }
-            val allIds = previewAllList.map { p -> p!!::class.members.find { it.name == "id" }!!.call(p) as String }
-            listIds shouldBe allIds
-        }
-
-        test("集約プロパティが @AggregateToAll 付きで生成される") {
-            val source = SourceFile.kotlin(
-                "Preview.kt",
-                """
-            package test.source
-
-            @org.jetbrains.compose.ui.tooling.preview.Preview
-            fun AggPropPreview() {}
-            """,
-            )
-            val result = base.compile(source)
-            result.exitCode shouldBe KotlinCompilation.ExitCode.OK
-
-            // 集約プロパティのクラスが存在すること
-            // ソース生成方式では AggregatePreviewProperty.kt に配置
-            val clazz = runCatching {
-                result.classLoader.loadClass(
-                    "me.tbsten.compose.preview.lab.generated.AggregatePreviewPropertyKt",
-                )
-            }.getOrNull()
-            clazz shouldNotBe null
+            previews.size shouldBe allPreviews.size
+            val ids = previews.map { p -> p::class.members.find { it.name == "id" }!!.call(p) as String }
+            val allIds = allPreviews.map { p -> p::class.members.find { it.name == "id" }!!.call(p) as String }
+            ids shouldBe allIds
         }
     })
