@@ -10,7 +10,7 @@ val kotlinCompilerVersion = providers
 
 dependencies {
     api(projects.compilerPlugin.compat)
-    api(projects.compilerPluginCompatK222)
+    api(projects.compilerPlugin.compatK222)
     compileOnly(kotlinCompilerVersion.map { "org.jetbrains.kotlin:kotlin-compiler-embeddable:$it" })
 }
 

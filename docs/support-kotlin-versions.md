@@ -21,12 +21,15 @@ The single source of truth that the CI matrix and test scripts read:
 ```
 compiler-plugin/                        # main (version-agnostic) — published as a shadow JAR
 ├── compat/                             # shared SPI: CompatContext, KotlinToolingVersion, ServiceLoader
-compiler-plugin-compat-k230/            # Kotlin 2.3.x: FirFunction + IrConstructorCallImpl
-compiler-plugin-compat-k240_beta2/      # Kotlin 2.4+: IrAnnotationImpl (handles the annotations type change)
+├── compat-k210/                        # Kotlin 2.1.20+: legacy IrBuilderWithScope receivers
+├── compat-k222/                        # Kotlin 2.2.x: IrBuilder receiver widening absorbed
+├── compat-k2220/                       # Kotlin 2.2.20+: incremental delta over k222
+├── compat-k230/                        # Kotlin 2.3.x: FirFunction + IrConstructorCallImpl
+└── compat-k240_beta2/                  # Kotlin 2.4+: IrAnnotationImpl (handles the annotations type change)
 ```
 
 At build time the `compiler-plugin` shadow JAR pulls in `compiler-plugin/compat` plus each
-`compiler-plugin-compat-*`, and merges
+`compiler-plugin/compat-k*`, and merges
 `META-INF/services/me.tbsten.compose.preview.lab.compiler.compat.CompatContext$Factory`.
 
 At runtime:
@@ -45,15 +48,15 @@ At runtime:
 
 ### B) Minor / major release with API drift
 
-1. Create a new `compiler-plugin-compat-kXYZ/` module:
+1. Create a new `compiler-plugin/compat-kXYZ/` module:
    - Put `X.Y.Z` in `version.txt`.
    - Pin `compileOnly("org.jetbrains.kotlin:kotlin-compiler-embeddable:X.Y.Z")` in `build.gradle.kts`.
    - Implement `src/main/kotlin/.../compat/kXYZ/CompatContextImpl.kt`:
      - Delegate to the closest existing compat module (`CompatContext by k230.CompatContextImpl()`)
        and only override the diff.
    - Register `src/main/resources/META-INF/services/...$Factory`.
-2. Add `include(":compiler-plugin-compat-kXYZ")` to `settings.gradle.kts`.
-3. Add `add(embedded.name, projects.compilerPluginCompatKxyz)` to the `embedded` configuration
+2. Add `include(":compiler-plugin:compat-kXYZ")` to `settings.gradle.kts`.
+3. Add `add(embedded.name, projects.compilerPlugin.compatKxyz)` to the `embedded` configuration
    in `compiler-plugin/build.gradle.kts`.
 4. Append the new version to `scripts/supported-kotlin-versions.txt`.
 5. Verify with `./scripts/compiler-plugin-test.sh X.Y.Z`.
