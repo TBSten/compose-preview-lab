@@ -17,7 +17,6 @@ import org.gradle.kotlin.dsl.setValue
  * ```kotlin
  * composePreviewLab {
  *     generatePackage = "myModule"
- *     publicPreviewList = true
  *     generateFeaturedFiles = true
  * }
  * ```
@@ -40,15 +39,6 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
         )
 
     /**
-     * Controls visibility of generated preview lists
-     *
-     * When true, generates public PreviewList objects accessible from other modules.
-     * When false (default), generates internal objects for module-local use only.
-     */
-    var publicPreviewList: Boolean by objects.property<Boolean>()
-        .convention(false)
-
-    /**
      * Root path of the project for file path resolution
      *
      * Used to resolve relative file paths in generated previews.
@@ -56,25 +46,6 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
      */
     var projectRootPath: String by objects.property<String>()
         .convention(project.rootProject.projectDir.absolutePath)
-
-    /**
-     * Controls generation of PreviewList object
-     *
-     * When true (default), generates a PreviewList object containing all previews
-     * from the current module.
-     */
-    var generatePreviewList: Boolean by objects.property<Boolean>()
-        .convention(true)
-
-    /**
-     * Controls generation of PreviewAllList aggregated object
-     *
-     * When true (default), generates a PreviewAllList object that aggregates
-     * previews from the current module and all dependencies configured via
-     * `collectPreviewsExport` / `collectAllModulePreviews()`.
-     */
-    var generatePreviewAllList: Boolean by objects.property<Boolean>()
-        .convention(true)
 
     /**
      * Fully qualified name of the `@CollectPreviews` property exported by this module.

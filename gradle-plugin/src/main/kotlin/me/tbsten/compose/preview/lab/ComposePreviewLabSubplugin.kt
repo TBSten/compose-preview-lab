@@ -42,10 +42,7 @@ class ComposePreviewLabSubplugin : KotlinCompilerPluginSupportPlugin {
 
             buildList {
                 add(SubpluginOption("previewsListPackage", extension.generatePackage))
-                add(SubpluginOption("publicPreviewList", extension.publicPreviewList.toString()))
                 add(SubpluginOption("projectRootPath", extension.projectRootPath))
-                add(SubpluginOption("generatePreviewList", extension.generatePreviewList.toString()))
-                add(SubpluginOption("generatePreviewAllList", extension.generatePreviewAllList.toString()))
                 if (depFqns.isNotEmpty()) {
                     add(SubpluginOption("dependencyCollectPreviewsFqns", depFqns.joinToString(",")))
                 }

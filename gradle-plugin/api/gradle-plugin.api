@@ -3,17 +3,11 @@ public abstract class me/tbsten/compose/preview/lab/ComposePreviewLabExtension {
 	public final fun getCollectPreviewsExport ()Ljava/lang/String;
 	public final fun getGenerateFeaturedFiles ()Z
 	public final fun getGeneratePackage ()Ljava/lang/String;
-	public final fun getGeneratePreviewAllList ()Z
-	public final fun getGeneratePreviewList ()Z
 	public final fun getProjectRootPath ()Ljava/lang/String;
-	public final fun getPublicPreviewList ()Z
 	public final fun setCollectPreviewsExport (Ljava/lang/String;)V
 	public final fun setGenerateFeaturedFiles (Z)V
 	public final fun setGeneratePackage (Ljava/lang/String;)V
-	public final fun setGeneratePreviewAllList (Z)V
-	public final fun setGeneratePreviewList (Z)V
 	public final fun setProjectRootPath (Ljava/lang/String;)V
-	public final fun setPublicPreviewList (Z)V
 }
 
 public final class me/tbsten/compose/preview/lab/ComposePreviewLabGradlePlugin : org/gradle/api/Plugin {

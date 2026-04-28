@@ -60,9 +60,7 @@ open class CompilerPluginTestBase {
         pluginOptions: List<PluginOption> = defaultPluginOptions(),
     ): JvmCompilationResult {
         val pkg = pluginOptions.firstOrNull { it.optionName == "previewsListPackage" }?.optionValue ?: "test.generated"
-        val genList = pluginOptions.firstOrNull { it.optionName == "generatePreviewList" }?.optionValue != "false"
-        val genAllList = pluginOptions.firstOrNull { it.optionName == "generatePreviewAllList" }?.optionValue != "false"
-        val previewListStubs = previewListSourceStubs(pkg, genList, genAllList)
+        val previewListStubs = previewListSourceStubs(pkg)
 
         return KotlinCompilation().apply {
             this.sources = previewAnnotationStubs + collectPreviewsStubs + previewListStubs + sources.toList()
@@ -88,57 +86,40 @@ open class CompilerPluginTestBase {
      * FIR 宣言生成を廃止し、ソースファイル生成に移行したため、
      * テスト時にもスタブを明示的に渡す必要がある。
      */
-    private fun previewListSourceStubs(pkg: String, generateList: Boolean, generateAllList: Boolean,): List<SourceFile> =
-        buildList {
-            if (generateList) {
-                add(
-                    SourceFile.kotlin(
-                        "PreviewList.kt",
-                        """
-                    package $pkg
-                    import me.tbsten.compose.preview.lab.CollectedPreview
-                    object PreviewList : List<CollectedPreview> by emptyList()
-                    """,
-                    ),
-                )
-            }
-            if (generateAllList) {
-                add(
-                    SourceFile.kotlin(
-                        "PreviewAllList.kt",
-                        """
-                    package $pkg
-                    import me.tbsten.compose.preview.lab.CollectedPreview
-                    object PreviewAllList : List<CollectedPreview> by emptyList()
-                    """,
-                    ),
-                )
-                val propName = "__${pkg.replace('.', '_')}__previewsForAggregateAll"
-                add(
-                    SourceFile.kotlin(
-                        "AggregatePreviewProperty.kt",
-                        """
-                    package me.tbsten.compose.preview.lab.generated
-                    import me.tbsten.compose.preview.lab.CollectedPreview
-                    val $propName: List<CollectedPreview> = emptyList()
-                    """,
-                    ),
-                )
-            }
-        }
+    private fun previewListSourceStubs(pkg: String): List<SourceFile> {
+        val propName = "__${pkg.replace('.', '_')}__previewsForAggregateAll"
+        return listOf(
+            SourceFile.kotlin(
+                "PreviewList.kt",
+                """
+                package $pkg
+                import me.tbsten.compose.preview.lab.CollectedPreview
+                object PreviewList : List<CollectedPreview> by emptyList()
+                """,
+            ),
+            SourceFile.kotlin(
+                "PreviewAllList.kt",
+                """
+                package $pkg
+                import me.tbsten.compose.preview.lab.CollectedPreview
+                object PreviewAllList : List<CollectedPreview> by emptyList()
+                """,
+            ),
+            SourceFile.kotlin(
+                "AggregatePreviewProperty.kt",
+                """
+                package me.tbsten.compose.preview.lab.generated
+                import me.tbsten.compose.preview.lab.CollectedPreview
+                val $propName: List<CollectedPreview> = emptyList()
+                """,
+            ),
+        )
+    }
 
-    fun defaultPluginOptions(
-        previewsListPackage: String = "test.generated",
-        publicPreviewList: Boolean = false,
-        generatePreviewList: Boolean = true,
-        generatePreviewAllList: Boolean = true,
-    ): List<PluginOption> {
+    fun defaultPluginOptions(previewsListPackage: String = "test.generated"): List<PluginOption> {
         val pluginId = ComposePreviewLabCommandLineProcessor.PluginId
         return listOf(
             PluginOption(pluginId, "previewsListPackage", previewsListPackage),
-            PluginOption(pluginId, "publicPreviewList", publicPreviewList.toString()),
-            PluginOption(pluginId, "generatePreviewList", generatePreviewList.toString()),
-            PluginOption(pluginId, "generatePreviewAllList", generatePreviewAllList.toString()),
         )
     }
 }

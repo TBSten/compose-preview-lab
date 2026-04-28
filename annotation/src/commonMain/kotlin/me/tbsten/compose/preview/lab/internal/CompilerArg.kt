@@ -10,8 +10,5 @@ import me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
 object CompilerArg {
     private const val PREFIX = "composePreviewLab."
     const val previewsListPackage = "${PREFIX}previewsListPackage"
-    const val publicPreviewList = "${PREFIX}publicPreviewList"
     const val projectRootPath = "${PREFIX}projectRootPath"
-    const val generatePreviewList = "${PREFIX}generatePreviewList"
-    const val generatePreviewAllList = "${PREFIX}generatePreviewAllList"
 }
