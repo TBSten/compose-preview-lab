@@ -66,6 +66,5 @@ android {
 }
 
 composePreviewLab {
-    publicPreviewList = true
     collectPreviewsExport = "uiLib.uiLibPreviews"
 }
