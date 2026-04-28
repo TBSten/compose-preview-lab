@@ -6,12 +6,17 @@ dispatching at runtime via ServiceLoader.
 
 ## Current support matrix
 
+The supported range tracks `scripts/supported-kotlin-versions.txt` (the SSOT for CI).
+
 | Kotlin              | Status | Notes                                                                                          |
 | ------------------- | :----: | ---------------------------------------------------------------------------------------------- |
-| 2.3.0 / 2.3.10      |   ✅   | `IrDeclarationOriginCompat` resolves the companion-accessor shape via reflection                |
-| 2.3.20 / 2.3.21     |   ✅   | Same reflection helper plus the project pin (`gradle/libs.versions.toml: kotlin = 2.3.21`)     |
-| 2.4.0-Beta2         |   ✅   | `compat-k240_beta2` swaps in `IrAnnotationImpl`; `IrAnnotationCompat` covers `getAnnotation`    |
-| 2.2.x and earlier   |   ❌   | Out of scope (only used as a workaround for Issue #149)                                         |
+| 2.0.x / 2.1.0–2.1.10|   ❌   | Out of scope: requires the unified `IrMemberAccessExpression.arguments` API (2.1.20+)           |
+| 2.1.20 / 2.1.21     |   ✅   | `:compiler-plugin:compat-k210` ships legacy `IrBuilderWithScope`-receiver IR builders           |
+| 2.2.0 – 2.2.10      |   ✅   | `:compiler-plugin:compat-k222` absorbs the `IrBuilder` receiver widening                        |
+| 2.2.20 / 2.2.21     |   ✅   | `:compiler-plugin:compat-k2220` (incremental delta over `compat-k222`)                          |
+| 2.3.0 / 2.3.10      |   ✅   | `:compiler-plugin:compat-k230` + `IrDeclarationOriginCompat` reflection helper                  |
+| 2.3.20 / 2.3.21     |   ✅   | Same `compat-k230`; project pinned to 2.3.21 via `gradle/libs.versions.toml`                    |
+| 2.4.0-Beta2         |   ✅   | `:compiler-plugin:compat-k240_beta2` swaps in `IrAnnotationImpl`; `IrAnnotationCompat` covers `getAnnotation` |
 
 The single source of truth that the CI matrix and test scripts read:
 [`scripts/supported-kotlin-versions.txt`](../scripts/supported-kotlin-versions.txt).
@@ -57,7 +62,8 @@ At runtime:
    - Register `src/main/resources/META-INF/services/...$Factory`.
 2. Add `include(":compiler-plugin:compat-kXYZ")` to `settings.gradle.kts`.
 3. Add `add(embedded.name, projects.compilerPlugin.compatKxyz)` to the `embedded` configuration
-   in `compiler-plugin/build.gradle.kts`.
+   in `compiler-plugin/build.gradle.kts`. Note that the typesafe accessor is camel-cased: e.g.
+   `compat-k230` → `projects.compilerPlugin.compatK230`, `compat-k240_beta2` → `projects.compilerPlugin.compatK240Beta2`.
 4. Append the new version to `scripts/supported-kotlin-versions.txt`.
 5. Verify with `./scripts/compiler-plugin-test.sh X.Y.Z`.
 6. Open the PR.

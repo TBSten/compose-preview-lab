@@ -23,7 +23,7 @@ internal object CompatContextLoader {
         if (factories.isEmpty()) {
             error(
                 "No CompatContext.Factory implementations found on the classpath. " +
-                    "compiler-plugin/compat-k* modules may not be bundled into the plugin jar.",
+                    "The :compiler-plugin:compat-k* modules may not be bundled into the published plugin jar.",
             )
         }
 
