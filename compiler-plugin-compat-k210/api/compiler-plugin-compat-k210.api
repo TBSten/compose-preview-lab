@@ -1,4 +1,4 @@
-public final class me/tbsten/compose/preview/lab/compiler/compat/k2220/CompatContextImpl : me/tbsten/compose/preview/lab/compiler/compat/CompatContext {
+public final class me/tbsten/compose/preview/lab/compiler/compat/k210/CompatContextImpl : me/tbsten/compose/preview/lab/compiler/compat/CompatContext {
 	public fun <init> ()V
 	public fun addConstructorCallAnnotation (Lorg/jetbrains/kotlin/ir/declarations/IrSimpleFunction;Lorg/jetbrains/kotlin/ir/types/IrType;Lorg/jetbrains/kotlin/ir/symbols/IrConstructorSymbol;)V
 	public fun getDefaultType (Lorg/jetbrains/kotlin/ir/symbols/IrClassSymbol;)Lorg/jetbrains/kotlin/ir/types/IrSimpleType;
@@ -11,7 +11,7 @@ public final class me/tbsten/compose/preview/lab/compiler/compat/k2220/CompatCon
 	public fun transformModuleFragment (Lorg/jetbrains/kotlin/ir/declarations/IrModuleFragment;Ljava/lang/Object;)V
 }
 
-public final class me/tbsten/compose/preview/lab/compiler/compat/k2220/CompatContextImpl$Factory : me/tbsten/compose/preview/lab/compiler/compat/CompatContext$Factory {
+public final class me/tbsten/compose/preview/lab/compiler/compat/k210/CompatContextImpl$Factory : me/tbsten/compose/preview/lab/compiler/compat/CompatContext$Factory {
 	public fun <init> ()V
 	public fun create ()Lme/tbsten/compose/preview/lab/compiler/compat/CompatContext;
 	public fun getMinVersion ()Ljava/lang/String;

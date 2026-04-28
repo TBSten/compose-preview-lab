@@ -10,9 +10,7 @@ import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.ir.builders.declarations.buildFun
 import org.jetbrains.kotlin.ir.builders.irBlockBody
-import org.jetbrains.kotlin.ir.builders.irCall
 import org.jetbrains.kotlin.ir.builders.irReturn
-import org.jetbrains.kotlin.ir.builders.irString
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
@@ -69,10 +67,10 @@ internal class CollectedPreviewIrBuilder(
         ).apply {
             val nullableString = pluginContext.irBuiltIns.stringType.makeNullable()
             val nullableInt = pluginContext.irBuiltIns.intType.makeNullable()
-            arguments[0] = builder.irString(preview.id)
-            arguments[1] = builder.irString(preview.displayName)
+            arguments[0] = compatContext.irString(builder, preview.id)
+            arguments[1] = compatContext.irString(builder, preview.displayName)
             arguments[2] = preview.filePath
-                ?.let { builder.irString(it) }
+                ?.let { compatContext.irString(builder, it) }
                 ?: IrConstImpl.constNull(SYNTHETIC_OFFSET, SYNTHETIC_OFFSET, nullableString)
             arguments[3] = preview.startLineNumber
                 ?.let { IrConstImpl.int(SYNTHETIC_OFFSET, SYNTHETIC_OFFSET, pluginContext.irBuiltIns.intType, it) }
@@ -81,10 +79,10 @@ internal class CollectedPreviewIrBuilder(
                 ?.let { IrConstImpl.int(SYNTHETIC_OFFSET, SYNTHETIC_OFFSET, pluginContext.irBuiltIns.intType, it) }
                 ?: IrConstImpl.constNull(SYNTHETIC_OFFSET, SYNTHETIC_OFFSET, nullableInt)
             arguments[5] = preview.code
-                ?.let { builder.irString(it) }
+                ?.let { compatContext.irString(builder, it) }
                 ?: IrConstImpl.constNull(SYNTHETIC_OFFSET, SYNTHETIC_OFFSET, nullableString)
             arguments[6] = preview.kdoc
-                ?.let { builder.irString(it) }
+                ?.let { compatContext.irString(builder, it) }
                 ?: IrConstImpl.constNull(SYNTHETIC_OFFSET, SYNTHETIC_OFFSET, nullableString)
             arguments[7] = contentLambda
         }
@@ -109,7 +107,7 @@ internal class CollectedPreviewIrBuilder(
             lambda.parent = parent
             addComposableAnnotationIfAvailable(lambda)
             lambda.body = DeclarationIrBuilder(pluginContext, lambda.symbol).irBlockBody {
-                +irReturn(irCall(previewFunc.symbol))
+                +irReturn(compatContext.irCall(this, previewFunc.symbol))
             }
         }
 

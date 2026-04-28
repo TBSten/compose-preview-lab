@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.compiler.compat.k222
+package me.tbsten.compose.preview.lab.compiler.compat.k210
 
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
@@ -27,20 +27,25 @@ import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 
 /**
- * Compatibility layer for Kotlin 2.2.x.
+ * Compatibility layer for Kotlin 2.1.20 and 2.1.21.
  *
- * - FIR: in 2.2 functions are represented as [FirSimpleFunction] (not [FirFunction], which was
- *   introduced in 2.3 as a merged supertype). We check against [FirSimpleFunction] here.
- * - IR: [IrConstructorCallImpl] is still the correct annotation element type in 2.2.
- * - IR builders: in 2.2.x the `irCall` / `irGet` / `irString` helpers take an `IrBuilderWithScope`
- *   receiver. The receiver was widened to `IrBuilder` in later versions, so the bytecode emitted
- *   by this module pins the 2.2.x JVM signature.
+ * The minimum version is 2.1.20 because the main plugin relies on the unified
+ * `IrMemberAccessExpression.arguments` API that landed in 2.1.20; older 2.1.x patches
+ * cannot load the plugin.
+ *
+ * Differences from later modules:
+ * - FIR: functions are still represented as [FirSimpleFunction] (unified into `FirFunction`
+ *   in 2.3).
+ * - IR: `IrClassifierSymbol.defaultType` returns `IrType` here; the cast to `IrSimpleType`
+ *   is safe for class symbols.
+ * - IR builders: `irCall` / `irGet` / `irString` accept an `IrBuilderWithScope` receiver.
+ *   The receiver was widened to `IrBuilder` in 2.2.0+, so the bytecode emitted by this
+ *   module pins the 2.1.x JVM signature and resolves correctly at runtime.
  */
 public class CompatContextImpl : CompatContext {
 
     override fun isFirFunction(declaration: FirDeclaration): Boolean = declaration is FirSimpleFunction
 
-    // In 2.2.x IrClassifierSymbol.defaultType returns IrType; cast is safe for class symbols.
     @Suppress("UNCHECKED_CAST")
     override fun getDefaultType(classSymbol: IrClassSymbol): IrSimpleType = classSymbol.defaultType as IrSimpleType
 
@@ -81,7 +86,7 @@ public class CompatContextImpl : CompatContext {
     }
 
     public class Factory : CompatContext.Factory {
-        override val minVersion: String = "2.2.0"
+        override val minVersion: String = "2.1.20"
         override fun create(): CompatContext = CompatContextImpl()
     }
 }
