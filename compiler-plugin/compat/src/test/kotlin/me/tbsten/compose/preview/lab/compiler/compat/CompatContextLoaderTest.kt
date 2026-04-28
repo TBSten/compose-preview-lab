@@ -6,7 +6,7 @@ import io.kotest.matchers.shouldBe
 
 /**
  * Tests the error path when no [CompatContext.Factory] implementations are on the classpath.
- * (The compat module itself registers no factory; factories live in compiler-plugin-compat-* modules.)
+ * (The compat module itself registers no factory; factories live in compiler-plugin/compat-k* modules.)
  */
 class CompatContextLoaderTest :
     StringSpec({

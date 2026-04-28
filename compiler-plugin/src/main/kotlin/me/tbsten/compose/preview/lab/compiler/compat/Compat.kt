@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.ir.types.IrType
  * Access point for the version-specific Kotlin compiler API.
  *
  * The actual differences live in compat modules that implement [CompatContext]
- * (`compiler-plugin-compat-k230`, `compiler-plugin-compat-k240_beta2`, ...).
+ * (`compiler-plugin/compat-k230`, `compiler-plugin/compat-k240_beta2`, ...).
  * At runtime, ServiceLoader picks the one that matches the current Kotlin compiler.
  *
  * The extension-function shapes here intentionally mirror the ones that used to live
