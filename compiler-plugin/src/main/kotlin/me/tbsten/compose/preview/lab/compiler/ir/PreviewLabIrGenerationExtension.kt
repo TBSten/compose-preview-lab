@@ -33,7 +33,7 @@ class PreviewLabIrGenerationExtension(private val config: PluginConfig) : IrGene
         val previews = collectPreviews(moduleFragment)
         val compatContext = CompatContext.load()
         PreviewLabIrBodyFiller(pluginContext, config, previews, compatContext).also {
-            moduleFragment.transform(it, null)
+            compatContext.transformModuleFragment(moduleFragment, it)
         }
     }
 

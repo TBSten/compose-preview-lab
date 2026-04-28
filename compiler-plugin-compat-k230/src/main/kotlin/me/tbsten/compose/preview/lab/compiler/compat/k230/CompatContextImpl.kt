@@ -3,14 +3,28 @@ package me.tbsten.compose.preview.lab.compiler.compat.k230
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirFunction
+import org.jetbrains.kotlin.ir.builders.IrBuilderWithScope
+import org.jetbrains.kotlin.ir.builders.irCall
+import org.jetbrains.kotlin.ir.builders.irGet
+import org.jetbrains.kotlin.ir.builders.irString
+import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
+import org.jetbrains.kotlin.ir.declarations.IrValueDeclaration
+import org.jetbrains.kotlin.ir.expressions.IrCall
+import org.jetbrains.kotlin.ir.expressions.IrExpression
+import org.jetbrains.kotlin.ir.expressions.IrFunctionAccessExpression
+import org.jetbrains.kotlin.ir.expressions.IrGetValue
+import org.jetbrains.kotlin.ir.expressions.IrMemberAccessExpression
 import org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
+import org.jetbrains.kotlin.ir.symbols.IrFunctionSymbol
+import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.types.IrSimpleType
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.defaultType
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
+import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 
 /**
  * Compatibility layer for Kotlin 2.3.x.
@@ -19,6 +33,9 @@ import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
  *   `FirFunction`.
  * - IR: in 2.3 the element type of `IrSimpleFunction.annotations` is still
  *   `List<IrConstructorCall>`, so `IrConstructorCallImpl` can be appended directly.
+ * - IR builders: by 2.3.x the `irCall` / `irGet` / `irString` helpers accept the wider
+ *   `IrBuilder` receiver, but `IrBuilderWithScope` is still a subtype, so the same call
+ *   sites resolve correctly. This module compiles them against 2.3.x bytecode.
  *
  * These APIs are identical across the 2.3.0 / 2.3.10 / 2.3.20 / 2.3.21 patches.
  */
@@ -42,6 +59,26 @@ public class CompatContextImpl : CompatContext {
             constructorTypeArgumentsCount = 0,
         )
         function.annotations = function.annotations + annotation
+    }
+
+    override fun irCall(builder: IrBuilderWithScope, callee: IrSimpleFunctionSymbol): IrCall = builder.irCall(callee)
+
+    override fun irCall(builder: IrBuilderWithScope, callee: IrFunctionSymbol, returnType: IrType): IrFunctionAccessExpression =
+        builder.irCall(callee, returnType)
+
+    override fun irCall(
+        builder: IrBuilderWithScope,
+        callee: IrFunctionSymbol,
+        returnType: IrType,
+        typeArguments: List<IrType>,
+    ): IrMemberAccessExpression<*> = builder.irCall(callee, returnType, typeArguments)
+
+    override fun irGet(builder: IrBuilderWithScope, variable: IrValueDeclaration): IrGetValue = builder.irGet(variable)
+
+    override fun irString(builder: IrBuilderWithScope, value: String): IrExpression = builder.irString(value)
+
+    override fun transformModuleFragment(moduleFragment: IrModuleFragment, transformer: Any) {
+        moduleFragment.transform(transformer as IrElementTransformerVoid, null)
     }
 
     public class Factory : CompatContext.Factory {

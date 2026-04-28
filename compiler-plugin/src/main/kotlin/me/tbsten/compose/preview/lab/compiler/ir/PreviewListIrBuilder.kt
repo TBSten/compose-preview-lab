@@ -11,8 +11,6 @@ import org.jetbrains.kotlin.ir.builders.IrBuilderWithScope
 import org.jetbrains.kotlin.ir.builders.declarations.buildFun
 import org.jetbrains.kotlin.ir.builders.irBlock
 import org.jetbrains.kotlin.ir.builders.irBlockBody
-import org.jetbrains.kotlin.ir.builders.irCall
-import org.jetbrains.kotlin.ir.builders.irGet
 import org.jetbrains.kotlin.ir.builders.irReturn
 import org.jetbrains.kotlin.ir.builders.irTemporary
 import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
@@ -79,7 +77,7 @@ internal class PreviewListIrBuilder(
             elements = elements.toMutableList(),
         )
 
-        return builder.irCall(listOfFun, listOfCollectedPreviewType, listOf(collectedPreviewType)).apply {
+        return compatContext.irCall(builder, listOfFun, listOfCollectedPreviewType, listOf(collectedPreviewType)).apply {
             arguments[0] = vararg
         }
     }
@@ -88,7 +86,7 @@ internal class PreviewListIrBuilder(
         val emptyListFun = pluginContext.referenceFunctions(
             CallableId(FqName("kotlin.collections"), Name.identifier("emptyList")),
         ).first()
-        return builder.irCall(emptyListFun, listOfCollectedPreviewType, listOf(collectedPreviewType))
+        return compatContext.irCall(builder, emptyListFun, listOfCollectedPreviewType, listOf(collectedPreviewType))
     }
 
     // ----- Lazy wrapper -----
@@ -125,7 +123,8 @@ internal class PreviewListIrBuilder(
             function = lambdaFun,
         )
 
-        return builder.irCall(
+        return compatContext.irCall(
+            builder,
             lazyFun,
             pluginContext.referenceClass(
                 ClassId(FqName("kotlin"), Name.identifier("Lazy")),
@@ -167,21 +166,26 @@ internal class PreviewListIrBuilder(
 
         return builder.irBlock {
             val listVar = irTemporary(
-                builder.irCall(mutableListOfFun, mutableListType, listOf(collectedPreviewType)),
+                compatContext.irCall(this, mutableListOfFun, mutableListType, listOf(collectedPreviewType)),
             )
-            +irCall(addAllFun, pluginContext.irBuiltIns.booleanType, listOf(collectedPreviewType)).apply {
-                arguments[0] = irGet(listVar)
+            +compatContext.irCall(this, addAllFun, pluginContext.irBuiltIns.booleanType, listOf(collectedPreviewType)).apply {
+                arguments[0] = compatContext.irGet(this@irBlock, listVar)
                 arguments[1] = thisModulePreviews
             }
             for (depProp in depProperties) {
                 val depGetter = depProp.getter ?: continue
-                val depValue = builder.irCall(depGetter.symbol, listOfCollectedPreviewType)
-                +irCall(addAllFun, pluginContext.irBuiltIns.booleanType, listOf(collectedPreviewType)).apply {
-                    arguments[0] = irGet(listVar)
+                val depValue = compatContext.irCall(this, depGetter.symbol, listOfCollectedPreviewType)
+                +compatContext.irCall(
+                    this,
+                    addAllFun,
+                    pluginContext.irBuiltIns.booleanType,
+                    listOf(collectedPreviewType)
+                ).apply {
+                    arguments[0] = compatContext.irGet(this@irBlock, listVar)
                     arguments[1] = depValue
                 }
             }
-            +irGet(listVar)
+            +compatContext.irGet(this, listVar)
         }
     }
 
