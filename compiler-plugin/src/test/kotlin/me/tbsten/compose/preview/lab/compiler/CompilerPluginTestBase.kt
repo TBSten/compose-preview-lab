@@ -57,7 +57,7 @@ open class CompilerPluginTestBase {
     fun compile(
         vararg sources: SourceFile,
         pluginRegistrars: List<CompilerPluginRegistrar> = listOf(ComposePreviewLabCompilerPluginRegistrar()),
-        pluginOptions: List<PluginOption> = defaultPluginOptions(),
+        pluginOptions: List<PluginOption> = emptyList(),
     ): JvmCompilationResult = KotlinCompilation().apply {
         this.sources = previewAnnotationStubs + collectPreviewsStubs + sources.toList()
         this.compilerPluginRegistrars = pluginRegistrars
@@ -75,13 +75,6 @@ open class CompilerPluginTestBase {
             )
         }
     }.compile()
-
-    fun defaultPluginOptions(previewsListPackage: String = "test.generated"): List<PluginOption> {
-        val pluginId = ComposePreviewLabCommandLineProcessor.PluginId
-        return listOf(
-            PluginOption(pluginId, "previewsListPackage", previewsListPackage),
-        )
-    }
 
     /**
      * `val <propertyName> by collectModulePreviews()` を `test.entry.EntryKt` に持つ補助ソース。

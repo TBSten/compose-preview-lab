@@ -41,7 +41,6 @@ class ComposePreviewLabSubplugin : KotlinCompilerPluginSupportPlugin {
             val depFqns = collectDependencyCollectPreviewsFqns(project)
 
             buildList {
-                add(SubpluginOption("previewsListPackage", extension.generatePackage))
                 add(SubpluginOption("projectRootPath", extension.projectRootPath))
                 if (depFqns.isNotEmpty()) {
                     add(SubpluginOption("dependencyCollectPreviewsFqns", depFqns.joinToString(",")))

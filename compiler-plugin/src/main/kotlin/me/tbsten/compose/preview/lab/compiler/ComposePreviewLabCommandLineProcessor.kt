@@ -12,12 +12,6 @@ class ComposePreviewLabCommandLineProcessor : CommandLineProcessor {
 
     override val pluginOptions: Collection<AbstractCliOption> = listOf(
         CliOption(
-            optionName = OptionPreviewsListPackage,
-            valueDescription = "<package>",
-            description = "Package name for generated preview list",
-            required = true,
-        ),
-        CliOption(
             optionName = OptionProjectRootPath,
             valueDescription = "<path>",
             description = "Root path of the project",
@@ -33,7 +27,6 @@ class ComposePreviewLabCommandLineProcessor : CommandLineProcessor {
 
     override fun processOption(option: AbstractCliOption, value: String, configuration: CompilerConfiguration,) {
         when (option.optionName) {
-            OptionPreviewsListPackage -> configuration.put(KEY_PREVIEWS_LIST_PACKAGE, value)
             OptionProjectRootPath -> configuration.put(KEY_PROJECT_ROOT_PATH, value)
             OptionDependencyCollectPreviewsFqns -> configuration.put(KEY_DEPENDENCY_COLLECT_PREVIEWS_FQNS, value)
             else -> error("Unknown option: ${option.optionName}")
@@ -42,7 +35,6 @@ class ComposePreviewLabCommandLineProcessor : CommandLineProcessor {
 
     companion object {
         const val PluginId = "me.tbsten.compose.preview.lab.compiler"
-        const val OptionPreviewsListPackage = "previewsListPackage"
         const val OptionProjectRootPath = "projectRootPath"
         const val OptionDependencyCollectPreviewsFqns = "dependencyCollectPreviewsFqns"
     }
