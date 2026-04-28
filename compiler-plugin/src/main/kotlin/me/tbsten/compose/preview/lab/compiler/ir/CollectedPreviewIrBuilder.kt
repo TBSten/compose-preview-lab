@@ -2,6 +2,7 @@
 
 package me.tbsten.compose.preview.lab.compiler.ir
 
+import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
 import me.tbsten.compose.preview.lab.compiler.compat.addConstructorCallAnnotation
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -22,7 +23,6 @@ import org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrFunctionExpressionImpl
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.types.IrType
-import org.jetbrains.kotlin.ir.types.defaultType
 import org.jetbrains.kotlin.ir.types.makeNullable
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 import org.jetbrains.kotlin.ir.util.constructors
@@ -34,13 +34,16 @@ import org.jetbrains.kotlin.name.SpecialNames
 /**
  * Builds the IR for individual [CollectedPreview] instances.
  */
-internal class CollectedPreviewIrBuilder(private val pluginContext: IrPluginContext,) {
+internal class CollectedPreviewIrBuilder(
+    private val pluginContext: IrPluginContext,
+    private val compatContext: CompatContext,
+) {
     val collectedPreviewClass by lazy {
         pluginContext.referenceClass(
             ClassId(FqName("me.tbsten.compose.preview.lab"), Name.identifier("CollectedPreview")),
         )!!
     }
-    val collectedPreviewType by lazy { collectedPreviewClass.defaultType }
+    val collectedPreviewType by lazy { compatContext.getDefaultType(collectedPreviewClass) }
 
     /**
      * Builds the IR for `CollectedPreview(id, displayName, ...) { previewFun() }`.
@@ -127,7 +130,7 @@ internal class CollectedPreviewIrBuilder(private val pluginContext: IrPluginCont
         val composableClass = pluginContext.referenceClass(composableClassId) ?: return
         val ctor = composableClass.constructors.firstOrNull() ?: return
         func.addConstructorCallAnnotation(
-            type = composableClass.defaultType,
+            type = compatContext.getDefaultType(composableClass),
             constructorSymbol = ctor,
         )
     }

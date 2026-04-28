@@ -3,6 +3,7 @@
 package me.tbsten.compose.preview.lab.compiler.ir
 
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
+import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.getAnnotationCompat
 import me.tbsten.compose.preview.lab.compiler.compat.hasAnnotationCompat
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
@@ -30,7 +31,8 @@ class PreviewLabIrGenerationExtension(private val config: PluginConfig) : IrGene
 
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
         val previews = collectPreviews(moduleFragment)
-        PreviewLabIrBodyFiller(pluginContext, config, previews).also {
+        val compatContext = CompatContext.load()
+        PreviewLabIrBodyFiller(pluginContext, config, previews, compatContext).also {
             moduleFragment.transform(it, null)
         }
     }

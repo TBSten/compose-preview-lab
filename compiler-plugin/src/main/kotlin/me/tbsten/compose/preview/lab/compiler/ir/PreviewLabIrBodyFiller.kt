@@ -3,6 +3,7 @@
 package me.tbsten.compose.preview.lab.compiler.ir
 
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
+import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.descriptors.ClassKind
@@ -34,6 +35,7 @@ internal class PreviewLabIrBodyFiller(
     private val pluginContext: IrPluginContext,
     private val config: PluginConfig,
     previews: List<PreviewFunctionInfo>,
+    compatContext: CompatContext,
 ) : IrElementTransformerVoid() {
 
     private val collectModulePreviewsFq = FqName("me.tbsten.compose.preview.lab.collectModulePreviews")
@@ -44,7 +46,7 @@ internal class PreviewLabIrBodyFiller(
     private val previewListFqName = previewsListPackage.child(Name.identifier("PreviewList"))
     private val previewAllListFqName = previewsListPackage.child(Name.identifier("PreviewAllList"))
 
-    private val irBuilder = PreviewListIrBuilder(pluginContext, previews, config)
+    private val irBuilder = PreviewListIrBuilder(pluginContext, previews, config, compatContext)
 
     // ----- collectModulePreviews / collectAllModulePreviews -----
 

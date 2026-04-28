@@ -7,6 +7,10 @@
 #   2. Verify locally with `./scripts/compiler-plugin-test.sh <new-version>`.
 #   3. If API drift requires it, add a new compat module
 #      (compiler-plugin-compat-k* / settings.gradle.kts / META-INF/services).
+2.2.0
+2.2.10
+2.2.20
+2.2.21
 2.3.0
 2.3.10
 2.3.20

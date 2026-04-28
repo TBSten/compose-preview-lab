@@ -2,7 +2,9 @@ package me.tbsten.compose.preview.lab.compiler.compat
 
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
+import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
+import org.jetbrains.kotlin.ir.types.IrSimpleType
 import org.jetbrains.kotlin.ir.types.IrType
 
 /**
@@ -23,6 +25,14 @@ public interface CompatContext {
      * (e.g. `FirSimpleFunction` vs `FirFunction`); this method abstracts that away.
      */
     public fun isFirFunction(declaration: FirDeclaration): Boolean
+
+    /**
+     * Returns the default type of a class symbol.
+     *
+     * `IrClassifierSymbol.defaultType` (extension) was introduced in 2.2.20; earlier versions
+     * only have `IrClass.defaultType` as a direct member property.
+     */
+    public fun getDefaultType(classSymbol: IrClassSymbol): IrSimpleType
 
     /**
      * Builds an annotation from the given constructor symbol and adds it to [function].
