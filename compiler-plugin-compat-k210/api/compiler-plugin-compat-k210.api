@@ -1,0 +1,19 @@
+public final class me/tbsten/compose/preview/lab/compiler/compat/k210/CompatContextImpl : me/tbsten/compose/preview/lab/compiler/compat/CompatContext {
+	public fun <init> ()V
+	public fun addConstructorCallAnnotation (Lorg/jetbrains/kotlin/ir/declarations/IrSimpleFunction;Lorg/jetbrains/kotlin/ir/types/IrType;Lorg/jetbrains/kotlin/ir/symbols/IrConstructorSymbol;)V
+	public fun getDefaultType (Lorg/jetbrains/kotlin/ir/symbols/IrClassSymbol;)Lorg/jetbrains/kotlin/ir/types/IrSimpleType;
+	public fun irCall (Lorg/jetbrains/kotlin/ir/builders/IrBuilderWithScope;Lorg/jetbrains/kotlin/ir/symbols/IrFunctionSymbol;Lorg/jetbrains/kotlin/ir/types/IrType;)Lorg/jetbrains/kotlin/ir/expressions/IrFunctionAccessExpression;
+	public fun irCall (Lorg/jetbrains/kotlin/ir/builders/IrBuilderWithScope;Lorg/jetbrains/kotlin/ir/symbols/IrFunctionSymbol;Lorg/jetbrains/kotlin/ir/types/IrType;Ljava/util/List;)Lorg/jetbrains/kotlin/ir/expressions/IrMemberAccessExpression;
+	public fun irCall (Lorg/jetbrains/kotlin/ir/builders/IrBuilderWithScope;Lorg/jetbrains/kotlin/ir/symbols/IrSimpleFunctionSymbol;)Lorg/jetbrains/kotlin/ir/expressions/IrCall;
+	public fun irGet (Lorg/jetbrains/kotlin/ir/builders/IrBuilderWithScope;Lorg/jetbrains/kotlin/ir/declarations/IrValueDeclaration;)Lorg/jetbrains/kotlin/ir/expressions/IrGetValue;
+	public fun irString (Lorg/jetbrains/kotlin/ir/builders/IrBuilderWithScope;Ljava/lang/String;)Lorg/jetbrains/kotlin/ir/expressions/IrExpression;
+	public fun isFirFunction (Lorg/jetbrains/kotlin/fir/declarations/FirDeclaration;)Z
+	public fun transformModuleFragment (Lorg/jetbrains/kotlin/ir/declarations/IrModuleFragment;Ljava/lang/Object;)V
+}
+
+public final class me/tbsten/compose/preview/lab/compiler/compat/k210/CompatContextImpl$Factory : me/tbsten/compose/preview/lab/compiler/compat/CompatContext$Factory {
+	public fun <init> ()V
+	public fun create ()Lme/tbsten/compose/preview/lab/compiler/compat/CompatContext;
+	public fun getMinVersion ()Ljava/lang/String;
+}
+

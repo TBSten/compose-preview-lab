@@ -28,8 +28,11 @@ configurations.named("testImplementation").configure { extendsFrom(embedded) }
 // `scripts/supported-kotlin-versions.txt`.
 val testKotlinVersion: String = (findProperty("test.kotlin") as String?) ?: libs.versions.kotlin.get()
 
-// Kotlin 2.4 needs a newer kctfork release.
+// kctfork version selection per Kotlin version.
+// - 2.1.x: 0.10.0 (K2JVMCompilerArguments.jvmDefaultStable absent before 2.2.0)
+// - 2.4.x: 0.13.0-alpha01 (newer API changes)
 val kctforkVersion: String = when {
+    testKotlinVersion.startsWith("2.1") -> "0.10.0"
     testKotlinVersion.startsWith("2.4") -> "0.13.0-alpha01"
     else -> libs.versions.kctfork.get()
 }
@@ -47,6 +50,7 @@ dependencies {
     api(projects.annotation)
 
     add(embedded.name, projects.compilerPlugin.compat)
+    add(embedded.name, projects.compilerPluginCompatK210)
     add(embedded.name, projects.compilerPluginCompatK222)
     add(embedded.name, projects.compilerPluginCompatK2220)
     add(embedded.name, projects.compilerPluginCompatK230)
@@ -99,6 +103,10 @@ listOf("testCompileClasspath", "testRuntimeClasspath").forEach { name ->
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    // Pass testKotlinVersion to tests so CompilerPluginTestBase can set languageVersion
+    // accordingly. In Kotlin 2.1.x, FirIncompatibleClassExpressionChecker crashes when
+    // languageVersion="2.0" is used with a 2.1.x compiler (source must not be null).
+    systemProperty("test.kotlin.version", testKotlinVersion)
     // kctfork bundles a kotlin-compiler-embeddable that cannot parse Java 26 version
     // strings, so the test JVM has to run on Java 21.
     javaLauncher.set(
