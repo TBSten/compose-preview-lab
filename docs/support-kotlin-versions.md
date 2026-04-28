@@ -8,10 +8,13 @@ dispatching at runtime via ServiceLoader.
 
 | Kotlin              | Status | Notes                                                                                          |
 | ------------------- | :----: | ---------------------------------------------------------------------------------------------- |
-| 2.3.0 / 2.3.10      |   ✅   | `IrDeclarationOriginCompat` resolves the companion-accessor shape via reflection                |
-| 2.3.20 / 2.3.21     |   ✅   | Same reflection helper plus the project pin (`gradle/libs.versions.toml: kotlin = 2.3.21`)     |
+| 2.0.x / 2.1.0–2.1.10|   ❌   | Out of scope: requires unified `IrMemberAccessExpression.arguments` API (introduced in 2.1.20)  |
+| 2.1.20 / 2.1.21     |   ✅   | `compat-k210` ships legacy `IrBuilderWithScope`-receiver IR builders                            |
+| 2.2.0 – 2.2.10      |   ✅   | `compat-k222` absorbs the `IrBuilder` receiver widening                                         |
+| 2.2.20 / 2.2.21     |   ✅   | `compat-k2220` (incremental delta over `compat-k222`)                                           |
+| 2.3.0 / 2.3.10      |   ✅   | `compat-k230` + `IrDeclarationOriginCompat` reflection helper for the companion-accessor shape  |
+| 2.3.20 / 2.3.21     |   ✅   | Same `compat-k230`; project pinned to 2.3.21 via `gradle/libs.versions.toml`                    |
 | 2.4.0-Beta2         |   ✅   | `compat-k240_beta2` swaps in `IrAnnotationImpl`; `IrAnnotationCompat` covers `getAnnotation`    |
-| 2.2.x and earlier   |   ❌   | Out of scope (only used as a workaround for Issue #149)                                         |
 
 The single source of truth that the CI matrix and test scripts read:
 [`scripts/supported-kotlin-versions.txt`](../scripts/supported-kotlin-versions.txt).

@@ -46,11 +46,17 @@ Compose Multiplatform is supported.
 The easiest way to get started. The `starter` module bundles all core modules (core, field, ui, preview-lab, gallery) into a
 single dependency.
 
-> ⚠️ The `me.tbsten.compose.preview.lab` plugin must be applied **before** the Compose Compiler plugin.
+> [!NOTE]
+> On **Kotlin 2.3.0 or later**, plugin application order does not matter — the Gradle plugin injects
+> `-Xcompiler-plugin-order` automatically. On Kotlin 2.1.20 / 2.2.x, the
+> `me.tbsten.compose.preview.lab` plugin must be applied **before** the Compose Compiler plugin
+> (the Gradle plugin will fail fast with a clear error otherwise).
 
 ```kts
 plugins {
-    // ⭐️ Add Compose Preview Lab Gradle plugin (apply BEFORE composeCompiler)
+    // ⭐️ Add Compose Preview Lab Gradle plugin
+    // Kotlin 2.3+: order does not matter (the Gradle plugin auto-injects -Xcompiler-plugin-order)
+    // Kotlin 2.1.20 / 2.2.x: apply BEFORE composeCompiler
     id("me.tbsten.compose.preview.lab") version "<compose-preview-lab-version>"
     id("org.jetbrains.kotlin.plugin.compose")
 }
@@ -85,7 +91,9 @@ If you need fine-grained control over dependencies, you can add individual modul
 
 ```kts
 plugins {
-    // ⭐️ Add Compose Preview Lab Gradle plugin (apply BEFORE composeCompiler)
+    // ⭐️ Add Compose Preview Lab Gradle plugin
+    // Kotlin 2.3+: order does not matter (the Gradle plugin auto-injects -Xcompiler-plugin-order)
+    // Kotlin 2.1.20 / 2.2.x: apply BEFORE composeCompiler
     id("me.tbsten.compose.preview.lab") version "<compose-preview-lab-version>"
     id("org.jetbrains.kotlin.plugin.compose")
 }
@@ -130,7 +138,9 @@ kotlin {
 
 ```kts
 plugins {
-    // ⭐️ Add Compose Preview Lab Gradle plugin (apply BEFORE composeCompiler)
+    // ⭐️ Add Compose Preview Lab Gradle plugin
+    // Kotlin 2.3+: order does not matter (the Gradle plugin auto-injects -Xcompiler-plugin-order)
+    // Kotlin 2.1.20 / 2.2.x: apply BEFORE composeCompiler
     id("me.tbsten.compose.preview.lab") version "<compose-preview-lab-version>"
     id("org.jetbrains.kotlin.plugin.compose")
 }
