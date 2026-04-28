@@ -9,12 +9,12 @@ dispatching at runtime via ServiceLoader.
 | Kotlin              | Status | Notes                                                                                          |
 | ------------------- | :----: | ---------------------------------------------------------------------------------------------- |
 | 2.0.x / 2.1.0–2.1.10|   ❌   | Out of scope: requires unified `IrMemberAccessExpression.arguments` API (introduced in 2.1.20)  |
-| 2.1.20 / 2.1.21     |   ✅   | `compat-k210` ships legacy `IrBuilderWithScope`-receiver IR builders                            |
-| 2.2.0 – 2.2.10      |   ✅   | `compat-k222` absorbs the `IrBuilder` receiver widening                                         |
-| 2.2.20 / 2.2.21     |   ✅   | `compat-k2220` (incremental delta over `compat-k222`)                                           |
-| 2.3.0 / 2.3.10      |   ✅   | `compat-k230` + `IrDeclarationOriginCompat` reflection helper for the companion-accessor shape  |
-| 2.3.20 / 2.3.21     |   ✅   | Same `compat-k230`; project pinned to 2.3.21 via `gradle/libs.versions.toml`                    |
-| 2.4.0-Beta2         |   ✅   | `compat-k240_beta2` swaps in `IrAnnotationImpl`; `IrAnnotationCompat` covers `getAnnotation`    |
+| 2.1.20 / 2.1.21     |   ✅   | `compiler-plugin-compat-k210` ships legacy `IrBuilderWithScope`-receiver IR builders            |
+| 2.2.0 – 2.2.10      |   ✅   | `compiler-plugin-compat-k222` absorbs the `IrBuilder` receiver widening                         |
+| 2.2.20 / 2.2.21     |   ✅   | `compiler-plugin-compat-k2220` (incremental delta over `compiler-plugin-compat-k222`)           |
+| 2.3.0 / 2.3.10      |   ✅   | `compiler-plugin-compat-k230` + `IrDeclarationOriginCompat` reflection helper                   |
+| 2.3.20 / 2.3.21     |   ✅   | Same `compiler-plugin-compat-k230`; project pinned to 2.3.21 via `gradle/libs.versions.toml`    |
+| 2.4.0-Beta2         |   ✅   | `compiler-plugin-compat-k240_beta2` swaps in `IrAnnotationImpl`; `IrAnnotationCompat` covers `getAnnotation` |
 
 The single source of truth that the CI matrix and test scripts read:
 [`scripts/supported-kotlin-versions.txt`](../scripts/supported-kotlin-versions.txt).
@@ -23,13 +23,17 @@ The single source of truth that the CI matrix and test scripts read:
 
 ```
 compiler-plugin/                        # main (version-agnostic) — published as a shadow JAR
-├── compat/                             # shared SPI: CompatContext, KotlinToolingVersion, ServiceLoader
+└── compat/                             # shared SPI (`:compiler-plugin:compat`)
+
+compiler-plugin-compat-k210/            # Kotlin 2.1.20+: legacy IrBuilderWithScope-receiver IR builders
+compiler-plugin-compat-k222/            # Kotlin 2.2.x: IrBuilder receiver widening
+compiler-plugin-compat-k2220/           # Kotlin 2.2.20+: incremental delta over k222
 compiler-plugin-compat-k230/            # Kotlin 2.3.x: FirFunction + IrConstructorCallImpl
 compiler-plugin-compat-k240_beta2/      # Kotlin 2.4+: IrAnnotationImpl (handles the annotations type change)
 ```
 
-At build time the `compiler-plugin` shadow JAR pulls in `compiler-plugin/compat` plus each
-`compiler-plugin-compat-*`, and merges
+At build time the `compiler-plugin` shadow JAR pulls in `:compiler-plugin:compat` plus each
+`compiler-plugin-compat-*` module, and merges
 `META-INF/services/me.tbsten.compose.preview.lab.compiler.compat.CompatContext$Factory`.
 
 At runtime:
