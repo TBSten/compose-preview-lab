@@ -35,7 +35,3 @@ android {
     namespace = "me.tbsten.compose.preview.lab.sample.uiLibReversed"
     compileSdk = 36
 }
-
-composePreviewLab {
-    publicPreviewList = true
-}

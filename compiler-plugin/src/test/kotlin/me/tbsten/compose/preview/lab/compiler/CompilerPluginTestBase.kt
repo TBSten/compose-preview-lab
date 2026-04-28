@@ -57,88 +57,65 @@ open class CompilerPluginTestBase {
     fun compile(
         vararg sources: SourceFile,
         pluginRegistrars: List<CompilerPluginRegistrar> = listOf(ComposePreviewLabCompilerPluginRegistrar()),
-        pluginOptions: List<PluginOption> = defaultPluginOptions(),
-    ): JvmCompilationResult {
-        val pkg = pluginOptions.firstOrNull { it.optionName == "previewsListPackage" }?.optionValue ?: "test.generated"
-        val genList = pluginOptions.firstOrNull { it.optionName == "generatePreviewList" }?.optionValue != "false"
-        val genAllList = pluginOptions.firstOrNull { it.optionName == "generatePreviewAllList" }?.optionValue != "false"
-        val previewListStubs = previewListSourceStubs(pkg, genList, genAllList)
-
-        return KotlinCompilation().apply {
-            this.sources = previewAnnotationStubs + collectPreviewsStubs + previewListStubs + sources.toList()
-            this.compilerPluginRegistrars = pluginRegistrars
-            this.commandLineProcessors = listOf(ComposePreviewLabCommandLineProcessor())
-            this.pluginOptions = pluginOptions
-            this.inheritClassPath = true
-            // Use the compiler's own major.minor as languageVersion to avoid
-            // FirIncompatibleClassExpressionChecker crashing in Kotlin 2.1.x when
-            // languageVersion="2.0" is used (source must not be null).
-            this.languageVersion = testLanguageVersion
-            if (needsCompatibilityFlags) {
-                this.kotlincArguments = this.kotlincArguments + listOf(
-                    "-Xskip-prerelease-check",
-                    "-Xskip-metadata-version-check",
-                )
-            }
-        }.compile()
-    }
+        pluginOptions: List<PluginOption> = emptyList(),
+    ): JvmCompilationResult = KotlinCompilation().apply {
+        this.sources = previewAnnotationStubs + collectPreviewsStubs + sources.toList()
+        this.compilerPluginRegistrars = pluginRegistrars
+        this.commandLineProcessors = listOf(ComposePreviewLabCommandLineProcessor())
+        this.pluginOptions = pluginOptions
+        this.inheritClassPath = true
+        // Use the compiler's own major.minor as languageVersion to avoid
+        // FirIncompatibleClassExpressionChecker crashing in Kotlin 2.1.x when
+        // languageVersion="2.0" is used (source must not be null).
+        this.languageVersion = testLanguageVersion
+        if (needsCompatibilityFlags) {
+            this.kotlincArguments = this.kotlincArguments + listOf(
+                "-Xskip-prerelease-check",
+                "-Xskip-metadata-version-check",
+            )
+        }
+    }.compile()
 
     /**
-     * Gradle plugin が生成する PreviewList / PreviewAllList スタブソースを模倣する。
-     * FIR 宣言生成を廃止し、ソースファイル生成に移行したため、
-     * テスト時にもスタブを明示的に渡す必要がある。
+     * `val <propertyName> by collectModulePreviews()` を `test.entry.EntryKt` に持つ補助ソース。
+     * テストはこのプロパティを通して IR 変換後の List<CollectedPreview> を検証する。
      */
-    private fun previewListSourceStubs(pkg: String, generateList: Boolean, generateAllList: Boolean,): List<SourceFile> =
-        buildList {
-            if (generateList) {
-                add(
-                    SourceFile.kotlin(
-                        "PreviewList.kt",
-                        """
-                    package $pkg
-                    import me.tbsten.compose.preview.lab.CollectedPreview
-                    object PreviewList : List<CollectedPreview> by emptyList()
-                    """,
-                    ),
-                )
-            }
-            if (generateAllList) {
-                add(
-                    SourceFile.kotlin(
-                        "PreviewAllList.kt",
-                        """
-                    package $pkg
-                    import me.tbsten.compose.preview.lab.CollectedPreview
-                    object PreviewAllList : List<CollectedPreview> by emptyList()
-                    """,
-                    ),
-                )
-                val propName = "__${pkg.replace('.', '_')}__previewsForAggregateAll"
-                add(
-                    SourceFile.kotlin(
-                        "AggregatePreviewProperty.kt",
-                        """
-                    package me.tbsten.compose.preview.lab.generated
-                    import me.tbsten.compose.preview.lab.CollectedPreview
-                    val $propName: List<CollectedPreview> = emptyList()
-                    """,
-                    ),
-                )
-            }
-        }
+    fun collectModulePreviewsEntry(propertyName: String = "previews"): SourceFile = SourceFile.kotlin(
+        "Entry.kt",
+        """
+        package test.entry
 
-    fun defaultPluginOptions(
-        previewsListPackage: String = "test.generated",
-        publicPreviewList: Boolean = false,
-        generatePreviewList: Boolean = true,
-        generatePreviewAllList: Boolean = true,
-    ): List<PluginOption> {
-        val pluginId = ComposePreviewLabCommandLineProcessor.PluginId
-        return listOf(
-            PluginOption(pluginId, "previewsListPackage", previewsListPackage),
-            PluginOption(pluginId, "publicPreviewList", publicPreviewList.toString()),
-            PluginOption(pluginId, "generatePreviewList", generatePreviewList.toString()),
-            PluginOption(pluginId, "generatePreviewAllList", generatePreviewAllList.toString()),
-        )
-    }
+        import me.tbsten.compose.preview.lab.collectModulePreviews
+
+        val $propertyName by collectModulePreviews()
+        """,
+    )
+
+    /**
+     * `val <propertyName> by collectAllModulePreviews()` を `test.entry.EntryKt` に持つ補助ソース。
+     * `collectModulePreviewsEntry` と排他で使うこと（同一ファイルに両方を入れたい場合は手動で組み立てる）。
+     */
+    fun collectAllModulePreviewsEntry(propertyName: String = "allPreviews"): SourceFile = SourceFile.kotlin(
+        "Entry.kt",
+        """
+        package test.entry
+
+        import me.tbsten.compose.preview.lab.collectAllModulePreviews
+
+        val $propertyName by collectAllModulePreviews()
+        """,
+    )
+}
+
+/**
+ * `collectModulePreviewsEntry` / `collectAllModulePreviewsEntry` で生成したプロパティを
+ * リフレクションで取得する。テスト側のボイラープレートを抑えるための薄いラッパー。
+ */
+@Suppress("UNCHECKED_CAST")
+internal fun JvmCompilationResult.loadCollectedPreviews(propertyName: String = "previews"): List<Any> {
+    val getter = "get" + propertyName.replaceFirstChar { it.uppercase() }
+    return classLoader
+        .loadClass("test.entry.EntryKt")
+        .getMethod(getter)
+        .invoke(null) as List<Any>
 }

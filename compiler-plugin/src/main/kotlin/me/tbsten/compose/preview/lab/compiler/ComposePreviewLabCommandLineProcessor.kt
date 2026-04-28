@@ -12,33 +12,9 @@ class ComposePreviewLabCommandLineProcessor : CommandLineProcessor {
 
     override val pluginOptions: Collection<AbstractCliOption> = listOf(
         CliOption(
-            optionName = OptionPreviewsListPackage,
-            valueDescription = "<package>",
-            description = "Package name for generated preview list",
-            required = true,
-        ),
-        CliOption(
-            optionName = OptionPublicPreviewList,
-            valueDescription = "<true|false>",
-            description = "Whether the generated preview list should be public",
-            required = false,
-        ),
-        CliOption(
             optionName = OptionProjectRootPath,
             valueDescription = "<path>",
             description = "Root path of the project",
-            required = false,
-        ),
-        CliOption(
-            optionName = OptionGeneratePreviewList,
-            valueDescription = "<true|false>",
-            description = "Whether to generate preview list",
-            required = false,
-        ),
-        CliOption(
-            optionName = OptionGeneratePreviewAllList,
-            valueDescription = "<true|false>",
-            description = "Whether to generate preview all list",
             required = false,
         ),
         CliOption(
@@ -51,11 +27,7 @@ class ComposePreviewLabCommandLineProcessor : CommandLineProcessor {
 
     override fun processOption(option: AbstractCliOption, value: String, configuration: CompilerConfiguration,) {
         when (option.optionName) {
-            OptionPreviewsListPackage -> configuration.put(KEY_PREVIEWS_LIST_PACKAGE, value)
-            OptionPublicPreviewList -> configuration.put(KEY_PUBLIC_PREVIEW_LIST, value.toBooleanStrict())
             OptionProjectRootPath -> configuration.put(KEY_PROJECT_ROOT_PATH, value)
-            OptionGeneratePreviewList -> configuration.put(KEY_GENERATE_PREVIEW_LIST, value.toBooleanStrict())
-            OptionGeneratePreviewAllList -> configuration.put(KEY_GENERATE_PREVIEW_ALL_LIST, value.toBooleanStrict())
             OptionDependencyCollectPreviewsFqns -> configuration.put(KEY_DEPENDENCY_COLLECT_PREVIEWS_FQNS, value)
             else -> error("Unknown option: ${option.optionName}")
         }
@@ -63,11 +35,7 @@ class ComposePreviewLabCommandLineProcessor : CommandLineProcessor {
 
     companion object {
         const val PluginId = "me.tbsten.compose.preview.lab.compiler"
-        const val OptionPreviewsListPackage = "previewsListPackage"
-        const val OptionPublicPreviewList = "publicPreviewList"
         const val OptionProjectRootPath = "projectRootPath"
-        const val OptionGeneratePreviewList = "generatePreviewList"
-        const val OptionGeneratePreviewAllList = "generatePreviewAllList"
         const val OptionDependencyCollectPreviewsFqns = "dependencyCollectPreviewsFqns"
     }
 }

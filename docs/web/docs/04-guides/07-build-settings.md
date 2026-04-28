@@ -39,38 +39,7 @@ composePreviewLab {
 という場合に、明示的にパッケージ名を指定します。
 :::
 
-## 2. publicPreviewList
-
-生成される `PreviewList` / `PreviewAllList` の可視性を制御します。
-
-デフォルトは false になっており internal で生成されますが、true にすることで public にして他モジュールから参照できるようになります。
-
-```kotlin
-composePreviewLab {
-    // true: 他モジュールからも参照できる public な PreviewList を生成
-    // false: モジュール内だけで使う internal な PreviewList を生成 (デフォルト)
-    publicPreviewList = true
-}
-```
-
-複数モジュールから Preview を集約して 1 つの UI カタログを作りたい場合は `true` にするのがおすすめです。
-
-## 3. generatePreviewList / generatePreviewAllList
-
-デフォルトで true です。
-
-false に設定すると PreviewList の収集を行わないようにします。
-
-```kotlin
-composePreviewLab {
-    // モジュール内の @Preview を集約した PreviewList を生成するか
-    generatePreviewList = false
-}
-```
-
-「このモジュールでは PreviewList を生成したくない」といった特殊なケースのみ、`false` に変更します。
-
-## 4. generateFeaturedFiles
+## 2. generateFeaturedFiles
 
 `.composepreviewlab/featured/` ディレクトリから **FeaturedFileList** を生成するかどうかを制御します。  
 詳しくは [Featured Files](./featured-files) を参照してください。
