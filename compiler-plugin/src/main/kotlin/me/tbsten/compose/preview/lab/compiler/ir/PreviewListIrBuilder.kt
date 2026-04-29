@@ -4,6 +4,7 @@ package me.tbsten.compose.preview.lab.compiler.ir
 
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
+import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
@@ -13,23 +14,27 @@ import org.jetbrains.kotlin.ir.builders.irBlock
 import org.jetbrains.kotlin.ir.builders.irBlockBody
 import org.jetbrains.kotlin.ir.builders.irReturn
 import org.jetbrains.kotlin.ir.builders.irTemporary
-import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrProperty
+import org.jetbrains.kotlin.ir.expressions.IrConst
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin
 import org.jetbrains.kotlin.ir.expressions.IrVararg
+import org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrFunctionExpressionImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
+import org.jetbrains.kotlin.ir.types.classFqName
 import org.jetbrains.kotlin.ir.types.typeWith
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
+import org.jetbrains.kotlin.ir.util.constructors
 import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.SpecialNames
+import org.jetbrains.kotlin.platform.jvm.isJvm
 
 /**
  * Builds the IR for the full preview list.
@@ -89,10 +94,43 @@ internal class PreviewListIrBuilder(
         return compatContext.irCall(builder, emptyListFun, listOfCollectedPreviewType, listOf(collectedPreviewType))
     }
 
+    // ----- PreviewExport wrapper -----
+
+    private val previewExportClass by lazy {
+        pluginContext.referenceClass(
+            ClassId(FqName("me.tbsten.compose.preview.lab"), Name.identifier("PreviewExport")),
+        ) ?: error("PreviewExport class not found on classpath")
+    }
+
+    private val previewExportType by lazy {
+        previewExportClass.typeWith()
+    }
+
+    /**
+     * Builds the IR for `PreviewExport(<lazyExpr>)` where [lazyExpr] is a `Lazy<List<CollectedPreview>>`
+     * expression. The backing field of properties declared as
+     * `val x by collectModulePreviews()` / `val x by collectAllModulePreviews()` ends up holding
+     * the resulting `PreviewExport` instance, which acts as the marker type for cross-module
+     * discovery in [GeneratePreviewExportHint].
+     */
+    fun buildPreviewExportCall(builder: DeclarationIrBuilder, lazyExpr: IrExpression): IrExpression {
+        val ctor = previewExportClass.constructors.first()
+        return IrConstructorCallImpl(
+            startOffset = SYNTHETIC_OFFSET,
+            endOffset = SYNTHETIC_OFFSET,
+            type = previewExportType,
+            symbol = ctor,
+            typeArgumentsCount = 0,
+            constructorTypeArgumentsCount = 0,
+        ).apply {
+            arguments[0] = lazyExpr
+        }
+    }
+
     // ----- Lazy wrapper -----
 
     /** Builds the IR for `lazy { valueExpr }`. */
-    fun buildLazyCall(builder: DeclarationIrBuilder, valueExpr: IrExpression, parent: IrDeclarationParent,): IrExpression {
+    fun buildLazyCall(builder: DeclarationIrBuilder, valueExpr: IrExpression, parent: IrDeclarationParent): IrExpression {
         val lazyFun = pluginContext.referenceFunctions(
             CallableId(FqName("kotlin"), Name.identifier("lazy")),
         ).first { fn ->
@@ -138,14 +176,61 @@ internal class PreviewListIrBuilder(
     // ----- Cross-module concatenation -----
 
     /**
-     * Builds an expression that concatenates this module's previews with previews from
-     * dependency modules.
+     * Lazily-cached lookup of `me.tbsten.compose.preview.lab.distinctPreviewsById`.
      *
-     * Generates `mutableListOf<CollectedPreview>().apply { addAll(this); addAll(dep) }`.
+     * `referenceFunctions(CallableId)` walks every classpath entry, so caching avoids redoing
+     * the scan when [buildConcatenatedPreviewsExpr] is invoked for multiple
+     * `collectAllModulePreviews()` properties in the same compilation.
      */
-    fun buildConcatenatedPreviewsExpr(builder: DeclarationIrBuilder, thisModulePreviews: IrExpression,): IrExpression {
-        val depProperties = collectDependencyProperties()
-        if (depProperties.isEmpty()) return thisModulePreviews
+    private val distinctPreviewsByIdFun by lazy {
+        pluginContext.referenceFunctions(
+            CallableId(FqName("me.tbsten.compose.preview.lab"), Name.identifier("distinctPreviewsById")),
+        ).firstOrNull() ?: error(
+            "me.tbsten.compose.preview.lab.distinctPreviewsById not found on the compilation classpath. " +
+                "This usually means the compose-preview-lab runtime/core dependency is missing or there is " +
+                "a core/plugin version mismatch.",
+        )
+    }
+
+    /**
+     * Lazily-cached dependency-module preview properties discovered via Metro-style hints.
+     *
+     * Caching ensures the (potentially expensive) hint-function classpath walk in
+     * [collectDependencyProperties] runs at most once per [PreviewListIrBuilder] instance, even
+     * when a module declares multiple `collectAllModulePreviews()` properties.
+     */
+    private val cachedDependencyProperties: List<IrProperty> by lazy { collectDependencyProperties() }
+
+    /**
+     * Builds an expression that concatenates this module's previews with previews from
+     * dependency modules and removes id-duplicates.
+     *
+     * Generates (semantically equivalent):
+     * ```kotlin
+     * distinctPreviewsById(
+     *     mutableListOf<CollectedPreview>().apply {
+     *         addAll(thisModulePreviews)
+     *         addAll(dep1Property)
+     *         addAll(dep2Property)
+     *         // ...
+     *     }
+     * )
+     * ```
+     *
+     * `distinctPreviewsById` is needed because a dependency that itself uses
+     * `collectAllModulePreviews()` re-exports its transitive previews. Without dedup, an
+     * `app(all) → ui(all) → core(single)` chain would yield each `core` preview twice (once
+     * via `core` hint, once via `ui` hint).
+     */
+    fun buildConcatenatedPreviewsExpr(builder: DeclarationIrBuilder, thisModulePreviews: IrExpression): IrExpression {
+        val depProperties = cachedDependencyProperties
+        val distinctFun = distinctPreviewsByIdFun
+
+        if (depProperties.isEmpty()) {
+            return compatContext.irCall(builder, distinctFun, listOfCollectedPreviewType).apply {
+                arguments[0] = thisModulePreviews
+            }
+        }
 
         val mutableListOfFun = pluginContext.referenceFunctions(
             CallableId(FqName("kotlin.collections"), Name.identifier("mutableListOf")),
@@ -164,7 +249,7 @@ internal class PreviewListIrBuilder(
             ClassId(FqName("kotlin.collections"), Name.identifier("MutableList")),
         )!!.typeWith(collectedPreviewType)
 
-        return builder.irBlock {
+        val concatenatedExpr = builder.irBlock {
             val listVar = irTemporary(
                 compatContext.irCall(this, mutableListOfFun, mutableListType, listOf(collectedPreviewType)),
             )
@@ -179,7 +264,7 @@ internal class PreviewListIrBuilder(
                     this,
                     addAllFun,
                     pluginContext.irBuiltIns.booleanType,
-                    listOf(collectedPreviewType)
+                    listOf(collectedPreviewType),
                 ).apply {
                     arguments[0] = compatContext.irGet(this@irBlock, listVar)
                     arguments[1] = depValue
@@ -187,13 +272,63 @@ internal class PreviewListIrBuilder(
             }
             +compatContext.irGet(this, listVar)
         }
+
+        return compatContext.irCall(builder, distinctFun, listOfCollectedPreviewType).apply {
+            arguments[0] = concatenatedExpr
+        }
     }
 
-    private fun collectDependencyProperties(): List<IrProperty> = config.dependencyCollectPreviewsFqns.mapNotNull { fqn ->
-        val lastDot = fqn.lastIndexOf('.')
-        if (lastDot < 0) return@mapNotNull null
-        val packageFqName = FqName(fqn.substring(0, lastDot))
-        val propertyName = Name.identifier(fqn.substring(lastDot + 1))
-        pluginContext.referenceProperties(CallableId(packageFqName, propertyName)).firstOrNull()?.owner
+    /**
+     * Discovers dependency-module preview properties via Metro-style hint functions.
+     *
+     * **Currently JVM-only.** On KLIB-based platforms (JS / Wasm / iOS) the hint generator skips
+     * emission entirely (see `PreviewLabIrBodyFiller`) and this method returns an empty list.
+     * The reason is a KLIB-specific signature clash: `referenceFunctions(CallableId)` requires
+     * a fixed function name to enumerate overloads, but KLIB IdSignatures are derived from
+     * `(name, parameter types)` only — they do not include parameter names or annotations — so
+     * two hints generated from different modules with the same parameter type `PreviewExport`
+     * collide at link time. Solving this would require either descriptor-based package scanning
+     * (rejected at runtime in K2 IR) or generating a unique synthetic class per FQN to differentiate
+     * parameter types (FIR-level work, out of scope for this PR).
+     *
+     * On JVM the file-facade class disambiguates hints with identical signatures, so a fixed-name
+     * `referenceFunctions(...)` lookup returns every overload across the classpath as expected.
+     *
+     * Hints emitted by the current module (because `PreviewLabIrBodyFiller` runs hint generation
+     * in the same IR pass) are filtered out so the aggregator does not double-count this module's
+     * own previews.
+     */
+    private fun collectDependencyProperties(): List<IrProperty> {
+        if (pluginContext.platform?.isJvm() != true) return emptyList()
+
+        val hintSymbols = pluginContext.referenceFunctions(
+            GeneratePreviewExportHint.HINT_FUNCTION_CALLABLE_ID,
+        )
+
+        return hintSymbols.mapNotNull { hintSymbol ->
+            val hintFunction = hintSymbol.owner
+
+            // Skip hints generated by the current compilation; their preview lists are already
+            // covered by `thisModulePreviews`. External declarations come back with the
+            // `IR_EXTERNAL_DECLARATION_STUB` origin marker.
+            if (hintFunction.origin != IrDeclarationOriginCompat.IR_EXTERNAL_DECLARATION_STUB) return@mapNotNull null
+
+            // Validate parameter shape: must take a single Regular parameter of type PreviewExport.
+            val regularParams = hintFunction.parameters.filter { it.kind == IrParameterKind.Regular }
+            if (regularParams.size != 1) return@mapNotNull null
+            if (regularParams[0].type.classFqName != GeneratePreviewExportHint.PREVIEW_EXPORT_FQN) return@mapNotNull null
+
+            // Decode the property FQN from the @PreviewExportHint annotation.
+            val hintAnnotation = hintFunction.annotations.firstOrNull { ann ->
+                ann.type.classFqName == GeneratePreviewExportHint.PREVIEW_EXPORT_HINT_FQN
+            } ?: return@mapNotNull null
+            val fqn = (hintAnnotation.arguments.firstOrNull() as? IrConst)?.value as? String ?: return@mapNotNull null
+
+            // Default-package properties (no dots in FQN) resolve to FqName.ROOT.
+            val lastDot = fqn.lastIndexOf('.')
+            val packageFqName = if (lastDot < 0) FqName.ROOT else FqName(fqn.substring(0, lastDot))
+            val propertyName = Name.identifier(if (lastDot < 0) fqn else fqn.substring(lastDot + 1))
+            pluginContext.referenceProperties(CallableId(packageFqName, propertyName)).firstOrNull()?.owner
+        }
     }
 }

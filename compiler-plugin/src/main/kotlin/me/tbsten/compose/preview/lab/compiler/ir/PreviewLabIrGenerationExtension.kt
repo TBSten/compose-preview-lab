@@ -32,7 +32,7 @@ class PreviewLabIrGenerationExtension(private val config: PluginConfig) : IrGene
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
         val previews = collectPreviews(moduleFragment)
         val compatContext = CompatContext.load()
-        PreviewLabIrBodyFiller(pluginContext, config, previews, compatContext).also {
+        PreviewLabIrBodyFiller(pluginContext, config, moduleFragment, previews, compatContext).also {
             compatContext.transformModuleFragment(moduleFragment, it)
         }
     }
