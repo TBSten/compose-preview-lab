@@ -78,20 +78,12 @@ Gallery の詳しいオプションについては [PreviewLabGallery の Guide]
 `collectModulePreviews()` はモジュールごとに Preview を収集します。
 マルチモジュールプロジェクトでは、`collectAllModulePreviews()` を使うことで依存モジュールの Preview を自動的に含めることができます。
 
-### Step 1: 各依存モジュールで収集ポイントを宣言し、Gradle で export 設定
+### Step 1: 各依存モジュールで収集ポイントを宣言
 
 ```kt title="uiLib/src/commonMain/kotlin/Previews.kt"
 package uiLib
 
 val uiLibPreviews by collectModulePreviews()
-```
-
-```kotlin title="uiLib/build.gradle.kts"
-composePreviewLab {
-    // highlight-start
-    collectPreviewsExport = "uiLib.uiLibPreviews"
-    // highlight-end
-}
 ```
 
 ### Step 2: アプリモジュールで `collectAllModulePreviews()` を使用

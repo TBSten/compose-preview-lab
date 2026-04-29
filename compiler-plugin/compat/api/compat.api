@@ -1,6 +1,8 @@
 public abstract interface class me/tbsten/compose/preview/lab/compiler/compat/CompatContext {
 	public static final field Companion Lme/tbsten/compose/preview/lab/compiler/compat/CompatContext$Companion;
 	public abstract fun addConstructorCallAnnotation (Lorg/jetbrains/kotlin/ir/declarations/IrSimpleFunction;Lorg/jetbrains/kotlin/ir/types/IrType;Lorg/jetbrains/kotlin/ir/symbols/IrConstructorSymbol;)V
+	public abstract fun addConstructorCallAnnotationWithArgs (Lorg/jetbrains/kotlin/ir/declarations/IrSimpleFunction;Lorg/jetbrains/kotlin/ir/types/IrType;Lorg/jetbrains/kotlin/ir/symbols/IrConstructorSymbol;Ljava/util/List;)V
+	public abstract fun createSyntheticFileEntry (Ljava/lang/String;)Lorg/jetbrains/kotlin/ir/IrFileEntry;
 	public abstract fun getDefaultType (Lorg/jetbrains/kotlin/ir/symbols/IrClassSymbol;)Lorg/jetbrains/kotlin/ir/types/IrSimpleType;
 	public abstract fun irCall (Lorg/jetbrains/kotlin/ir/builders/IrBuilderWithScope;Lorg/jetbrains/kotlin/ir/symbols/IrFunctionSymbol;Lorg/jetbrains/kotlin/ir/types/IrType;)Lorg/jetbrains/kotlin/ir/expressions/IrFunctionAccessExpression;
 	public abstract fun irCall (Lorg/jetbrains/kotlin/ir/builders/IrBuilderWithScope;Lorg/jetbrains/kotlin/ir/symbols/IrFunctionSymbol;Lorg/jetbrains/kotlin/ir/types/IrType;Ljava/util/List;)Lorg/jetbrains/kotlin/ir/expressions/IrMemberAccessExpression;
@@ -32,7 +34,9 @@ public final class me/tbsten/compose/preview/lab/compiler/compat/IrAnnotationCom
 
 public final class me/tbsten/compose/preview/lab/compiler/compat/IrDeclarationOriginCompat {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/compiler/compat/IrDeclarationOriginCompat;
+	public final fun getDEFINED ()Lorg/jetbrains/kotlin/ir/declarations/IrDeclarationOrigin;
 	public final fun getDELEGATE ()Lorg/jetbrains/kotlin/ir/declarations/IrDeclarationOrigin;
+	public final fun getIR_EXTERNAL_DECLARATION_STUB ()Lorg/jetbrains/kotlin/ir/declarations/IrDeclarationOrigin;
 	public final fun getLOCAL_FUNCTION_FOR_LAMBDA ()Lorg/jetbrains/kotlin/ir/declarations/IrDeclarationOrigin;
 }
 

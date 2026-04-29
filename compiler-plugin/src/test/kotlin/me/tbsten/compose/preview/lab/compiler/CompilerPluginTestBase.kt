@@ -42,14 +42,16 @@ open class CompilerPluginTestBase {
         ),
     )
 
-    /** collectModulePreviews / collectAllModulePreviews のスタブ */
+    /** collectModulePreviews / collectAllModulePreviews / distinctPreviewsById のスタブ */
     private val collectPreviewsStubs = listOf(
         SourceFile.kotlin(
             "CollectModulePreviews.kt",
             """
             package me.tbsten.compose.preview.lab
-            fun collectModulePreviews(): Lazy<List<CollectedPreview>> = lazy { emptyList() }
-            fun collectAllModulePreviews(): Lazy<List<CollectedPreview>> = lazy { emptyList() }
+            fun collectModulePreviews(): PreviewExport = PreviewExport(lazy { emptyList() })
+            fun collectAllModulePreviews(): PreviewExport = PreviewExport(lazy { emptyList() })
+            fun distinctPreviewsById(previews: List<CollectedPreview>): List<CollectedPreview> =
+                previews.distinctBy { it.id }
             """,
         ),
     )
@@ -58,12 +60,16 @@ open class CompilerPluginTestBase {
         vararg sources: SourceFile,
         pluginRegistrars: List<CompilerPluginRegistrar> = listOf(ComposePreviewLabCompilerPluginRegistrar()),
         pluginOptions: List<PluginOption> = emptyList(),
+        extraClasspaths: List<java.io.File> = emptyList(),
     ): JvmCompilationResult = KotlinCompilation().apply {
         this.sources = previewAnnotationStubs + collectPreviewsStubs + sources.toList()
         this.compilerPluginRegistrars = pluginRegistrars
         this.commandLineProcessors = listOf(ComposePreviewLabCommandLineProcessor())
         this.pluginOptions = pluginOptions
         this.inheritClassPath = true
+        if (extraClasspaths.isNotEmpty()) {
+            this.classpaths = this.classpaths + extraClasspaths
+        }
         // Use the compiler's own major.minor as languageVersion to avoid
         // FirIncompatibleClassExpressionChecker crashing in Kotlin 2.1.x when
         // languageVersion="2.0" is used (source must not be null).

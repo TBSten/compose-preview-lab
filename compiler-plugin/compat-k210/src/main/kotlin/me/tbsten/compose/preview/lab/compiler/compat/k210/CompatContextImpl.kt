@@ -15,7 +15,9 @@ import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrFunctionAccessExpression
 import org.jetbrains.kotlin.ir.expressions.IrGetValue
 import org.jetbrains.kotlin.ir.expressions.IrMemberAccessExpression
+import org.jetbrains.kotlin.ir.IrFileEntry
 import org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl
+import org.jetbrains.kotlin.ir.util.NaiveSourceBasedFileEntryImpl
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
 import org.jetbrains.kotlin.ir.symbols.IrFunctionSymbol
@@ -65,6 +67,25 @@ public class CompatContextImpl : CompatContext {
         function.annotations = function.annotations + annotation
     }
 
+    override fun addConstructorCallAnnotationWithArgs(
+        function: IrSimpleFunction,
+        type: IrType,
+        constructorSymbol: IrConstructorSymbol,
+        arguments: List<IrExpression>,
+    ) {
+        val annotation = IrConstructorCallImpl(
+            startOffset = SYNTHETIC_OFFSET,
+            endOffset = SYNTHETIC_OFFSET,
+            type = type,
+            symbol = constructorSymbol,
+            typeArgumentsCount = 0,
+            constructorTypeArgumentsCount = 0,
+        ).apply {
+            arguments.forEachIndexed { index, expr -> this.arguments[index] = expr }
+        }
+        function.annotations = function.annotations + annotation
+    }
+
     override fun irCall(builder: IrBuilderWithScope, callee: IrSimpleFunctionSymbol): IrCall = builder.irCall(callee)
 
     override fun irCall(builder: IrBuilderWithScope, callee: IrFunctionSymbol, returnType: IrType): IrFunctionAccessExpression =
@@ -80,6 +101,10 @@ public class CompatContextImpl : CompatContext {
     override fun irGet(builder: IrBuilderWithScope, variable: IrValueDeclaration): IrGetValue = builder.irGet(variable)
 
     override fun irString(builder: IrBuilderWithScope, value: String): IrExpression = builder.irString(value)
+
+    // Kotlin 2.1.x: NaiveSourceBasedFileEntryImpl(name, lineStartOffsets, maxOffset).
+    override fun createSyntheticFileEntry(fileName: String): IrFileEntry =
+        NaiveSourceBasedFileEntryImpl(fileName, IntArray(0), 0)
 
     override fun transformModuleFragment(moduleFragment: IrModuleFragment, transformer: Any) {
         moduleFragment.transform(transformer as IrElementTransformerVoid, null)

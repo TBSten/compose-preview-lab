@@ -1,14 +1,17 @@
 package me.tbsten.compose.preview.lab
 
 /**
- * Returns a [Lazy] that provides the list of `@Preview` functions collected from **this module only**.
+ * Provides a delegate that collects `@Preview` functions from **this module only**.
  *
- * The Compose Preview Lab compiler plugin replaces the [Lazy] initializer at compile time
- * with the actual list of [CollectedPreview] instances. If the compiler plugin is not applied,
+ * The Compose Preview Lab compiler plugin replaces the body at compile time so that the returned
+ * delegate holds the actual preview list. If the compiler plugin is not applied,
  * accessing the value throws an [IllegalStateException].
  *
- * The return type is [Lazy] so that `@Composable` lambdas inside [CollectedPreview] are
- * initialized on first access rather than at class-load time, avoiding `ExceptionInInitializerError`.
+ * The returned [PreviewExport] functions as a property delegate for a `List<CollectedPreview>`.
+ * It wraps a [Lazy] so that `@Composable` lambdas inside [CollectedPreview] are initialized
+ * on first access rather than at class-load time, avoiding `ExceptionInInitializerError`.
+ * The same wrapper acts as a marker type that downstream modules pick up automatically —
+ * see [collectAllModulePreviews].
  *
  * Example — single-module preview collection:
  * ```kotlin
@@ -21,44 +24,70 @@ package me.tbsten.compose.preview.lab
  * val uiLibPreviews by collectModulePreviews()
  * ```
  *
- * @return a [Lazy] wrapping the collected preview list; the initializer is replaced by the compiler plugin
+ * @return a [PreviewExport] delegate wrapping the collected preview list; the body is replaced by the compiler plugin
  * @see collectAllModulePreviews
  */
-fun collectModulePreviews(): Lazy<List<CollectedPreview>> = lazy {
-    error(
-        "[ComposePreviewLab] collectModulePreviews() was not replaced by the compiler plugin. " +
-            "Make sure the Compose Preview Lab compiler plugin is applied to this module.",
-    )
-}
+@OptIn(InternalComposePreviewLabApi::class)
+public fun collectModulePreviews(): PreviewExport = PreviewExport(
+    lazy {
+        error(
+            "[ComposePreviewLab] collectModulePreviews() was not replaced by the compiler plugin. " +
+                "Make sure the Compose Preview Lab compiler plugin is applied to this module.",
+        )
+    },
+)
 
 /**
- * Returns a [Lazy] that provides the list of `@Preview` functions collected from **this module
- * and all dependency modules** that export their preview properties.
+ * Provides a delegate that collects `@Preview` functions from **this module and every
+ * dependency module that exposes a `collectModulePreviews()` property**.
  *
- * The compiler plugin replaces the [Lazy] initializer at compile time with a concatenation
- * of this module's previews and the values of dependency modules' exported preview properties.
- * Dependency modules are discovered via the `collectPreviewsExport` Gradle configuration.
+ * The compiler plugin replaces the body at compile time so that the returned [PreviewExport]
+ * holds a concatenation of this module's previews and the previews of all properties in
+ * dependency modules that are delegated via [PreviewExport]. Discovery is fully automatic —
+ * downstream modules do not need any Gradle configuration.
  *
- * Example — app module aggregating its own and library previews:
+ * **JVM-only auto-discovery.** Cross-module aggregation only works on JVM targets. On KLIB-based
+ * platforms (JS / Wasm JS / iOS) this returns just **this module's previews** — the compiler
+ * plugin's hint mechanism would clash with KLIB's signature-uniqueness rules across modules.
+ * For multi-platform Galleries, consume this from a JVM module or repeat `collectModulePreviews()`
+ * in each module you want to display.
+ *
+ * Example — app module aggregating its own previews and any library previews on the classpath:
  * ```kotlin
  * // app/src/commonMain/kotlin/Previews.kt
  * val appPreviews by collectAllModulePreviews()
  * ```
  *
- * Example — dependency module exporting its previews via Gradle:
+ * Example — dependency module that exports its previews:
  * ```kotlin
- * // uiLib/build.gradle.kts
- * composePreviewLab {
- *     collectPreviewsExport = "uiLib.uiLibPreviews"
- * }
+ * // uiLib/src/commonMain/kotlin/Previews.kt
+ * val uiLibPreviews by collectModulePreviews()
  * ```
  *
- * @return a [Lazy] wrapping the aggregated preview list; the initializer is replaced by the compiler plugin
+ * @return a [PreviewExport] delegate wrapping the aggregated preview list; the body is replaced by the compiler plugin
  * @see collectModulePreviews
  */
-fun collectAllModulePreviews(): Lazy<List<CollectedPreview>> = lazy {
-    error(
-        "[ComposePreviewLab] collectAllModulePreviews() was not replaced by the compiler plugin. " +
-            "Make sure the Compose Preview Lab compiler plugin is applied to this module.",
-    )
-}
+@OptIn(InternalComposePreviewLabApi::class)
+public fun collectAllModulePreviews(): PreviewExport = PreviewExport(
+    lazy {
+        error(
+            "[ComposePreviewLab] collectAllModulePreviews() was not replaced by the compiler plugin. " +
+                "Make sure the Compose Preview Lab compiler plugin is applied to this module.",
+        )
+    },
+)
+
+/**
+ * Removes duplicates from the aggregated preview list by [CollectedPreview.id].
+ *
+ * Called from the IR generated by `collectAllModulePreviews()` to merge previews from this
+ * module with previews discovered through the `previewLabExport` hint mechanism. When a
+ * dependency module also uses `collectAllModulePreviews()` (i.e. it re-exports its own
+ * dependencies), the same `CollectedPreview` may reach the aggregator through more than one
+ * hint chain. Deduplicating by `id` guarantees a stable result regardless of how many paths
+ * a preview travels through.
+ *
+ * Internal API — meant only as a callsite for the compiler plugin.
+ */
+@InternalComposePreviewLabApi
+public fun distinctPreviewsById(previews: List<CollectedPreview>): List<CollectedPreview> = previews.distinctBy { it.id }

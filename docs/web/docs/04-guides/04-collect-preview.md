@@ -78,13 +78,7 @@ val appPreviews by collectModulePreviews()
 
 ### `collectAllModulePreviews()` のセットアップ
 
-依存モジュールの Preview を自動で含めるには、各依存モジュールで `collectPreviewsExport` を設定します。
-
-```kts title="uiLib/build.gradle.kts"
-composePreviewLab {
-    collectPreviewsExport = "uiLib.uiLibPreviews"
-}
-```
+各依存モジュール側で `val x by collectModulePreviews()` を宣言しておけば、上位モジュールの `collectAllModulePreviews()` がその property を自動的に発見・集約します。
 
 ```kt title="uiLib/src/commonMain/kotlin/Previews.kt"
 package uiLib
@@ -98,6 +92,14 @@ package app
 val appPreviews by collectAllModulePreviews()
 // ↑ app 自身の Preview + uiLib の Preview が含まれる
 ```
+
+依存モジュールが `collectAllModulePreviews()` を使っている場合も同様に集約されます。たとえば `app(all) → ui(all) → core(single)` のように複数段の依存関係でも、最上位の `app` から全ての Preview を取得できます。
+
+:::warning JVM 限定
+`collectAllModulePreviews()` の cross-module 自動集約は **JVM ターゲットでのみ動作します**。JS / Wasm JS / iOS など KLIB ベースの platform では `collectAllModulePreviews()` は **そのモジュール内の Preview のみ** を返します (Compiler Plugin の hint 関数が KLIB の signature 一意性制約と衝突するため)。
+
+これらの platform では Gallery を提供したいモジュールに直接 `collectModulePreviews()` を書くか、JVM ビルドのみで Gallery を構成してください。
+:::
 
 ## `@ComposePreviewLabOption`
 
@@ -156,3 +158,14 @@ import dotHierarchySample from './dot-hierarchy-sample.png';
 Compose Preview Lab の Compiler Plugin は、`@Preview` が付与された `private` 関数の visibility を自動的に `internal` に変更します。これにより、収集された Preview リストから各 Preview 関数を呼び出すことが可能になります。
 
 ソースコード上の `private` 宣言は変更されません。Compiler Plugin が FIR フェーズで内部的に visibility を変換するため、ユーザーのコードには影響しません。
+
+## ライブラリを公開するときの注意
+
+`collectModulePreviews()` / `collectAllModulePreviews()` を宣言したモジュールには、Compiler Plugin が `me.tbsten.compose.preview.lab.exports` パッケージに `previewLabExport` という **public な hint 関数** を生成します。これは下流モジュールの `collectAllModulePreviews()` が依存先の Preview を自動発見するためのマーカー関数で、ランタイムに呼び出されることはありません。
+
+そのため、ライブラリとして外部に公開するモジュールに `collectModulePreviews()` / `collectAllModulePreviews()` を含める場合は次の点に注意してください。
+
+- 成果物 (jar / klib) に `me.tbsten.compose.preview.lab.exports.previewLabExport` という public な top-level 関数が含まれます
+- ライブラリの consumer 側で `collectAllModulePreviews()` を使うと、そのライブラリの Preview が自動的に集約されます
+
+`@Preview` を含まない通常のライブラリでは `collectModulePreviews()` / `collectAllModulePreviews()` を宣言する必要はありません。
