@@ -28,6 +28,18 @@ class PreviewLabFirStatusTransformerExtension(session: FirSession) : FirStatusTr
         ClassId.topLevel(FqName("androidx.compose.ui.tooling.preview.Preview")),
     )
 
+    /**
+     * Returns `true` when the declaration is a `private` function annotated with `@Preview`.
+     *
+     * Example — returns `true` for:
+     * ```kotlin
+     * @Preview
+     * private fun MyButton() { ... }
+     * ```
+     *
+     * Returns `false` for non-functions, non-private declarations, or functions without
+     * a Compose `@Preview` annotation.
+     */
     override fun needTransformStatus(declaration: FirDeclaration): Boolean {
         if (!declaration.isFirFunction()) return false
         if (declaration !is FirMemberDeclaration) return false
@@ -35,6 +47,25 @@ class PreviewLabFirStatusTransformerExtension(session: FirSession) : FirStatusTr
         return previewAnnotations.any { classId -> declaration.hasPreviewAnnotation(classId) }
     }
 
+    /**
+     * Widens the visibility of a `private` `@Preview` function to `internal`.
+     *
+     * **Before**:
+     * ```kotlin
+     * @Preview
+     * private fun MyButton() { ... }  // Visibilities.Private
+     * ```
+     *
+     * **After**:
+     * ```kotlin
+     * @Preview
+     * internal fun MyButton() { ... }  // Visibilities.Internal
+     * ```
+     *
+     * `internal` is the minimum visibility needed for the synthetically generated
+     * `PreviewList` in the same module to call the function directly. `public` would
+     * change the library API surface, so `internal` is used instead.
+     */
     override fun transformStatus(status: FirDeclarationStatus, declaration: FirDeclaration): FirDeclarationStatus =
         status.transform(visibility = Visibilities.Internal)
 

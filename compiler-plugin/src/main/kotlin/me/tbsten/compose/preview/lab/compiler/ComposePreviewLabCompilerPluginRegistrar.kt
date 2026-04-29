@@ -14,6 +14,20 @@ class ComposePreviewLabCompilerPluginRegistrar : CompilerPluginRegistrar() {
     override val pluginId: String = ComposePreviewLabCommandLineProcessor.PluginId
     override val supportsK2: Boolean = true
 
+    /**
+     * Registers the FIR and IR extensions for Compose Preview Lab.
+     *
+     * Extensions registered:
+     * - [PreviewLabFirExtensionRegistrar] (via [FirExtensionRegistrarAdapter]) — registers FIR
+     *   status transformer that widens `private @Preview` functions to `internal`.
+     * - [PreviewLabIrGenerationExtension] (via [IrGenerationExtension]) — collects `@Preview`
+     *   functions and rewrites `collectModulePreviews()` / `collectAllModulePreviews()` call sites.
+     *
+     * `registerExtensionCompat` is used instead of the standard companion `registerExtension`
+     * because the parent class of `FirExtensionRegistrarAdapter.Companion` and
+     * `IrGenerationExtension.Companion` changed between Kotlin 2.3 and 2.4, producing
+     * different JVM call-site signatures. The reflective wrapper abstracts that away.
+     */
     override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
         val config = PluginConfig.from(configuration)
         // The parent class of the FirExtensionRegistrarAdapter / IrGenerationExtension companions
