@@ -142,6 +142,21 @@ internal class GeneratePreviewExportHint(
         )
     }
 
+    /**
+     * Creates the synthetic [IrFile] that hosts the hint function for [propertyFqn].
+     *
+     * For `propertyFqn = "uiLib.uiLibPreviews"`, generates:
+     * ```
+     * // file: me/tbsten/compose/preview/lab/exports/PreviewLabExport_uiLib_uiLibPreviews.kt
+     * package me.tbsten.compose.preview.lab.exports
+     * ```
+     *
+     * The file's metadata is wired to a synthetic [FirMetadataSource.File] derived from
+     * [sourceFile]'s `FirModuleData`. This causes the Kotlin compiler to emit
+     * `kotlin.Metadata(k=2)` (file facade) instead of `k=3` (synthetic class). Without
+     * `k=2`, `pluginContext.referenceFunctions(...)` in downstream compilations cannot
+     * discover the hint function as a top-level callable.
+     */
     private fun createHintFile(propertyFqn: String, sourceFile: IrFile): IrFileImpl {
         val sanitizedFqn = propertyFqn.replace('.', '_')
         val fileName = "PreviewLabExport_$sanitizedFqn.kt"

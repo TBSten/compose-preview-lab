@@ -48,6 +48,34 @@ class PreviewLabIrGenerationExtension(private val config: PluginConfig) : IrGene
         return result.sortedBy { it.displayName }
     }
 
+    /**
+     * Builds a [PreviewFunctionInfo] for a `@Preview`-annotated top-level function, or returns
+     * null if the function should be skipped (not annotated, or `ignore = true`).
+     *
+     * **Input**: `@Preview fun MyButton()` in `src/main/kotlin/com/example/MyButton.kt`
+     *
+     * **Output**:
+     * ```kotlin
+     * PreviewFunctionInfo(
+     *     function = <IrSimpleFunction for MyButton>,
+     *     id = "com.example.MyButton",
+     *     displayName = "com.example.MyButton",
+     *     filePath = "src/main/kotlin/com/example/MyButton.kt",
+     *     startLineNumber = 10,
+     *     endLineNumber = 15,
+     *     code = "{ ... }",
+     *     kdoc = null,
+     * )
+     * ```
+     *
+     * With `@ComposePreviewLabOption(displayName = "My Button", id = "custom-id")`:
+     * ```kotlin
+     * PreviewFunctionInfo(id = "custom-id", displayName = "My Button", ...)
+     * ```
+     *
+     * Template placeholders `{{package}}`, `{{simpleName}}`, `{{qualifiedName}}` are resolved
+     * in both `displayName` and `id`.
+     */
     private fun buildPreviewInfo(func: IrSimpleFunction): PreviewFunctionInfo? {
         if (!func.hasAnnotationCompat(CMP_PREVIEW_FQ) && !func.hasAnnotationCompat(ANDROID_PREVIEW_FQ)) return null
 
