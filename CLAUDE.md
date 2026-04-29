@@ -102,3 +102,9 @@ Compose Preview Lab は、Compose の `@Preview` をインタラクティブな 
 - `MutablePreviewLabField<T>`: 変更可能なフィールド
 - `PreviewLabScope`: `PreviewLab { }` 内で利用可能なスコープ（`fieldValue`, `fieldState`, `field`, `onEvent`）
 - `CollectedPreview`: KSP で収集された Preview 情報
+
+## Project Rules
+
+`.claude/rules/` 配下のルールに従うこと:
+
+- [`compiler-plugin-kdoc.md`](.claude/rules/compiler-plugin-kdoc.md) — `compiler-plugin/` 配下の IR/FIR 関数の KDoc には生成/変換される Kotlin コード例を必ず含める

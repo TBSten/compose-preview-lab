@@ -38,20 +38,23 @@ color: red
 ### 📚 総合ガイド
 
 - **[fix-ci-guide.md](../skills/fix-ci-guide.md)** - CI/CD トラブルシューティング総合ガイド
-  - スキル選択フロー
-  - 実行順序
-  - シナリオ別対応方法
+    - スキル選択フロー
+    - 実行順序
+    - シナリオ別対応方法
 
-### 🔧 個別スキル
+### 🔧 タスク
 
-| スキル | 対象 | 参照 |
-|--------|------|------|
-| **fix-ci-setup** | CI 環境構築、ワークフロー確認 | [fix-ci-setup.md](../skills/fix-ci-setup.md) |
-| **fix-ci-lint** | Lint エラー（ktlintCheck） | [fix-ci-lint.md](../skills/fix-ci-lint.md) |
-| **fix-ci-binary** | バイナリ互換性（apiCheck） | [fix-ci-binary.md](../skills/fix-ci-binary.md) |
-| **fix-ci-test** | テスト失敗 | [fix-ci-test.md](../skills/fix-ci-test.md) |
-| **fix-ci-build** | ビルドエラー | [fix-ci-build.md](../skills/fix-ci-build.md) |
-| **fix-ci-pr-comments** | PR レビューコメント対応 | [fix-ci-pr-comments.md](../skills/fix-ci-pr-comments.md) |
+以下の skill を参照してそれぞれの観点で修正箇所を探し対応する。
+必要に応じて subagent を起動してタスクを実行してください。
+
+| スキル                    | 対象                    | 参照                                                       |
+|------------------------|-----------------------|----------------------------------------------------------|
+| **fix-ci-setup**       | CI 環境構築、ワークフロー確認      | [fix-ci-setup.md](../skills/fix-ci-setup.md)             |
+| **fix-ci-lint**        | Lint エラー（ktlintCheck） | [fix-ci-lint.md](../skills/fix-ci-lint.md)               |
+| **fix-ci-binary**      | バイナリ互換性（apiCheck）     | [fix-ci-binary.md](../skills/fix-ci-binary.md)           |
+| **fix-ci-test**        | テスト失敗                 | [fix-ci-test.md](../skills/fix-ci-test.md)               |
+| **fix-ci-build**       | ビルドエラー                | [fix-ci-build.md](../skills/fix-ci-build.md)             |
+| **fix-ci-pr-comments** | PR レビューコメント対応         | [fix-ci-pr-comments.md](../skills/fix-ci-pr-comments.md) |
 
 ## スキル選択フロー
 
