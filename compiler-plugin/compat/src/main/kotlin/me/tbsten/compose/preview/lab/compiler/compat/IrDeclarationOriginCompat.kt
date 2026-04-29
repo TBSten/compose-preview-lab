@@ -31,6 +31,29 @@ public object IrDeclarationOriginCompat {
         lookup("DELEGATE")
     }
 
+    /**
+     * Resolves `IR_EXTERNAL_DECLARATION_STUB` (the marker on declarations loaded from
+     * external compiled dependencies, used to filter classpath-discovered hints).
+     */
+    public val IR_EXTERNAL_DECLARATION_STUB: IrDeclarationOrigin by lazy {
+        lookup("IR_EXTERNAL_DECLARATION_STUB")
+    }
+
+    /**
+     * Resolves `DEFINED` (the standard origin for user-defined declarations).
+     *
+     * Across Kotlin patches the bytecode return type of `getDEFINED()` differs:
+     * - 2.1.x / 2.2.x: returns `IrDeclarationOriginImpl`
+     * - 2.3.x+: returns `IrDeclarationOrigin`
+     *
+     * Writing `IrDeclarationOrigin.DEFINED` directly causes `NoSuchMethodError` when the
+     * compiled bytecode signature does not match the runtime jar. This helper resolves it
+     * reflectively against whatever shape the runtime exposes.
+     */
+    public val DEFINED: IrDeclarationOrigin by lazy {
+        lookup("DEFINED")
+    }
+
     private fun lookup(name: String): IrDeclarationOrigin {
         val cls = IrDeclarationOrigin::class.java
 

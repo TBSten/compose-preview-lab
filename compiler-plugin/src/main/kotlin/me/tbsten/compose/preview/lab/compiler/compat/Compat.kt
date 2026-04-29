@@ -2,6 +2,7 @@ package me.tbsten.compose.preview.lab.compiler.compat
 
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
+import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
 import org.jetbrains.kotlin.ir.types.IrType
 
@@ -26,3 +27,13 @@ internal fun FirDeclaration.isFirFunction(): Boolean = compatContext.isFirFuncti
  */
 internal fun IrSimpleFunction.addConstructorCallAnnotation(type: IrType, constructorSymbol: IrConstructorSymbol) =
     compatContext.addConstructorCallAnnotation(this, type, constructorSymbol)
+
+/**
+ * Builds an annotation with constructor [arguments] and adds it to the function.
+ * See [CompatContext.addConstructorCallAnnotationWithArgs].
+ */
+internal fun IrSimpleFunction.addConstructorCallAnnotationWithArgs(
+    type: IrType,
+    constructorSymbol: IrConstructorSymbol,
+    arguments: List<IrExpression>,
+) = compatContext.addConstructorCallAnnotationWithArgs(this, type, constructorSymbol, arguments)
