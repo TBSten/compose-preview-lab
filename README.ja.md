@@ -41,11 +41,17 @@ Compose Multiplatformに対応しています。
 
 最も簡単な始め方です。`starter`モジュールはすべてのコアモジュール（core, field, ui, preview-lab, gallery）を単一の依存関係にバンドルしています。
 
-> ⚠️ `me.tbsten.compose.preview.lab` プラグインは Compose Compiler プラグインより **前** に記述してください。
+> [!NOTE]
+> **Kotlin 2.3.0 以降** ではプラグインの適用順序を気にする必要はありません — Gradle plugin が自動で
+> `-Xcompiler-plugin-order` を注入します。Kotlin 2.1.20 / 2.2.x の場合は、
+> `me.tbsten.compose.preview.lab` プラグインを Compose Compiler プラグインより **前** に記述してください
+> (順序が逆の場合は Gradle plugin が早期にエラーで通知します)。
 
 ```kts
 plugins {
-    // ⭐️ Compose Preview Lab Gradleプラグインを追加（composeCompiler より前に記述）
+    // ⭐️ Compose Preview Lab Gradle プラグインを追加
+    // Kotlin 2.3+: 適用順序は問わない (Gradle plugin が -Xcompiler-plugin-order を自動注入)
+    // Kotlin 2.1.20 / 2.2.x: composeCompiler より **前** に記述
     id("me.tbsten.compose.preview.lab") version "<compose-preview-lab-version>"
     id("org.jetbrains.kotlin.plugin.compose")
 }
@@ -80,7 +86,9 @@ val appPreviews by collectModulePreviews()
 
 ```kts
 plugins {
-    // ⭐️ Compose Preview Lab Gradleプラグインを追加（composeCompiler より前に記述）
+    // ⭐️ Compose Preview Lab Gradle プラグインを追加
+    // Kotlin 2.3+: 適用順序は問わない (Gradle plugin が -Xcompiler-plugin-order を自動注入)
+    // Kotlin 2.1.20 / 2.2.x: composeCompiler より **前** に記述
     id("me.tbsten.compose.preview.lab") version "<compose-preview-lab-version>"
     id("org.jetbrains.kotlin.plugin.compose")
 }
@@ -122,7 +130,9 @@ kotlin {
 
 ```kts
 plugins {
-    // ⭐️ Compose Preview Lab Gradleプラグインを追加（composeCompiler より前に記述）
+    // ⭐️ Compose Preview Lab Gradle プラグインを追加
+    // Kotlin 2.3+: 適用順序は問わない (Gradle plugin が -Xcompiler-plugin-order を自動注入)
+    // Kotlin 2.1.20 / 2.2.x: composeCompiler より **前** に記述
     id("me.tbsten.compose.preview.lab") version "<compose-preview-lab-version>"
     id("org.jetbrains.kotlin.plugin.compose")
 }
