@@ -44,7 +44,27 @@ internal class CollectedPreviewIrBuilder(
     val collectedPreviewType by lazy { compatContext.getDefaultType(collectedPreviewClass) }
 
     /**
-     * Builds the IR for `CollectedPreview(id, displayName, ...) { previewFun() }`.
+     * Builds the IR for a single `CollectedPreview(...)` constructor call.
+     *
+     * **Input**: `PreviewFunctionInfo(id = "com.example.MyButton", displayName = "com.example.MyButton",
+     * filePath = "src/main/kotlin/com/example/MyButton.kt", startLineNumber = 10, endLineNumber = 15,
+     * code = "{ ... }", kdoc = null, function = fun MyButton())`
+     *
+     * **Resulting IR is equivalent to**:
+     * ```kotlin
+     * CollectedPreview(
+     *     id = "com.example.MyButton",
+     *     displayName = "com.example.MyButton",
+     *     filePath = "src/main/kotlin/com/example/MyButton.kt",
+     *     startLineNumber = 10,
+     *     endLineNumber = 15,
+     *     code = "{ ... }",
+     *     kdoc = null,
+     * ) { MyButton() }
+     * ```
+     *
+     * Nullable fields (`filePath`, `startLineNumber`, `endLineNumber`, `code`, `kdoc`) are
+     * emitted as `IrConst(null)` when the corresponding [PreviewFunctionInfo] field is null.
      */
     fun buildCollectedPreviewCall(
         preview: PreviewFunctionInfo,
@@ -89,7 +109,18 @@ internal class CollectedPreviewIrBuilder(
     }
 
     /**
-     * Builds the @Composable IR lambda for `{ previewFun() }`.
+     * Builds the `@Composable` lambda `{ previewFun() }` that invokes the preview function.
+     *
+     * **Input**: `IrSimpleFunction` for `fun MyButton()`, `contentType` = `@Composable () -> Unit`
+     *
+     * **Resulting IR is equivalent to**:
+     * ```kotlin
+     * @Composable { MyButton() }
+     * ```
+     *
+     * The lambda is annotated with `@Composable` when `androidx.compose.runtime.Composable`
+     * is on the classpath; if the annotation class is absent (e.g. non-Compose test compilation)
+     * the annotation is silently omitted.
      */
     private fun buildContentLambda(
         previewFunc: IrSimpleFunction,

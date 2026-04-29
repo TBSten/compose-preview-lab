@@ -54,6 +54,19 @@ private fun extractCode(func: IrSimpleFunction, content: String): String? {
 /**
  * Extracts a `/** ... */` KDoc block immediately before the function start offset,
  * skipping any annotation lines between the KDoc and the function declaration.
+ *
+ * **Input** (content substring before `funcStart`):
+ * ```
+ * /** My preview component. */
+ * @Preview
+ * fun MyButton() { ... }
+ * ```
+ *
+ * **Output**: `"My preview component."`
+ *
+ * The regex matches the last `/** ... */` block followed by zero or more `@Annotation` lines
+ * at the end of the substring, then strips leading `*` characters and blank lines from each
+ * matched line.
  */
 private fun extractKDoc(funcStart: Int, content: String): String? {
     if (funcStart <= 0 || funcStart > content.length) return null
