@@ -101,7 +101,7 @@ internal class PreviewLabIrBodyFiller(
      *         distinctPreviewsById(
      *             mutableListOf<CollectedPreview>().apply {
      *                 addAll(listOf(CollectedPreview(...) { MyButton() })) // this module
-     *                 addAll(uiLibPreviews.value)                          // dep module via hint
+     *                 addAll(uiLibPreviews)                                 // dep module via hint (by-delegate getter returns List<CollectedPreview>)
      *             }
      *         )
      *     }
