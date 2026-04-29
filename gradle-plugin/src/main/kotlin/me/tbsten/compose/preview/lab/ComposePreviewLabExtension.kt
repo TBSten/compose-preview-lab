@@ -48,21 +48,6 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
         .convention(project.rootProject.projectDir.absolutePath)
 
     /**
-     * Fully qualified name of the `@CollectPreviews` property exported by this module.
-     *
-     * Set this to allow downstream modules using `collectAllModulePreviews()` to
-     * automatically discover and include this module's previews.
-     *
-     * ```kotlin
-     * composePreviewLab {
-     *     collectPreviewsExport = "uiLib.uiLibPreviews"
-     * }
-     * ```
-     */
-    var collectPreviewsExport: String by objects.property<String>()
-        .convention("")
-
-    /**
      * Controls generation of FeaturedFileList from .composepreviewlab/featured/ directory
      *
      * When true, scans the .composepreviewlab/featured/ directory and generates

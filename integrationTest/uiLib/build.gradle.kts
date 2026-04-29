@@ -65,6 +65,3 @@ android {
     compileSdk = 36
 }
 
-composePreviewLab {
-    collectPreviewsExport = "uiLib.uiLibPreviews"
-}
