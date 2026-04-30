@@ -142,6 +142,15 @@ internal class GeneratePreviewExportHint(
         )
     }
 
+    /**
+     * Creates the synthetic [IrFile] that hosts the hint function for [propertyFqn].
+     *
+     * For `propertyFqn = "uiLib.uiLibPreviews"`, generates:
+     * ```
+     * // file: me/tbsten/compose/preview/lab/exports/PreviewLabExport_uiLib_uiLibPreviews.kt
+     * package me.tbsten.compose.preview.lab.exports
+     * ```
+     */
     private fun createHintFile(propertyFqn: String, sourceFile: IrFile): IrFileImpl {
         val sanitizedFqn = propertyFqn.replace('.', '_')
         val fileName = "PreviewLabExport_$sanitizedFqn.kt"

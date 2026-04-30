@@ -44,6 +44,18 @@ public class KotlinToolingVersion(
         classifier?.let { Regex("""-(\d+)$""").find(it) }?.groupValues?.get(1)?.toIntOrNull()
     }
 
+    /**
+     * Compares two versions in the order: major → minor → patch → [Maturity] → classifier
+     * number → build number → classifier string (tiebreaker).
+     *
+     * [Maturity] ordinal order (ascending): SNAPSHOT < DEV < MILESTONE < ALPHA < BETA < RC < STABLE
+     *
+     * Examples:
+     * - `KotlinToolingVersion("2.3.0") > KotlinToolingVersion("2.3.0-Beta2")` — STABLE > BETA
+     * - `KotlinToolingVersion("2.4.0-RC2") > KotlinToolingVersion("2.4.0-RC1")` — higher RC number
+     * - `KotlinToolingVersion("2.4.0-dev-2124") > KotlinToolingVersion("2.4.0-dev-100")` — higher build
+     * - `KotlinToolingVersion("2.3.0") > KotlinToolingVersion("2.3.0-release-1")` — null classifier > non-null
+     */
     override fun compareTo(other: KotlinToolingVersion): Int {
         (this.major - other.major).takeIf { it != 0 }?.let { return it }
         (this.minor - other.minor).takeIf { it != 0 }?.let { return it }

@@ -67,41 +67,49 @@ internal class PreviewLabIrBodyFiller(
     }
 
     /**
-     * Replaces the placeholder initializer of a preview collection property with the actual IR logic to aggregate and export `@Preview` functions.
+     * Replaces the placeholder initializer of a preview collection property with the actual IR.
      *
-     * This method transforms a property's backing field (typically a delegate) from a simple sentinel call into a
-     * complete implementation that builds the preview list, wraps it in a [lazy] block, and exports it for
-     * cross-module discovery.
-     *
-     * # Transformation Logic
-     * The original call to `collectModulePreviews()` or `collectAllModulePreviews()` is replaced with:
-     * 1. **List Construction**: Generates IR to create a `List<CollectedPreview>` containing all discovered previews.
-     * 2. **Dependency Aggregation**: If `collectAllModulePreviews()` is used, it also includes previews exported by upstream modules.
-     * 3. **Lazy Wrapping**: The list is wrapped in `kotlin.lazy` to ensure initialization only occurs when accessed.
-     * 4. **Export Metadata**: Wraps the result in a `PreviewExport` container.
-     *
-     * # JVM Hint Generation
-     * On JVM platforms, this method also triggers the generation of a "hint" function. This hint allows
-     * downstream modules to discover this property as a source of previews through IR scanning, enabling
-     * seamless multi-module preview aggregation.
-     *
-     * # Example
-     * ## Source Code:
-     * ```kt
+     * **Before** (`collectModulePreviews()`):
+     * ```kotlin
      * val myPreviews by collectModulePreviews()
+     * // delegate field initializer = collectModulePreviews() sentinel call
      * ```
      *
-     * ## Transformed IR (Conceptual):
-     * ```kt
-     * val myPreviews$delegate = PreviewExport(lazy {
-     *     listOf(
-     *         CollectedPreview(id = "Preview1", ...),
-     *         CollectedPreview(id = "Preview2", ...),
-     *     )
-     * })
+     * **After** (semantically equivalent):
+     * ```kotlin
+     * val myPreviews by PreviewExport(
+     *     lazy {
+     *         listOf(
+     *             CollectedPreview(
+     *                 id = "com.example.MyButton",
+     *                 displayName = "com.example.MyButton",
+     *                 filePath = "src/main/kotlin/com/example/MyButton.kt",
+     *                 startLineNumber = 10,
+     *                 endLineNumber = 15,
+     *                 code = "{ ... }",
+     *                 kdoc = null,
+     *             ) { MyButton() },
+     *         )
+     *     }
+     * )
      * ```
      *
-     * @param property The [IrProperty] declaration whose initializer needs to be replaced.
+     * For `collectAllModulePreviews()`, dependency previews are appended and deduplicated:
+     * ```kotlin
+     * val appPreviews by PreviewExport(
+     *     lazy {
+     *         distinctPreviewsById(
+     *             mutableListOf<CollectedPreview>().apply {
+     *                 addAll(listOf(CollectedPreview(...) { MyButton() })) // this module
+     *                 addAll(uiLibPreviews)                                 // dep module via hint (by-delegate getter returns List<CollectedPreview>)
+     *             }
+     *         )
+     *     }
+     * )
+     * ```
+     *
+     * On JVM, also emits a hint function so downstream `collectAllModulePreviews()` can discover
+     * this property via classpath scanning (see [GeneratePreviewExportHint]).
      */
     private fun replaceCollectPreviewsProperty(property: IrProperty) {
         val delegateField = property.backingField ?: return
