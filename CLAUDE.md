@@ -75,15 +75,15 @@ Compose Preview Lab は、Compose の `@Preview` をインタラクティブな 
 - **preview-lab**: `PreviewLab` Composable（`fieldValue`, `fieldState`, `onEvent` を提供）
 - **gallery**: `PreviewLabGallery` で Preview 一覧を表示
 - **ui**: 内部 UI コンポーネント
-- **ksp-plugin**: `@Preview` アノテーションを収集してコード生成
-- **gradle-plugin**: KSP 設定を簡略化
+- **compiler-plugin**: Kotlin Compiler Plugin で `@Preview` を収集・IR 注入
+- **gradle-plugin**: Gradle プラグイン設定、FeaturedFileList 生成
 - **extension/**: kotlinx-datetime, navigation などの拡張
 
 ## Build Logic (Convention Plugins)
 
 `buildLogic/` に定義された Convention Plugin でボイラープレートを削減:
 
-- **convention-jvm**: ksp-plugin, gradle-plugin 用
+- **convention-jvm**: compiler-plugin, gradle-plugin 用
 - **convention-kmp**: annotation, starter 用（KMP 設定）
 - **convention-cmp**: core, field, gallery, preview-lab, ui, extension 用（CMP 設定）
 - **convention-cmp-ui**: UI を持つ CMP モジュール用
@@ -101,7 +101,7 @@ Compose Preview Lab は、Compose の `@Preview` をインタラクティブな 
 - `PreviewLabField<T>`: フィールドの基本インターフェース（`value`, `label`, `FieldView`）
 - `MutablePreviewLabField<T>`: 変更可能なフィールド
 - `PreviewLabScope`: `PreviewLab { }` 内で利用可能なスコープ（`fieldValue`, `fieldState`, `field`, `onEvent`）
-- `CollectedPreview`: KSP で収集された Preview 情報
+- `CollectedPreview`: Compiler Plugin で収集された Preview 情報
 
 ## Project Rules
 
