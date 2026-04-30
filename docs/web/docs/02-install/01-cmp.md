@@ -31,8 +31,9 @@ Compose Multiplatform プロジェクトを新しく作成する場合は、[Com
 
 `build.gradle.kts` に Gradle プラグインを追加します。
 
-:::caution プラグインの適用順序
-`me.tbsten.compose.preview.lab` は **Compose Compiler Plugin より前** に記述してください。
+:::info プラグインの適用順序（Kotlin バージョンによって異なります）
+- **Kotlin 2.3.0 以降**: 適用順序は問いません。Gradle プラグインが自動で `-Xcompiler-plugin-order` を注入します。
+- **Kotlin 2.1.20 / 2.2.x**: `me.tbsten.compose.preview.lab` を Compose Compiler より**前**に記述してください（順序が逆の場合は Gradle プラグインが早期エラーで通知します）。
 :::
 
 <table>
@@ -49,7 +50,9 @@ plugins {
     // Compose Multiplatform
     kotlin("multiplatform")
     // highlight-start
-    // ⭐️ Compose Preview Lab (Compose Compiler より前に記述)
+    // ⭐️ Compose Preview Lab
+    // Kotlin 2.3+: 適用順序は問わない (Gradle plugin が -Xcompiler-plugin-order を自動注入)
+    // Kotlin 2.1.20 / 2.2.x: composeCompiler より前に記述
     id("me.tbsten.compose.preview.lab") version "<compose-preview-lab-version>"
     // highlight-end
     id("org.jetbrains.compose")

@@ -2,7 +2,7 @@
 title: "Build Settings"
 sidebar_position: 7
 ---
-s
+
 # Build Settings
 
 Compose Preview Lab の Gradle プラグインには、コード生成や Preview の収集方法を制御するための **ビルド設定 (Build Settings)** が用意されています。  
@@ -24,18 +24,17 @@ composePreviewLab {
 
 ## 1. generatePackage
 
-生成される `PreviewList` / `PreviewAllList` のパッケージ名を指定します。
+`FeaturedFileList` などの生成ファイルのパッケージ名を指定します。  
+デフォルトはプロジェクト名から自動生成されます（例: `my-app` → `myApp`）。
 
 ```kotlin title="build.gradle.kts"
 composePreviewLab {
-    // デフォルトはプロジェクト名から自動生成される (e.g. my-app -> myApp)
     generatePackage = "com.example.preview"
 }
 ```
 
 :::tip いつ変更する？
-- 複数モジュールから共通の PreviewList をインポートしたい  
-- 生成されたクラスを特定のパッケージ配下にまとめたい  
+- 生成されたファイルを特定のパッケージ配下にまとめたい  
 という場合に、明示的にパッケージ名を指定します。
 :::
 
