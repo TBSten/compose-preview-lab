@@ -40,7 +40,9 @@ import ComposePreviewLabVersion from "@site/src/components/ComposePreviewLabVers
 
 ```kts title="<module>/build.gradle.kts"
 plugins {
-    // ⭐️ Compose Preview Lab (Compose Compiler より前に記述)
+    // ⭐️ Compose Preview Lab
+    // Kotlin 2.3+: 適用順序は問わない (Gradle plugin が -Xcompiler-plugin-order を自動注入)
+    // Kotlin 2.1.20 / 2.2.x: composeCompiler より前に記述
     id("me.tbsten.compose.preview.lab") version "<compose-preview-lab-version>"
     // Compose Compiler
     id("org.jetbrains.kotlin.plugin.compose")
