@@ -3,6 +3,7 @@
 package me.tbsten.compose.preview.lab.compiler.fir
 
 import org.jetbrains.kotlin.descriptors.ClassKind
+import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.caches.FirCache
@@ -162,11 +163,21 @@ internal class PreviewLabHintFirGenerator(session: FirSession) : FirDeclarationG
      * Interfaces have no constructors, so [generateConstructors] / [getCallableNamesForClass]
      * also return empty for our hint package.
      *
+     * The interface's modality must be `ABSTRACT` (the builder default is `FINAL`) — a
+     * `FINAL` interface trips Konan's `ClassLayoutBuilder.vtableEntries` and aborts iOS
+     * linking with `IllegalArgumentException: Expected a class, found interface`.
+     *
      * Returns null if [classId] is not one of the marker classes computed for this module.
      */
     override fun generateTopLevelClassLikeDeclaration(classId: ClassId): FirClassLikeSymbol<*>? {
         if (hintEntriesCache.getValue(Unit, null).none { it.markerClassId == classId }) return null
-        val klass = createTopLevelClass(classId, Keys.PreviewLabHintMarker, ClassKind.INTERFACE) {}
+        val klass = createTopLevelClass(classId, Keys.PreviewLabHintMarker, ClassKind.INTERFACE) {
+            // Konan's `ClassLayoutBuilder.vtableEntries` rejects `INTERFACE` declarations
+            // whose modality is the builder default of `FINAL` ("Expected a class, found
+            // interface"). Setting `ABSTRACT` matches how user-source interfaces are emitted
+            // and keeps the iOS linker happy.
+            modality = Modality.ABSTRACT
+        }
         return klass.symbol
     }
 
