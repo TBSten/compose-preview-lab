@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.ir.builders.irReturn
 import org.jetbrains.kotlin.ir.builders.irTemporary
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
-import org.jetbrains.kotlin.ir.declarations.IrProperty
+import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.IrConst
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin
@@ -193,13 +193,23 @@ internal class PreviewListIrBuilder(
     }
 
     /**
-     * Lazily-cached dependency-module preview properties discovered via Metro-style hints.
+     * Lazily-cached dependency-module preview getters discovered via Metro-style hints.
+     *
+     * Each entry is an [IrSimpleFunction] that, when called, returns
+     * `List<CollectedPreview>` for one upstream module. Two flavors live in this list:
+     *
+     * - **Manual `collectModulePreviews()` / `collectAllModulePreviews()`**: the [IrSimpleFunction]
+     *   is the property's getter (resolved from the hint's `@PreviewExportHint(fqn = ...)` via
+     *   [IrPluginContext.referenceProperties]).
+     * - **Auto-hint** (no sentinel call written by the user): the [IrSimpleFunction] is a
+     *   stand-alone provider function emitted by `AutoPreviewExportGenerator`, resolved via
+     *   [IrPluginContext.referenceFunctions] when property resolution comes back empty.
      *
      * Caching ensures the (potentially expensive) hint-function classpath walk in
-     * [collectDependencyProperties] runs at most once per [PreviewListIrBuilder] instance, even
+     * [collectDependencyGetters] runs at most once per [PreviewListIrBuilder] instance, even
      * when a module declares multiple `collectAllModulePreviews()` properties.
      */
-    private val cachedDependencyProperties: List<IrProperty> by lazy { collectDependencyProperties() }
+    private val cachedDependencyGetters: List<IrSimpleFunction> by lazy { collectDependencyGetters() }
 
     /**
      * Builds an expression that concatenates this module's previews with previews from
@@ -223,10 +233,10 @@ internal class PreviewListIrBuilder(
      * via `core` hint, once via `ui` hint).
      */
     fun buildConcatenatedPreviewsExpr(builder: DeclarationIrBuilder, thisModulePreviews: IrExpression): IrExpression {
-        val depProperties = cachedDependencyProperties
+        val depGetters = cachedDependencyGetters
         val distinctFun = distinctPreviewsByIdFun
 
-        if (depProperties.isEmpty()) {
+        if (depGetters.isEmpty()) {
             return compatContext.irCall(builder, distinctFun, listOfCollectedPreviewType).apply {
                 arguments[0] = thisModulePreviews
             }
@@ -257,8 +267,7 @@ internal class PreviewListIrBuilder(
                 arguments[0] = compatContext.irGet(this@irBlock, listVar)
                 arguments[1] = thisModulePreviews
             }
-            for (depProp in depProperties) {
-                val depGetter = depProp.getter ?: continue
+            for (depGetter in depGetters) {
                 val depValue = compatContext.irCall(this, depGetter.symbol, listOfCollectedPreviewType)
                 +compatContext.irCall(
                     this,
@@ -279,7 +288,7 @@ internal class PreviewListIrBuilder(
     }
 
     /**
-     * Discovers dependency-module preview properties via Metro-style hint functions.
+     * Discovers dependency-module preview getters via Metro-style hint functions.
      *
      * **Currently JVM-only.** On KLIB-based platforms (JS / Wasm / iOS) the hint generator skips
      * emission entirely (see `PreviewLabIrBodyFiller`) and this method returns an empty list.
@@ -294,11 +303,21 @@ internal class PreviewListIrBuilder(
      * On JVM the file-facade class disambiguates hints with identical signatures, so a fixed-name
      * `referenceFunctions(...)` lookup returns every overload across the classpath as expected.
      *
-     * Hints emitted by the current module (because `PreviewLabIrBodyFiller` runs hint generation
-     * in the same IR pass) are filtered out so the aggregator does not double-count this module's
-     * own previews.
+     * Hints emitted by the current module (because `PreviewLabIrBodyFiller` and
+     * `AutoPreviewExportGenerator` run hint generation in the same IR pass) are filtered out so
+     * the aggregator does not double-count this module's own previews.
+     *
+     * Each hint's `@PreviewExportHint(fqn = ...)` is resolved in two stages so both manual
+     * `collectModulePreviews()` properties and auto-generated provider functions can share the
+     * same hint discovery path:
+     *
+     * 1. [IrPluginContext.referenceProperties] — finds manual `val x by collectModulePreviews()`
+     *    properties, returns `property.getter`.
+     * 2. [IrPluginContext.referenceFunctions] (fallback) — finds auto-generated
+     *    `previewLabAutoProvider_*` functions emitted by `AutoPreviewExportGenerator` for
+     *    modules that don't write any sentinel call.
      */
-    private fun collectDependencyProperties(): List<IrProperty> {
+    private fun collectDependencyGetters(): List<IrSimpleFunction> {
         if (pluginContext.platform?.isJvm() != true) return emptyList()
 
         val hintSymbols = pluginContext.referenceFunctions(
@@ -318,17 +337,25 @@ internal class PreviewListIrBuilder(
             if (regularParams.size != 1) return@mapNotNull null
             if (regularParams[0].type.classFqName != GeneratePreviewExportHint.PREVIEW_EXPORT_FQN) return@mapNotNull null
 
-            // Decode the property FQN from the @PreviewExportHint annotation.
+            // Decode the target FQN from the @PreviewExportHint annotation.
             val hintAnnotation = hintFunction.annotations.firstOrNull { ann ->
                 ann.type.classFqName == GeneratePreviewExportHint.PREVIEW_EXPORT_HINT_FQN
             } ?: return@mapNotNull null
             val fqn = (hintAnnotation.arguments.firstOrNull() as? IrConst)?.value as? String ?: return@mapNotNull null
 
-            // Default-package properties (no dots in FQN) resolve to FqName.ROOT.
+            // Default-package targets (no dots in FQN) resolve to FqName.ROOT.
             val lastDot = fqn.lastIndexOf('.')
             val packageFqName = if (lastDot < 0) FqName.ROOT else FqName(fqn.substring(0, lastDot))
-            val propertyName = Name.identifier(if (lastDot < 0) fqn else fqn.substring(lastDot + 1))
-            pluginContext.referenceProperties(CallableId(packageFqName, propertyName)).firstOrNull()?.owner
+            val callableName = Name.identifier(if (lastDot < 0) fqn else fqn.substring(lastDot + 1))
+            val callableId = CallableId(packageFqName, callableName)
+
+            // Manual `collectModulePreviews()` property → return its getter.
+            val property = pluginContext.referenceProperties(callableId).firstOrNull()?.owner
+            val propertyGetter = property?.getter
+            if (propertyGetter != null) return@mapNotNull propertyGetter
+
+            // Auto-generated provider function (no source-level property) → return the function itself.
+            pluginContext.referenceFunctions(callableId).firstOrNull()?.owner
         }
     }
 }
