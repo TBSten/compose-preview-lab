@@ -90,6 +90,6 @@ jobs:
           title: "PBT Nightly Failed"
           description: |
             Property-Based Test Nightly が失敗しました。
-            Workflow run を確認してください。
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           url: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           noprefix: true
