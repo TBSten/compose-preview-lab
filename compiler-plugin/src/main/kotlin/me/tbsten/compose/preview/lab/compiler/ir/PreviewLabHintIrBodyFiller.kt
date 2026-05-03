@@ -26,13 +26,19 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
  *
  * Before:
  * ```kotlin
- * public fun previewLabExport(value: PreviewLabExportMarker_<hash>): Unit  // body is null
+ * public fun previewLabExport(value: PreviewLabExportMarker_<hash>): Unit  // body == null
  * ```
  *
  * After:
  * ```kotlin
  * public fun previewLabExport(value: PreviewLabExportMarker_<hash>): Unit { /* empty */ }
  * ```
+ *
+ * Note: the corresponding `@PreviewExportHint(fqn = ...)` annotation is **not** attached
+ * here. The auto-provider FQN is fully derivable from the marker class id (the hash suffix
+ * is shared with the provider name), and IR-attached annotations on FIR-generated functions
+ * do not always survive to `kotlin.Metadata` on the consumer side. See
+ * [PreviewListIrBuilder.collectDependencyGetters] for the marker-based derivation.
  */
 internal class PreviewLabHintIrBodyFiller(private val pluginContext: IrPluginContext,) : IrElementTransformerVoid() {
 

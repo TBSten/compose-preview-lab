@@ -288,40 +288,38 @@ internal class PreviewListIrBuilder(
     }
 
     /**
-     * Discovers dependency-module preview getters via Metro-style hint functions.
+     * Discovers dependency-module preview getters via FIR-emitted marker hints.
      *
-     * **Currently JVM-only.** On KLIB-based platforms (JS / Wasm / iOS) the hint generator skips
-     * emission entirely (see `PreviewLabIrBodyFiller`) and this method returns an empty list.
-     * The reason is a KLIB-specific signature clash: `referenceFunctions(CallableId)` requires
-     * a fixed function name to enumerate overloads, but KLIB IdSignatures are derived from
-     * `(name, parameter types)` only — they do not include parameter names or annotations — so
-     * two hints generated from different modules with the same parameter type `PreviewExport`
-     * collide at link time. Solving this would require either descriptor-based package scanning
-     * (rejected at runtime in K2 IR) or generating a unique synthetic class per FQN to differentiate
-     * parameter types (FIR-level work, out of scope for this PR).
+     * **Cross-module aggregation requires Kotlin 2.3.21+** (gated through
+     * [CompatContext.supportsKlibCrossModuleHint]). On older compilers this returns an empty
+     * list and downstream `collectAllModulePreviews()` aggregates only the current module.
+     * The 2.3.21 floor is what unlocks KLIB-safe hint emission via FIR-generated per-module
+     * marker classes (see `PreviewLabHintFirGenerator`): KLIB IdSignatures are derived from
+     * `(name, parameter types)` only, so making each hint take a per-module-unique marker
+     * class as its parameter type makes every hint's IdSignature naturally unique without
+     * needing descriptor-based package scanning.
      *
-     * On JVM the file-facade class disambiguates hints with identical signatures, so a fixed-name
-     * `referenceFunctions(...)` lookup returns every overload across the classpath as expected.
+     * Discovery walks `pluginContext.referenceFunctions(HINT_FUNCTION_CALLABLE_ID)`, accepts
+     * any hint whose single value-parameter type lives in the hint package, and reconstructs
+     * the matching auto-provider FQN (`previewLabAutoProvider_<hash>`) from the marker class
+     * id (`PreviewLabExportMarker_<hash>`) — the two share the same hash by construction in
+     * [PreviewLabHintFirGenerator] / [computeAutoProviderName]. No `@PreviewExportHint`
+     * annotation lookup is involved.
      *
-     * Hints emitted by the current module (because `PreviewLabIrBodyFiller` and
-     * `GenerateAutoPreviewExport` run hint generation in the same IR pass) are filtered out so
-     * the aggregator does not double-count this module's own previews.
-     *
-     * Each hint's `@PreviewExportHint(fqn = ...)` is resolved in two stages so both manual
-     * `collectModulePreviews()` properties and auto-generated provider functions can share the
-     * same hint discovery path:
-     *
-     * 1. [IrPluginContext.referenceProperties] — finds manual `val x by collectModulePreviews()`
-     *    properties, returns `property.getter`.
-     * 2. [IrPluginContext.referenceFunctions] (fallback) — finds auto-generated
-     *    `previewLabAutoProvider_*` functions emitted by `GenerateAutoPreviewExport` for
-     *    modules that don't write any sentinel call.
+     * Hints emitted by the current module (which would point back at our own previews and
+     * cause double-counting) are filtered out via the `IR_EXTERNAL_DECLARATION_STUB` origin
+     * marker — only externally-linked hints from upstream modules survive the filter.
      */
     private fun collectDependencyGetters(): List<IrSimpleFunction> {
-        if (pluginContext.platform?.isJvm() != true) return emptyList()
+        // KLIB cross-module aggregation requires the FIR-side hint generator (Kotlin 2.3.21+).
+        // On older Kotlin we fall back to JVM-only legacy hints, where file-facade classes
+        // disambiguate `previewLabExport(PreviewExport)` overloads at the bytecode level.
+        if (!compatContext.supportsKlibCrossModuleHint() && pluginContext.platform?.isJvm() != true) {
+            return emptyList()
+        }
 
         val hintSymbols = pluginContext.referenceFunctions(
-            GeneratePreviewExportHint.HINT_FUNCTION_CALLABLE_ID,
+            HINT_FUNCTION_CALLABLE_ID,
         )
 
         return hintSymbols.mapNotNull { hintSymbol ->
@@ -332,16 +330,36 @@ internal class PreviewListIrBuilder(
             // `IR_EXTERNAL_DECLARATION_STUB` origin marker.
             if (hintFunction.origin != IrDeclarationOriginCompat.IR_EXTERNAL_DECLARATION_STUB) return@mapNotNull null
 
-            // Validate parameter shape: must take a single Regular parameter of type PreviewExport.
+            // Validate parameter shape: a single Regular parameter whose type is either:
+            // - the legacy `PreviewExport` (Kotlin <2.3.21 JVM hints)
+            // - any per-module marker class in the hint package (Kotlin 2.3.21+ FIR hints)
             val regularParams = hintFunction.parameters.filter { it.kind == IrParameterKind.Regular }
             if (regularParams.size != 1) return@mapNotNull null
-            if (regularParams[0].type.classFqName != GeneratePreviewExportHint.PREVIEW_EXPORT_FQN) return@mapNotNull null
+            val paramFqn = regularParams[0].type.classFqName
+            val isLegacyShape = paramFqn == PREVIEW_EXPORT_FQN
+            // FIR-emitted marker classes live directly in the hint package, named
+            // `PreviewLabExportMarker_<hash>`. The hash matches the auto-provider function
+            // suffix, so once we know the marker class id we can derive the provider FQN
+            // without needing the `@PreviewExportHint` annotation — which is critical because
+            // IR-attached annotations on FIR-generated functions don't always survive into
+            // the consumer's `kotlin.Metadata`.
+            val isFirMarkerShape = paramFqn?.parent() == HINT_PACKAGE &&
+                paramFqn.shortName().asString().startsWith(MarkerClassPrefix)
+            if (!isLegacyShape && !isFirMarkerShape) return@mapNotNull null
 
-            // Decode the target FQN from the @PreviewExportHint annotation.
-            val hintAnnotation = hintFunction.annotations.firstOrNull { ann ->
-                ann.type.classFqName == GeneratePreviewExportHint.PREVIEW_EXPORT_HINT_FQN
-            } ?: return@mapNotNull null
-            val fqn = (hintAnnotation.arguments.firstOrNull() as? IrConst)?.value as? String ?: return@mapNotNull null
+            val fqn: String = if (isFirMarkerShape) {
+                val hash = paramFqn!!.shortName().asString().removePrefix(MarkerClassPrefix)
+                "${HINT_PACKAGE.asString()}.previewLabAutoProvider_$hash"
+            } else {
+                // Legacy `previewLabExport(PreviewExport)` hint: target FQN comes from the
+                // `@PreviewExportHint(fqn = ...)` annotation that `GeneratePreviewExportHint`
+                // attaches at IR construction time (kotlin.Metadata captures it because the
+                // function itself is IR-generated).
+                val hintAnnotation = hintFunction.annotations.firstOrNull { ann ->
+                    ann.type.classFqName == PREVIEW_EXPORT_HINT_FQN
+                } ?: return@mapNotNull null
+                (hintAnnotation.arguments.firstOrNull() as? IrConst)?.value as? String ?: return@mapNotNull null
+            }
 
             // Default-package targets (no dots in FQN) resolve to FqName.ROOT.
             val lastDot = fqn.lastIndexOf('.')
@@ -357,5 +375,13 @@ internal class PreviewListIrBuilder(
             // Auto-generated provider function (no source-level property) → return the function itself.
             pluginContext.referenceFunctions(callableId).firstOrNull()?.owner
         }
+    }
+
+    private companion object {
+        // Mirrors `PreviewLabHintFirGenerator.MarkerClassPrefix`. We deliberately keep the
+        // constant duplicated here rather than reaching into the FIR module — `PreviewListIrBuilder`
+        // is in the IR layer and consuming a FIR-only constant would create a one-way coupling
+        // we don't have anywhere else.
+        const val MarkerClassPrefix = "PreviewLabExportMarker_"
     }
 }

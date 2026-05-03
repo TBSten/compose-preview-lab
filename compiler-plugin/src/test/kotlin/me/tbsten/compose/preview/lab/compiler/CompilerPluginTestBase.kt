@@ -10,6 +10,12 @@ import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 @OptIn(ExperimentalCompilerApi::class)
 open class CompilerPluginTestBase {
 
+    // Each call to `compile()` without an explicit moduleName gets a unique sequential
+    // module name. The auto-provider FQN scheme hashes the Kotlin module name to derive a
+    // per-module-unique provider function name, so multi-stage cross-module tests would
+    // collide on the same FQN if every stage shared kctfork's default module name.
+    private val moduleNameCounter = java.util.concurrent.atomic.AtomicInteger(0)
+
     // Derive major.minor from the actual compiler version so that kctfork uses the
     // correct language level. In Kotlin 2.1.x, mixing languageVersion="2.0" with a
     // 2.1.x compiler causes FirIncompatibleClassExpressionChecker to crash with
@@ -71,9 +77,7 @@ open class CompilerPluginTestBase {
         if (extraClasspaths.isNotEmpty()) {
             this.classpaths = this.classpaths + extraClasspaths
         }
-        if (moduleName != null) {
-            this.moduleName = moduleName
-        }
+        this.moduleName = moduleName ?: "preview-lab-test-${moduleNameCounter.incrementAndGet()}"
         // Use the compiler's own major.minor as languageVersion to avoid
         // FirIncompatibleClassExpressionChecker crashing in Kotlin 2.1.x when
         // languageVersion="2.0" is used (source must not be null).

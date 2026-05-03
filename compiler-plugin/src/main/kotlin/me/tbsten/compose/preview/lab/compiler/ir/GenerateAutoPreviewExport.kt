@@ -25,48 +25,41 @@ import org.jetbrains.kotlin.ir.types.typeWith
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 import org.jetbrains.kotlin.ir.util.addChild
 import org.jetbrains.kotlin.ir.util.addFile
-import org.jetbrains.kotlin.ir.util.file
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
-import org.jetbrains.kotlin.platform.jvm.isJvm
 
 /**
- * Emits an auto-generated preview export — a stand-alone provider function plus a matching
- * [GeneratePreviewExportHint] entry — for modules that have `@Preview` functions but never
- * declare a `collectModulePreviews()` / `collectAllModulePreviews()` sentinel.
+ * Emits the per-module auto-provider function whose `List<CollectedPreview>` return value is
+ * the canonical entry point downstream `collectAllModulePreviews()` calls invoke for this
+ * module.
  *
- * This is the half of cross-module discovery that lets users skip the boilerplate
- * `val xxxPreviews by collectModulePreviews()` declaration entirely: as long as the Gradle
- * plugin is applied and at least one `@Preview` function exists, downstream
- * `collectAllModulePreviews()` can pick up that module's previews.
- *
- * **Output (semantically equivalent Kotlin)** for a module whose Kotlin module name is
- * `<libA>` and whose first `@Preview` function lives in `package com.example.lib`:
+ * **Output (semantically equivalent Kotlin)** for a module whose Kotlin module name hashes
+ * to `a3k9z2x1`:
  *
  * ```kotlin
- * // me/tbsten/compose/preview/lab/exports/PreviewLabAutoProvider_libA_com_example_lib.kt
+ * // me/tbsten/compose/preview/lab/exports/PreviewLabAutoProvider_a3k9z2x1.kt
  * package me.tbsten.compose.preview.lab.exports
  *
- * public fun previewLabAutoProvider_libA_com_example_lib(): List<CollectedPreview> = listOf(
- *     CollectedPreview(id = "com.example.lib.MyPreview", ...) { MyPreview() },
+ * public fun previewLabAutoProvider_a3k9z2x1(): List<CollectedPreview> = listOf(
+ *     CollectedPreview(id = "com.example.MyPreview", ...) { MyPreview() },
  *     // ...
  * )
- *
- * // (separate synthetic file emitted by GeneratePreviewExportHint)
- * @PreviewExportHint(fqn = "me.tbsten.compose.preview.lab.exports.previewLabAutoProvider_libA_com_example_lib")
- * public fun previewLabExport(value: PreviewExport): Unit {}
  * ```
  *
- * The module-name component (`libA` above) is what keeps two siblings sharing a base
- * package from colliding on the same provider FQN — see [invoke] for the full rationale.
+ * The function name is computed by [computeAutoProviderName] from the Kotlin module name
+ * hash so two modules sharing the same source-level package never collide on the same FQN.
+ *
+ * **Discovery path (Kotlin 2.3.21+, all platforms)**: `PreviewLabHintFirGenerator` emits a
+ * per-module `previewLabExport(value: <Marker>): Unit` hint whose marker class id ends with
+ * the same hash this generator embeds in its provider function name. Downstream
+ * [PreviewListIrBuilder.collectDependencyGetters] reads the hint's parameter type, extracts
+ * the hash, and reconstructs this provider's FQN — no `@PreviewExportHint` annotation lookup
+ * is involved (and `PreviewLabHintIrBodyFiller` only injects an empty body, never an
+ * annotation).
  *
  * The provider function is registered with [IrPluginContext.metadataDeclarationRegistrar] so
- * downstream `referenceFunctions(...)` can find it via the fallback path in
- * [PreviewListIrBuilder] (`referenceProperties` first, then `referenceFunctions`).
- *
- * **JVM-only by design** — same constraint as [GeneratePreviewExportHint]; see its KDoc for
- * why KLIB-based platforms can't host the hint shape.
+ * downstream `referenceFunctions(...)` finds it.
  */
 internal class GenerateAutoPreviewExport(
     private val pluginContext: IrPluginContext,
@@ -88,46 +81,26 @@ internal class GenerateAutoPreviewExport(
     }
 
     /**
-     * Emits the auto provider + hint pair into [moduleFragment].
+     * Emits the auto-provider function (and, on legacy paths, the matching legacy hint) into
+     * [moduleFragment].
      *
-     * **Input**: Module containing `@Preview` functions but no explicit `collectModulePreviews()` sentinel.
-     * **Output**: Synthetic provider function + hint function (as two IrFiles).
+     * **Input**: Module containing `@Preview` functions, with [sourceFile] being one of its
+     * real source files (its `FirMetadataSource.File` seeds the synthetic file metadata so the
+     * provider lands in `kotlin.Metadata(k=2)` and is discoverable via `referenceFunctions`).
      *
-     * [sourceFile] is required for the synthetic file's `FirMetadataSource.File` wiring so the
-     * provider function ends up in `kotlin.Metadata(k=2)` (file facade) and is visible to
-     * downstream `referenceFunctions(...)` lookups. Pass any source file that already carries a
-     * `FirMetadataSource.File` — typically the file holding the first `@Preview` function.
+     * **Output**: Synthetic provider function as a new IrFile in
+     * `me.tbsten.compose.preview.lab.exports`. The matching hint function is emitted by
+     * [me.tbsten.compose.preview.lab.compiler.fir.PreviewLabHintFirGenerator] during the FIR
+     * pass, so this generator does not emit any hint itself.
      *
-     * Defined as `operator fun invoke` so call sites read like `generator(sourceFile)` — the class
-     * name `GenerateAutoPreviewExport` already carries the verb.
+     * Defined as `operator fun invoke` so call sites read like `generator(sourceFile)` — the
+     * class name `GenerateAutoPreviewExport` already carries the verb.
      */
     operator fun invoke(sourceFile: IrFile) {
-        if (previews.isEmpty()) return
-        if (pluginContext.platform?.isJvm() != true) return
+        val providerFunctionName = computeAutoProviderName(moduleFragment, config)
+        val moduleHash = providerFunctionName.asString().removePrefix(AutoProviderPrefix)
 
-        // Provider function names need to be unique across every dependency that takes the
-        // auto-export path on a given classpath. Two siblings sharing a base package
-        // (e.g. `package com.example` in both `:libA` and `:libB`) would collide without
-        // the module-name component. Additionally, `sanitizeIdentifier()` strips punctuation,
-        // so module names like `extension-navigation` and `extensionnavigation` would map to
-        // the same identifier — compounding the collision risk.
-        //
-        // Hash the module name to ensure uniqueness even when sanitization drops characters.
-        // The Kotlin module name is unique per dependency JAR, and hashing preserves that
-        // invariant while keeping the FQN short (8-char hash is sufficient for classpath scope).
-        val firstPreviewFile = previews.first().function.file
-        val firstPreviewPkg = firstPreviewFile.packageFqName.asString()
-        val sanitizedPkg = firstPreviewPkg.replace('.', '_').ifEmpty { DEFAULT_PACKAGE_TOKEN }
-        val moduleNameHash = moduleFragment.name.asString().hashCode().toString(36).takeLast(8)
-        val providerFunctionName = Name.identifier(
-            "previewLabAutoProvider_${moduleNameHash}_$sanitizedPkg",
-        )
-        val providerFqn = "${HINT_PACKAGE.asString()}.${providerFunctionName.asString()}"
-
-        val syntheticFile = createSyntheticFile(
-            "${moduleNameHash}_$sanitizedPkg",
-            sourceFile,
-        )
+        val syntheticFile = createSyntheticFile(moduleHash, sourceFile)
         val providerFunction = buildProviderFunction(providerFunctionName, syntheticFile)
 
         moduleFragment.addFile(
@@ -136,11 +109,8 @@ internal class GenerateAutoPreviewExport(
 
         pluginContext.metadataDeclarationRegistrar.registerFunctionAsMetadataVisible(providerFunction)
 
-        // Emit the matching hint that points to the provider function's FQN. The hint lives in
-        // its own synthetic file (separate file facade) — same pattern as the manual case where
-        // each `collectModulePreviews()` property gets its own hint file.
-        GeneratePreviewExportHint(pluginContext, moduleFragment, compatContext)
-            .invoke(providerFqn, sourceFile)
+        // The matching `previewLabExport(<Marker>)` hint is emitted by
+        // [PreviewLabHintFirGenerator] in the FIR pass; no IR-side hint emission needed.
     }
 
     /**
@@ -148,7 +118,7 @@ internal class GenerateAutoPreviewExport(
      *
      * **Generated function** (semantically equivalent Kotlin):
      * ```kotlin
-     * public fun previewLabAutoProvider_<sanitizedModule>_<sanitizedPkg>(): List<CollectedPreview> {
+     * public fun previewLabAutoProvider_<moduleHash>(): List<CollectedPreview> {
      *     return listOf(
      *         CollectedPreview(id = "id1", ...) { Preview1() },
      *         CollectedPreview(id = "id2", ...) { Preview2() },
@@ -156,14 +126,20 @@ internal class GenerateAutoPreviewExport(
      * }
      * ```
      *
-     * The list contains every `@Preview` function discovered in the module, regardless of
-     * which package each lives in. `sanitizedPkg` only seeds the function name (taken from
-     * the first preview alphabetically, since [previews] is pre-sorted in
-     * [PreviewLabIrGenerationExtension.collectPreviews]); it does not partition the previews.
+     * The list contains every `@Preview` function discovered in the module **plus** the
+     * concatenated previews from any dependency module hints visible on this module's
+     * classpath, deduped by id. Unlike the manual `val x by collectModulePreviews()` path, the
+     * result is *not* wrapped in `lazy { ... }` or `PreviewExport(...)` — the function returns
+     * `List<CollectedPreview>` directly so [PreviewListIrBuilder.collectDependencyGetters] can
+     * call it as a plain getter.
      *
-     * Unlike the manual `val x by collectModulePreviews()` path, the result is *not* wrapped in
-     * `lazy { ... }` or `PreviewExport(...)` — the function returns `List<CollectedPreview>`
-     * directly so [PreviewListIrBuilder.collectDependencyGetters] can call it as a plain getter.
+     * **Why include transitive deps**: an `:app` → `:ui` (impl) → `:core` chain only exposes
+     * `:ui` on `:app`'s compile classpath, so `:app`'s discovery cannot find `:core`'s hint
+     * directly. Folding `:core`'s previews into `:ui`'s auto-provider at `:ui`'s compile time
+     * (when `:core` *is* on `:ui`'s classpath) carries them forward to `:app` through `:ui`'s
+     * single visible hint. `distinctPreviewsById` (inside [PreviewListIrBuilder.buildConcatenatedPreviewsExpr])
+     * keeps the list dedup-safe even when the same preview reaches `:app` through multiple
+     * paths.
      */
     private fun buildProviderFunction(providerFunctionName: Name, parent: IrFile,): IrSimpleFunction {
         val providerFunction = pluginContext.irFactory.buildFun {
@@ -178,7 +154,8 @@ internal class GenerateAutoPreviewExport(
 
         val previewListBuilder = PreviewListIrBuilder(pluginContext, previews, config, compatContext)
         val builder = DeclarationIrBuilder(pluginContext, providerFunction.symbol)
-        val listExpr = previewListBuilder.buildPreviewsListExpr(builder, providerFunction)
+        val thisModulePreviews = previewListBuilder.buildPreviewsListExpr(builder, providerFunction)
+        val listExpr = previewListBuilder.buildConcatenatedPreviewsExpr(builder, thisModulePreviews)
         providerFunction.body = builder.irBlockBody {
             +irReturn(listExpr)
         }
@@ -217,15 +194,5 @@ internal class GenerateAutoPreviewExport(
             ),
             module = moduleFragment,
         ).also { it.metadata = FirMetadataSource.File(firFile) }
-    }
-
-    companion object {
-        // Reuse the same package as hint functions so downstream
-        // `collectDependencyGetters()` can resolve provider functions through its existing
-        // `referenceFunctions(CallableId(...))` fallback path.
-        val HINT_PACKAGE: FqName = GeneratePreviewExportHint.HINT_PACKAGE
-
-        /** Token substituted for the package-derived component when the source file has no package. */
-        private val DEFAULT_PACKAGE_TOKEN = "default"
     }
 }
