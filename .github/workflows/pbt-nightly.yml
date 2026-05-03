@@ -76,3 +76,20 @@ jobs:
       - name: Run Docs PBT
         shell: bash
         run: cd ./docs && ./gradlew jvmTest -Dkotest.tags="PBT" -Ptest.property.iterations=${{ inputs.iterations || '5000' }}
+
+  notify-failure:
+    needs: pbt
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Discord on failure
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          status: failure
+          title: "PBT Nightly Failed"
+          description: |
+            Property-Based Test Nightly が失敗しました。
+            Workflow run を確認してください。
+          url: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          noprefix: true
