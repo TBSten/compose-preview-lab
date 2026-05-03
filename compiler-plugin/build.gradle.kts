@@ -102,12 +102,39 @@ listOf("testCompileClasspath", "testRuntimeClasspath").forEach { name ->
     }
 }
 
+// Resolvable configuration that pulls `kotlin-stdlib-js` as a `.klib` artifact, bypassing
+// the Kotlin Multiplatform variant resolution rules that would reject it on a JVM consumer.
+// kctfork's `KotlinJsCompilation` needs this to feed stage-1 KLIBs through `-libraries`.
+val kotlinStdlibJsKlib by configurations.creating {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+}
+dependencies {
+    add(kotlinStdlibJsKlib.name, "org.jetbrains.kotlin:kotlin-stdlib-js:$testKotlinVersion@klib")
+}
+
+// Configuration-cache compatible argument provider for the kotlin-stdlib-js KLIB path.
+// Captures only the FileCollection (declared as @Classpath input) so the script object
+// reference does not get serialized.
+abstract class StdlibJsKlibArgumentProvider : CommandLineArgumentProvider {
+    @get:org.gradle.api.tasks.Classpath
+    abstract val klibFiles: ConfigurableFileCollection
+
+    override fun asArguments(): List<String> = listOf("-Dtest.kotlin.stdlib.js.klib=${klibFiles.singleFile.absolutePath}")
+}
+
 tasks.withType<Test> {
     useJUnitPlatform()
     // Pass testKotlinVersion to tests so CompilerPluginTestBase can set languageVersion
     // accordingly. In Kotlin 2.1.x, FirIncompatibleClassExpressionChecker crashes when
     // languageVersion="2.0" is used with a 2.1.x compiler (source must not be null).
     systemProperty("test.kotlin.version", testKotlinVersion)
+    // Surface kotlin-stdlib-js KLIB to the JS test base so it can wire `args.libraries`.
+    jvmArgumentProviders.add(
+        objects.newInstance(StdlibJsKlibArgumentProvider::class).apply {
+            klibFiles.from(kotlinStdlibJsKlib)
+        },
+    )
     // kctfork bundles a kotlin-compiler-embeddable that cannot parse Java 26 version
     // strings, so the test JVM has to run on Java 21.
     javaLauncher.set(
