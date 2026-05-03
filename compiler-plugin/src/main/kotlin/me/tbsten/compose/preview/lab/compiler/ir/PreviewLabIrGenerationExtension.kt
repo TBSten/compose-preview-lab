@@ -56,16 +56,17 @@ class PreviewLabIrGenerationExtension(
         // Emit the auto-provider function this module's hint points at.
         //
         // - Kotlin 2.3.21+ (any platform): `PreviewLabHintFirGenerator` already emitted the
-        //   per-module hint + marker class, and `PreviewLabHintIrBodyFiller` (above) attached
-        //   `@PreviewExportHint(fqn = computeAutoProviderFqn(...))`. We just need to materialize
-        //   the matching provider function here. Skipping when `previews` is empty is fine: the
-        //   FIR-emitted hint still exists but its `fqn` points at a non-existent function, and
-        //   downstream `referenceProperties/Functions` simply returns nothing — no link error.
-        // - Older Kotlin (JVM only via the existing version gate): no FIR hint runs, so we fall
-        //   back to the legacy IR-based path that emits both the provider and a
-        //   `previewLabExport(PreviewExport)` hint via `GeneratePreviewExportHint`. Conditioned
-        //   on `!bodyFiller.didGenerateAnyHint` so we don't double-emit when the module already
-        //   has a `collectModulePreviews()` delegate.
+        //   per-module hint + marker class, both sharing the same module-name hash. The
+        //   downstream consumer reconstructs this provider's FQN from the marker class id
+        //   alone (no `@PreviewExportHint` annotation involved), so we just materialize the
+        //   matching provider function here. Skipping when `previews` is empty is fine: the
+        //   FIR-emitted hint still exists, but `referenceFunctions` simply returns nothing
+        //   for the missing provider name — no link error.
+        // - Older Kotlin (JVM only via the existing version gate): no FIR hint runs, so we
+        //   fall back to the legacy IR-based path that emits both the provider and a
+        //   `previewLabExport(PreviewExport)` hint via `GeneratePreviewExportHint`.
+        //   Conditioned on `!bodyFiller.didGenerateAnyHint` so we don't double-emit when the
+        //   module already has a `collectModulePreviews()` delegate.
         if (previews.isNotEmpty()) {
             val sourceFile = previews.first().function.file
             val generator = GenerateAutoPreviewExport(pluginContext, moduleFragment, compatContext, previews, config)

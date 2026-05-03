@@ -17,8 +17,9 @@ import org.jetbrains.kotlin.name.Name
  *
  * **Result** (semantically): `Name.identifier("previewLabAutoProvider_a3k9z2x1")`.
  *
- * The 8-character base-36 hash of `moduleFragment.name.asString()` matches the suffix the
- * FIR-side marker class uses (`PreviewLabExportMarker_<hash>`), so a downstream consumer
+ * The base-36 hash of `moduleFragment.name.asString()` (up to 8 characters; `Int.hashCode`
+ * stringified in base-36 is at most 7 characters before sign stripping) matches the suffix
+ * the FIR-side marker class uses (`PreviewLabExportMarker_<hash>`), so a downstream consumer
  * can derive this provider's FQN from the hint function's parameter type alone — no
  * `@PreviewExportHint` annotation lookup needed. See
  * [PreviewListIrBuilder.collectDependencyGetters] for the consumer-side derivation.
@@ -47,4 +48,4 @@ internal fun computeAutoProviderFqn(moduleFragment: IrModuleFragment): String =
 
 internal val HINT_PACKAGE: FqName = PreviewLabFirBuiltIns.HINT_PACKAGE
 
-private const val AutoProviderPrefix = "previewLabAutoProvider_"
+internal const val AutoProviderPrefix = "previewLabAutoProvider_"

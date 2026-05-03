@@ -288,34 +288,27 @@ internal class PreviewListIrBuilder(
     }
 
     /**
-     * Discovers dependency-module preview getters via Metro-style hint functions.
+     * Discovers dependency-module preview getters via FIR-emitted marker hints.
      *
-     * **Currently JVM-only.** On KLIB-based platforms (JS / Wasm / iOS) the hint generator skips
-     * emission entirely (see `PreviewLabIrBodyFiller`) and this method returns an empty list.
-     * The reason is a KLIB-specific signature clash: `referenceFunctions(CallableId)` requires
-     * a fixed function name to enumerate overloads, but KLIB IdSignatures are derived from
-     * `(name, parameter types)` only — they do not include parameter names or annotations — so
-     * two hints generated from different modules with the same parameter type `PreviewExport`
-     * collide at link time. Solving this would require either descriptor-based package scanning
-     * (rejected at runtime in K2 IR) or generating a unique synthetic class per FQN to differentiate
-     * parameter types (FIR-level work, out of scope for this PR).
+     * **Cross-module aggregation requires Kotlin 2.3.21+** (gated through
+     * [CompatContext.supportsKlibCrossModuleHint]). On older compilers this returns an empty
+     * list and downstream `collectAllModulePreviews()` aggregates only the current module.
+     * The 2.3.21 floor is what unlocks KLIB-safe hint emission via FIR-generated per-module
+     * marker classes (see `PreviewLabHintFirGenerator`): KLIB IdSignatures are derived from
+     * `(name, parameter types)` only, so making each hint take a per-module-unique marker
+     * class as its parameter type makes every hint's IdSignature naturally unique without
+     * needing descriptor-based package scanning.
      *
-     * On JVM the file-facade class disambiguates hints with identical signatures, so a fixed-name
-     * `referenceFunctions(...)` lookup returns every overload across the classpath as expected.
+     * Discovery walks `pluginContext.referenceFunctions(HINT_FUNCTION_CALLABLE_ID)`, accepts
+     * any hint whose single value-parameter type lives in the hint package, and reconstructs
+     * the matching auto-provider FQN (`previewLabAutoProvider_<hash>`) from the marker class
+     * id (`PreviewLabExportMarker_<hash>`) — the two share the same hash by construction in
+     * [PreviewLabHintFirGenerator] / [computeAutoProviderName]. No `@PreviewExportHint`
+     * annotation lookup is involved.
      *
-     * Hints emitted by the current module (because `PreviewLabIrBodyFiller` and
-     * `GenerateAutoPreviewExport` run hint generation in the same IR pass) are filtered out so
-     * the aggregator does not double-count this module's own previews.
-     *
-     * Each hint's `@PreviewExportHint(fqn = ...)` is resolved in two stages so both manual
-     * `collectModulePreviews()` properties and auto-generated provider functions can share the
-     * same hint discovery path:
-     *
-     * 1. [IrPluginContext.referenceProperties] — finds manual `val x by collectModulePreviews()`
-     *    properties, returns `property.getter`.
-     * 2. [IrPluginContext.referenceFunctions] (fallback) — finds auto-generated
-     *    `previewLabAutoProvider_*` functions emitted by `GenerateAutoPreviewExport` for
-     *    modules that don't write any sentinel call.
+     * Hints emitted by the current module (which would point back at our own previews and
+     * cause double-counting) are filtered out via the `IR_EXTERNAL_DECLARATION_STUB` origin
+     * marker — only externally-linked hints from upstream modules survive the filter.
      */
     private fun collectDependencyGetters(): List<IrSimpleFunction> {
         // KLIB cross-module aggregation requires the FIR-side hint generator (Kotlin 2.3.21+).

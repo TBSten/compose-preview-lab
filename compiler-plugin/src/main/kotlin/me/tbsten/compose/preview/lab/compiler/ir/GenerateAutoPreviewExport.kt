@@ -50,19 +50,16 @@ import org.jetbrains.kotlin.name.Name
  * The function name is computed by [computeAutoProviderName] from the Kotlin module name
  * hash so two modules sharing the same source-level package never collide on the same FQN.
  *
- * **Two paths share this generator**:
- *
- * - Kotlin 2.3.21+ (any platform): `PreviewLabHintFirGenerator` already emitted a
- *   `previewLabExport(value: <Marker>): Unit` hint, and `PreviewLabHintIrBodyFiller`
- *   attached `@PreviewExportHint(fqn = computeAutoProviderFqn(moduleFragment))` onto it.
- *   This generator only needs to materialize the matching function the FQN points at.
- * - Older Kotlin on JVM: no FIR generator runs, so this generator falls back to emitting
- *   the legacy `previewLabExport(value: PreviewExport): Unit` hint via
- *   [GeneratePreviewExportHint] alongside the provider function.
+ * **Discovery path (Kotlin 2.3.21+, all platforms)**: `PreviewLabHintFirGenerator` emits a
+ * per-module `previewLabExport(value: <Marker>): Unit` hint whose marker class id ends with
+ * the same hash this generator embeds in its provider function name. Downstream
+ * [PreviewListIrBuilder.collectDependencyGetters] reads the hint's parameter type, extracts
+ * the hash, and reconstructs this provider's FQN — no `@PreviewExportHint` annotation lookup
+ * is involved (and `PreviewLabHintIrBodyFiller` only injects an empty body, never an
+ * annotation).
  *
  * The provider function is registered with [IrPluginContext.metadataDeclarationRegistrar] so
- * downstream `referenceFunctions(...)` finds it via the fallback path in
- * [PreviewListIrBuilder.collectDependencyGetters].
+ * downstream `referenceFunctions(...)` finds it.
  */
 internal class GenerateAutoPreviewExport(
     private val pluginContext: IrPluginContext,
@@ -92,8 +89,9 @@ internal class GenerateAutoPreviewExport(
      * provider lands in `kotlin.Metadata(k=2)` and is discoverable via `referenceFunctions`).
      *
      * **Output**: Synthetic provider function as a new IrFile in
-     * `me.tbsten.compose.preview.lab.exports`. On older Kotlin, also a legacy
-     * `previewLabExport(PreviewExport)` hint pointing at the provider's FQN.
+     * `me.tbsten.compose.preview.lab.exports`. The matching hint function is emitted by
+     * [me.tbsten.compose.preview.lab.compiler.fir.PreviewLabHintFirGenerator] during the FIR
+     * pass, so this generator does not emit any hint itself.
      *
      * Defined as `operator fun invoke` so call sites read like `generator(sourceFile)` — the
      * class name `GenerateAutoPreviewExport` already carries the verb.
@@ -102,9 +100,9 @@ internal class GenerateAutoPreviewExport(
         if (previews.isEmpty()) return
 
         val providerFunctionName = computeAutoProviderName(moduleFragment)
-        val providerFqn = computeAutoProviderFqn(moduleFragment)
+        val moduleHash = providerFunctionName.asString().removePrefix(AutoProviderPrefix)
 
-        val syntheticFile = createSyntheticFile(providerFunctionName.asString(), sourceFile)
+        val syntheticFile = createSyntheticFile(moduleHash, sourceFile)
         val providerFunction = buildProviderFunction(providerFunctionName, syntheticFile)
 
         moduleFragment.addFile(
@@ -113,9 +111,8 @@ internal class GenerateAutoPreviewExport(
 
         pluginContext.metadataDeclarationRegistrar.registerFunctionAsMetadataVisible(providerFunction)
 
-        // **Kotlin 2.3.21+ only**: The FIR-side hint generator
-        // ([PreviewLabHintFirGenerator]) already emits a per-module hint that points at
-        // the provider's FQN. Older Kotlin versions are no longer supported.
+        // The matching `previewLabExport(<Marker>)` hint is emitted by
+        // [PreviewLabHintFirGenerator] in the FIR pass; no IR-side hint emission needed.
     }
 
     /**
