@@ -45,8 +45,8 @@ class PreviewLabIrGenerationExtension(private val config: PluginConfig) : IrGene
         // `GeneratePreviewExportHint` KDoc).
         if (previews.isNotEmpty() && !bodyFiller.didGenerateAnyHint && pluginContext.platform?.isJvm() == true) {
             val sourceFile = previews.first().function.file
-            AutoPreviewExportGenerator(pluginContext, moduleFragment, compatContext, previews, config)
-                .generate(sourceFile)
+            GenerateAutoPreviewExport(pluginContext, moduleFragment, compatContext, previews, config)
+                .invoke(sourceFile)
         }
     }
 

@@ -59,7 +59,7 @@ import org.jetbrains.kotlin.platform.jvm.isJvm
  * ```
  *
  * The module-name component (`libA` above) is what keeps two siblings sharing a base
- * package from colliding on the same provider FQN — see [generate] for the full rationale.
+ * package from colliding on the same provider FQN — see [invoke] for the full rationale.
  *
  * The provider function is registered with [IrPluginContext.metadataDeclarationRegistrar] so
  * downstream `referenceFunctions(...)` can find it via the fallback path in
@@ -67,8 +67,11 @@ import org.jetbrains.kotlin.platform.jvm.isJvm
  *
  * **JVM-only by design** — same constraint as [GeneratePreviewExportHint]; see its KDoc for
  * why KLIB-based platforms can't host the hint shape.
+ *
+ * Defined as `operator fun invoke` so call sites read like `generator(sourceFile)` — the class
+ * name `GenerateAutoPreviewExport` already carries the verb.
  */
-internal class AutoPreviewExportGenerator(
+internal class GenerateAutoPreviewExport(
     private val pluginContext: IrPluginContext,
     private val moduleFragment: IrModuleFragment,
     private val compatContext: CompatContext,
@@ -95,7 +98,7 @@ internal class AutoPreviewExportGenerator(
      * downstream `referenceFunctions(...)` lookups. Pass any source file that already carries a
      * `FirMetadataSource.File` — typically the file holding the first `@Preview` function.
      */
-    fun generate(sourceFile: IrFile) {
+    operator fun invoke(sourceFile: IrFile) {
         if (previews.isEmpty()) return
         if (pluginContext.platform?.isJvm() != true) return
 
