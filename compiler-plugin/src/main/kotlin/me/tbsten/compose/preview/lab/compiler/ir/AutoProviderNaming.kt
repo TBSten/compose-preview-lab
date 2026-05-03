@@ -2,6 +2,7 @@
 
 package me.tbsten.compose.preview.lab.compiler.ir
 
+import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.fir.PreviewLabFirBuiltIns
 import me.tbsten.compose.preview.lab.compiler.fir.computeModuleHash
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
@@ -13,8 +14,9 @@ import org.jetbrains.kotlin.name.Name
  * Computes the auto-provider function name for [moduleFragment] (the function emitted by
  * [GenerateAutoPreviewExport] that returns this module's `List<CollectedPreview>`).
  *
- * **Sample call**: `computeAutoProviderName(moduleFragment)` for a module whose Kotlin module
- * name is `:uiLib` (hashed → `a3k9z2x1`).
+ * **Sample call**: `computeAutoProviderName(moduleFragment, config)` for a module whose Kotlin
+ * module name is `:uiLib` and whose `config.projectRootPath` is `/work/my-app`
+ * (hashed → `a3k9z2x1`).
  *
  * **Result** (semantically): `Name.identifier("previewLabAutoProvider_a3k9z2x1")`.
  *
@@ -24,11 +26,17 @@ import org.jetbrains.kotlin.name.Name
  * function's parameter type alone — no `@PreviewExportHint` annotation lookup needed. See
  * [PreviewListIrBuilder.collectDependencyGetters] for the consumer-side derivation.
  *
- * Using SHA-256 (instead of `String.hashCode()`) is what makes the suffix collision-resistant
- * on user-controlled module names; see [computeModuleHash] for the reasoning.
+ * `config.projectRootPath` is folded in as the disambiguator so two unrelated published
+ * artifacts that happen to share a Kotlin module name still hash to different suffixes
+ * (each artifact was built by its own Gradle invocation with its own absolute project root).
+ * Within a single project, sibling modules share the project root but already have unique
+ * Kotlin module names by Gradle convention, so the disambiguator is redundant there.
  */
-internal fun computeAutoProviderName(moduleFragment: IrModuleFragment): Name {
-    val moduleNameHash = computeModuleHash(moduleFragment.name.asString())
+internal fun computeAutoProviderName(moduleFragment: IrModuleFragment, config: PluginConfig): Name {
+    val moduleNameHash = computeModuleHash(
+        moduleName = moduleFragment.name.asString(),
+        disambiguator = config.projectRootPath,
+    )
     return Name.identifier("$AutoProviderPrefix$moduleNameHash")
 }
 
@@ -39,8 +47,8 @@ internal fun computeAutoProviderName(moduleFragment: IrModuleFragment): Name {
  *
  * **Result**: `"me.tbsten.compose.preview.lab.exports.previewLabAutoProvider_a3k9z2x1"`.
  */
-internal fun computeAutoProviderFqn(moduleFragment: IrModuleFragment): String =
-    "${HINT_PACKAGE.asString()}.${computeAutoProviderName(moduleFragment).asString()}"
+internal fun computeAutoProviderFqn(moduleFragment: IrModuleFragment, config: PluginConfig): String =
+    "${HINT_PACKAGE.asString()}.${computeAutoProviderName(moduleFragment, config).asString()}"
 
 internal val HINT_PACKAGE: FqName = PreviewLabFirBuiltIns.HINT_PACKAGE
 

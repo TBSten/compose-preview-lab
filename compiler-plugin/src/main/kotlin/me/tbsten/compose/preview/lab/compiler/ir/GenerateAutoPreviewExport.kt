@@ -97,7 +97,7 @@ internal class GenerateAutoPreviewExport(
      * class name `GenerateAutoPreviewExport` already carries the verb.
      */
     operator fun invoke(sourceFile: IrFile) {
-        val providerFunctionName = computeAutoProviderName(moduleFragment)
+        val providerFunctionName = computeAutoProviderName(moduleFragment, config)
         val moduleHash = providerFunctionName.asString().removePrefix(AutoProviderPrefix)
 
         val syntheticFile = createSyntheticFile(moduleHash, sourceFile)
