@@ -10,6 +10,7 @@ public final class me/tbsten/compose/preview/lab/compiler/compat/k230/CompatCont
 	public fun irGet (Lorg/jetbrains/kotlin/ir/builders/IrBuilderWithScope;Lorg/jetbrains/kotlin/ir/declarations/IrValueDeclaration;)Lorg/jetbrains/kotlin/ir/expressions/IrGetValue;
 	public fun irString (Lorg/jetbrains/kotlin/ir/builders/IrBuilderWithScope;Ljava/lang/String;)Lorg/jetbrains/kotlin/ir/expressions/IrExpression;
 	public fun isFirFunction (Lorg/jetbrains/kotlin/fir/declarations/FirDeclaration;)Z
+	public fun supportsKlibCrossModuleHint ()Z
 	public fun transformModuleFragment (Lorg/jetbrains/kotlin/ir/declarations/IrModuleFragment;Ljava/lang/Object;)V
 }
 

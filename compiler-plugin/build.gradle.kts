@@ -54,6 +54,7 @@ dependencies {
     add(embedded.name, projects.compilerPlugin.compatK222)
     add(embedded.name, projects.compilerPlugin.compatK2220)
     add(embedded.name, projects.compilerPlugin.compatK230)
+    add(embedded.name, projects.compilerPlugin.compatK2321)
     add(embedded.name, projects.compilerPlugin.compatK240Beta2)
 
     compileOnly("org.jetbrains.kotlin:kotlin-compiler-embeddable:$compilerPluginBaselineKotlin")

@@ -108,6 +108,10 @@ public class CompatContextImpl : CompatContext {
         moduleFragment.transform(transformer as IrElementTransformerVoid, null)
     }
 
+    // Kotlin 2.3.0–2.3.20: KT-82395 (JS/Wasm IC × top-level decl gen) is still open, so the
+    // FIR-based hint generator cannot run safely. The 2.3.21 patch (compat-k2321) flips this on.
+    override fun supportsKlibCrossModuleHint(): Boolean = false
+
     public class Factory : CompatContext.Factory {
         override val minVersion: String = "2.3.0"
         override fun create(): CompatContext = CompatContextImpl()

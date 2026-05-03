@@ -8,6 +8,7 @@ import me.tbsten.compose.preview.lab.compiler.compat.getAnnotationCompat
 import me.tbsten.compose.preview.lab.compiler.compat.hasAnnotationCompat
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.IrConst
@@ -22,7 +23,10 @@ import org.jetbrains.kotlin.platform.jvm.isJvm
  * Collects every @Preview function in the module and injects them at the
  * `collectModulePreviews()` / `collectAllModulePreviews()` call sites.
  */
-class PreviewLabIrGenerationExtension(private val config: PluginConfig) : IrGenerationExtension {
+class PreviewLabIrGenerationExtension(
+    private val config: PluginConfig,
+    private val messageCollector: MessageCollector = MessageCollector.NONE,
+) : IrGenerationExtension {
 
     companion object {
         private val CMP_PREVIEW_FQ = FqName("org.jetbrains.compose.ui.tooling.preview.Preview")
@@ -33,7 +37,8 @@ class PreviewLabIrGenerationExtension(private val config: PluginConfig) : IrGene
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
         val previews = collectPreviews(moduleFragment)
         val compatContext = CompatContext.load()
-        val bodyFiller = PreviewLabIrBodyFiller(pluginContext, config, moduleFragment, previews, compatContext)
+        val bodyFiller =
+            PreviewLabIrBodyFiller(pluginContext, config, moduleFragment, previews, compatContext, messageCollector)
         compatContext.transformModuleFragment(moduleFragment, bodyFiller)
 
         // Fall back to auto-hint generation when the module has `@Preview` functions but no

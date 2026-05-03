@@ -7,6 +7,11 @@
 #   that landed in 2.1.20; older versions (2.0.x / 2.1.0–2.1.10) cannot load the
 #   plugin and are intentionally not supported.
 #
+#   Note: `collectAllModulePreviews()` requires Kotlin 2.3.21+ for KLIB-safe cross-module
+#   aggregation. Tests exercising this API (tagged with "KlibCrossModuleHint") are skipped
+#   for Kotlin < 2.3.21 in CI, but compat modules for older versions are retained so
+#   existing builds using `collectModulePreviews()` continue to work.
+#
 # To add a new version:
 #   1. Append a line below.
 #   2. Verify locally with `./scripts/compiler-plugin-test.sh <new-version>`.

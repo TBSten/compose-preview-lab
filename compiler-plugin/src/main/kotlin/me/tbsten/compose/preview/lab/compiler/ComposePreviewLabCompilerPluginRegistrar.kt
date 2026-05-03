@@ -4,8 +4,10 @@ import me.tbsten.compose.preview.lab.compiler.compat.registerExtensionCompat
 import me.tbsten.compose.preview.lab.compiler.fir.PreviewLabFirExtensionRegistrar
 import me.tbsten.compose.preview.lab.compiler.ir.PreviewLabIrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
+import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
+import org.jetbrains.kotlin.config.CommonConfigurationKeys
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrarAdapter
 
@@ -30,6 +32,8 @@ class ComposePreviewLabCompilerPluginRegistrar : CompilerPluginRegistrar() {
      */
     override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
         val config = PluginConfig.from(configuration)
+        val messageCollector = configuration.get(CommonConfigurationKeys.MESSAGE_COLLECTOR_KEY)
+            ?: MessageCollector.NONE
         // The parent class of the FirExtensionRegistrarAdapter / IrGenerationExtension companions
         // changed between Kotlin 2.3 and 2.4, so resolve `registerExtension(...)` reflectively.
         registerExtensionCompat(
@@ -38,7 +42,7 @@ class ComposePreviewLabCompilerPluginRegistrar : CompilerPluginRegistrar() {
         )
         registerExtensionCompat(
             IrGenerationExtension.Companion,
-            PreviewLabIrGenerationExtension(config),
+            PreviewLabIrGenerationExtension(config, messageCollector),
         )
     }
 }

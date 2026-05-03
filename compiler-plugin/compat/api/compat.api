@@ -10,6 +10,7 @@ public abstract interface class me/tbsten/compose/preview/lab/compiler/compat/Co
 	public abstract fun irGet (Lorg/jetbrains/kotlin/ir/builders/IrBuilderWithScope;Lorg/jetbrains/kotlin/ir/declarations/IrValueDeclaration;)Lorg/jetbrains/kotlin/ir/expressions/IrGetValue;
 	public abstract fun irString (Lorg/jetbrains/kotlin/ir/builders/IrBuilderWithScope;Ljava/lang/String;)Lorg/jetbrains/kotlin/ir/expressions/IrExpression;
 	public abstract fun isFirFunction (Lorg/jetbrains/kotlin/fir/declarations/FirDeclaration;)Z
+	public abstract fun supportsKlibCrossModuleHint ()Z
 	public abstract fun transformModuleFragment (Lorg/jetbrains/kotlin/ir/declarations/IrModuleFragment;Ljava/lang/Object;)V
 }
 
