@@ -28,6 +28,15 @@ open class CompilerPluginJsTestBase {
 
     private val testKotlinVersion: String = System.getProperty("test.kotlin.version") ?: "2.3.21"
     private val testLanguageVersion: String = testKotlinVersion.split(".").take(2).joinToString(".")
+
+    // Mirror `CompilerPluginTestBase.needsCompatibilityFlags`. The plugin / test classes are
+    // compiled against the baseline Kotlin (2.3.x), so when the smoke-test runner swaps in an
+    // older `kotlin-compiler-embeddable` (e.g. `-Ptest.kotlin=2.1.20`) the FIR
+    // `FirIncompatibleClassExpressionChecker` rejects the metadata as "Incompatible classes were
+    // found in dependencies". The skip-check flags suppress that. JS-side compilation uses the
+    // same `parseCommandLineArguments` path so the flags work identically here.
+    private val needsCompatibilityFlags: Boolean = testKotlinVersion.startsWith("2.1")
+
     private val stdlibJsKlib: java.io.File = System.getProperty("test.kotlin.stdlib.js.klib")
         ?.let { java.io.File(it) }
         ?: error(
@@ -110,11 +119,24 @@ open class CompilerPluginJsTestBase {
         this.languageVersion = testLanguageVersion
         this.kotlinStdLibJsJar = stdlibJsKlib
 
+        val extraKotlincArgs = mutableListOf<String>()
         if (extraLibraries.isNotEmpty()) {
             // Override `args.libraries` set inside jsArgs() — kctfork's parseCommandLineArguments
             // call runs after, so this takes precedence.
-            val combined = (listOf(stdlibJsKlib) + extraLibraries).joinToString(":") { it.absolutePath }
-            this.kotlincArguments = this.kotlincArguments + listOf("-libraries", combined)
+            //
+            // Use `File.pathSeparator` (`:` on Unix, `;` on Windows) to keep the test runnable
+            // on Windows CI runners; a hard-coded `:` would treat `C:\path1;C:\path2` as a single
+            // malformed entry.
+            val combined = (listOf(stdlibJsKlib) + extraLibraries).joinToString(java.io.File.pathSeparator) {
+                it.absolutePath
+            }
+            extraKotlincArgs += listOf("-libraries", combined)
+        }
+        if (needsCompatibilityFlags) {
+            extraKotlincArgs += listOf("-Xskip-prerelease-check", "-Xskip-metadata-version-check")
+        }
+        if (extraKotlincArgs.isNotEmpty()) {
+            this.kotlincArguments = this.kotlincArguments + extraKotlincArgs
         }
     }.compile()
 
