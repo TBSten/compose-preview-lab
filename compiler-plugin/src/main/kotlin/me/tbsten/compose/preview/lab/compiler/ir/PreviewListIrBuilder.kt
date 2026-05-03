@@ -202,7 +202,7 @@ internal class PreviewListIrBuilder(
      *   is the property's getter (resolved from the hint's `@PreviewExportHint(fqn = ...)` via
      *   [IrPluginContext.referenceProperties]).
      * - **Auto-hint** (no sentinel call written by the user): the [IrSimpleFunction] is a
-     *   stand-alone provider function emitted by `AutoPreviewExportGenerator`, resolved via
+     *   stand-alone provider function emitted by `GenerateAutoPreviewExport`, resolved via
      *   [IrPluginContext.referenceFunctions] when property resolution comes back empty.
      *
      * Caching ensures the (potentially expensive) hint-function classpath walk in
@@ -304,7 +304,7 @@ internal class PreviewListIrBuilder(
      * `referenceFunctions(...)` lookup returns every overload across the classpath as expected.
      *
      * Hints emitted by the current module (because `PreviewLabIrBodyFiller` and
-     * `AutoPreviewExportGenerator` run hint generation in the same IR pass) are filtered out so
+     * `GenerateAutoPreviewExport` run hint generation in the same IR pass) are filtered out so
      * the aggregator does not double-count this module's own previews.
      *
      * Each hint's `@PreviewExportHint(fqn = ...)` is resolved in two stages so both manual
@@ -314,7 +314,7 @@ internal class PreviewListIrBuilder(
      * 1. [IrPluginContext.referenceProperties] — finds manual `val x by collectModulePreviews()`
      *    properties, returns `property.getter`.
      * 2. [IrPluginContext.referenceFunctions] (fallback) — finds auto-generated
-     *    `previewLabAutoProvider_*` functions emitted by `AutoPreviewExportGenerator` for
+     *    `previewLabAutoProvider_*` functions emitted by `GenerateAutoPreviewExport` for
      *    modules that don't write any sentinel call.
      */
     private fun collectDependencyGetters(): List<IrSimpleFunction> {

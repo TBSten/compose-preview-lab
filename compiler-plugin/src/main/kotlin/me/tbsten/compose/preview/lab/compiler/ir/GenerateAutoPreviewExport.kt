@@ -107,25 +107,25 @@ internal class GenerateAutoPreviewExport(
 
         // Provider function names need to be unique across every dependency that takes the
         // auto-export path on a given classpath. Two siblings sharing a base package
-        // (e.g. `package com.example` in both `:libA` and `:libB`) used to collide here:
-        // both modules emitted `previewLabAutoProvider_com_example`, and the downstream
-        // `referenceFunctions(...).firstOrNull()` lookup in `PreviewListIrBuilder` resolved
-        // only one — silently dropping the other module's previews.
+        // (e.g. `package com.example` in both `:libA` and `:libB`) would collide without
+        // the module-name component. Additionally, `sanitizeIdentifier()` strips punctuation,
+        // so module names like `extension-navigation` and `extensionnavigation` would map to
+        // the same identifier — compounding the collision risk.
         //
-        // The Kotlin module name (typically the Gradle module / KMP source-set identifier) is
-        // unique per dependency JAR, so combining it with the first preview's package gives a
-        // collision-resistant name without needing build-system cooperation.
+        // Hash the module name to ensure uniqueness even when sanitization drops characters.
+        // The Kotlin module name is unique per dependency JAR, and hashing preserves that
+        // invariant while keeping the FQN short (8-char hash is sufficient for classpath scope).
         val firstPreviewFile = previews.first().function.file
         val firstPreviewPkg = firstPreviewFile.packageFqName.asString()
         val sanitizedPkg = firstPreviewPkg.replace('.', '_').ifEmpty { DEFAULT_PACKAGE_TOKEN }
-        val sanitizedModule = sanitizeIdentifier(moduleFragment.name.asString())
+        val moduleNameHash = moduleFragment.name.asString().hashCode().toString(36).takeLast(8)
         val providerFunctionName = Name.identifier(
-            "previewLabAutoProvider_${sanitizedModule}_$sanitizedPkg",
+            "previewLabAutoProvider_${moduleNameHash}_$sanitizedPkg",
         )
         val providerFqn = "${HINT_PACKAGE.asString()}.${providerFunctionName.asString()}"
 
         val syntheticFile = createSyntheticFile(
-            "${sanitizedModule}_$sanitizedPkg",
+            "${moduleNameHash}_$sanitizedPkg",
             sourceFile,
         )
         val providerFunction = buildProviderFunction(providerFunctionName, syntheticFile)
@@ -219,26 +219,11 @@ internal class GenerateAutoPreviewExport(
         ).also { it.metadata = FirMetadataSource.File(firFile) }
     }
 
-    /**
-     * Strips characters that aren't legal inside a Kotlin identifier.
-     *
-     * `IrModuleFragment.name.asString()` typically returns angle-bracketed names like
-     * `<libA>` or `<my-app:commonMain>`; strip everything except letter/digit/underscore so
-     * the result can be embedded directly in a Kotlin function name. Falls back to
-     * [FALLBACK_IDENTIFIER] if the input has no identifier-safe characters at all
-     * (extremely unusual, but keeps the generated FQN syntactically valid).
-     */
-    private fun sanitizeIdentifier(raw: String): String =
-        raw.filter { it.isLetterOrDigit() || it == '_' }.ifEmpty { FALLBACK_IDENTIFIER }
-
     companion object {
         // Reuse the same package as hint functions so downstream
         // `collectDependencyGetters()` can resolve provider functions through its existing
         // `referenceFunctions(CallableId(...))` fallback path.
         val HINT_PACKAGE: FqName = GeneratePreviewExportHint.HINT_PACKAGE
-
-        /** Fallback identifier used when [sanitizeIdentifier] would otherwise return empty. */
-        private val FALLBACK_IDENTIFIER = "module"
 
         /** Token substituted for the package-derived component when the source file has no package. */
         private val DEFAULT_PACKAGE_TOKEN = "default"
