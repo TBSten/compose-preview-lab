@@ -39,12 +39,13 @@ public fun collectModulePreviews(): PreviewExport = PreviewExport(
 
 /**
  * Provides a delegate that collects `@Preview` functions from **this module and every
- * dependency module that exposes a `collectModulePreviews()` property**.
+ * dependency module that has the Compose Preview Lab Gradle plugin applied**.
  *
  * The compiler plugin replaces the body at compile time so that the returned [PreviewExport]
- * holds a concatenation of this module's previews and the previews of all properties in
- * dependency modules that are delegated via [PreviewExport]. Discovery is fully automatic —
- * downstream modules do not need any Gradle configuration.
+ * holds a concatenation of this module's previews and the previews of every dependency module
+ * on the classpath. Discovery is fully automatic — applying the Gradle plugin in a dependency
+ * module is enough; **`collectModulePreviews()` does not need to be declared** there. Modules
+ * that do declare it explicitly continue to work unchanged.
  *
  * **JVM-only auto-discovery.** Cross-module aggregation only works on JVM targets. On KLIB-based
  * platforms (JS / Wasm JS / iOS) this returns just **this module's previews** — the compiler
@@ -58,10 +59,13 @@ public fun collectModulePreviews(): PreviewExport = PreviewExport(
  * val appPreviews by collectAllModulePreviews()
  * ```
  *
- * Example — dependency module that exports its previews:
+ * Example — dependency module just applies the Gradle plugin; no `Previews.kt` file required:
  * ```kotlin
- * // uiLib/src/commonMain/kotlin/Previews.kt
- * val uiLibPreviews by collectModulePreviews()
+ * // uiLib/build.gradle.kts
+ * plugins {
+ *     id("me.tbsten.compose.preview.lab")
+ * }
+ * // any @Preview function in uiLib is now picked up by upstream collectAllModulePreviews()
  * ```
  *
  * @return a [PreviewExport] delegate wrapping the aggregated preview list; the body is replaced by the compiler plugin

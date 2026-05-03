@@ -61,6 +61,7 @@ open class CompilerPluginTestBase {
         pluginRegistrars: List<CompilerPluginRegistrar> = listOf(ComposePreviewLabCompilerPluginRegistrar()),
         pluginOptions: List<PluginOption> = emptyList(),
         extraClasspaths: List<java.io.File> = emptyList(),
+        moduleName: String? = null,
     ): JvmCompilationResult = KotlinCompilation().apply {
         this.sources = previewAnnotationStubs + collectPreviewsStubs + sources.toList()
         this.compilerPluginRegistrars = pluginRegistrars
@@ -69,6 +70,9 @@ open class CompilerPluginTestBase {
         this.inheritClassPath = true
         if (extraClasspaths.isNotEmpty()) {
             this.classpaths = this.classpaths + extraClasspaths
+        }
+        if (moduleName != null) {
+            this.moduleName = moduleName
         }
         // Use the compiler's own major.minor as languageVersion to avoid
         // FirIncompatibleClassExpressionChecker crashing in Kotlin 2.1.x when
