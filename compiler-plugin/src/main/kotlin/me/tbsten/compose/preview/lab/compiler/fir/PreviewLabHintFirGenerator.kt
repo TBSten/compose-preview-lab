@@ -56,16 +56,18 @@ import org.jetbrains.kotlin.name.Name
  *
  * **Current scope (bug-017 step 2)**:
  *
- *  - One hint emitted per compilation unit, targeting the deterministic auto-provider FQN
- *    that [me.tbsten.compose.preview.lab.compiler.ir.GenerateAutoPreviewExport] computes from
- *    `(session.moduleData.name)` during the IR pass. Both phases compute the FQN identically
- *    so they always agree.
- *  - The hint is emitted unconditionally (regardless of whether the module actually contains
- *    `@Preview` functions). Modules without previews end up with a dangling marker class
- *    whose `targetFqn` does not resolve to anything during the downstream
- *    `referenceFunctions(...)` lookup; the lookup quietly skips it. This avoids walking the
- *    `predicateBasedProvider` for `@Preview` annotations from inside the cache loader, which
- *    triggers a Kotlin 2.3.21 frontend resolution cycle.
+ *  - One hint emitted per compilation unit. The marker class id is derived from a hash of
+ *    `session.moduleData.name` for cross-module uniqueness; no `targetFqn` is computed yet.
+ *    Step 3 will add per-property hints (one per `collectModulePreviews()` /
+ *    `collectAllModulePreviews()` delegate found via `predicateBasedProvider`) and an entry
+ *    for the auto-export path that mirrors the FQN
+ *    [me.tbsten.compose.preview.lab.compiler.ir.GenerateAutoPreviewExport] computes during
+ *    the IR pass.
+ *  - Hints are emitted unconditionally (regardless of whether the module actually contains
+ *    `@Preview` functions). This is intentional: walking `predicateBasedProvider` for
+ *    `@Preview` annotations from inside the cache loader triggers a Kotlin 2.3.21 frontend
+ *    resolution cycle, and the empty-module marker is harmless because step 2's hints are
+ *    never read by anything yet.
  *  - Manual `val x by collectModulePreviews()` properties continue to be exported via the
  *    legacy IR-based [me.tbsten.compose.preview.lab.compiler.ir.GeneratePreviewExportHint] on
  *    JVM. The two hint families coexist because their value-parameter types differ
@@ -87,12 +89,18 @@ import org.jetbrains.kotlin.name.Name
 internal class PreviewLabHintFirGenerator(session: FirSession) : FirDeclarationGenerationExtension(session) {
 
     /**
-     * One hint to emit, paired with the marker class id that disambiguates it from sibling hints.
+     * A hint to emit, identified by the marker class id that disambiguates it from sibling
+     * hints from other modules.
      *
-     * `targetFqn` is the FQN that downstream `collectAllModulePreviews()` will resolve via
-     * `referenceFunctions(callableId)` after reading the hint's `@PreviewExportHint(fqn = ...)`.
+     * Step 2 produces exactly one entry per compilation unit. Step 3+ will extend this to
+     * one entry per manual `collectModulePreviews()` / `collectAllModulePreviews()` property
+     * found via `predicateBasedProvider`, plus one for the auto-export path. At that point
+     * each entry will also carry the `targetFqn` that gets attached as
+     * `@PreviewExportHint(fqn = ...)` on the hint function — but that wiring is intentionally
+     * absent in Step 2: the FIR-emitted hints exist only to validate the KLIB pipeline, not
+     * to be discovered downstream yet.
      */
-    private data class HintEntry(val targetFqn: String, val markerClassId: ClassId)
+    private data class HintEntry(val markerClassId: ClassId)
 
     private val hintEntriesCache: FirCache<Unit, List<HintEntry>, Nothing?> =
         session.firCachesFactory.createCache { _, _ -> computeHintEntries() }
@@ -105,17 +113,23 @@ internal class PreviewLabHintFirGenerator(session: FirSession) : FirDeclarationG
     }
 
     /**
-     * Synthesizes one [HintEntry] per compilation unit pointing at the deterministic
-     * auto-provider FQN. The marker class id is derived from the FQN so it stays unique
-     * across modules.
+     * Synthesizes one [HintEntry] per compilation unit. The marker class id is derived from
+     * a hash of `session.moduleData.name` so it is unique across modules on the same
+     * classpath, which is the only invariant the Step 2 KLIB pipeline cares about.
+     *
+     * The Step 3 follow-up will add the matching `targetFqn` (the auto-provider FQN that
+     * `GenerateAutoPreviewExport` computes during the IR pass) and attach it as
+     * `@PreviewExportHint(fqn = ...)` so downstream `collectAllModulePreviews()` can resolve
+     * the corresponding function. The FQN computation lives entirely in IR today; pre-computing
+     * it here would just duplicate that logic with no consumer to read it.
      */
     private fun computeHintEntries(): List<HintEntry> {
-        val moduleNameHash = session.moduleData.name.asString().hashCode().toUInt()
-            .toString(36).padStart(8, '0').takeLast(8)
-        val providerFnName = "previewLabAutoProvider_${moduleNameHash}_$AutoProviderDefaultPackageToken"
-        val providerFqn = "${PreviewLabFirBuiltIns.HINT_PACKAGE.asString()}.$providerFnName"
-        val markerClassId = computeMarkerClassId(providerFqn)
-        return listOf(HintEntry(providerFqn, markerClassId))
+        val moduleNameHash = session.moduleData.name.asString().hashCode().toString(36).takeLast(8)
+        val markerClassId = ClassId(
+            PreviewLabFirBuiltIns.HINT_PACKAGE,
+            Name.identifier("$MarkerClassPrefix$moduleNameHash"),
+        )
+        return listOf(HintEntry(markerClassId))
     }
 
     override fun getTopLevelClassIds(): Set<ClassId> = hintEntriesCache.getValue(Unit, null).map { it.markerClassId }.toSet()
@@ -158,7 +172,8 @@ internal class PreviewLabHintFirGenerator(session: FirSession) : FirDeclarationG
 
     override fun generateConstructors(context: MemberGenerationContext): List<FirConstructorSymbol> = emptyList()
 
-    override fun getCallableNamesForClass(classSymbol: FirClassSymbol<*>, context: MemberGenerationContext,): Set<Name> = emptySet()
+    override fun getCallableNamesForClass(classSymbol: FirClassSymbol<*>, context: MemberGenerationContext,): Set<Name> =
+        emptySet()
 
     /**
      * Generates one `previewLabExport(value: <Marker>): Unit` hint per [HintEntry].
@@ -187,7 +202,7 @@ internal class PreviewLabHintFirGenerator(session: FirSession) : FirDeclarationG
         if (callableId != PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID) return emptyList()
         val entries = hintEntriesCache.getValue(Unit, null)
         if (entries.isEmpty()) return emptyList()
-        return entries.sortedBy { it.targetFqn }.map { entry ->
+        return entries.sortedBy { it.markerClassId.asString() }.map { entry ->
             val markerSymbol = session.symbolProvider
                 .getClassLikeSymbolByClassId(entry.markerClassId) as FirClassSymbol<*>
             val fileName = hintFileName(entry.markerClassId)
@@ -210,27 +225,7 @@ internal class PreviewLabHintFirGenerator(session: FirSession) : FirDeclarationG
     override fun hasPackage(packageFqName: FqName): Boolean = packageFqName == PreviewLabFirBuiltIns.HINT_PACKAGE
 
     private companion object Companion {
-        const val AutoProviderDefaultPackageToken = "default"
         const val MarkerClassPrefix = "PreviewLabExportMarker_"
-
-        /**
-         * Computes the marker class id for a hint targeting [targetFqn].
-         *
-         * Naming: `me.tbsten.compose.preview.lab.exports.PreviewLabExportMarker_<sanitized>_<hash8>`
-         * - `<sanitized>`: [targetFqn] with non-alphanumeric characters replaced by `_`,
-         *   truncated to keep file names manageable.
-         * - `<hash8>`: 8-char base-36 hash of [targetFqn] for cross-module collision avoidance.
-         */
-        fun computeMarkerClassId(targetFqn: String): ClassId {
-            val sanitized = targetFqn
-                .replace(Regex("[^A-Za-z0-9]+"), "_")
-                .trim('_')
-                .take(40)
-                .ifEmpty { "Root" }
-            val hash = targetFqn.hashCode().toUInt().toString(36).padStart(8, '0').takeLast(8)
-            val simpleName = "$MarkerClassPrefix${sanitized}_$hash"
-            return ClassId(PreviewLabFirBuiltIns.HINT_PACKAGE, Name.identifier(simpleName))
-        }
 
         fun hintFileName(markerClassId: ClassId): String = "PreviewLabExport_${markerClassId.shortClassName.asString()}.kt"
     }
