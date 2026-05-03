@@ -3,6 +3,7 @@
 package me.tbsten.compose.preview.lab.compiler.ir
 
 import me.tbsten.compose.preview.lab.compiler.fir.PreviewLabFirBuiltIns
+import me.tbsten.compose.preview.lab.compiler.fir.computeModuleHash
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.name.FqName
@@ -17,22 +18,17 @@ import org.jetbrains.kotlin.name.Name
  *
  * **Result** (semantically): `Name.identifier("previewLabAutoProvider_a3k9z2x1")`.
  *
- * The base-36 hash of `moduleFragment.name.asString()` (up to 8 characters; `Int.hashCode`
- * stringified in base-36 is at most 7 characters before sign stripping) matches the suffix
- * the FIR-side marker class uses (`PreviewLabExportMarker_<hash>`), so a downstream consumer
- * can derive this provider's FQN from the hint function's parameter type alone — no
- * `@PreviewExportHint` annotation lookup needed. See
+ * The hash is computed via the shared [computeModuleHash] (SHA-256 → 8 base-36 chars), which
+ * matches the suffix the FIR-side marker class uses (`PreviewLabExportMarker_<hash>`). That
+ * shared identity is what lets a downstream consumer derive this provider's FQN from the hint
+ * function's parameter type alone — no `@PreviewExportHint` annotation lookup needed. See
  * [PreviewListIrBuilder.collectDependencyGetters] for the consumer-side derivation.
  *
- * The hash uses the Kotlin module name (unique per dependency JAR) so two sibling modules
- * sharing a base package never collide on the same FQN.
+ * Using SHA-256 (instead of `String.hashCode()`) is what makes the suffix collision-resistant
+ * on user-controlled module names; see [computeModuleHash] for the reasoning.
  */
 internal fun computeAutoProviderName(moduleFragment: IrModuleFragment): Name {
-    // `hashCode().toString(36)` can produce a leading `-` for negative hashes; strip the
-    // sign with `and Int.MAX_VALUE` so the suffix is always a valid Kotlin identifier
-    // tail. Without this, `Name.identifier(...)` throws on the consumer side when
-    // re-parsing the FQN out of `@PreviewExportHint(fqn = ...)`.
-    val moduleNameHash = (moduleFragment.name.asString().hashCode() and Int.MAX_VALUE).toString(36).takeLast(8)
+    val moduleNameHash = computeModuleHash(moduleFragment.name.asString())
     return Name.identifier("$AutoProviderPrefix$moduleNameHash")
 }
 
