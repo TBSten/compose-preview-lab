@@ -67,9 +67,6 @@ import org.jetbrains.kotlin.platform.jvm.isJvm
  *
  * **JVM-only by design** — same constraint as [GeneratePreviewExportHint]; see its KDoc for
  * why KLIB-based platforms can't host the hint shape.
- *
- * Defined as `operator fun invoke` so call sites read like `generator(sourceFile)` — the class
- * name `GenerateAutoPreviewExport` already carries the verb.
  */
 internal class GenerateAutoPreviewExport(
     private val pluginContext: IrPluginContext,
@@ -93,10 +90,16 @@ internal class GenerateAutoPreviewExport(
     /**
      * Emits the auto provider + hint pair into [moduleFragment].
      *
+     * **Input**: Module containing `@Preview` functions but no explicit `collectModulePreviews()` sentinel.
+     * **Output**: Synthetic provider function + hint function (as two IrFiles).
+     *
      * [sourceFile] is required for the synthetic file's `FirMetadataSource.File` wiring so the
      * provider function ends up in `kotlin.Metadata(k=2)` (file facade) and is visible to
      * downstream `referenceFunctions(...)` lookups. Pass any source file that already carries a
      * `FirMetadataSource.File` — typically the file holding the first `@Preview` function.
+     *
+     * Defined as `operator fun invoke` so call sites read like `generator(sourceFile)` — the class
+     * name `GenerateAutoPreviewExport` already carries the verb.
      */
     operator fun invoke(sourceFile: IrFile) {
         if (previews.isEmpty()) return
