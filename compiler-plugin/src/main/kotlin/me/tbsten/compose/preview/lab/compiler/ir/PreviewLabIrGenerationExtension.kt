@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.ir.expressions.IrConst
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.util.file
 import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.platform.jvm.isJvm
 
 /**
  * IR generation extension for Compose Preview Lab.
@@ -32,8 +33,20 @@ class PreviewLabIrGenerationExtension(private val config: PluginConfig) : IrGene
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
         val previews = collectPreviews(moduleFragment)
         val compatContext = CompatContext.load()
-        PreviewLabIrBodyFiller(pluginContext, config, moduleFragment, previews, compatContext).also {
-            compatContext.transformModuleFragment(moduleFragment, it)
+        val bodyFiller = PreviewLabIrBodyFiller(pluginContext, config, moduleFragment, previews, compatContext)
+        compatContext.transformModuleFragment(moduleFragment, bodyFiller)
+
+        // Fall back to auto-hint generation when the module has `@Preview` functions but no
+        // user-written `collectModulePreviews()` / `collectAllModulePreviews()` sentinel.
+        // Without this, downstream `collectAllModulePreviews()` callers cannot discover this
+        // module's previews (no hint emitted by `PreviewLabIrBodyFiller`).
+        //
+        // JVM-only — the hint mechanism doesn't work on KLIB platforms (see
+        // `GeneratePreviewExportHint` KDoc).
+        if (previews.isNotEmpty() && !bodyFiller.didGenerateAnyHint && pluginContext.platform?.isJvm() == true) {
+            val sourceFile = previews.first().function.file
+            AutoPreviewExportGenerator(pluginContext, moduleFragment, compatContext, previews, config)
+                .generate(sourceFile)
         }
     }
 

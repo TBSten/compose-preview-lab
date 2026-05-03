@@ -151,6 +151,253 @@ class CrossModuleAggregationTest :
                 )
             }
 
+            test("collectModulePreviews() なしで @Preview だけ持つ依存モジュールも自動収集される") {
+                // 子モジュールが `val xxxPreviews by collectModulePreviews()` を一切書かなくても、
+                // compiler plugin が auto provider function + hint を自動生成し、
+                // app の `collectAllModulePreviews()` から発見される。
+                val libResult = base.compile(
+                    SourceFile.kotlin(
+                        "UiLib.kt",
+                        """
+                    package uilib
+
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun UiLibPreview1() {}
+
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun UiLibPreview2() {}
+
+                    // collectModulePreviews() は意図的に書かない
+                    """,
+                    ),
+                )
+                libResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
+
+                val appResult = base.compile(
+                    SourceFile.kotlin(
+                        "App.kt",
+                        """
+                    package app
+
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun AppPreview() {}
+                    """,
+                    ),
+                    base.collectAllModulePreviewsEntry("appPreviews"),
+                    extraClasspaths = listOf(libResult.outputDirectory),
+                )
+                appResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
+
+                val previews = appResult.loadCollectedPreviews(propertyName = "appPreviews")
+                val ids = previews.map { p -> p::class.members.find { it.name == "id" }!!.call(p) as String }
+                ids shouldContainExactlyInAnyOrder listOf(
+                    "app.AppPreview",
+                    "uilib.UiLibPreview1",
+                    "uilib.UiLibPreview2",
+                )
+            }
+
+            test("default package (package 宣言なし) のモジュールでも auto-collect が動く") {
+                // package 宣言を持たないファイルでも provider 関数名生成パスが正常に動作すること。
+                // (sanitizedPkg は `DEFAULT_PACKAGE_TOKEN` にフォールバックする)
+                val libResult = base.compile(
+                    SourceFile.kotlin(
+                        "RootPkgLib.kt",
+                        """
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun RootPreview() {}
+                    """,
+                    ),
+                    moduleName = "rootPkgLib",
+                )
+                libResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
+
+                val appResult = base.compile(
+                    SourceFile.kotlin(
+                        "App.kt",
+                        """
+                    package app
+
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun AppPreview() {}
+                    """,
+                    ),
+                    base.collectAllModulePreviewsEntry("appPreviews"),
+                    extraClasspaths = listOf(libResult.outputDirectory),
+                    moduleName = "app",
+                )
+                appResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
+
+                val previews = appResult.loadCollectedPreviews(propertyName = "appPreviews")
+                val ids = previews.map { p -> p::class.members.find { it.name == "id" }!!.call(p) as String }
+                ids shouldContainExactlyInAnyOrder listOf("app.AppPreview", "RootPreview")
+            }
+
+            test("同一モジュール内の複数パッケージにまたがる @Preview がすべて auto-collect される") {
+                // provider 関数名は最初の preview の package から派生するが、
+                // body に含まれる preview は package を問わず全部であることを保証する。
+                val libResult = base.compile(
+                    SourceFile.kotlin(
+                        "FeatureA.kt",
+                        """
+                    package multilib.featureA
+
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun FeatureAPreview() {}
+                    """,
+                    ),
+                    SourceFile.kotlin(
+                        "FeatureB.kt",
+                        """
+                    package multilib.featureB
+
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun FeatureBPreview() {}
+                    """,
+                    ),
+                    moduleName = "multiPkgLib",
+                )
+                libResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
+
+                val appResult = base.compile(
+                    SourceFile.kotlin(
+                        "App.kt",
+                        """
+                    package app
+
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun AppPreview() {}
+                    """,
+                    ),
+                    base.collectAllModulePreviewsEntry("appPreviews"),
+                    extraClasspaths = listOf(libResult.outputDirectory),
+                    moduleName = "app",
+                )
+                appResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
+
+                val previews = appResult.loadCollectedPreviews(propertyName = "appPreviews")
+                val ids = previews.map { p -> p::class.members.find { it.name == "id" }!!.call(p) as String }
+                ids shouldContainExactlyInAnyOrder listOf(
+                    "app.AppPreview",
+                    "multilib.featureA.FeatureAPreview",
+                    "multilib.featureB.FeatureBPreview",
+                )
+            }
+
+            test("同じパッケージを共有する 2 つの auto-collect 依存モジュールが両方とも収集される") {
+                // 複数の依存モジュールが同じパッケージ名を使うケース
+                // (例: マルチモジュールプロジェクトでモジュール間で base package を共有する)。
+                // provider function 名がパッケージのみから派生していると名前衝突して
+                // 片方の preview がサイレントに脱落する回帰を防ぐ。
+                val libAResult = base.compile(
+                    SourceFile.kotlin(
+                        "LibA.kt",
+                        """
+                    package shared
+
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun LibAPreview() {}
+                    """,
+                    ),
+                    moduleName = "libA",
+                )
+                libAResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
+
+                val libBResult = base.compile(
+                    SourceFile.kotlin(
+                        "LibB.kt",
+                        """
+                    package shared
+
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun LibBPreview() {}
+                    """,
+                    ),
+                    moduleName = "libB",
+                )
+                libBResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
+
+                val appResult = base.compile(
+                    SourceFile.kotlin(
+                        "App.kt",
+                        """
+                    package app
+
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun AppPreview() {}
+                    """,
+                    ),
+                    base.collectAllModulePreviewsEntry("appPreviews"),
+                    extraClasspaths = listOf(libAResult.outputDirectory, libBResult.outputDirectory),
+                    moduleName = "app",
+                )
+                appResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
+
+                val previews = appResult.loadCollectedPreviews(propertyName = "appPreviews")
+                val ids = previews.map { p -> p::class.members.find { it.name == "id" }!!.call(p) as String }
+                ids shouldContainExactlyInAnyOrder listOf(
+                    "app.AppPreview",
+                    "shared.LibAPreview",
+                    "shared.LibBPreview",
+                )
+            }
+
+            test("auto-collect モジュールと manual collectModulePreviews() モジュールが混在しても重複しない") {
+                // Stage 1: manualLib — 明示的に collectModulePreviews() を書く
+                val manualLibResult = base.compile(
+                    SourceFile.kotlin(
+                        "ManualLib.kt",
+                        """
+                    package manuallib
+
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun ManualLibPreview() {}
+
+                    val manualLibPreviews by me.tbsten.compose.preview.lab.collectModulePreviews()
+                    """,
+                    ),
+                )
+                manualLibResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
+
+                // Stage 2: autoLib — collectModulePreviews() を書かない (auto-hint 経路)
+                val autoLibResult = base.compile(
+                    SourceFile.kotlin(
+                        "AutoLib.kt",
+                        """
+                    package autolib
+
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun AutoLibPreview() {}
+                    """,
+                    ),
+                )
+                autoLibResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
+
+                // Stage 3: app — 両モジュールを classpath に追加
+                val appResult = base.compile(
+                    SourceFile.kotlin(
+                        "App.kt",
+                        """
+                    package app
+
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun AppPreview() {}
+                    """,
+                    ),
+                    base.collectAllModulePreviewsEntry("appPreviews"),
+                    extraClasspaths = listOf(manualLibResult.outputDirectory, autoLibResult.outputDirectory),
+                )
+                appResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
+
+                val previews = appResult.loadCollectedPreviews(propertyName = "appPreviews")
+                val ids = previews.map { p -> p::class.members.find { it.name == "id" }!!.call(p) as String }
+                ids shouldContainExactlyInAnyOrder listOf(
+                    "app.AppPreview",
+                    "manuallib.ManualLibPreview",
+                    "autolib.AutoLibPreview",
+                )
+            }
+
             test("3 段の入れ子: app(all) → ui(all) → core(single) で全 preview が集約され重複しない") {
                 // Stage 1: core — collectModulePreviews()
                 val coreResult = base.compile(
