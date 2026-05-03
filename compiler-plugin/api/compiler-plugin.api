@@ -54,7 +54,8 @@ public final class me/tbsten/compose/preview/lab/compiler/fir/PreviewLabFirStatu
 
 public final class me/tbsten/compose/preview/lab/compiler/ir/PreviewLabIrGenerationExtension : org/jetbrains/kotlin/backend/common/extensions/IrGenerationExtension {
 	public static final field Companion Lme/tbsten/compose/preview/lab/compiler/ir/PreviewLabIrGenerationExtension$Companion;
-	public fun <init> (Lme/tbsten/compose/preview/lab/compiler/PluginConfig;)V
+	public fun <init> (Lme/tbsten/compose/preview/lab/compiler/PluginConfig;Lorg/jetbrains/kotlin/cli/common/messages/MessageCollector;)V
+	public synthetic fun <init> (Lme/tbsten/compose/preview/lab/compiler/PluginConfig;Lorg/jetbrains/kotlin/cli/common/messages/MessageCollector;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun generate (Lorg/jetbrains/kotlin/ir/declarations/IrModuleFragment;Lorg/jetbrains/kotlin/backend/common/extensions/IrPluginContext;)V
 	public fun getPlatformIntrinsicExtension (Lorg/jetbrains/kotlin/backend/common/LoweringContext;)Lorg/jetbrains/kotlin/backend/common/extensions/IrIntrinsicExtension;
 	public fun getShouldAlsoBeAppliedInKaptStubGenerationMode ()Z

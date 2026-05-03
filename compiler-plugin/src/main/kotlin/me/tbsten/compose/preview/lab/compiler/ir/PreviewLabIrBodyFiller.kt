@@ -6,6 +6,9 @@ import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
+import org.jetbrains.kotlin.cli.common.messages.CompilerMessageLocation
+import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
+import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.declarations.IrField
@@ -30,6 +33,7 @@ internal class PreviewLabIrBodyFiller(
     private val moduleFragment: org.jetbrains.kotlin.ir.declarations.IrModuleFragment,
     previews: List<PreviewFunctionInfo>,
     private val compatContext: CompatContext,
+    private val messageCollector: MessageCollector = MessageCollector.NONE,
 ) : IrElementTransformerVoid() {
 
     private val collectModulePreviewsFq = FqName("me.tbsten.compose.preview.lab.collectModulePreviews")
@@ -125,6 +129,16 @@ internal class PreviewLabIrBodyFiller(
     private fun replaceCollectPreviewsProperty(property: IrProperty) {
         val delegateField = property.backingField ?: return
         val isAll = isCollectAllCall(delegateField)
+
+        // Version gate: cross-module aggregation requires Kotlin 2.3.21+ across every platform
+        // (the FIR-based KLIB-safe hint generator depends on KT-82395 being fixed). When the
+        // current compiler is older we report a structured error here so users get a clear
+        // upgrade path rather than a silent half-broken aggregation.
+        if (isAll && !compatContext.supportsKlibCrossModuleHint()) {
+            reportUnsupportedCollectAllError(property)
+            return
+        }
+
         val builder = DeclarationIrBuilder(pluginContext, property.symbol)
 
         // The synthetic lambda needs an IrFunction as its parent.
@@ -178,6 +192,39 @@ internal class PreviewLabIrBodyFiller(
             generateHint(fqn, sourceFile)
             didGenerateAnyHint = true
         }
+    }
+
+    /**
+     * Reports the Kotlin-version-gate error for `collectAllModulePreviews()`.
+     *
+     * **Input** (semantically): the property's IR node for
+     * ```kotlin
+     * val previews by collectAllModulePreviews()
+     * ```
+     * compiled by a Kotlin compiler older than 2.3.21.
+     *
+     * **Output**: a `CompilerMessageSeverity.ERROR` reported through [messageCollector]
+     * pointing at the property declaration, which causes the build to fail with a clear
+     * upgrade-or-downgrade message. The IR is left untouched (the property keeps its
+     * sentinel `collectAllModulePreviews()` initializer and the property's getter will
+     * throw at runtime if the build somehow proceeds).
+     */
+    private fun reportUnsupportedCollectAllError(property: IrProperty) {
+        val sourceFile = property.parent as? org.jetbrains.kotlin.ir.declarations.IrFile
+        val location = sourceFile?.fileEntry?.let { entry ->
+            val offset = property.startOffset.takeIf { it >= 0 } ?: return@let null
+            val line = entry.getLineNumber(offset) + 1
+            val column = entry.getColumnNumber(offset) + 1
+            CompilerMessageLocation.create(entry.name, line, column, null)
+        }
+        messageCollector.report(
+            CompilerMessageSeverity.ERROR,
+            "[ComposePreviewLab] collectAllModulePreviews() requires Kotlin 2.3.21 or later " +
+                "for cross-module preview aggregation. " +
+                "Either upgrade Kotlin to 2.3.21+, or use collectModulePreviews() for " +
+                "single-module collection.",
+            location,
+        )
     }
 
     /**
