@@ -18,7 +18,6 @@ import org.jetbrains.kotlin.ir.util.file
 import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.platform.jvm.isJvm
 
 /**
  * Transforms the IR tree to replace preview-collection property initializers
@@ -42,10 +41,6 @@ internal class PreviewLabIrBodyFiller(
 
     private val irBuilder = PreviewListIrBuilder(pluginContext, previews, config, compatContext)
 
-    private val generateHint by lazy {
-        GeneratePreviewExportHint(pluginContext, moduleFragment, compatContext)
-    }
-
     /**
      * Tracks whether at least one hint function was emitted by this transformer.
      *
@@ -53,6 +48,9 @@ internal class PreviewLabIrBodyFiller(
      * auto-hint generation: if no `collectModulePreviews()` / `collectAllModulePreviews()`
      * sentinel exists in the module, no hint will have been emitted here, and the
      * module's `@Preview` functions need to be exported via the auto path.
+     *
+     * **Kotlin 2.3.21+**: Hints are emitted by [PreviewLabHintFirGenerator], so this is always false.
+     * The hint discovery happens via [PreviewListIrBuilder.collectDependencyGetters].
      */
     var didGenerateAnyHint: Boolean = false
         private set
@@ -169,35 +167,11 @@ internal class PreviewLabIrBodyFiller(
             expression = previewExportExpr,
         )
 
-        // Generate a hint function so downstream `collectAllModulePreviews()` can discover
-        // this property without any Gradle configuration.
-        //
-        // **Kotlin 2.3.21+**: skipped here. `PreviewLabHintFirGenerator` already emits a single
-        // per-module hint that points at the auto-provider function, which returns the same
-        // `List<CollectedPreview>` this property holds — emitting an additional per-property
-        // hint would just create duplicate work that `distinctPreviewsById` filters out anyway.
-        // **Older Kotlin (JVM only)**: emit the legacy `previewLabExport(PreviewExport)` hint.
-        // KLIB platforms compute IdSignature from `(name, parameter types)` only and would
-        // collide on it; on JVM the file-facade class disambiguates them.
-        //
-        // Hints cover both `collectModulePreviews()` and `collectAllModulePreviews()` properties.
-        // The latter ensures an intermediate module that re-aggregates its dependencies (e.g.
-        // `app(all) → ui(all) → core(single)`) can still be discovered. Duplicates from
-        // overlapping hint chains are filtered out in `buildConcatenatedPreviewsExpr` via
-        // `distinctPreviewsById`.
-        val sourceFile = property.parent as? org.jetbrains.kotlin.ir.declarations.IrFile
-        if (
-            property.isDelegated &&
-            sourceFile != null &&
-            !compatContext.supportsKlibCrossModuleHint() &&
-            pluginContext.platform?.isJvm() == true
-        ) {
-            val pkg = sourceFile.packageFqName.asString()
-            val propertyName = property.name.asString()
-            val fqn = if (pkg.isEmpty()) propertyName else "$pkg.$propertyName"
-            generateHint(fqn, sourceFile)
-            didGenerateAnyHint = true
-        }
+        // **Kotlin 2.3.21+ only**: `PreviewLabHintFirGenerator` emits a per-module hint that points
+        // at the auto-provider function or at the property FQN for manual sentinel properties.
+        // Cross-module aggregation requires Kotlin 2.3.21+ for the FIR-based marker class
+        // solution that avoids KLIB IdSignature collisions. Older Kotlin versions are no longer
+        // supported by this compiler plugin.
     }
 
     /**

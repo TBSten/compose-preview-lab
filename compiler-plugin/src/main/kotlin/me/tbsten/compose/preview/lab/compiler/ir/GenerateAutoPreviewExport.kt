@@ -113,14 +113,9 @@ internal class GenerateAutoPreviewExport(
 
         pluginContext.metadataDeclarationRegistrar.registerFunctionAsMetadataVisible(providerFunction)
 
-        // Legacy `previewLabExport(PreviewExport)` hint: only needed when the FIR-side hint
-        // generator did not run (Kotlin <2.3.21 fallback). When it did, `PreviewLabHintIrBodyFiller`
-        // attaches the `@PreviewExportHint(fqn = providerFqn)` onto the FIR-emitted hint and we
-        // skip emission here to avoid duplicate hints for the same provider.
-        if (!compatContext.supportsKlibCrossModuleHint()) {
-            GeneratePreviewExportHint(pluginContext, moduleFragment, compatContext)
-                .invoke(providerFqn, sourceFile)
-        }
+        // **Kotlin 2.3.21+ only**: The FIR-side hint generator
+        // ([PreviewLabHintFirGenerator]) already emits a per-module hint that points at
+        // the provider's FQN. Older Kotlin versions are no longer supported.
     }
 
     /**

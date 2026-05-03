@@ -326,7 +326,7 @@ internal class PreviewListIrBuilder(
         }
 
         val hintSymbols = pluginContext.referenceFunctions(
-            GeneratePreviewExportHint.HINT_FUNCTION_CALLABLE_ID,
+            HINT_FUNCTION_CALLABLE_ID,
         )
 
         return hintSymbols.mapNotNull { hintSymbol ->
@@ -343,27 +343,27 @@ internal class PreviewListIrBuilder(
             val regularParams = hintFunction.parameters.filter { it.kind == IrParameterKind.Regular }
             if (regularParams.size != 1) return@mapNotNull null
             val paramFqn = regularParams[0].type.classFqName
-            val isLegacyShape = paramFqn == GeneratePreviewExportHint.PREVIEW_EXPORT_FQN
+            val isLegacyShape = paramFqn == PREVIEW_EXPORT_FQN
             // FIR-emitted marker classes live directly in the hint package, named
             // `PreviewLabExportMarker_<hash>`. The hash matches the auto-provider function
             // suffix, so once we know the marker class id we can derive the provider FQN
             // without needing the `@PreviewExportHint` annotation — which is critical because
             // IR-attached annotations on FIR-generated functions don't always survive into
             // the consumer's `kotlin.Metadata`.
-            val isFirMarkerShape = paramFqn?.parent() == GeneratePreviewExportHint.HINT_PACKAGE &&
+            val isFirMarkerShape = paramFqn?.parent() == HINT_PACKAGE &&
                 paramFqn.shortName().asString().startsWith(MarkerClassPrefix)
             if (!isLegacyShape && !isFirMarkerShape) return@mapNotNull null
 
             val fqn: String = if (isFirMarkerShape) {
                 val hash = paramFqn!!.shortName().asString().removePrefix(MarkerClassPrefix)
-                "${GeneratePreviewExportHint.HINT_PACKAGE.asString()}.previewLabAutoProvider_$hash"
+                "${HINT_PACKAGE.asString()}.previewLabAutoProvider_$hash"
             } else {
                 // Legacy `previewLabExport(PreviewExport)` hint: target FQN comes from the
                 // `@PreviewExportHint(fqn = ...)` annotation that `GeneratePreviewExportHint`
                 // attaches at IR construction time (kotlin.Metadata captures it because the
                 // function itself is IR-generated).
                 val hintAnnotation = hintFunction.annotations.firstOrNull { ann ->
-                    ann.type.classFqName == GeneratePreviewExportHint.PREVIEW_EXPORT_HINT_FQN
+                    ann.type.classFqName == PREVIEW_EXPORT_HINT_FQN
                 } ?: return@mapNotNull null
                 (hintAnnotation.arguments.firstOrNull() as? IrConst)?.value as? String ?: return@mapNotNull null
             }
