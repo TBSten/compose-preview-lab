@@ -58,7 +58,9 @@ internal class PreviewLabHintEntries(private val session: FirSession) {
     fun get(): List<HintEntry> = cache.getValue(Unit, null)
 
     private fun compute(): List<HintEntry> {
-        val moduleNameHash = session.moduleData.name.asString().hashCode().toString(36).takeLast(8)
+        // SHA-256-based hash to avoid Java `String.hashCode()` collisions on user-controlled
+        // module names (e.g. `"Aa".hashCode() == "BB".hashCode()`); see [computeModuleHash].
+        val moduleNameHash = computeModuleHash(session.moduleData.name.asString())
         val markerClassId = ClassId(
             PreviewLabFirBuiltIns.HINT_PACKAGE,
             Name.identifier("$MarkerClassPrefix$moduleNameHash"),
