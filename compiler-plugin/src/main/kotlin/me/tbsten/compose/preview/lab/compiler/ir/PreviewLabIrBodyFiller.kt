@@ -172,21 +172,26 @@ internal class PreviewLabIrBodyFiller(
         // Generate a hint function so downstream `collectAllModulePreviews()` can discover
         // this property without any Gradle configuration.
         //
-        // **JVM-only**: all hints share the same `(previewLabExport, PreviewExport)` IR signature.
-        // On JVM the file-facade class disambiguates them at the bytecode level. KLIB-based
-        // platforms (JS / Wasm / iOS) compute IdSignature from `(name, parameter types)` only and
-        // would treat hints from different modules as duplicates at link time. Skipping emission
-        // on non-JVM keeps the build green; cross-module aggregation falls back to single-module
-        // there. See `GeneratePreviewExportHint` KDoc for the full rationale.
+        // **Kotlin 2.3.21+**: skipped here. `PreviewLabHintFirGenerator` already emits a single
+        // per-module hint that points at the auto-provider function, which returns the same
+        // `List<CollectedPreview>` this property holds — emitting an additional per-property
+        // hint would just create duplicate work that `distinctPreviewsById` filters out anyway.
+        // **Older Kotlin (JVM only)**: emit the legacy `previewLabExport(PreviewExport)` hint.
+        // KLIB platforms compute IdSignature from `(name, parameter types)` only and would
+        // collide on it; on JVM the file-facade class disambiguates them.
         //
-        // We emit hints for both `collectModulePreviews()` and `collectAllModulePreviews()`
-        // properties: the latter is needed so a downstream `collectAllModulePreviews()` can pick
-        // up an intermediate module that has already aggregated its own dependencies (e.g.
-        // `app(all) → ui(all) → core(single)` should yield app + ui + core previews).
-        // Duplicates that arise from overlapping hint chains are filtered out in
-        // `PreviewListIrBuilder.buildConcatenatedPreviewsExpr` via `distinctPreviewsById`.
+        // Hints cover both `collectModulePreviews()` and `collectAllModulePreviews()` properties.
+        // The latter ensures an intermediate module that re-aggregates its dependencies (e.g.
+        // `app(all) → ui(all) → core(single)`) can still be discovered. Duplicates from
+        // overlapping hint chains are filtered out in `buildConcatenatedPreviewsExpr` via
+        // `distinctPreviewsById`.
         val sourceFile = property.parent as? org.jetbrains.kotlin.ir.declarations.IrFile
-        if (property.isDelegated && sourceFile != null && pluginContext.platform?.isJvm() == true) {
+        if (
+            property.isDelegated &&
+            sourceFile != null &&
+            !compatContext.supportsKlibCrossModuleHint() &&
+            pluginContext.platform?.isJvm() == true
+        ) {
             val pkg = sourceFile.packageFqName.asString()
             val propertyName = property.name.asString()
             val fqn = if (pkg.isEmpty()) propertyName else "$pkg.$propertyName"

@@ -318,7 +318,12 @@ internal class PreviewListIrBuilder(
      *    modules that don't write any sentinel call.
      */
     private fun collectDependencyGetters(): List<IrSimpleFunction> {
-        if (pluginContext.platform?.isJvm() != true) return emptyList()
+        // KLIB cross-module aggregation requires the FIR-side hint generator (Kotlin 2.3.21+).
+        // On older Kotlin we fall back to JVM-only legacy hints, where file-facade classes
+        // disambiguate `previewLabExport(PreviewExport)` overloads at the bytecode level.
+        if (!compatContext.supportsKlibCrossModuleHint() && pluginContext.platform?.isJvm() != true) {
+            return emptyList()
+        }
 
         val hintSymbols = pluginContext.referenceFunctions(
             GeneratePreviewExportHint.HINT_FUNCTION_CALLABLE_ID,
@@ -332,16 +337,36 @@ internal class PreviewListIrBuilder(
             // `IR_EXTERNAL_DECLARATION_STUB` origin marker.
             if (hintFunction.origin != IrDeclarationOriginCompat.IR_EXTERNAL_DECLARATION_STUB) return@mapNotNull null
 
-            // Validate parameter shape: must take a single Regular parameter of type PreviewExport.
+            // Validate parameter shape: a single Regular parameter whose type is either:
+            // - the legacy `PreviewExport` (Kotlin <2.3.21 JVM hints)
+            // - any per-module marker class in the hint package (Kotlin 2.3.21+ FIR hints)
             val regularParams = hintFunction.parameters.filter { it.kind == IrParameterKind.Regular }
             if (regularParams.size != 1) return@mapNotNull null
-            if (regularParams[0].type.classFqName != GeneratePreviewExportHint.PREVIEW_EXPORT_FQN) return@mapNotNull null
+            val paramFqn = regularParams[0].type.classFqName
+            val isLegacyShape = paramFqn == GeneratePreviewExportHint.PREVIEW_EXPORT_FQN
+            // FIR-emitted marker classes live directly in the hint package, named
+            // `PreviewLabExportMarker_<hash>`. The hash matches the auto-provider function
+            // suffix, so once we know the marker class id we can derive the provider FQN
+            // without needing the `@PreviewExportHint` annotation — which is critical because
+            // IR-attached annotations on FIR-generated functions don't always survive into
+            // the consumer's `kotlin.Metadata`.
+            val isFirMarkerShape = paramFqn?.parent() == GeneratePreviewExportHint.HINT_PACKAGE &&
+                paramFqn.shortName().asString().startsWith(MarkerClassPrefix)
+            if (!isLegacyShape && !isFirMarkerShape) return@mapNotNull null
 
-            // Decode the target FQN from the @PreviewExportHint annotation.
-            val hintAnnotation = hintFunction.annotations.firstOrNull { ann ->
-                ann.type.classFqName == GeneratePreviewExportHint.PREVIEW_EXPORT_HINT_FQN
-            } ?: return@mapNotNull null
-            val fqn = (hintAnnotation.arguments.firstOrNull() as? IrConst)?.value as? String ?: return@mapNotNull null
+            val fqn: String = if (isFirMarkerShape) {
+                val hash = paramFqn!!.shortName().asString().removePrefix(MarkerClassPrefix)
+                "${GeneratePreviewExportHint.HINT_PACKAGE.asString()}.previewLabAutoProvider_$hash"
+            } else {
+                // Legacy `previewLabExport(PreviewExport)` hint: target FQN comes from the
+                // `@PreviewExportHint(fqn = ...)` annotation that `GeneratePreviewExportHint`
+                // attaches at IR construction time (kotlin.Metadata captures it because the
+                // function itself is IR-generated).
+                val hintAnnotation = hintFunction.annotations.firstOrNull { ann ->
+                    ann.type.classFqName == GeneratePreviewExportHint.PREVIEW_EXPORT_HINT_FQN
+                } ?: return@mapNotNull null
+                (hintAnnotation.arguments.firstOrNull() as? IrConst)?.value as? String ?: return@mapNotNull null
+            }
 
             // Default-package targets (no dots in FQN) resolve to FqName.ROOT.
             val lastDot = fqn.lastIndexOf('.')
@@ -357,5 +382,13 @@ internal class PreviewListIrBuilder(
             // Auto-generated provider function (no source-level property) → return the function itself.
             pluginContext.referenceFunctions(callableId).firstOrNull()?.owner
         }
+    }
+
+    private companion object {
+        // Mirrors `PreviewLabHintFirGenerator.MarkerClassPrefix`. We deliberately keep the
+        // constant duplicated here rather than reaching into the FIR module — `PreviewListIrBuilder`
+        // is in the IR layer and consuming a FIR-only constant would create a one-way coupling
+        // we don't have anywhere else.
+        const val MarkerClassPrefix = "PreviewLabExportMarker_"
     }
 }

@@ -47,21 +47,33 @@ class PreviewLabIrGenerationExtension(
         // here. Skipping this step makes the JVM backend assert with
         // `Function has no body: CONSTRUCTOR GENERATED[Keys.PreviewLabHintMarker]`.
         if (compatContext.supportsKlibCrossModuleHint()) {
-            compatContext.transformModuleFragment(moduleFragment, PreviewLabHintIrBodyFiller(pluginContext))
+            compatContext.transformModuleFragment(
+                moduleFragment,
+                PreviewLabHintIrBodyFiller(pluginContext),
+            )
         }
 
-        // Fall back to auto-hint generation when the module has `@Preview` functions but no
-        // user-written `collectModulePreviews()` / `collectAllModulePreviews()` sentinel.
-        // Without this, downstream `collectAllModulePreviews()` callers cannot discover this
-        // module's previews (no hint emitted by `PreviewLabIrBodyFiller`).
+        // Emit the auto-provider function this module's hint points at.
         //
-        // JVM-only — the hint mechanism doesn't work on KLIB platforms (see
-        // `GeneratePreviewExportHint` KDoc).
-        if (previews.isNotEmpty() && !bodyFiller.didGenerateAnyHint && pluginContext.platform?.isJvm() == true) {
-            val sourceFile = previews.firstOrNull()?.function?.file
-                ?: error("[ComposePreviewLab] No source file found for previews")
-            GenerateAutoPreviewExport(pluginContext, moduleFragment, compatContext, previews, config)
-                .invoke(sourceFile)
+        // - Kotlin 2.3.21+ (any platform): `PreviewLabHintFirGenerator` already emitted the
+        //   per-module hint + marker class, and `PreviewLabHintIrBodyFiller` (above) attached
+        //   `@PreviewExportHint(fqn = computeAutoProviderFqn(...))`. We just need to materialize
+        //   the matching provider function here. Skipping when `previews` is empty is fine: the
+        //   FIR-emitted hint still exists but its `fqn` points at a non-existent function, and
+        //   downstream `referenceProperties/Functions` simply returns nothing — no link error.
+        // - Older Kotlin (JVM only via the existing version gate): no FIR hint runs, so we fall
+        //   back to the legacy IR-based path that emits both the provider and a
+        //   `previewLabExport(PreviewExport)` hint via `GeneratePreviewExportHint`. Conditioned
+        //   on `!bodyFiller.didGenerateAnyHint` so we don't double-emit when the module already
+        //   has a `collectModulePreviews()` delegate.
+        if (previews.isNotEmpty()) {
+            val sourceFile = previews.first().function.file
+            val generator = GenerateAutoPreviewExport(pluginContext, moduleFragment, compatContext, previews, config)
+            if (compatContext.supportsKlibCrossModuleHint()) {
+                generator.invoke(sourceFile)
+            } else if (!bodyFiller.didGenerateAnyHint && pluginContext.platform?.isJvm() == true) {
+                generator.invoke(sourceFile)
+            }
         }
     }
 
