@@ -15,8 +15,10 @@ import org.jetbrains.kotlin.name.Name
  * Pattern adapted from Metro `MetroFirBuiltIns`
  * (https://github.com/ZacSweers/metro/blob/main/compiler/src/main/kotlin/dev/zacsweers/metro/compiler/fir/MetroFirBuiltIns.kt).
  *
- * Registered via `FirExtensionRegistrarContext.+::PreviewLabFirBuiltIns` so other FIR
- * extensions can resolve it via `session.previewLabFirBuiltIns`.
+ * Will be registered via `FirExtensionRegistrarContext.+::PreviewLabFirBuiltIns` once the
+ * FIR-side hint generator is wired up (planned in a follow-up PR), so other FIR extensions
+ * can resolve it via `session.previewLabFirBuiltIns`. Currently this class only holds shared
+ * identifiers and is referenced from the IR side.
  */
 internal class PreviewLabFirBuiltIns(session: FirSession, val config: PluginConfig,) : FirExtensionSessionComponent(session) {
 

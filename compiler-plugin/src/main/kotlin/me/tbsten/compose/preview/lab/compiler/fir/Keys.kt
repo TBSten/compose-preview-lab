@@ -5,8 +5,10 @@ import org.jetbrains.kotlin.GeneratedDeclarationKey
 /**
  * Keys identifying declarations synthesized by the Compose Preview Lab compiler plugin.
  *
- * Used by the FIR declaration generator to mark generated symbols and by the IR body
- * filler to recognize them when injecting body expressions.
+ * Will be used by the FIR declaration generator (planned in a follow-up PR) to mark
+ * generated symbols, and by the IR body filler to recognize them when injecting body
+ * expressions. Currently introduced as part of the foundational scaffolding for the
+ * FIR-based hint generation pipeline.
  *
  * Pattern adapted from Metro
  * (https://github.com/ZacSweers/metro/blob/main/compiler/src/main/kotlin/dev/zacsweers/metro/compiler/fir/Keys.kt).

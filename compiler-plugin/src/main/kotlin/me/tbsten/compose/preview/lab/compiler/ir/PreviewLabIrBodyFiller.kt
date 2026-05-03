@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.declarations.IrField
 import org.jetbrains.kotlin.ir.declarations.IrProperty
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
+import org.jetbrains.kotlin.ir.util.file
 import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 import org.jetbrains.kotlin.name.FqName
@@ -210,8 +211,7 @@ internal class PreviewLabIrBodyFiller(
      * throw at runtime if the build somehow proceeds).
      */
     private fun reportUnsupportedCollectAllError(property: IrProperty) {
-        val sourceFile = property.parent as? org.jetbrains.kotlin.ir.declarations.IrFile
-        val location = sourceFile?.fileEntry?.let { entry ->
+        val location = runCatching { property.file }.getOrNull()?.fileEntry?.let { entry ->
             val offset = property.startOffset.takeIf { it >= 0 } ?: return@let null
             val line = entry.getLineNumber(offset) + 1
             val column = entry.getColumnNumber(offset) + 1
