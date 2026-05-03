@@ -125,5 +125,94 @@ class CrossModuleAggregationKlibTest :
                 )
                 app.assertOk()
             }
+
+            test("E-2: 同名 collectModulePreviews property を持つ依存 2 つでも IdSignature 衝突しない") {
+                // 両モジュールが同じプロパティ名 `sharedPreviews` を持つ。旧 IR-based hint scheme では
+                // `previewLabExport(PreviewExport)` の IdSignature が両モジュールで一致して link 失敗するが、
+                // 新 FIR-based path では module-name-hash で marker class を unique 化しているので両方 link 成功する。
+                val lib1 = base.compileJs(
+                    SourceFile.kotlin(
+                        "Lib1.kt",
+                        """
+                    package lib1
+
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun Lib1Preview() {}
+
+                    val sharedPreviews by me.tbsten.compose.preview.lab.collectModulePreviews()
+                    """,
+                    ),
+                    moduleName = "preview-lab-js-collide-lib1",
+                )
+                lib1.assertOk()
+
+                val lib2 = base.compileJs(
+                    SourceFile.kotlin(
+                        "Lib2.kt",
+                        """
+                    package lib2
+
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun Lib2Preview() {}
+
+                    val sharedPreviews by me.tbsten.compose.preview.lab.collectModulePreviews()
+                    """,
+                    ),
+                    moduleName = "preview-lab-js-collide-lib2",
+                )
+                lib2.assertOk()
+
+                val app = base.compileJs(
+                    SourceFile.kotlin(
+                        "App.kt",
+                        """
+                    package app
+
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun AppPreview() {}
+                    """,
+                    ),
+                    base.collectAllModulePreviewsEntry("appPreviews"),
+                    extraLibraries = lib1.klibFiles() + lib2.klibFiles(),
+                    moduleName = "preview-lab-js-collide-app",
+                )
+                app.assertOk()
+            }
+
+            test("E-4: @Preview を持たない依存モジュールが含まれていても link が壊れない") {
+                // empty な依存 KLIB (preview / property どちらも無し)。FIR generator は依然として
+                // marker + hint を出すので、auto-provider が空リストを返す形で生成される必要がある。
+                // (P1 fix を入れる前は previews.isEmpty() で provider 生成を skip していたため、
+                // 下流の `referenceFunctions` が空になり aggregation 自体は動くが、provider 不在の
+                // hint が残る奇妙な状態になっていた。)
+                val emptyLib = base.compileJs(
+                    SourceFile.kotlin(
+                        "EmptyLib.kt",
+                        """
+                    package emptylib
+
+                    fun nonPreviewFunction(): Int = 42
+                    """,
+                    ),
+                    moduleName = "preview-lab-js-empty-lib",
+                )
+                emptyLib.assertOk()
+
+                val app = base.compileJs(
+                    SourceFile.kotlin(
+                        "App.kt",
+                        """
+                    package app
+
+                    @org.jetbrains.compose.ui.tooling.preview.Preview
+                    fun AppPreview() {}
+                    """,
+                    ),
+                    base.collectAllModulePreviewsEntry("appPreviews"),
+                    extraLibraries = emptyLib.klibFiles(),
+                    moduleName = "preview-lab-js-empty-app",
+                )
+                app.assertOk()
+            }
         },
     )
