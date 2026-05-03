@@ -41,6 +41,15 @@ class PreviewLabIrGenerationExtension(
             PreviewLabIrBodyFiller(pluginContext, config, moduleFragment, previews, compatContext, messageCollector)
         compatContext.transformModuleFragment(moduleFragment, bodyFiller)
 
+        // Fill bodies into the marker classes / hint functions emitted by
+        // `PreviewLabHintFirGenerator`. Bodies cannot be generated at the FIR layer, so the FIR
+        // generator hands the IR pass empty constructors / functions and we materialize them
+        // here. Skipping this step makes the JVM backend assert with
+        // `Function has no body: CONSTRUCTOR GENERATED[Keys.PreviewLabHintMarker]`.
+        if (compatContext.supportsKlibCrossModuleHint()) {
+            compatContext.transformModuleFragment(moduleFragment, PreviewLabHintIrBodyFiller(pluginContext))
+        }
+
         // Fall back to auto-hint generation when the module has `@Preview` functions but no
         // user-written `collectModulePreviews()` / `collectAllModulePreviews()` sentinel.
         // Without this, downstream `collectAllModulePreviews()` callers cannot discover this
