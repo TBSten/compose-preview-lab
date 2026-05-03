@@ -97,8 +97,6 @@ internal class GenerateAutoPreviewExport(
      * class name `GenerateAutoPreviewExport` already carries the verb.
      */
     operator fun invoke(sourceFile: IrFile) {
-        if (previews.isEmpty()) return
-
         val providerFunctionName = computeAutoProviderName(moduleFragment)
         val moduleHash = providerFunctionName.asString().removePrefix(AutoProviderPrefix)
 
@@ -128,10 +126,20 @@ internal class GenerateAutoPreviewExport(
      * }
      * ```
      *
-     * The list contains every `@Preview` function discovered in the module. Unlike the manual
-     * `val x by collectModulePreviews()` path, the result is *not* wrapped in `lazy { ... }` or
-     * `PreviewExport(...)` — the function returns `List<CollectedPreview>` directly so
-     * [PreviewListIrBuilder.collectDependencyGetters] can call it as a plain getter.
+     * The list contains every `@Preview` function discovered in the module **plus** the
+     * concatenated previews from any dependency module hints visible on this module's
+     * classpath, deduped by id. Unlike the manual `val x by collectModulePreviews()` path, the
+     * result is *not* wrapped in `lazy { ... }` or `PreviewExport(...)` — the function returns
+     * `List<CollectedPreview>` directly so [PreviewListIrBuilder.collectDependencyGetters] can
+     * call it as a plain getter.
+     *
+     * **Why include transitive deps**: an `:app` → `:ui` (impl) → `:core` chain only exposes
+     * `:ui` on `:app`'s compile classpath, so `:app`'s discovery cannot find `:core`'s hint
+     * directly. Folding `:core`'s previews into `:ui`'s auto-provider at `:ui`'s compile time
+     * (when `:core` *is* on `:ui`'s classpath) carries them forward to `:app` through `:ui`'s
+     * single visible hint. `distinctPreviewsById` (inside [PreviewListIrBuilder.buildConcatenatedPreviewsExpr])
+     * keeps the list dedup-safe even when the same preview reaches `:app` through multiple
+     * paths.
      */
     private fun buildProviderFunction(providerFunctionName: Name, parent: IrFile,): IrSimpleFunction {
         val providerFunction = pluginContext.irFactory.buildFun {
@@ -146,7 +154,8 @@ internal class GenerateAutoPreviewExport(
 
         val previewListBuilder = PreviewListIrBuilder(pluginContext, previews, config, compatContext)
         val builder = DeclarationIrBuilder(pluginContext, providerFunction.symbol)
-        val listExpr = previewListBuilder.buildPreviewsListExpr(builder, providerFunction)
+        val thisModulePreviews = previewListBuilder.buildPreviewsListExpr(builder, providerFunction)
+        val listExpr = previewListBuilder.buildConcatenatedPreviewsExpr(builder, thisModulePreviews)
         providerFunction.body = builder.irBlockBody {
             +irReturn(listExpr)
         }

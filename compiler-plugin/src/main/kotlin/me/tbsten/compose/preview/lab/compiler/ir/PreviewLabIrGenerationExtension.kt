@@ -9,6 +9,7 @@ import me.tbsten.compose.preview.lab.compiler.compat.hasAnnotationCompat
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
+import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.IrConst
@@ -55,25 +56,32 @@ class PreviewLabIrGenerationExtension(
 
         // Emit the auto-provider function this module's hint points at.
         //
-        // - Kotlin 2.3.21+ (any platform): `PreviewLabHintFirGenerator` already emitted the
-        //   per-module hint + marker class, both sharing the same module-name hash. The
-        //   downstream consumer reconstructs this provider's FQN from the marker class id
-        //   alone (no `@PreviewExportHint` annotation involved), so we just materialize the
-        //   matching provider function here. Skipping when `previews` is empty is fine: the
-        //   FIR-emitted hint still exists, but `referenceFunctions` simply returns nothing
-        //   for the missing provider name — no link error.
+        // - Kotlin 2.3.21+ (any platform): `PreviewLabHintFirGenerator` always emitted a
+        //   per-module hint + marker class for this compilation unit, so we always materialize
+        //   the matching provider here — even when the module has no local `@Preview`s.
+        //   Re-export-only modules (only `val x by collectAllModulePreviews()`) and pure-leaf
+        //   modules need the provider to exist so downstream consumers can resolve the hint
+        //   target; the provider body uses [PreviewListIrBuilder.buildConcatenatedPreviewsExpr]
+        //   which folds in transitive dependency previews (and dedups them) so an
+        //   `:app → :ui (impl) → :core` chain still surfaces `:core`'s previews to `:app`
+        //   through `:ui`'s single visible auto-provider.
         // - Older Kotlin (JVM only via the existing version gate): no FIR hint runs, so we
         //   fall back to the legacy IR-based path that emits both the provider and a
-        //   `previewLabExport(PreviewExport)` hint via `GeneratePreviewExportHint`.
-        //   Conditioned on `!bodyFiller.didGenerateAnyHint` so we don't double-emit when the
-        //   module already has a `collectModulePreviews()` delegate.
-        if (previews.isNotEmpty()) {
-            val sourceFile = previews.first().function.file
+        //   `previewLabExport(PreviewExport)` hint via `GeneratePreviewExportHint`. That path
+        //   still requires at least one `@Preview` and is gated on `!bodyFiller.didGenerateAnyHint`
+        //   so we don't double-emit when the module already has a `collectModulePreviews()`
+        //   delegate.
+        val sourceFileForProvider: IrFile? = previews.firstOrNull()?.function?.file
+            ?: moduleFragment.files.firstOrNull()
+        if (sourceFileForProvider != null) {
             val generator = GenerateAutoPreviewExport(pluginContext, moduleFragment, compatContext, previews, config)
             if (compatContext.supportsKlibCrossModuleHint()) {
-                generator.invoke(sourceFile)
-            } else if (!bodyFiller.didGenerateAnyHint && pluginContext.platform?.isJvm() == true) {
-                generator.invoke(sourceFile)
+                generator.invoke(sourceFileForProvider)
+            } else if (previews.isNotEmpty() &&
+                !bodyFiller.didGenerateAnyHint &&
+                pluginContext.platform?.isJvm() == true
+            ) {
+                generator.invoke(sourceFileForProvider)
             }
         }
     }
