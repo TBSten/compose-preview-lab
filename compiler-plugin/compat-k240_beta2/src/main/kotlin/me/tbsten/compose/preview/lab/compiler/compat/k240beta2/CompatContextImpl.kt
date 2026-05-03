@@ -72,6 +72,9 @@ public class CompatContextImpl : CompatContext by K230CompatContextImpl() {
         function.annotations = function.annotations + annotation
     }
 
+    // Kotlin 2.4.0-Beta2+: FIR top-level decl gen is stable on KLIB and KT-82395 is fixed.
+    override fun supportsKlibCrossModuleHint(): Boolean = true
+
     public class Factory : CompatContext.Factory {
         override val minVersion: String = "2.4.0-Beta2"
         override fun create(): CompatContext = CompatContextImpl()

@@ -105,6 +105,9 @@ public class CompatContextImpl : CompatContext {
         moduleFragment.transform(transformer as IrElementTransformerVoid, null)
     }
 
+    // FIR top-level declaration generation is unstable on KLIB targets in Kotlin 2.2.x.
+    override fun supportsKlibCrossModuleHint(): Boolean = false
+
     public class Factory : CompatContext.Factory {
         override val minVersion: String = "2.2.0"
         override fun create(): CompatContext = CompatContextImpl()
