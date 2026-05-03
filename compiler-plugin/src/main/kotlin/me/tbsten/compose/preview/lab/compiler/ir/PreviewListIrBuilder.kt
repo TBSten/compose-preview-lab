@@ -233,10 +233,10 @@ internal class PreviewListIrBuilder(
      * via `core` hint, once via `ui` hint).
      */
     fun buildConcatenatedPreviewsExpr(builder: DeclarationIrBuilder, thisModulePreviews: IrExpression): IrExpression {
-        val depGetters = cachedDependencyGetters
+        val dependencyGetters = cachedDependencyGetters
         val distinctFun = distinctPreviewsByIdFun
 
-        if (depGetters.isEmpty()) {
+        if (dependencyGetters.isEmpty()) {
             return compatContext.irCall(builder, distinctFun, listOfCollectedPreviewType).apply {
                 arguments[0] = thisModulePreviews
             }
@@ -267,8 +267,8 @@ internal class PreviewListIrBuilder(
                 arguments[0] = compatContext.irGet(this@irBlock, listVar)
                 arguments[1] = thisModulePreviews
             }
-            for (depGetter in depGetters) {
-                val depValue = compatContext.irCall(this, depGetter.symbol, listOfCollectedPreviewType)
+            for (dependencyGetter in dependencyGetters) {
+                val dependencyValue = compatContext.irCall(this, dependencyGetter.symbol, listOfCollectedPreviewType)
                 +compatContext.irCall(
                     this,
                     addAllFun,
@@ -276,7 +276,7 @@ internal class PreviewListIrBuilder(
                     listOf(collectedPreviewType),
                 ).apply {
                     arguments[0] = compatContext.irGet(this@irBlock, listVar)
-                    arguments[1] = depValue
+                    arguments[1] = dependencyValue
                 }
             }
             +compatContext.irGet(this, listVar)

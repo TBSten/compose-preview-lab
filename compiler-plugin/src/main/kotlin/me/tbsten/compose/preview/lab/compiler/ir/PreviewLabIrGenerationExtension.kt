@@ -44,7 +44,8 @@ class PreviewLabIrGenerationExtension(private val config: PluginConfig) : IrGene
         // JVM-only — the hint mechanism doesn't work on KLIB platforms (see
         // `GeneratePreviewExportHint` KDoc).
         if (previews.isNotEmpty() && !bodyFiller.didGenerateAnyHint && pluginContext.platform?.isJvm() == true) {
-            val sourceFile = previews.first().function.file
+            val sourceFile = previews.firstOrNull()?.function?.file
+                ?: error("[ComposePreviewLab] No source file found for previews")
             GenerateAutoPreviewExport(pluginContext, moduleFragment, compatContext, previews, config)
                 .invoke(sourceFile)
         }
