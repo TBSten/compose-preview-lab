@@ -66,8 +66,14 @@ internal class PreviewLabHintEntries(private val session: FirSession) {
 
     private fun compute(): List<HintEntry> {
         // SHA-256-based hash to avoid Java `String.hashCode()` collisions on user-controlled
-        // module names (e.g. `"Aa".hashCode() == "BB".hashCode()`); see [computeModuleHash].
-        val moduleNameHash = computeModuleHash(session.moduleData.name.asString())
+        // module names (e.g. `"Aa".hashCode() == "BB".hashCode()`); the project root path
+        // disambiguates two unrelated published artifacts that happen to share a Kotlin module
+        // name (each was built by its own Gradle invocation, so the path differs). See
+        // [computeModuleHash] for the reasoning.
+        val moduleNameHash = computeModuleHash(
+            moduleName = session.moduleData.name.asString(),
+            disambiguator = session.previewLabFirBuiltIns.config.projectRootPath,
+        )
         val markerClassId = ClassId(
             PreviewLabFirBuiltIns.HINT_PACKAGE,
             Name.identifier("$MarkerClassPrefix$moduleNameHash"),
