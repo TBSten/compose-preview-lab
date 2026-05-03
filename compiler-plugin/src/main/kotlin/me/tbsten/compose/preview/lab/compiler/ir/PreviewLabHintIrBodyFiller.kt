@@ -22,12 +22,14 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
  * `IllegalStateException: Function has no body: ...`. The marker is an empty interface,
  * so it has no constructor or members that need bodies.
  *
- * **Hint function — Before**:
+ * **Hint function**
+ *
+ * Before:
  * ```kotlin
  * public fun previewLabExport(value: PreviewLabExportMarker_<hash>): Unit  // body is null
  * ```
  *
- * **After**:
+ * After:
  * ```kotlin
  * public fun previewLabExport(value: PreviewLabExportMarker_<hash>): Unit { /* empty */ }
  * ```

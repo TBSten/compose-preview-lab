@@ -6,13 +6,10 @@ import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.fir.FirSession
-import org.jetbrains.kotlin.fir.caches.FirCache
-import org.jetbrains.kotlin.fir.caches.firCachesFactory
 import org.jetbrains.kotlin.fir.extensions.ExperimentalTopLevelDeclarationsGenerationApi
 import org.jetbrains.kotlin.fir.extensions.FirDeclarationGenerationExtension
 import org.jetbrains.kotlin.fir.extensions.FirDeclarationPredicateRegistrar
 import org.jetbrains.kotlin.fir.extensions.MemberGenerationContext
-import org.jetbrains.kotlin.fir.moduleData
 import org.jetbrains.kotlin.fir.plugin.createTopLevelClass
 import org.jetbrains.kotlin.fir.plugin.createTopLevelFunction
 import org.jetbrains.kotlin.fir.resolve.providers.symbolProvider
@@ -89,22 +86,7 @@ import org.jetbrains.kotlin.name.Name
  */
 internal class PreviewLabHintFirGenerator(session: FirSession) : FirDeclarationGenerationExtension(session) {
 
-    /**
-     * A hint to emit, identified by the marker class id that disambiguates it from sibling
-     * hints from other modules.
-     *
-     * Step 2 produces exactly one entry per compilation unit. Step 3+ will extend this to
-     * one entry per manual `collectModulePreviews()` / `collectAllModulePreviews()` property
-     * found via `predicateBasedProvider`, plus one for the auto-export path. At that point
-     * each entry will also carry the `targetFqn` that gets attached as
-     * `@PreviewExportHint(fqn = ...)` on the hint function — but that wiring is intentionally
-     * absent in Step 2: the FIR-emitted hints exist only to validate the KLIB pipeline, not
-     * to be discovered downstream yet.
-     */
-    private data class HintEntry(val markerClassId: ClassId)
-
-    private val hintEntriesCache: FirCache<Unit, List<HintEntry>, Nothing?> =
-        session.firCachesFactory.createCache { _, _ -> computeHintEntries() }
+    private val hintEntries = PreviewLabHintEntries(session)
 
     override fun FirDeclarationPredicateRegistrar.registerPredicates() {
         // No predicates needed yet; auto-export hint emission is unconditional. Manual
@@ -113,29 +95,9 @@ internal class PreviewLabHintFirGenerator(session: FirSession) : FirDeclarationG
         // `predicateBasedProvider` here.
     }
 
-    /**
-     * Synthesizes one [HintEntry] per compilation unit. The marker class id is derived from
-     * a hash of `session.moduleData.name` so it is unique across modules on the same
-     * classpath, which is the only invariant the Step 2 KLIB pipeline cares about.
-     *
-     * The Step 3 follow-up will add the matching `targetFqn` (the auto-provider FQN that
-     * `GenerateAutoPreviewExport` computes during the IR pass) and attach it as
-     * `@PreviewExportHint(fqn = ...)` so downstream `collectAllModulePreviews()` can resolve
-     * the corresponding function. The FQN computation lives entirely in IR today; pre-computing
-     * it here would just duplicate that logic with no consumer to read it.
-     */
-    private fun computeHintEntries(): List<HintEntry> {
-        val moduleNameHash = session.moduleData.name.asString().hashCode().toString(36).takeLast(8)
-        val markerClassId = ClassId(
-            PreviewLabFirBuiltIns.HINT_PACKAGE,
-            Name.identifier("$MarkerClassPrefix$moduleNameHash"),
-        )
-        return listOf(HintEntry(markerClassId))
-    }
+    override fun getTopLevelClassIds(): Set<ClassId> = hintEntries.get().map { it.markerClassId }.toSet()
 
-    override fun getTopLevelClassIds(): Set<ClassId> = hintEntriesCache.getValue(Unit, null).map { it.markerClassId }.toSet()
-
-    override fun getTopLevelCallableIds(): Set<CallableId> = if (hintEntriesCache.getValue(Unit, null).isEmpty()) {
+    override fun getTopLevelCallableIds(): Set<CallableId> = if (hintEntries.get().isEmpty()) {
         emptySet()
     } else {
         setOf(PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID)
@@ -170,7 +132,7 @@ internal class PreviewLabHintFirGenerator(session: FirSession) : FirDeclarationG
      * Returns null if [classId] is not one of the marker classes computed for this module.
      */
     override fun generateTopLevelClassLikeDeclaration(classId: ClassId): FirClassLikeSymbol<*>? {
-        if (hintEntriesCache.getValue(Unit, null).none { it.markerClassId == classId }) return null
+        if (hintEntries.get().none { it.markerClassId == classId }) return null
         val klass = createTopLevelClass(classId, Keys.PreviewLabHintMarker, ClassKind.INTERFACE) {
             // Konan's `ClassLayoutBuilder.vtableEntries` rejects `INTERFACE` declarations
             // whose modality is the builder default of `FINAL` ("Expected a class, found
@@ -211,7 +173,7 @@ internal class PreviewLabHintFirGenerator(session: FirSession) : FirDeclarationG
      */
     override fun generateFunctions(callableId: CallableId, context: MemberGenerationContext?,): List<FirNamedFunctionSymbol> {
         if (callableId != PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID) return emptyList()
-        val entries = hintEntriesCache.getValue(Unit, null)
+        val entries = hintEntries.get()
         if (entries.isEmpty()) return emptyList()
         return entries.sortedBy { it.markerClassId.asString() }.map { entry ->
             val markerSymbol = session.symbolProvider
@@ -235,9 +197,7 @@ internal class PreviewLabHintFirGenerator(session: FirSession) : FirDeclarationG
 
     override fun hasPackage(packageFqName: FqName): Boolean = packageFqName == PreviewLabFirBuiltIns.HINT_PACKAGE
 
-    private companion object Companion {
-        const val MarkerClassPrefix = "PreviewLabExportMarker_"
-
+    private companion object {
         fun hintFileName(markerClassId: ClassId): String = "PreviewLabExport_${markerClassId.shortClassName.asString()}.kt"
     }
 }
