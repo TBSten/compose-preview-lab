@@ -12,7 +12,6 @@ import org.jetbrains.kotlin.fir.extensions.FirDeclarationGenerationExtension
 import org.jetbrains.kotlin.fir.extensions.FirDeclarationPredicateRegistrar
 import org.jetbrains.kotlin.fir.extensions.MemberGenerationContext
 import org.jetbrains.kotlin.fir.moduleData
-import org.jetbrains.kotlin.fir.plugin.createConstructor
 import org.jetbrains.kotlin.fir.plugin.createTopLevelClass
 import org.jetbrains.kotlin.fir.plugin.createTopLevelFunction
 import org.jetbrains.kotlin.fir.resolve.providers.symbolProvider
@@ -25,7 +24,6 @@ import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
-import org.jetbrains.kotlin.name.SpecialNames
 
 /**
  * FIR-side hint generator for the bug-017 KLIB-safe cross-module aggregation pipeline.
@@ -43,10 +41,18 @@ import org.jetbrains.kotlin.name.SpecialNames
  * // file: PreviewLabExport_<sanitized>.kt
  * package me.tbsten.compose.preview.lab.exports
  *
- * public class PreviewLabExportMarker_<sanitized>_<hash8> public constructor()
+ * public interface PreviewLabExportMarker_<sanitized>_<hash8>
  *
  * public fun previewLabExport(value: PreviewLabExportMarker_<sanitized>_<hash8>): Unit {}
  * ```
+ *
+ * The marker is an empty `interface` (not a `class` / `object`) so that the Compose Compiler's
+ * stability inference does not synthesize a `$stableprop` accessor for it. On JS / Wasm
+ * incremental compilation, Compose-injected stability accessors over plugin-generated classes
+ * end up re-binding the same `IrPropertySymbolImpl` across cache reloads and crash the IR
+ * linker with `IrPropertySymbolImpl is already bound`. Interface stability is decided per
+ * implementation at use sites, so Compose emits no `$stableprop` on the interface itself,
+ * sidestepping the IC clash.
  *
  * **Current scope (bug-017 step 2)**:
  *
@@ -69,11 +75,11 @@ import org.jetbrains.kotlin.name.SpecialNames
  *    follow-up step wires that up alongside the migration of the manual-property path to
  *    FIR.
  *
- * **Body filling**: `createTopLevelClass` / `createConstructor` / `createTopLevelFunction`
- * produce declarations with `body == null`. The JVM backend asserts on that, so
+ * **Body filling**: `createTopLevelFunction` produces a declaration with `body == null`.
+ * The JVM backend asserts on that, so
  * [me.tbsten.compose.preview.lab.compiler.ir.PreviewLabHintIrBodyFiller] runs during the IR
- * pass and injects the canonical `super<Any>(); <init>` body for the constructor and an
- * empty block body for the hint function.
+ * pass and injects an empty block body for the hint function. The marker interface has no
+ * constructor, so no body filling is needed for the marker itself.
  *
  * Pattern adapted from Metro's
  * [ContributionHintFirGenerator](https://github.com/ZacSweers/metro/blob/main/compiler/src/main/kotlin/dev/zacsweers/metro/compiler/fir/generators/ContributionHintFirGenerator.kt).
@@ -121,35 +127,38 @@ internal class PreviewLabHintFirGenerator(session: FirSession) : FirDeclarationG
     }
 
     /**
-     * Generates the synthetic marker class for [classId] with a private no-arg constructor.
+     * Generates the synthetic marker **interface** for [classId].
      *
      * **Generated Kotlin (semantically equivalent)**:
      * ```kotlin
      * package me.tbsten.compose.preview.lab.exports
-     * public class PreviewLabExportMarker_<hash> private constructor()
+     * public interface PreviewLabExportMarker_<hash>
      * ```
+     *
+     * `ClassKind.INTERFACE` (not `CLASS` or `OBJECT`) because the Compose Compiler's class
+     * stability inference adds `$stableprop` synthetic accessors to every regular class /
+     * object it sees, including plugin-synthesized ones. On JS / Wasm incremental compilation
+     * the deserializer then re-creates the synthetic property's symbol on the next compile
+     * round and crashes with `IrPropertySymbolImpl is already bound`. Interfaces have no
+     * intrinsic stability mask (their stability is decided per implementation at use sites)
+     * so Compose does not synthesize `$stableprop` on them, sidestepping the IC clash. For
+     * KLIB IdSignature uniqueness only the class id matters, and an interface's class id is
+     * just as unique as a class id.
+     *
+     * Interfaces have no constructors, so [generateConstructors] / [getCallableNamesForClass]
+     * also return empty for our hint package.
      *
      * Returns null if [classId] is not one of the marker classes computed for this module.
      */
     override fun generateTopLevelClassLikeDeclaration(classId: ClassId): FirClassLikeSymbol<*>? {
         if (hintEntriesCache.getValue(Unit, null).none { it.markerClassId == classId }) return null
-        val klass = createTopLevelClass(classId, Keys.PreviewLabHintMarker, ClassKind.CLASS) {}
+        val klass = createTopLevelClass(classId, Keys.PreviewLabHintMarker, ClassKind.INTERFACE) {}
         return klass.symbol
     }
 
-    override fun generateConstructors(context: MemberGenerationContext): List<FirConstructorSymbol> {
-        val owner = context.owner
-        if (owner.classId.packageFqName != PreviewLabFirBuiltIns.HINT_PACKAGE) return emptyList()
-        val ctor = createConstructor(owner, Keys.PreviewLabHintMarker, isPrimary = true) {
-            visibility = Visibilities.Public
-        }
-        return listOf(ctor.symbol)
-    }
+    override fun generateConstructors(context: MemberGenerationContext): List<FirConstructorSymbol> = emptyList()
 
-    override fun getCallableNamesForClass(classSymbol: FirClassSymbol<*>, context: MemberGenerationContext,): Set<Name> {
-        if (classSymbol.classId.packageFqName != PreviewLabFirBuiltIns.HINT_PACKAGE) return emptySet()
-        return setOf(SpecialNames.INIT)
-    }
+    override fun getCallableNamesForClass(classSymbol: FirClassSymbol<*>, context: MemberGenerationContext,): Set<Name> = emptySet()
 
     /**
      * Generates one `previewLabExport(value: <Marker>): Unit` hint per [HintEntry].
