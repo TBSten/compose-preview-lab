@@ -11,13 +11,20 @@ import org.jetbrains.kotlin.name.Name
  * A single hint to emit, identified by the marker class id that disambiguates it from
  * sibling hints from other modules.
  *
- * Step 2 produces exactly one entry per compilation unit. Step 3+ will extend this to
- * one entry per manual `collectModulePreviews()` / `collectAllModulePreviews()` property
- * found via `predicateBasedProvider`, plus one for the auto-export path. At that point
- * each entry will also carry the `targetFqn` that gets attached as
- * `@PreviewExportHint(fqn = ...)` on the hint function — but that wiring is intentionally
- * absent in Step 2: the FIR-emitted hints exist only to validate the KLIB pipeline, not
- * to be discovered downstream yet.
+ * **One entry per compilation unit**. The downstream consumer
+ * [me.tbsten.compose.preview.lab.compiler.ir.PreviewListIrBuilder.collectDependencyGetters]
+ * reads the marker class short name, strips the `PreviewLabExportMarker_` prefix, and
+ * reconstructs the auto-provider FQN as `<HINT_PACKAGE>.previewLabAutoProvider_<suffix>`.
+ * Both sides derive the suffix from [computeModuleHash] of the same Kotlin module name, so
+ * the marker class id alone locates the matching provider — no
+ * `@PreviewExportHint(fqn = ...)` annotation lookup is involved.
+ *
+ * Per-property `targetFqn` was considered but dropped: the auto-provider already folds in
+ * both local `@Preview`s and any `collectAllModulePreviews()` deps via
+ * `PreviewListIrBuilder.buildConcatenatedPreviewsExpr`, so a single per-module entry
+ * carries everything downstream needs. Manual `collectModulePreviews()` /
+ * `collectAllModulePreviews()` properties are user-owned and consumed locally, not
+ * exported through this hint channel.
  */
 internal data class HintEntry(val markerClassId: ClassId)
 
