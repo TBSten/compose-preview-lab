@@ -2,18 +2,29 @@
 # One version per line (blank lines and lines starting with `#` are comments).
 # CI workflows and compiler-plugin-test scripts read this file.
 #
-# Supported range: Kotlin 2.3.21 and later.
-#   Older versions (2.1.20–2.3.20) are intentionally not supported any more —
-#   `collectAllModulePreviews()` requires the FIR top-level declaration generator
-#   pipeline that only stabilized on KLIB targets in 2.3.21 (KT-82395 fix).
-#   The compat-k210 / compat-k222 / compat-k2220 / compat-k230 modules still ship
-#   in the published plugin jar so existing builds with single-module
-#   `collectModulePreviews()` keep loading, but they are no longer covered by CI.
+# Supported range: Kotlin 2.1.20 and later.
+#   The compiler plugin uses the unified `IrMemberAccessExpression.arguments` API
+#   that landed in 2.1.20; older versions (2.0.x / 2.1.0–2.1.10) cannot load the
+#   plugin and are intentionally not supported.
+#
+#   Note: `collectAllModulePreviews()` requires Kotlin 2.3.21+ for KLIB-safe cross-module
+#   aggregation. Tests exercising this API (tagged with "KlibCrossModuleHint") are skipped
+#   for Kotlin < 2.3.21 in CI, but compat modules for older versions are retained so
+#   existing builds using `collectModulePreviews()` continue to work.
 #
 # To add a new version:
 #   1. Append a line below.
 #   2. Verify locally with `./scripts/compiler-plugin-test.sh <new-version>`.
 #   3. If API drift requires it, add a new compat module
 #      (compiler-plugin/compat-k* / settings.gradle.kts / META-INF/services).
+2.1.20
+2.1.21
+2.2.0
+2.2.10
+2.2.20
+2.2.21
+2.3.0
+2.3.10
+2.3.20
 2.3.21
 2.4.0-Beta2
