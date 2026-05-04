@@ -2,11 +2,14 @@
 
 package me.tbsten.compose.preview.lab.compiler.ir
 
+import me.tbsten.compose.preview.lab.compiler.PluginConfig
+import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.fir.Keys
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.builders.irBlockBody
+import org.jetbrains.kotlin.ir.builders.irReturn
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
@@ -40,28 +43,61 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
  * do not always survive to `kotlin.Metadata` on the consumer side. See
  * [PreviewListIrBuilder.collectDependencyGetters] for the marker-based derivation.
  */
-internal class PreviewLabHintIrBodyFiller(private val pluginContext: IrPluginContext,) : IrElementTransformerVoid() {
+internal class PreviewLabHintIrBodyFiller(
+    private val pluginContext: IrPluginContext,
+    private val compatContext: CompatContext,
+    private val previews: List<PreviewFunctionInfo>,
+    private val config: PluginConfig,
+) : IrElementTransformerVoid() {
 
-    /**
-     * Detects whether [origin] was produced by our FIR-side hint generator key
-     * ([Keys.PreviewLabHint]) so we own filling its body.
-     */
-    private fun IrDeclarationOrigin.isPreviewLabFirOrigin(): Boolean {
+    /** Lazily-built so the dependency-getter scan only runs once per IR pass. */
+    private val previewListBuilder by lazy {
+        PreviewListIrBuilder(pluginContext, previews, config, compatContext)
+    }
+
+    private fun IrDeclarationOrigin.isHintFunctionOrigin(): Boolean {
         if (this !is IrDeclarationOrigin.GeneratedByPlugin) return false
         return pluginKey === Keys.PreviewLabHint
     }
 
+    private fun IrDeclarationOrigin.isAutoProviderOrigin(): Boolean {
+        if (this !is IrDeclarationOrigin.GeneratedByPlugin) return false
+        return pluginKey === Keys.PreviewLabAutoProvider
+    }
+
     /**
-     * Fills the body of FIR-generated hint functions with an empty `Unit`-returning block.
+     * Fills bodies for the FIR-generated hint and auto-provider stubs.
      *
-     * The function carries no observable behavior at runtime — its sole purpose is to occupy
-     * a [org.jetbrains.kotlin.ir.util.IdSignature] slot in the published klib so downstream
-     * `referenceFunctions(...)` discovers it during cross-module preview aggregation.
+     * **Hint** ([Keys.PreviewLabHint]) — empty `Unit`-returning block; the function's sole
+     * purpose is to occupy a KLIB IdSignature slot so downstream `referenceFunctions(...)`
+     * can discover it.
+     *
+     * **Auto-provider** ([Keys.PreviewLabAutoProvider]) — body equivalent to:
+     * ```kotlin
+     * return distinctPreviewsById(thisModulePreviews + dep1.invoke() + dep2.invoke() + …)
+     * ```
+     * via [PreviewListIrBuilder.buildConcatenatedPreviewsExpr]. The FIR generator already
+     * declared the function with the matching `previewLabAutoProvider_<hash>` name, so its
+     * KLIB IdSignature is fixed at FIR-emit time — IR only fills the body, leaving the
+     * symbol identity intact. That alignment is what lets a downstream consumer's
+     * `pluginContext.referenceFunctions(...)` resolve to a symbol whose IdSignature matches
+     * what the call IR computes, avoiding the `IrLinkageError: No function found for symbol
+     * previewLabAutoProvider_<hash>` failure that the IR-only post-hoc add path was hitting.
      */
     override fun visitSimpleFunction(declaration: IrSimpleFunction): IrStatement {
-        if (declaration.body == null && declaration.origin.isPreviewLabFirOrigin()) {
-            val builder = DeclarationIrBuilder(pluginContext, declaration.symbol)
-            declaration.body = builder.irBlockBody { /* empty */ }
+        if (declaration.body == null) {
+            when {
+                declaration.origin.isHintFunctionOrigin() -> {
+                    val builder = DeclarationIrBuilder(pluginContext, declaration.symbol)
+                    declaration.body = builder.irBlockBody { /* empty */ }
+                }
+                declaration.origin.isAutoProviderOrigin() -> {
+                    val builder = DeclarationIrBuilder(pluginContext, declaration.symbol)
+                    val thisModulePreviews = previewListBuilder.buildPreviewsListExpr(builder, declaration)
+                    val concat = previewListBuilder.buildConcatenatedPreviewsExpr(builder, thisModulePreviews)
+                    declaration.body = builder.irBlockBody { +irReturn(concat) }
+                }
+            }
         }
         return super.visitSimpleFunction(declaration)
     }

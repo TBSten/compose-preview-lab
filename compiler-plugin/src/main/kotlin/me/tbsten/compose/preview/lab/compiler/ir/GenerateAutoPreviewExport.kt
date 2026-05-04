@@ -81,24 +81,14 @@ internal class GenerateAutoPreviewExport(
     }
 
     /**
-     * Emits the auto-provider function (and, on legacy paths, the matching legacy hint) into
-     * [moduleFragment].
-     *
-     * **Input**: Module containing `@Preview` functions, with [sourceFile] being one of its
-     * real source files (its `FirMetadataSource.File` seeds the synthetic file metadata so the
-     * provider lands in `kotlin.Metadata(k=2)` and is discoverable via `referenceFunctions`).
-     *
-     * **Output**: Synthetic provider function as a new IrFile in
-     * `me.tbsten.compose.preview.lab.exports`. The matching hint function is emitted by
-     * [me.tbsten.compose.preview.lab.compiler.fir.PreviewLabHintFirGenerator] during the FIR
-     * pass, so this generator does not emit any hint itself.
-     *
-     * Defined as `operator fun invoke` so call sites read like `generator(sourceFile)` — the
-     * class name `GenerateAutoPreviewExport` already carries the verb.
+     * Emits the legacy IR-side provider for the given [moduleHash] (suffix that downstream
+     * consumers will reconstruct to find this provider). Caller passes the hash explicitly
+     * so the same generator can materialise providers for multiple sessions if needed; the
+     * Kotlin 2.3.21+ KLIB path now declares the provider through FIR instead, so this entry
+     * point is reached only on the older Kotlin / JVM-only fallback.
      */
-    operator fun invoke(sourceFile: IrFile) {
-        val providerFunctionName = computeAutoProviderName(moduleFragment, config)
-        val moduleHash = providerFunctionName.asString().removePrefix(AutoProviderPrefix)
+    operator fun invoke(sourceFile: IrFile, moduleHash: String) {
+        val providerFunctionName = Name.identifier("$AutoProviderPrefix$moduleHash")
 
         val syntheticFile = createSyntheticFile(moduleHash, sourceFile)
         val providerFunction = buildProviderFunction(providerFunctionName, syntheticFile)
@@ -108,9 +98,6 @@ internal class GenerateAutoPreviewExport(
         )
 
         pluginContext.metadataDeclarationRegistrar.registerFunctionAsMetadataVisible(providerFunction)
-
-        // The matching `previewLabExport(<Marker>)` hint is emitted by
-        // [PreviewLabHintFirGenerator] in the FIR pass; no IR-side hint emission needed.
     }
 
     /**

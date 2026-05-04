@@ -17,6 +17,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirClassLikeSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirClassSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirConstructorSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirNamedFunctionSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
 import org.jetbrains.kotlin.fir.types.constructType
 import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.ClassId
@@ -97,10 +98,22 @@ internal class PreviewLabHintFirGenerator(session: FirSession) : FirDeclarationG
 
     override fun getTopLevelClassIds(): Set<ClassId> = hintEntries.get().map { it.markerClassId }.toSet()
 
-    override fun getTopLevelCallableIds(): Set<CallableId> = if (hintEntries.get().isEmpty()) {
-        emptySet()
-    } else {
-        setOf(PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID)
+    override fun getTopLevelCallableIds(): Set<CallableId> {
+        val entries = hintEntries.get()
+        if (entries.isEmpty()) return emptySet()
+        return buildSet {
+            add(PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID)
+            for (entry in entries) {
+                val hash = entry.markerClassId.shortClassName.asString()
+                    .removePrefix(PreviewLabHintEntries.MarkerClassPrefix)
+                add(
+                    CallableId(
+                        PreviewLabFirBuiltIns.HINT_PACKAGE,
+                        Name.identifier("${PreviewLabFirBuiltIns.AutoProviderPrefix}$hash"),
+                    ),
+                )
+            }
+        }
     }
 
     /**
@@ -172,10 +185,18 @@ internal class PreviewLabHintFirGenerator(session: FirSession) : FirDeclarationG
      * APIs (also added in step 3).
      */
     override fun generateFunctions(callableId: CallableId, context: MemberGenerationContext?,): List<FirNamedFunctionSymbol> {
-        if (callableId != PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID) return emptyList()
         val entries = hintEntries.get()
         if (entries.isEmpty()) return emptyList()
-        return entries.sortedBy { it.markerClassId.asString() }.map { entry ->
+        if (callableId.packageName != PreviewLabFirBuiltIns.HINT_PACKAGE) return emptyList()
+
+        return when (callableId) {
+            PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID -> generateHintFunctions(callableId, entries)
+            else -> generateAutoProviderStub(callableId, entries)
+        }
+    }
+
+    private fun generateHintFunctions(callableId: CallableId, entries: List<HintEntry>): List<FirNamedFunctionSymbol> =
+        entries.sortedBy { it.markerClassId.asString() }.map { entry ->
             val markerSymbol = session.symbolProvider
                 .getClassLikeSymbolByClassId(entry.markerClassId) as FirClassSymbol<*>
             val fileName = hintFileName(entry.markerClassId)
@@ -193,6 +214,62 @@ internal class PreviewLabHintFirGenerator(session: FirSession) : FirDeclarationG
             }
             fn.symbol
         }
+
+    /**
+     * Emits the `previewLabAutoProvider_<hash>(): List<CollectedPreview>` stub matching the
+     * marker class with the same hash. Body filled by
+     * [me.tbsten.compose.preview.lab.compiler.ir.PreviewLabHintIrBodyFiller] in the IR pass.
+     *
+     * **Generated Kotlin (semantically equivalent)**:
+     * ```kotlin
+     * package me.tbsten.compose.preview.lab.exports
+     * public fun previewLabAutoProvider_<hash>(): List<CollectedPreview>
+     * ```
+     *
+     * Emitting through FIR (instead of building a fresh `IrSimpleFunction` post-hoc in IR) is
+     * what gives the function a proper KLIB IdSignature: FIR-declared top-level callables go
+     * through the compiler's standard declaration pipeline, so consumer-side
+     * `referenceFunctions(callableId)` lookups land on a symbol whose IdSignature matches the
+     * call IR. With the leaf-only emission gate in [PreviewLabHintEntries.compute], only one
+     * FIR session per Kotlin module compile reaches this code path, so there is exactly one
+     * provider stub per marker — no `IrSimpleFunctionSymbolImpl is already bound` from
+     * sibling sessions duplicating the same signature.
+     */
+    private fun generateAutoProviderStub(callableId: CallableId, entries: List<HintEntry>,): List<FirNamedFunctionSymbol> {
+        val expectedHash = callableId.callableName.asString()
+            .removePrefix(PreviewLabFirBuiltIns.AutoProviderPrefix)
+        val matching = entries.firstOrNull { entry ->
+            entry.markerClassId.shortClassName.asString()
+                .removePrefix(PreviewLabHintEntries.MarkerClassPrefix) == expectedHash
+        } ?: return emptyList()
+
+        val collectedPreviewSymbol = session.symbolProvider
+            .getClassLikeSymbolByClassId(PreviewLabFirBuiltIns.COLLECTED_PREVIEW_CLASS_ID)
+            as? FirRegularClassSymbol ?: return emptyList()
+        val listSymbol = session.symbolProvider
+            .getClassLikeSymbolByClassId(ClassId(FqName("kotlin.collections"), Name.identifier("List")))
+            as? FirRegularClassSymbol ?: return emptyList()
+
+        val listOfCollectedPreview = listSymbol.constructType(
+            arrayOf(collectedPreviewSymbol.constructType(emptyArray())),
+        )
+
+        val fileName = "PreviewLabAutoProvider_$expectedHash.kt"
+        val fn = createTopLevelFunction(
+            Keys.PreviewLabAutoProvider,
+            callableId,
+            listOfCollectedPreview,
+            fileName,
+        ) {
+            visibility = Visibilities.Public
+        }
+
+        // `matching` was already used for the early-return guard above; reading it once more
+        // here keeps the variable load alive against a future ktlint/IDE pruning pass that
+        // might mistake the lookup for dead code (the lookup defends against `entries`
+        // skipping ahead of `getTopLevelCallableIds`).
+        require(matching.markerClassId.shortClassName.asString().startsWith(PreviewLabHintEntries.MarkerClassPrefix))
+        return listOf(fn.symbol)
     }
 
     override fun hasPackage(packageFqName: FqName): Boolean = packageFqName == PreviewLabFirBuiltIns.HINT_PACKAGE

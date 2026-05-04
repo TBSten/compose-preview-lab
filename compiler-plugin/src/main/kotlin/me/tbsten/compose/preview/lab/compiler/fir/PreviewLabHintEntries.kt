@@ -65,6 +65,30 @@ internal class PreviewLabHintEntries(private val session: FirSession) {
     fun get(): List<HintEntry> = cache.getValue(Unit, null)
 
     private fun compute(): List<HintEntry> {
+        // **Leaf-only emission** for KMP modules. K2 runs a separate FirSession for every
+        // source-set fragment a platform compile sees: `<commonMain>` (root), intermediates
+        // such as `<webMain>` (jsAndWasm shared), and the platform-leaf such as
+        // `<Compose-Preview-Lab-Integration-Test:uiLib>` (named with the full Gradle project
+        // path + module name). All sessions narrow `componentPlatforms` to the same single
+        // target during a per-platform compile, so the leaf signal is **the name shape
+        // itself**: only the leaf session's `moduleData.name` reflects the Gradle module
+        // identity — non-leaf sessions use bare source-set names (`<commonMain>`,
+        // `<webMain>`, `<jsMain>`, `<jvmMain>`, `<iosMain>`, etc.) without any project /
+        // module disambiguator.
+        //
+        // Without this gate, each KMP session's `getTopLevelClassIds()` emits its own
+        // `PreviewLabExportMarker_<hashN>`. The IR pass runs once on the merged module
+        // fragment (named after the leaf) and can only emit a single
+        // `previewLabAutoProvider_<leafHash>`. The non-leaf markers' hint functions would
+        // then point at provider FQNs that never get materialised, surfacing downstream as
+        // `IrLinkageError: No function found for symbol previewLabAutoProvider_<hash>` at
+        // KLIB link time.
+        //
+        // Single-target non-KMP modules (pure Kotlin/JVM) only have one source-set session,
+        // and its name carries the Gradle module identity by default — so `isKmpSourceSetFragmentName`
+        // returns false and emission proceeds.
+        if (session.moduleData.name.asString().isKmpSourceSetFragmentName()) return emptyList()
+
         // SHA-256-based hash to avoid Java `String.hashCode()` collisions on user-controlled
         // module names (e.g. `"Aa".hashCode() == "BB".hashCode()`); the project root path
         // disambiguates two unrelated published artifacts that happen to share a Kotlin module
@@ -83,5 +107,41 @@ internal class PreviewLabHintEntries(private val session: FirSession) {
 
     companion object {
         const val MarkerClassPrefix = "PreviewLabExportMarker_"
+
+        /**
+         * Recognises the bare source-set fragment names K2 uses for non-leaf KMP sessions
+         * (`<commonMain>`, `<webMain>`, `<jsMain>`, …). The leaf session's `moduleData.name`
+         * always carries the Gradle module identity (project path / module name) and never
+         * matches this set, so the negation is what we filter emission on.
+         *
+         * The list mirrors the standard KMP source-set DSL plus common intermediate names.
+         * If a future Kotlin version adds a new shared source-set name shape, add it here.
+         */
+        private val KMP_SOURCE_SET_FRAGMENT_NAMES = setOf(
+            "commonMain", "commonTest",
+            "jvmMain", "jvmTest",
+            "androidMain", "androidUnitTest", "androidInstrumentedTest",
+            "jsMain", "jsTest",
+            "wasmJsMain", "wasmJsTest",
+            "wasmWasiMain", "wasmWasiTest",
+            "nativeMain", "nativeTest",
+            "linuxMain", "linuxTest",
+            "macosMain", "macosTest",
+            "iosMain", "iosTest",
+            "iosSimulatorArm64Main", "iosSimulatorArm64Test",
+            "iosArm64Main", "iosArm64Test",
+            "iosX64Main", "iosX64Test",
+            "tvosMain", "tvosTest",
+            "watchosMain", "watchosTest",
+            "mingwMain", "mingwTest",
+            "webMain", "webTest",
+            "appleMain", "appleTest",
+            "concurrentMain", "concurrentTest",
+        )
+
+        private fun String.isKmpSourceSetFragmentName(): Boolean {
+            val inner = if (startsWith('<') && endsWith('>')) substring(1, length - 1) else this
+            return inner in KMP_SOURCE_SET_FRAGMENT_NAMES
+        }
     }
 }

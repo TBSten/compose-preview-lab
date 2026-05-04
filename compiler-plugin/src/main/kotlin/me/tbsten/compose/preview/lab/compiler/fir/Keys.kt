@@ -33,4 +33,22 @@ internal object Keys {
      * always `previewLabExport`).
      */
     object PreviewLabHintMarker : GeneratedDeclarationKey()
+
+    /**
+     * Marks `previewLabAutoProvider_<hash>(): List<CollectedPreview>` provider stubs emitted
+     * by [PreviewLabHintFirGenerator] in the leaf source-set's FIR session.
+     *
+     * The body is filled in IR by [me.tbsten.compose.preview.lab.compiler.ir.PreviewLabHintIrBodyFiller]
+     * with the concatenated module previews + dependency previews. Emitting the stub through
+     * FIR (instead of building a fresh `IrSimpleFunction` post-hoc in IR) is what gives the
+     * function a proper KLIB IdSignature: FIR-declared top-level callables go through the
+     * compiler's standard declaration pipeline, so consumer-side
+     * `referenceFunctions(callableId)` lookups land on a symbol whose IdSignature matches
+     * what the consumer's IR builder computes for the call. IR-only `irFactory.buildFun`
+     * additions land in the KLIB strings table but never participate in the IdSignature
+     * symbol table the linker resolves against, surfacing as
+     * `IrLinkageError: No function found for symbol previewLabAutoProvider_<hash>` at link
+     * time.
+     */
+    object PreviewLabAutoProvider : GeneratedDeclarationKey()
 }
