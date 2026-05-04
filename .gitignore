@@ -15,7 +15,7 @@ Pods/
 *.jks
 *.gpg
 *yarn.lock
-.claude/settings.local.json
+.claude/*.local.*
 integrationTest/.claude/settings.local.json
 integrationTest/web/.claude/settings.local.json
 docs/web/.claude/settings.local.json
