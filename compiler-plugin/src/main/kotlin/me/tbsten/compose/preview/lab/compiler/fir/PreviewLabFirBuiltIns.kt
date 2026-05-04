@@ -53,6 +53,15 @@ internal class PreviewLabFirBuiltIns(session: FirSession, val config: PluginConf
         /** `me.tbsten.compose.preview.lab.collectAllModulePreviews` sentinel call FQN. */
         val COLLECT_ALL_MODULE_PREVIEWS_FQN: FqName =
             FqName.fromSegments(listOf("me", "tbsten", "compose", "preview", "lab", "collectAllModulePreviews"))
+
+        /** `me.tbsten.compose.preview.lab.CollectedPreview` `ClassId` — element type of the auto-provider's return list. */
+        val COLLECTED_PREVIEW_CLASS_ID: ClassId = ClassId(
+            FqName("me.tbsten.compose.preview.lab"),
+            Name.identifier("CollectedPreview"),
+        )
+
+        /** Auto-provider function name prefix; suffix is the per-module hash that matches the marker class. */
+        const val AutoProviderPrefix: String = "previewLabAutoProvider_"
     }
 }
 

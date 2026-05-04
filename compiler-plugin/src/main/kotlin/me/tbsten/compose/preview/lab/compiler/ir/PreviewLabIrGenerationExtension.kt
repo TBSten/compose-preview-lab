@@ -9,7 +9,6 @@ import me.tbsten.compose.preview.lab.compiler.compat.hasAnnotationCompat
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
-import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.IrConst
@@ -50,39 +49,33 @@ class PreviewLabIrGenerationExtension(
         if (compatContext.supportsKlibCrossModuleHint()) {
             compatContext.transformModuleFragment(
                 moduleFragment,
-                PreviewLabHintIrBodyFiller(pluginContext),
+                PreviewLabHintIrBodyFiller(pluginContext, compatContext, previews, config),
             )
         }
 
-        // Emit the auto-provider function this module's hint points at.
+        // Auto-provider emission.
         //
-        // - Kotlin 2.3.21+ (any platform): `PreviewLabHintFirGenerator` always emitted a
-        //   per-module hint + marker class for this compilation unit, so we always materialize
-        //   the matching provider here — even when the module has no local `@Preview`s.
-        //   Re-export-only modules (only `val x by collectAllModulePreviews()`) and pure-leaf
-        //   modules need the provider to exist so downstream consumers can resolve the hint
-        //   target; the provider body uses [PreviewListIrBuilder.buildConcatenatedPreviewsExpr]
-        //   which folds in transitive dependency previews (and dedups them) so an
-        //   `:app → :ui (impl) → :core` chain still surfaces `:core`'s previews to `:app`
-        //   through `:ui`'s single visible auto-provider.
+        // - Kotlin 2.3.21+ (any platform): `PreviewLabHintFirGenerator` declared one
+        //   `previewLabAutoProvider_<hash>` stub alongside each marker / hint via FIR's
+        //   standard declaration pipeline; `PreviewLabHintIrBodyFiller` (above) just filled
+        //   the body. Going through FIR is what gives the function a proper KLIB IdSignature
+        //   that consumers can resolve. The leaf-only emission gate in
+        //   `PreviewLabHintEntries.compute` ensures exactly one provider per Kotlin module
+        //   compile, even for KMP modules with multiple source-set sessions.
         // - Older Kotlin (JVM only via the existing version gate): no FIR hint runs, so we
         //   fall back to the legacy IR-based path that emits both the provider and a
-        //   `previewLabExport(PreviewExport)` hint via `GeneratePreviewExportHint`. That path
-        //   still requires at least one `@Preview` and is gated on `!bodyFiller.didGenerateAnyHint`
-        //   so we don't double-emit when the module already has a `collectModulePreviews()`
-        //   delegate.
-        val sourceFileForProvider: IrFile? = previews.firstOrNull()?.function?.file
-            ?: moduleFragment.files.firstOrNull()
-        if (sourceFileForProvider != null) {
-            val generator = GenerateAutoPreviewExport(pluginContext, moduleFragment, compatContext, previews, config)
-            if (compatContext.supportsKlibCrossModuleHint()) {
-                generator.invoke(sourceFileForProvider)
-            } else if (previews.isNotEmpty() &&
-                !bodyFiller.didGenerateAnyHint &&
-                pluginContext.platform?.isJvm() == true
-            ) {
-                generator.invoke(sourceFileForProvider)
-            }
+        //   `previewLabExport(PreviewExport)` hint. Conditioned on `!bodyFiller.didGenerateAnyHint`
+        //   and `previews.isNotEmpty()` to keep the previous behaviour intact.
+        if (!compatContext.supportsKlibCrossModuleHint() &&
+            previews.isNotEmpty() &&
+            !bodyFiller.didGenerateAnyHint &&
+            pluginContext.platform?.isJvm() == true
+        ) {
+            val sourceFile = previews.first().function.file
+            val legacyHash = computeAutoProviderName(moduleFragment, config).asString()
+                .removePrefix(AutoProviderPrefix)
+            GenerateAutoPreviewExport(pluginContext, moduleFragment, compatContext, previews, config)
+                .invoke(sourceFile, legacyHash)
         }
     }
 
