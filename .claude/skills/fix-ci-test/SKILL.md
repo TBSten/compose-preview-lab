@@ -1,3 +1,8 @@
+---
+name: fix-ci-test
+description: CI で実行される各種テスト（jvmTest, jsBrowserTest, wasmJsBrowserTest, testDebugUnitTest, iosSimulatorArm64Test, integrationTest）の失敗を診断・修正する。Property-Based Test (PBT タグ) の扱いも含む。Use when "テストが失敗", "jvmTest が失敗", "Kotest 失敗", "PBT が落ちる", "integrationTest 失敗".
+---
+
 # fix-ci-test
 
 テスト失敗の診断と修正スキル

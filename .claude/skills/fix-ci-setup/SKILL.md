@@ -1,3 +1,8 @@
+---
+name: fix-ci-setup
+description: GitHub Actions の CI/CD 環境構築・セットアップ周りの問題（JDK バージョン、キャッシュ設定、シークレット、ワークフロー定義）を診断・修正する。Use when "CI のセットアップ問題", "GitHub Actions の設定", "JDK バージョン問題", "ワークフロー定義の修正".
+---
+
 # fix-ci-setup
 
 CI/CD 環境構築とセットアップ診断スキル

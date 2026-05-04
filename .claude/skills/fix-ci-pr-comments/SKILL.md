@@ -1,3 +1,8 @@
+---
+name: fix-ci-pr-comments
+description: PR に付いたレビューコメントへ対応するワークフロー。gh CLI でコメントを取得し、TodoWrite で追跡しながら修正・返信・resolve まで進める。Use when "PR コメントに対応", "レビュー指摘を修正", "PR レビュー対応", "review comments を resolved にする".
+---
+
 # fix-ci-pr-comments
 
 PR レビューコメント対応ワークフロー

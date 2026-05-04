@@ -1,3 +1,8 @@
+---
+name: fix-ci-lint
+description: Kotlin リントチェック（./gradlew ktlintCheck）が失敗した時の診断と修正を行う。ktlintFormat による自動修正と、手動修正が必要なケースの切り分けを案内する。Use when "ktlintCheck が失敗", "lint エラー", "コードスタイル違反", "ktlintFormat".
+---
+
 # fix-ci-lint
 
 Kotlin リントチェック（ktlintCheck）の診断と修正スキル

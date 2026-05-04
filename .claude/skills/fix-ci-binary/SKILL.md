@@ -1,3 +1,8 @@
+---
+name: fix-ci-binary
+description: バイナリ互換性チェック（./gradlew apiCheck）が失敗した時の診断と修正を行う。public API の差分を確認し、必要に応じて apiDump で API ダンプを更新する。Use when "apiCheck が失敗", "binary compatibility エラー", "API ダンプを更新", "公開 API の互換性チェック".
+---
+
 # fix-ci-binary
 
 バイナリ互換性チェック（apiCheck）の診断と修正スキル

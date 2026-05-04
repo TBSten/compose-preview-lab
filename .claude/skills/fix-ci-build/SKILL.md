@@ -1,3 +1,8 @@
+---
+name: fix-ci-build
+description: Gradle ビルド（assembleDebug, compileKotlin など）が失敗した時の診断と修正を行う。コンパイルエラー、依存関係の問題、Convention Plugin の設定不備などを切り分けて修正する。Use when "ビルドが失敗", "Gradle build error", "コンパイルエラー", "compileKotlin が失敗".
+---
+
 # fix-ci-build
 
 ビルドエラーの診断と修正スキル
