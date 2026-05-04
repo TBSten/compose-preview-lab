@@ -7,9 +7,6 @@ class CollectPreviewsTest {
 
     @Test
     fun collectModulePreviewsContainsThisModulePreviews() {
-        assertTrue(
-            appModulePreviews.isNotEmpty(),
-            "collectModulePreviews() should collect at least one @Preview from this module",
-        )
+        assertTrue(appPreviews.size == appModulePreviews.size + 2)
     }
 }
