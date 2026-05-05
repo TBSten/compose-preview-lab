@@ -212,6 +212,19 @@ internal class PreviewListIrBuilder(
     private val cachedDependencyGetters: List<IrSimpleFunction> by lazy { collectDependencyGetters() }
 
     /**
+     * Lazily-cached per-declaration hint functions discovered via Metro 風 mechanism.
+     *
+     * Each entry is an [IrSimpleFunction] that, when called with no arguments, returns a single
+     * `CollectedPreview` (1 hint = 1 `@Preview`)。 旧モジュール集約 hint
+     * ([cachedDependencyGetters]) と異なり、 戻り値は List ではなく単体の CollectedPreview
+     * なので [buildConcatenatedPreviewsExpr] では `add(hint())` 形で list に積む。
+     *
+     * Caching ensures the (potentially expensive) package walk in [discoverHintsV2] runs at
+     * most once per [PreviewListIrBuilder] instance.
+     */
+    private val cachedHintsV2: List<IrSimpleFunction> by lazy { discoverHintsV2(pluginContext, compatContext) }
+
+    /**
      * Builds an expression that concatenates this module's previews with previews from
      * dependency modules and removes id-duplicates.
      *
@@ -234,9 +247,10 @@ internal class PreviewListIrBuilder(
      */
     fun buildConcatenatedPreviewsExpr(builder: DeclarationIrBuilder, thisModulePreviews: IrExpression): IrExpression {
         val dependencyGetters = cachedDependencyGetters
+        val hintsV2 = cachedHintsV2
         val distinctFun = distinctPreviewsByIdFun
 
-        if (dependencyGetters.isEmpty()) {
+        if (dependencyGetters.isEmpty() && hintsV2.isEmpty()) {
             return compatContext.irCall(builder, distinctFun, listOfCollectedPreviewType).apply {
                 arguments[0] = thisModulePreviews
             }
@@ -253,6 +267,15 @@ internal class PreviewListIrBuilder(
         ).first { fn ->
             val params = fn.owner.parameters.filter { it.kind == IrParameterKind.Regular }
             params.size == 1 && params[0].varargElementType == null
+        }
+        val addFun = pluginContext.referenceFunctions(
+            CallableId(
+                ClassId(FqName("kotlin.collections"), Name.identifier("MutableCollection")),
+                Name.identifier("add"),
+            ),
+        ).first { fn ->
+            val params = fn.owner.parameters.filter { it.kind == IrParameterKind.Regular }
+            params.size == 1
         }
 
         val mutableListType = pluginContext.referenceClass(
@@ -277,6 +300,15 @@ internal class PreviewListIrBuilder(
                 ).apply {
                     arguments[0] = compatContext.irGet(this@irBlock, listVar)
                     arguments[1] = dependencyValue
+                }
+            }
+            // Per-declaration hint (V2): 各 hint は CollectedPreview を 1 個 return するので
+            // `add(hint())` で list に積む (V1 dep getter のような List ではない)。
+            for (hintFn in hintsV2) {
+                val hintCall = compatContext.irCall(this, hintFn.symbol, collectedPreviewType)
+                +compatContext.irCall(this, addFun, pluginContext.irBuiltIns.booleanType).apply {
+                    arguments[0] = compatContext.irGet(this@irBlock, listVar)
+                    arguments[1] = hintCall
                 }
             }
             +compatContext.irGet(this, listVar)
