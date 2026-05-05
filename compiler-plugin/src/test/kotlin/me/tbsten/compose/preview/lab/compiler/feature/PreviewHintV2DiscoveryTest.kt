@@ -160,10 +160,12 @@ class PreviewHintV2DiscoveryTest :
             val ignored = listOf(filePath, code)
         }
 
-        test("dedup: 自モジュール @Preview と cross-module hint が同 FQN なら 1 個に統合") {
-            // 同 FQN cross-module collision は受容済み edge case だが、 通常ケースとして
-            // 自モジュール側の hint が先に登録されて cross-module 側が overwrite しないこと
-            // (= distinctPreviewsById が機能していること) を確認するために、 別 FQN を使う。
+        test("dedup: 同一 preview が V1 (auto-provider) と V2 (per-declaration hint) の両 path から到達しても 1 個に統合される") {
+            // T04 時点では V1 (auto-provider 経由の旧モジュール集約) と V2 (per-declaration hint
+            // 経由の新方式) が共存しているため、 dependency module の `@Preview` は app 側で
+            //   - V1 path: app の auto-provider 経由で lib の preview list を集約
+            //   - V2 path: discoverHintsV2 で lib の `previewHint_<hash>()` を発見 → call
+            // の 2 経路で到達する。 distinctPreviewsById により id 重複が排除されることを検証する。
             val libResult = base.compile(
                 SourceFile.kotlin(
                     "Shared.kt",
@@ -195,10 +197,12 @@ class PreviewHintV2DiscoveryTest :
             val previews = appResult.loadCollectedPreviews(propertyName = "allPreviews")
             val ids = previews.map { p -> p::class.members.find { it.name == "id" }!!.call(p) as String }
 
-            // V1 (auto-provider経由) + V2 (per-declaration hint経由) で SharedPreview が
-            // 2 重に出てくる可能性があるが、 distinctPreviewsById で 1 個に統合される
+            // shared.SharedPreview が 2 重に出てくる可能性があるが、 distinctPreviewsById で
+            // 1 個に統合される (size == distinct size で重複ゼロを assert)
             previews.size shouldBe ids.distinct().size
             ids shouldContain "shared.SharedPreview"
             ids shouldContain "app.AppPreview"
+            // shared.SharedPreview が dedup 後も 1 個だけ残っていることを明示的に確認
+            ids.count { it == "shared.SharedPreview" } shouldBe 1
         }
     })
