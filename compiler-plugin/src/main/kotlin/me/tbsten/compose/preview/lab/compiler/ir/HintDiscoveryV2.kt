@@ -1,7 +1,4 @@
-@file:OptIn(
-    UnsafeDuringIrConstructionAPI::class,
-    org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI::class,
-)
+@file:OptIn(UnsafeDuringIrConstructionAPI::class)
 
 package me.tbsten.compose.preview.lab.compiler.ir
 
@@ -9,67 +6,64 @@ import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
 import me.tbsten.compose.preview.lab.compiler.fir.PreviewLabFirBuiltIns
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.types.classFqName
-import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.platform.jvm.isJvm
 
 /**
  * Per-declaration hint (Metro 風) を **依存モジュール側** から発見する。
- * `me.tbsten.compose.preview.lab.hints` package 配下の `previewHint_*` 関数を全列挙する。
+ * `me.tbsten.compose.preview.lab.hints.previewHint` 関数を `pluginContext.referenceFunctions` で
+ * fixed-name lookup することで、 全 classpath 上の hint を発見する。
  *
  * **Sample call**:
  * ```
  * val hints = discoverHintsV2(pluginContext, compatContext)
  * // → 依存モジュール側で生成された
- * //   `me.tbsten.compose.preview.lab.hints/previewHint_<hash1>(): CollectedPreview`,
- * //   `me.tbsten.compose.preview.lab.hints/previewHint_<hash2>(): CollectedPreview`, ...
+ * //   `previewHint(value: PreviewHintMarker_<hash1>): CollectedPreview`,
+ * //   `previewHint(value: PreviewHintMarker_<hash2>): CollectedPreview`, ...
  * //   の IrSimpleFunction list が返る (自モジュール emit 分は filter 済み)
  * ```
  *
- * 自モジュールが emit した hint は scan 対象外にする (filter via `IR_EXTERNAL_DECLARATION_STUB`
- * origin)。 自モジュールの `@Preview` は別経路で `thisModulePreviews` として既に列挙されて
- * いるため、 含めると `distinctPreviewsById` で dedup されるとはいえ無駄な call IR を増やす。
- *
  * # 設計ポイント
  *
- * - **Package 全 walk**: K2 の `pluginContext.referenceFunctions(CallableId)` は specific 名
- *   での lookup なので、 `previewHint_<hash>` のように hash が module ごとに異なる場合は
- *   先に **関数名一覧** を `moduleDescriptor.getPackage(...).memberScope.getFunctionNames()`
- *   で取得する必要がある。 これは `@ObsoleteDescriptorBasedAPI` 扱いだが、 Metro 等の
- *   標準的な plugin で使われているパターン
+ * - **Fixed name + marker param**: hint 関数名は固定 (`previewHint`)、 引数の marker class が
+ *   per-`@Preview` ユニーク。 KLIB IdSignature は `(name, paramTypes)` で導出されるので、
+ *   marker が違えば別 IdSignature。 `referenceFunctions(fixed-name)` で classpath 全体から
+ *   全 hint を 1 回の lookup で発見できる (V1 の `previewLabExport` 同様の方式)
  * - **Cross-module gate**: KLIB cross-module aggregation は Kotlin 2.3.21+ で機能する。
- *   それ未満では JVM only fallback (file facade で disambiguate) なので、 V1 と同じ条件で
- *   gate する
- * - **filter 条件**: 関数名が `previewHint_` で始まること + 外部 module 由来であること
- *   + 戻り値型が `CollectedPreview` であること (sanity check)
+ *   それ未満では JVM only fallback (file facade で disambiguate)。 旧来の version gate と
+ *   同じ条件で hint 発見を有効化する
+ * - **filter 条件**: `IR_EXTERNAL_DECLARATION_STUB` origin (= 外部 module 由来)、 marker 引数
+ *   が hint package 内、 marker 名が `PreviewHintMarker_` で始まる、 戻り値型が
+ *   `CollectedPreview`
  */
 internal fun discoverHintsV2(pluginContext: IrPluginContext, compatContext: CompatContext,): List<IrSimpleFunction> {
     if (!compatContext.supportsKlibCrossModuleHint() && pluginContext.platform?.isJvm() != true) {
         return emptyList()
     }
 
-    val packageView = pluginContext.moduleDescriptor.getPackage(PreviewLabFirBuiltIns.HINT_PACKAGE_V2)
-    val functionNames = packageView.memberScope.getFunctionNames()
+    @Suppress("DEPRECATION")
+    val hintSymbols = pluginContext.referenceFunctions(PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID_V2)
 
-    val result = mutableListOf<IrSimpleFunction>()
-    for (name in functionNames) {
-        if (!name.asString().startsWith(PreviewLabFirBuiltIns.PreviewHintV2Prefix)) continue
-        val symbols = pluginContext.referenceFunctions(
-            CallableId(PreviewLabFirBuiltIns.HINT_PACKAGE_V2, name),
-        )
-        for (sym in symbols) {
-            val fn = sym.owner
-            // 自モジュール emit の hint は thisModulePreviews 経由で既に列挙されているため除外。
-            // 外部 module から linked された関数は IR_EXTERNAL_DECLARATION_STUB origin で識別。
-            if (fn.origin != IrDeclarationOriginCompat.IR_EXTERNAL_DECLARATION_STUB) continue
-            // 戻り値型が CollectedPreview であることを sanity check
-            if (fn.returnType.classFqName?.asString() != CollectedPreviewFqn) continue
-            result.add(fn)
-        }
+    return hintSymbols.mapNotNull { hintSymbol ->
+        val fn = hintSymbol.owner
+
+        // 自モジュール emit の hint は thisModulePreviews 経由で既に列挙されているため除外。
+        if (fn.origin != IrDeclarationOriginCompat.IR_EXTERNAL_DECLARATION_STUB) return@mapNotNull null
+
+        // marker 引数 1 個 + 戻り値が CollectedPreview であることを sanity check。
+        val regularParams = fn.parameters.filter { it.kind == IrParameterKind.Regular }
+        if (regularParams.size != 1) return@mapNotNull null
+        val markerFqn = regularParams[0].type.classFqName ?: return@mapNotNull null
+        if (markerFqn.parent() != PreviewLabFirBuiltIns.HINT_PACKAGE_V2) return@mapNotNull null
+        if (!markerFqn.shortName().asString().startsWith(MarkerClassPrefix)) return@mapNotNull null
+        if (fn.returnType.classFqName?.asString() != CollectedPreviewFqn) return@mapNotNull null
+
+        fn
     }
-    return result
 }
 
+private const val MarkerClassPrefix = "PreviewHintMarker_"
 private const val CollectedPreviewFqn = "me.tbsten.compose.preview.lab.CollectedPreview"

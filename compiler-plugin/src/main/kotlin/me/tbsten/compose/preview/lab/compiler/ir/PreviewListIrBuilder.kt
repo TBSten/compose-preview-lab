@@ -17,15 +17,14 @@ import org.jetbrains.kotlin.ir.builders.irTemporary
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
-import org.jetbrains.kotlin.ir.expressions.IrConst
 import org.jetbrains.kotlin.ir.expressions.IrExpression
+import org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl
 import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin
 import org.jetbrains.kotlin.ir.expressions.IrVararg
 import org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrFunctionExpressionImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
-import org.jetbrains.kotlin.ir.types.classFqName
 import org.jetbrains.kotlin.ir.types.typeWith
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 import org.jetbrains.kotlin.ir.util.constructors
@@ -34,7 +33,6 @@ import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.SpecialNames
-import org.jetbrains.kotlin.platform.jvm.isJvm
 
 /**
  * Builds the IR for the full preview list.
@@ -193,31 +191,11 @@ internal class PreviewListIrBuilder(
     }
 
     /**
-     * Lazily-cached dependency-module preview getters discovered via Metro-style hints.
-     *
-     * Each entry is an [IrSimpleFunction] that, when called, returns
-     * `List<CollectedPreview>` for one upstream module. Two flavors live in this list:
-     *
-     * - **Manual `collectModulePreviews()` / `collectAllModulePreviews()`**: the [IrSimpleFunction]
-     *   is the property's getter (resolved from the hint's `@PreviewExportHint(fqn = ...)` via
-     *   [IrPluginContext.referenceProperties]).
-     * - **Auto-hint** (no sentinel call written by the user): the [IrSimpleFunction] is a
-     *   stand-alone provider function emitted by `GenerateAutoPreviewExport`, resolved via
-     *   [IrPluginContext.referenceFunctions] when property resolution comes back empty.
-     *
-     * Caching ensures the (potentially expensive) hint-function classpath walk in
-     * [collectDependencyGetters] runs at most once per [PreviewListIrBuilder] instance, even
-     * when a module declares multiple `collectAllModulePreviews()` properties.
-     */
-    private val cachedDependencyGetters: List<IrSimpleFunction> by lazy { collectDependencyGetters() }
-
-    /**
      * Lazily-cached per-declaration hint functions discovered via Metro 風 mechanism.
      *
      * Each entry is an [IrSimpleFunction] that, when called with no arguments, returns a single
-     * `CollectedPreview` (1 hint = 1 `@Preview`)。 旧モジュール集約 hint
-     * ([cachedDependencyGetters]) と異なり、 戻り値は List ではなく単体の CollectedPreview
-     * なので [buildConcatenatedPreviewsExpr] では `add(hint())` 形で list に積む。
+     * `CollectedPreview` (1 hint = 1 `@Preview`)。 [buildConcatenatedPreviewsExpr] では
+     * `add(hint())` 形で list に積む。
      *
      * Caching ensures the (potentially expensive) package walk in [discoverHintsV2] runs at
      * most once per [PreviewListIrBuilder] instance.
@@ -246,11 +224,10 @@ internal class PreviewListIrBuilder(
      * via `core` hint, once via `ui` hint).
      */
     fun buildConcatenatedPreviewsExpr(builder: DeclarationIrBuilder, thisModulePreviews: IrExpression): IrExpression {
-        val dependencyGetters = cachedDependencyGetters
-        val hintsV2 = cachedHintsV2
+        val hints = cachedHintsV2
         val distinctFun = distinctPreviewsByIdFun
 
-        if (dependencyGetters.isEmpty() && hintsV2.isEmpty()) {
+        if (hints.isEmpty()) {
             return compatContext.irCall(builder, distinctFun, listOfCollectedPreviewType).apply {
                 arguments[0] = thisModulePreviews
             }
@@ -290,22 +267,17 @@ internal class PreviewListIrBuilder(
                 arguments[0] = compatContext.irGet(this@irBlock, listVar)
                 arguments[1] = thisModulePreviews
             }
-            for (dependencyGetter in dependencyGetters) {
-                val dependencyValue = compatContext.irCall(this, dependencyGetter.symbol, listOfCollectedPreviewType)
-                +compatContext.irCall(
-                    this,
-                    addAllFun,
-                    pluginContext.irBuiltIns.booleanType,
-                    listOf(collectedPreviewType),
-                ).apply {
-                    arguments[0] = compatContext.irGet(this@irBlock, listVar)
-                    arguments[1] = dependencyValue
+            // Per-declaration hint: 各 hint は CollectedPreview を 1 個 return するので
+            // `add(hint(null))` で list に積む。 hint 関数は
+            // `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` で、 marker
+            // param は IdSignature 区別だけが目的なので `null` を渡せば良い。
+            for (hintFn in hints) {
+                val markerParam = hintFn.parameters.firstOrNull { it.kind == IrParameterKind.Regular }
+                val hintCall = compatContext.irCall(this, hintFn.symbol, collectedPreviewType).apply {
+                    if (markerParam != null) {
+                        arguments[0] = IrConstImpl.constNull(SYNTHETIC_OFFSET, SYNTHETIC_OFFSET, markerParam.type)
+                    }
                 }
-            }
-            // Per-declaration hint (V2): 各 hint は CollectedPreview を 1 個 return するので
-            // `add(hint())` で list に積む (V1 dep getter のような List ではない)。
-            for (hintFn in hintsV2) {
-                val hintCall = compatContext.irCall(this, hintFn.symbol, collectedPreviewType)
                 +compatContext.irCall(this, addFun, pluginContext.irBuiltIns.booleanType).apply {
                     arguments[0] = compatContext.irGet(this@irBlock, listVar)
                     arguments[1] = hintCall
@@ -317,103 +289,5 @@ internal class PreviewListIrBuilder(
         return compatContext.irCall(builder, distinctFun, listOfCollectedPreviewType).apply {
             arguments[0] = concatenatedExpr
         }
-    }
-
-    /**
-     * Discovers dependency-module preview getters via FIR-emitted marker hints.
-     *
-     * **Cross-module aggregation requires Kotlin 2.3.21+** (gated through
-     * [CompatContext.supportsKlibCrossModuleHint]). On older compilers this returns an empty
-     * list and downstream `collectAllModulePreviews()` aggregates only the current module.
-     * The 2.3.21 floor is what unlocks KLIB-safe hint emission via FIR-generated per-module
-     * marker classes (see `PreviewLabHintFirGenerator`): KLIB IdSignatures are derived from
-     * `(name, parameter types)` only, so making each hint take a per-module-unique marker
-     * class as its parameter type makes every hint's IdSignature naturally unique without
-     * needing descriptor-based package scanning.
-     *
-     * Discovery walks `pluginContext.referenceFunctions(HINT_FUNCTION_CALLABLE_ID)`, accepts
-     * any hint whose single value-parameter type lives in the hint package, and reconstructs
-     * the matching auto-provider FQN (`previewLabAutoProvider_<hash>`) from the marker class
-     * id (`PreviewLabExportMarker_<hash>`) — the two share the same hash by construction in
-     * [PreviewLabHintFirGenerator] / [computeAutoProviderName]. No `@PreviewExportHint`
-     * annotation lookup is involved.
-     *
-     * Hints emitted by the current module (which would point back at our own previews and
-     * cause double-counting) are filtered out via the `IR_EXTERNAL_DECLARATION_STUB` origin
-     * marker — only externally-linked hints from upstream modules survive the filter.
-     */
-    private fun collectDependencyGetters(): List<IrSimpleFunction> {
-        // KLIB cross-module aggregation requires the FIR-side hint generator (Kotlin 2.3.21+).
-        // On older Kotlin we fall back to JVM-only legacy hints, where file-facade classes
-        // disambiguate `previewLabExport(PreviewExport)` overloads at the bytecode level.
-        if (!compatContext.supportsKlibCrossModuleHint() && pluginContext.platform?.isJvm() != true) {
-            return emptyList()
-        }
-
-        val hintSymbols = pluginContext.referenceFunctions(
-            HINT_FUNCTION_CALLABLE_ID,
-        )
-
-        return hintSymbols.mapNotNull { hintSymbol ->
-            val hintFunction = hintSymbol.owner
-
-            // Skip hints generated by the current compilation; their preview lists are already
-            // covered by `thisModulePreviews`. External declarations come back with the
-            // `IR_EXTERNAL_DECLARATION_STUB` origin marker.
-            if (hintFunction.origin != IrDeclarationOriginCompat.IR_EXTERNAL_DECLARATION_STUB) return@mapNotNull null
-
-            // Validate parameter shape: a single Regular parameter whose type is either:
-            // - the legacy `PreviewExport` (Kotlin <2.3.21 JVM hints)
-            // - any per-module marker class in the hint package (Kotlin 2.3.21+ FIR hints)
-            val regularParams = hintFunction.parameters.filter { it.kind == IrParameterKind.Regular }
-            if (regularParams.size != 1) return@mapNotNull null
-            val paramFqn = regularParams[0].type.classFqName
-            val isLegacyShape = paramFqn == PREVIEW_EXPORT_FQN
-            // FIR-emitted marker classes live directly in the hint package, named
-            // `PreviewLabExportMarker_<hash>`. The hash matches the auto-provider function
-            // suffix, so once we know the marker class id we can derive the provider FQN
-            // without needing the `@PreviewExportHint` annotation — which is critical because
-            // IR-attached annotations on FIR-generated functions don't always survive into
-            // the consumer's `kotlin.Metadata`.
-            val isFirMarkerShape = paramFqn?.parent() == HINT_PACKAGE &&
-                paramFqn.shortName().asString().startsWith(MarkerClassPrefix)
-            if (!isLegacyShape && !isFirMarkerShape) return@mapNotNull null
-
-            val fqn: String = if (isFirMarkerShape) {
-                val hash = paramFqn!!.shortName().asString().removePrefix(MarkerClassPrefix)
-                "${HINT_PACKAGE.asString()}.previewLabAutoProvider_$hash"
-            } else {
-                // Legacy `previewLabExport(PreviewExport)` hint: target FQN comes from the
-                // `@PreviewExportHint(fqn = ...)` annotation that `GeneratePreviewExportHint`
-                // attaches at IR construction time (kotlin.Metadata captures it because the
-                // function itself is IR-generated).
-                val hintAnnotation = hintFunction.annotations.firstOrNull { ann ->
-                    ann.type.classFqName == PREVIEW_EXPORT_HINT_FQN
-                } ?: return@mapNotNull null
-                (hintAnnotation.arguments.firstOrNull() as? IrConst)?.value as? String ?: return@mapNotNull null
-            }
-
-            // Default-package targets (no dots in FQN) resolve to FqName.ROOT.
-            val lastDot = fqn.lastIndexOf('.')
-            val packageFqName = if (lastDot < 0) FqName.ROOT else FqName(fqn.substring(0, lastDot))
-            val callableName = Name.identifier(if (lastDot < 0) fqn else fqn.substring(lastDot + 1))
-            val callableId = CallableId(packageFqName, callableName)
-
-            // Manual `collectModulePreviews()` property → return its getter.
-            val property = pluginContext.referenceProperties(callableId).firstOrNull()?.owner
-            val propertyGetter = property?.getter
-            if (propertyGetter != null) return@mapNotNull propertyGetter
-
-            // Auto-generated provider function (no source-level property) → return the function itself.
-            pluginContext.referenceFunctions(callableId).firstOrNull()?.owner
-        }
-    }
-
-    private companion object {
-        // Mirrors `PreviewLabHintFirGenerator.MarkerClassPrefix`. We deliberately keep the
-        // constant duplicated here rather than reaching into the FIR module — `PreviewListIrBuilder`
-        // is in the IR layer and consuming a FIR-only constant would create a one-way coupling
-        // we don't have anywhere else.
-        const val MarkerClassPrefix = "PreviewLabExportMarker_"
     }
 }

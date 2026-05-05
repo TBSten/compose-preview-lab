@@ -12,10 +12,15 @@ import me.tbsten.compose.preview.lab.compiler.fir.computeHintHash
 
 /**
  * Per-declaration hint generator (Metro 風) が `@Preview` 1 個に対し
- * `previewHint_<sha256(sourceFqn)>(): CollectedPreview` を 1 個 emit し、 IR で body に
- * `CollectedPreview(...)` constructor 呼び出しを埋め込んでいることを検証する。
+ * (a) `interface PreviewHintMarker_<hash>` (b) `fun previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview`
+ * を 1 セット emit し、 IR で hint 関数の body に `CollectedPreview(...)` constructor 呼び出しを
+ * 埋め込んでいることを検証する。
  *
- * **Skipped on Kotlin < 2.3.21**: 旧モジュール集約 hint generator と同じ version gate に従う
+ * 関数名は固定 (`previewHint`) で marker class が IdSignature を per-`@Preview` 区別する
+ * (V1 の `previewLabExport(value: Marker)` と同じ pattern)。 cross-module discovery は
+ * `referenceFunctions(fixed-name)` で全 hint を発見する。
+ *
+ * **Skipped on Kotlin < 2.3.21**: hint generator は Kotlin 2.3.21+ でのみ稼働
  * ([CompatContext.supportsKlibCrossModuleHint][me.tbsten.compose.preview.lab.compiler.compat.CompatContext.supportsKlibCrossModuleHint])。
  */
 class PreviewHintV2EmissionTest :
@@ -43,8 +48,8 @@ class PreviewHintV2EmissionTest :
                 val expectedHash = computeHintHash(
                     buildPreviewHintCanonicalKey("test.source.MyButton", emptyList()),
                 )
-                // file 名 `previewHint_<hash>__Hint.kt` → file facade class `PreviewHint_<hash>__HintKt`
-                val expectedClassFile = "me/tbsten/compose/preview/lab/hints/PreviewHint_${expectedHash}__HintKt.class"
+                // file 名 `previewHint_<hash>__Hint.kt` → file facade class `PreviewHint_<hash>Kt`
+                val expectedClassFile = "me/tbsten/compose/preview/lab/hints/PreviewHint_${expectedHash}Kt.class"
 
                 val classFiles = result.outputDirectory.walkTopDown()
                     .filter { it.isFile && it.name.endsWith(".class") }
@@ -73,11 +78,15 @@ class PreviewHintV2EmissionTest :
                     buildPreviewHintCanonicalKey("test.source.MyButton", emptyList()),
                 )
                 val hintFacade = result.classLoader
-                    .loadClass("me.tbsten.compose.preview.lab.hints.PreviewHint_${expectedHash}__HintKt")
-                val hintMethod = hintFacade.getMethod("previewHint_$expectedHash")
+                    .loadClass("me.tbsten.compose.preview.lab.hints.PreviewHint_${expectedHash}Kt")
+                // hint 関数名は固定 (`previewHint`) で、 marker class param で区別する。
+                // Java reflection からは marker param 型の Class object を渡して getMethod する。
+                val markerClass = result.classLoader
+                    .loadClass("me.tbsten.compose.preview.lab.hints.PreviewHintMarker_$expectedHash")
+                val hintMethod = hintFacade.getMethod("previewHint", markerClass)
 
-                // hint() を invoke すると CollectedPreview インスタンスが返る
-                val collected = hintMethod.invoke(null)
+                // hint(null) を invoke すると CollectedPreview インスタンスが返る
+                val collected = hintMethod.invoke(null, null)
                 checkNotNull(collected) { "hint 関数が null を返した" }
 
                 val collectedClass = collected.javaClass
@@ -117,10 +126,10 @@ class PreviewHintV2EmissionTest :
                     .toList()
 
                 classFiles shouldExist {
-                    it == "me/tbsten/compose/preview/lab/hints/PreviewHint_${firstHash}__HintKt.class"
+                    it == "me/tbsten/compose/preview/lab/hints/PreviewHint_${firstHash}Kt.class"
                 }
                 classFiles shouldExist {
-                    it == "me/tbsten/compose/preview/lab/hints/PreviewHint_${secondHash}__HintKt.class"
+                    it == "me/tbsten/compose/preview/lab/hints/PreviewHint_${secondHash}Kt.class"
                 }
             }
 

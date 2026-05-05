@@ -4,7 +4,6 @@ package me.tbsten.compose.preview.lab.compiler.ir
 
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.fir.Keys
-import me.tbsten.compose.preview.lab.compiler.fir.PreviewLabFirBuiltIns
 import me.tbsten.compose.preview.lab.compiler.fir.buildPreviewHintCanonicalKey
 import me.tbsten.compose.preview.lab.compiler.fir.computeHintHash
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -92,11 +91,29 @@ internal class PreviewHintIrBodyFillerV2(
      */
     override fun visitSimpleFunction(declaration: IrSimpleFunction): IrStatement {
         if (declaration.body != null) return super.visitSimpleFunction(declaration)
-        if (!declaration.isHintV2()) return super.visitSimpleFunction(declaration)
+        val origin = declaration.origin
+        when {
+            origin is IrDeclarationOrigin.GeneratedByPlugin && origin.pluginKey === Keys.PreviewLabHintV2 -> {
+                fillHintBody(declaration)
+            }
+        }
+        return super.visitSimpleFunction(declaration)
+    }
 
-        val hash = declaration.name.asString()
-            .removePrefix(PreviewLabFirBuiltIns.PreviewHintV2Prefix)
-        val previewInfo = previewsByHash[hash] ?: return super.visitSimpleFunction(declaration)
+    /**
+     * Hint 関数の body を `CollectedPreview(...)` constructor 呼び出しの `irReturn` に書き換える。
+     *
+     * 元 `@Preview` 関数は hint の `value: PreviewHintMarker_<hash>` 引数の marker class 名から
+     * hash を取り出して特定する (FIR generator が hash 入りの marker class を生成しているため)。
+     */
+    private fun fillHintBody(declaration: IrSimpleFunction) {
+        val regularParams = declaration.parameters.filter { it.kind == IrParameterKind.Regular }
+        if (regularParams.size != 1) return
+        val markerFqn = regularParams[0].type.classFqName ?: return
+        val markerShortName = markerFqn.shortName().asString()
+        if (!markerShortName.startsWith(MarkerClassPrefix)) return
+        val hash = markerShortName.removePrefix(MarkerClassPrefix)
+        val previewInfo = previewsByHash[hash] ?: return
 
         val builder = DeclarationIrBuilder(pluginContext, declaration.symbol)
         val collectedPreviewExpr = collectedPreviewBuilder.buildCollectedPreviewCall(
@@ -105,13 +122,10 @@ internal class PreviewHintIrBodyFillerV2(
             parent = declaration,
         )
         declaration.body = builder.irBlockBody { +irReturn(collectedPreviewExpr) }
-
-        return super.visitSimpleFunction(declaration)
     }
 
-    private fun IrSimpleFunction.isHintV2(): Boolean {
-        val origin = origin
-        return origin is IrDeclarationOrigin.GeneratedByPlugin && origin.pluginKey === Keys.PreviewLabHintV2
+    private companion object {
+        const val MarkerClassPrefix = "PreviewHintMarker_"
     }
 }
 
