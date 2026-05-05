@@ -5,8 +5,10 @@ import com.tschuchort.compiletesting.SourceFile
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldExist
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import me.tbsten.compose.preview.lab.compiler.CompilerPluginTestBase
-import me.tbsten.compose.preview.lab.compiler.fir.computeSourceFqnHash
+import me.tbsten.compose.preview.lab.compiler.fir.buildPreviewHintCanonicalKey
+import me.tbsten.compose.preview.lab.compiler.fir.computeHintHash
 
 /**
  * Per-declaration hint generator (Metro 風) が `@Preview` 1 個に対し
@@ -21,7 +23,7 @@ class PreviewHintV2EmissionTest :
         val base = CompilerPluginTestBase()
 
         val testKotlinVersion = System.getProperty("test.kotlin.version") ?: "2.3.21"
-        val supports = testKotlinVersion.compareTo("2.3.21") >= 0 || testKotlinVersion.startsWith("2.4")
+        val supports = testKotlinVersion.isAtLeast(2, 3, 21)
 
         test("@Preview 1 個 → previewHint_<hash> が 1 個 emit される")
             .config(enabled = supports) {
@@ -38,9 +40,11 @@ class PreviewHintV2EmissionTest :
                 )
                 result.exitCode shouldBe KotlinCompilation.ExitCode.OK
 
-                val expectedHash = computeSourceFqnHash("test.source.MyButton")
-                // file facade class name は file 名の先頭を capitalize: previewHint_<hash>.kt → PreviewHint_<hash>Kt.class
-                val expectedClassFile = "me/tbsten/compose/preview/lab/hints/PreviewHint_${expectedHash}Kt.class"
+                val expectedHash = computeHintHash(
+                    buildPreviewHintCanonicalKey("test.source.MyButton", emptyList()),
+                )
+                // file 名 `previewHint_<hash>__Hint.kt` → file facade class `PreviewHint_<hash>__HintKt`
+                val expectedClassFile = "me/tbsten/compose/preview/lab/hints/PreviewHint_${expectedHash}__HintKt.class"
 
                 val classFiles = result.outputDirectory.walkTopDown()
                     .filter { it.isFile && it.name.endsWith(".class") }
@@ -65,9 +69,11 @@ class PreviewHintV2EmissionTest :
                 )
                 result.exitCode shouldBe KotlinCompilation.ExitCode.OK
 
-                val expectedHash = computeSourceFqnHash("test.source.MyButton")
+                val expectedHash = computeHintHash(
+                    buildPreviewHintCanonicalKey("test.source.MyButton", emptyList()),
+                )
                 val hintFacade = result.classLoader
-                    .loadClass("me.tbsten.compose.preview.lab.hints.PreviewHint_${expectedHash}Kt")
+                    .loadClass("me.tbsten.compose.preview.lab.hints.PreviewHint_${expectedHash}__HintKt")
                 val hintMethod = hintFacade.getMethod("previewHint_$expectedHash")
 
                 // hint() を invoke すると CollectedPreview インスタンスが返る
@@ -82,7 +88,7 @@ class PreviewHintV2EmissionTest :
                 displayName shouldBe "test.source.MyButton"
             }
 
-        test("@Preview が複数あれば hint が複数 emit される")
+        test("@Preview が複数あれば hint が複数 emit され、 hash は別 (overload も signature で区別)")
             .config(enabled = supports) {
                 val result = base.compile(
                     SourceFile.kotlin(
@@ -100,9 +106,10 @@ class PreviewHintV2EmissionTest :
                 )
                 result.exitCode shouldBe KotlinCompilation.ExitCode.OK
 
-                val firstHash = computeSourceFqnHash("test.source.First")
-                val secondHash = computeSourceFqnHash("test.source.Second")
-                firstHash shouldBe firstHash // sanity (deterministic)
+                val firstHash = computeHintHash(buildPreviewHintCanonicalKey("test.source.First", emptyList()))
+                val secondHash = computeHintHash(buildPreviewHintCanonicalKey("test.source.Second", emptyList()))
+                // 別 sourceFqn なので別 hash → 別 hint 関数として共存
+                firstHash shouldNotBe secondHash
 
                 val classFiles = result.outputDirectory.walkTopDown()
                     .filter { it.isFile && it.name.endsWith(".class") }
@@ -110,18 +117,58 @@ class PreviewHintV2EmissionTest :
                     .toList()
 
                 classFiles shouldExist {
-                    it == "me/tbsten/compose/preview/lab/hints/PreviewHint_${firstHash}Kt.class"
+                    it == "me/tbsten/compose/preview/lab/hints/PreviewHint_${firstHash}__HintKt.class"
                 }
                 classFiles shouldExist {
-                    it == "me/tbsten/compose/preview/lab/hints/PreviewHint_${secondHash}Kt.class"
+                    it == "me/tbsten/compose/preview/lab/hints/PreviewHint_${secondHash}__HintKt.class"
                 }
             }
 
-        test("同じ source FQN の hash は projectRootPath に依存せず再現可能")
+        test("同名 overload を canonical key の signature で区別する (hash unit-level)") {
+            // hint canonical key 自体が parameter signature を含むので、 同 sourceFqn でも
+            // 異なる signature なら異なる hash になることを確認。
+            // (parameterized `@Preview` を実際に compile した end-to-end test は orthogonal な
+            //  「lambda body が param 付き関数を call できない」 課題があるため別 ticket で扱う)
+            val noArgHash = computeHintHash(buildPreviewHintCanonicalKey("test.source.MyButton", emptyList()))
+            val withStringArgHash = computeHintHash(
+                buildPreviewHintCanonicalKey("test.source.MyButton", listOf("kotlin.String")),
+            )
+            val withIntArgHash = computeHintHash(
+                buildPreviewHintCanonicalKey("test.source.MyButton", listOf("kotlin.Int")),
+            )
+            val withNullableStringArgHash = computeHintHash(
+                buildPreviewHintCanonicalKey("test.source.MyButton", listOf("kotlin.String?")),
+            )
+            noArgHash shouldNotBe withStringArgHash
+            withStringArgHash shouldNotBe withIntArgHash
+            withStringArgHash shouldNotBe withNullableStringArgHash
+        }
+
+        test("hash 関数が canonical key で再現可能 (projectRootPath 非依存)")
             .config(enabled = supports) {
-                // hash 関数自体の reproducibility を verify (compile 越しではなく直接)
-                val a = computeSourceFqnHash("uiLib.button.MyButton")
-                val b = computeSourceFqnHash("uiLib.button.MyButton")
+                val key = buildPreviewHintCanonicalKey("uiLib.button.MyButton", emptyList())
+                val a = computeHintHash(key)
+                val b = computeHintHash(key)
                 a shouldBe b
             }
     })
+
+/**
+ * `"2.3.9"` 等の lexicographic 比較で誤って `>= 2.3.21` 判定される問題を避けるため、
+ * `MAJOR.MINOR.PATCH` を numeric 比較する簡易 helper。
+ *
+ * **Sample**: `"2.3.21".isAtLeast(2, 3, 21)` → `true`、 `"2.3.9".isAtLeast(2, 3, 21)` → `false`、
+ * `"2.4.0".isAtLeast(2, 3, 21)` → `true`、 `"2.3.21-Beta1".isAtLeast(2, 3, 21)` → `true`
+ * (suffix は無視)。
+ */
+private fun String.isAtLeast(major: Int, minor: Int, patch: Int): Boolean {
+    val parts = substringBefore('-').split('.')
+    val v0 = parts.getOrNull(0)?.toIntOrNull() ?: 0
+    val v1 = parts.getOrNull(1)?.toIntOrNull() ?: 0
+    val v2 = parts.getOrNull(2)?.toIntOrNull() ?: 0
+    return when {
+        v0 != major -> v0 > major
+        v1 != minor -> v1 > minor
+        else -> v2 >= patch
+    }
+}

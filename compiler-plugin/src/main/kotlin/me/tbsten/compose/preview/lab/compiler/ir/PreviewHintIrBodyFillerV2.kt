@@ -5,15 +5,19 @@ package me.tbsten.compose.preview.lab.compiler.ir
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.fir.Keys
 import me.tbsten.compose.preview.lab.compiler.fir.PreviewLabFirBuiltIns
-import me.tbsten.compose.preview.lab.compiler.fir.computeSourceFqnHash
+import me.tbsten.compose.preview.lab.compiler.fir.buildPreviewHintCanonicalKey
+import me.tbsten.compose.preview.lab.compiler.fir.computeHintHash
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.builders.irBlockBody
 import org.jetbrains.kotlin.ir.builders.irReturn
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
+import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
+import org.jetbrains.kotlin.ir.types.classFqName
+import org.jetbrains.kotlin.ir.types.isMarkedNullable
 import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 
@@ -112,12 +116,16 @@ internal class PreviewHintIrBodyFillerV2(
 }
 
 /**
- * `@Preview` annotated top-level 関数を moduleFragment から走査し、 sourceFqn の hash を key
- * とした [PreviewFunctionInfo] map を構築する。
+ * `@Preview` annotated top-level 関数を moduleFragment から走査し、 canonical key の hash を
+ * key とした [PreviewFunctionInfo] map を構築する。
  *
  * `ignore = true` の preview も含めることで、 [PreviewHintFirGeneratorV2] が emit した
  * すべての hint declaration に body を埋められるようにする。 ignore filter は consumer 側
  * で行う想定 (TODO: cross-module で ignore preview が露出しない形にする follow-up)。
+ *
+ * Canonical key は同名 overload (`fun MyButton()` と `fun MyButton(text: String)`) を
+ * 区別するため、 sourceFqn + parameter type FQN を含む形で組み立てる。 FIR generator と
+ * 同じロジックを使う必要があるため [buildPreviewHintCanonicalKey] を共有する。
  *
  * **Sample entry**: `"a3k9z2x1" → PreviewFunctionInfo(function = fun MyButton(), id = "uiLib.button.MyButton", ...)`
  */
@@ -125,6 +133,21 @@ internal fun buildPreviewByHashMap(previews: List<PreviewFunctionInfo>): Map<Str
     for (preview in previews) {
         val sourceFqn = preview.function.kotlinFqName.asString()
         if (sourceFqn.isEmpty()) continue
-        put(computeSourceFqnHash(sourceFqn), preview)
+        val parameterTypeFqns = preview.function.parameterTypeFqnsForHash()
+        val canonicalKey = buildPreviewHintCanonicalKey(sourceFqn, parameterTypeFqns)
+        put(computeHintHash(canonicalKey), preview)
     }
 }
+
+/**
+ * IR `IrSimpleFunction` の value parameter type を hint canonical key 用の FQN リストに変換する。
+ * FIR side [me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGeneratorV2] と同じ format で
+ * 揃える必要がある (nullable は `?` suffix、 unknown は `?` 単体)。
+ */
+private fun IrSimpleFunction.parameterTypeFqnsForHash(): List<String> = parameters
+    .filter { it.kind == IrParameterKind.Regular }
+    .map { param ->
+        val type = param.type
+        val classFqn = type.classFqName?.asString() ?: "?"
+        if (type.isMarkedNullable()) "$classFqn?" else classFqn
+    }

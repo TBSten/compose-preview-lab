@@ -6,6 +6,7 @@ package me.tbsten.compose.preview.lab.compiler.fir
 
 import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
 import org.jetbrains.kotlin.fir.extensions.FirDeclarationGenerationExtension
 import org.jetbrains.kotlin.fir.extensions.FirDeclarationPredicateRegistrar
 import org.jetbrains.kotlin.fir.extensions.MemberGenerationContext
@@ -14,7 +15,10 @@ import org.jetbrains.kotlin.fir.extensions.predicateBasedProvider
 import org.jetbrains.kotlin.fir.plugin.createTopLevelFunction
 import org.jetbrains.kotlin.fir.resolve.providers.symbolProvider
 import org.jetbrains.kotlin.fir.symbols.impl.FirNamedFunctionSymbol
+import org.jetbrains.kotlin.fir.symbols.lazyResolveToPhase
+import org.jetbrains.kotlin.fir.types.classId
 import org.jetbrains.kotlin.fir.types.constructType
+import org.jetbrains.kotlin.fir.types.isMarkedNullable
 import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
@@ -127,7 +131,10 @@ internal class PreviewHintFirGeneratorV2(session: FirSession) : FirDeclarationGe
             ?: return emptyList()
         val collectedPreviewType = collectedPreviewSymbol.constructType(emptyArray())
 
-        val fileName = "${callableId.callableName.asString()}.kt"
+        // 同 package に user-side の `previewHint_<hash>` 同名トップレベル関数があった場合に
+        // file facade class が衝突しないよう、 plugin 生成 file 名には `__Hint` suffix を付ける。
+        // class 名は `PreviewHint_<hash>__HintKt` になる。
+        val fileName = "${callableId.callableName.asString()}__Hint.kt"
         val function = createTopLevelFunction(
             Keys.PreviewLabHintV2,
             callableId,
@@ -155,12 +162,32 @@ internal class PreviewHintFirGeneratorV2(session: FirSession) : FirDeclarationGe
                 val packageName = callableId.packageName.asString()
                 val simpleName = callableId.callableName.asString()
                 val sourceFqn = if (packageName.isEmpty()) simpleName else "$packageName.$simpleName"
-                val hash = computeSourceFqnHash(sourceFqn)
+                val parameterTypeFqns = symbol.parameterTypeFqnsForHash()
+                val canonicalKey = buildPreviewHintCanonicalKey(sourceFqn, parameterTypeFqns)
+                val hash = computeHintHash(canonicalKey)
                 CallableId(
                     PreviewLabFirBuiltIns.HINT_PACKAGE_V2,
                     Name.identifier("${PreviewLabFirBuiltIns.PreviewHintV2Prefix}$hash"),
                 )
             }
             .distinct()
+    }
+
+    /**
+     * `@Preview` 関数の value parameter type を hint canonical key 用の FQN リストに変換する。
+     *
+     * 同名 overload (`fun MyButton()` と `fun MyButton(text: String)`) を区別するため、
+     * 各パラメータの type FQN を含めて hash 入力を作る。 parameter type の resolve には
+     * TYPES phase が必要なので [lazyResolveToPhase] で進める。
+     *
+     * **Format**: 各 type は `<classId>` (nullable なら `?` を suffix)。 unknown は `?` を返す。
+     */
+    private fun FirNamedFunctionSymbol.parameterTypeFqnsForHash(): List<String> {
+        lazyResolveToPhase(FirResolvePhase.TYPES)
+        return valueParameterSymbols.map { paramSymbol ->
+            val coneType = paramSymbol.resolvedReturnTypeRef.coneType
+            val classFqn = coneType.classId?.asFqNameString() ?: "?"
+            if (coneType.isMarkedNullable) "$classFqn?" else classFqn
+        }
     }
 }
