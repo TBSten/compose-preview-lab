@@ -25,6 +25,7 @@ class PreviewLabFirExtensionRegistrar(private val config: PluginConfig) : FirExt
         +::PreviewLabFirStatusTransformerExtension
         if (CompatContext.load().supportsKlibCrossModuleHint()) {
             +::PreviewLabHintFirGenerator
+            +::PreviewHintFirGeneratorV2
         }
     }
 }
