@@ -53,9 +53,12 @@ public fun collectModulePreviews(): PreviewExport = PreviewExport(
  * `me.tbsten.compose.preview.lab.hints` package) and the consumer side discovers them via
  * `IrPluginContext.referenceFunctions`, which works equally for JVM bytecode and KLIB modules.
  *
- * Older Kotlin (pre-2.3.21) does not support the FIR-based hint generator, so calling
- * `collectAllModulePreviews()` there fails at compile time with a clear upgrade-or-downgrade
- * message. `collectModulePreviews()` (single-module) continues to work on every Kotlin version.
+ * Older Kotlin (pre-2.3.21) does not support the FIR-based hint generator. The plugin's
+ * IR pass detects the `val x by collectAllModulePreviews()` delegated-property pattern and
+ * reports a compile-time error with a clear upgrade-or-downgrade message. Direct calls outside
+ * a property delegate (which are not the supported usage) compile and fall back to the
+ * `IllegalStateException` thrown by the placeholder body. `collectModulePreviews()`
+ * (single-module) continues to work on every Kotlin version.
  *
  * Example — app module aggregating its own previews and any library previews on the classpath:
  * ```kotlin
