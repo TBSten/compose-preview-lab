@@ -18,8 +18,10 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
  *   を emit する Metro 風 generator。
  *   **Only registered when the running Kotlin compiler supports it** (Kotlin 2.3.21+,
  *   surfaced via [CompatContext.supportsKlibCrossModuleHint])。 古い Kotlin では
- *   `collectAllModulePreviews()` 自体が動かないため、 T06 の FIR Checker が call site で
- *   compile-time error を報告する。
+ *   `collectAllModulePreviews()` 自体が動かないため、 IR phase の
+ *   `PreviewLabIrBodyFiller.reportUnsupportedCollectAllError` が
+ *   `val by collectAllModulePreviews()` の by-delegate pattern を検出して
+ *   compile-time error を `MessageCollector` 経由で報告する。
  */
 class PreviewLabFirExtensionRegistrar(private val config: PluginConfig) : FirExtensionRegistrar() {
 

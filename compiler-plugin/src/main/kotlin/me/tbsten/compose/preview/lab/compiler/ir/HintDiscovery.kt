@@ -10,7 +10,6 @@ import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.types.classFqName
-import org.jetbrains.kotlin.platform.jvm.isJvm
 
 /**
  * Per-declaration hint (Metro 風) を **依存モジュール側** から発見する。
@@ -32,17 +31,16 @@ import org.jetbrains.kotlin.platform.jvm.isJvm
  *   per-`@Preview` ユニーク。 KLIB IdSignature は `(name, paramTypes)` で導出されるので、
  *   marker が違えば別 IdSignature。 `referenceFunctions(fixed-name)` で classpath 全体から
  *   全 hint を 1 回の lookup で発見できる (V1 の `previewLabExport` 同様の方式)
- * - **Cross-module gate**: KLIB cross-module aggregation は Kotlin 2.3.21+ で機能する。
- *   それ未満では JVM only fallback (file facade で disambiguate)。 旧来の version gate と
- *   同じ条件で hint 発見を有効化する
+ * - **Cross-module gate**: hint discovery は呼び出し元 (`PreviewLabIrBodyFiller.replaceCollectPreviewsProperty`)
+ *   で `supportsKlibCrossModuleHint()` を pre-check して、 不可なら早期 error report で IR
+ *   transform を中止する。 そのため discoverHints が実際に呼ばれる時点では gate 条件は
+ *   満たされている前提
  * - **filter 条件**: `IR_EXTERNAL_DECLARATION_STUB` origin (= 外部 module 由来)、 marker 引数
  *   が hint package 内、 marker 名が `PreviewHintMarker_` で始まる、 戻り値型が
  *   `CollectedPreview`
  */
 internal fun discoverHints(pluginContext: IrPluginContext, compatContext: CompatContext,): List<IrSimpleFunction> {
-    if (!compatContext.supportsKlibCrossModuleHint() && pluginContext.platform?.isJvm() != true) {
-        return emptyList()
-    }
+    if (!compatContext.supportsKlibCrossModuleHint()) return emptyList()
 
     @Suppress("DEPRECATION")
     val hintSymbols = pluginContext.referenceFunctions(PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID)

@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.IrConst
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.util.file
+import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.name.FqName
 
 /**
@@ -47,7 +48,18 @@ class PreviewLabIrGenerationExtension(
         // ignore=true も含めて構築する。
         if (compatContext.supportsKlibCrossModuleHint()) {
             val previewsIncludingIgnored = collectPreviewsIncludingIgnored(moduleFragment)
-            val previewsByHash = buildPreviewByHashMap(previewsIncludingIgnored)
+            val previewsByHash = buildPreviewByHashMap(previewsIncludingIgnored) { hash, existing, conflicting ->
+                val existingFqn = existing.function.kotlinFqName.asString()
+                val conflictingFqn = conflicting.function.kotlinFqName.asString()
+                messageCollector.report(
+                    org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity.ERROR,
+                    "[ComposePreviewLab] hint hash collision detected on `$hash`. " +
+                        "Two distinct @Preview functions hash to the same value: " +
+                        "`$existingFqn` and `$conflictingFqn`. " +
+                        "This is astronomically rare (~10⁻⁷ at 1k previews) but indicates a SHA-256 " +
+                        "truncation collision. Workaround: rename one of the functions or its package.",
+                )
+            }
             compatContext.transformModuleFragment(
                 moduleFragment,
                 PreviewHintIrBodyFiller(pluginContext, compatContext, previewsByHash),

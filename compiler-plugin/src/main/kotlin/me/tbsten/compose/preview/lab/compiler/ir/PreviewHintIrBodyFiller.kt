@@ -146,14 +146,30 @@ internal class PreviewHintIrBodyFiller(
  * 同じロジックを使う必要があるため [buildPreviewHintCanonicalKey] を共有する。
  *
  * **Sample entry**: `"a3k9z2x1" → PreviewFunctionInfo(function = fun MyButton(), id = "uiLib.button.MyButton", ...)`
+ *
+ * # Collision detection
+ *
+ * Hint hash は SHA-256 を base-36 8 文字に truncate しているため (約 41 bit、
+ * [computeHintHash] 参照)、 distinct な canonical key 同士で hash 衝突する可能性が
+ * 理論上ゼロではない (1k preview で ~10⁻⁷)。 衝突した場合 `put` 上書きで `@Preview` が
+ * silent に集約結果から欠落するため、 衝突を検知したら [onCollision] callback で
+ * 呼び出し側に通知し ERROR 報告する。
  */
-internal fun buildPreviewByHashMap(previews: List<PreviewFunctionInfo>): Map<String, PreviewFunctionInfo> = buildMap {
+internal fun buildPreviewByHashMap(
+    previews: List<PreviewFunctionInfo>,
+    onCollision: (hash: String, existing: PreviewFunctionInfo, conflicting: PreviewFunctionInfo) -> Unit = { _, _, _ -> },
+): Map<String, PreviewFunctionInfo> = buildMap {
     for (preview in previews) {
         val sourceFqn = preview.function.kotlinFqName.asString()
         if (sourceFqn.isEmpty()) continue
         val parameterTypeFqns = preview.function.parameterTypeFqnsForHash()
         val canonicalKey = buildPreviewHintCanonicalKey(sourceFqn, parameterTypeFqns)
-        put(computeHintHash(canonicalKey), preview)
+        val hash = computeHintHash(canonicalKey)
+        val existing = get(hash)
+        if (existing != null && existing.function.kotlinFqName != preview.function.kotlinFqName) {
+            onCollision(hash, existing, preview)
+        }
+        put(hash, preview)
     }
 }
 

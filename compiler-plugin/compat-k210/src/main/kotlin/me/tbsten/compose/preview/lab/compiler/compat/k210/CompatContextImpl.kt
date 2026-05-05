@@ -67,25 +67,6 @@ public class CompatContextImpl : CompatContext {
         function.annotations = function.annotations + annotation
     }
 
-    override fun addConstructorCallAnnotationWithArgs(
-        function: IrSimpleFunction,
-        type: IrType,
-        constructorSymbol: IrConstructorSymbol,
-        arguments: List<IrExpression>,
-    ) {
-        val annotation = IrConstructorCallImpl(
-            startOffset = SYNTHETIC_OFFSET,
-            endOffset = SYNTHETIC_OFFSET,
-            type = type,
-            symbol = constructorSymbol,
-            typeArgumentsCount = 0,
-            constructorTypeArgumentsCount = 0,
-        ).apply {
-            arguments.forEachIndexed { index, expr -> this.arguments[index] = expr }
-        }
-        function.annotations = function.annotations + annotation
-    }
-
     override fun irCall(builder: IrBuilderWithScope, callee: IrSimpleFunctionSymbol): IrCall = builder.irCall(callee)
 
     override fun irCall(builder: IrBuilderWithScope, callee: IrFunctionSymbol, returnType: IrType): IrFunctionAccessExpression =
