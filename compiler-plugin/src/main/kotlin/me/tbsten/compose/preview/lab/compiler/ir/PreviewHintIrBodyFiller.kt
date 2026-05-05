@@ -4,6 +4,7 @@ package me.tbsten.compose.preview.lab.compiler.ir
 
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.fir.Keys
+import me.tbsten.compose.preview.lab.compiler.fir.PreviewLabFirBuiltIns
 import me.tbsten.compose.preview.lab.compiler.fir.buildPreviewHintCanonicalKey
 import me.tbsten.compose.preview.lab.compiler.fir.computeHintHash
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -22,19 +23,20 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 
 /**
  * [me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGenerator] が emit した
- * `previewHint_<hash>(): CollectedPreview` stub の body を埋める。 FIR は body を持てないので
- * IR pass で `CollectedPreview(...)` constructor 呼び出しを `irReturn` する形に書き換える。
+ * `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` stub の body を埋める。
+ * FIR は body を持てないので IR pass で `CollectedPreview(...)` constructor 呼び出しを
+ * `irReturn` する形に書き換える。
  *
  * **Hint function**
  *
  * Before (FIR から渡る):
  * ```kotlin
- * public fun previewHint_<hash>(): CollectedPreview  // body == null
+ * public fun previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview  // body == null
  * ```
  *
  * After (本 transformer が書き換え):
  * ```kotlin
- * public fun previewHint_<hash>(): CollectedPreview = CollectedPreview(
+ * public fun previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview = CollectedPreview(
  *     id = "uiLib.button.MyButton",
  *     displayName = "uiLib.button.MyButton",
  *     filePath = "uiLib/src/.../MyButton.kt",
@@ -48,17 +50,18 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
  *
  * # 設計ポイント
  *
- * - **Hint と `@Preview` の照合**: hint 関数名 `previewHint_<hash>` から hash を取り出し、
- *   IR module 内の `@Preview` 関数の sourceFqn を hash した値と突き合わせて元関数を特定する。
- *   FIR generator と IR side で同一の [computeSourceFqnHash] を使うので一意に照合できる
+ * - **Hint と `@Preview` の照合**: hint の `value: PreviewHintMarker_<hash>?` 引数の marker
+ *   class 短名から hash を取り出し、 IR module 内の `@Preview` 関数の canonical key を
+ *   hash した値と突き合わせて元関数を特定する。 FIR generator と IR side で同一の
+ *   [computeHintHash] / [buildPreviewHintCanonicalKey] を使うので一意に照合できる
  * - **`CollectedPreview` 構築**: 既存 [CollectedPreviewIrBuilder.buildCollectedPreviewCall] を
- *   そのまま再利用する。 旧モジュール集約 hint
- *   (`previewLabAutoProvider_<hash>(): List<CollectedPreview>`) も同じ builder で個々の
- *   `CollectedPreview` を構築しているので、 hint 関数の戻り値の差は「単体 vs List」 だけ
+ *   そのまま再利用する
  * - **`@ComposePreviewLabOption(ignore = true)` の取り扱い**: hint emit 自体は ignore=true でも
  *   行うため、 IR 側でも `previews` (filter 済み) ではなく moduleFragment 全体の `@Preview`
  *   関数を直接走査して PreviewFunctionInfo を構築する。 そうしないと ignore=true の hint が
- *   orphan (body=null) になり JVM backend assert に当たる
+ *   orphan (body=null) になり JVM backend assert に当たる。 cross-module で ignore preview
+ *   が露出する課題は redesign 完了後の follow-up
+ *   (`.local/ticket/followup-ignore-preview-cross-module-leak.md`)
  */
 internal class PreviewHintIrBodyFiller(
     private val pluginContext: IrPluginContext,
@@ -74,17 +77,17 @@ internal class PreviewHintIrBodyFiller(
     /**
      * Hint 関数の body を `CollectedPreview(...)` constructor 呼び出しの `irReturn` に書き換える。
      *
-     * `Keys.PreviewLabHint` origin の関数のみを対象にする。 元 `@Preview` 関数は hint 関数名
-     * `previewHint_<hash>` の hash 部分から特定する。
+     * `Keys.PreviewLabHint` origin の関数のみを対象にする。 元 `@Preview` 関数は hint の
+     * `value: PreviewHintMarker_<hash>?` 引数の marker class 短名から特定する。
      *
      * **Before**:
      * ```kotlin
-     * public fun previewHint_a3k9z2x1(): CollectedPreview  // body == null
+     * public fun previewHint(value: PreviewHintMarker_a3k9z2x1?): CollectedPreview  // body == null
      * ```
      *
      * **After** (semantically):
      * ```kotlin
-     * public fun previewHint_a3k9z2x1(): CollectedPreview = CollectedPreview(
+     * public fun previewHint(value: PreviewHintMarker_a3k9z2x1?): CollectedPreview = CollectedPreview(
      *     id = "uiLib.button.MyButton", ..., content = @Composable { uiLib.button.MyButton() },
      * )
      * ```
@@ -125,7 +128,8 @@ internal class PreviewHintIrBodyFiller(
     }
 
     private companion object {
-        const val MarkerClassPrefix = "PreviewHintMarker_"
+        // 別 module からも参照される canonical な定義は `PreviewLabFirBuiltIns.PreviewHintMarkerPrefix`。
+        val MarkerClassPrefix = PreviewLabFirBuiltIns.PreviewHintMarkerPrefix
     }
 }
 

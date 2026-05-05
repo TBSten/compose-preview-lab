@@ -14,7 +14,8 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
  * - [PreviewLabFirStatusTransformerExtension] — widens `private @Preview` functions to
  *   `internal` so generated code can call them.
  * - [PreviewHintFirGenerator] — `@Preview` 1 個ごとに per-declaration hint
- *   `previewHint_<hash>(): CollectedPreview` を emit する Metro 風 generator。
+ *   (`interface PreviewHintMarker_<hash>` + `fun previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview`)
+ *   を emit する Metro 風 generator。
  *   **Only registered when the running Kotlin compiler supports it** (Kotlin 2.3.21+,
  *   surfaced via [CompatContext.supportsKlibCrossModuleHint])。 古い Kotlin では
  *   `collectAllModulePreviews()` 自体が動かないため、 T06 の FIR Checker が call site で

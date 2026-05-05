@@ -41,7 +41,7 @@ class PreviewLabIrGenerationExtension(
         compatContext.transformModuleFragment(moduleFragment, bodyFiller)
 
         // Per-declaration hint (Metro 風) 用の body filler。 FIR generator が emit した
-        // `previewHint_<hash>(): CollectedPreview` の body を IR pass で埋める。
+        // `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` の body を IR pass で埋める。
         // hint emit 側で ignore=true を filter していないため、 body fill 用の lookup は
         // ignore=true も含めて構築する。
         if (compatContext.supportsKlibCrossModuleHint()) {
@@ -52,10 +52,13 @@ class PreviewLabIrGenerationExtension(
                 PreviewHintIrBodyFiller(pluginContext, compatContext, previewsByHash),
             )
         }
-        // 古い Kotlin では hint generator が動かないので、 collectAllModulePreviews()
-        // 自体が cross-module aggregation できない (T06 の FIR Checker が call site で
-        // compile-time error を報告)。 collectModulePreviews() 単体は IR transform で
-        // 自モジュールの previews を注入するだけなので version gate なしで動く。
+        // 古い Kotlin (<2.3.21) では hint generator が動かないので、
+        // collectAllModulePreviews() 自体が cross-module aggregation できない。
+        // PreviewLabIrBodyFiller.reportUnsupportedCollectAllError が
+        // `val by collectAllModulePreviews()` の by-delegate pattern を IR phase で検出して
+        // compile-time error を MessageCollector 経由で報告する。
+        // collectModulePreviews() 単体は IR transform で自モジュールの previews を注入する
+        // だけなので version gate なしで動く。
     }
 
     private fun collectPreviews(moduleFragment: IrModuleFragment): List<PreviewFunctionInfo> {

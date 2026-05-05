@@ -42,20 +42,6 @@ internal class PreviewLabIrBodyFiller(
     private val irBuilder = PreviewListIrBuilder(pluginContext, previews, config, compatContext)
 
     /**
-     * Tracks whether at least one hint function was emitted by this transformer.
-     *
-     * Consumed by [PreviewLabIrGenerationExtension] to decide whether to fall back to
-     * auto-hint generation: if no `collectModulePreviews()` / `collectAllModulePreviews()`
-     * sentinel exists in the module, no hint will have been emitted here, and the
-     * module's `@Preview` functions need to be exported via the auto path.
-     *
-     * **Kotlin 2.3.21+**: Hints are emitted by [PreviewLabHintFirGenerator], so this is always false.
-     * The hint discovery happens via [PreviewListIrBuilder.collectDependencyGetters].
-     */
-    var didGenerateAnyHint: Boolean = false
-        private set
-
-    /**
      * Visits each property declaration and replaces the initializer if it matches
      * `collectModulePreviews()` or `collectAllModulePreviews()`.
      */

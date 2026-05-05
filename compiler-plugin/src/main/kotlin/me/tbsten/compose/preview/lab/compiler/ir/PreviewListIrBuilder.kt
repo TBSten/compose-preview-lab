@@ -199,7 +199,7 @@ internal class PreviewListIrBuilder(
      * Caching ensures the (potentially expensive) package walk in [discoverHints] runs at
      * most once per [PreviewListIrBuilder] instance.
      */
-    private val cachedHintsV2: List<IrSimpleFunction> by lazy { discoverHints(pluginContext, compatContext) }
+    private val cachedHints: List<IrSimpleFunction> by lazy { discoverHints(pluginContext, compatContext) }
 
     /**
      * Builds an expression that concatenates this module's previews with previews from
@@ -223,7 +223,7 @@ internal class PreviewListIrBuilder(
      * via `core` hint, once via `ui` hint).
      */
     fun buildConcatenatedPreviewsExpr(builder: DeclarationIrBuilder, thisModulePreviews: IrExpression): IrExpression {
-        val hints = cachedHintsV2
+        val hints = cachedHints
         val distinctFun = distinctPreviewsByIdFun
 
         if (hints.isEmpty()) {

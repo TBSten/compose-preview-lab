@@ -38,7 +38,7 @@ import org.jetbrains.kotlin.name.Name
  * **Generated Kotlin (semantically equivalent), per `@Preview`**:
  *
  * ```kotlin
- * // file: previewHint_<hash>__Hint.kt
+ * // file: PreviewHint_<hash>.kt
  * package me.tbsten.compose.preview.lab.hints
  *
  * public interface PreviewHintMarker_<hash>
@@ -235,6 +235,8 @@ internal class PreviewHintFirGenerator(session: FirSession) : FirDeclarationGene
     }
 
     private companion object {
-        const val MarkerClassPrefix = "PreviewHintMarker_"
+        // 別 module からも参照される canonical な定義は `PreviewLabFirBuiltIns.PreviewHintMarkerPrefix`。
+        // ここではローカル alias として持つ (FQN 短縮の readability 用)。
+        val MarkerClassPrefix = PreviewLabFirBuiltIns.PreviewHintMarkerPrefix
     }
 }

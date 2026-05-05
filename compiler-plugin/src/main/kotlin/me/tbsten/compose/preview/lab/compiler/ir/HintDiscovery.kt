@@ -65,5 +65,6 @@ internal fun discoverHints(pluginContext: IrPluginContext, compatContext: Compat
     }
 }
 
-private const val MarkerClassPrefix = "PreviewHintMarker_"
+// canonical な定義は `PreviewLabFirBuiltIns.PreviewHintMarkerPrefix`。
+private val MarkerClassPrefix = PreviewLabFirBuiltIns.PreviewHintMarkerPrefix
 private const val CollectedPreviewFqn = "me.tbsten.compose.preview.lab.CollectedPreview"
