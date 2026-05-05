@@ -6,6 +6,25 @@
 // - Show declarations: true
 
 // Library unique name: <me.tbsten.compose.preview.lab:core>
+open annotation class me.tbsten.compose.preview.lab/PreviewHint : kotlin/Annotation { // me.tbsten.compose.preview.lab/PreviewHint|null[0]
+    constructor <init>(kotlin/String, kotlin/String, kotlin/String, kotlin/Int, kotlin/Int, kotlin/String, kotlin/String) // me.tbsten.compose.preview.lab/PreviewHint.<init>|<init>(kotlin.String;kotlin.String;kotlin.String;kotlin.Int;kotlin.Int;kotlin.String;kotlin.String){}[0]
+
+    final val code // me.tbsten.compose.preview.lab/PreviewHint.code|{}code[0]
+        final fun <get-code>(): kotlin/String // me.tbsten.compose.preview.lab/PreviewHint.code.<get-code>|<get-code>(){}[0]
+    final val displayName // me.tbsten.compose.preview.lab/PreviewHint.displayName|{}displayName[0]
+        final fun <get-displayName>(): kotlin/String // me.tbsten.compose.preview.lab/PreviewHint.displayName.<get-displayName>|<get-displayName>(){}[0]
+    final val endLineNumber // me.tbsten.compose.preview.lab/PreviewHint.endLineNumber|{}endLineNumber[0]
+        final fun <get-endLineNumber>(): kotlin/Int // me.tbsten.compose.preview.lab/PreviewHint.endLineNumber.<get-endLineNumber>|<get-endLineNumber>(){}[0]
+    final val filePath // me.tbsten.compose.preview.lab/PreviewHint.filePath|{}filePath[0]
+        final fun <get-filePath>(): kotlin/String // me.tbsten.compose.preview.lab/PreviewHint.filePath.<get-filePath>|<get-filePath>(){}[0]
+    final val id // me.tbsten.compose.preview.lab/PreviewHint.id|{}id[0]
+        final fun <get-id>(): kotlin/String // me.tbsten.compose.preview.lab/PreviewHint.id.<get-id>|<get-id>(){}[0]
+    final val kdoc // me.tbsten.compose.preview.lab/PreviewHint.kdoc|{}kdoc[0]
+        final fun <get-kdoc>(): kotlin/String // me.tbsten.compose.preview.lab/PreviewHint.kdoc.<get-kdoc>|<get-kdoc>(){}[0]
+    final val startLineNumber // me.tbsten.compose.preview.lab/PreviewHint.startLineNumber|{}startLineNumber[0]
+        final fun <get-startLineNumber>(): kotlin/Int // me.tbsten.compose.preview.lab/PreviewHint.startLineNumber.<get-startLineNumber>|<get-startLineNumber>(){}[0]
+}
+
 abstract interface me.tbsten.compose.preview.lab/PreviewLabPreview { // me.tbsten.compose.preview.lab/PreviewLabPreview|null[0]
     abstract val code // me.tbsten.compose.preview.lab/PreviewLabPreview.code|{}code[0]
         abstract fun <get-code>(): kotlin/String? // me.tbsten.compose.preview.lab/PreviewLabPreview.code.<get-code>|<get-code>(){}[0]

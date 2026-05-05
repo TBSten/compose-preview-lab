@@ -80,6 +80,16 @@ public final class me/tbsten/compose/preview/lab/PreviewExport {
 	public final fun getValue (Ljava/lang/Object;Lkotlin/reflect/KProperty;)Ljava/util/List;
 }
 
+public abstract interface annotation class me/tbsten/compose/preview/lab/PreviewHint : java/lang/annotation/Annotation {
+	public abstract fun code ()Ljava/lang/String;
+	public abstract fun displayName ()Ljava/lang/String;
+	public abstract fun endLineNumber ()I
+	public abstract fun filePath ()Ljava/lang/String;
+	public abstract fun id ()Ljava/lang/String;
+	public abstract fun kdoc ()Ljava/lang/String;
+	public abstract fun startLineNumber ()I
+}
+
 public final class me/tbsten/compose/preview/lab/PreviewLabEvent {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/time/Instant;)V
