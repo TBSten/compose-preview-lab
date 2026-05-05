@@ -31,10 +31,10 @@ class CrossModuleCollectPreviewsTest {
     }
 
     /**
-     * 旧モジュール集約 hint と per-declaration hint (Metro 風 / T03) の両方が動いている期間中は
-     * 同一 `@Preview` から `CollectedPreview` が 2 個 emit される (V1 経由 + V2 経由)。
-     * `collectAllModulePreviews()` の IR transform は最終的に `distinctPreviewsById` で
-     * dedup するので、 結果 list の `id` がユニークであることを assert する。
+     * 依存連鎖 (`app(all) → ui(all) → core`) で同 `@Preview` の `CollectedPreview` が複数の
+     * hint chain を通って到達する場合があるが、 `collectAllModulePreviews()` の IR transform は
+     * 最終的に `distinctPreviewsById` で dedup する。 結果 list の `id` がユニークであることを
+     * assert する。
      */
     @Test
     fun collectAllModulePreviewsDeduplicatesById() {

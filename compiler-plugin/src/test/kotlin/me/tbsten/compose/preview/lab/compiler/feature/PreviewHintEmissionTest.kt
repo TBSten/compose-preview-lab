@@ -17,20 +17,20 @@ import me.tbsten.compose.preview.lab.compiler.fir.computeHintHash
  * 埋め込んでいることを検証する。
  *
  * 関数名は固定 (`previewHint`) で marker class が IdSignature を per-`@Preview` 区別する
- * (V1 の `previewLabExport(value: Marker)` と同じ pattern)。 cross-module discovery は
- * `referenceFunctions(fixed-name)` で全 hint を発見する。
+ * fixed-name + marker pattern。 cross-module discovery は `referenceFunctions(fixed-name)` で
+ * 全 hint を発見する。
  *
  * **Skipped on Kotlin < 2.3.21**: hint generator は Kotlin 2.3.21+ でのみ稼働
  * ([CompatContext.supportsKlibCrossModuleHint][me.tbsten.compose.preview.lab.compiler.compat.CompatContext.supportsKlibCrossModuleHint])。
  */
-class PreviewHintV2EmissionTest :
+class PreviewHintEmissionTest :
     FunSpec({
         val base = CompilerPluginTestBase()
 
         val testKotlinVersion = System.getProperty("test.kotlin.version") ?: "2.3.21"
         val supports = testKotlinVersion.isAtLeast(2, 3, 21)
 
-        test("@Preview 1 個 → previewHint_<hash> が 1 個 emit される")
+        test("@Preview 1 個 → marker (PreviewHintMarker_<hash>) + previewHint(marker?) 1 セット emit される")
             .config(enabled = supports) {
                 val result = base.compile(
                     SourceFile.kotlin(
@@ -48,7 +48,9 @@ class PreviewHintV2EmissionTest :
                 val expectedHash = computeHintHash(
                     buildPreviewHintCanonicalKey("test.source.MyButton", emptyList()),
                 )
-                // file 名 `previewHint_<hash>__Hint.kt` → file facade class `PreviewHint_<hash>Kt`
+                // FIR generator は file 名 `PreviewHint_<hash>.kt` で emit するので、
+                // file facade class は `PreviewHint_<hash>Kt`、 marker class は同 package の
+                // `PreviewHintMarker_<hash>` で並ぶ。
                 val expectedClassFile = "me/tbsten/compose/preview/lab/hints/PreviewHint_${expectedHash}Kt.class"
 
                 val classFiles = result.outputDirectory.walkTopDown()

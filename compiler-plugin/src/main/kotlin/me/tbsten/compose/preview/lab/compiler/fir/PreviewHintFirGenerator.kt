@@ -38,7 +38,7 @@ import org.jetbrains.kotlin.name.Name
  * **Generated Kotlin (semantically equivalent), per `@Preview`**:
  *
  * ```kotlin
- * // file: previewHint_<hash>__Hint.kt
+ * // file: PreviewHint_<hash>.kt
  * package me.tbsten.compose.preview.lab.hints
  *
  * public interface PreviewHintMarker_<hash>
@@ -48,13 +48,13 @@ import org.jetbrains.kotlin.name.Name
  * ```
  *
  * 戻り値型 / 関数名のみ FIR で declare し、 metadata を含む `CollectedPreview(...)` constructor
- * 呼び出しは IR 側 ([me.tbsten.compose.preview.lab.compiler.ir.PreviewHintIrBodyFillerV2]) で
+ * 呼び出しは IR 側 ([me.tbsten.compose.preview.lab.compiler.ir.PreviewHintIrBodyFiller]) で
  * 注入する。
  *
  * # 設計ポイント
  *
  * - **Hint 関数名は固定 (`previewHint`)**: cross-module discovery を `referenceFunctions(
- *   CallableId(HINT_PACKAGE_V2, "previewHint"))` で実現するため。 K2 の package 全 walk API は
+ *   CallableId(HINT_PACKAGE, "previewHint"))` で実現するため。 K2 の package 全 walk API は
  *   外部 module の宣言を on-demand load しないため、 fixed-name + `referenceFunctions` の
  *   組み合わせが de facto 標準 (V1 と同じパターン)
  * - **Marker interface for IdSignature 区別**: KLIB linker は `(name, parameterTypes)` で
@@ -72,7 +72,7 @@ import org.jetbrains.kotlin.name.Name
  * [ContributionHintFirGenerator](https://github.com/ZacSweers/metro/blob/main/compiler/src/main/kotlin/dev/zacsweers/metro/compiler/fir/generators/ContributionHintFirGenerator.kt)
  * + 旧モジュール集約 hint の fixed-name discovery 方式の hybrid。
  */
-internal class PreviewHintFirGeneratorV2(session: FirSession) : FirDeclarationGenerationExtension(session) {
+internal class PreviewHintFirGenerator(session: FirSession) : FirDeclarationGenerationExtension(session) {
 
     /**
      * `@Preview` 関数を発見するための predicate。 CMP / Android 両方の `@Preview` annotation を
@@ -97,17 +97,17 @@ internal class PreviewHintFirGeneratorV2(session: FirSession) : FirDeclarationGe
     }
 
     override fun getTopLevelClassIds(): Set<ClassId> = hintHashes.mapTo(mutableSetOf()) { hash ->
-        ClassId(PreviewLabFirBuiltIns.HINT_PACKAGE_V2, Name.identifier("$MarkerClassPrefix$hash"))
+        ClassId(PreviewLabFirBuiltIns.HINT_PACKAGE, Name.identifier("$MarkerClassPrefix$hash"))
     }
 
     override fun getTopLevelCallableIds(): Set<CallableId> = if (hintHashes.isEmpty()) {
         emptySet()
     } else {
         // hint 関数名は固定 (`previewHint`)。 marker class 引数で IdSignature を区別する。
-        setOf(PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID_V2)
+        setOf(PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID)
     }
 
-    override fun hasPackage(packageFqName: FqName): Boolean = packageFqName == PreviewLabFirBuiltIns.HINT_PACKAGE_V2
+    override fun hasPackage(packageFqName: FqName): Boolean = packageFqName == PreviewLabFirBuiltIns.HINT_PACKAGE
 
     /**
      * Marker interface を生成する。
@@ -123,7 +123,7 @@ internal class PreviewHintFirGeneratorV2(session: FirSession) : FirDeclarationGe
      * `Expected a class, found interface` (interface に対する FINAL modality 拒否) を回避する。
      */
     override fun generateTopLevelClassLikeDeclaration(classId: ClassId): FirClassLikeSymbol<*>? {
-        if (classId.packageFqName != PreviewLabFirBuiltIns.HINT_PACKAGE_V2) return null
+        if (classId.packageFqName != PreviewLabFirBuiltIns.HINT_PACKAGE) return null
         val shortName = classId.shortClassName.asString()
         if (!shortName.startsWith(MarkerClassPrefix)) return null
         val hash = shortName.removePrefix(MarkerClassPrefix)
@@ -152,12 +152,12 @@ internal class PreviewHintFirGeneratorV2(session: FirSession) : FirDeclarationGe
      * ユニークにする。 cross-module consumer は `referenceFunctions(fixed-name)` で全 hint
      * を発見できる。
      *
-     * Body は emit しない (FIR は body を持てない)。 [Keys.PreviewLabHintV2] origin が IR 側
-     * [me.tbsten.compose.preview.lab.compiler.ir.PreviewHintIrBodyFillerV2] への signal で、
+     * Body は emit しない (FIR は body を持てない)。 [Keys.PreviewLabHint] origin が IR 側
+     * [me.tbsten.compose.preview.lab.compiler.ir.PreviewHintIrBodyFiller] への signal で、
      * IR pass で `CollectedPreview(...)` constructor 呼び出しを return する body が埋まる。
      */
     override fun generateFunctions(callableId: CallableId, context: MemberGenerationContext?): List<FirNamedFunctionSymbol> {
-        if (callableId != PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID_V2) return emptyList()
+        if (callableId != PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID) return emptyList()
         if (hintHashes.isEmpty()) return emptyList()
 
         val collectedPreviewSymbol = session.symbolProvider
@@ -167,14 +167,14 @@ internal class PreviewHintFirGeneratorV2(session: FirSession) : FirDeclarationGe
 
         return hintHashes.map { hash ->
             val markerClassId = ClassId(
-                PreviewLabFirBuiltIns.HINT_PACKAGE_V2,
+                PreviewLabFirBuiltIns.HINT_PACKAGE,
                 Name.identifier("$MarkerClassPrefix$hash"),
             )
             val markerSymbol = session.symbolProvider
                 .getClassLikeSymbolByClassId(markerClassId) as FirClassSymbol<*>
             val fileName = "PreviewHint_$hash.kt"
             val function = createTopLevelFunction(
-                Keys.PreviewLabHintV2,
+                Keys.PreviewLabHint,
                 callableId,
                 collectedPreviewType,
                 fileName,
@@ -235,6 +235,8 @@ internal class PreviewHintFirGeneratorV2(session: FirSession) : FirDeclarationGe
     }
 
     private companion object {
-        const val MarkerClassPrefix = "PreviewHintMarker_"
+        // 別 module からも参照される canonical な定義は `PreviewLabFirBuiltIns.PreviewHintMarkerPrefix`。
+        // ここではローカル alias として持つ (FQN 短縮の readability 用)。
+        val MarkerClassPrefix = PreviewLabFirBuiltIns.PreviewHintMarkerPrefix
     }
 }

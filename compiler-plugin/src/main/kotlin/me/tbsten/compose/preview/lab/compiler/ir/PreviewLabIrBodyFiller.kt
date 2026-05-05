@@ -42,20 +42,6 @@ internal class PreviewLabIrBodyFiller(
     private val irBuilder = PreviewListIrBuilder(pluginContext, previews, config, compatContext)
 
     /**
-     * Tracks whether at least one hint function was emitted by this transformer.
-     *
-     * Consumed by [PreviewLabIrGenerationExtension] to decide whether to fall back to
-     * auto-hint generation: if no `collectModulePreviews()` / `collectAllModulePreviews()`
-     * sentinel exists in the module, no hint will have been emitted here, and the
-     * module's `@Preview` functions need to be exported via the auto path.
-     *
-     * **Kotlin 2.3.21+**: Hints are emitted by [PreviewLabHintFirGenerator], so this is always false.
-     * The hint discovery happens via [PreviewListIrBuilder.collectDependencyGetters].
-     */
-    var didGenerateAnyHint: Boolean = false
-        private set
-
-    /**
      * Visits each property declaration and replaces the initializer if it matches
      * `collectModulePreviews()` or `collectAllModulePreviews()`.
      */
@@ -124,9 +110,9 @@ internal class PreviewLabIrBodyFiller(
      * ```
      *
      * Cross-module discovery は per-declaration hint generator
-     * ([me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGeneratorV2]) が emit する
+     * ([me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGenerator]) が emit する
      * `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` 関数を
-     * [HintDiscoveryV2] が `referenceFunctions` で発見することで実現する。
+     * [HintDiscovery] が `referenceFunctions` で発見することで実現する。
      */
     private fun replaceCollectPreviewsProperty(property: IrProperty) {
         val delegateField = property.backingField ?: return

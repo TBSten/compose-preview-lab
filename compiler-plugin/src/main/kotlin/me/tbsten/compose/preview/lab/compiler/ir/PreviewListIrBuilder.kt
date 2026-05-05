@@ -197,10 +197,10 @@ internal class PreviewListIrBuilder(
      * では marker arg は IdSignature 区別目的のみで実値不要なので `add(hint(null))` 形で list に積む
      * (1 hint = 1 `@Preview`)。
      *
-     * Caching ensures the (potentially expensive) package walk in [discoverHintsV2] runs at
+     * Caching ensures the (potentially expensive) package walk in [discoverHints] runs at
      * most once per [PreviewListIrBuilder] instance.
      */
-    private val cachedHintsV2: List<IrSimpleFunction> by lazy { discoverHintsV2(pluginContext, compatContext) }
+    private val cachedHints: List<IrSimpleFunction> by lazy { discoverHints(pluginContext, compatContext) }
 
     /**
      * Builds an expression that concatenates this module's previews with previews from
@@ -224,7 +224,7 @@ internal class PreviewListIrBuilder(
      * via `core` hint, once via `ui` hint).
      */
     fun buildConcatenatedPreviewsExpr(builder: DeclarationIrBuilder, thisModulePreviews: IrExpression): IrExpression {
-        val hints = cachedHintsV2
+        val hints = cachedHints
         val distinctFun = distinctPreviewsByIdFun
 
         if (hints.isEmpty()) {

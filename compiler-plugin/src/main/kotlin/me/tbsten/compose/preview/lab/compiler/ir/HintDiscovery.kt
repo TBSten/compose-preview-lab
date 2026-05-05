@@ -19,7 +19,7 @@ import org.jetbrains.kotlin.platform.jvm.isJvm
  *
  * **Sample call**:
  * ```
- * val hints = discoverHintsV2(pluginContext, compatContext)
+ * val hints = discoverHints(pluginContext, compatContext)
  * // → 依存モジュール側で生成された
  * //   `previewHint(value: PreviewHintMarker_<hash1>): CollectedPreview`,
  * //   `previewHint(value: PreviewHintMarker_<hash2>): CollectedPreview`, ...
@@ -39,13 +39,13 @@ import org.jetbrains.kotlin.platform.jvm.isJvm
  *   が hint package 内、 marker 名が `PreviewHintMarker_` で始まる、 戻り値型が
  *   `CollectedPreview`
  */
-internal fun discoverHintsV2(pluginContext: IrPluginContext, compatContext: CompatContext,): List<IrSimpleFunction> {
+internal fun discoverHints(pluginContext: IrPluginContext, compatContext: CompatContext,): List<IrSimpleFunction> {
     if (!compatContext.supportsKlibCrossModuleHint() && pluginContext.platform?.isJvm() != true) {
         return emptyList()
     }
 
     @Suppress("DEPRECATION")
-    val hintSymbols = pluginContext.referenceFunctions(PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID_V2)
+    val hintSymbols = pluginContext.referenceFunctions(PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID)
 
     return hintSymbols.mapNotNull { hintSymbol ->
         val fn = hintSymbol.owner
@@ -57,7 +57,7 @@ internal fun discoverHintsV2(pluginContext: IrPluginContext, compatContext: Comp
         val regularParams = fn.parameters.filter { it.kind == IrParameterKind.Regular }
         if (regularParams.size != 1) return@mapNotNull null
         val markerFqn = regularParams[0].type.classFqName ?: return@mapNotNull null
-        if (markerFqn.parent() != PreviewLabFirBuiltIns.HINT_PACKAGE_V2) return@mapNotNull null
+        if (markerFqn.parent() != PreviewLabFirBuiltIns.HINT_PACKAGE) return@mapNotNull null
         if (!markerFqn.shortName().asString().startsWith(MarkerClassPrefix)) return@mapNotNull null
         if (fn.returnType.classFqName?.asString() != CollectedPreviewFqn) return@mapNotNull null
 
@@ -65,5 +65,6 @@ internal fun discoverHintsV2(pluginContext: IrPluginContext, compatContext: Comp
     }
 }
 
-private const val MarkerClassPrefix = "PreviewHintMarker_"
+// canonical な定義は `PreviewLabFirBuiltIns.PreviewHintMarkerPrefix`。
+private val MarkerClassPrefix = PreviewLabFirBuiltIns.PreviewHintMarkerPrefix
 private const val CollectedPreviewFqn = "me.tbsten.compose.preview.lab.CollectedPreview"

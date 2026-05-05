@@ -3,14 +3,18 @@ package me.tbsten.compose.preview.lab
 import kotlin.reflect.KProperty
 
 /**
- * Wrapper around a lazy list of [CollectedPreview] that the compiler plugin uses as a marker type
- * for cross-module preview discovery.
+ * Wrapper around a lazy list of [CollectedPreview] used as the backing field type for properties
+ * declared with `val x by collectModulePreviews()` / `collectAllModulePreviews()`.
  *
- * Properties declared as `val x by collectModulePreviews()` end up with a backing field of type
- * [PreviewExport]. The compiler plugin emits a synthetic hint function in the
- * `me.tbsten.compose.preview.lab.exports` package whose parameter is also typed as [PreviewExport],
- * which makes downstream `collectAllModulePreviews()` callers able to discover the property through
- * `IrPluginContext.referenceFunctions(...)` without any manual Gradle configuration.
+ * The lazy wrapping ensures that `@Composable` lambdas inside [CollectedPreview] are initialized
+ * on first access rather than at class-load time, avoiding `ExceptionInInitializerError` in JVM
+ * static initializers.
+ *
+ * Cross-module preview discovery does **not** rely on this type — it is handled by the compiler
+ * plugin emitting per-`@Preview` hint functions
+ * (`previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` in the
+ * `me.tbsten.compose.preview.lab.hints` package) that the consumer side resolves through
+ * `IrPluginContext.referenceFunctions`.
  *
  * Users do not construct this class directly — it is produced exclusively by the compiler plugin.
  *

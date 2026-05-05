@@ -33,13 +33,13 @@ internal class PreviewLabFirBuiltIns(session: FirSession, val config: PluginConf
         )
 
         /** Per-declaration hint 関数 / marker interface が住む package。 */
-        val HINT_PACKAGE_V2: FqName = FqName("me.tbsten.compose.preview.lab.hints")
+        val HINT_PACKAGE: FqName = FqName("me.tbsten.compose.preview.lab.hints")
 
         /** Per-declaration hint 関数名 (固定)。 marker class param で IdSignature を per-`@Preview` 区別する。 */
-        val HINT_FUNCTION_NAME_V2: Name = Name.identifier("previewHint")
+        val HINT_FUNCTION_NAME: Name = Name.identifier("previewHint")
 
         /** `me.tbsten.compose.preview.lab.hints/previewHint`。 */
-        val HINT_FUNCTION_CALLABLE_ID_V2: CallableId = CallableId(HINT_PACKAGE_V2, HINT_FUNCTION_NAME_V2)
+        val HINT_FUNCTION_CALLABLE_ID: CallableId = CallableId(HINT_PACKAGE, HINT_FUNCTION_NAME)
 
         /** Per-`@Preview` marker interface 名 prefix。 suffix は canonical key の sha256。 */
         const val PreviewHintMarkerPrefix: String = "PreviewHintMarker_"

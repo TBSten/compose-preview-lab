@@ -13,14 +13,15 @@ import me.tbsten.compose.preview.lab.compiler.loadCollectedPreviews
  * Per-declaration hint (Metro 風) を依存モジュールから発見する consumer 側 IR pass の検証。
  *
  * 2-stage kctfork compilation:
- * 1. uiLib をコンパイルし、 `me.tbsten.compose.preview.lab.hints/previewHint_<hash>(): CollectedPreview`
- *    が emit される (T02 で実装済み)
+ * 1. uiLib をコンパイルし、 `me.tbsten.compose.preview.lab.hints` package に
+ *    `interface PreviewHintMarker_<hash>` + `fun previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview`
+ *    が emit される
  * 2. app を uiLib output を classpath に追加してコンパイル。 `collectAllModulePreviews()` の
- *    IR transform で V2 hint discovery が cross-module hint を call して `CollectedPreview` を
- *    取得し、 list に積む
+ *    IR transform で `referenceFunctions(CallableId(hintsPackage, "previewHint"))` で hint を
+ *    発見し、 各 hint を call して `CollectedPreview` を list に積む
  * 3. リフレクションで app.allPreviews を読み出し、 cross-module preview が含まれることを検証
  */
-class PreviewHintV2DiscoveryTest :
+class PreviewHintDiscoveryTest :
     FunSpec({
         val base = CompilerPluginTestBase()
 
@@ -58,8 +59,9 @@ class PreviewHintV2DiscoveryTest :
             val previews = appResult.loadCollectedPreviews(propertyName = "allPreviews")
             val ids = previews.map { p -> p::class.members.find { it.name == "id" }!!.call(p) as String }
 
-            // V1 (旧モジュール集約) + V2 (per-declaration) 両方が動くが、 distinctPreviewsById
-            // で dedup されるので同じ preview は 1 回だけ登場する。
+            // 自モジュールの @Preview と cross-module hint discovery の両方から CollectedPreview
+            // が emit されるが、 distinctPreviewsById で id ベースで dedup されるので同じ
+            // preview は 1 回だけ登場する。
             ids shouldContainExactlyInAnyOrder listOf(
                 "app.AppPreview",
                 "uilib.UiLibPreview",
@@ -160,12 +162,14 @@ class PreviewHintV2DiscoveryTest :
             val ignored = listOf(filePath, code)
         }
 
-        test("dedup: 同一 preview が V1 (auto-provider) と V2 (per-declaration hint) の両 path から到達しても 1 個に統合される") {
-            // T04 時点では V1 (auto-provider 経由の旧モジュール集約) と V2 (per-declaration hint
-            // 経由の新方式) が共存しているため、 dependency module の `@Preview` は app 側で
-            //   - V1 path: app の auto-provider 経由で lib の preview list を集約
-            //   - V2 path: discoverHintsV2 で lib の `previewHint_<hash>()` を発見 → call
-            // の 2 経路で到達する。 distinctPreviewsById により id 重複が排除されることを検証する。
+        test("smoke: collectAllModulePreviews() の結果に id の重複が現れない") {
+            // 自モジュール `@Preview` (local list 経由) と cross-module `@Preview` (per-declaration
+            // hint 経由) の両方を含む集約結果について、 `distinctPreviewsById` が正しく適用され
+            // 結果リストの id が unique であることを smoke test として確認する。
+            //
+            // 真の重複が発生する transitive dep chain (app(all) → ui(all) → core) のケースは
+            // integrationTest 側 (`CrossModuleCollectPreviewsTest.collectAllModulePreviewsDeduplicatesById`)
+            // でカバーする。
             val libResult = base.compile(
                 SourceFile.kotlin(
                     "Shared.kt",
@@ -197,8 +201,7 @@ class PreviewHintV2DiscoveryTest :
             val previews = appResult.loadCollectedPreviews(propertyName = "allPreviews")
             val ids = previews.map { p -> p::class.members.find { it.name == "id" }!!.call(p) as String }
 
-            // shared.SharedPreview が 2 重に出てくる可能性があるが、 distinctPreviewsById で
-            // 1 個に統合される (size == distinct size で重複ゼロを assert)
+            // distinctPreviewsById により id 重複ゼロを assert
             previews.size shouldBe ids.distinct().size
             ids shouldContain "shared.SharedPreview"
             ids shouldContain "app.AppPreview"
