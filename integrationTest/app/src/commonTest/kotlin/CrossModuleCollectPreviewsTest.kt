@@ -29,4 +29,19 @@ class CrossModuleCollectPreviewsTest {
                 "is broken on this target.",
         )
     }
+
+    /**
+     * 旧モジュール集約 hint と per-declaration hint (Metro 風 / T03) の両方が動いている期間中は
+     * 同一 `@Preview` から `CollectedPreview` が 2 個 emit される (V1 経由 + V2 経由)。
+     * `collectAllModulePreviews()` の IR transform は最終的に `distinctPreviewsById` で
+     * dedup するので、 結果 list の `id` がユニークであることを assert する。
+     */
+    @Test
+    fun collectAllModulePreviewsDeduplicatesById() {
+        val ids = appPreviews.map { it.id }
+        assertTrue(
+            ids.size == ids.distinct().size,
+            "appPreviews has id duplicates: ${ids.groupingBy { it }.eachCount().filter { it.value > 1 }}",
+        )
+    }
 }
