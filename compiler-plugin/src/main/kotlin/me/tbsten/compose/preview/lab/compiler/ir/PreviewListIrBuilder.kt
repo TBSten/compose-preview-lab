@@ -108,8 +108,7 @@ internal class PreviewListIrBuilder(
      * Builds the IR for `PreviewExport(<lazyExpr>)` where [lazyExpr] is a `Lazy<List<CollectedPreview>>`
      * expression. The backing field of properties declared as
      * `val x by collectModulePreviews()` / `val x by collectAllModulePreviews()` ends up holding
-     * the resulting `PreviewExport` instance, which acts as the marker type for cross-module
-     * discovery in [GeneratePreviewExportHint].
+     * the resulting `PreviewExport` instance.
      */
     fun buildPreviewExportCall(builder: DeclarationIrBuilder, lazyExpr: IrExpression): IrExpression {
         val ctor = previewExportClass.constructors.first()

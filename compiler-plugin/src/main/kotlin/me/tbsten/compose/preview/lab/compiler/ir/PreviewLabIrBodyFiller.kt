@@ -115,15 +115,18 @@ internal class PreviewLabIrBodyFiller(
      *         distinctPreviewsById(
      *             mutableListOf<CollectedPreview>().apply {
      *                 addAll(listOf(CollectedPreview(...) { MyButton() })) // this module
-     *                 addAll(uiLibPreviews)                                 // dep module via hint (by-delegate getter returns List<CollectedPreview>)
+     *                 add(previewHint(null))                                 // dep module の各 @Preview を per-declaration hint 経由で呼ぶ
+     *                 add(previewHint(null))
      *             }
      *         )
      *     }
      * )
      * ```
      *
-     * On JVM, also emits a hint function so downstream `collectAllModulePreviews()` can discover
-     * this property via classpath scanning (see [GeneratePreviewExportHint]).
+     * Cross-module discovery は per-declaration hint generator
+     * ([me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGeneratorV2]) が emit する
+     * `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` 関数を
+     * [HintDiscoveryV2] が `referenceFunctions` で発見することで実現する。
      */
     private fun replaceCollectPreviewsProperty(property: IrProperty) {
         val delegateField = property.backingField ?: return

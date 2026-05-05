@@ -74,15 +74,12 @@ public interface CompatContext {
      * **Sample call**:
      * ```kotlin
      * addConstructorCallAnnotationWithArgs(
-     *     func, previewExportHintType, hintCtorSymbol,
-     *     listOf(irString(builder, "com.example.myPreviews")),
+     *     func, someAnnotationType, ctorSymbol,
+     *     listOf(irString(builder, "value-1")),
      * )
      * ```
      *
-     * **Result** (semantically):
-     * ```kotlin
-     * func.annotations += @PreviewExportHint(fqn = "com.example.myPreviews")
-     * ```
+     * **Result** (semantically): adds `@SomeAnnotation("value-1")` annotation to the function.
      */
     public fun addConstructorCallAnnotationWithArgs(
         function: IrSimpleFunction,
