@@ -193,9 +193,10 @@ internal class PreviewListIrBuilder(
     /**
      * Lazily-cached per-declaration hint functions discovered via Metro 風 mechanism.
      *
-     * Each entry is an [IrSimpleFunction] that, when called with no arguments, returns a single
-     * `CollectedPreview` (1 hint = 1 `@Preview`)。 [buildConcatenatedPreviewsExpr] では
-     * `add(hint())` 形で list に積む。
+     * Each entry is an [IrSimpleFunction] with signature
+     * `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview`。 [buildConcatenatedPreviewsExpr]
+     * では marker arg は IdSignature 区別目的のみで実値不要なので `add(hint(null))` 形で list に積む
+     * (1 hint = 1 `@Preview`)。
      *
      * Caching ensures the (potentially expensive) package walk in [discoverHintsV2] runs at
      * most once per [PreviewListIrBuilder] instance.

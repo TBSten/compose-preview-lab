@@ -41,7 +41,8 @@ class PreviewLabIrGenerationExtension(
         compatContext.transformModuleFragment(moduleFragment, bodyFiller)
 
         // Per-declaration hint (Metro 風) 用の body filler。 FIR generator が emit した
-        // `previewHint_<hash>(): CollectedPreview` の body を IR pass で埋める。
+        // `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` の body を IR pass で埋める
+        // (関数名は固定 `previewHint`、 hash は marker class 短名から抽出)。
         // hint emit 側で ignore=true を filter していないため、 body fill 用の lookup は
         // ignore=true も含めて構築する。
         if (compatContext.supportsKlibCrossModuleHint()) {
