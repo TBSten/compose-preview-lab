@@ -15,7 +15,6 @@ import org.jetbrains.kotlin.ir.expressions.IrConst
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.util.file
 import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.platform.jvm.isJvm
 
 /**
  * IR generation extension for Compose Preview Lab.
@@ -41,20 +40,12 @@ class PreviewLabIrGenerationExtension(
             PreviewLabIrBodyFiller(pluginContext, config, moduleFragment, previews, compatContext, messageCollector)
         compatContext.transformModuleFragment(moduleFragment, bodyFiller)
 
-        // Fill bodies into the marker classes / hint functions emitted by
-        // `PreviewLabHintFirGenerator`. Bodies cannot be generated at the FIR layer, so the FIR
-        // generator hands the IR pass empty constructors / functions and we materialize them
-        // here. Skipping this step makes the JVM backend assert with
-        // `Function has no body: CONSTRUCTOR GENERATED[Keys.PreviewLabHintMarker]`.
+        // Per-declaration hint (Metro 風) 用の body filler。 FIR generator が emit した
+        // `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` の body を IR pass で埋める
+        // (関数名は固定 `previewHint`、 hash は marker class 短名から抽出)。
+        // hint emit 側で ignore=true を filter していないため、 body fill 用の lookup は
+        // ignore=true も含めて構築する。
         if (compatContext.supportsKlibCrossModuleHint()) {
-            compatContext.transformModuleFragment(
-                moduleFragment,
-                PreviewLabHintIrBodyFiller(pluginContext, compatContext, previews, config),
-            )
-            // Per-declaration hint (Metro 風) 用の body filler。 旧モジュール集約 hint と
-            // 別 origin (`Keys.PreviewLabHintV2`) なので独立 transform として走る。
-            // hint emit 側で ignore=true を filter していないため、 body fill 用の lookup
-            // は ignore=true も含めて構築する必要がある。
             val previewsIncludingIgnored = collectPreviewsIncludingIgnored(moduleFragment)
             val previewsByHash = buildPreviewByHashMap(previewsIncludingIgnored)
             compatContext.transformModuleFragment(
@@ -62,31 +53,10 @@ class PreviewLabIrGenerationExtension(
                 PreviewHintIrBodyFillerV2(pluginContext, compatContext, previewsByHash),
             )
         }
-
-        // Auto-provider emission.
-        //
-        // - Kotlin 2.3.21+ (any platform): `PreviewLabHintFirGenerator` declared one
-        //   `previewLabAutoProvider_<hash>` stub alongside each marker / hint via FIR's
-        //   standard declaration pipeline; `PreviewLabHintIrBodyFiller` (above) just filled
-        //   the body. Going through FIR is what gives the function a proper KLIB IdSignature
-        //   that consumers can resolve. The leaf-only emission gate in
-        //   `PreviewLabHintEntries.compute` ensures exactly one provider per Kotlin module
-        //   compile, even for KMP modules with multiple source-set sessions.
-        // - Older Kotlin (JVM only via the existing version gate): no FIR hint runs, so we
-        //   fall back to the legacy IR-based path that emits both the provider and a
-        //   `previewLabExport(PreviewExport)` hint. Conditioned on `!bodyFiller.didGenerateAnyHint`
-        //   and `previews.isNotEmpty()` to keep the previous behaviour intact.
-        if (!compatContext.supportsKlibCrossModuleHint() &&
-            previews.isNotEmpty() &&
-            !bodyFiller.didGenerateAnyHint &&
-            pluginContext.platform?.isJvm() == true
-        ) {
-            val sourceFile = previews.first().function.file
-            val legacyHash = computeAutoProviderName(moduleFragment, config).asString()
-                .removePrefix(AutoProviderPrefix)
-            GenerateAutoPreviewExport(pluginContext, moduleFragment, compatContext, previews, config)
-                .invoke(sourceFile, legacyHash)
-        }
+        // 古い Kotlin では V2 hint generator が動かないので、 collectAllModulePreviews()
+        // 自体が cross-module aggregation できない (T06 の FIR Checker が call site で
+        // compile-time error を報告)。 collectModulePreviews() 単体は IR transform で
+        // 自モジュールの previews を注入するだけなので version gate なしで動く。
     }
 
     private fun collectPreviews(moduleFragment: IrModuleFragment): List<PreviewFunctionInfo> {
