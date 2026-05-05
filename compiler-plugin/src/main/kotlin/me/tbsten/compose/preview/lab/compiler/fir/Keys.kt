@@ -51,4 +51,20 @@ internal object Keys {
      * time.
      */
     object PreviewLabAutoProvider : GeneratedDeclarationKey()
+
+    /**
+     * Per-`@Preview` hint 関数を識別する key (Metro 風 per-declaration hint 方式)。
+     *
+     * 各 `@Preview` 関数に対し
+     * `me.tbsten.compose.preview.lab.hints/previewHint_<sha256(sourceFqn)>(): CollectedPreview`
+     * という hint stub を FIR で declare し、 IR で body を埋める。 旧モジュール集約 hint
+     * [PreviewLabHint] (`previewLabExport(value: Marker)`) と区別するためだけの key。
+     *
+     * 使用箇所:
+     * - [PreviewHintFirGeneratorV2] (FIR side): hint stub に origin として attach
+     * - [me.tbsten.compose.preview.lab.compiler.ir.PreviewHintIrBodyFillerV2] (IR side):
+     *   この key で hint 関数を識別し、 body に `CollectedPreview(...)` constructor 呼び出しを
+     *   `irReturn` する形で埋める
+     */
+    object PreviewLabHintV2 : GeneratedDeclarationKey()
 }

@@ -51,6 +51,16 @@ class PreviewLabIrGenerationExtension(
                 moduleFragment,
                 PreviewLabHintIrBodyFiller(pluginContext, compatContext, previews, config),
             )
+            // Per-declaration hint (Metro 風) 用の body filler。 旧モジュール集約 hint と
+            // 別 origin (`Keys.PreviewLabHintV2`) なので独立 transform として走る。
+            // hint emit 側で ignore=true を filter していないため、 body fill 用の lookup
+            // は ignore=true も含めて構築する必要がある。
+            val previewsIncludingIgnored = collectPreviewsIncludingIgnored(moduleFragment)
+            val previewsByHash = buildPreviewByHashMap(previewsIncludingIgnored)
+            compatContext.transformModuleFragment(
+                moduleFragment,
+                PreviewHintIrBodyFillerV2(pluginContext, compatContext, previewsByHash),
+            )
         }
 
         // Auto-provider emission.
@@ -91,6 +101,22 @@ class PreviewLabIrGenerationExtension(
     }
 
     /**
+     * `@Preview` annotated 関数を `@ComposePreviewLabOption(ignore = true)` も含めて全て収集する。
+     * Per-declaration hint body filler は ignore=true でも body を埋める必要があるため、
+     * 通常の [collectPreviews] (ignore filter 済み) ではなく本関数を使う。
+     */
+    private fun collectPreviewsIncludingIgnored(moduleFragment: IrModuleFragment): List<PreviewFunctionInfo> {
+        val result = mutableListOf<PreviewFunctionInfo>()
+        for (file in moduleFragment.files) {
+            for (decl in file.declarations) {
+                if (decl !is IrSimpleFunction) continue
+                buildPreviewInfoOrNull(decl, includeIgnored = true)?.let { result.add(it) }
+            }
+        }
+        return result
+    }
+
+    /**
      * Builds a [PreviewFunctionInfo] for a `@Preview`-annotated top-level function, or returns
      * null if the function should be skipped (not annotated, or `ignore = true`).
      *
@@ -118,12 +144,20 @@ class PreviewLabIrGenerationExtension(
      * Template placeholders `{{package}}`, `{{simpleName}}`, `{{qualifiedName}}` are resolved
      * in both `displayName` and `id`.
      */
-    private fun buildPreviewInfo(func: IrSimpleFunction): PreviewFunctionInfo? {
+    private fun buildPreviewInfo(func: IrSimpleFunction): PreviewFunctionInfo? =
+        buildPreviewInfoOrNull(func, includeIgnored = false)
+
+    /**
+     * `buildPreviewInfo` の internal 版。 [includeIgnored] = true の場合、 `ignore = true` でも
+     * 除外せず [PreviewFunctionInfo] を返す。 per-declaration hint body filler が
+     * `@ComposePreviewLabOption(ignore = true)` の preview にも hint body を埋めるために使う。
+     */
+    internal fun buildPreviewInfoOrNull(func: IrSimpleFunction, includeIgnored: Boolean): PreviewFunctionInfo? {
         if (!func.hasAnnotationCompat(CMP_PREVIEW_FQ) && !func.hasAnnotationCompat(ANDROID_PREVIEW_FQ)) return null
 
         val optionAnno = func.getAnnotationCompat(CPL_OPTION_FQ)
         val ignore = (optionAnno?.arguments?.getOrNull(1) as? IrConst)?.value as? Boolean ?: false
-        if (ignore) return null
+        if (ignore && !includeIgnored) return null
 
         val packageName = func.file.packageFqName.asString()
         val simpleName = func.name.asString()

@@ -62,6 +62,20 @@ internal class PreviewLabFirBuiltIns(session: FirSession, val config: PluginConf
 
         /** Auto-provider function name prefix; suffix is the per-module hash that matches the marker class. */
         const val AutoProviderPrefix: String = "previewLabAutoProvider_"
+
+        // -------------------- per-declaration hint (Metro 風) 用の identifier --------------------
+
+        /** Per-declaration hint 関数が住む package。 旧モジュール集約 marker (`exports`) とは別 package で併存中の交錯を避ける。 */
+        val HINT_PACKAGE_V2: FqName = FqName("me.tbsten.compose.preview.lab.hints")
+
+        /** Per-declaration hint 関数名 prefix。 suffix は `sha256(sourceFqn)` の base-36 8 文字。 */
+        const val PreviewHintV2Prefix: String = "previewHint_"
+
+        /** CMP / Android `@Preview` annotation FQN (predicate registration 用)。 */
+        val CMP_PREVIEW_ANNOTATION_FQN: FqName =
+            FqName("org.jetbrains.compose.ui.tooling.preview.Preview")
+        val ANDROID_PREVIEW_ANNOTATION_FQN: FqName =
+            FqName("androidx.compose.ui.tooling.preview.Preview")
     }
 }
 
