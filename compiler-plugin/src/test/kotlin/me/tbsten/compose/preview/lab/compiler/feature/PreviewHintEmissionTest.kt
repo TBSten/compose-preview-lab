@@ -23,7 +23,7 @@ import me.tbsten.compose.preview.lab.compiler.fir.computeHintHash
  * **Skipped on Kotlin < 2.3.21**: hint generator は Kotlin 2.3.21+ でのみ稼働
  * ([CompatContext.supportsKlibCrossModuleHint][me.tbsten.compose.preview.lab.compiler.compat.CompatContext.supportsKlibCrossModuleHint])。
  */
-class PreviewHintV2EmissionTest :
+class PreviewHintEmissionTest :
     FunSpec({
         val base = CompilerPluginTestBase()
 

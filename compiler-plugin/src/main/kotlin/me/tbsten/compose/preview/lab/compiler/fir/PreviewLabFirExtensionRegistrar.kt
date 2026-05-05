@@ -13,7 +13,7 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
  *   plus [PluginConfig], accessible from any FIR extension via `session.previewLabFirBuiltIns`.
  * - [PreviewLabFirStatusTransformerExtension] — widens `private @Preview` functions to
  *   `internal` so generated code can call them.
- * - [PreviewHintFirGeneratorV2] — `@Preview` 1 個ごとに per-declaration hint
+ * - [PreviewHintFirGenerator] — `@Preview` 1 個ごとに per-declaration hint
  *   `previewHint_<hash>(): CollectedPreview` を emit する Metro 風 generator。
  *   **Only registered when the running Kotlin compiler supports it** (Kotlin 2.3.21+,
  *   surfaced via [CompatContext.supportsKlibCrossModuleHint])。 古い Kotlin では
@@ -26,7 +26,7 @@ class PreviewLabFirExtensionRegistrar(private val config: PluginConfig) : FirExt
         +({ session: FirSession -> PreviewLabFirBuiltIns(session, config) })
         +::PreviewLabFirStatusTransformerExtension
         if (CompatContext.load().supportsKlibCrossModuleHint()) {
-            +::PreviewHintFirGeneratorV2
+            +::PreviewHintFirGenerator
         }
     }
 }

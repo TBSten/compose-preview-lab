@@ -49,10 +49,10 @@ class PreviewLabIrGenerationExtension(
             val previewsByHash = buildPreviewByHashMap(previewsIncludingIgnored)
             compatContext.transformModuleFragment(
                 moduleFragment,
-                PreviewHintIrBodyFillerV2(pluginContext, compatContext, previewsByHash),
+                PreviewHintIrBodyFiller(pluginContext, compatContext, previewsByHash),
             )
         }
-        // 古い Kotlin では V2 hint generator が動かないので、 collectAllModulePreviews()
+        // 古い Kotlin では hint generator が動かないので、 collectAllModulePreviews()
         // 自体が cross-module aggregation できない (T06 の FIR Checker が call site で
         // compile-time error を報告)。 collectModulePreviews() 単体は IR transform で
         // 自モジュールの previews を注入するだけなので version gate なしで動く。

@@ -18,12 +18,12 @@ internal object Keys {
      * param で IdSignature を per-`@Preview` 区別する。
      *
      * 使用箇所:
-     * - [PreviewHintFirGeneratorV2] (FIR side): hint stub に origin として attach
-     * - [me.tbsten.compose.preview.lab.compiler.ir.PreviewHintIrBodyFillerV2] (IR side):
+     * - [PreviewHintFirGenerator] (FIR side): hint stub に origin として attach
+     * - [me.tbsten.compose.preview.lab.compiler.ir.PreviewHintIrBodyFiller] (IR side):
      *   この key で hint 関数を識別し、 body に `CollectedPreview(...)` constructor 呼び出しを
      *   `irReturn` する形で埋める
      */
-    object PreviewLabHintV2 : GeneratedDeclarationKey()
+    object PreviewLabHint : GeneratedDeclarationKey()
 
     /**
      * Per-`@Preview` marker interface を識別する key。 hint 関数の引数型として使われ、

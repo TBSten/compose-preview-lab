@@ -21,7 +21,7 @@ import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 
 /**
- * [me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGeneratorV2] が emit した
+ * [me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGenerator] が emit した
  * `previewHint_<hash>(): CollectedPreview` stub の body を埋める。 FIR は body を持てないので
  * IR pass で `CollectedPreview(...)` constructor 呼び出しを `irReturn` する形に書き換える。
  *
@@ -60,7 +60,7 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
  *   関数を直接走査して PreviewFunctionInfo を構築する。 そうしないと ignore=true の hint が
  *   orphan (body=null) になり JVM backend assert に当たる
  */
-internal class PreviewHintIrBodyFillerV2(
+internal class PreviewHintIrBodyFiller(
     private val pluginContext: IrPluginContext,
     private val compatContext: CompatContext,
     private val previewsByHash: Map<String, PreviewFunctionInfo>,
@@ -74,7 +74,7 @@ internal class PreviewHintIrBodyFillerV2(
     /**
      * Hint 関数の body を `CollectedPreview(...)` constructor 呼び出しの `irReturn` に書き換える。
      *
-     * `Keys.PreviewLabHintV2` origin の関数のみを対象にする。 元 `@Preview` 関数は hint 関数名
+     * `Keys.PreviewLabHint` origin の関数のみを対象にする。 元 `@Preview` 関数は hint 関数名
      * `previewHint_<hash>` の hash 部分から特定する。
      *
      * **Before**:
@@ -93,7 +93,7 @@ internal class PreviewHintIrBodyFillerV2(
         if (declaration.body != null) return super.visitSimpleFunction(declaration)
         val origin = declaration.origin
         when {
-            origin is IrDeclarationOrigin.GeneratedByPlugin && origin.pluginKey === Keys.PreviewLabHintV2 -> {
+            origin is IrDeclarationOrigin.GeneratedByPlugin && origin.pluginKey === Keys.PreviewLabHint -> {
                 fillHintBody(declaration)
             }
         }
@@ -133,7 +133,7 @@ internal class PreviewHintIrBodyFillerV2(
  * `@Preview` annotated top-level 関数を moduleFragment から走査し、 canonical key の hash を
  * key とした [PreviewFunctionInfo] map を構築する。
  *
- * `ignore = true` の preview も含めることで、 [PreviewHintFirGeneratorV2] が emit した
+ * `ignore = true` の preview も含めることで、 [PreviewHintFirGenerator] が emit した
  * すべての hint declaration に body を埋められるようにする。 ignore filter は consumer 側
  * で行う想定 (TODO: cross-module で ignore preview が露出しない形にする follow-up)。
  *
@@ -155,7 +155,7 @@ internal fun buildPreviewByHashMap(previews: List<PreviewFunctionInfo>): Map<Str
 
 /**
  * IR `IrSimpleFunction` の value parameter type を hint canonical key 用の FQN リストに変換する。
- * FIR side [me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGeneratorV2] と同じ format で
+ * FIR side [me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGenerator] と同じ format で
  * 揃える必要がある (nullable は `?` suffix、 unknown は `?` 単体)。
  */
 private fun IrSimpleFunction.parameterTypeFqnsForHash(): List<String> = parameters

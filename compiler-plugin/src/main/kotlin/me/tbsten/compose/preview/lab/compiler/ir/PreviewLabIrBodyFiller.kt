@@ -124,9 +124,9 @@ internal class PreviewLabIrBodyFiller(
      * ```
      *
      * Cross-module discovery は per-declaration hint generator
-     * ([me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGeneratorV2]) が emit する
+     * ([me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGenerator]) が emit する
      * `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` 関数を
-     * [HintDiscoveryV2] が `referenceFunctions` で発見することで実現する。
+     * [HintDiscovery] が `referenceFunctions` で発見することで実現する。
      */
     private fun replaceCollectPreviewsProperty(property: IrProperty) {
         val delegateField = property.backingField ?: return

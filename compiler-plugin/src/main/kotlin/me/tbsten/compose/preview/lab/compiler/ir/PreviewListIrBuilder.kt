@@ -196,10 +196,10 @@ internal class PreviewListIrBuilder(
      * `CollectedPreview` (1 hint = 1 `@Preview`)。 [buildConcatenatedPreviewsExpr] では
      * `add(hint())` 形で list に積む。
      *
-     * Caching ensures the (potentially expensive) package walk in [discoverHintsV2] runs at
+     * Caching ensures the (potentially expensive) package walk in [discoverHints] runs at
      * most once per [PreviewListIrBuilder] instance.
      */
-    private val cachedHintsV2: List<IrSimpleFunction> by lazy { discoverHintsV2(pluginContext, compatContext) }
+    private val cachedHintsV2: List<IrSimpleFunction> by lazy { discoverHints(pluginContext, compatContext) }
 
     /**
      * Builds an expression that concatenates this module's previews with previews from

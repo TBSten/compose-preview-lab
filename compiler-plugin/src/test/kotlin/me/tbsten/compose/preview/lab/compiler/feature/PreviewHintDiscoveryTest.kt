@@ -13,14 +13,15 @@ import me.tbsten.compose.preview.lab.compiler.loadCollectedPreviews
  * Per-declaration hint (Metro 風) を依存モジュールから発見する consumer 側 IR pass の検証。
  *
  * 2-stage kctfork compilation:
- * 1. uiLib をコンパイルし、 `me.tbsten.compose.preview.lab.hints/previewHint_<hash>(): CollectedPreview`
- *    が emit される (T02 で実装済み)
+ * 1. uiLib をコンパイルし、 `me.tbsten.compose.preview.lab.hints` package に
+ *    `interface PreviewHintMarker_<hash>` + `fun previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview`
+ *    が emit される
  * 2. app を uiLib output を classpath に追加してコンパイル。 `collectAllModulePreviews()` の
- *    IR transform で V2 hint discovery が cross-module hint を call して `CollectedPreview` を
- *    取得し、 list に積む
+ *    IR transform で `referenceFunctions(CallableId(hintsPackage, "previewHint"))` で hint を
+ *    発見し、 各 hint を call して `CollectedPreview` を list に積む
  * 3. リフレクションで app.allPreviews を読み出し、 cross-module preview が含まれることを検証
  */
-class PreviewHintV2DiscoveryTest :
+class PreviewHintDiscoveryTest :
     FunSpec({
         val base = CompilerPluginTestBase()
 
@@ -58,8 +59,9 @@ class PreviewHintV2DiscoveryTest :
             val previews = appResult.loadCollectedPreviews(propertyName = "allPreviews")
             val ids = previews.map { p -> p::class.members.find { it.name == "id" }!!.call(p) as String }
 
-            // V1 (旧モジュール集約) + V2 (per-declaration) 両方が動くが、 distinctPreviewsById
-            // で dedup されるので同じ preview は 1 回だけ登場する。
+            // 自モジュールの @Preview と cross-module hint discovery の両方から CollectedPreview
+            // が emit されるが、 distinctPreviewsById で id ベースで dedup されるので同じ
+            // preview は 1 回だけ登場する。
             ids shouldContainExactlyInAnyOrder listOf(
                 "app.AppPreview",
                 "uilib.UiLibPreview",
@@ -195,8 +197,7 @@ class PreviewHintV2DiscoveryTest :
             val previews = appResult.loadCollectedPreviews(propertyName = "allPreviews")
             val ids = previews.map { p -> p::class.members.find { it.name == "id" }!!.call(p) as String }
 
-            // V1 (auto-provider経由) + V2 (per-declaration hint経由) で SharedPreview が
-            // 2 重に出てくる可能性があるが、 distinctPreviewsById で 1 個に統合される
+            // distinctPreviewsById により同 id の preview は 1 個に統合される
             previews.size shouldBe ids.distinct().size
             ids shouldContain "shared.SharedPreview"
             ids shouldContain "app.AppPreview"
