@@ -15,8 +15,6 @@ import java.util.Collections.emptyMap
 import me.tbsten.compose.preview.lab.gallery.PreviewLabGallery
 import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
 import me.tbsten.compose.preview.lab.gallery.PreviewListGrid
-import me.tbsten.compose.preview.lab.mcp.PreviewLabMcpServerConfig
-import me.tbsten.compose.preview.lab.mcp.ProvideMcpServer
 import me.tbsten.compose.preview.lab.previewlab.openfilehandler.OpenFileHandler
 import me.tbsten.compose.preview.lab.ui.adaptive
 
@@ -70,15 +68,11 @@ import me.tbsten.compose.preview.lab.ui.adaptive
  * @param focusable Whether the window can receive focus
  * @param alwaysOnTop Whether the window should stay on top of other windows
  * @param noSelectedContents Content to display when no preview is selected
- * @param mcpServerConfig Configuration for the MCP server (experimental feature).
- *   The MCP server allows AI assistants to interact with previews.
- *   Use [PreviewLabMcpServerConfig.Disable] to disable the MCP server.
  * @param onPreviewKeyEvent Callback for preview key events
  * @param onKeyEvent Callback for key events
  * @see me.tbsten.compose.preview.lab.gallery.PreviewLabGallery
  * @see CollectedPreview
  * @see OpenFileHandler
- * @see PreviewLabMcpServerConfig
  */
 @Composable
 fun ApplicationScope.PreviewLabGalleryWindows(
@@ -93,7 +87,6 @@ fun ApplicationScope.PreviewLabGalleryWindows(
             contentPadding = PaddingValues(adaptive(12.dp, 20.dp)),
         )
     },
-    mcpServerConfig: PreviewLabMcpServerConfig = PreviewLabMcpServerConfig(),
     // Main window arguments
     // TODO: Review appropriate default values
     windowState: WindowState = rememberWindowState(size = DpSize(1000.dp, 800.dp)),
@@ -110,34 +103,27 @@ fun ApplicationScope.PreviewLabGalleryWindows(
     onPreviewKeyEvent: (KeyEvent) -> Boolean = { false },
     onKeyEvent: (KeyEvent) -> Boolean = { false },
 ) {
-    ProvideMcpServer(
-        previewList = previewList,
-        featuredFileList = featuredFileList,
-        state = state,
-        config = mcpServerConfig,
+    Window(
+        onCloseRequest = onCloseRequest,
+        state = windowState,
+        visible = visible,
+        title = title,
+        icon = icon,
+        undecorated = undecorated,
+        transparent = transparent,
+        resizable = resizable,
+        enabled = enabled,
+        focusable = focusable,
+        alwaysOnTop = alwaysOnTop,
+        onPreviewKeyEvent = onPreviewKeyEvent,
+        onKeyEvent = onKeyEvent,
     ) {
-        Window(
-            onCloseRequest = onCloseRequest,
-            state = windowState,
-            visible = visible,
-            title = title,
-            icon = icon,
-            undecorated = undecorated,
-            transparent = transparent,
-            resizable = resizable,
-            enabled = enabled,
-            focusable = focusable,
-            alwaysOnTop = alwaysOnTop,
-            onPreviewKeyEvent = onPreviewKeyEvent,
-            onKeyEvent = onKeyEvent,
-        ) {
-            PreviewLabGallery(
-                previewList = previewList,
-                featuredFileList = featuredFileList,
-                openFileHandler = openFileHandler,
-                state = state,
-                noSelectedContents = noSelectedContents,
-            )
-        }
+        PreviewLabGallery(
+            previewList = previewList,
+            featuredFileList = featuredFileList,
+            openFileHandler = openFileHandler,
+            state = state,
+            noSelectedContents = noSelectedContents,
+        )
     }
 }
