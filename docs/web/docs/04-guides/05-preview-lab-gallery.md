@@ -147,6 +147,3 @@ PreviewLabGalleryState の詳しい機能については <KDocLink path="core/me
 
 [Featured Files](./featured-files) を参照してください。
 
-### `mcpServerConfig` (option, JVM only)
-
-[MCP Server](./mcp) を参照してください。
