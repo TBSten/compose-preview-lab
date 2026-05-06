@@ -16,13 +16,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.zIndex
-import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
-import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
 import me.tbsten.compose.preview.lab.field.ScreenSize
 import me.tbsten.compose.preview.lab.previewlab.header.PreviewLabHeader
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorTab
 import me.tbsten.compose.preview.lab.previewlab.inspectorspane.InspectorsPane
-import me.tbsten.compose.preview.lab.previewlab.mcp.LocalPreviewLabMcpBridge
 import me.tbsten.compose.preview.lab.previewlab.screenshot.LocalCaptureScreenshot
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.toast.ToastAction
@@ -492,7 +489,6 @@ fun PreviewLab(
     content = content,
 )
 
-@OptIn(ExperimentalComposePreviewLabApi::class)
 @Composable
 private fun PreviewLabProviders(
     state: PreviewLabState,
@@ -502,18 +498,6 @@ private fun PreviewLabProviders(
     content: @Composable () -> Unit,
 ) {
     val urlParams = rememberUrlParams()
-    val mcpBridge = LocalPreviewLabMcpBridge.current
-    val previewId = LocalPreviewLabPreview.current?.id
-
-    // Notify MCP bridge of state changes (only if previewId is available)
-    if (previewId != null) {
-        McpBridgeEffect(
-            mcpBridge = mcpBridge,
-            previewId = previewId,
-            state = state,
-            captureScreenshot = captureScreenshot,
-        )
-    }
 
     DisableSelection {
         contentRoot {
