@@ -39,11 +39,6 @@ kotlinxCoroutines = "1.10.1"
 # Filekit
 filekit = "0.12.0"
 
-# Ktor / MCP (gallery)
-ktor = "3.3.3"
-mcp = "0.8.1"
-slf4j = "2.0.16"
-
 # Test
 kotest = "6.0.5"
 kctfork = "0.12.1"
@@ -95,12 +90,6 @@ kotlinxSerializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serializati
 filekitCore = { module = "io.github.vinceglb:filekit-core", version.ref = "filekit" }
 filekitDialogs = { module = "io.github.vinceglb:filekit-dialogs", version.ref = "filekit" }
 
-# Ktor / MCP (gallery)
-ktorServerCore = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
-ktorServerCio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
-mcpKotlinSdk = { module = "io.modelcontextprotocol:kotlin-sdk", version.ref = "mcp" }
-slf4jNop = { module = "org.slf4j:slf4j-nop", version.ref = "slf4j" }
-
 # Test
 kotestProperty = { module = "io.kotest:kotest-property", version.ref = "kotest" }
 kotestFrameworkEngine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
@@ -151,9 +140,6 @@ composeTest = ["composeUiTest", "composeUiTestJunit4"]
 # Filekit
 filekit = ["filekitCore", "filekitDialogs"]
 
-# Ktor Server (gallery)
-ktorServer = ["ktorServerCore", "ktorServerCio"]
-
 # Test
 kotest = ["kotestFrameworkEngine", "kotestAssertionsCore", "kotestRunnerJunit5"]
 
@@ -200,4 +186,3 @@ shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 # Dev / IntegrationTest
 hotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "hotReload" }
 lumoUi = { id = "com.nomanr.plugin.lumo", version.ref = "lumoUi" }
-ktor = { id = "io.ktor.plugin", version.ref = "ktor" }

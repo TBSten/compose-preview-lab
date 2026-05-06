@@ -2,8 +2,6 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 
 plugins {
     alias(libs.plugins.conventionCmpUi)
-    alias(libs.plugins.kotlinxSerialization)
-    alias(libs.plugins.ktor)
     alias(libs.plugins.buildkonfig)
     alias(libs.plugins.conventionFormat)
     alias(libs.plugins.conventionPublish)
@@ -27,12 +25,6 @@ kotlin {
             implementation(libs.kotestRunnerJunit5)
             implementation(libs.kotestProperty)
             implementation(libs.kotlinxCoroutinesTest)
-        }
-        jvmMain.dependencies {
-            implementation(libs.ktorServerCore)
-            implementation(libs.ktorServerCio)
-            implementation(libs.mcpKotlinSdk)
-            implementation(libs.slf4jNop)
         }
     }
 }
