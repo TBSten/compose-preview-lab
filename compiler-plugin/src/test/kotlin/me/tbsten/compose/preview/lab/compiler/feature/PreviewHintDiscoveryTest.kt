@@ -2,6 +2,7 @@ package me.tbsten.compose.preview.lab.compiler.feature
 
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
+import io.kotest.assertions.assertSoftly
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
@@ -192,11 +193,11 @@ class PreviewHintDiscoveryTest :
                     SourceFile.kotlin(
                         "Shared.kt",
                         """
-                    package shared
+                        package shared
 
-                    @org.jetbrains.compose.ui.tooling.preview.Preview
-                    fun SharedPreview() {}
-                    """,
+                        @org.jetbrains.compose.ui.tooling.preview.Preview
+                        fun SharedPreview() {}
+                        """.trimIndent(),
                     ),
                 )
                 libResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
@@ -205,11 +206,11 @@ class PreviewHintDiscoveryTest :
                     SourceFile.kotlin(
                         "App.kt",
                         """
-                    package app
+                        package app
 
-                    @org.jetbrains.compose.ui.tooling.preview.Preview
-                    fun AppPreview() {}
-                    """,
+                        @org.jetbrains.compose.ui.tooling.preview.Preview
+                        fun AppPreview() {}
+                        """.trimIndent(),
                     ),
                     base.collectAllModulePreviewsEntry("allPreviews"),
                     extraClasspaths = listOf(libResult.outputDirectory),
@@ -219,12 +220,15 @@ class PreviewHintDiscoveryTest :
                 val previews = appResult.loadCollectedPreviews(propertyName = "allPreviews")
                 val ids = previews.map { p -> p::class.members.find { it.name == "id" }!!.call(p) as String }
 
-                // distinctPreviewsById should leave zero id duplicates.
-                previews.size shouldBe ids.distinct().size
-                ids shouldContain "shared.SharedPreview"
-                ids shouldContain "app.AppPreview"
-                // Explicitly confirm that shared.SharedPreview is kept exactly once after
-                // dedup.
-                ids.count { it == "shared.SharedPreview" } shouldBe 1
+                // Report every assertion failure together rather than failing on the
+                // first one — if dedup is broken we want to see the full picture.
+                assertSoftly {
+                    // distinctPreviewsById should leave zero id duplicates.
+                    previews.size shouldBe ids.distinct().size
+                    ids shouldContain "shared.SharedPreview"
+                    ids shouldContain "app.AppPreview"
+                    // Confirm that shared.SharedPreview is kept exactly once after dedup.
+                    ids.count { it == "shared.SharedPreview" } shouldBe 1
+                }
             }
     })
