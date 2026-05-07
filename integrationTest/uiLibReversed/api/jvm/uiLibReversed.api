@@ -1,0 +1,11 @@
+public final class me/tbsten/compose/preview/lab/sample/libreversed/ComposableSingletons$MyButtonKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/sample/libreversed/ComposableSingletons$MyButtonKt;
+	public fun <init> ()V
+	public final fun getLambda$-1639038902$uiLibReversed ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class me/tbsten/compose/preview/lab/sample/libreversed/MyButtonKt {
+	public static final fun MyButton (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V
+	public static final fun MyButtonPreview (Landroidx/compose/runtime/Composer;I)V
+}
+

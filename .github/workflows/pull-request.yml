@@ -42,6 +42,10 @@ jobs:
       - name: Validate Binary Compatibility
         shell: bash
         run: ./gradlew apiCheck
+      - name: Validate Binary Compatibility (integrationTest)
+        working-directory: integrationTest
+        shell: bash
+        run: ./gradlew apiCheck
   test:
     strategy:
       fail-fast: false
