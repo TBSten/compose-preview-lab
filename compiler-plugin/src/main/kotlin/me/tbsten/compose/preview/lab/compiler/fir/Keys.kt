@@ -12,16 +12,13 @@ internal object Keys {
     /**
      * Identifies the hint function generated once per `@Preview`.
      *
-     * For each `@Preview` function the FIR side declares a stub
+     * For each `@Preview` function the FIR side ([PreviewHintFirGenerator]) declares a
+     * stub
      * `me.tbsten.compose.preview.lab.hints/previewHint(value: PreviewHintMarker_<sanitized_fqn>_<hash>): CollectedPreview`
-     * and the IR side fills in the body. The fixed callable name plus the marker class
-     * parameter are what make the IdSignature unique per `@Preview`.
-     *
-     * Used by:
-     * - [PreviewHintFirGenerator] (FIR side): attaches this origin to the hint stub.
-     * - [me.tbsten.compose.preview.lab.compiler.ir.PreviewHintIrBodyFiller] (IR side):
-     *   matches functions by this key and fills their body with an `irReturn` of the
-     *   corresponding `CollectedPreview(...)` constructor call.
+     * and the IR side
+     * ([me.tbsten.compose.preview.lab.compiler.ir.PreviewHintIrBodyFiller]) fills in the
+     * body. The fixed callable name plus the marker class parameter are what make the
+     * IdSignature unique per `@Preview`.
      */
     object PreviewLabHint : GeneratedDeclarationKey()
 
