@@ -33,7 +33,7 @@ class PreviewHintDiscoveryTest :
         val testKotlinVersion = System.getProperty("test.kotlin.version") ?: "2.3.21"
         val supports = testKotlinVersion.isAtLeast(2, 3, 21)
 
-        test("collectAllModulePreviews() が cross-module の per-declaration hint を発見・利用する")
+        test("collectAllModulePreviews() discovers and uses cross-module per-declaration hints")
             .config(enabled = supports) {
                 // Stage 1: uiLib
                 val libResult = base.compile(
@@ -77,7 +77,7 @@ class PreviewHintDiscoveryTest :
                 )
             }
 
-        test("複数 @Preview を持つ依存モジュールの hint をすべて発見する")
+        test("discovers all hints from a dependency module with multiple @Preview annotations")
             .config(enabled = supports) {
                 val libResult = base.compile(
                     SourceFile.kotlin(
@@ -120,7 +120,7 @@ class PreviewHintDiscoveryTest :
                 )
             }
 
-        test("cross-module の preview が CollectedPreview の全 metadata を保持する")
+        test("cross-module preview preserves all CollectedPreview metadata")
             .config(enabled = supports) {
                 val libResult = base.compile(
                     SourceFile.kotlin(
@@ -173,7 +173,7 @@ class PreviewHintDiscoveryTest :
                 val ignored = listOf(filePath, code)
             }
 
-        test("smoke: collectAllModulePreviews() の結果に id の重複が現れない")
+        test("smoke: collectAllModulePreviews() result contains no duplicate ids")
             .config(enabled = supports) {
                 // 自モジュール `@Preview` (local list 経由) と cross-module `@Preview` (per-declaration
                 // hint 経由) の両方を含む集約結果について、 `distinctPreviewsById` が正しく適用され
