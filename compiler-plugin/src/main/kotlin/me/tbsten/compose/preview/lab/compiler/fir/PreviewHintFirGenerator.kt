@@ -156,6 +156,13 @@ internal class PreviewHintFirGenerator(session: FirSession) : FirDeclarationGene
         val shortName = classId.shortClassName.asString()
         if (shortName !in hashByMarkerShortName) return null
 
+        // TODO: marker は internal 利用 (`@Preview` ごとの IdSignature 区別だけが目的) なので、
+        //   外部実装をシールするために `Modality.SEALED` に切り替えるべき。 ただし sealed +
+        //   `@Deprecated(HIDDEN)` の cross-Kotlin-version (2.1〜2.4-Beta) / KLIB IC 動作の検証が
+        //   必要なので分離。 follow-up: .local/ticket/followup-sealed-hint-marker-interface.md
+        // TODO: ユーザーコードからの誤参照を防ぐため `@Deprecated(level = HIDDEN)` を付与すべき。
+        //   FIR annotation 構築の boilerplate と cross-Kotlin-version 互換検証を別軸で扱う必要が
+        //   あるので分離。 follow-up: .local/ticket/followup-deprecated-hidden-hint-declarations.md
         val klass = createTopLevelClass(classId, Keys.PreviewLabHintMarker, ClassKind.INTERFACE) {
             modality = Modality.ABSTRACT
         }
@@ -204,6 +211,9 @@ internal class PreviewHintFirGenerator(session: FirSession) : FirDeclarationGene
                         "generateTopLevelClassLikeDeclaration, but symbol provider returned null",
                 )
             val fileName = "PreviewHint_${entry.hash}.kt"
+            // TODO: ユーザーが `previewHint(...)` を直接呼ばないように `@Deprecated(level = HIDDEN)`
+            //   を付与すべき。 cross-module discovery (`referenceFunctions`) の動作は維持する想定。
+            //   follow-up: .local/ticket/followup-deprecated-hidden-hint-declarations.md
             createTopLevelFunction(
                 Keys.PreviewLabHint,
                 callableId,
