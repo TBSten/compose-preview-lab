@@ -23,9 +23,9 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 
 /**
  * [me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGenerator] が emit した
- * `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` stub の body を埋める。
- * FIR は body を持てないので IR pass で `CollectedPreview(...)` constructor 呼び出しを
- * `irReturn` する形に書き換える。
+ * `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` stub の body で
+ * `CollectedPreview` を返すようにする。 FIR は body を持てないので IR pass で
+ * `CollectedPreview(...)` constructor 呼び出しを `irReturn` する形に書き換える。
  *
  * **Hint function**
  *
@@ -60,8 +60,7 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
  *   行うため、 IR 側でも `previews` (filter 済み) ではなく moduleFragment 全体の `@Preview`
  *   関数を直接走査して PreviewFunctionInfo を構築する。 そうしないと ignore=true の hint が
  *   orphan (body=null) になり JVM backend assert に当たる。 cross-module で ignore preview
- *   が露出する課題は redesign 完了後の follow-up
- *   (`.local/ticket/followup-ignore-preview-cross-module-leak.md`)
+ *   が露出する課題は redesign 完了後の follow-up で対処予定
  */
 internal class PreviewHintIrBodyFiller(
     private val pluginContext: IrPluginContext,
