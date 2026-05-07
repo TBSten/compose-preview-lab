@@ -4,6 +4,7 @@ import com.tschuchort.compiletesting.SourceFile
 import io.kotest.core.spec.style.FunSpec
 import me.tbsten.compose.preview.lab.compiler.CompilerPluginJsTestBase
 import me.tbsten.compose.preview.lab.compiler.assertOk
+import me.tbsten.compose.preview.lab.compiler.isAtLeast
 import me.tbsten.compose.preview.lab.compiler.klibFiles
 
 /**
@@ -26,9 +27,10 @@ class CrossModuleAggregationKlibTest :
             // hint generator is not registered at all, so these tests cannot exercise
             // the marker-class scheme they depend on. Skipping rather than failing keeps
             // the older-Kotlin smoke matrix (`scripts/compiler-plugin-test.sh`) green.
+            // Must use numeric comparison; lexicographic `compareTo` would (incorrectly)
+            // classify e.g. "2.3.9" >= "2.3.21" because '9' > '2'.
             val testKotlinVersion = System.getProperty("test.kotlin.version") ?: "2.3.21"
-            val supportsKlibHint = testKotlinVersion.compareTo("2.3.21") >= 0 ||
-                testKotlinVersion.startsWith("2.4")
+            val supportsKlibHint = testKotlinVersion.isAtLeast(2, 3, 21)
 
             test("E-1: a single dependency module's @Preview is aggregated by app's collectAllModulePreviews()")
                 .config(enabled = supportsKlibHint) {
@@ -111,9 +113,11 @@ class CrossModuleAggregationKlibTest :
                     lib2.assertOk()
 
                     // Stage 2: the app references both KLIBs via `-libraries` and calls
-                    // collectAllModulePreviews. Marker class naming is unique per
-                    // module-hash, so the `previewLabExport(<Marker>)` from both libs do
-                    // not collide on IdSignature and link successfully.
+                    // collectAllModulePreviews. Each `@Preview` produces a per-declaration
+                    // hint in `me.tbsten.compose.preview.lab.hints` whose marker class
+                    // name embeds the canonical-key sha256, so the
+                    // `previewHint(value: PreviewHintMarker_..._<hash>?)` overloads from
+                    // both libs have distinct IdSignatures and link successfully.
                     val app = base.compileJs(
                         SourceFile.kotlin(
                             "App.kt",
@@ -168,12 +172,13 @@ class CrossModuleAggregationKlibTest :
 
             test("E-2: two dependencies that share a collectModulePreviews property name do not collide on IdSignature")
                 .config(enabled = supportsKlibHint) {
-                    // Both modules expose the same property name `sharedPreviews`. Under
-                    // the legacy IR-based hint scheme this caused the
-                    // `previewLabExport(PreviewExport)` IdSignatures from both modules to
-                    // be identical, and linking failed. The new FIR-based path uses
-                    // module-name-hashed marker classes to keep them unique, so both
-                    // link successfully.
+                    // Both modules expose the same property name `sharedPreviews`, but
+                    // cross-module aggregation no longer goes through that property — it
+                    // walks every `previewHint(marker?)` discovered via fixed-name
+                    // `referenceFunctions` lookup. Each hint's IdSignature is
+                    // disambiguated by the per-`@Preview` canonical-key hash embedded in
+                    // its marker class name (`PreviewHintMarker_<sanitized_fqn>_<hash>`),
+                    // so linking succeeds regardless of the property name.
                     val lib1 = base.compileJs(
                         SourceFile.kotlin(
                             "Lib1.kt",

@@ -19,14 +19,16 @@ class CrossModuleAggregationTest :
              * a two-stage kctfork compilation.
              *
              * Flow:
-             * 1. Compile uiLib1 / uiLib2 independently. (The compiler plugin's hint
-             *    generator emits `me.tbsten.compose.preview.lab.exports.previewLabExport`
-             *    hint functions in synthetic files.)
+             * 1. Compile uiLib1 / uiLib2 independently. (The compiler plugin's FIR
+             *    generator emits one
+             *    `me.tbsten.compose.preview.lab.hints.previewHint(value: PreviewHintMarker_..._<hash>?): CollectedPreview`
+             *    hint per `@Preview`, with a sibling marker interface in the same
+             *    package.)
              * 2. Compile app with uiLib1 / uiLib2 outputs added to its classpath. (The
-             *    compiler plugin's `collectAllModulePreviews()` rewrite discovers the hint
-             *    functions in the dependency jars via `pluginContext.referenceFunctions`,
-             *    resolves the original property, and folds its value into the aggregated
-             *    list.)
+             *    compiler plugin's `collectAllModulePreviews()` rewrite discovers each
+             *    hint via `pluginContext.referenceFunctions(CallableId(HINT_PACKAGE, "previewHint"))`,
+             *    invokes it with `null`, and folds the returned `CollectedPreview` into
+             *    the aggregated list.)
              * 3. Read `app.appPreviews` via reflection and assert that both modules'
              *    previews are present.
              */
