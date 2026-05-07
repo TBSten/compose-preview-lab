@@ -24,7 +24,7 @@ class PreviewHintV2DiscoveryTest :
     FunSpec({
         val base = CompilerPluginTestBase()
 
-        test("collectAllModulePreviews() が cross-module の per-declaration hint を発見・利用する") {
+        test("collectAllModulePreviews() discovers and uses cross-module per-declaration hints") {
             // Stage 1: uiLib
             val libResult = base.compile(
                 SourceFile.kotlin(
@@ -66,7 +66,7 @@ class PreviewHintV2DiscoveryTest :
             )
         }
 
-        test("複数 @Preview を持つ依存モジュールの hint をすべて発見する") {
+        test("discovers all hints from dependency module with multiple @Preview annotations") {
             val libResult = base.compile(
                 SourceFile.kotlin(
                     "UiLib.kt",
@@ -108,7 +108,7 @@ class PreviewHintV2DiscoveryTest :
             )
         }
 
-        test("cross-module の preview が CollectedPreview の全 metadata を保持する") {
+        test("cross-module preview preserves all CollectedPreview metadata") {
             val libResult = base.compile(
                 SourceFile.kotlin(
                     "UiLib.kt",
@@ -160,7 +160,7 @@ class PreviewHintV2DiscoveryTest :
             val ignored = listOf(filePath, code)
         }
 
-        test("dedup: 自モジュール @Preview と cross-module hint が同 FQN なら 1 個に統合") {
+        test("dedup: local @Preview and cross-module hint with same FQN are consolidated to one") {
             // 同 FQN cross-module collision は受容済み edge case だが、 通常ケースとして
             // 自モジュール側の hint が先に登録されて cross-module 側が overwrite しないこと
             // (= distinctPreviewsById が機能していること) を確認するために、 別 FQN を使う。
