@@ -175,7 +175,7 @@ internal class PreviewHintFirGenerator(session: FirSession) : FirDeclarationGene
         //   the marker. Deferred because building the FIR annotation has non-trivial
         //   boilerplate that needs cross-Kotlin-version compatibility checks.
         //   follow-up: .local/ticket/followup-deprecated-hidden-hint-declarations.md
-        val klass = createTopLevelClass(classId, Keys.PreviewLabHintMarker, ClassKind.INTERFACE) {
+        val klass = createTopLevelClass(classId, Keys.PreviewLabHintMarkerInterface, ClassKind.INTERFACE) {
             modality = Modality.ABSTRACT
         }
         return klass.symbol

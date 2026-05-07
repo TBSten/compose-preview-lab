@@ -28,5 +28,5 @@ internal object Keys {
      * per `@Preview`. Emitted as an `interface` with `Modality.ABSTRACT` to avoid IC
      * collisions.
      */
-    object PreviewLabHintMarker : GeneratedDeclarationKey()
+    object PreviewLabHintMarkerInterface : GeneratedDeclarationKey()
 }
