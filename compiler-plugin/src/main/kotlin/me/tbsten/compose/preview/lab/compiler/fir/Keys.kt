@@ -10,12 +10,12 @@ import org.jetbrains.kotlin.GeneratedDeclarationKey
  */
 internal object Keys {
     /**
-     * Per-`@Preview` hint 関数を識別する key (Metro 風 per-declaration hint 方式)。
+     * `@Preview` ごとに 1 つ生成する hint 関数を識別する key。
      *
      * 各 `@Preview` 関数に対し
      * `me.tbsten.compose.preview.lab.hints/previewHint(value: PreviewHintMarker_<hash>): CollectedPreview`
      * という hint stub を FIR で declare し、 IR で body を埋める。 fixed name + marker class
-     * param で IdSignature を per-`@Preview` 区別する。
+     * param で IdSignature を `@Preview` ごとに区別する。
      *
      * 使用箇所:
      * - [PreviewHintFirGenerator] (FIR side): hint stub に origin として attach
@@ -26,9 +26,9 @@ internal object Keys {
     object PreviewLabHint : GeneratedDeclarationKey()
 
     /**
-     * Per-`@Preview` marker interface を識別する key。 hint 関数の引数型として使われ、
-     * KLIB IdSignature を per-`@Preview` ユニークにするだけが目的。 IC 衝突回避のため
-     * `interface` (`Modality.ABSTRACT`) で emit される。
+     * `@Preview` ごとに 1 つ生成する marker interface を識別する key。 hint 関数の引数型として
+     * 使われ、 KLIB IdSignature を `@Preview` ごとにユニークにするだけが目的。 IC 衝突回避の
+     * ため `interface` (`Modality.ABSTRACT`) で emit される。
      */
     object PreviewLabHintMarker : GeneratedDeclarationKey()
 }
