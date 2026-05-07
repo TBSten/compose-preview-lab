@@ -115,8 +115,8 @@ internal class PreviewHintIrBodyFiller(
         val markerShortName = markerFqn.shortName().asString()
         if (!markerShortName.startsWith(PreviewLabFirBuiltIns.PreviewHintMarkerPrefix)) return
         // marker 名は `PreviewHintMarker_<sanitized_fqn>_<hash>`。 hash は固定長
-        // ([PreviewLabFirBuiltIns.HASH_LENGTH]) の base-36 文字列なので末尾切り出しで取得する。
-        val hash = markerShortName.takeLast(PreviewLabFirBuiltIns.HASH_LENGTH)
+        // ([PreviewLabFirBuiltIns.HashLength]) の base-36 文字列なので末尾切り出しで取得する。
+        val hash = markerShortName.takeLast(PreviewLabFirBuiltIns.HashLength)
         val previewInfo = previewsByHash[hash] ?: return
 
         val builder = DeclarationIrBuilder(pluginContext, declaration.symbol)

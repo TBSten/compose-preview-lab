@@ -48,13 +48,13 @@ internal class PreviewLabFirBuiltIns(session: FirSession, val config: PluginConf
          * Prefix of the per-`@Preview` marker interface name. Full name is
          * `PreviewHintMarker_<sanitized_fqn>_<hash>` where `<sanitized_fqn>` is the source
          * FQN with `.` replaced by `_` (debugging aid) and `<hash>` is the canonical-key
-         * sha256 ([HASH_LENGTH] chars, used for overload disambiguation and as the
+         * sha256 ([HashLength] chars, used for overload disambiguation and as the
          * cross-FIR/IR matching key).
          */
         const val PreviewHintMarkerPrefix: String = "PreviewHintMarker_"
 
         /** Length of the hash suffix on marker / hint declarations (matches `computeHintHash`). */
-        const val HASH_LENGTH: Int = 8
+        const val HashLength: Int = 8
 
         /** CMP `@Preview` annotation FQN (used for predicate registration). */
         val CMP_PREVIEW_ANNOTATION_FQN: FqName =

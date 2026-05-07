@@ -87,7 +87,9 @@ class PreviewHintEmissionTest :
                 // hint 関数名は固定 (`previewHint`) で、 marker class param で区別する。
                 // Java reflection からは marker param 型の Class object を渡して getMethod する。
                 val markerClass = result.classLoader
-                    .loadClass("me.tbsten.compose.preview.lab.hints.${buildMarkerShortName("test.source.MyButton", expectedHash)}")
+                    .loadClass(
+                        "me.tbsten.compose.preview.lab.hints.${buildMarkerShortName("test.source.MyButton", expectedHash)}"
+                    )
                 val hintMethod = hintFacade.getMethod("previewHint", markerClass)
 
                 // hint(null) を invoke すると CollectedPreview インスタンスが返る
