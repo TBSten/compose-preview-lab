@@ -7,13 +7,15 @@ import io.kotest.matchers.collections.shouldExist
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import me.tbsten.compose.preview.lab.compiler.CompilerPluginTestBase
+import me.tbsten.compose.preview.lab.compiler.fir.buildMarkerShortName
 import me.tbsten.compose.preview.lab.compiler.fir.buildPreviewHintCanonicalKey
 import me.tbsten.compose.preview.lab.compiler.fir.computeHintHash
 import me.tbsten.compose.preview.lab.compiler.isAtLeast
 
 /**
  * Per-declaration hint generator (Metro 風) が `@Preview` 1 個に対し
- * (a) `interface PreviewHintMarker_<hash>` (b) `fun previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview`
+ * (a) `interface PreviewHintMarker_<sanitized_fqn>_<hash>`
+ * (b) `fun previewHint(value: PreviewHintMarker_<sanitized_fqn>_<hash>?): CollectedPreview`
  * を 1 セット emit し、 IR で hint 関数の body に `CollectedPreview(...)` constructor 呼び出しを
  * 埋め込んでいることを検証する。
  *
@@ -31,7 +33,7 @@ class PreviewHintEmissionTest :
         val testKotlinVersion = System.getProperty("test.kotlin.version") ?: "2.3.21"
         val supports = testKotlinVersion.isAtLeast(2, 3, 21)
 
-        test("@Preview 1 個 → marker (PreviewHintMarker_<hash>) + previewHint(marker?) 1 セット emit される")
+        test("@Preview 1 個 → marker (PreviewHintMarker_<sanitized_fqn>_<hash>) + previewHint(marker?) 1 セット emit される")
             .config(enabled = supports) {
                 val result = base.compile(
                     SourceFile.kotlin(
@@ -51,7 +53,7 @@ class PreviewHintEmissionTest :
                 )
                 // FIR generator は file 名 `PreviewHint_<hash>.kt` で emit するので、
                 // file facade class は `PreviewHint_<hash>Kt`、 marker class は同 package の
-                // `PreviewHintMarker_<hash>` で並ぶ。
+                // `PreviewHintMarker_<sanitized_fqn>_<hash>` で並ぶ。
                 val expectedClassFile = "me/tbsten/compose/preview/lab/hints/PreviewHint_${expectedHash}Kt.class"
 
                 val classFiles = result.outputDirectory.walkTopDown()
@@ -85,7 +87,7 @@ class PreviewHintEmissionTest :
                 // hint 関数名は固定 (`previewHint`) で、 marker class param で区別する。
                 // Java reflection からは marker param 型の Class object を渡して getMethod する。
                 val markerClass = result.classLoader
-                    .loadClass("me.tbsten.compose.preview.lab.hints.PreviewHintMarker_$expectedHash")
+                    .loadClass("me.tbsten.compose.preview.lab.hints.${buildMarkerShortName("test.source.MyButton", expectedHash)}")
                 val hintMethod = hintFacade.getMethod("previewHint", markerClass)
 
                 // hint(null) を invoke すると CollectedPreview インスタンスが返る

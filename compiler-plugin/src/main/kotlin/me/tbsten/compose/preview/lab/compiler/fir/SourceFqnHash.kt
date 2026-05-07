@@ -51,3 +51,16 @@ internal fun computeHintHash(canonicalKey: String): String {
  */
 internal fun buildPreviewHintCanonicalKey(sourceFqn: String, parameterTypeFqns: List<String>): String =
     "$sourceFqn(${parameterTypeFqns.joinToString(",")})"
+
+/**
+ * Marker interface 短名 `PreviewHintMarker_<sanitized_fqn>_<hash>` を組み立てる。
+ *
+ * sanitized FQN は `.` を `_` に置換した値で、 IDE / stack trace / KLIB IC log で marker
+ * がどの `@Preview` 由来か一目で分かるようにするためのデバッグ補助。 hash は同名 overload の
+ * 区別用 ([buildPreviewHintCanonicalKey] の sha256)。
+ *
+ * **Sample**: `buildMarkerShortName("uilib.button.MyButton", "a3k9z2x1")`
+ * → `"PreviewHintMarker_uilib_button_MyButton_a3k9z2x1"`
+ */
+internal fun buildMarkerShortName(sourceFqn: String, hash: String): String =
+    "${PreviewLabFirBuiltIns.PreviewHintMarkerPrefix}${sourceFqn.replace('.', '_')}_$hash"

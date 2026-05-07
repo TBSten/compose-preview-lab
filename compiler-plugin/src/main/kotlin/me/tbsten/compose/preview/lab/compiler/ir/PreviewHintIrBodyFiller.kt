@@ -23,7 +23,7 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 
 /**
  * [me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGenerator] が emit した
- * `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` stub の body で
+ * `previewHint(value: PreviewHintMarker_<sanitized_fqn>_<hash>?): CollectedPreview` stub の body で
  * `CollectedPreview` を返すようにする。 FIR は body を持てないので IR pass で
  * `CollectedPreview(...)` constructor 呼び出しを `irReturn` する形に書き換える。
  *
@@ -31,12 +31,12 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
  *
  * Before (FIR から渡る):
  * ```kotlin
- * public fun previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview  // body == null
+ * public fun previewHint(value: PreviewHintMarker_<sanitized_fqn>_<hash>?): CollectedPreview  // body == null
  * ```
  *
  * After (本 transformer が書き換え):
  * ```kotlin
- * public fun previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview = CollectedPreview(
+ * public fun previewHint(value: PreviewHintMarker_<sanitized_fqn>_<hash>?): CollectedPreview = CollectedPreview(
  *     id = "uiLib.button.MyButton",
  *     displayName = "uiLib.button.MyButton",
  *     filePath = "uiLib/src/.../MyButton.kt",
@@ -50,7 +50,7 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
  *
  * # 設計ポイント
  *
- * - **Hint と `@Preview` の照合**: hint の `value: PreviewHintMarker_<hash>?` 引数の marker
+ * - **Hint と `@Preview` の照合**: hint の `value: PreviewHintMarker_<sanitized_fqn>_<hash>?` 引数の marker
  *   class 短名から hash を取り出し、 IR module 内の `@Preview` 関数の canonical key を
  *   hash した値と突き合わせて元関数を特定する。 FIR generator と IR side で同一の
  *   [computeHintHash] / [buildPreviewHintCanonicalKey] を使うので一意に照合できる
@@ -77,16 +77,16 @@ internal class PreviewHintIrBodyFiller(
      * Hint 関数の body を `CollectedPreview(...)` constructor 呼び出しの `irReturn` に書き換える。
      *
      * `Keys.PreviewLabHint` origin の関数のみを対象にする。 元 `@Preview` 関数は hint の
-     * `value: PreviewHintMarker_<hash>?` 引数の marker class 短名から特定する。
+     * `value: PreviewHintMarker_<sanitized_fqn>_<hash>?` 引数の marker class 短名から特定する。
      *
      * **Before**:
      * ```kotlin
-     * public fun previewHint(value: PreviewHintMarker_a3k9z2x1?): CollectedPreview  // body == null
+     * public fun previewHint(value: PreviewHintMarker_uilib_button_MyButton_a3k9z2x1?): CollectedPreview  // body == null
      * ```
      *
      * **After** (semantically):
      * ```kotlin
-     * public fun previewHint(value: PreviewHintMarker_a3k9z2x1?): CollectedPreview = CollectedPreview(
+     * public fun previewHint(value: PreviewHintMarker_uilib_button_MyButton_a3k9z2x1?): CollectedPreview = CollectedPreview(
      *     id = "uiLib.button.MyButton", ..., content = @Composable { uiLib.button.MyButton() },
      * )
      * ```
@@ -105,7 +105,7 @@ internal class PreviewHintIrBodyFiller(
     /**
      * Hint 関数の body を `CollectedPreview(...)` constructor 呼び出しの `irReturn` に書き換える。
      *
-     * 元 `@Preview` 関数は hint の `value: PreviewHintMarker_<hash>` 引数の marker class 名から
+     * 元 `@Preview` 関数は hint の `value: PreviewHintMarker_<sanitized_fqn>_<hash>` 引数の marker class 名から
      * hash を取り出して特定する (FIR generator が hash 入りの marker class を生成しているため)。
      */
     private fun fillHintBody(declaration: IrSimpleFunction) {
@@ -114,7 +114,9 @@ internal class PreviewHintIrBodyFiller(
         val markerFqn = regularParams[0].type.classFqName ?: return
         val markerShortName = markerFqn.shortName().asString()
         if (!markerShortName.startsWith(PreviewLabFirBuiltIns.PreviewHintMarkerPrefix)) return
-        val hash = markerShortName.removePrefix(PreviewLabFirBuiltIns.PreviewHintMarkerPrefix)
+        // marker 名は `PreviewHintMarker_<sanitized_fqn>_<hash>`。 hash は固定長
+        // ([PreviewLabFirBuiltIns.HASH_LENGTH]) の base-36 文字列なので末尾切り出しで取得する。
+        val hash = markerShortName.takeLast(PreviewLabFirBuiltIns.HASH_LENGTH)
         val previewInfo = previewsByHash[hash] ?: return
 
         val builder = DeclarationIrBuilder(pluginContext, declaration.symbol)

@@ -13,7 +13,7 @@ internal object Keys {
      * `@Preview` ごとに 1 つ生成する hint 関数を識別する key。
      *
      * 各 `@Preview` 関数に対し
-     * `me.tbsten.compose.preview.lab.hints/previewHint(value: PreviewHintMarker_<hash>): CollectedPreview`
+     * `me.tbsten.compose.preview.lab.hints/previewHint(value: PreviewHintMarker_<sanitized_fqn>_<hash>): CollectedPreview`
      * という hint stub を FIR で declare し、 IR で body を埋める。 fixed name + marker class
      * param で IdSignature を `@Preview` ごとに区別する。
      *

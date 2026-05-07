@@ -86,21 +86,26 @@ internal class PreviewHintFirGenerator(session: FirSession) : FirDeclarationGene
     }
 
     /**
-     * このセッションで発見された `@Preview` 関数群と対応する hint hash。
+     * このセッションで発見された `@Preview` 関数 1 つ ↔ marker / hint 1 セットの対応表。
      * `getTopLevelCallableIds()` / `getTopLevelClassIds()` で初めて触られた時点で walk する
      * (cache loader 内で walk しない)。
      */
-    private val hintHashes: List<String> by lazy { computeHintHashes() }
+    private val hintEntries: List<HintEntry> by lazy { computeHintEntries() }
+
+    /** Marker class 短名 (`PreviewHintMarker_<sanitized_fqn>_<hash>`) → hash の reverse lookup. */
+    private val hashByMarkerShortName: Map<String, String> by lazy {
+        hintEntries.associate { it.markerShortName to it.hash }
+    }
 
     override fun FirDeclarationPredicateRegistrar.registerPredicates() {
         register(previewPredicate)
     }
 
-    override fun getTopLevelClassIds(): Set<ClassId> = hintHashes.mapTo(mutableSetOf()) { hash ->
-        ClassId(PreviewLabFirBuiltIns.HINT_PACKAGE, Name.identifier("$MarkerClassPrefix$hash"))
+    override fun getTopLevelClassIds(): Set<ClassId> = hintEntries.mapTo(mutableSetOf()) { entry ->
+        ClassId(PreviewLabFirBuiltIns.HINT_PACKAGE, Name.identifier(entry.markerShortName))
     }
 
-    override fun getTopLevelCallableIds(): Set<CallableId> = if (hintHashes.isEmpty()) {
+    override fun getTopLevelCallableIds(): Set<CallableId> = if (hintEntries.isEmpty()) {
         emptySet()
     } else {
         // hint 関数名は固定 (`previewHint`)。 marker class 引数で IdSignature を区別する。
@@ -112,11 +117,15 @@ internal class PreviewHintFirGenerator(session: FirSession) : FirDeclarationGene
     /**
      * Marker interface を生成する。
      *
-     * **Emitted Kotlin (semantically equivalent), per hash**:
+     * **Emitted Kotlin (semantically equivalent), per `@Preview`** (`fun com.example.app.MyButtonPreview()` の場合):
      * ```kotlin
      * package me.tbsten.compose.preview.lab.hints
-     * public interface PreviewHintMarker_<hash>
+     * public interface PreviewHintMarker_com_example_app_MyButtonPreview_<hash>
      * ```
+     *
+     * 名前 format は `PreviewHintMarker_<sanitized_fqn>_<hash>`。 sanitized FQN は `.` を `_` に
+     * 置換した値で、 IDE / stack trace / KLIB IC log で marker がどの `@Preview` 由来か
+     * 一目で分かる。 hash は同名 overload の区別用 (sourceFqn のみだと衝突する)。
      *
      * `INTERFACE` (not `CLASS` / `OBJECT`) で `Modality.ABSTRACT` を明示することで、
      * Compose Compiler の `$stableprop` 合成 (JS / Wasm IC 衝突原因) と Konan の
@@ -125,9 +134,7 @@ internal class PreviewHintFirGenerator(session: FirSession) : FirDeclarationGene
     override fun generateTopLevelClassLikeDeclaration(classId: ClassId): FirClassLikeSymbol<*>? {
         if (classId.packageFqName != PreviewLabFirBuiltIns.HINT_PACKAGE) return null
         val shortName = classId.shortClassName.asString()
-        if (!shortName.startsWith(MarkerClassPrefix)) return null
-        val hash = shortName.removePrefix(MarkerClassPrefix)
-        if (hash !in hintHashes) return null
+        if (shortName !in hashByMarkerShortName) return null
 
         val klass = createTopLevelClass(classId, Keys.PreviewLabHintMarker, ClassKind.INTERFACE) {
             modality = Modality.ABSTRACT
@@ -158,21 +165,21 @@ internal class PreviewHintFirGenerator(session: FirSession) : FirDeclarationGene
      */
     override fun generateFunctions(callableId: CallableId, context: MemberGenerationContext?): List<FirNamedFunctionSymbol> {
         if (callableId != PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID) return emptyList()
-        if (hintHashes.isEmpty()) return emptyList()
+        if (hintEntries.isEmpty()) return emptyList()
 
         val collectedPreviewSymbol = session.symbolProvider
             .getClassLikeSymbolByClassId(PreviewLabFirBuiltIns.COLLECTED_PREVIEW_CLASS_ID)
             ?: return emptyList()
         val collectedPreviewType = collectedPreviewSymbol.constructType(emptyArray())
 
-        return hintHashes.map { hash ->
+        return hintEntries.map { entry ->
             val markerClassId = ClassId(
                 PreviewLabFirBuiltIns.HINT_PACKAGE,
-                Name.identifier("$MarkerClassPrefix$hash"),
+                Name.identifier(entry.markerShortName),
             )
             val markerSymbol = session.symbolProvider
                 .getClassLikeSymbolByClassId(markerClassId) as FirClassSymbol<*>
-            val fileName = "PreviewHint_$hash.kt"
+            val fileName = "PreviewHint_${entry.hash}.kt"
             val function = createTopLevelFunction(
                 Keys.PreviewLabHint,
                 callableId,
@@ -194,12 +201,12 @@ internal class PreviewHintFirGenerator(session: FirSession) : FirDeclarationGene
     }
 
     /**
-     * Predicate walk + 各 `@Preview` 関数から hint hash を計算する。
+     * Predicate walk + 各 `@Preview` 関数から hint hash と marker class 短名を計算する。
      *
      * `getTopLevelClassIds()` / `getTopLevelCallableIds()` 経由で初めて触られた時点で評価される
      * (lazy)。
      */
-    private fun computeHintHashes(): List<String> {
+    private fun computeHintEntries(): List<HintEntry> {
         val symbols = session.predicateBasedProvider.getSymbolsByPredicate(previewPredicate)
         return symbols
             .filterIsInstance<FirNamedFunctionSymbol>()
@@ -211,9 +218,13 @@ internal class PreviewHintFirGenerator(session: FirSession) : FirDeclarationGene
                 val sourceFqn = if (packageName.isEmpty()) simpleName else "$packageName.$simpleName"
                 val parameterTypeFqns = symbol.parameterTypeFqnsForHash()
                 val canonicalKey = buildPreviewHintCanonicalKey(sourceFqn, parameterTypeFqns)
-                computeHintHash(canonicalKey)
+                val hash = computeHintHash(canonicalKey)
+                HintEntry(
+                    hash = hash,
+                    markerShortName = buildMarkerShortName(sourceFqn, hash),
+                )
             }
-            .distinct()
+            .distinctBy { it.markerShortName }
     }
 
     /**
@@ -234,9 +245,11 @@ internal class PreviewHintFirGenerator(session: FirSession) : FirDeclarationGene
         }
     }
 
-    private companion object {
-        // 別 module からも参照される canonical な定義は `PreviewLabFirBuiltIns.PreviewHintMarkerPrefix`。
-        // ここではローカル alias として持つ (FQN 短縮の readability 用)。
-        val MarkerClassPrefix = PreviewLabFirBuiltIns.PreviewHintMarkerPrefix
-    }
+    /** `@Preview` 1 つに対応する marker / hint 関数のメタ。 */
+    private data class HintEntry(
+        /** canonical key の sha256 base-36 8 文字 (`computeHintHash` の戻り値)。 */
+        val hash: String,
+        /** marker interface の短名 `PreviewHintMarker_<sanitized_fqn>_<hash>`。 */
+        val markerShortName: String,
+    )
 }

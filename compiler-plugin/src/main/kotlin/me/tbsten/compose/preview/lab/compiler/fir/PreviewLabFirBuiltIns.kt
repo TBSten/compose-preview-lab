@@ -44,8 +44,17 @@ internal class PreviewLabFirBuiltIns(session: FirSession, val config: PluginConf
         /** `me.tbsten.compose.preview.lab.hints/previewHint`. */
         val HINT_FUNCTION_CALLABLE_ID: CallableId = CallableId(HINT_PACKAGE, HINT_FUNCTION_NAME)
 
-        /** Prefix of the per-`@Preview` marker interface name; suffix is the sha256 of the canonical key. */
+        /**
+         * Prefix of the per-`@Preview` marker interface name. Full name is
+         * `PreviewHintMarker_<sanitized_fqn>_<hash>` where `<sanitized_fqn>` is the source
+         * FQN with `.` replaced by `_` (debugging aid) and `<hash>` is the canonical-key
+         * sha256 ([HASH_LENGTH] chars, used for overload disambiguation and as the
+         * cross-FIR/IR matching key).
+         */
         const val PreviewHintMarkerPrefix: String = "PreviewHintMarker_"
+
+        /** Length of the hash suffix on marker / hint declarations (matches `computeHintHash`). */
+        const val HASH_LENGTH: Int = 8
 
         /** CMP `@Preview` annotation FQN (used for predicate registration). */
         val CMP_PREVIEW_ANNOTATION_FQN: FqName =
