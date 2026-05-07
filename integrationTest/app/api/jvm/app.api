@@ -69,6 +69,19 @@ public final class app/PreviewsKt {
 	public static final fun getAppPreviews ()Ljava/util/List;
 }
 
+public final class me/tbsten/compose/preview/lab/hints/ComposableSingletons$PreviewHint_iogqwxq2Kt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/hints/ComposableSingletons$PreviewHint_iogqwxq2Kt;
+	public fun <init> ()V
+	public final fun getLambda$-2070441691$app ()Lkotlin/jvm/functions/Function2;
+}
+
+public abstract interface class me/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_ComposeMultiplatformWizardDefaultUIPreview_iogqwxq2 {
+}
+
+public final class me/tbsten/compose/preview/lab/hints/PreviewHint_iogqwxq2Kt {
+	public static final fun previewHint (Lme/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_ComposeMultiplatformWizardDefaultUIPreview_iogqwxq2;)Lme/tbsten/compose/preview/lab/CollectedPreview;
+}
+
 public final class me/tbsten/compose/preview/lab/sample/ComposableSingletons$ComposeMultiplatformWizardDefaultUIKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/sample/ComposableSingletons$ComposeMultiplatformWizardDefaultUIKt;
 	public fun <init> ()V
