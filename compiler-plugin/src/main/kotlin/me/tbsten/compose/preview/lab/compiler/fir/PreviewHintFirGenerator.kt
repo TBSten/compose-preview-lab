@@ -259,15 +259,14 @@ internal class PreviewHintFirGenerator(session: FirSession) : FirDeclarationGene
      *
      * **Format** (FIR / IR 共通):
      * - `<classId>` (classId が解決できる non-nullable type)
-     * - `<classId>?` (nullable な type)
-     * - `?` (classId 未解決 / generic type parameter など)
-     * - `??` (classId 未解決かつ nullable; 上記 `?` と区別される)
+     * - `<classId>?` (classId が解決できる nullable type)
+     * - `?` (classId 未解決 = generic type parameter / 解決失敗。 nullability は無視する)
      */
     private fun FirNamedFunctionSymbol.parameterTypeFqnsForHash(): List<String> {
         lazyResolveToPhase(FirResolvePhase.TYPES)
         return valueParameterSymbols.map { paramSymbol ->
             val coneType = paramSymbol.resolvedReturnTypeRef.coneType
-            val classFqn = coneType.classId?.asFqNameString() ?: "?"
+            val classFqn = coneType.classId?.asFqNameString() ?: return@map "?"
             if (coneType.isMarkedNullable) "$classFqn?" else classFqn
         }
     }

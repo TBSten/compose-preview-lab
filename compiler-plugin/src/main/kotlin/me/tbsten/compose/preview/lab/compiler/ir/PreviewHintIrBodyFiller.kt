@@ -188,19 +188,16 @@ internal fun buildPreviewByHashMap(
  *
  * **Format** (FIR / IR 共通):
  * - `<classFqn>` (classId が解決できる non-nullable type)
- * - `<classFqn>?` (nullable な type)
- * - `?` (classId 未解決 / generic type parameter など)
- * - `??` (classId 未解決かつ nullable; 上記 `?` と区別される)
+ * - `<classFqn>?` (classId が解決できる nullable type)
+ * - `?` (classId 未解決 = generic type parameter / 解決失敗。 nullability は無視する)
  *
- * `??` の case は分岐を増やさず `<classFqn>?` 規則の単純な合成で生まれる。 hash 入力としては
- * unknown と unknown? を別物として扱うが、 normal な top-level `@Preview` で当該 case が
- * 出現することは想定していない (出現したら canonical key が一意に固定されるという保証だけが
- * 重要)。
+ * Unknown 時に nullability を無視するのは、 unknown は元々情報量が少なく、 nullability で更に
+ * 区別する意味が薄いため。 FIR / IR 双方で同じ判定にしておくと canonical key が必ず一致する。
  */
 private fun IrSimpleFunction.parameterTypeFqnsForHash(): List<String> = parameters
     .filter { it.kind == IrParameterKind.Regular }
     .map { param ->
         val type = param.type
-        val classFqn = type.classFqName?.asString() ?: "?"
+        val classFqn = type.classFqName?.asString() ?: return@map "?"
         if (type.isMarkedNullable()) "$classFqn?" else classFqn
     }

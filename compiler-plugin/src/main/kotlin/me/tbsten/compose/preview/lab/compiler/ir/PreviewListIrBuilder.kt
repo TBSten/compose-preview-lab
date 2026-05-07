@@ -25,6 +25,7 @@ import org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrFunctionExpressionImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
+import org.jetbrains.kotlin.ir.types.classFqName
 import org.jetbrains.kotlin.ir.types.typeWith
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 import org.jetbrains.kotlin.ir.util.constructors
@@ -239,11 +240,17 @@ internal class PreviewListIrBuilder(
             fn.owner.parameters.filter { it.kind == IrParameterKind.Regular }.isEmpty()
         }
 
+        // `MutableCollection<in T>.addAll(...)` は Iterable / Sequence / Array の overload があるので、
+        // 「Regular param 1 個」だけだと意図しない overload (例: Array<out T>) が選ばれて IR 型整合
+        // が壊れる。 thisModulePreviews は List<CollectedPreview> なので、 Iterable overload を
+        // parameter type で明示的に絞り込む。
         val addAllFun = pluginContext.referenceFunctions(
             CallableId(FqName("kotlin.collections"), Name.identifier("addAll")),
         ).first { fn ->
             val params = fn.owner.parameters.filter { it.kind == IrParameterKind.Regular }
-            params.size == 1 && params[0].varargElementType == null
+            params.size == 1 &&
+                params[0].varargElementType == null &&
+                params[0].type.classFqName?.asString() == "kotlin.collections.Iterable"
         }
         val addFun = pluginContext.referenceFunctions(
             CallableId(
