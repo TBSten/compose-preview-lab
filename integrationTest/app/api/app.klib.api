@@ -1,0 +1,65 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, js, wasmJs]
+// Alias: ios => [iosArm64, iosSimulatorArm64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <Compose-Preview-Lab-Integration-Test:app>
+final object app/FeaturedFileList : kotlin.collections/Map<kotlin/String, kotlin.collections/List<kotlin/String>> { // app/FeaturedFileList|null[0]
+    final val entries // app/FeaturedFileList.entries|{}entries[0]
+        final fun <get-entries>(): kotlin.collections/Set<kotlin.collections/Map.Entry<kotlin/String, kotlin.collections/List<kotlin/String>>> // app/FeaturedFileList.entries.<get-entries>|<get-entries>(){}[0]
+    final val keys // app/FeaturedFileList.keys|{}keys[0]
+        final fun <get-keys>(): kotlin.collections/Set<kotlin/String> // app/FeaturedFileList.keys.<get-keys>|<get-keys>(){}[0]
+    final val pr_123 // app/FeaturedFileList.pr_123|{}pr_123[0]
+        final fun <get-pr_123>(): kotlin.collections/List<kotlin/String> // app/FeaturedFileList.pr_123.<get-pr_123>|<get-pr_123>(){}[0]
+    final val sample_design_system // app/FeaturedFileList.sample_design_system|{}sample_design_system[0]
+        final fun <get-sample_design_system>(): kotlin.collections/List<kotlin/String> // app/FeaturedFileList.sample_design_system.<get-sample_design_system>|<get-sample_design_system>(){}[0]
+    final val size // app/FeaturedFileList.size|{}size[0]
+        final fun <get-size>(): kotlin/Int // app/FeaturedFileList.size.<get-size>|<get-size>(){}[0]
+    final val values // app/FeaturedFileList.values|{}values[0]
+        final fun <get-values>(): kotlin.collections/Collection<kotlin.collections/List<kotlin/String>> // app/FeaturedFileList.values.<get-values>|<get-values>(){}[0]
+
+    final fun containsKey(kotlin/String): kotlin/Boolean // app/FeaturedFileList.containsKey|containsKey(kotlin.String){}[0]
+    final fun containsValue(kotlin.collections/List<kotlin/String>): kotlin/Boolean // app/FeaturedFileList.containsValue|containsValue(kotlin.collections.List<kotlin.String>){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // app/FeaturedFileList.equals|equals(kotlin.Any?){}[0]
+    final fun get(kotlin/String): kotlin.collections/List<kotlin/String>? // app/FeaturedFileList.get|get(kotlin.String){}[0]
+    final fun hashCode(): kotlin/Int // app/FeaturedFileList.hashCode|hashCode(){}[0]
+    final fun isEmpty(): kotlin/Boolean // app/FeaturedFileList.isEmpty|isEmpty(){}[0]
+    final fun toString(): kotlin/String // app/FeaturedFileList.toString|toString(){}[0]
+
+    // Targets: [js]
+    final fun asJsReadonlyMapView(): kotlin.js.collections/JsReadonlyMap<kotlin/String, kotlin.collections/List<kotlin/String>> // app/FeaturedFileList.asJsReadonlyMapView|asJsReadonlyMapView(){}[0]
+}
+
+final val app/appModulePreviews // app/appModulePreviews|{}appModulePreviews[0]
+    final fun <get-appModulePreviews>(): kotlin.collections/List<me.tbsten.compose.preview.lab/CollectedPreview> // app/appModulePreviews.<get-appModulePreviews>|<get-appModulePreviews>(){}[0]
+final val app/appPreviews // app/appPreviews|{}appPreviews[0]
+    final fun <get-appPreviews>(): kotlin.collections/List<me.tbsten.compose.preview.lab/CollectedPreview> // app/appPreviews.<get-appPreviews>|<get-appPreviews>(){}[0]
+final val app/app_FeaturedFileList$stableprop // app/app_FeaturedFileList$stableprop|#static{}app_FeaturedFileList$stableprop[0]
+final val compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_array$stableprop // compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_array$stableprop|#static{}compose_preview_lab_integration_test_app_generated_resources_Res_array$stableprop[0]
+final val compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_drawable$stableprop // compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_drawable$stableprop|#static{}compose_preview_lab_integration_test_app_generated_resources_Res_drawable$stableprop[0]
+final val compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_font$stableprop // compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_font$stableprop|#static{}compose_preview_lab_integration_test_app_generated_resources_Res_font$stableprop[0]
+final val compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_plurals$stableprop // compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_plurals$stableprop|#static{}compose_preview_lab_integration_test_app_generated_resources_Res_plurals$stableprop[0]
+final val compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_string$stableprop // compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_string$stableprop|#static{}compose_preview_lab_integration_test_app_generated_resources_Res_string$stableprop[0]
+
+final fun app/app_FeaturedFileList$stableprop_getter(): kotlin/Int // app/app_FeaturedFileList$stableprop_getter|app_FeaturedFileList$stableprop_getter(){}[0]
+final fun compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_array$stableprop_getter(): kotlin/Int // compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_array$stableprop_getter|compose_preview_lab_integration_test_app_generated_resources_Res_array$stableprop_getter(){}[0]
+final fun compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_drawable$stableprop_getter(): kotlin/Int // compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_drawable$stableprop_getter|compose_preview_lab_integration_test_app_generated_resources_Res_drawable$stableprop_getter(){}[0]
+final fun compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_font$stableprop_getter(): kotlin/Int // compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_font$stableprop_getter|compose_preview_lab_integration_test_app_generated_resources_Res_font$stableprop_getter(){}[0]
+final fun compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_plurals$stableprop_getter(): kotlin/Int // compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_plurals$stableprop_getter|compose_preview_lab_integration_test_app_generated_resources_Res_plurals$stableprop_getter(){}[0]
+final fun compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_string$stableprop_getter(): kotlin/Int // compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_string$stableprop_getter|compose_preview_lab_integration_test_app_generated_resources_Res_string$stableprop_getter(){}[0]
+
+// Targets: [ios]
+final fun /MainViewController(): platform.UIKit/UIViewController // /MainViewController|MainViewController(){}[0]
+
+// Targets: [js, wasmJs]
+final fun /main() // /main|main(){}[0]
+
+// Targets: [js]
+final val /appPreviewList // /appPreviewList|{}appPreviewList[0]
+    final fun <get-appPreviewList>(): kotlin/Array<me.tbsten.compose.preview.lab/CollectedPreview> // /appPreviewList.<get-appPreviewList>|<get-appPreviewList>(){}[0]
+
+// Targets: [js]
+final fun /renderPreviewById(org.w3c.dom/Element, kotlin/String): kotlin/Function0<kotlin/Unit> // /renderPreviewById|renderPreviewById(org.w3c.dom.Element;kotlin.String){}[0]
