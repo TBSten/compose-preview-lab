@@ -13,15 +13,11 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
  *   plus [PluginConfig], accessible from any FIR extension via `session.previewLabFirBuiltIns`.
  * - [PreviewLabFirStatusTransformerExtension] — widens `private @Preview` functions to
  *   `internal` so generated code can call them.
- * - [PreviewHintFirGenerator] — `@Preview` 1 個ごとに per-declaration hint
- *   (`interface PreviewHintMarker_<hash>` + `fun previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview`)
- *   を emit する Metro 風 generator。
- *   **Only registered when the running Kotlin compiler supports it** (Kotlin 2.3.21+,
- *   surfaced via [CompatContext.supportsKlibCrossModuleHint])。 古い Kotlin では
- *   `collectAllModulePreviews()` 自体が動かないため、 IR phase の
- *   `PreviewLabIrBodyFiller.reportUnsupportedCollectAllError` が
- *   `val by collectAllModulePreviews()` の by-delegate pattern を検出して
- *   compile-time error を `MessageCollector` 経由で報告する。
+ * - [PreviewHintFirGenerator] — emits the per-declaration hint
+ *   (`interface PreviewHintMarker_<sanitized_fqn>_<hash>` +
+ *   `fun previewHint(value: PreviewHintMarker_..._<hash>?): CollectedPreview`)
+ *   for each `@Preview`. **Only registered when the running Kotlin compiler supports it**
+ *   (Kotlin 2.3.21+, surfaced via [CompatContext.supportsKlibCrossModuleHint]).
  */
 class PreviewLabFirExtensionRegistrar(private val config: PluginConfig) : FirExtensionRegistrar() {
 
