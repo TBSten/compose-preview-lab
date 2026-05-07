@@ -113,22 +113,20 @@ internal class PreviewHintIrBodyFiller(
         if (regularParams.size != 1) return
         val markerFqn = regularParams[0].type.classFqName ?: return
         val markerShortName = markerFqn.shortName().asString()
-        if (!markerShortName.startsWith(MarkerClassPrefix)) return
-        val hash = markerShortName.removePrefix(MarkerClassPrefix)
+        if (!markerShortName.startsWith(PreviewLabFirBuiltIns.PreviewHintMarkerPrefix)) return
+        val hash = markerShortName.removePrefix(PreviewLabFirBuiltIns.PreviewHintMarkerPrefix)
         val previewInfo = previewsByHash[hash] ?: return
 
         val builder = DeclarationIrBuilder(pluginContext, declaration.symbol)
-        val collectedPreviewExpr = collectedPreviewBuilder.buildCollectedPreviewCall(
-            preview = previewInfo,
-            builder = builder,
-            parent = declaration,
-        )
-        declaration.body = builder.irBlockBody { +irReturn(collectedPreviewExpr) }
-    }
-
-    private companion object {
-        // 別 module からも参照される canonical な定義は `PreviewLabFirBuiltIns.PreviewHintMarkerPrefix`。
-        val MarkerClassPrefix = PreviewLabFirBuiltIns.PreviewHintMarkerPrefix
+        declaration.body = builder.irBlockBody {
+            +irReturn(
+                collectedPreviewBuilder.buildCollectedPreviewCall(
+                    preview = previewInfo,
+                    builder = builder,
+                    parent = declaration,
+                ),
+            )
+        }
     }
 }
 
