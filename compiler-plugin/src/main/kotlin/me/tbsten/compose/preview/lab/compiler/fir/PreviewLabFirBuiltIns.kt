@@ -18,37 +18,40 @@ import org.jetbrains.kotlin.name.Name
 internal class PreviewLabFirBuiltIns(session: FirSession, val config: PluginConfig) : FirExtensionSessionComponent(session) {
 
     companion object {
-        /** `me.tbsten.compose.preview.lab.collectModulePreviews` sentinel call FQN。 */
+        /** `me.tbsten.compose.preview.lab.collectModulePreviews` sentinel call FQN. */
         val COLLECT_MODULE_PREVIEWS_FQN: FqName =
             FqName.fromSegments(listOf("me", "tbsten", "compose", "preview", "lab", "collectModulePreviews"))
 
-        /** `me.tbsten.compose.preview.lab.collectAllModulePreviews` sentinel call FQN。 */
+        /** `me.tbsten.compose.preview.lab.collectAllModulePreviews` sentinel call FQN. */
         val COLLECT_ALL_MODULE_PREVIEWS_FQN: FqName =
             FqName.fromSegments(listOf("me", "tbsten", "compose", "preview", "lab", "collectAllModulePreviews"))
 
-        /** `me.tbsten.compose.preview.lab.CollectedPreview` `ClassId` — hint 関数の戻り値型。 */
+        /** `me.tbsten.compose.preview.lab.CollectedPreview` `ClassId` — return type of every hint function. */
         val COLLECTED_PREVIEW_CLASS_ID: ClassId = ClassId(
             FqName("me.tbsten.compose.preview.lab"),
             Name.identifier("CollectedPreview"),
         )
 
-        /** Per-declaration hint 関数 / marker interface が住む package。 */
+        /** Package that owns every per-declaration hint function and marker interface. */
         val HINT_PACKAGE: FqName = FqName("me.tbsten.compose.preview.lab.hints")
 
-        /** Per-declaration hint 関数名 (固定)。 marker class param で IdSignature を per-`@Preview` 区別する。 */
+        /**
+         * Fixed callable name shared by every per-declaration hint function. The marker class
+         * parameter type disambiguates the IdSignature per `@Preview`.
+         */
         val HINT_FUNCTION_NAME: Name = Name.identifier("previewHint")
 
-        /** `me.tbsten.compose.preview.lab.hints/previewHint`。 */
+        /** `me.tbsten.compose.preview.lab.hints/previewHint`. */
         val HINT_FUNCTION_CALLABLE_ID: CallableId = CallableId(HINT_PACKAGE, HINT_FUNCTION_NAME)
 
-        /** Per-`@Preview` marker interface 名 prefix。 suffix は canonical key の sha256。 */
+        /** Prefix of the per-`@Preview` marker interface name; suffix is the sha256 of the canonical key. */
         const val PreviewHintMarkerPrefix: String = "PreviewHintMarker_"
 
-        /** CMP `@Preview` annotation FQN (predicate registration 用)。 */
+        /** CMP `@Preview` annotation FQN (used for predicate registration). */
         val CMP_PREVIEW_ANNOTATION_FQN: FqName =
             FqName("org.jetbrains.compose.ui.tooling.preview.Preview")
 
-        /** Android `@Preview` annotation FQN (predicate registration 用)。 */
+        /** Android `@Preview` annotation FQN (used for predicate registration). */
         val ANDROID_PREVIEW_ANNOTATION_FQN: FqName =
             FqName("androidx.compose.ui.tooling.preview.Preview")
     }
