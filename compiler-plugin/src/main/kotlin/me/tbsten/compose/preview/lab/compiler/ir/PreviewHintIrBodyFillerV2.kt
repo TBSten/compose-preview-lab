@@ -127,15 +127,31 @@ internal class PreviewHintIrBodyFillerV2(
  * 区別するため、 sourceFqn + parameter type FQN を含む形で組み立てる。 FIR generator と
  * 同じロジックを使う必要があるため [buildPreviewHintCanonicalKey] を共有する。
  *
+ * Hash collision は検出してエラーを投げる。衝突が発生した場合は、 両者の canonical key
+ * （canonical key = sourceFqn + parameterTypeFqns）を確認し、実装の issue を報告してください。
+ *
  * **Sample entry**: `"a3k9z2x1" → PreviewFunctionInfo(function = fun MyButton(), id = "uiLib.button.MyButton", ...)`
  */
 internal fun buildPreviewByHashMap(previews: List<PreviewFunctionInfo>): Map<String, PreviewFunctionInfo> = buildMap {
+    val canonicalKeyByHash = mutableMapOf<String, String>()
     for (preview in previews) {
         val sourceFqn = preview.function.kotlinFqName.asString()
         if (sourceFqn.isEmpty()) continue
         val parameterTypeFqns = preview.function.parameterTypeFqnsForHash()
         val canonicalKey = buildPreviewHintCanonicalKey(sourceFqn, parameterTypeFqns)
-        put(computeHintHash(canonicalKey), preview)
+        val hash = computeHintHash(canonicalKey)
+        val existingKey = canonicalKeyByHash[hash]
+        if (existingKey != null && existingKey != canonicalKey) {
+            error(
+                "Hash collision detected in preview hint generation:\n" +
+                    "  hash: $hash\n" +
+                    "  existing canonical key: $existingKey\n" +
+                    "  new canonical key: $canonicalKey\n" +
+                    "Please report this issue with the above details."
+            )
+        }
+        canonicalKeyByHash[hash] = canonicalKey
+        put(hash, preview)
     }
 }
 
