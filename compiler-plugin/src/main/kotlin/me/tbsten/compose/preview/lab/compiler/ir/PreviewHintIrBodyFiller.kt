@@ -154,21 +154,30 @@ internal class PreviewHintIrBodyFiller(
  * 理論上ゼロではない (1k preview で ~10⁻⁷)。 衝突した場合 `put` 上書きで `@Preview` が
  * silent に集約結果から欠落するため、 衝突を検知したら [onCollision] callback で
  * 呼び出し側に通知し ERROR 報告する。
+ *
+ * 衝突判定は **canonical key 同士の比較** で行う (FQN だけだと同名 overload を区別
+ * できないため)。 同 canonical key の重複登録 (ignore=true filter 前後の 2 度走査など)
+ * は衝突ではないので silent に上書きしてよい。
  */
 internal fun buildPreviewByHashMap(
     previews: List<PreviewFunctionInfo>,
     onCollision: (hash: String, existing: PreviewFunctionInfo, conflicting: PreviewFunctionInfo) -> Unit = { _, _, _ -> },
 ): Map<String, PreviewFunctionInfo> = buildMap {
+    val canonicalKeyByHash = mutableMapOf<String, String>()
     for (preview in previews) {
         val sourceFqn = preview.function.kotlinFqName.asString()
         if (sourceFqn.isEmpty()) continue
         val parameterTypeFqns = preview.function.parameterTypeFqnsForHash()
         val canonicalKey = buildPreviewHintCanonicalKey(sourceFqn, parameterTypeFqns)
         val hash = computeHintHash(canonicalKey)
-        val existing = get(hash)
-        if (existing != null && existing.function.kotlinFqName != preview.function.kotlinFqName) {
+        val existingKey = canonicalKeyByHash[hash]
+        if (existingKey != null && existingKey != canonicalKey) {
+            // 別 canonical key が同 hash に landed = 真の hash 衝突。 同 canonical key の
+            // 重複登録 (同 file 内 ignore=true 含む 2 度走査) はノイズなので silent に上書き。
+            val existing = getValue(hash)
             onCollision(hash, existing, preview)
         }
+        canonicalKeyByHash[hash] = canonicalKey
         put(hash, preview)
     }
 }
