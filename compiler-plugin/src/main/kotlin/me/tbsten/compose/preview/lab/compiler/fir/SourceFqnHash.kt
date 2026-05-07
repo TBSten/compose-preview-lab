@@ -55,12 +55,25 @@ internal fun buildPreviewHintCanonicalKey(sourceFqn: String, parameterTypeFqns: 
 /**
  * Marker interface 短名 `PreviewHintMarker_<sanitized_fqn>_<hash>` を組み立てる。
  *
- * sanitized FQN は `.` を `_` に置換した値で、 IDE / stack trace / KLIB IC log で marker
- * がどの `@Preview` 由来か一目で分かるようにするためのデバッグ補助。 hash は同名 overload の
- * 区別用 ([buildPreviewHintCanonicalKey] の sha256)。
+ * sanitized FQN は `[A-Za-z0-9_]` 以外をすべて `_` に置換した値で、 IDE / stack trace /
+ * KLIB IC log で marker がどの `@Preview` 由来か一目で分かるようにするためのデバッグ補助。
+ * 単純な `.` → `_` だと、 backtick で囲まれた識別子 (例: `` fun `my preview`() ``) のように
+ * Kotlin source としては valid だが identifier として不正な文字を含む FQN が来た時に
+ * `Name.identifier(...)` で例外を起こすため、 ここで包括的にサニタイズしておく。
+ *
+ * hash は同名 overload の区別用 ([buildPreviewHintCanonicalKey] の sha256) で、 sanitization
+ * による情報落ち (`A.B` と `A_B` が衝突する等) も hash 側で吸収される。
  *
  * **Sample**: `buildMarkerShortName("uilib.button.MyButton", "a3k9z2x1")`
  * → `"PreviewHintMarker_uilib_button_MyButton_a3k9z2x1"`
+ *
+ * **Sample (識別子 不正文字を含むケース)**: `buildMarkerShortName("uilib.`my preview`", "h4sh1234")`
+ * → `"PreviewHintMarker_uilib__my_preview__h4sh1234"`
  */
-internal fun buildMarkerShortName(sourceFqn: String, hash: String): String =
-    "${PreviewLabFirBuiltIns.PreviewHintMarkerPrefix}${sourceFqn.replace('.', '_')}_$hash"
+internal fun buildMarkerShortName(sourceFqn: String, hash: String): String {
+    val sanitizedFqn = sourceFqn.replace(NonIdentifierCharRegex, "_")
+    return "${PreviewLabFirBuiltIns.PreviewHintMarkerPrefix}${sanitizedFqn}_$hash"
+}
+
+/** Kotlin の identifier (back-tick なし版) として使えない文字。 */
+private val NonIdentifierCharRegex = Regex("[^A-Za-z0-9_]")

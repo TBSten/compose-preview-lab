@@ -8,11 +8,16 @@ import me.tbsten.compose.preview.lab.compiler.compat.getAnnotationCompat
 import me.tbsten.compose.preview.lab.compiler.compat.hasAnnotationCompat
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.cli.common.messages.CompilerMessageLocation
+import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
+import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.IrConst
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
+import org.jetbrains.kotlin.ir.types.classFqName
+import org.jetbrains.kotlin.ir.types.isMarkedNullable
 import org.jetbrains.kotlin.ir.util.file
 import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.name.FqName
@@ -49,15 +54,20 @@ class PreviewLabIrGenerationExtension(
         if (compatContext.supportsKlibCrossModuleHint()) {
             val previewsIncludingIgnored = collectPreviewsIncludingIgnored(moduleFragment)
             val previewsByHash = buildPreviewByHashMap(previewsIncludingIgnored) { hash, existing, conflicting ->
-                val existingFqn = existing.function.kotlinFqName.asString()
-                val conflictingFqn = conflicting.function.kotlinFqName.asString()
+                val existingSignature = existing.function.canonicalSignatureForReport()
+                val conflictingSignature = conflicting.function.canonicalSignatureForReport()
+                val message = "[ComposePreviewLab] hint hash collision detected on `$hash`. " +
+                    "Two distinct @Preview functions hash to the same value: " +
+                    "`$existingSignature` and `$conflictingSignature`. " +
+                    "This is astronomically rare (~10⁻⁷ at 1k previews) but indicates a SHA-256 " +
+                    "truncation collision. Workaround: rename one of the functions or its package."
+                // Report at the *new* (conflicting) function's location so the build log points at
+                // the second @Preview that triggered the collision; the first one is named in the
+                // message body.
                 messageCollector.report(
-                    org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity.ERROR,
-                    "[ComposePreviewLab] hint hash collision detected on `$hash`. " +
-                        "Two distinct @Preview functions hash to the same value: " +
-                        "`$existingFqn` and `$conflictingFqn`. " +
-                        "This is astronomically rare (~10⁻⁷ at 1k previews) but indicates a SHA-256 " +
-                        "truncation collision. Workaround: rename one of the functions or its package.",
+                    CompilerMessageSeverity.ERROR,
+                    message,
+                    conflicting.function.compilerMessageLocation(),
                 )
             }
             compatContext.transformModuleFragment(
@@ -174,4 +184,30 @@ class PreviewLabIrGenerationExtension(
 
         return PreviewFunctionInfo(func, id, displayName, filePath, startLineNumber, endLineNumber, code, kdoc)
     }
+}
+
+/**
+ * `<sourceFqn>(<paramType1>, <paramType2>, ...)` 形式の人間可読な signature を組み立てる。
+ *
+ * 同名 overload を区別する必要がある hash collision エラー報告用。 hash 入力に使う canonical
+ * key と同じ情報を含むが、 separator を `,` から `, ` にしたり `unknown` を `?` ではなく
+ * 明示的に書いたりして「人間にとって読みやすい」形にしてある。
+ */
+private fun IrSimpleFunction.canonicalSignatureForReport(): String {
+    val params = parameters.filter { it.kind == IrParameterKind.Regular }.joinToString(", ") { p ->
+        val classFqn = p.type.classFqName?.asString() ?: "?"
+        if (p.type.isMarkedNullable()) "$classFqn?" else classFqn
+    }
+    return "${kotlinFqName.asString()}($params)"
+}
+
+/**
+ * Build a [CompilerMessageLocation] pointing at the function's declaration site so that
+ * `MessageCollector.report` produces a clickable location in IDE / CI logs.
+ */
+private fun IrSimpleFunction.compilerMessageLocation(): CompilerMessageLocation? {
+    val fileEntry = file.fileEntry
+    val line = fileEntry.getLineNumber(startOffset) + 1
+    val column = fileEntry.getColumnNumber(startOffset) + 1
+    return CompilerMessageLocation.create(fileEntry.name, line, column, lineContent = null)
 }

@@ -257,7 +257,11 @@ internal class PreviewHintFirGenerator(session: FirSession) : FirDeclarationGene
      * 各パラメータの type FQN を含めて hash 入力を作る。 parameter type の resolve には
      * TYPES phase が必要なので [lazyResolveToPhase] で進める。
      *
-     * **Format**: 各 type は `<classId>` (nullable なら `?` を suffix)。 unknown は `?` を返す。
+     * **Format** (FIR / IR 共通):
+     * - `<classId>` (classId が解決できる non-nullable type)
+     * - `<classId>?` (nullable な type)
+     * - `?` (classId 未解決 / generic type parameter など)
+     * - `??` (classId 未解決かつ nullable; 上記 `?` と区別される)
      */
     private fun FirNamedFunctionSymbol.parameterTypeFqnsForHash(): List<String> {
         lazyResolveToPhase(FirResolvePhase.TYPES)
