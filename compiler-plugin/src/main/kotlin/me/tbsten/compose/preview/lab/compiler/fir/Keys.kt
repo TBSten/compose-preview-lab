@@ -3,32 +3,33 @@ package me.tbsten.compose.preview.lab.compiler.fir
 import org.jetbrains.kotlin.GeneratedDeclarationKey
 
 /**
- * Compose Preview Lab compiler plugin が synthesize する宣言を識別する key 群。
+ * Keys identifying declarations synthesized by the Compose Preview Lab compiler plugin.
  *
  * Pattern adapted from Metro
  * (https://github.com/ZacSweers/metro/blob/main/compiler/src/main/kotlin/dev/zacsweers/metro/compiler/fir/Keys.kt).
  */
 internal object Keys {
     /**
-     * `@Preview` ごとに 1 つ生成する hint 関数を識別する key。
+     * Identifies the hint function generated once per `@Preview`.
      *
-     * 各 `@Preview` 関数に対し
+     * For each `@Preview` function the FIR side declares a stub
      * `me.tbsten.compose.preview.lab.hints/previewHint(value: PreviewHintMarker_<sanitized_fqn>_<hash>): CollectedPreview`
-     * という hint stub を FIR で declare し、 IR で body を埋める。 fixed name + marker class
-     * param で IdSignature を `@Preview` ごとに区別する。
+     * and the IR side fills in the body. The fixed callable name plus the marker class
+     * parameter are what make the IdSignature unique per `@Preview`.
      *
-     * 使用箇所:
-     * - [PreviewHintFirGenerator] (FIR side): hint stub に origin として attach
+     * Used by:
+     * - [PreviewHintFirGenerator] (FIR side): attaches this origin to the hint stub.
      * - [me.tbsten.compose.preview.lab.compiler.ir.PreviewHintIrBodyFiller] (IR side):
-     *   この key で hint 関数を識別し、 body に `CollectedPreview(...)` constructor 呼び出しを
-     *   `irReturn` する形で埋める
+     *   matches functions by this key and fills their body with an `irReturn` of the
+     *   corresponding `CollectedPreview(...)` constructor call.
      */
     object PreviewLabHint : GeneratedDeclarationKey()
 
     /**
-     * `@Preview` ごとに 1 つ生成する marker interface を識別する key。 hint 関数の引数型として
-     * 使われ、 KLIB IdSignature を `@Preview` ごとにユニークにするだけが目的。 IC 衝突回避の
-     * ため `interface` (`Modality.ABSTRACT`) で emit される。
+     * Identifies the marker interface generated once per `@Preview`. Used as the parameter
+     * type of the hint function; its sole purpose is to make the KLIB IdSignature unique
+     * per `@Preview`. Emitted as an `interface` with `Modality.ABSTRACT` to avoid IC
+     * collisions.
      */
     object PreviewLabHintMarker : GeneratedDeclarationKey()
 }

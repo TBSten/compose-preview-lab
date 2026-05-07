@@ -101,7 +101,7 @@ internal class PreviewLabIrBodyFiller(
      *         distinctPreviewsById(
      *             mutableListOf<CollectedPreview>().apply {
      *                 addAll(listOf(CollectedPreview(...) { MyButton() })) // this module
-     *                 add(previewHint(null))                                 // dep module の各 @Preview を per-declaration hint 経由で呼ぶ
+     *                 add(previewHint(null))                                // each @Preview from a dep module via per-declaration hint
      *                 add(previewHint(null))
      *             }
      *         )
@@ -109,10 +109,10 @@ internal class PreviewLabIrBodyFiller(
      * )
      * ```
      *
-     * Cross-module discovery は per-declaration hint generator
-     * ([me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGenerator]) が emit する
-     * `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` 関数を
-     * [HintDiscovery] が `referenceFunctions` で発見することで実現する。
+     * Cross-module discovery is implemented by [HintDiscovery] using `referenceFunctions`
+     * to find the `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview`
+     * functions emitted by the per-declaration hint generator
+     * ([me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGenerator]).
      */
     private fun replaceCollectPreviewsProperty(property: IrProperty) {
         val delegateField = property.backingField ?: return

@@ -17,9 +17,10 @@ import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 
 /**
- * `@Preview` アノテーションが付与された private 関数の visibility を internal に変更する。
+ * Widens the visibility of `@Preview`-annotated `private` functions to `internal`.
  *
- * これにより、生成される PreviewList から直接参照可能になる。
+ * This makes the function reachable from the synthetic `PreviewList` generated in the
+ * same module.
  */
 class PreviewLabFirStatusTransformerExtension(session: FirSession) : FirStatusTransformerExtension(session) {
 
@@ -70,9 +71,10 @@ class PreviewLabFirStatusTransformerExtension(session: FirSession) : FirStatusTr
         status.transform(visibility = Visibilities.Internal)
 
     private fun FirDeclaration.hasPreviewAnnotation(classId: ClassId): Boolean {
-        // session 経由で解決できる場合 (アノテーションクラスが classpath にある場合)
+        // Fast path: the annotation class is on the classpath and resolvable through the session.
         if (hasAnnotation(classId, session)) return true
-        // アノテーションクラスが classpath にない場合は型参照から ClassId を直接取得
+        // Fallback: the annotation class is not on the classpath, so read the ClassId
+        // directly from the annotation's type reference instead.
         return annotations.any { it.matchesClassId(classId) }
     }
 

@@ -12,69 +12,74 @@ import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.types.classFqName
 
 /**
- * Per-declaration hint を **依存モジュール側** から発見する。
- * `me.tbsten.compose.preview.lab.hints.previewHint` 関数を `pluginContext.referenceFunctions` で
- * fixed-name lookup することで、 全 classpath 上の hint を発見する。
+ * Discovers per-declaration hints **emitted by dependency modules**. Performs a fixed-name
+ * lookup of `me.tbsten.compose.preview.lab.hints.previewHint` via
+ * `pluginContext.referenceFunctions` so every hint on the classpath is found.
  *
  * **Sample call**:
  * ```kotlin
  * val hints = discoverHints(pluginContext, compatContext)
- * // → 依存モジュール側で生成された
+ * // → returns the IrSimpleFunctions emitted by dependency modules:
  * //   `previewHint(value: PreviewHintMarker_uilib_button_MyButton_<hash1>?): CollectedPreview`,
  * //   `previewHint(value: PreviewHintMarker_uilib_text_MyText_<hash2>?): CollectedPreview`, ...
- * //   の IrSimpleFunction list が返る (自モジュール emit 分は filter 済み)
+ * //   (hints from the current module are filtered out)
  * ```
  *
- * # 設計ポイント
+ * # Design points
  *
  * ## Fixed name + marker param
  *
- * hint 関数名は固定 (`previewHint`)、 引数の marker class が `@Preview` ごとにユニーク。
- * KLIB IdSignature は `(name, paramTypes)` で導出されるので、 marker が違えば別 IdSignature。
- * `referenceFunctions(fixed-name)` で classpath 全体から全 hint を 1 回の lookup で発見できる。
+ * The hint function name is fixed (`previewHint`); the marker class on the parameter is
+ * unique per `@Preview`. The KLIB IdSignature is derived from `(name, paramTypes)`, so a
+ * different marker yields a different IdSignature. A single
+ * `referenceFunctions(fixed-name)` call discovers every hint across the classpath.
  *
  * ```kotlin
  * pluginContext.referenceFunctions(CallableId(HINT_PACKAGE, Name.identifier("previewHint")))
- * // → 自モジュール + 依存モジュールの previewHint(...) を全部返す
+ * // → returns every previewHint(...) from this module + dependency modules
  * ```
  *
  * ## Cross-module gate
  *
- * hint discovery は呼び出し元 ([PreviewLabIrBodyFiller.replaceCollectPreviewsProperty][me.tbsten.compose.preview.lab.compiler.ir.PreviewLabIrBodyFiller])
- * で [CompatContext.supportsKlibCrossModuleHint] を pre-check して、 不可なら早期 error report
- * で IR transform を中止する。 そのため [discoverHints] が実際に呼ばれる時点では gate 条件は
- * 満たされている前提。
+ * The caller
+ * ([PreviewLabIrBodyFiller.replaceCollectPreviewsProperty][me.tbsten.compose.preview.lab.compiler.ir.PreviewLabIrBodyFiller])
+ * pre-checks [CompatContext.supportsKlibCrossModuleHint] and aborts the IR transform with
+ * an early error report when not supported, so by the time [discoverHints] is invoked the
+ * gate condition is assumed to hold.
  *
- * ## Filter 条件
+ * ## Filter conditions
  *
- * - [IrDeclarationOriginCompat.IR_EXTERNAL_DECLARATION_STUB] origin (= 外部 module 由来)
- * - marker 引数 1 個 + その class が hint package 内
- * - marker 名が `PreviewHintMarker_` で始まる
- * - 戻り値型が `CollectedPreview`
+ * - [IrDeclarationOriginCompat.IR_EXTERNAL_DECLARATION_STUB] origin (= comes from another
+ *   module)
+ * - exactly one marker parameter whose class lives in the hint package
+ * - the marker class short name starts with `PreviewHintMarker_`
+ * - the return type is `CollectedPreview`
  *
- * # 参考
+ * # References
  *
- * `referenceFunctions(callableId)` は K2 で deprecation warning が付く API だが、
- * 推奨後継 (`finderForBuiltins` / `finderForSource(fromFile)`) は **builtins / 単一 file の
- * scope 限定** で、 classpath 全体を fixed-name で walk する用途には対応していない。
- * 現時点では既存 API を使い続ける必要がある。 K2 が classpath-wide finder を生やしたら
- * 移行する (follow-up)。
+ * `referenceFunctions(callableId)` carries a K2 deprecation warning, but the recommended
+ * replacements (`finderForBuiltins` / `finderForSource(fromFile)`) are scoped to
+ * **builtins / a single file** and do not cover walking the whole classpath by fixed
+ * name. We continue to use the existing API for now and will migrate when K2 grows a
+ * classpath-wide finder (follow-up).
  */
 internal fun discoverHints(pluginContext: IrPluginContext, compatContext: CompatContext,): List<IrSimpleFunction> {
     if (!compatContext.supportsKlibCrossModuleHint()) return emptyList()
 
-    // referenceFunctions は K2 で deprecated だが、 推奨後継 (finderForBuiltins / finderForSource)
-    // は classpath 全体の fixed-name lookup に対応していないので継続使用する。 詳細は KDoc 参照。
+    // `referenceFunctions` is deprecated in K2, but the recommended replacements
+    // (`finderForBuiltins` / `finderForSource`) do not support classpath-wide fixed-name
+    // lookup, so we keep using the existing API. See KDoc for details.
     @Suppress("DEPRECATION")
     val hintSymbols = pluginContext.referenceFunctions(PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID)
 
     return hintSymbols.mapNotNull { hintSymbol ->
         val hintFunction = hintSymbol.owner
 
-        // 自モジュール emit の hint は thisModulePreviews 経由で既に列挙されているため除外。
+        // Hints emitted by the current module are already listed via thisModulePreviews,
+        // so drop them here.
         if (hintFunction.origin != IrDeclarationOriginCompat.IR_EXTERNAL_DECLARATION_STUB) return@mapNotNull null
 
-        // marker 引数 1 個 + 戻り値が CollectedPreview であることを sanity check。
+        // Sanity-check: exactly one marker parameter and a CollectedPreview return type.
         val regularParams = hintFunction.parameters.filter { it.kind == IrParameterKind.Regular }
         if (regularParams.size != 1) return@mapNotNull null
         val markerFqn = regularParams[0].type.classFqName ?: return@mapNotNull null

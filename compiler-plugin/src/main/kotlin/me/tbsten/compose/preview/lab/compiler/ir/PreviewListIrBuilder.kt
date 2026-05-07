@@ -191,12 +191,14 @@ internal class PreviewListIrBuilder(
     }
 
     /**
-     * Lazily-cached per-declaration hint functions discovered via Metro 風 mechanism.
+     * Lazily-cached per-declaration hint functions discovered via the Metro-style hint
+     * mechanism.
      *
-     * Each entry is an [IrSimpleFunction] with signature
-     * `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview`。 [buildConcatenatedPreviewsExpr]
-     * では marker arg は IdSignature 区別目的のみで実値不要なので `add(hint(null))` 形で list に積む
-     * (1 hint = 1 `@Preview`)。
+     * Each entry is an [IrSimpleFunction] with the signature
+     * `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview`. In
+     * [buildConcatenatedPreviewsExpr] the marker argument exists only to disambiguate the
+     * IdSignature, so `null` is passed and each hint contributes one `CollectedPreview`
+     * via `add(hint(null))` (1 hint = 1 `@Preview`).
      *
      * Caching ensures the (potentially expensive) package walk in [discoverHints] runs at
      * most once per [PreviewListIrBuilder] instance.
@@ -240,10 +242,11 @@ internal class PreviewListIrBuilder(
             fn.owner.parameters.filter { it.kind == IrParameterKind.Regular }.isEmpty()
         }
 
-        // `MutableCollection<in T>.addAll(...)` は Iterable / Sequence / Array の overload があるので、
-        // 「Regular param 1 個」だけだと意図しない overload (例: Array<out T>) が選ばれて IR 型整合
-        // が壊れる。 thisModulePreviews は List<CollectedPreview> なので、 Iterable overload を
-        // parameter type で明示的に絞り込む。
+        // `MutableCollection<in T>.addAll(...)` has Iterable / Sequence / Array overloads,
+        // so filtering only on "1 Regular param" can pick an unintended overload (e.g.
+        // Array<out T>) and break IR type matching. `thisModulePreviews` is a
+        // `List<CollectedPreview>`, so explicitly narrow to the Iterable overload by
+        // parameter type.
         val addAllFun = pluginContext.referenceFunctions(
             CallableId(FqName("kotlin.collections"), Name.identifier("addAll")),
         ).first { fn ->
@@ -274,10 +277,11 @@ internal class PreviewListIrBuilder(
                 arguments[0] = compatContext.irGet(this@irBlock, listVar)
                 arguments[1] = thisModulePreviews
             }
-            // Per-declaration hint: 各 hint は CollectedPreview を 1 個 return するので
-            // `add(hint(null))` で list に積む。 hint 関数は
-            // `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` で、 marker
-            // param は IdSignature 区別だけが目的なので `null` を渡せば良い。
+            // Per-declaration hint: each hint returns one CollectedPreview, so we push it
+            // onto the list via `add(hint(null))`. The hint signature is
+            // `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview`; the marker
+            // parameter exists only to disambiguate the IdSignature, so passing `null` is
+            // sufficient.
             for (hintFn in hints) {
                 val markerParam = hintFn.parameters.firstOrNull { it.kind == IrParameterKind.Regular }
                 val hintCall = compatContext.irCall(this, hintFn.symbol, collectedPreviewType).apply {

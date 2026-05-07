@@ -3,37 +3,40 @@ package me.tbsten.compose.preview.lab.compiler.fir
 import java.security.MessageDigest
 
 /**
- * Per-declaration hint 関数名 suffix を `@Preview` の canonical signature key から導出する
- * hash 関数。
+ * Hash function that derives the per-declaration hint suffix from a `@Preview`'s
+ * canonical signature key.
  *
- * 「モジュール集約 marker」 を per-module で hash する [computeModuleHash] とは別物。
- * per-declaration 方式では「`@Preview` 1 個 = hint 1 個」 で入力は **canonical key のみ**。
- * projectRootPath / moduleName を入力に含めると同じ `@Preview` の hint 関数名が build 環境で
- * 変動し、 incremental compile / 再現可能ビルド両方を破壊するため含めない。
+ * Distinct from the per-module marker hash (`computeModuleHash`). In the per-declaration
+ * design every `@Preview` produces exactly one hint, and the input is **only** the
+ * canonical key. Including `projectRootPath` / `moduleName` would change the hint name
+ * across build environments, breaking both incremental compilation and reproducible
+ * builds, so neither is mixed in.
  *
- * 同 canonical key cross-artifact collision (e.g. 別 artifact に同 FQN + 同 signature の
- * `@Preview` が存在) は **user 側の名前空間管理で解決する受容済み edge case** とする
- * (`.local/redesign-hint-mechanism/参考.md` §3 参照)。
+ * Cross-artifact collisions on the same canonical key (e.g. two artifacts containing a
+ * `@Preview` with identical FQN + signature) are an **accepted edge case to be resolved
+ * by user-side namespace management**.
  *
  * **Sample call**: `computeHintHash("uiLib.button.MyButton()")`
  *
- * **Result**: `"a3k9z2x1"` 程度の base-36 8 文字 ([computeModuleHash] と同じ format)
+ * **Result**: an 8-char base-36 string such as `"a3k9z2x1"` (same format as
+ * `computeModuleHash`).
  *
- * SHA-256 → 先頭 8 byte (64 bit) → base-36 で encode → 末尾 8 文字。 この格子は約 41 bit 強で、
- * 名前空間サイズに対する collision 確率は実用上十分小さい。
+ * SHA-256 → first 8 bytes (64 bits) → base-36 encoding → last 8 characters. The
+ * resulting alphabet has ~41 effective bits, which keeps the collision probability
+ * negligibly small for practical namespace sizes.
  *
- * # Canonical key の format
+ * # Canonical key format
  *
- * 同名 overload (例: 同 package に `fun MyButton()` と `fun MyButton(text: String)` があるケース)
- * を区別するため、 caller は **canonical key として `<sourceFqn>(<paramTypeFqns>)` 形式** を
- * 渡すこと:
+ * To disambiguate same-name overloads (e.g. `fun MyButton()` and
+ * `fun MyButton(text: String)` in the same package), callers must supply the canonical
+ * key in the form `<sourceFqn>(<paramTypeFqns>)`:
  *
  * - sourceFqn: `<package>.<simpleName>`
- * - paramTypeFqns: 各パラメータの type FQN を `,` で連結。 nullability は `?` を suffix
- *   (例: `kotlin.String?`)
+ * - paramTypeFqns: parameter type FQNs joined by `,`. Nullability is suffixed with `?`
+ *   (e.g. `kotlin.String?`).
  *
- * [buildPreviewHintCanonicalKey] が FIR / IR それぞれの API から canonical key を構築する
- * helper。
+ * [buildPreviewHintCanonicalKey] is a helper that builds this canonical key from either
+ * the FIR or IR APIs.
  */
 internal fun computeHintHash(canonicalKey: String): String {
     val digest = MessageDigest.getInstance("SHA-256").digest(canonicalKey.toByteArray(Charsets.UTF_8))
@@ -43,8 +46,9 @@ internal fun computeHintHash(canonicalKey: String): String {
 }
 
 /**
- * `<sourceFqn>(<paramTypeFqn1>,<paramTypeFqn2>,...)` という canonical key を組み立てる。
- * FIR / IR で同じ key を生成するために `parameterTypeFqns` の生成方法を caller 側で揃えること。
+ * Builds the canonical key `<sourceFqn>(<paramTypeFqn1>,<paramTypeFqn2>,...)`.
+ * Callers must align how `parameterTypeFqns` is produced on the FIR and IR sides so that
+ * the same `@Preview` always yields the same key.
  *
  * **Sample**: `buildPreviewHintCanonicalKey("uiLib.MyButton", emptyList())` → `"uiLib.MyButton()"`
  * **Sample**: `buildPreviewHintCanonicalKey("uiLib.MyButton", listOf("kotlin.String"))` → `"uiLib.MyButton(kotlin.String)"`
@@ -53,21 +57,23 @@ internal fun buildPreviewHintCanonicalKey(sourceFqn: String, parameterTypeFqns: 
     "$sourceFqn(${parameterTypeFqns.joinToString(",")})"
 
 /**
- * Marker interface 短名 `PreviewHintMarker_<sanitized_fqn>_<hash>` を組み立てる。
+ * Builds the marker interface short name `PreviewHintMarker_<sanitized_fqn>_<hash>`.
  *
- * sanitized FQN は `[A-Za-z0-9_]` 以外をすべて `_` に置換した値で、 IDE / stack trace /
- * KLIB IC log で marker がどの `@Preview` 由来か一目で分かるようにするためのデバッグ補助。
- * 単純な `.` → `_` だと、 backtick で囲まれた識別子 (例: `` fun `my preview`() ``) のように
- * Kotlin source としては valid だが identifier として不正な文字を含む FQN が来た時に
- * `Name.identifier(...)` で例外を起こすため、 ここで包括的にサニタイズしておく。
+ * The sanitized FQN replaces every character outside `[A-Za-z0-9_]` with `_`. This is a
+ * debugging aid that makes IDE navigation, stack traces, and KLIB IC logs immediately
+ * reveal which `@Preview` a marker belongs to. A naive `.` → `_` substitution is not
+ * enough because backtick-quoted identifiers (e.g. `` fun `my preview`() ``) are valid in
+ * Kotlin source but contain characters that `Name.identifier(...)` would reject, so we
+ * sanitize comprehensively here.
  *
- * hash は同名 overload の区別用 ([buildPreviewHintCanonicalKey] の sha256) で、 sanitization
- * による情報落ち (`A.B` と `A_B` が衝突する等) も hash 側で吸収される。
+ * The hash suffix disambiguates same-name overloads (the sha256 of
+ * [buildPreviewHintCanonicalKey]); any information loss from sanitization (e.g. `A.B` and
+ * `A_B` mapping to the same sanitized form) is absorbed by the hash.
  *
  * **Sample**: `buildMarkerShortName("uilib.button.MyButton", "a3k9z2x1")`
  * → `"PreviewHintMarker_uilib_button_MyButton_a3k9z2x1"`
  *
- * **Sample (識別子 不正文字を含むケース)**: `buildMarkerShortName("uilib.`my preview`", "h4sh1234")`
+ * **Sample (identifier-illegal characters)**: `buildMarkerShortName("uilib.`my preview`", "h4sh1234")`
  * → `"PreviewHintMarker_uilib__my_preview__h4sh1234"`
  */
 internal fun buildMarkerShortName(sourceFqn: String, hash: String): String {
@@ -75,5 +81,5 @@ internal fun buildMarkerShortName(sourceFqn: String, hash: String): String {
     return "${PreviewLabFirBuiltIns.PreviewHintMarkerPrefix}${sanitizedFqn}_$hash"
 }
 
-/** Kotlin の identifier (back-tick なし版) として使えない文字。 */
+/** Characters that are not legal in a non-backticked Kotlin identifier. */
 private val NonIdentifierCharRegex = Regex("[^A-Za-z0-9_]")

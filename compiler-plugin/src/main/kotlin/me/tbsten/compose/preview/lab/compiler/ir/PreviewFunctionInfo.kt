@@ -3,7 +3,7 @@ package me.tbsten.compose.preview.lab.compiler.ir
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 
 /**
- * @Preview アノテーション付き関数から収集したメタデータ。
+ * Metadata collected from an `@Preview`-annotated function.
  */
 internal data class PreviewFunctionInfo(
     val function: IrSimpleFunction,

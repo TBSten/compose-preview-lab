@@ -1,12 +1,14 @@
 package me.tbsten.compose.preview.lab.compiler
 
 /**
- * `"2.3.9"` 等の lexicographic 比較で誤って `>= 2.3.21` 判定される問題を避けるため、
- * `MAJOR.MINOR.PATCH` を numeric 比較する簡易 helper。
+ * Numeric `MAJOR.MINOR.PATCH` comparison helper. Avoids the bug where lexicographic
+ * comparison would judge `"2.3.9"` as `>= 2.3.21`.
  *
- * **Sample**: `"2.3.21".isAtLeast(2, 3, 21)` → `true`、 `"2.3.9".isAtLeast(2, 3, 21)` → `false`、
- * `"2.4.0".isAtLeast(2, 3, 21)` → `true`、 `"2.3.21-Beta1".isAtLeast(2, 3, 21)` → `true`
- * (suffix は無視)。
+ * **Samples**:
+ * - `"2.3.21".isAtLeast(2, 3, 21)` → `true`
+ * - `"2.3.9".isAtLeast(2, 3, 21)` → `false`
+ * - `"2.4.0".isAtLeast(2, 3, 21)` → `true`
+ * - `"2.3.21-Beta1".isAtLeast(2, 3, 21)` → `true` (the suffix is ignored)
  */
 internal fun String.isAtLeast(major: Int, minor: Int, patch: Int): Boolean {
     val parts = substringBefore('-').split('.')

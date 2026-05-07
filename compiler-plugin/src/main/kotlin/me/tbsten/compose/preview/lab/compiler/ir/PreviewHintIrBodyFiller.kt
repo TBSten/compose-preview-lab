@@ -22,19 +22,21 @@ import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 
 /**
- * [me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGenerator] が emit した
- * `previewHint(value: PreviewHintMarker_<sanitized_fqn>_<hash>?): CollectedPreview` stub の body で
- * `CollectedPreview` を返すようにする。 FIR は body を持てないので IR pass で
- * `CollectedPreview(...)` constructor 呼び出しを `irReturn` する形に書き換える。
+ * Fills the body of the
+ * `previewHint(value: PreviewHintMarker_<sanitized_fqn>_<hash>?): CollectedPreview`
+ * stubs emitted by
+ * [me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGenerator] so that they
+ * return their corresponding `CollectedPreview`. FIR cannot own a body, so this IR pass
+ * rewrites each stub into an `irReturn` of the `CollectedPreview(...)` constructor call.
  *
  * **Hint function**
  *
- * Before (FIR から渡る):
+ * Before (handed down from FIR):
  * ```kotlin
  * public fun previewHint(value: PreviewHintMarker_<sanitized_fqn>_<hash>?): CollectedPreview  // body == null
  * ```
  *
- * After (本 transformer が書き換え):
+ * After (rewritten by this transformer):
  * ```kotlin
  * public fun previewHint(value: PreviewHintMarker_<sanitized_fqn>_<hash>?): CollectedPreview = CollectedPreview(
  *     id = "uiLib.button.MyButton",
@@ -48,19 +50,20 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
  * )
  * ```
  *
- * # 設計ポイント
+ * # Design points
  *
- * - **Hint と `@Preview` の照合**: hint の `value: PreviewHintMarker_<sanitized_fqn>_<hash>?` 引数の marker
- *   class 短名から hash を取り出し、 IR module 内の `@Preview` 関数の canonical key を
- *   hash した値と突き合わせて元関数を特定する。 FIR generator と IR side で同一の
- *   [computeHintHash] / [buildPreviewHintCanonicalKey] を使うので一意に照合できる
- * - **`CollectedPreview` 構築**: 既存 [CollectedPreviewIrBuilder.buildCollectedPreviewCall] を
- *   そのまま再利用する
- * - **`@ComposePreviewLabOption(ignore = true)` の取り扱い**: hint emit 自体は ignore=true でも
- *   行うため、 IR 側でも `previews` (filter 済み) ではなく moduleFragment 全体の `@Preview`
- *   関数を直接走査して PreviewFunctionInfo を構築する。 そうしないと ignore=true の hint が
- *   orphan (body=null) になり JVM backend assert に当たる。 cross-module で ignore preview
- *   が露出する課題は redesign 完了後の follow-up で対処予定
+ * - **Matching hint to `@Preview`**: extract the hash from the marker class short name on
+ *   the hint's `value: PreviewHintMarker_<sanitized_fqn>_<hash>?` parameter and look it up
+ *   against the canonical-key hash of each `@Preview` in the IR module. FIR generator and
+ *   IR side share [computeHintHash] / [buildPreviewHintCanonicalKey], so the match is
+ *   unambiguous.
+ * - **`CollectedPreview` construction**: reuses the existing
+ *   [CollectedPreviewIrBuilder.buildCollectedPreviewCall] unchanged.
+ * - **`@ComposePreviewLabOption(ignore = true)` handling**: hint emission runs even for
+ *   ignore=true, so the IR side likewise walks every `@Preview` in the moduleFragment
+ *   (rather than the filtered `previews`) when building `PreviewFunctionInfo`. Otherwise
+ *   the ignore=true hint is left orphan (body=null), which trips a JVM backend assert.
+ *   Hiding ignored previews on the cross-module side is tracked as a separate follow-up.
  */
 internal class PreviewHintIrBodyFiller(
     private val pluginContext: IrPluginContext,
@@ -68,16 +71,18 @@ internal class PreviewHintIrBodyFiller(
     private val previewsByHash: Map<String, PreviewFunctionInfo>,
 ) : IrElementTransformerVoid() {
 
-    /** Lazily 構築。 既存 builder を再利用して `CollectedPreview(...)` IR を生成する。 */
+    /** Lazily built; reuses the existing builder to emit `CollectedPreview(...)` IR. */
     private val collectedPreviewBuilder by lazy {
         CollectedPreviewIrBuilder(pluginContext, compatContext)
     }
 
     /**
-     * Hint 関数の body を `CollectedPreview(...)` constructor 呼び出しの `irReturn` に書き換える。
+     * Rewrites the hint function body to an `irReturn` of the `CollectedPreview(...)`
+     * constructor call.
      *
-     * `Keys.PreviewLabHint` origin の関数のみを対象にする。 元 `@Preview` 関数は hint の
-     * `value: PreviewHintMarker_<sanitized_fqn>_<hash>?` 引数の marker class 短名から特定する。
+     * Only functions with the `Keys.PreviewLabHint` origin are touched. The original
+     * `@Preview` is identified from the marker class short name on the hint's
+     * `value: PreviewHintMarker_<sanitized_fqn>_<hash>?` parameter.
      *
      * **Before**:
      * ```kotlin
@@ -103,10 +108,12 @@ internal class PreviewHintIrBodyFiller(
     }
 
     /**
-     * Hint 関数の body を `CollectedPreview(...)` constructor 呼び出しの `irReturn` に書き換える。
+     * Rewrites the hint function body to an `irReturn` of the `CollectedPreview(...)`
+     * constructor call.
      *
-     * 元 `@Preview` 関数は hint の `value: PreviewHintMarker_<sanitized_fqn>_<hash>` 引数の marker class 名から
-     * hash を取り出して特定する (FIR generator が hash 入りの marker class を生成しているため)。
+     * The original `@Preview` is recovered from the marker class name on the hint's
+     * `value: PreviewHintMarker_<sanitized_fqn>_<hash>` parameter (the FIR generator
+     * embeds the hash there).
      */
     private fun fillHintBody(declaration: IrSimpleFunction) {
         val regularParams = declaration.parameters.filter { it.kind == IrParameterKind.Regular }
@@ -114,8 +121,9 @@ internal class PreviewHintIrBodyFiller(
         val markerFqn = regularParams[0].type.classFqName ?: return
         val markerShortName = markerFqn.shortName().asString()
         if (!markerShortName.startsWith(PreviewLabFirBuiltIns.PreviewHintMarkerPrefix)) return
-        // marker 名は `PreviewHintMarker_<sanitized_fqn>_<hash>`。 hash は固定長
-        // ([PreviewLabFirBuiltIns.HashLength]) の base-36 文字列なので末尾切り出しで取得する。
+        // The marker name is `PreviewHintMarker_<sanitized_fqn>_<hash>`. The hash is a
+        // fixed-length ([PreviewLabFirBuiltIns.HashLength]) base-36 string, so a tail
+        // slice recovers it.
         val hash = markerShortName.takeLast(PreviewLabFirBuiltIns.HashLength)
         val previewInfo = previewsByHash[hash] ?: return
 
@@ -133,30 +141,32 @@ internal class PreviewHintIrBodyFiller(
 }
 
 /**
- * `@Preview` annotated top-level 関数を moduleFragment から走査し、 canonical key の hash を
- * key とした [PreviewFunctionInfo] map を構築する。
+ * Walks every `@Preview`-annotated top-level function in the module fragment and builds a
+ * map from canonical-key hash to [PreviewFunctionInfo].
  *
- * `ignore = true` の preview も含めることで、 [PreviewHintFirGenerator] が emit した
- * すべての hint declaration に body を埋められるようにする。 ignore filter は consumer 側
- * で行う想定 (TODO: cross-module で ignore preview が露出しない形にする follow-up)。
+ * Includes `ignore = true` previews so that every hint declaration emitted by
+ * [PreviewHintFirGenerator] can have its body filled. The ignore filter is meant to be
+ * applied on the consumer side (a follow-up tracks not exposing ignored previews
+ * cross-module).
  *
- * Canonical key は同名 overload (`fun MyButton()` と `fun MyButton(text: String)`) を
- * 区別するため、 sourceFqn + parameter type FQN を含む形で組み立てる。 FIR generator と
- * 同じロジックを使う必要があるため [buildPreviewHintCanonicalKey] を共有する。
+ * The canonical key includes both `sourceFqn` and the parameter-type FQNs so that
+ * same-name overloads (`fun MyButton()` vs `fun MyButton(text: String)`) are
+ * disambiguated. [buildPreviewHintCanonicalKey] is shared with the FIR generator to keep
+ * the format identical on both sides.
  *
  * **Sample entry**: `"a3k9z2x1" → PreviewFunctionInfo(function = fun MyButton(), id = "uiLib.button.MyButton", ...)`
  *
  * # Collision detection
  *
- * Hint hash は SHA-256 を base-36 8 文字に truncate しているため (約 41 bit、
- * [computeHintHash] 参照)、 distinct な canonical key 同士で hash 衝突する可能性が
- * 理論上ゼロではない (1k preview で ~10⁻⁷)。 衝突した場合 `put` 上書きで `@Preview` が
- * silent に集約結果から欠落するため、 衝突を検知したら [onCollision] callback で
- * 呼び出し側に通知し ERROR 報告する。
+ * The hint hash is SHA-256 truncated to 8 base-36 characters (~41 bits; see
+ * [computeHintHash]), so distinct canonical keys can in principle collide (~10⁻⁷ at 1k
+ * previews). On collision a naive `put` would silently drop one `@Preview` from the
+ * aggregated result, so the [onCollision] callback notifies the caller, who reports an
+ * ERROR.
  *
- * 衝突判定は **canonical key 同士の比較** で行う (FQN だけだと同名 overload を区別
- * できないため)。 同 canonical key の重複登録 (ignore=true filter 前後の 2 度走査など)
- * は衝突ではないので silent に上書きしてよい。
+ * Detection compares **canonical keys directly**, not FQN, so same-name overloads cannot
+ * be misclassified. Re-registering the same canonical key (e.g. two passes once before
+ * and once after the ignore=true filter) is not a collision and silently overwrites.
  */
 internal fun buildPreviewByHashMap(
     previews: List<PreviewFunctionInfo>,
@@ -171,8 +181,9 @@ internal fun buildPreviewByHashMap(
         val hash = computeHintHash(canonicalKey)
         val existingKey = canonicalKeyByHash[hash]
         if (existingKey != null && existingKey != canonicalKey) {
-            // 別 canonical key が同 hash に landed = 真の hash 衝突。 同 canonical key の
-            // 重複登録 (同 file 内 ignore=true 含む 2 度走査) はノイズなので silent に上書き。
+            // Two distinct canonical keys landed on the same hash = a genuine collision.
+            // Re-registering the same canonical key (e.g. a file walked twice across the
+            // ignore=true filter passes) is just noise, so silently overwrite.
             val existing = getValue(hash)
             onCollision(hash, existing, preview)
         }
@@ -182,17 +193,19 @@ internal fun buildPreviewByHashMap(
 }
 
 /**
- * IR `IrSimpleFunction` の value parameter type を hint canonical key 用の FQN リストに変換する。
- * FIR side [me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGenerator] と同じ format で
- * 揃える必要がある。
+ * Converts an IR `IrSimpleFunction`'s value parameter types into the FQN list used in the
+ * hint canonical key. Must produce the same format as the FIR side
+ * [me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGenerator].
  *
- * **Format** (FIR / IR 共通):
- * - `<classFqn>` (classId が解決できる non-nullable type)
- * - `<classFqn>?` (classId が解決できる nullable type)
- * - `?` (classId 未解決 = generic type parameter / 解決失敗。 nullability は無視する)
+ * **Format** (shared between FIR and IR):
+ * - `<classFqn>` (classId resolved, non-nullable type)
+ * - `<classFqn>?` (classId resolved, nullable type)
+ * - `?` (classId unresolved = generic type parameter or resolution failure; nullability
+ *   is ignored in this case)
  *
- * Unknown 時に nullability を無視するのは、 unknown は元々情報量が少なく、 nullability で更に
- * 区別する意味が薄いため。 FIR / IR 双方で同じ判定にしておくと canonical key が必ず一致する。
+ * Ignoring nullability when the classId is unresolved keeps the format minimal — there is
+ * little additional information to encode about an unknown type — and ensures the
+ * canonical key is identical on the FIR and IR sides.
  */
 private fun IrSimpleFunction.parameterTypeFqnsForHash(): List<String> = parameters
     .filter { it.kind == IrParameterKind.Regular }

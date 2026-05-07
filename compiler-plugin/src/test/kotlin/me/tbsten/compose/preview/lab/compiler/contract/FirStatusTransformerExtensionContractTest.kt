@@ -8,13 +8,14 @@ import io.kotest.matchers.shouldNotBe
 import me.tbsten.compose.preview.lab.compiler.CompilerPluginTestBase
 
 /**
- * FirStatusTransformerExtension の Compiler API 挙動を検証するコントラクトテスト。
+ * Contract test that verifies the compiler-API behavior of
+ * `FirStatusTransformerExtension`.
  */
 class FirStatusTransformerExtensionContractTest :
     FunSpec({
         val base = CompilerPluginTestBase()
 
-        test("private な関数の visibility を internal に変更できる") {
+        test("can widen the visibility of a private function to internal") {
             val source = SourceFile.kotlin(
                 "Input.kt",
                 """
@@ -32,12 +33,12 @@ class FirStatusTransformerExtensionContractTest :
                 .declaredMethods
                 .find { it.name == "PrivatePreview" }
 
-            // private → internal (JVM 上では public になる) に変更されていれば、
-            // 同一モジュール内からリフレクションでアクセス可能
+            // After private → internal (which becomes public on the JVM), the function
+            // is reachable from same-module reflection.
             method shouldNotBe null
         }
 
-        test("変更後の関数が同一モジュール内コードから呼び出し可能") {
+        test("the transformed function is callable from same-module code") {
             val source = SourceFile.kotlin(
                 "Input.kt",
                 """
@@ -58,8 +59,8 @@ class FirStatusTransformerExtensionContractTest :
             """,
             )
             val result = base.compile(source, caller)
-            // 現状: private なので呼び出せずコンパイルエラー
-            // 実装後: internal に変更されるのでコンパイル成功を期待
+            // Without the transform: private, so the call site fails to compile.
+            // With the transform: widened to internal, so compilation succeeds.
             result.exitCode shouldBe KotlinCompilation.ExitCode.OK
         }
     })

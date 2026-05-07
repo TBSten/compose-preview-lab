@@ -11,20 +11,24 @@ import me.tbsten.compose.preview.lab.compiler.isAtLeast
 import me.tbsten.compose.preview.lab.compiler.loadCollectedPreviews
 
 /**
- * Per-declaration hint (Metro 風) を依存モジュールから発見する consumer 側 IR pass の検証。
+ * Verifies the consumer-side IR pass that discovers per-declaration hints emitted by
+ * dependency modules.
  *
  * 2-stage kctfork compilation:
- * 1. uiLib をコンパイルし、 `me.tbsten.compose.preview.lab.hints` package に
+ * 1. Compile uiLib so that
  *    `interface PreviewHintMarker_<hash>` + `fun previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview`
- *    が emit される
- * 2. app を uiLib output を classpath に追加してコンパイル。 `collectAllModulePreviews()` の
- *    IR transform で `referenceFunctions(CallableId(hintsPackage, "previewHint"))` で hint を
- *    発見し、 各 hint を call して `CollectedPreview` を list に積む
- * 3. リフレクションで app.allPreviews を読み出し、 cross-module preview が含まれることを検証
+ *    are emitted into the `me.tbsten.compose.preview.lab.hints` package.
+ * 2. Compile app with uiLib's output added to the classpath. Inside the
+ *    `collectAllModulePreviews()` IR transform, `referenceFunctions(CallableId(hintsPackage, "previewHint"))`
+ *    discovers each hint, invokes it, and pushes the resulting `CollectedPreview` onto
+ *    the list.
+ * 3. Read `app.allPreviews` via reflection and assert that the cross-module preview is
+ *    present.
  *
- * **Skipped on Kotlin < 2.3.21**: hint generator は Kotlin 2.3.21+ でのみ稼働し、 古い Kotlin では
- * `collectAllModulePreviews()` 自体が IR phase で compile-time error になる
- * ([CompatContext.supportsKlibCrossModuleHint][me.tbsten.compose.preview.lab.compiler.compat.CompatContext.supportsKlibCrossModuleHint])。
+ * **Skipped on Kotlin < 2.3.21**: the hint generator only runs on Kotlin 2.3.21+; on
+ * older versions `collectAllModulePreviews()` itself produces a compile-time error in
+ * the IR phase
+ * ([CompatContext.supportsKlibCrossModuleHint][me.tbsten.compose.preview.lab.compiler.compat.CompatContext.supportsKlibCrossModuleHint]).
  */
 class PreviewHintDiscoveryTest :
     FunSpec({
@@ -68,9 +72,9 @@ class PreviewHintDiscoveryTest :
                 val previews = appResult.loadCollectedPreviews(propertyName = "allPreviews")
                 val ids = previews.map { p -> p::class.members.find { it.name == "id" }!!.call(p) as String }
 
-                // 自モジュールの @Preview と cross-module hint discovery の両方から CollectedPreview
-                // が emit されるが、 distinctPreviewsById で id ベースで dedup されるので同じ
-                // preview は 1 回だけ登場する。
+                // Both the local @Preview and the cross-module hint discovery emit a
+                // CollectedPreview for each id, but distinctPreviewsById dedups by id so
+                // the same preview shows up only once.
                 ids shouldContainExactlyInAnyOrder listOf(
                     "app.AppPreview",
                     "uilib.UiLibPreview",
@@ -162,26 +166,28 @@ class PreviewHintDiscoveryTest :
                 val code = preview::class.members.find { it.name == "code" }!!.call(preview) as String?
 
                 displayName shouldBe "uilib.WithMetadata"
-                // startLine / endLine は @Preview の宣言位置を指す (1-based)
+                // startLine / endLine point at the @Preview declaration position (1-based).
                 (startLine != null) shouldBe true
                 (endLine != null) shouldBe true
-                // filePath / code は kctfork の in-memory file 環境では null になる場合があるので
-                // 存在チェックのみ (実 build では non-null)。 sentinel `""` から null に正しく
-                // 復元されることを `code != null && code.isEmpty()` のような誤動作で潰さないかの
-                // 確認は T04 (integrationTest) に委ねる
+                // filePath / code can be null in kctfork's in-memory file environment, so we
+                // only assert their presence here (in a real build they are non-null).
+                // The integrationTest harness (T04) covers the empty-vs-null sentinel
+                // handling more rigorously to guard against bugs like
+                // `code != null && code.isEmpty()` collapsing the two cases.
                 @Suppress("UNUSED_VARIABLE")
                 val ignored = listOf(filePath, code)
             }
 
         test("smoke: collectAllModulePreviews() result contains no duplicate ids")
             .config(enabled = supports) {
-                // 自モジュール `@Preview` (local list 経由) と cross-module `@Preview` (per-declaration
-                // hint 経由) の両方を含む集約結果について、 `distinctPreviewsById` が正しく適用され
-                // 結果リストの id が unique であることを smoke test として確認する。
+                // Smoke test: when the aggregated result contains both this module's
+                // `@Preview` (via the local list) and a cross-module `@Preview` (via the
+                // per-declaration hint), assert that `distinctPreviewsById` is applied so
+                // the resulting ids are unique.
                 //
-                // 真の重複が発生する transitive dep chain (app(all) → ui(all) → core) のケースは
-                // integrationTest 側 (`CrossModuleCollectPreviewsTest.collectAllModulePreviewsDeduplicatesById`)
-                // でカバーする。
+                // Cases that produce real duplicates via a transitive dep chain
+                // (app(all) → ui(all) → core) are covered on the integrationTest side
+                // (`CrossModuleCollectPreviewsTest.collectAllModulePreviewsDeduplicatesById`).
                 val libResult = base.compile(
                     SourceFile.kotlin(
                         "Shared.kt",
@@ -213,11 +219,12 @@ class PreviewHintDiscoveryTest :
                 val previews = appResult.loadCollectedPreviews(propertyName = "allPreviews")
                 val ids = previews.map { p -> p::class.members.find { it.name == "id" }!!.call(p) as String }
 
-                // distinctPreviewsById により id 重複ゼロを assert
+                // distinctPreviewsById should leave zero id duplicates.
                 previews.size shouldBe ids.distinct().size
                 ids shouldContain "shared.SharedPreview"
                 ids shouldContain "app.AppPreview"
-                // shared.SharedPreview が dedup 後も 1 個だけ残っていることを明示的に確認
+                // Explicitly confirm that shared.SharedPreview is kept exactly once after
+                // dedup.
                 ids.count { it == "shared.SharedPreview" } shouldBe 1
             }
     })

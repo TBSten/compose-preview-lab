@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
 
 /**
- * Compose Preview Lab の FIR extension を登録する。
+ * Registers all of Compose Preview Lab's FIR extensions.
  *
  * Registered extensions:
  * - [PreviewLabFirBuiltIns] (`FirExtensionSessionComponent`) — shared FQN/CallableId constants

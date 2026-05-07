@@ -46,11 +46,12 @@ class PreviewLabIrGenerationExtension(
             PreviewLabIrBodyFiller(pluginContext, config, moduleFragment, previews, compatContext, messageCollector)
         compatContext.transformModuleFragment(moduleFragment, bodyFiller)
 
-        // Per-declaration hint (Metro 風) 用の body filler。 FIR generator が emit した
-        // `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` の body を IR pass で埋める
-        // (関数名は固定 `previewHint`、 hash は marker class 短名から抽出)。
-        // hint emit 側で ignore=true を filter していないため、 body fill 用の lookup は
-        // ignore=true も含めて構築する。
+        // Body filler for the per-declaration hints. Fills the body of every
+        // `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` emitted by the
+        // FIR generator (the function name is fixed to `previewHint`; the hash is
+        // recovered from the marker class short name).
+        // Hint emission does not filter `ignore=true`, so the lookup used by the body
+        // filler must include ignored previews too.
         if (compatContext.supportsKlibCrossModuleHint()) {
             val previewsIncludingIgnored = collectPreviewsIncludingIgnored(moduleFragment)
             val previewsByHash = buildPreviewByHashMap(previewsIncludingIgnored) { hash, existing, conflicting ->
@@ -75,13 +76,13 @@ class PreviewLabIrGenerationExtension(
                 PreviewHintIrBodyFiller(pluginContext, compatContext, previewsByHash),
             )
         }
-        // 古い Kotlin (<2.3.21) では hint generator が動かないので、
-        // collectAllModulePreviews() 自体が cross-module aggregation できない。
-        // PreviewLabIrBodyFiller.reportUnsupportedCollectAllError が
-        // `val by collectAllModulePreviews()` の by-delegate pattern を IR phase で検出して
-        // compile-time error を MessageCollector 経由で報告する。
-        // collectModulePreviews() 単体は IR transform で自モジュールの previews を注入する
-        // だけなので version gate なしで動く。
+        // On older Kotlin (<2.3.21) the hint generator is not active, so
+        // collectAllModulePreviews() cannot perform cross-module aggregation.
+        // PreviewLabIrBodyFiller.reportUnsupportedCollectAllError detects the
+        // `val by collectAllModulePreviews()` by-delegate pattern in the IR phase and
+        // surfaces a compile-time error via MessageCollector.
+        // collectModulePreviews() on its own only injects this module's previews via
+        // an IR transform, so it works without a version gate.
     }
 
     private fun collectPreviews(moduleFragment: IrModuleFragment): List<PreviewFunctionInfo> {
@@ -96,9 +97,10 @@ class PreviewLabIrGenerationExtension(
     }
 
     /**
-     * `@Preview` annotated 関数を `@ComposePreviewLabOption(ignore = true)` も含めて全て収集する。
-     * Per-declaration hint body filler は ignore=true でも body を埋める必要があるため、
-     * 通常の [collectPreviews] (ignore filter 済み) ではなく本関数を使う。
+     * Collects every `@Preview`-annotated function including those marked
+     * `@ComposePreviewLabOption(ignore = true)`. The per-declaration hint body filler must
+     * fill the body even for `ignore = true`, so it uses this function instead of the
+     * filtered [collectPreviews].
      */
     private fun collectPreviewsIncludingIgnored(moduleFragment: IrModuleFragment): List<PreviewFunctionInfo> {
         val result = mutableListOf<PreviewFunctionInfo>()
@@ -143,9 +145,10 @@ class PreviewLabIrGenerationExtension(
         buildPreviewInfoOrNull(func, includeIgnored = false)
 
     /**
-     * `buildPreviewInfo` の internal 版。 [includeIgnored] = true の場合、 `ignore = true` でも
-     * 除外せず [PreviewFunctionInfo] を返す。 per-declaration hint body filler が
-     * `@ComposePreviewLabOption(ignore = true)` の preview にも hint body を埋めるために使う。
+     * Internal variant of [buildPreviewInfo]. When [includeIgnored] = true, returns a
+     * [PreviewFunctionInfo] even for `ignore = true` previews, instead of dropping them.
+     * Used by the per-declaration hint body filler so that hint bodies for
+     * `@ComposePreviewLabOption(ignore = true)` previews can still be filled in.
      */
     internal fun buildPreviewInfoOrNull(func: IrSimpleFunction, includeIgnored: Boolean): PreviewFunctionInfo? {
         if (!func.hasAnnotationCompat(CMP_PREVIEW_FQ) && !func.hasAnnotationCompat(ANDROID_PREVIEW_FQ)) return null
@@ -187,11 +190,11 @@ class PreviewLabIrGenerationExtension(
 }
 
 /**
- * `<sourceFqn>(<paramType1>, <paramType2>, ...)` 形式の人間可読な signature を組み立てる。
+ * Builds a human-readable signature in the form `<sourceFqn>(<paramType1>, <paramType2>, ...)`.
  *
- * 同名 overload を区別する必要がある hash collision エラー報告用。 hash 入力に使う canonical
- * key と同じ情報を含むが、 separator を `,` から `, ` にしたり `unknown` を `?` ではなく
- * 明示的に書いたりして「人間にとって読みやすい」形にしてある。
+ * Used in hash-collision error reports where same-name overloads must be told apart.
+ * Carries the same information as the canonical key fed into the hash, but uses
+ * `, ` instead of `,` as the separator to read more naturally.
  */
 private fun IrSimpleFunction.canonicalSignatureForReport(): String {
     val params = parameters.filter { it.kind == IrParameterKind.Regular }.joinToString(", ") { p ->
