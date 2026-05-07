@@ -214,17 +214,22 @@ internal class PreviewListIrBuilder(
      * distinctPreviewsById(
      *     mutableListOf<CollectedPreview>().apply {
      *         addAll(thisModulePreviews)
-     *         addAll(dep1Property)
-     *         addAll(dep2Property)
-     *         // ...
+     *         add(previewHint(null))   // one entry per dep-module @Preview, via per-declaration hint
+     *         add(previewHint(null))
+     *         // ... (one add(...) per discovered hint)
      *     }
      * )
      * ```
      *
+     * Each cross-module entry is produced by invoking the per-declaration
+     * `previewHint(value: PreviewHintMarker_<...>?): CollectedPreview` function emitted
+     * by [me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGenerator]. The marker
+     * parameter exists only to disambiguate the IdSignature, so passing `null` is safe.
+     *
      * `distinctPreviewsById` is needed because a dependency that itself uses
      * `collectAllModulePreviews()` re-exports its transitive previews. Without dedup, an
      * `app(all) → ui(all) → core(single)` chain would yield each `core` preview twice (once
-     * via `core` hint, once via `ui` hint).
+     * via `core`'s hint, once via `ui`'s hint).
      */
     fun buildConcatenatedPreviewsExpr(builder: DeclarationIrBuilder, thisModulePreviews: IrExpression): IrExpression {
         val hints = cachedHints
