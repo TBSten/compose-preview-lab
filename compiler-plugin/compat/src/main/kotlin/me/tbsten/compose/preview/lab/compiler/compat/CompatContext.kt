@@ -176,10 +176,7 @@ public interface CompatContext {
      * annotation set, or `null` if the receiver type is not supported on this Kotlin
      * version.
      */
-    public fun getDeprecationsProviderCompat(
-        declaration: FirAnnotationContainer,
-        session: FirSession,
-    ): DeprecationsProvider?
+    public fun getDeprecationsProviderCompat(declaration: FirAnnotationContainer, session: FirSession): DeprecationsProvider?
 
     /**
      * Applies [transformer] to [moduleFragment] using the version-appropriate IR visitor API.
