@@ -3,6 +3,7 @@ public final class me/tbsten/compose/preview/lab/compiler/compat/k210/CompatCont
 	public fun addConstructorCallAnnotation (Lorg/jetbrains/kotlin/ir/declarations/IrSimpleFunction;Lorg/jetbrains/kotlin/ir/types/IrType;Lorg/jetbrains/kotlin/ir/symbols/IrConstructorSymbol;)V
 	public fun createSyntheticFileEntry (Ljava/lang/String;)Lorg/jetbrains/kotlin/ir/IrFileEntry;
 	public fun getDefaultType (Lorg/jetbrains/kotlin/ir/symbols/IrClassSymbol;)Lorg/jetbrains/kotlin/ir/types/IrSimpleType;
+	public fun getDeprecationsProviderCompat (Lorg/jetbrains/kotlin/fir/FirAnnotationContainer;Lorg/jetbrains/kotlin/fir/FirSession;)Lorg/jetbrains/kotlin/fir/declarations/DeprecationsProvider;
 	public fun irCall (Lorg/jetbrains/kotlin/ir/builders/IrBuilderWithScope;Lorg/jetbrains/kotlin/ir/symbols/IrFunctionSymbol;Lorg/jetbrains/kotlin/ir/types/IrType;)Lorg/jetbrains/kotlin/ir/expressions/IrFunctionAccessExpression;
 	public fun irCall (Lorg/jetbrains/kotlin/ir/builders/IrBuilderWithScope;Lorg/jetbrains/kotlin/ir/symbols/IrFunctionSymbol;Lorg/jetbrains/kotlin/ir/types/IrType;Ljava/util/List;)Lorg/jetbrains/kotlin/ir/expressions/IrMemberAccessExpression;
 	public fun irCall (Lorg/jetbrains/kotlin/ir/builders/IrBuilderWithScope;Lorg/jetbrains/kotlin/ir/symbols/IrSimpleFunctionSymbol;)Lorg/jetbrains/kotlin/ir/expressions/IrCall;

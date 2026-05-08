@@ -8,7 +8,7 @@ public abstract interface class me/tbsten/compose/preview/lab/hints/PreviewHintM
 }
 
 public final class me/tbsten/compose/preview/lab/hints/PreviewHint_04g2qjkwKt {
-	public static final fun previewHint (Lme/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_libreversed_MyButtonPreview_04g2qjkw;)Lme/tbsten/compose/preview/lab/CollectedPreview;
+	public static final synthetic fun previewHint (Lme/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_libreversed_MyButtonPreview_04g2qjkw;)Lme/tbsten/compose/preview/lab/CollectedPreview;
 }
 
 public final class me/tbsten/compose/preview/lab/sample/libreversed/ComposableSingletons$MyButtonKt {

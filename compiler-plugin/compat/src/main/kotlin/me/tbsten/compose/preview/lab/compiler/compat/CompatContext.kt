@@ -1,5 +1,8 @@
 package me.tbsten.compose.preview.lab.compiler.compat
 
+import org.jetbrains.kotlin.fir.FirAnnotationContainer
+import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.declarations.DeprecationsProvider
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.ir.IrFileEntry
 import org.jetbrains.kotlin.ir.builders.IrBuilderWithScope
@@ -153,6 +156,27 @@ public interface CompatContext {
      * - `compat-k2321` (Kotlin 2.3.21+) / `compat-k240_beta2` → `true`
      */
     public fun supportsKlibCrossModuleHint(): Boolean
+
+    /**
+     * Returns the [DeprecationsProvider] for [declaration] so the FIR / IDE deprecation
+     * cache can be invalidated after a `replaceAnnotations(...)` call.
+     *
+     * In Kotlin 2.4.0-Beta2 the receiver of `fun getDeprecationsProvider(session)` was
+     * narrowed from `FirAnnotationContainer` to `FirCallableDeclaration` /
+     * `FirClassLikeDeclaration` (the `FirAnnotationContainer` overload was removed).
+     * Implementations dispatch on the concrete declaration type accordingly.
+     *
+     * Returns null when the declaration is neither a `FirCallableDeclaration` nor a
+     * `FirClassLikeDeclaration`; callers skip cache invalidation in that case.
+     *
+     * **Sample call**: `getDeprecationsProviderCompat(synthesizedFunction, session)`
+     *
+     * **Result** (semantically): `DeprecationsProvider` whose
+     * `getDeprecationsInfo(languageVersionSettings)` reflects the freshly-attached
+     * annotation set, or `null` if the receiver type is not supported on this Kotlin
+     * version.
+     */
+    public fun getDeprecationsProviderCompat(declaration: FirAnnotationContainer, session: FirSession): DeprecationsProvider?
 
     /**
      * Applies [transformer] to [moduleFragment] using the version-appropriate IR visitor API.

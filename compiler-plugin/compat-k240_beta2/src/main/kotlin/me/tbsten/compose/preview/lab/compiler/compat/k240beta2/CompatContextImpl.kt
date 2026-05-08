@@ -2,6 +2,12 @@ package me.tbsten.compose.preview.lab.compiler.compat.k240beta2
 
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.k230.CompatContextImpl as K230CompatContextImpl
+import org.jetbrains.kotlin.fir.FirAnnotationContainer
+import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.declarations.DeprecationsProvider
+import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
+import org.jetbrains.kotlin.fir.declarations.FirClassLikeDeclaration
+import org.jetbrains.kotlin.fir.declarations.getDeprecationsProvider
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.impl.IrAnnotationImpl
 import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
@@ -39,6 +45,19 @@ public class CompatContextImpl : CompatContext by K230CompatContextImpl() {
 
     // Kotlin 2.4.0-Beta2+: FIR top-level decl gen is stable on KLIB and KT-82395 is fixed.
     override fun supportsKlibCrossModuleHint(): Boolean = true
+
+    // Kotlin 2.4.0-Beta2: the receiver of `fun getDeprecationsProvider(session)` was narrowed
+    // from `FirAnnotationContainer` to `FirCallableDeclaration` / `FirClassLikeDeclaration`,
+    // and the `FirAnnotationContainer` overload was removed. Dispatch on the concrete
+    // declaration type so the call site picks the version-appropriate static method.
+    override fun getDeprecationsProviderCompat(
+        declaration: FirAnnotationContainer,
+        session: FirSession,
+    ): DeprecationsProvider? = when (declaration) {
+        is FirCallableDeclaration -> declaration.getDeprecationsProvider(session)
+        is FirClassLikeDeclaration -> declaration.getDeprecationsProvider(session)
+        else -> null
+    }
 
     public class Factory : CompatContext.Factory {
         override val minVersion: String = "2.4.0-Beta2"

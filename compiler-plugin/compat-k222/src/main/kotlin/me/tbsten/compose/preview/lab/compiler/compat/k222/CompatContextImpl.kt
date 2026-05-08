@@ -1,8 +1,12 @@
 package me.tbsten.compose.preview.lab.compiler.compat.k222
 
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
+import org.jetbrains.kotlin.fir.FirAnnotationContainer
+import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.declarations.DeprecationsProvider
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
+import org.jetbrains.kotlin.fir.declarations.getDeprecationsProvider
 import org.jetbrains.kotlin.ir.builders.IrBuilderWithScope
 import org.jetbrains.kotlin.ir.builders.irCall
 import org.jetbrains.kotlin.ir.builders.irGet
@@ -88,6 +92,12 @@ public class CompatContextImpl : CompatContext {
 
     // FIR top-level declaration generation is unstable on KLIB targets in Kotlin 2.2.x.
     override fun supportsKlibCrossModuleHint(): Boolean = false
+
+    // 2.2.x: same `FirAnnotationContainer.getDeprecationsProvider(session)` extension as 2.1.
+    override fun getDeprecationsProviderCompat(
+        declaration: FirAnnotationContainer,
+        session: FirSession,
+    ): DeprecationsProvider = declaration.getDeprecationsProvider(session)
 
     public class Factory : CompatContext.Factory {
         override val minVersion: String = "2.2.0"
