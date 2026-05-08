@@ -118,6 +118,16 @@ internal class PreviewLabIrBodyFiller(
         val delegateField = property.backingField ?: return
         val isAll = isCollectAllCall(delegateField)
 
+        // Module-level gate: when `collectPreviewsEnabled = false` for this module the FIR
+        // hint generator was not registered, so neither this module's previews nor any
+        // dependency's hints can be discovered. Reporting an error keeps users from getting
+        // a silently-empty list at runtime — flipping the flag is almost always a mistake
+        // when paired with a `collect[All]ModulePreviews()` call site.
+        if (!config.collectPreviewsEnabled) {
+            reportCollectPreviewsDisabledError(property, isAll)
+            return
+        }
+
         // Version gate: cross-module aggregation requires Kotlin 2.3.21+ across every platform
         // (the FIR-based KLIB-safe hint generator depends on KT-82395 being fixed). When the
         // current compiler is older we report a structured error here so users get a clear
@@ -179,20 +189,52 @@ internal class PreviewLabIrBodyFiller(
      * throw at runtime if the build somehow proceeds).
      */
     private fun reportUnsupportedCollectAllError(property: IrProperty) {
-        val location = runCatching { property.file }.getOrNull()?.fileEntry?.let { entry ->
-            val offset = property.startOffset.takeIf { it >= 0 } ?: return@let null
-            val line = entry.getLineNumber(offset) + 1
-            val column = entry.getColumnNumber(offset) + 1
-            CompilerMessageLocation.create(entry.name, line, column, null)
-        }
         messageCollector.report(
             CompilerMessageSeverity.ERROR,
             "[ComposePreviewLab] collectAllModulePreviews() requires Kotlin 2.3.21 or later " +
                 "for cross-module preview aggregation. " +
                 "Either upgrade Kotlin to 2.3.21+, or use collectModulePreviews() for " +
                 "single-module collection.",
-            location,
+            propertyLocation(property),
         )
+    }
+
+    /**
+     * Reports the disabled-module error for any `collect[All]ModulePreviews()` call site
+     * found while `collectPreviewsEnabled = false`.
+     *
+     * **Input** (semantically): the property's IR node for
+     * ```kotlin
+     * val previews by collectModulePreviews()       // or collectAllModulePreviews()
+     * ```
+     * compiled with `composePreviewLab.collectPreviews.enabled = false` in the Gradle
+     * configuration.
+     *
+     * **Output**: `CompilerMessageSeverity.ERROR` pointing at the property declaration.
+     * The disabled flag suppresses every per-declaration hint emission for this module
+     * (and consequently every cross-module aggregation it might participate in), so any
+     * call site is almost certainly a configuration mistake — surfacing it as a compile
+     * error is better than letting users observe a silently-empty list at runtime.
+     */
+    private fun reportCollectPreviewsDisabledError(property: IrProperty, isAll: Boolean) {
+        val callName = if (isAll) "collectAllModulePreviews()" else "collectModulePreviews()"
+        messageCollector.report(
+            CompilerMessageSeverity.ERROR,
+            "[ComposePreviewLab] $callName cannot be used in this module because " +
+                "`composePreviewLab.collectPreviews.enabled` is false. " +
+                "Either remove the call, or set `enabled = true` in the module's " +
+                "composePreviewLab configuration.",
+            propertyLocation(property),
+        )
+    }
+
+    /** Resolves the source location of [property] for use in `MessageCollector` reports. */
+    private fun propertyLocation(property: IrProperty): CompilerMessageLocation? {
+        val entry = runCatching { property.file }.getOrNull()?.fileEntry ?: return null
+        val offset = property.startOffset.takeIf { it >= 0 } ?: return null
+        val line = entry.getLineNumber(offset) + 1
+        val column = entry.getColumnNumber(offset) + 1
+        return CompilerMessageLocation.create(entry.name, line, column, null)
     }
 
     /**

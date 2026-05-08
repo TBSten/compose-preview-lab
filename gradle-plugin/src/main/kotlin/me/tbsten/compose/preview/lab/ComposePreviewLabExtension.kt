@@ -1,6 +1,7 @@
 package me.tbsten.compose.preview.lab
 
 import javax.inject.Inject
+import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory
 import org.gradle.kotlin.dsl.getValue
@@ -18,6 +19,9 @@ import org.gradle.kotlin.dsl.setValue
  * composePreviewLab {
  *     generatePackage = "myModule"
  *     generateFeaturedFiles = true
+ *     collectPreviews {
+ *         enabled = false
+ *     }
  * }
  * ```
  */
@@ -56,4 +60,44 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
      */
     var generateFeaturedFiles: Boolean by objects.property<Boolean>()
         .convention(false)
+
+    /**
+     * Per-module configuration for the per-declaration preview hint pipeline.
+     *
+     * The defaults match the behaviour of every existing build, so adding this DSL block
+     * is opt-in. See [CollectPreviewsConfig] for the available knobs.
+     */
+    val collectPreviews: CollectPreviewsConfig = objects.newInstance(CollectPreviewsConfig::class.java)
+
+    /** Kotlin-DSL friendly accessor for [collectPreviews]. */
+    fun collectPreviews(action: Action<CollectPreviewsConfig>) {
+        action.execute(collectPreviews)
+    }
+}
+
+/**
+ * Configures the per-declaration preview hint pipeline for one module.
+ *
+ * ```kotlin
+ * composePreviewLab {
+ *     collectPreviews {
+ *         enabled = false
+ *     }
+ * }
+ * ```
+ */
+abstract class CollectPreviewsConfig @Inject constructor(objects: ObjectFactory) {
+    /**
+     * Whether this module participates in per-declaration preview hint emission.
+     *
+     * - `true` (default) — `@Preview` functions in this module emit a marker interface and
+     *   a `previewHint(...)` overload, so they can be discovered cross-module by
+     *   `collectAllModulePreviews()` consumers.
+     * - `false` — the compiler plugin emits no marker / hint pair for this module **and**
+     *   any `collectModulePreviews()` / `collectAllModulePreviews()` call site in the same
+     *   module becomes a compile-time error. Use this for sample / test-fixture modules
+     *   whose previews should never leak into a downstream consumer.
+     */
+    var enabled: Boolean by objects.property<Boolean>()
+        .convention(true)
 }

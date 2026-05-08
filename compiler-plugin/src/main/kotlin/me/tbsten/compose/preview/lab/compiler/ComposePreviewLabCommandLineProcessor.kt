@@ -17,11 +17,19 @@ class ComposePreviewLabCommandLineProcessor : CommandLineProcessor {
             description = "Root path of the project",
             required = false,
         ),
+        CliOption(
+            optionName = OptionCollectPreviewsEnabled,
+            valueDescription = "<true|false>",
+            description = "Whether this module emits per-declaration preview hints and lets " +
+                "collect[All]ModulePreviews() compile (default: true)",
+            required = false,
+        ),
     )
 
     override fun processOption(option: AbstractCliOption, value: String, configuration: CompilerConfiguration,) {
         when (option.optionName) {
             OptionProjectRootPath -> configuration.put(KEY_PROJECT_ROOT_PATH, value)
+            OptionCollectPreviewsEnabled -> configuration.put(KEY_COLLECT_PREVIEWS_ENABLED, value.toBoolean())
             else -> error("Unknown option: ${option.optionName}")
         }
     }
@@ -29,5 +37,6 @@ class ComposePreviewLabCommandLineProcessor : CommandLineProcessor {
     companion object {
         const val PluginId = "me.tbsten.compose.preview.lab.compiler"
         const val OptionProjectRootPath = "projectRootPath"
+        const val OptionCollectPreviewsEnabled = "collectPreviewsEnabled"
     }
 }
