@@ -47,9 +47,16 @@ private const val HiddenMessage = "This synthesized declaration should not be us
  * (https://github.com/ZacSweers/metro/blob/main/compiler/src/main/kotlin/dev/zacsweers/metro/compiler/fir/fir.kt).
  */
 internal fun createDeprecatedHiddenAnnotation(session: FirSession): FirAnnotation = buildAnnotation {
+    // `kotlin.Deprecated` is part of the Kotlin standard library, which is on the classpath
+    // on every supported target. If the symbol provider returns null (or a non-regular class
+    // shape), the build is broken in a way the plugin cannot recover from, so fail loudly
+    // with a useful message instead of letting `ClassCastException` escape.
     val deprecatedAnno = session.symbolProvider
-        .getClassLikeSymbolByClassId(StandardClassIds.Annotations.Deprecated)
-        as FirRegularClassSymbol
+        .getClassLikeSymbolByClassId(StandardClassIds.Annotations.Deprecated) as? FirRegularClassSymbol
+        ?: error(
+            "kotlin.Deprecated annotation symbol is not resolvable from the FIR session. " +
+                "kotlin-stdlib must be on the classpath for the per-declaration hint generator.",
+        )
 
     annotationTypeRef = deprecatedAnno.constructType().toFirResolvedTypeRef()
 

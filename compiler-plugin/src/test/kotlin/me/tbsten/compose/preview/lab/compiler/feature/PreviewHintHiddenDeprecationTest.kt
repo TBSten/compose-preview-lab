@@ -8,12 +8,11 @@ import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.shouldBe
 import me.tbsten.compose.preview.lab.compiler.CompilerPluginTestBase
 import me.tbsten.compose.preview.lab.compiler.isAtLeast
-import java.io.File
 
 /**
- * Verifies that every per-declaration hint declaration emitted by
- * [PreviewHintFirGenerator] carries `@kotlin.Deprecated(level = HIDDEN)` so it stays
- * out of IDE autocomplete and resists accidental user references — while remaining
+ * Verifies that every per-declaration hint declaration emitted by `PreviewHintFirGenerator`
+ * (in `compiler-plugin/src/main/.../fir/`) carries `@kotlin.Deprecated(level = HIDDEN)` so
+ * it stays out of IDE autocomplete and resists accidental user references — while remaining
  * discoverable via classpath lookup (`referenceFunctions`).
  *
  * Validation is done at the JVM bytecode level: the Kotlin `@Deprecated(HIDDEN)`
@@ -21,8 +20,8 @@ import java.io.File
  * `previewHint` overload (Kotlin emits `ACC_DEPRECATED` + the annotation), so JDK
  * reflection picks it up uniformly.
  *
- * **Skipped on Kotlin < 2.3.21**: the per-declaration hint generator only runs on
- * Kotlin 2.3.21+ ([CompatContext.supportsKlibCrossModuleHint]).
+ * **Skipped on Kotlin < 2.3.21**: the per-declaration hint generator only runs on Kotlin
+ * 2.3.21+ (gated by `CompatContext.supportsKlibCrossModuleHint`).
  */
 class PreviewHintHiddenDeprecationTest :
     FunSpec({
@@ -182,26 +181,3 @@ class PreviewHintHiddenDeprecationTest :
                 }
             }
     })
-
-/**
- * Walks the output directory for `me.tbsten.compose.preview.lab.hints.PreviewHintMarker_*.class`
- * files and returns the FQNs (so they can be loaded via the test classloader).
- */
-private fun File.previewHintMarkerNames(): List<String> = walkTopDown()
-    .filter { it.isFile && it.extension == "class" }
-    .filter {
-        it.parentFile.toRelativeString(this).replace('/', '.').replace('\\', '.') == "me.tbsten.compose.preview.lab.hints"
-    }
-    .filter { it.name.startsWith("PreviewHintMarker_") && !it.name.endsWith("Kt.class") }
-    .map { "me.tbsten.compose.preview.lab.hints." + it.nameWithoutExtension }
-    .toList()
-
-/** Walks the output for `PreviewHint_<hash>Kt.class` facade FQNs. */
-private fun File.previewHintFacadeNames(): List<String> = walkTopDown()
-    .filter { it.isFile && it.extension == "class" }
-    .filter {
-        it.parentFile.toRelativeString(this).replace('/', '.').replace('\\', '.') == "me.tbsten.compose.preview.lab.hints"
-    }
-    .filter { it.name.startsWith("PreviewHint_") && it.name.endsWith("Kt.class") }
-    .map { "me.tbsten.compose.preview.lab.hints." + it.nameWithoutExtension }
-    .toList()
