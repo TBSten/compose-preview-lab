@@ -171,24 +171,55 @@ internal class PreviewHintIrBodyFiller(
 internal fun buildPreviewByHashMap(
     previews: List<PreviewFunctionInfo>,
     onCollision: (hash: String, existing: PreviewFunctionInfo, conflicting: PreviewFunctionInfo) -> Unit = { _, _, _ -> },
-): Map<String, PreviewFunctionInfo> = buildMap {
-    val canonicalKeyByHash = mutableMapOf<String, String>()
-    for (preview in previews) {
+): Map<String, PreviewFunctionInfo> {
+    val keyed = previews.mapNotNull { preview ->
         val sourceFqn = preview.function.kotlinFqName.asString()
-        if (sourceFqn.isEmpty()) continue
+        if (sourceFqn.isEmpty()) return@mapNotNull null
         val parameterTypeFqns = preview.function.parameterTypeFqnsForHash()
         val canonicalKey = buildPreviewHintCanonicalKey(sourceFqn, parameterTypeFqns)
-        val hash = computeHintHash(canonicalKey)
-        val existingKey = canonicalKeyByHash[hash]
+        canonicalKey to preview
+    }
+    return buildHashMapWithCollisionDetection(keyed, ::computeHintHash, onCollision)
+}
+
+/**
+ * Generic helper that turns `(canonical key, value)` pairs into a `hash → value` map and
+ * fires [onCollision] when two distinct canonical keys land on the same hash. Re-using
+ * the same canonical key for the same hash is treated as an idempotent overwrite.
+ *
+ * Extracted from [buildPreviewByHashMap] so unit tests can inject a controlled [hash]
+ * function (e.g. one that always returns the same hash for two distinct keys) without
+ * needing real `IrSimpleFunction` instances.
+ *
+ * **Sample (collision case)**:
+ * ```kotlin
+ * val hits = mutableListOf<String>()
+ * val map = buildHashMapWithCollisionDetection(
+ *     entries = listOf("keyA" to "A", "keyB" to "B"),
+ *     hash = { "h" }, // force collision
+ *     onCollision = { _, existing, conflicting -> hits += "$existing/$conflicting" },
+ * )
+ * // map = { "h" -> "B" }, hits = ["A/B"]
+ * ```
+ */
+internal fun <V> buildHashMapWithCollisionDetection(
+    entries: List<Pair<String, V>>,
+    hash: (canonicalKey: String) -> String,
+    onCollision: (hash: String, existing: V, conflicting: V) -> Unit = { _, _, _ -> },
+): Map<String, V> = buildMap {
+    val canonicalKeyByHash = mutableMapOf<String, String>()
+    for ((canonicalKey, value) in entries) {
+        val h = hash(canonicalKey)
+        val existingKey = canonicalKeyByHash[h]
         if (existingKey != null && existingKey != canonicalKey) {
             // Two distinct canonical keys landed on the same hash = a genuine collision.
             // Re-registering the same canonical key (e.g. a file walked twice across the
             // ignore=true filter passes) is just noise, so silently overwrite.
-            val existing = getValue(hash)
-            onCollision(hash, existing, preview)
+            val existing = getValue(h)
+            onCollision(h, existing, value)
         }
-        canonicalKeyByHash[hash] = canonicalKey
-        put(hash, preview)
+        canonicalKeyByHash[h] = canonicalKey
+        put(h, value)
     }
 }
 
