@@ -17,11 +17,11 @@ public abstract interface class me/tbsten/compose/preview/lab/hints/PreviewHintM
 }
 
 public final class me/tbsten/compose/preview/lab/hints/PreviewHint_8wxhg4imKt {
-	public static final fun previewHint (Lme/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_lib_MyButtonPreview_8wxhg4im;)Lme/tbsten/compose/preview/lab/CollectedPreview;
+	public static final synthetic fun previewHint (Lme/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_lib_MyButtonPreview_8wxhg4im;)Lme/tbsten/compose/preview/lab/CollectedPreview;
 }
 
 public final class me/tbsten/compose/preview/lab/hints/PreviewHint_umm6awb4Kt {
-	public static final fun previewHint (Lme/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_lib_MyTextFieldPreview_umm6awb4;)Lme/tbsten/compose/preview/lab/CollectedPreview;
+	public static final synthetic fun previewHint (Lme/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_lib_MyTextFieldPreview_umm6awb4;)Lme/tbsten/compose/preview/lab/CollectedPreview;
 }
 
 public final class me/tbsten/compose/preview/lab/sample/lib/ComposableSingletons$MyButtonKt {

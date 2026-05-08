@@ -68,7 +68,7 @@ public abstract interface class me/tbsten/compose/preview/lab/hints/PreviewHintM
 }
 
 public final class me/tbsten/compose/preview/lab/hints/PreviewHint_iogqwxq2Kt {
-	public static final fun previewHint (Lme/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_ComposeMultiplatformWizardDefaultUIPreview_iogqwxq2;)Lme/tbsten/compose/preview/lab/CollectedPreview;
+	public static final synthetic fun previewHint (Lme/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_ComposeMultiplatformWizardDefaultUIPreview_iogqwxq2;)Lme/tbsten/compose/preview/lab/CollectedPreview;
 }
 
 public final class me/tbsten/compose/preview/lab/sample/AppActivity : androidx/activity/ComponentActivity {
