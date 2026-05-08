@@ -10,7 +10,6 @@ import io.kotest.matchers.shouldBe
 import me.tbsten.compose.preview.lab.compiler.CompilerPluginTestBase
 import me.tbsten.compose.preview.lab.compiler.isAtLeast
 import me.tbsten.compose.preview.lab.compiler.loadCollectedPreviews
-import java.io.File
 
 /**
  * Cross-module behaviour of `@ComposePreviewLabOption(ignore = true)`.
@@ -352,25 +351,3 @@ class PreviewHintIgnoreCrossModuleTest :
 private fun List<Any>.previewIds(): List<String> = map { p ->
     p::class.members.find { it.name == "id" }!!.call(p) as String
 }
-
-/**
- * Walks the lib output directory for `PreviewHint_<hash>Kt.class` facade files (the file
- * facade emitted by [PreviewHintFirGenerator.generateFunctions]). One file per per-declaration
- * hint — so we can check that ignored previews leave no facade behind.
- */
-private fun File.previewHintFacadeFiles(): List<File> = walkTopDown()
-    .filter { it.isFile && it.extension == "class" }
-    .filter {
-        it.parentFile.toRelativeString(this).replace('/', '.').replace('\\', '.') == "me.tbsten.compose.preview.lab.hints"
-    }
-    .filter { it.name.startsWith("PreviewHint_") && it.name.endsWith("Kt.class") }
-    .toList()
-
-/** Walks the lib output for `PreviewHintMarker_<sanitized_fqn>_<hash>.class` files. */
-private fun File.previewHintMarkerFiles(): List<File> = walkTopDown()
-    .filter { it.isFile && it.extension == "class" }
-    .filter {
-        it.parentFile.toRelativeString(this).replace('/', '.').replace('\\', '.') == "me.tbsten.compose.preview.lab.hints"
-    }
-    .filter { it.name.startsWith("PreviewHintMarker_") && !it.name.endsWith("Kt.class") }
-    .toList()
