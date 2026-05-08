@@ -119,10 +119,12 @@ internal class PreviewLabIrBodyFiller(
         val isAll = isCollectAllCall(delegateField)
 
         // Module-level gate: when `collectPreviewsEnabled = false` for this module the FIR
-        // hint generator was not registered, so neither this module's previews nor any
-        // dependency's hints can be discovered. Reporting an error keeps users from getting
-        // a silently-empty list at runtime — flipping the flag is almost always a mistake
-        // when paired with a `collect[All]ModulePreviews()` call site.
+        // hint generator was not registered, so this module's previews never make it onto
+        // the classpath. Discovering dependency hints is still technically possible (they
+        // already live on the classpath when `collect[All]ModulePreviews()` runs), but we
+        // intentionally treat the disabled module as "owns no preview surface" — pairing the
+        // flag with a call site is almost always a configuration mistake. Reporting an
+        // error keeps users from getting a silently-empty list at runtime.
         if (!config.collectPreviewsEnabled) {
             reportCollectPreviewsDisabledError(property, isAll)
             return
@@ -221,9 +223,10 @@ internal class PreviewLabIrBodyFiller(
         messageCollector.report(
             CompilerMessageSeverity.ERROR,
             "[ComposePreviewLab] $callName cannot be used in this module because " +
-                "`composePreviewLab.collectPreviews.enabled` is false. " +
-                "Either remove the call, or set `enabled = true` in the module's " +
-                "composePreviewLab configuration.",
+                "the `collectPreviewsEnabled` plugin option is false " +
+                "(typically set via `composePreviewLab.collectPreviews.enabled` in the Gradle DSL, " +
+                "or via the `-P plugin:...:collectPreviewsEnabled=...` compiler option in non-Gradle setups). " +
+                "Either remove the call, or re-enable the option for this module.",
             propertyLocation(property),
         )
     }

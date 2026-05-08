@@ -29,7 +29,18 @@ class ComposePreviewLabCommandLineProcessor : CommandLineProcessor {
     override fun processOption(option: AbstractCliOption, value: String, configuration: CompilerConfiguration,) {
         when (option.optionName) {
             OptionProjectRootPath -> configuration.put(KEY_PROJECT_ROOT_PATH, value)
-            OptionCollectPreviewsEnabled -> configuration.put(KEY_COLLECT_PREVIEWS_ENABLED, value.toBoolean())
+            OptionCollectPreviewsEnabled -> {
+                // Strict parse: a typo like `ture` would otherwise silently flip the module
+                // into the disabled state, where every collect[All]ModulePreviews() call site
+                // becomes a compile-time error. Failing fast turns the typo into an
+                // option-processing diagnostic the user can act on.
+                val parsed = value.toBooleanStrictOrNull()
+                    ?: error(
+                        "Invalid value for $OptionCollectPreviewsEnabled: \"$value\". " +
+                            "Expected exactly \"true\" or \"false\".",
+                    )
+                configuration.put(KEY_COLLECT_PREVIEWS_ENABLED, parsed)
+            }
             else -> error("Unknown option: ${option.optionName}")
         }
     }

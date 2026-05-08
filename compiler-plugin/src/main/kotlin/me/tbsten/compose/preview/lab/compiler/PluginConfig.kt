@@ -3,11 +3,11 @@ package me.tbsten.compose.preview.lab.compiler
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.CompilerConfigurationKey
 
-val KEY_PROJECT_ROOT_PATH = CompilerConfigurationKey<String>(
+internal val KEY_PROJECT_ROOT_PATH = CompilerConfigurationKey<String>(
     "composePreviewLab.projectRootPath",
 )
 
-val KEY_COLLECT_PREVIEWS_ENABLED = CompilerConfigurationKey<Boolean>(
+internal val KEY_COLLECT_PREVIEWS_ENABLED = CompilerConfigurationKey<Boolean>(
     "composePreviewLab.collectPreviewsEnabled",
 )
 
