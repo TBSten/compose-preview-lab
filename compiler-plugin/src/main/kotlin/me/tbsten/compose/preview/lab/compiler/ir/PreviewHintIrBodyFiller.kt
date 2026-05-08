@@ -59,11 +59,13 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
  *   unambiguous.
  * - **`CollectedPreview` construction**: reuses the existing
  *   [CollectedPreviewIrBuilder.buildCollectedPreviewCall] unchanged.
- * - **`@ComposePreviewLabOption(ignore = true)` handling**: hint emission runs even for
- *   ignore=true, so the IR side likewise walks every `@Preview` in the moduleFragment
- *   (rather than the filtered `previews`) when building `PreviewFunctionInfo`. Otherwise
- *   the ignore=true hint is left orphan (body=null), which trips a JVM backend assert.
- *   Hiding ignored previews on the cross-module side is tracked as a separate follow-up.
+ * - **`@ComposePreviewLabOption(ignore = true)` handling**: the FIR generator filters
+ *   ignored previews out *before* emitting any hint declaration, so the IR-side body
+ *   filler does the same — `previewsByHash` is built from the filtered `previews` list,
+ *   and the few hint stubs that exist after the FIR pass are guaranteed to have a
+ *   matching entry. This also keeps ignored previews out of the hash collision check
+ *   (avoiding false positives between an ignored preview and an emitted preview that
+ *   share the same truncated SHA-256 hash).
  */
 internal class PreviewHintIrBodyFiller(
     private val pluginContext: IrPluginContext,
@@ -144,10 +146,12 @@ internal class PreviewHintIrBodyFiller(
  * Walks every `@Preview`-annotated top-level function in the module fragment and builds a
  * map from canonical-key hash to [PreviewFunctionInfo].
  *
- * Includes `ignore = true` previews so that every hint declaration emitted by
- * [PreviewHintFirGenerator] can have its body filled. The ignore filter is meant to be
- * applied on the consumer side (a follow-up tracks not exposing ignored previews
- * cross-module).
+ * Callers should pass an already-filtered `previews` list (i.e. with
+ * `@ComposePreviewLabOption(ignore = true)` removed). The FIR generator filters ignored
+ * previews out before emitting any hint declaration, so this map only needs entries for
+ * the previews that have a corresponding emitted hint stub. Including ignored previews
+ * here would also bloat the hash-collision check (raising the chance of a false-positive
+ * ERROR between an ignored preview and an emitted preview that share a truncated hash).
  *
  * The canonical key includes both `sourceFqn` and the parameter-type FQNs so that
  * same-name overloads (`fun MyButton()` vs `fun MyButton(text: String)`) are
@@ -165,8 +169,8 @@ internal class PreviewHintIrBodyFiller(
  * ERROR.
  *
  * Detection compares **canonical keys directly**, not FQN, so same-name overloads cannot
- * be misclassified. Re-registering the same canonical key (e.g. two passes once before
- * and once after the ignore=true filter) is not a collision and silently overwrites.
+ * be misclassified. Re-registering the same canonical key is not a collision and silently
+ * overwrites.
  */
 internal fun buildPreviewByHashMap(
     previews: List<PreviewFunctionInfo>,

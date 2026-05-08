@@ -63,6 +63,25 @@ internal class PreviewLabFirBuiltIns(session: FirSession, val config: PluginConf
         /** Android `@Preview` annotation FQN (used for predicate registration). */
         val ANDROID_PREVIEW_ANNOTATION_FQN: FqName =
             FqName("androidx.compose.ui.tooling.preview.Preview")
+
+        /**
+         * `me.tbsten.compose.preview.lab.ComposePreviewLabOption` FQN — used both for FIR
+         * `LookupPredicate` registration (eagerly resolves the annotation type ref) and as
+         * the source of [COMPOSE_PREVIEW_LAB_OPTION_CLASS_ID].
+         */
+        val COMPOSE_PREVIEW_LAB_OPTION_FQN: FqName =
+            FqName("me.tbsten.compose.preview.lab.ComposePreviewLabOption")
+
+        /**
+         * `me.tbsten.compose.preview.lab.ComposePreviewLabOption` `ClassId` — looked up on
+         * each `@Preview` symbol to read user-supplied options (e.g. `ignore = true`) during
+         * hint emission.
+         */
+        val COMPOSE_PREVIEW_LAB_OPTION_CLASS_ID: ClassId =
+            ClassId.topLevel(COMPOSE_PREVIEW_LAB_OPTION_FQN)
+
+        /** `@ComposePreviewLabOption(ignore = ...)` argument name. */
+        val IGNORE_NAME: Name = Name.identifier("ignore")
     }
 }
 

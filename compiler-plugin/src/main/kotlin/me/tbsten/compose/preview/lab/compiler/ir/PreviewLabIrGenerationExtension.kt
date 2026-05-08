@@ -50,11 +50,16 @@ class PreviewLabIrGenerationExtension(
         // `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` emitted by the
         // FIR generator (the function name is fixed to `previewHint`; the hash is
         // recovered from the marker class short name).
-        // Hint emission does not filter `ignore=true`, so the lookup used by the body
-        // filler must include ignored previews too.
+        //
+        // Since the FIR generator skips `@ComposePreviewLabOption(ignore = true)` previews
+        // before emitting any hint declaration, we must NOT include ignored previews in the
+        // hash → preview map either: doing so would let an ignored preview's hash sit in
+        // the map without a corresponding emitted hint, raising the chance that a future
+        // emitted preview's truncated SHA-256 hash collides with an ignored preview's hash
+        // and produces a false-positive collision ERROR. `collectPreviews` already excludes
+        // ignored entries.
         if (compatContext.supportsKlibCrossModuleHint()) {
-            val previewsIncludingIgnored = collectPreviewsIncludingIgnored(moduleFragment)
-            val previewsByHash = buildPreviewByHashMap(previewsIncludingIgnored) { hash, existing, conflicting ->
+            val previewsByHash = buildPreviewByHashMap(previews) { hash, existing, conflicting ->
                 val existingSignature = existing.function.canonicalSignatureForReport()
                 val conflictingSignature = conflicting.function.canonicalSignatureForReport()
                 val message = "[ComposePreviewLab] hint hash collision detected on `$hash`. " +
@@ -94,23 +99,6 @@ class PreviewLabIrGenerationExtension(
             }
         }
         return result.sortedBy { it.displayName }
-    }
-
-    /**
-     * Collects every `@Preview`-annotated function including those marked
-     * `@ComposePreviewLabOption(ignore = true)`. The per-declaration hint body filler must
-     * fill the body even for `ignore = true`, so it uses this function instead of the
-     * filtered [collectPreviews].
-     */
-    private fun collectPreviewsIncludingIgnored(moduleFragment: IrModuleFragment): List<PreviewFunctionInfo> {
-        val result = mutableListOf<PreviewFunctionInfo>()
-        for (file in moduleFragment.files) {
-            for (decl in file.declarations) {
-                if (decl !is IrSimpleFunction) continue
-                buildPreviewInfoOrNull(decl, includeIgnored = true)?.let { result.add(it) }
-            }
-        }
-        return result
     }
 
     /**
