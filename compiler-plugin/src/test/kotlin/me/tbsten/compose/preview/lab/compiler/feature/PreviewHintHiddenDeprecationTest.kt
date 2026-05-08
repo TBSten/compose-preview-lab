@@ -88,7 +88,7 @@ class PreviewHintHiddenDeprecationTest :
                 assertSoftly {
                     facadeNames.forEach { fqn ->
                         val facade = result.classLoader.loadClass(fqn)
-                        val previewHint = facade.declaredMethods.single { it.name == "previewHint" }
+                        val previewHint = facade.declaredMethods.single { it.name == "previewHint_default" }
                         previewHint.isAnnotationPresent(Deprecated::class.java) shouldBe true
                     }
                 }
@@ -114,7 +114,7 @@ class PreviewHintHiddenDeprecationTest :
 
                 val markerCls = result.classLoader.loadClass(markerName)
                 val facadeCls = result.classLoader.loadClass(facadeName)
-                val previewHint = facadeCls.declaredMethods.single { it.name == "previewHint" }
+                val previewHint = facadeCls.declaredMethods.single { it.name == "previewHint_default" }
 
                 assertSoftly {
                     markerCls.isAnnotationPresent(Deprecated::class.java) shouldBe true

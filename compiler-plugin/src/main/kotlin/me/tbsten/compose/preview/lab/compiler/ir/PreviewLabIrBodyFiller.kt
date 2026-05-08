@@ -4,6 +4,7 @@ package me.tbsten.compose.preview.lab.compiler.ir
 
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
+import me.tbsten.compose.preview.lab.compiler.fir.PreviewLabFirBuiltIns
 import me.tbsten.compose.preview.lab.compiler.ir.util.declarationLocation
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
@@ -11,8 +12,10 @@ import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
-import org.jetbrains.kotlin.ir.declarations.IrField
 import org.jetbrains.kotlin.ir.declarations.IrProperty
+import org.jetbrains.kotlin.ir.expressions.IrCall
+import org.jetbrains.kotlin.ir.expressions.IrConst
+import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
@@ -115,7 +118,8 @@ internal class PreviewLabIrBodyFiller(
      */
     private fun replaceCollectPreviewsProperty(property: IrProperty) {
         val delegateField = property.backingField ?: return
-        val isAll = isCollectAllCall(delegateField)
+        val collectCall = delegateField.initializer?.expression as? IrCall ?: return
+        val isAll = collectCall.symbol.owner.kotlinFqName == collectAllModulePreviewsFq
 
         // Module-level gate: when `collectPreviewsEnabled = false` for this module the FIR
         // hint generator was not registered, so no marker interface or `previewHint(...)`
@@ -140,6 +144,22 @@ internal class PreviewLabIrBodyFiller(
             return
         }
 
+        val callName = if (isAll) "collectAllModulePreviews" else "collectModulePreviews"
+        val scope = when (val resolution = resolveScopeArg(collectCall)) {
+            is ScopeArgResult.Default -> PreviewLabFirBuiltIns.DefaultCollectScope
+            is ScopeArgResult.Literal -> {
+                if (!PreviewLabFirBuiltIns.SCOPE_VALIDATION_REGEX.matches(resolution.value)) {
+                    reportInvalidScopeError(property, callName, resolution.value)
+                    return
+                }
+                resolution.value
+            }
+            is ScopeArgResult.NonLiteral -> {
+                reportNonLiteralScopeError(property, callName)
+                return
+            }
+        }
+
         val builder = DeclarationIrBuilder(pluginContext, property.symbol)
 
         // The synthetic lambda needs an IrFunction as its parent.
@@ -154,9 +174,9 @@ internal class PreviewLabIrBodyFiller(
                     " with a getter, not a backing field",
             )
 
-        val thisModulePreviews = irBuilder.buildPreviewsListExpr(builder, lambdaParent)
+        val thisModulePreviews = irBuilder.buildPreviewsListExpr(builder, lambdaParent, scope)
         val previewListExpr = if (isAll) {
-            irBuilder.buildConcatenatedPreviewsExpr(builder, thisModulePreviews)
+            irBuilder.buildConcatenatedPreviewsExpr(builder, thisModulePreviews, scope)
         } else {
             thisModulePreviews
         }
@@ -233,12 +253,73 @@ internal class PreviewLabIrBodyFiller(
     }
 
     /**
-     * Checks whether the delegate field was initialized with `collectAllModulePreviews()`
-     * (as opposed to `collectModulePreviews()`).
+     * Reports the strict-literal-only error for `collect[All]ModulePreviews(scope = ...)`.
+     *
+     * **Triggered by**: a `scope` argument that is not an `IrConst<String>` by the time the
+     * IR generation extension sees it — for example a non-`const` `val`, a string
+     * concatenation (`"a" + "b"`), or any other expression that produces an `IrCall` /
+     * `IrStringConcatenation`. References to a `const val` are **accepted**: they are
+     * inlined to an `IrConst<String>` before our pass runs, so they are indistinguishable
+     * from a hand-written literal.
      */
-    private fun isCollectAllCall(delegateField: IrField): Boolean {
-        val initializer = delegateField.initializer?.expression ?: return false
-        if (initializer !is org.jetbrains.kotlin.ir.expressions.IrCall) return false
-        return initializer.symbol.owner.kotlinFqName == collectAllModulePreviewsFq
+    private fun reportNonLiteralScopeError(property: IrProperty, callName: String) {
+        messageCollector.report(
+            CompilerMessageSeverity.ERROR,
+            "[ComposePreviewLab] $callName(scope = ...) accepts only a compile-time string " +
+                "constant — an inline string literal or a `const val` reference. Non-`const` " +
+                "vals, string concatenations, and other expressions are reported as errors " +
+                "because the value is embedded into the synthetic hint function name at " +
+                "IR-pass time.",
+            declarationLocation(property),
+        )
+    }
+
+    /**
+     * Reports the scope-shape error for `collect[All]ModulePreviews(scope = "...")` whose
+     * literal value falls outside `[A-Za-z0-9_]+`.
+     *
+     * **Triggered by**: a literal scope that contains spaces, hyphens, dots, or any other
+     * character that cannot appear in a Kotlin identifier. Validating up front lets us
+     * surface the mistake as a clear `MessageCollector` error instead of letting the
+     * synthetic identifier accidentally land on an unrelated function name.
+     */
+    private fun reportInvalidScopeError(property: IrProperty, callName: String, scope: String) {
+        messageCollector.report(
+            CompilerMessageSeverity.ERROR,
+            "[ComposePreviewLab] $callName(scope = \"$scope\") is not a valid scope identifier. " +
+                "Allowed characters: [A-Za-z0-9_]+ (the value is embedded into the synthetic hint " +
+                "function name).",
+            declarationLocation(property),
+        )
+    }
+
+    /**
+     * Outcome of inspecting the `scope = ...` argument of a
+     * `collect[All]ModulePreviews(...)` call site.
+     */
+    private sealed interface ScopeArgResult {
+        /** The user omitted the argument (`arguments[0] == null`); use the runtime default. */
+        data object Default : ScopeArgResult
+
+        /** The user supplied an `IrConst<String>`; the value is the chosen scope. */
+        data class Literal(val value: String) : ScopeArgResult
+
+        /** The user supplied a non-literal expression (named const, concat, ...). */
+        data class NonLiteral(val expr: IrExpression) : ScopeArgResult
+    }
+
+    /**
+     * Inspects the `scope` argument on a `collect[All]ModulePreviews(...)` IR call.
+     *
+     * `IrCall.arguments[0]` is the first regular value parameter for top-level functions;
+     * `null` means the user omitted the argument (Kotlin compiler keeps that as the
+     * sentinel for default-arg invocations all the way through to the IR pass).
+     */
+    private fun resolveScopeArg(call: IrCall): ScopeArgResult {
+        val arg = call.arguments.getOrNull(0) ?: return ScopeArgResult.Default
+        return when {
+            arg is IrConst && arg.value is String -> ScopeArgResult.Literal(arg.value as String)
+            else -> ScopeArgResult.NonLiteral(arg)
+        }
     }
 }

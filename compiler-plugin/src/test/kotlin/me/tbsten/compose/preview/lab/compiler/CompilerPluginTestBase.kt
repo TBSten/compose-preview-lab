@@ -54,8 +54,8 @@ open class CompilerPluginTestBase {
             "CollectModulePreviews.kt",
             """
             package me.tbsten.compose.preview.lab
-            fun collectModulePreviews(): PreviewExport = PreviewExport(lazy { emptyList() })
-            fun collectAllModulePreviews(): PreviewExport = PreviewExport(lazy { emptyList() })
+            fun collectModulePreviews(scope: String = "default"): PreviewExport = PreviewExport(lazy { emptyList() })
+            fun collectAllModulePreviews(scope: String = "default"): PreviewExport = PreviewExport(lazy { emptyList() })
             fun distinctPreviewsById(previews: List<CollectedPreview>): List<CollectedPreview> =
                 previews.distinctBy { it.id }
             """,

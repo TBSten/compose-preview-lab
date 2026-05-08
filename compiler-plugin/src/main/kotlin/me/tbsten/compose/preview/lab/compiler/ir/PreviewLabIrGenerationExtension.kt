@@ -15,6 +15,9 @@ import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.IrConst
+import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
+import org.jetbrains.kotlin.ir.expressions.IrExpression
+import org.jetbrains.kotlin.ir.expressions.IrVararg
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.types.classFqName
 import org.jetbrains.kotlin.ir.types.isMarkedNullable
@@ -142,7 +145,7 @@ class PreviewLabIrGenerationExtension(
         if (!func.hasAnnotationCompat(CMP_PREVIEW_FQ) && !func.hasAnnotationCompat(ANDROID_PREVIEW_FQ)) return null
 
         val optionAnno = func.getAnnotationCompat(CPL_OPTION_FQ)
-        val ignore = (optionAnno?.arguments?.getOrNull(1) as? IrConst)?.value as? Boolean ?: false
+        val ignore = (optionAnno?.findArgumentByName("ignore") as? IrConst)?.value as? Boolean ?: false
         if (ignore && !includeIgnored) return null
 
         val packageName = func.file.packageFqName.asString()
@@ -155,11 +158,12 @@ class PreviewLabIrGenerationExtension(
             .replace("{{qualifiedName}}", qualifiedName)
 
         val displayName = resolve(
-            (optionAnno?.arguments?.getOrNull(0) as? IrConst)?.value as? String ?: "{{qualifiedName}}",
+            (optionAnno?.findArgumentByName("displayName") as? IrConst)?.value as? String ?: "{{qualifiedName}}",
         )
         val id = resolve(
-            (optionAnno?.arguments?.getOrNull(2) as? IrConst)?.value as? String ?: "{{qualifiedName}}",
+            (optionAnno?.findArgumentByName("id") as? IrConst)?.value as? String ?: "{{qualifiedName}}",
         )
+        val scopes = readScopesArgument(optionAnno?.findArgumentByName("collectScope"))
 
         val fileEntry = func.file.fileEntry
         val rawPath = fileEntry.name
@@ -173,9 +177,93 @@ class PreviewLabIrGenerationExtension(
 
         val (code, kdoc) = extractSourceText(func)
 
-        return PreviewFunctionInfo(func, id, displayName, filePath, startLineNumber, endLineNumber, code, kdoc)
+        return PreviewFunctionInfo(func, id, displayName, filePath, startLineNumber, endLineNumber, code, kdoc, scopes)
     }
 }
+
+/**
+ * Looks up a named argument off an `@ComposePreviewLabOption(...)` IR annotation by
+ * walking the annotation constructor's value parameters and using the matching index
+ * into [IrConstructorCall.arguments]. Prefer this over `arguments.getOrNull(<int>)` so
+ * that adding / reordering annotation parameters does not silently shift the readout
+ * onto an unrelated value.
+ *
+ * **Sample call → result**:
+ * ```kotlin
+ * // @ComposePreviewLabOption(displayName = "X", ignore = false, id = "Y", collectScope = ["d"])
+ * optionAnno.findArgumentByName("collectScope")  // → IrVararg [IrConst("d")]
+ * optionAnno.findArgumentByName("ignore")        // → IrConst(false)
+ *
+ * // @ComposePreviewLabOption(displayName = "X")  ← collectScope omitted, default applies
+ * optionAnno.findArgumentByName("collectScope")  // → IrVararg [IrConst("default")]
+ *                                                //   (the annotation's declared default)
+ *
+ * optionAnno.findArgumentByName("missing")       // → null  (no such parameter)
+ * ```
+ *
+ * **`arguments[i]` is `null` for omitted-with-default arguments**: when the call site
+ * leaves a parameter unspecified, the slot in `arguments` is `null` rather than being
+ * pre-filled with the declared default. For annotation classes Kotlin always forces
+ * default-value IR conversion (`forcedDefaultValueConversion = true` in
+ * `Fir2IrConverter.createIrParameter`, plus deserialization via
+ * `annotationParameterDefaultValue` since 2.2.0) so `parameters[i].defaultValue?.expression`
+ * is reliably populated for both source-side and binary-loaded annotations. We fall back
+ * to it here so callers always observe the declared default IR — without this fallback,
+ * the IR side would have to hard-code a duplicate default per parameter (fragile: any
+ * annotation default change would silently disagree with the compiler-plugin readout).
+ *
+ * Returns `null` only when the annotation does not declare a parameter with [name].
+ */
+private fun IrConstructorCall.findArgumentByName(name: String): IrExpression? {
+    val parameters = symbol.owner.parameters
+    val index = parameters.indexOfFirst { it.kind == IrParameterKind.Regular && it.name.asString() == name }
+    if (index < 0) return null
+    return arguments.getOrNull(index) ?: parameters[index].defaultValue?.expression
+}
+
+/**
+ * Reads the `Array<String>` annotation argument for `collectScope` off the IR
+ * representation of `@ComposePreviewLabOption(collectScope = [...])`.
+ *
+ * **Sample call → result**:
+ * ```kotlin
+ * // @ComposePreviewLabOption(collectScope = ["design", "showcase"])
+ * readScopesArgument(<IrVararg of IrConst("design"), IrConst("showcase")>)
+ *   → ["design", "showcase"]
+ *
+ * // No annotation, or argument absent
+ * readScopesArgument(null) → ["default"]
+ * ```
+ *
+ * Annotation `Array<String>` arguments arrive as `IrVararg` whose elements are
+ * `IrConst<String>` — both for source-side `@ComposePreviewLabOption(collectScope = [...])`
+ * usages (`Fir2IrVisitor.convertToArrayLiteral`) and for usages read from compiled
+ * dependencies (`IrBodyDeserializer` for KLIB / .class). This was empirically verified by
+ * gating the previous IrConst / `else` fallback branches with `error(...)` and re-running
+ * the entire `:compiler-plugin:test` suite (multi-Kotlin matrix included) — neither branch
+ * was ever hit. Anything that is not an `IrVararg` (no annotation, absent argument,
+ * synthetic IR built outside a real compilation, ...) falls back to the `["default"]`
+ * default rather than crashing the build.
+ */
+private fun readScopesArgument(arg: IrExpression?): List<String> {
+    // Note: `Array<String>` annotation arguments always lower to `IrVararg` (both for
+    // source-side and dependency-binary-side annotations). `IrConst` only carries
+    // primitive values, so it can never hold an `Array<String>` directly — the vararg
+    // shape is the only one we need to recognise here. Verified empirically by gating
+    // an `is IrConst -> error(...)` branch and re-running the entire
+    // `:compiler-plugin:test` matrix without a single hit.
+    val vararg = arg as? IrVararg ?: return listOf(DefaultCollectScope)
+    return vararg.elements
+        .mapNotNull { (it as? IrConst)?.value as? String }
+        .ifEmpty { listOf(DefaultCollectScope) }
+}
+
+/**
+ * Mirror of `PreviewLabFirBuiltIns.DefaultCollectScope` for the IR side. The two layers
+ * agree on `"default"` so previews without an explicit scope flow through the corresponding
+ * default-scope `collect[All]ModulePreviews()` call automatically.
+ */
+private const val DefaultCollectScope: String = "default"
 
 /**
  * Builds a human-readable signature in the form `<sourceFqn>(<paramType1>, <paramType2>, ...)`.

@@ -5,6 +5,9 @@
 package me.tbsten.compose.preview.lab.compiler.fir
 
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
+import org.jetbrains.kotlin.cli.common.messages.CompilerMessageLocation
+import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
+import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.descriptors.Visibilities
@@ -35,10 +38,10 @@ import org.jetbrains.kotlin.name.Name
 
 /**
  * Per-declaration hint generator. For each `@Preview` it emits (1) a marker interface and
- * (2) a hint function into the `me.tbsten.compose.preview.lab.hints` package.
+ * (2) a scope-suffixed hint function into the `me.tbsten.compose.preview.lab.hints` package.
  *
  * **Generated Kotlin (semantically equivalent), per `@Preview`**
- * (for `com.example.app.MyButtonPreview`):
+ * (for `com.example.app.MyButtonPreview` with the default scope):
  *
  * ```kotlin
  * // file: PreviewHint_<hash>.kt
@@ -46,7 +49,7 @@ import org.jetbrains.kotlin.name.Name
  *
  * public interface PreviewHintMarker_com_example_app_MyButtonPreview_<hash>
  *
- * public fun previewHint(value: PreviewHintMarker_com_example_app_MyButtonPreview_<hash>?): CollectedPreview =
+ * public fun previewHint_default(value: PreviewHintMarker_com_example_app_MyButtonPreview_<hash>?): CollectedPreview =
  *     error("Stub! Filled by IR.")
  * ```
  *
@@ -56,16 +59,17 @@ import org.jetbrains.kotlin.name.Name
  *
  * # Design points
  *
- * ## Fixed hint name (`previewHint`)
+ * ## Hint function name encodes the scope
  *
  * Cross-module discovery is implemented via
- * `referenceFunctions(CallableId(HINT_PACKAGE, "previewHint"))`. The K2 package-walk APIs
- * do not load external-module declarations on demand, so the combination of a fixed name
- * plus `referenceFunctions` is the de-facto pattern.
+ * `referenceFunctions(CallableId(HINT_PACKAGE, "previewHint_<scope>"))`, so the IR side can
+ * filter by scope without inspecting each hint individually. The K2 package-walk APIs do
+ * not load external-module declarations on demand, so the combination of a known per-scope
+ * callable name plus `referenceFunctions` is the de-facto pattern.
  *
  * ```kotlin
- * // consumer side (IR pass)
- * referenceFunctions(CallableId(HINT_PACKAGE, "previewHint"))
+ * // consumer side (IR pass), scope = "design"
+ * referenceFunctions(CallableId(HINT_PACKAGE, "previewHint_design"))
  *     .filter { it.owner.isFromExternalModule() }
  *     .forEach { ... } // call each hint
  * ```
@@ -73,8 +77,8 @@ import org.jetbrains.kotlin.name.Name
  * ## Marker interface for IdSignature disambiguation
  *
  * The KLIB linker derives an IdSignature from `(name, parameterTypes)`, so to disambiguate
- * fixed-name hints the parameter type must be unique per `@Preview`. The marker is an
- * **interface** with `ABSTRACT` modality (Konan-compatible and avoids Compose's
+ * scope-suffixed hints the parameter type must still be unique per `@Preview`. The marker
+ * is an **interface** with `ABSTRACT` modality (Konan-compatible and avoids Compose's
  * `$stableprop` synthesis).
  *
  * ## Marker / hint function name hash
@@ -101,8 +105,11 @@ import org.jetbrains.kotlin.name.Name
  * [ContributionHintFirGenerator](https://github.com/ZacSweers/metro/blob/main/compiler/src/main/kotlin/dev/zacsweers/metro/compiler/fir/generators/ContributionHintFirGenerator.kt),
  * combined with the fixed-name discovery approach of the legacy module-aggregation hint.
  */
-internal class PreviewHintFirGenerator(session: FirSession, private val compat: CompatContext,) :
-    FirDeclarationGenerationExtension(session) {
+internal class PreviewHintFirGenerator(
+    session: FirSession,
+    private val compat: CompatContext,
+    private val messageCollector: MessageCollector = MessageCollector.NONE,
+) : FirDeclarationGenerationExtension(session) {
 
     /**
      * Predicate that locates the `@Preview` functions to generate hints for. Targets both
@@ -142,6 +149,25 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
         hintEntries.associate { it.markerShortName to it.hash }
     }
 
+    /**
+     * Pre-computed `previewHint_<scope>` callable id → matching entries lookup, built from
+     * [hintEntries]. Replaces the per-call early-return chain in [generateFunctions]
+     * (`packageName == HINT_PACKAGE` + `callableName.startsWith(PreviewHintFunctionPrefix)`
+     * + `entry.scopes` walk) with a single `Map.get` — the framework only calls us back
+     * for the callable ids we returned from [getTopLevelCallableIds], and any unexpected
+     * id surfaces as `null` here, so the lookup itself is the predicate.
+     */
+    private val entriesByHintCallableId: Map<CallableId, List<HintEntry>> by lazy {
+        buildMap<CallableId, MutableList<HintEntry>> {
+            hintEntries.forEach { entry ->
+                entry.scopes.forEach { scope ->
+                    val callableId = PreviewLabFirBuiltIns.hintFunctionCallableId(scope)
+                    getOrPut(callableId) { mutableListOf() }.add(entry)
+                }
+            }
+        }
+    }
+
     override fun FirDeclarationPredicateRegistrar.registerPredicates() {
         register(previewPredicate)
         register(optionPredicate)
@@ -151,12 +177,15 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
         ClassId(PreviewLabFirBuiltIns.HINT_PACKAGE, Name.identifier(entry.markerShortName))
     }
 
-    override fun getTopLevelCallableIds(): Set<CallableId> = if (hintEntries.isEmpty()) {
-        emptySet()
-    } else {
-        // The hint function name is fixed (`previewHint`); the marker class parameter
-        // disambiguates the IdSignature.
-        setOf(PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID)
+    override fun getTopLevelCallableIds(): Set<CallableId> {
+        if (hintEntries.isEmpty()) return emptySet()
+        // One callable id per distinct scope across every entry. The marker class parameter
+        // still makes the IdSignature unique per `@Preview`, so multiple hints (whether from
+        // different previews or from the same preview registered into multiple scopes) can
+        // share the same scope-suffixed callable name without colliding.
+        return hintEntries.flatMapTo(mutableSetOf()) { entry ->
+            entry.scopes.map { PreviewLabFirBuiltIns.hintFunctionCallableId(it) }
+        }
     }
 
     override fun hasPackage(packageFqName: FqName): Boolean = packageFqName == PreviewLabFirBuiltIns.HINT_PACKAGE
@@ -207,14 +236,18 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
     /**
      * Generates the hint function stub.
      *
-     * **Emitted Kotlin (semantically equivalent), per hash**:
+     * **Emitted Kotlin (semantically equivalent), per hash + scope**:
      * ```kotlin
-     * public fun previewHint(value: PreviewHintMarker_<sanitized_fqn>_<hash>?): CollectedPreview
+     * public fun previewHint_<scope>(value: PreviewHintMarker_<sanitized_fqn>_<hash>?): CollectedPreview
      * ```
      *
-     * The function name is fixed (`previewHint`); the marker class parameter makes the
-     * IdSignature unique per `@Preview`. Cross-module consumers can discover every hint
-     * with a single `referenceFunctions(fixed-name)` call.
+     * The function name encodes the scope (`previewHint_default` for unscoped previews;
+     * `previewHint_design` for `@ComposePreviewLabOption(collectScope = ["design"])`). Within
+     * a scope the marker class parameter still makes the IdSignature unique per `@Preview`,
+     * which lets multiple `@Preview` declarations share the same scope-suffixed name. The
+     * IR side rewrites `collectModulePreviews(scope = "design")` into a per-scope
+     * `referenceFunctions` lookup, so cross-module discovery is filtered at lookup time
+     * rather than after the fact.
      *
      * No body is emitted here (FIR cannot hold a body). The [Keys.PreviewLabHint] origin
      * is the signal that the IR side
@@ -222,15 +255,17 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
      * a body that returns the corresponding `CollectedPreview(...)` constructor call.
      */
     override fun generateFunctions(callableId: CallableId, context: MemberGenerationContext?): List<FirNamedFunctionSymbol> {
-        if (callableId != PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID) return emptyList()
-        if (hintEntries.isEmpty()) return emptyList()
+        // Unrecognised callable id → not ours to generate. The pre-computed map covers the
+        // package-name and `previewHint_*` prefix checks at construction time, so the
+        // single `null` branch here replaces three sequential early returns.
+        val matchingEntries = entriesByHintCallableId[callableId] ?: return emptyList()
 
         val collectedPreviewSymbol = session.symbolProvider
             .getClassLikeSymbolByClassId(PreviewLabFirBuiltIns.COLLECTED_PREVIEW_CLASS_ID)
             ?: return emptyList()
         val collectedPreviewType = collectedPreviewSymbol.constructType(emptyArray())
 
-        return hintEntries.map { entry ->
+        return matchingEntries.map { entry ->
             val markerClassId = ClassId(
                 PreviewLabFirBuiltIns.HINT_PACKAGE,
                 Name.identifier(entry.markerShortName),
@@ -262,18 +297,26 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
     }
 
     /**
-     * Walks the predicate and computes the hint hash plus marker class short name for each
-     * `@Preview` function.
+     * Walks the predicate and computes the hint hash, marker class short name, and
+     * collection scope for each `@Preview` function.
      *
      * **Behavior on `@ComposePreviewLabOption(ignore = true)`**: such `@Preview` symbols are
-     * filtered out *before* hint emission, so neither the marker interface nor the
-     * `previewHint` overload is generated for them. Cross-module consumers therefore cannot
-     * discover ignored previews via `referenceFunctions`. The annotation argument is read
-     * via `resolvedAnnotationsWithArguments` (lazy advance to `ANNOTATION_ARGUMENTS` phase),
-     * preferring the stdlib `getBooleanArgument` helper but falling back to a manual walk of
-     * the raw `argumentList.arguments` when the resolved name → expression mapping is empty
-     * (a state observed for inherit-classpath builds in our kctfork tests). See
-     * [isIgnoredByComposePreviewLabOption] for the readout details.
+     * filtered out *before* hint emission, so neither the marker interface nor the scope-
+     * suffixed `previewHint_<scope>` overload is generated for them. Cross-module consumers
+     * therefore cannot discover ignored previews via `referenceFunctions`. The annotation
+     * argument is read via `resolvedAnnotationsWithArguments` (lazy advance to
+     * `ANNOTATION_ARGUMENTS` phase), preferring the stdlib `getBooleanArgument` helper but
+     * falling back to a manual walk of the raw `argumentList.arguments` when the resolved
+     * name → expression mapping is empty (a state observed for inherit-classpath builds in
+     * our kctfork tests). See [isIgnoredByComposePreviewLabOption] for the readout details.
+     *
+     * **Behavior on `@ComposePreviewLabOption(collectScope = [...])`**: each scope value is
+     * read with [resolveCollectScopes] and embedded into a synthetic hint function name
+     * (`previewHint_<scope>`), one overload per element in the array. When any element
+     * does not match [PreviewLabFirBuiltIns.SCOPE_VALIDATION_REGEX] the whole entry is
+     * dropped and a `CompilerMessageSeverity.ERROR` is reported per offending element
+     * through [messageCollector] so the misconfiguration surfaces immediately rather than
+     * producing a silently empty bucket.
      *
      * Evaluated lazily the first time [getTopLevelClassIds] / [getTopLevelCallableIds] is
      * touched.
@@ -284,20 +327,154 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
             .filterIsInstance<FirNamedFunctionSymbol>()
             .filter { it.callableId.classId == null }
             .filterNot { symbol -> symbol.isIgnoredByComposePreviewLabOption() }
-            .map { symbol ->
+            .mapNotNull { symbol ->
                 val callableId = symbol.callableId
                 val packageName = callableId.packageName.asString()
                 val simpleName = callableId.callableName.asString()
                 val sourceFqn = if (packageName.isEmpty()) simpleName else "$packageName.$simpleName"
+                val scopes = resolveCollectScopes(symbol, sourceFqn) ?: return@mapNotNull null
                 val parameterTypeFqns = symbol.parameterTypeFqnsForHash()
                 val canonicalKey = buildPreviewHintCanonicalKey(sourceFqn, parameterTypeFqns)
                 val hash = computeHintHash(canonicalKey)
                 HintEntry(
                     hash = hash,
                     markerShortName = buildMarkerShortName(sourceFqn, hash),
+                    scopes = scopes,
                 )
             }
             .distinctBy { it.markerShortName }
+    }
+
+    /**
+     * Index of `collectScope` in the `@ComposePreviewLabOption(displayName, ignore, id, collectScope)`
+     * parameter list. Used by [resolveCollectScopes] when walking unnamed positional arguments —
+     * only the literal at this index is interpreted as `collectScope`, mirroring the same
+     * positional-fallback strategy as [ignoreParameterIndex].
+     */
+    private val collectScopeParameterIndex: Int = 3
+
+    /**
+     * Resolves the `@ComposePreviewLabOption(collectScope = [...])` argument for [symbol].
+     * Returns `null` (and reports a `CompilerMessageSeverity.ERROR` per offending element)
+     * when any element violates [PreviewLabFirBuiltIns.SCOPE_VALIDATION_REGEX] — invalid
+     * characters can't safely become part of a Kotlin identifier, so the whole entry is
+     * dropped to avoid emitting half-baked hint declarations.
+     *
+     * **Resolution rules**:
+     * - no `@ComposePreviewLabOption` → `[DefaultCollectScope]`
+     * - `@ComposePreviewLabOption()` (`collectScope` defaulted) → `[DefaultCollectScope]`
+     * - `@ComposePreviewLabOption(collectScope = ["design"])` → `["design"]`
+     * - `@ComposePreviewLabOption(collectScope = ["design", "showcase"])` → `["design", "showcase"]`
+     *
+     * The readout walks the raw `argumentList.arguments` because the stdlib helpers do not
+     * cover `Array<String>` annotation arguments. `FirArrayLiteral` (Kotlin 2.4+) and
+     * `FirArrayOfCall` (Kotlin 2.0–2.3) are both handled by inspecting
+     * `org.jetbrains.kotlin.fir.expressions.FirCall.arguments` reflectively — both classes
+     * expose the same `arguments: List<FirExpression>` shape, so a single loop covers
+     * every supported version.
+     */
+    private fun resolveCollectScopes(symbol: FirNamedFunctionSymbol, sourceFqn: String): List<String>? {
+        symbol.lazyResolveToPhase(FirResolvePhase.ANNOTATION_ARGUMENTS)
+        val optionAnnotation = symbol.resolvedAnnotationsWithArguments
+            .firstOrNull { it.toAnnotationClassIdSafe(session) == PreviewLabFirBuiltIns.COMPOSE_PREVIEW_LAB_OPTION_CLASS_ID }
+            ?: return listOf(PreviewLabFirBuiltIns.DefaultCollectScope)
+
+        val scopes = optionAnnotation.readCollectScopesFromRawArguments()
+            ?: listOf(PreviewLabFirBuiltIns.DefaultCollectScope)
+
+        if (scopes.isEmpty()) return listOf(PreviewLabFirBuiltIns.DefaultCollectScope)
+
+        val invalid = scopes.filterNot { PreviewLabFirBuiltIns.SCOPE_VALIDATION_REGEX.matches(it) }
+        if (invalid.isNotEmpty()) {
+            val location = symbol.compilerMessageLocation()
+            invalid.forEach { bad ->
+                messageCollector.report(
+                    CompilerMessageSeverity.ERROR,
+                    "[ComposePreviewLab] @ComposePreviewLabOption(collectScope = [..., \"$bad\", ...]) on " +
+                        "$sourceFqn contains a value that is not a valid scope identifier. Allowed " +
+                        "characters: [A-Za-z0-9_]+ (each value is embedded into the synthetic hint " +
+                        "function name).",
+                    location,
+                )
+            }
+            return null
+        }
+        return scopes.distinct()
+    }
+
+    /**
+     * Builds a `CompilerMessageLocation` pointing at the FIR symbol's declaration site so
+     * that `MessageCollector.report` produces a clickable location in IDE / CI logs.
+     *
+     * Returns `null` (which `MessageCollector` treats as "no location available") when the
+     * symbol has no PSI-backed source — for example synthetic FIR built from a light tree
+     * whose `KtPsiSourceElement` is unavailable. Line / column are derived by counting
+     * newlines up to `startOffset` because `KtSourceElement` does not expose them
+     * directly; the count is bounded to the file text length to be safe.
+     */
+    private fun FirNamedFunctionSymbol.compilerMessageLocation(): CompilerMessageLocation? {
+        val source = source ?: return null
+        val psi = (source as? org.jetbrains.kotlin.KtPsiSourceElement)?.psi ?: return null
+        val containingFile = psi.containingFile ?: return null
+        val path = containingFile.virtualFile?.path ?: containingFile.name
+        val text = containingFile.text ?: return null
+        val safeOffset = source.startOffset.coerceIn(0, text.length)
+        val before = text.substring(0, safeOffset)
+        val line = before.count { it == '\n' } + 1
+        val lastNewline = before.lastIndexOf('\n')
+        val column = if (lastNewline >= 0) safeOffset - lastNewline else safeOffset + 1
+        return CompilerMessageLocation.create(path, line, column, null)
+    }
+
+    /**
+     * Manual fallback that reads the `Array<String>` `collectScope` argument from the raw
+     * `argumentList.arguments` of the FIR annotation. Accepts:
+     *
+     * - `(collectScope = ["design"])` — `FirArrayLiteral` / `FirArrayOfCall` named.
+     * - `("X", false, "id", ["design"])` — positional array at [collectScopeParameterIndex].
+     * - `(collectScope = "design")` — defensive single-string fallback for callers that
+     *   were compiled against a pre-Array binary baseline.
+     */
+    private fun org.jetbrains.kotlin.fir.expressions.FirAnnotation.readCollectScopesFromRawArguments(): List<String>? {
+        val annotationCall = this as? org.jetbrains.kotlin.fir.expressions.FirAnnotationCall ?: return null
+        for ((argumentIndex, argument) in annotationCall.argumentList.arguments.withIndex()) {
+            val (argumentName, argumentExpression) = when (argument) {
+                is org.jetbrains.kotlin.fir.expressions.FirNamedArgumentExpression ->
+                    argument.name to argument.expression
+                else -> null to argument
+            }
+            val isCollectScopeArgument = when {
+                argumentName == PreviewLabFirBuiltIns.COLLECT_SCOPE_NAME -> true
+                argumentName != null -> false
+                else -> argumentIndex == collectScopeParameterIndex
+            }
+            if (!isCollectScopeArgument) continue
+
+            // Vararg form: `Array<String>` annotation values arrive on this code path
+            // when the annotation is read from a compiled binary, where the elements are
+            // packed into a `FirVarargArgumentsExpression`.
+            (argumentExpression as? org.jetbrains.kotlin.fir.expressions.FirVarargArgumentsExpression)
+                ?.let { vararg ->
+                    return vararg.arguments.mapNotNull {
+                        (it as? org.jetbrains.kotlin.fir.expressions.FirLiteralExpression)?.value as? String
+                    }
+                }
+
+            // Array literal form: `["a", "b"]` written directly in source surfaces as a
+            // `FirCall` (specifically `FirCollectionLiteral`) whose `argumentList.arguments`
+            // are the element expressions.
+            (argumentExpression as? org.jetbrains.kotlin.fir.expressions.FirCall)?.let { call ->
+                return call.argumentList.arguments.mapNotNull {
+                    (it as? org.jetbrains.kotlin.fir.expressions.FirLiteralExpression)?.value as? String
+                }
+            }
+
+            // Single-string form (compatibility with pre-Array binaries).
+            (argumentExpression as? org.jetbrains.kotlin.fir.expressions.FirLiteralExpression)?.let { literal ->
+                return (literal.value as? String)?.let(::listOf)
+            }
+        }
+        return null
     }
 
     /**
@@ -412,11 +589,17 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
         }
     }
 
-    /** Metadata for the marker / hint function pair generated for one `@Preview`. */
+    /** Metadata for the marker / hint function pair(s) generated for one `@Preview`. */
     private data class HintEntry(
         /** Canonical-key sha256 truncated to 8 base-36 chars (`computeHintHash` output). */
         val hash: String,
         /** Marker interface short name `PreviewHintMarker_<sanitized_fqn>_<hash>`. */
         val markerShortName: String,
+        /**
+         * Collection scopes this preview participates in. One marker class is emitted, and
+         * one `previewHint_<scope>` overload is emitted per element. `["default"]` when no
+         * `@ComposePreviewLabOption(collectScope = [...])` is present.
+         */
+        val scopes: List<String>,
     )
 }

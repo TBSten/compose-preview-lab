@@ -16,6 +16,7 @@ package me.tbsten.compose.preview.lab
  * Example — single-module preview collection:
  * ```kotlin
  * val myPreviews by collectModulePreviews()
+ * val buttonPreviews by collectModulePreviews(scope = "buttons")
  * ```
  *
  * Example — used in a library module with public visibility:
@@ -24,15 +25,29 @@ package me.tbsten.compose.preview.lab
  * val uiLibPreviews by collectModulePreviews()
  * ```
  *
+ * @param scope The collection scope to draw from. Only previews annotated with the matching
+ * `@ComposePreviewLabOption(collectScope = ["..."])` end up in the result; previews without an
+ * explicit scope use `"default"`. The argument must reach the compiler plugin's IR pass as a
+ * compile-time string constant — an inline string literal or a `const val` reference both
+ * work, because both end up as an `IrConst<String>` before our pass runs. Non-`const`
+ * vals, string concatenations, and other expressions that produce an `IrCall` /
+ * `IrStringConcatenation` are reported as compile errors. The resolved value must also
+ * match `[A-Za-z0-9_]+` because the plugin embeds it into the synthetic hint function name.
  * @return a [PreviewExport] delegate wrapping the collected preview list; the body is replaced by the compiler plugin
  * @see collectAllModulePreviews
  */
 @OptIn(InternalComposePreviewLabApi::class)
-public fun collectModulePreviews(): PreviewExport = PreviewExport(
+public fun collectModulePreviews(scope: String = "default"): PreviewExport = PreviewExport(
     lazy {
         error(
-            "[ComposePreviewLab] collectModulePreviews() was not replaced by the compiler plugin. " +
-                "Make sure the Compose Preview Lab compiler plugin is applied to this module.",
+            "[ComposePreviewLab] collectModulePreviews(scope = \"$scope\") was not replaced by the compiler plugin. " +
+                "Apply the Compose Preview Lab Gradle plugin to this module:\n" +
+                "  // build.gradle.kts\n" +
+                "  plugins {\n" +
+                "      id(\"me.tbsten.compose.preview.lab\")\n" +
+                "  }\n" +
+                "Then re-run the build. See https://github.com/TBSten/compose-preview-lab " +
+                "for the full setup guide.",
         )
     },
 )
@@ -64,6 +79,7 @@ public fun collectModulePreviews(): PreviewExport = PreviewExport(
  * ```kotlin
  * // app/src/commonMain/kotlin/Previews.kt
  * val appPreviews by collectAllModulePreviews()
+ * val designPreviews by collectAllModulePreviews(scope = "design")
  * ```
  *
  * Example — dependency module just applies the Gradle plugin; no `Previews.kt` file required:
@@ -75,15 +91,30 @@ public fun collectModulePreviews(): PreviewExport = PreviewExport(
  * // any @Preview function in uiLib is now picked up by upstream collectAllModulePreviews()
  * ```
  *
+ * @param scope The collection scope to draw from. Only previews annotated with the matching
+ * `@ComposePreviewLabOption(collectScope = ["..."])` end up in the result; previews without an
+ * explicit scope use `"default"`. The argument must reach the compiler plugin's IR pass as a
+ * compile-time string constant — an inline string literal or a `const val` reference both
+ * work, because both end up as an `IrConst<String>` before our pass runs. Non-`const`
+ * vals, string concatenations, and other expressions that produce an `IrCall` /
+ * `IrStringConcatenation` are reported as compile errors. The resolved value must also
+ * match `[A-Za-z0-9_]+` because the plugin embeds it into the synthetic hint function name.
  * @return a [PreviewExport] delegate wrapping the aggregated preview list; the body is replaced by the compiler plugin
  * @see collectModulePreviews
  */
 @OptIn(InternalComposePreviewLabApi::class)
-public fun collectAllModulePreviews(): PreviewExport = PreviewExport(
+public fun collectAllModulePreviews(scope: String = "default"): PreviewExport = PreviewExport(
     lazy {
         error(
-            "[ComposePreviewLab] collectAllModulePreviews() was not replaced by the compiler plugin. " +
-                "Make sure the Compose Preview Lab compiler plugin is applied to this module.",
+            "[ComposePreviewLab] collectAllModulePreviews(scope = \"$scope\") was not replaced by the compiler plugin. " +
+                "Apply the Compose Preview Lab Gradle plugin to this module **and** to every " +
+                "dependency module whose previews you want to aggregate:\n" +
+                "  // build.gradle.kts\n" +
+                "  plugins {\n" +
+                "      id(\"me.tbsten.compose.preview.lab\")\n" +
+                "  }\n" +
+                "Then re-run the build. Cross-module discovery requires Kotlin 2.3.21+. " +
+                "See https://github.com/TBSten/compose-preview-lab for the full setup guide.",
         )
     },
 )

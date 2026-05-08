@@ -60,9 +60,16 @@ internal class PreviewListIrBuilder(
 
     // ----- Preview list construction -----
 
-    /** Builds either `listOf(CollectedPreview(...), ...)` or `emptyList()`. */
-    fun buildPreviewsListExpr(builder: DeclarationIrBuilder, parent: IrDeclarationParent): IrExpression {
-        if (previews.isEmpty()) return buildEmptyListCall(builder)
+    /**
+     * Builds either `listOf(CollectedPreview(...), ...)` or `emptyList()` for the previews
+     * that participate in [scope]. A preview enters the result whenever [scope] appears
+     * anywhere in its `@ComposePreviewLabOption(collectScope = [...])` array, so the same
+     * preview can show up in multiple `collectModulePreviews(scope = "...")` call sites
+     * if it lists multiple scopes.
+     */
+    fun buildPreviewsListExpr(builder: DeclarationIrBuilder, parent: IrDeclarationParent, scope: String): IrExpression {
+        val scopedPreviews = previews.filter { scope in it.scopes }
+        if (scopedPreviews.isEmpty()) return buildEmptyListCall(builder)
 
         val listOfFun = pluginContext.referenceFunctions(
             CallableId(FqName("kotlin.collections"), Name.identifier("listOf")),
@@ -71,7 +78,7 @@ internal class PreviewListIrBuilder(
             valueParams.size == 1 && valueParams[0].varargElementType != null
         }
 
-        val elements = previews.map { previewBuilder.buildCollectedPreviewCall(it, builder, parent) }
+        val elements = scopedPreviews.map { previewBuilder.buildCollectedPreviewCall(it, builder, parent) }
 
         val vararg: IrVararg = IrVarargImpl(
             startOffset = SYNTHETIC_OFFSET,
@@ -191,19 +198,21 @@ internal class PreviewListIrBuilder(
     }
 
     /**
-     * Lazily-cached per-declaration hint functions discovered via the Metro-style hint
-     * mechanism.
+     * Lazily-cached per-declaration hint functions, keyed by collection scope.
      *
      * Each entry is an [IrSimpleFunction] with the signature
-     * `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview`. In
+     * `previewHint_<scope>(value: PreviewHintMarker_<hash>?): CollectedPreview`. In
      * [buildConcatenatedPreviewsExpr] the marker argument exists only to disambiguate the
      * IdSignature, so `null` is passed and each hint contributes one `CollectedPreview`
      * via `add(hint(null))` (1 hint = 1 `@Preview`).
      *
-     * Caching ensures the (potentially expensive) package walk in [discoverHints] runs at
-     * most once per [PreviewListIrBuilder] instance.
+     * Caching by scope ensures the (potentially expensive) package walk in [discoverHints]
+     * runs at most once per requested scope per [PreviewListIrBuilder] instance.
      */
-    private val cachedHints: List<IrSimpleFunction> by lazy { discoverHints(pluginContext, compatContext) }
+    private val cachedHintsByScope: MutableMap<String, List<IrSimpleFunction>> = mutableMapOf()
+
+    private fun hintsForScope(scope: String): List<IrSimpleFunction> =
+        cachedHintsByScope.getOrPut(scope) { discoverHints(pluginContext, compatContext, scope) }
 
     /**
      * Builds an expression that concatenates this module's previews with previews from
@@ -231,8 +240,12 @@ internal class PreviewListIrBuilder(
      * `app(all) → ui(all) → core(single)` chain would yield each `core` preview twice (once
      * via `core`'s hint, once via `ui`'s hint).
      */
-    fun buildConcatenatedPreviewsExpr(builder: DeclarationIrBuilder, thisModulePreviews: IrExpression): IrExpression {
-        val hints = cachedHints
+    fun buildConcatenatedPreviewsExpr(
+        builder: DeclarationIrBuilder,
+        thisModulePreviews: IrExpression,
+        scope: String,
+    ): IrExpression {
+        val hints = hintsForScope(scope)
         val distinctFun = distinctPreviewsByIdFun
 
         if (hints.isEmpty()) {

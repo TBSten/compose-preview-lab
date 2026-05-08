@@ -1,4 +1,5 @@
 public abstract interface annotation class me/tbsten/compose/preview/lab/ComposePreviewLabOption : java/lang/annotation/Annotation {
+	public abstract fun collectScope ()[Ljava/lang/String;
 	public abstract fun displayName ()Ljava/lang/String;
 	public abstract fun id ()Ljava/lang/String;
 	public abstract fun ignore ()Z
