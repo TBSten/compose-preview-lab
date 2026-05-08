@@ -22,14 +22,24 @@ allprojects {
 apiValidation {
     @OptIn(ExperimentalBCVApi::class)
     klib.enabled = true
-    // The compiler-plugin compat layer is implementation detail: every method on
-    // `CompatContext` is touched only by the compiler-plugin internal IR / FIR
-    // generators, never by user code. Keeping a `.api` baseline here just causes
-    // churn whenever a new SPI method is added (e.g. `getDeprecationsProviderCompat`).
+    // The compiler-plugin and its compat layers are internal compiler infrastructure,
+    // not consumer-facing API. The plugin entry point is a Gradle plugin DSL — the
+    // FIR/IR generators inside `:compiler-plugin` and the per-Kotlin-version compat
+    // implementations are bundled into a shadow jar and loaded by the Kotlin compiler
+    // via ServiceLoader. Each new Kotlin version requires a new compat-kXXX module
+    // that intentionally tracks compiler API drift, so a BCV baseline here would
+    // flag every legitimate addition as a breaking change.
     ignoredProjects.addAll(
         listOf(
             projects.dev.name,
+            projects.compilerPlugin.name,
             projects.compilerPlugin.compat.name,
+            projects.compilerPlugin.compatK210.name,
+            projects.compilerPlugin.compatK222.name,
+            projects.compilerPlugin.compatK2220.name,
+            projects.compilerPlugin.compatK230.name,
+            projects.compilerPlugin.compatK2321.name,
+            projects.compilerPlugin.compatK240Beta2.name,
         ),
     )
     nonPublicMarkers.addAll(
