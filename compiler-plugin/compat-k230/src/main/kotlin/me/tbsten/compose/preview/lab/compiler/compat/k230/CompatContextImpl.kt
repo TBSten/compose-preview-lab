@@ -1,8 +1,12 @@
 package me.tbsten.compose.preview.lab.compiler.compat.k230
 
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
+import org.jetbrains.kotlin.fir.FirAnnotationContainer
+import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.declarations.DeprecationsProvider
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirFunction
+import org.jetbrains.kotlin.fir.declarations.getDeprecationsProvider
 import org.jetbrains.kotlin.ir.builders.IrBuilderWithScope
 import org.jetbrains.kotlin.ir.builders.irCall
 import org.jetbrains.kotlin.ir.builders.irGet
@@ -92,6 +96,12 @@ public class CompatContextImpl : CompatContext {
     // Kotlin 2.3.0–2.3.20: KT-82395 (JS/Wasm IC × top-level decl gen) is still open, so the
     // FIR-based hint generator cannot run safely. The 2.3.21 patch (compat-k2321) flips this on.
     override fun supportsKlibCrossModuleHint(): Boolean = false
+
+    // 2.3.x: same `FirAnnotationContainer.getDeprecationsProvider(session)` extension as 2.1 / 2.2.
+    override fun getDeprecationsProviderCompat(
+        declaration: FirAnnotationContainer,
+        session: FirSession,
+    ): DeprecationsProvider = declaration.getDeprecationsProvider(session)
 
     public class Factory : CompatContext.Factory {
         override val minVersion: String = "2.3.0"

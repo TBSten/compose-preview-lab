@@ -22,8 +22,15 @@ allprojects {
 apiValidation {
     @OptIn(ExperimentalBCVApi::class)
     klib.enabled = true
-    ignoredProjects.add(
-        projects.dev.name,
+    // The compiler-plugin compat layer is implementation detail: every method on
+    // `CompatContext` is touched only by the compiler-plugin internal IR / FIR
+    // generators, never by user code. Keeping a `.api` baseline here just causes
+    // churn whenever a new SPI method is added (e.g. `getDeprecationsProviderCompat`).
+    ignoredProjects.addAll(
+        listOf(
+            projects.dev.name,
+            projects.compilerPlugin.compat.name,
+        ),
     )
     nonPublicMarkers.addAll(
         listOf(
