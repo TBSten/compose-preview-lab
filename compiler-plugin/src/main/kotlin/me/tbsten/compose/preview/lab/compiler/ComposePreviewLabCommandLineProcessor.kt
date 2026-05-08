@@ -2,6 +2,7 @@ package me.tbsten.compose.preview.lab.compiler
 
 import org.jetbrains.kotlin.compiler.plugin.AbstractCliOption
 import org.jetbrains.kotlin.compiler.plugin.CliOption
+import org.jetbrains.kotlin.compiler.plugin.CliOptionProcessingException
 import org.jetbrains.kotlin.compiler.plugin.CommandLineProcessor
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.jetbrains.kotlin.config.CompilerConfiguration
@@ -35,13 +36,13 @@ class ComposePreviewLabCommandLineProcessor : CommandLineProcessor {
                 // becomes a compile-time error. Failing fast turns the typo into an
                 // option-processing diagnostic the user can act on.
                 val parsed = value.toBooleanStrictOrNull()
-                    ?: error(
+                    ?: throw CliOptionProcessingException(
                         "Invalid value for $OptionCollectPreviewsEnabled: \"$value\". " +
                             "Expected exactly \"true\" or \"false\".",
                     )
                 configuration.put(KEY_COLLECT_PREVIEWS_ENABLED, parsed)
             }
-            else -> error("Unknown option: ${option.optionName}")
+            else -> throw CliOptionProcessingException("Unknown option: ${option.optionName}")
         }
     }
 
