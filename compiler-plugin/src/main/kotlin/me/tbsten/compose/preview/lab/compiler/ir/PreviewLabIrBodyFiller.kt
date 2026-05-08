@@ -4,9 +4,9 @@ package me.tbsten.compose.preview.lab.compiler.ir
 
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
+import me.tbsten.compose.preview.lab.compiler.ir.util.declarationLocation
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
-import org.jetbrains.kotlin.cli.common.messages.CompilerMessageLocation
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.ir.IrStatement
@@ -14,7 +14,6 @@ import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.declarations.IrField
 import org.jetbrains.kotlin.ir.declarations.IrProperty
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
-import org.jetbrains.kotlin.ir.util.file
 import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 import org.jetbrains.kotlin.name.FqName
@@ -119,12 +118,14 @@ internal class PreviewLabIrBodyFiller(
         val isAll = isCollectAllCall(delegateField)
 
         // Module-level gate: when `collectPreviewsEnabled = false` for this module the FIR
-        // hint generator was not registered, so this module's previews never make it onto
-        // the classpath. Discovering dependency hints is still technically possible (they
-        // already live on the classpath when `collect[All]ModulePreviews()` runs), but we
-        // intentionally treat the disabled module as "owns no preview surface" — pairing the
-        // flag with a call site is almost always a configuration mistake. Reporting an
-        // error keeps users from getting a silently-empty list at runtime.
+        // hint generator was not registered, so no marker interface or `previewHint_<scope>`
+        // overload was emitted alongside the @Preview functions. The @Preview functions
+        // themselves are still compiled and live on the classpath; what is missing is the
+        // discovery surface that `collect[All]ModulePreviews()` relies on. Dependency hints
+        // (those imported from other modules) are still technically reachable, but we
+        // intentionally treat the disabled module as "owns no preview surface" — pairing
+        // the flag with a local collect call is almost always a configuration mistake.
+        // Reporting an error keeps users from getting a silently-empty list at runtime.
         if (!config.collectPreviewsEnabled) {
             reportCollectPreviewsDisabledError(property, isAll)
             return
@@ -197,7 +198,7 @@ internal class PreviewLabIrBodyFiller(
                 "for cross-module preview aggregation. " +
                 "Either upgrade Kotlin to 2.3.21+, or use collectModulePreviews() for " +
                 "single-module collection.",
-            propertyLocation(property),
+            declarationLocation(property),
         )
     }
 
@@ -227,17 +228,8 @@ internal class PreviewLabIrBodyFiller(
                 "(typically set via `composePreviewLab.collectPreviews.enabled` in the Gradle DSL, " +
                 "or via the `-P plugin:...:collectPreviewsEnabled=...` compiler option in non-Gradle setups). " +
                 "Either remove the call, or re-enable the option for this module.",
-            propertyLocation(property),
+            declarationLocation(property),
         )
-    }
-
-    /** Resolves the source location of [property] for use in `MessageCollector` reports. */
-    private fun propertyLocation(property: IrProperty): CompilerMessageLocation? {
-        val entry = runCatching { property.file }.getOrNull()?.fileEntry ?: return null
-        val offset = property.startOffset.takeIf { it >= 0 } ?: return null
-        val line = entry.getLineNumber(offset) + 1
-        val column = entry.getColumnNumber(offset) + 1
-        return CompilerMessageLocation.create(entry.name, line, column, null)
     }
 
     /**

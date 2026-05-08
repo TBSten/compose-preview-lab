@@ -182,8 +182,8 @@ class PreviewHintEnabledFlagTest :
         }
     })
 
-private fun List<Any>.previewIds(): List<String> = map { p ->
-    p::class.members.find { it.name == "id" }!!.call(p) as String
+private fun List<Any>.previewIds(): List<String> = map { collectedPreview ->
+    collectedPreview::class.members.find { it.name == "id" }!!.call(collectedPreview) as String
 }
 
 /**
