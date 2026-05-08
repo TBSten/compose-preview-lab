@@ -145,19 +145,23 @@ internal class PreviewLabIrBodyFiller(
         }
 
         val callName = if (isAll) "collectAllModulePreviews" else "collectModulePreviews"
-        // Regex validation moved to the FIR `CHECKERS` phase
+        // Regex validation runs in the FIR `CHECKERS` phase
         // (`me.tbsten.compose.preview.lab.compiler.fir.checkers.CollectScopeCallChecker`)
-        // — by the time we get here any literal violating `[A-Za-z0-9_]+` has already
-        // been surfaced as a clickable diagnostic, so the IR side trusts whatever literal
-        // it sees. The non-literal expression check is **kept here** because at FIR
-        // analysis time we can't distinguish a `const val` reference (legal) from a plain
-        // `val` reference (illegal) — the const-folding into `IrConst<String>` only
-        // happens between FIR and IR, so the IR pass is the first place we know for sure
-        // whether the argument can be resolved at compile time.
+        // for inline string literals, but the FIR side cannot distinguish a `const val`
+        // reference from a plain `val` reference at analysis time — they both arrive as
+        // a `FirPropertyAccessExpression`. The const-folding into `IrConst<String>` only
+        // happens between FIR and IR, so the IR pass is the first place we observe the
+        // resolved-but-still-pre-checker `const val` value. We re-validate the regex here
+        // so a `private const val BAD = "has space"; collectModulePreviews(scope = BAD)`
+        // bypass would have been caught during embedding into the synthetic identifier.
         val scope = when (val resolution = resolveScopeArg(collectCall)) {
             is ScopeArgResult.Default -> config.defaultCollectScope
             is ScopeArgResult.Literal -> {
                 val rawValue = resolution.value
+                if (!PreviewLabFirBuiltIns.SCOPE_VALIDATION_REGEX.matches(rawValue)) {
+                    reportInvalidScopeError(property, callName, rawValue)
+                    return
+                }
                 // Sentinel substitution: a literal `"default"` (the
                 // `ComposePreviewLabOption.DefaultCollectScope` value) means "use the
                 // module's configured default scope" rather than the literal string.
@@ -281,6 +285,31 @@ internal class PreviewLabIrBodyFiller(
                 "vals, string concatenations, and other expressions are reported as errors " +
                 "because the value is embedded into the synthetic hint function name at " +
                 "IR-pass time.",
+            declarationLocation(property),
+        )
+    }
+
+    /**
+     * Reports the regex-violation error for a literal `collect[All]ModulePreviews(scope = ...)`
+     * value that reached IR through const-folding.
+     *
+     * The FIR `CollectScopeCallChecker` catches inline string literals
+     * (`scope = "has-hyphen"`) at analysis time, but a `const val` reference is
+     * indistinguishable from a non-`const` `val` reference at FIR time and is therefore
+     * left to the IR pass. By the time we get here the const-folded `IrConst<String>` is
+     * a hand-written-literal-equivalent, so the same regex must apply — otherwise a
+     * `private const val BAD = "has space"; collectModulePreviews(scope = BAD)` would
+     * silently bypass validation and the synthetic `previewHint_<scope>` lookup would
+     * either throw on `Name.identifier(...)` or land on an unrelated identifier.
+     */
+    private fun reportInvalidScopeError(property: IrProperty, callName: String, scope: String) {
+        messageCollector.report(
+            CompilerMessageSeverity.ERROR,
+            "[ComposePreviewLab] $callName(scope = \"$scope\") is not a valid scope " +
+                "identifier. Allowed characters: [A-Za-z0-9_]+ (the value is embedded into " +
+                "the synthetic previewHint_<scope> function name). This usually means a " +
+                "`const val` referenced as `scope = MY_CONST` evaluates to an invalid " +
+                "string at compile time.",
             declarationLocation(property),
         )
     }

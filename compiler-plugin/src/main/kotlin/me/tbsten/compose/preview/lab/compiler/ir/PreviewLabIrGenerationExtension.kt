@@ -163,7 +163,14 @@ class PreviewLabIrGenerationExtension(
         val id = resolve(
             (optionAnno?.findArgumentByName("id") as? IrConst)?.value as? String ?: "{{qualifiedName}}",
         )
-        val scopes = readScopesArgument(optionAnno?.findArgumentByName("collectScopes"))
+        // Substitute the `DefaultCollectScope` sentinel with the module's configured
+        // `defaultCollectScope` Gradle DSL value, the same way `PreviewLabIrBodyFiller`
+        // does for the *requested* scope on the call site. Without this, a module that
+        // sets `defaultCollectScope = "acme_ui"` would have its `collectModulePreviews()`
+        // resolve to `"acme_ui"` (substituted) but its unannotated previews stay pinned
+        // to `["default"]`, so the in-module filter `scope in scopes` ends up empty.
+        val rawScopes = readScopesArgument(optionAnno?.findArgumentByName("collectScopes"))
+        val scopes = rawScopes.map { if (it == DefaultCollectScope) config.defaultCollectScope else it }
 
         val fileEntry = func.file.fileEntry
         val rawPath = fileEntry.name

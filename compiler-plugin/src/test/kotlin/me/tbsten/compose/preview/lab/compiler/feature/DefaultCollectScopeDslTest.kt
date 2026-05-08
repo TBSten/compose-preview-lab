@@ -245,13 +245,75 @@ class DefaultCollectScopeDslTest :
                     ),
                     pluginOptions = pluginOptions("with-hyphen"),
                 )
-                // The CommandLineProcessor throws `IllegalStateException` on receipt; kctfork
-                // converts that into `COMPILATION_ERROR` (the build aborts at option parsing,
-                // before any source file is processed).
+                // The CommandLineProcessor throws `CliOptionProcessingException` on receipt;
+                // kctfork converts that into `COMPILATION_ERROR` (the build aborts at option
+                // parsing, before any source file is processed) without a stack trace.
                 assertSoftly {
                     result.exitCode shouldBe KotlinCompilation.ExitCode.COMPILATION_ERROR
                     result.messages shouldContain "defaultCollectScope"
                     result.messages shouldContain "with-hyphen"
+                }
+            }
+        }
+
+        context("same-module collect filter respects defaultCollectScope") {
+            test("collectModulePreviews() in a module with defaultCollectScope=acme_ui sees that module's unscoped previews")
+                .config(enabled = supports) {
+                    // Without the per-preview substitution introduced for this test, the
+                    // module's `collectModulePreviews()` would resolve to "acme_ui" but the
+                    // unannotated previews would stay pinned to ["default"], so the in-module
+                    // filter `scope in scopes` would yield empty. This regression test pins
+                    // down that the IR generator substitutes both sides consistently.
+                    val result = base.compile(
+                        SourceFile.kotlin(
+                            "Mod.kt",
+                            """
+                            package self
+
+                            @org.jetbrains.compose.ui.tooling.preview.Preview
+                            fun A() {}
+
+                            @org.jetbrains.compose.ui.tooling.preview.Preview
+                            fun B() {}
+                            """,
+                        ),
+                        base.collectModulePreviewsEntry("ownPreviews"),
+                        pluginOptions = pluginOptions("acme_ui"),
+                    )
+                    result.exitCode shouldBe KotlinCompilation.ExitCode.OK
+
+                    result.loadCollectedPreviews("ownPreviews")
+                        .previewIds() shouldContainExactlyInAnyOrder listOf("self.A", "self.B")
+                }
+        }
+
+        context("IR-side regex check catches `const val` reaching IR with an invalid value") {
+            test("collectModulePreviews(scope = INVALID_CONST) is rejected at IR time") {
+                // FIR `CollectScopeCallChecker` cannot tell a `const val` reference from a
+                // non-`const` `val` reference at analysis time — they both arrive as
+                // `FirPropertyAccessExpression`. Const-folding into `IrConst<String>` happens
+                // between FIR and IR, so the IR pass is the first place where an invalid
+                // const value can be caught. Without the IR-side regex check the synthetic
+                // `previewHint_<scope>` lookup would either crash on `Name.identifier(...)`
+                // or silently land on an unrelated identifier.
+                val result = base.compile(
+                    SourceFile.kotlin(
+                        "Entry.kt",
+                        """
+                        package test.entry
+
+                        import me.tbsten.compose.preview.lab.collectModulePreviews
+
+                        private const val INVALID_CONST = "has space"
+                        val previews by collectModulePreviews(scope = INVALID_CONST)
+                        """,
+                    ),
+                )
+                assertSoftly {
+                    result.exitCode shouldBe KotlinCompilation.ExitCode.COMPILATION_ERROR
+                    result.messages shouldContain "[ComposePreviewLab]"
+                    result.messages shouldContain "has space"
+                    result.messages shouldContain "[A-Za-z0-9_]+"
                 }
             }
         }

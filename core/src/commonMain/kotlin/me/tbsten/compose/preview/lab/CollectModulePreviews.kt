@@ -25,14 +25,22 @@ package me.tbsten.compose.preview.lab
  * val uiLibPreviews by collectModulePreviews()
  * ```
  *
- * @param scope The collection scope to draw from. Only previews annotated with the matching
- * `@ComposePreviewLabOption(collectScopes = ["..."])` end up in the result; previews without an
- * explicit scope use `"default"`. The argument must reach the compiler plugin's IR pass as a
- * compile-time string constant — an inline string literal or a `const val` reference both
- * work, because both end up as an `IrConst<String>` before our pass runs. Non-`const`
- * vals, string concatenations, and other expressions that produce an `IrCall` /
+ * @param scope The collection scope to draw from. Only previews annotated with the
+ * matching `@ComposePreviewLabOption(collectScopes = ["..."])` end up in the result.
+ * The literal value `"default"` (= [ComposePreviewLabOption.DefaultCollectScope]) acts as
+ * a sentinel: it does **not** mean a literal `"default"` bucket — the compiler plugin
+ * substitutes it with the module's `composePreviewLab.collectPreviews.defaultCollectScope`
+ * Gradle DSL value (which itself defaults to `"default"`). So a library that pins every
+ * preview to its own bucket via `defaultCollectScope = "acme_ui"` automatically reads
+ * back the same bucket here.
+ *
+ * The argument must reach the compiler plugin's IR pass as a compile-time string
+ * constant — an inline string literal or a `const val` reference both work, because
+ * both end up as an `IrConst<String>` before our pass runs. Non-`const` vals, string
+ * concatenations, and other expressions that produce an `IrCall` /
  * `IrStringConcatenation` are reported as compile errors. The resolved value must also
- * match `[A-Za-z0-9_]+` because the plugin embeds it into the synthetic hint function name.
+ * match `[A-Za-z0-9_]+` because the plugin embeds it into the synthetic hint function
+ * name.
  * @return a [PreviewExport] delegate wrapping the collected preview list; the body is replaced by the compiler plugin
  * @see collectAllModulePreviews
  */
@@ -91,14 +99,22 @@ public fun collectModulePreviews(scope: String = ComposePreviewLabOption.Default
  * // any @Preview function in uiLib is now picked up by upstream collectAllModulePreviews()
  * ```
  *
- * @param scope The collection scope to draw from. Only previews annotated with the matching
- * `@ComposePreviewLabOption(collectScopes = ["..."])` end up in the result; previews without an
- * explicit scope use `"default"`. The argument must reach the compiler plugin's IR pass as a
- * compile-time string constant — an inline string literal or a `const val` reference both
- * work, because both end up as an `IrConst<String>` before our pass runs. Non-`const`
- * vals, string concatenations, and other expressions that produce an `IrCall` /
+ * @param scope The collection scope to draw from. Only previews annotated with the
+ * matching `@ComposePreviewLabOption(collectScopes = ["..."])` end up in the result.
+ * The literal value `"default"` (= [ComposePreviewLabOption.DefaultCollectScope]) acts as
+ * a sentinel: it does **not** mean a literal `"default"` bucket — the compiler plugin
+ * substitutes it with the module's `composePreviewLab.collectPreviews.defaultCollectScope`
+ * Gradle DSL value (which itself defaults to `"default"`). So a library that pins every
+ * preview to its own bucket via `defaultCollectScope = "acme_ui"` is automatically picked
+ * up here.
+ *
+ * The argument must reach the compiler plugin's IR pass as a compile-time string
+ * constant — an inline string literal or a `const val` reference both work, because
+ * both end up as an `IrConst<String>` before our pass runs. Non-`const` vals, string
+ * concatenations, and other expressions that produce an `IrCall` /
  * `IrStringConcatenation` are reported as compile errors. The resolved value must also
- * match `[A-Za-z0-9_]+` because the plugin embeds it into the synthetic hint function name.
+ * match `[A-Za-z0-9_]+` because the plugin embeds it into the synthetic hint function
+ * name.
  * @return a [PreviewExport] delegate wrapping the aggregated preview list; the body is replaced by the compiler plugin
  * @see collectModulePreviews
  */
@@ -107,7 +123,7 @@ public fun collectAllModulePreviews(scope: String = ComposePreviewLabOption.Defa
     lazy {
         error(
             "[ComposePreviewLab] collectAllModulePreviews(scope = \"$scope\") was not replaced by the compiler plugin. " +
-                "Apply the Compose Preview Lab Gradle plugin to this module **and** to every " +
+                "Apply the Compose Preview Lab Gradle plugin to this module and to every " +
                 "dependency module whose previews you want to aggregate:\n" +
                 "  // build.gradle.kts\n" +
                 "  plugins {\n" +

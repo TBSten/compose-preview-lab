@@ -306,11 +306,13 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
      *
      * **Behavior on `@ComposePreviewLabOption(collectScopes = [...])`**: each scope value is
      * read with [resolveCollectScopes] and embedded into a synthetic hint function name
-     * (`previewHint_<scope>`), one overload per element in the array. When any element
-     * does not match [PreviewLabFirBuiltIns.SCOPE_VALIDATION_REGEX] the whole entry is
-     * dropped and a `CompilerMessageSeverity.ERROR` is reported per offending element
-     * through [messageCollector] so the misconfiguration surfaces immediately rather than
-     * producing a silently empty bucket.
+     * (`previewHint_<scope>`), one overload per element in the array. Regex validation
+     * (`[A-Za-z0-9_]+`) of those elements happens earlier in
+     * `me.tbsten.compose.preview.lab.compiler.fir.checkers.CollectScopeAnnotationChecker`
+     * (FIR `CHECKERS` phase), so by the time we get here invalid values have already been
+     * surfaced to the user as clickable diagnostics. We defensively filter them out again
+     * to avoid emitting Kotlin identifiers that would crash the compiler downstream — a
+     * silent drop is fine because the checker has already failed the build.
      *
      * Evaluated lazily the first time [getTopLevelClassIds] / [getTopLevelCallableIds] is
      * touched.
