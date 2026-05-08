@@ -118,7 +118,7 @@ internal class PreviewLabIrBodyFiller(
         val isAll = isCollectAllCall(delegateField)
 
         // Module-level gate: when `collectPreviewsEnabled = false` for this module the FIR
-        // hint generator was not registered, so no marker interface or `previewHint_<scope>`
+        // hint generator was not registered, so no marker interface or `previewHint(...)`
         // overload was emitted alongside the @Preview functions. The @Preview functions
         // themselves are still compiled and live on the classpath; what is missing is the
         // discovery surface that `collect[All]ModulePreviews()` relies on. Dependency hints

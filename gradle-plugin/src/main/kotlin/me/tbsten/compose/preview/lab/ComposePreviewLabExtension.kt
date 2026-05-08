@@ -64,14 +64,17 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
     /**
      * Per-module configuration for the per-declaration preview hint pipeline.
      *
-     * The defaults match the behaviour of every existing build, so adding this DSL block
+     * The defaults match the behavior of every existing build, so adding this DSL block
      * is opt-in. The most common knob is `enabled = false`, which **prevents this module
-     * from emitting any preview hints** — and as a corollary, **`collectModulePreviews()` /
-     * `collectAllModulePreviews()` call sites inside the same module become compile-time
-     * errors** because the compiler plugin can no longer wire them up to a non-empty
-     * preview list. Use it for sample / test-fixture modules whose previews must never
-     * leak into a downstream consumer. See [CollectPreviewsConfig] for the full set of
-     * options.
+     * from emitting any preview hints** (no marker interface, no `previewHint(...)`
+     * overload), so its previews cannot leak into downstream `collectAllModulePreviews()`
+     * consumers. As a deliberate policy gate, **`collectModulePreviews()` /
+     * `collectAllModulePreviews()` call sites inside the same disabled module are
+     * rejected at compile time**: a disabled module is declaring "I export no preview
+     * surface", so a local collect call almost always indicates a configuration mistake
+     * the build should surface up front. Use this knob for sample / test-fixture modules
+     * whose previews must never leak into a downstream consumer or whose hint emission
+     * cost is not justified. See [CollectPreviewsConfig] for the full set of options.
      */
     val collectPreviews: CollectPreviewsConfig = objects.newInstance(CollectPreviewsConfig::class.java)
 

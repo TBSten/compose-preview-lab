@@ -28,8 +28,12 @@ import me.tbsten.compose.preview.lab.compiler.loadCollectedPreviews
  * 5. `enabled = false` lib + `enabled = true` app → app's `collectAllModulePreviews()`
  *    sees nothing from the lib (the lib emitted no hints to discover).
  *
- * **Skipped on Kotlin < 2.3.21**: the per-declaration hint generator only runs on
- * Kotlin 2.3.21+ ([CompatContext.supportsKlibCrossModuleHint]).
+ * **Test gating**: scenarios that depend on the FIR hint generator being active
+ * (emission, cross-module aggregation) are gated on Kotlin 2.3.21+ via
+ * [CompatContext.supportsKlibCrossModuleHint]. The IR-pass error scenarios run on every
+ * supported Kotlin version because the IR pass is always active — the disabled-module
+ * collect call check does not depend on the hint generator. Each individual test pins
+ * its `.config(enabled = ...)` accordingly.
  */
 class PreviewHintEnabledFlagTest :
     FunSpec({
@@ -117,29 +121,28 @@ class PreviewHintEnabledFlagTest :
                 }
             }
 
-            test("collectAllModulePreviews() in a disabled module reports an actionable error")
-                .config(enabled = supports) {
-                    val result = base.compile(
-                        SourceFile.kotlin(
-                            "Mod.kt",
-                            """
+            test("collectAllModulePreviews() in a disabled module reports an actionable error") {
+                val result = base.compile(
+                    SourceFile.kotlin(
+                        "Mod.kt",
+                        """
                             package self
 
                             @org.jetbrains.compose.ui.tooling.preview.Preview
                             fun P() {}
                             """,
-                        ),
-                        base.collectAllModulePreviewsEntry("allPreviews"),
-                        pluginOptions = disabled,
-                    )
+                    ),
+                    base.collectAllModulePreviewsEntry("allPreviews"),
+                    pluginOptions = disabled,
+                )
 
-                    assertSoftly {
-                        result.exitCode shouldBe KotlinCompilation.ExitCode.COMPILATION_ERROR
-                        result.messages shouldContain "[ComposePreviewLab]"
-                        result.messages shouldContain "collectAllModulePreviews()"
-                        result.messages shouldContain "composePreviewLab.collectPreviews.enabled"
-                    }
+                assertSoftly {
+                    result.exitCode shouldBe KotlinCompilation.ExitCode.COMPILATION_ERROR
+                    result.messages shouldContain "[ComposePreviewLab]"
+                    result.messages shouldContain "collectAllModulePreviews()"
+                    result.messages shouldContain "composePreviewLab.collectPreviews.enabled"
                 }
+            }
         }
 
         context("downstream visibility") {
@@ -183,7 +186,20 @@ class PreviewHintEnabledFlagTest :
     })
 
 private fun List<Any>.previewIds(): List<String> = map { collectedPreview ->
-    collectedPreview::class.members.find { it.name == "id" }!!.call(collectedPreview) as String
+    val klass = collectedPreview::class
+    val idMember = klass.members.find { it.name == "id" }
+        ?: error(
+            "Reflective `id` lookup on ${klass.qualifiedName ?: klass.simpleName} failed: " +
+                "expected a `CollectedPreview`-shaped class with an `id` member but found none. " +
+                "(This usually means the IR-injected list contains an unexpected element type.)",
+        )
+    val rawId = idMember.call(collectedPreview)
+    rawId as? String
+        ?: error(
+            "Reflective `id` lookup on ${klass.qualifiedName ?: klass.simpleName} returned a " +
+                "${rawId?.let { it::class.qualifiedName ?: it::class.simpleName } ?: "null"} " +
+                "instead of a String — the `CollectedPreview.id` contract has changed.",
+        )
 }
 
 /**
