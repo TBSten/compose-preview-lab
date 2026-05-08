@@ -180,17 +180,18 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
      * Compose Compiler's `$stableprop` synthesis (which causes JS / Wasm IC collisions)
      * and Konan's `Expected a class, found interface` error (which rejects FINAL modality
      * on interfaces).
+     *
+     * The marker is **not** declared `sealed`. The `@Deprecated(HIDDEN)` annotation
+     * applied below already removes the symbol from consumer-side scope resolution, so
+     * an external `class MyMarker : PreviewHintMarker_<sanitized_fqn>_<hash>` does not
+     * compile — sealed-ization would be redundant. See
+     * `PreviewHintMarkerSealOrHiddenTest` for the executable proof.
      */
     override fun generateTopLevelClassLikeDeclaration(classId: ClassId): FirClassLikeSymbol<*>? {
         if (classId.packageFqName != PreviewLabFirBuiltIns.HINT_PACKAGE) return null
         val shortName = classId.shortClassName.asString()
         if (shortName !in hashByMarkerShortName) return null
 
-        // TODO: the marker is purely internal (its only purpose is to disambiguate the
-        //   IdSignature per `@Preview`), so it should switch to `Modality.SEALED` to lock out
-        //   external implementations. Deferred because `sealed` + `@Deprecated(HIDDEN)` needs
-        //   cross-Kotlin-version (2.1 through 2.4-Beta) and KLIB IC validation.
-        //   follow-up: .local/ticket/followup-sealed-hint-marker-interface.md
         val klass = createTopLevelClass(classId, Keys.PreviewLabHintMarkerInterface, ClassKind.INTERFACE) {
             modality = Modality.ABSTRACT
         }
