@@ -63,7 +63,7 @@ internal class PreviewListIrBuilder(
     /**
      * Builds either `listOf(CollectedPreview(...), ...)` or `emptyList()` for the previews
      * that participate in [scope]. A preview enters the result whenever [scope] appears
-     * anywhere in its `@ComposePreviewLabOption(collectScope = [...])` array, so the same
+     * anywhere in its `@ComposePreviewLabOption(collectScopes = [...])` array, so the same
      * preview can show up in multiple `collectModulePreviews(scope = "...")` call sites
      * if it lists multiple scopes.
      */

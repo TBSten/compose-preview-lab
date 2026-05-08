@@ -70,6 +70,13 @@ dependencies {
 kotlin {
     compilerOptions {
         optIn.add("org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi")
+        // FIR Checker / diagnostic factory APIs in Kotlin 2.3+ (`error1`, the abstract
+        // `FirDeclarationChecker.check`, etc.) are declared with `context(...)`
+        // parameters, so any code that overrides those bases or calls those extensions
+        // from this module needs the experimental context-parameters language feature.
+        // The flag only affects this module's main compilation; downstream consumers of
+        // the published plugin jar are unaffected.
+        freeCompilerArgs.add("-Xcontext-parameters")
     }
 }
 

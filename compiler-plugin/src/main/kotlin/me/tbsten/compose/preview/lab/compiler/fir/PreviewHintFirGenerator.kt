@@ -5,9 +5,6 @@
 package me.tbsten.compose.preview.lab.compiler.fir
 
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
-import org.jetbrains.kotlin.cli.common.messages.CompilerMessageLocation
-import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
-import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.descriptors.Visibilities
@@ -105,11 +102,8 @@ import org.jetbrains.kotlin.name.Name
  * [ContributionHintFirGenerator](https://github.com/ZacSweers/metro/blob/main/compiler/src/main/kotlin/dev/zacsweers/metro/compiler/fir/generators/ContributionHintFirGenerator.kt),
  * combined with the fixed-name discovery approach of the legacy module-aggregation hint.
  */
-internal class PreviewHintFirGenerator(
-    session: FirSession,
-    private val compat: CompatContext,
-    private val messageCollector: MessageCollector = MessageCollector.NONE,
-) : FirDeclarationGenerationExtension(session) {
+internal class PreviewHintFirGenerator(session: FirSession, private val compat: CompatContext,) :
+    FirDeclarationGenerationExtension(session) {
 
     /**
      * Predicate that locates the `@Preview` functions to generate hints for. Targets both
@@ -242,7 +236,7 @@ internal class PreviewHintFirGenerator(
      * ```
      *
      * The function name encodes the scope (`previewHint_default` for unscoped previews;
-     * `previewHint_design` for `@ComposePreviewLabOption(collectScope = ["design"])`). Within
+     * `previewHint_design` for `@ComposePreviewLabOption(collectScopes = ["design"])`). Within
      * a scope the marker class parameter still makes the IdSignature unique per `@Preview`,
      * which lets multiple `@Preview` declarations share the same scope-suffixed name. The
      * IR side rewrites `collectModulePreviews(scope = "design")` into a per-scope
@@ -310,7 +304,7 @@ internal class PreviewHintFirGenerator(
      * name → expression mapping is empty (a state observed for inherit-classpath builds in
      * our kctfork tests). See [isIgnoredByComposePreviewLabOption] for the readout details.
      *
-     * **Behavior on `@ComposePreviewLabOption(collectScope = [...])`**: each scope value is
+     * **Behavior on `@ComposePreviewLabOption(collectScopes = [...])`**: each scope value is
      * read with [resolveCollectScopes] and embedded into a synthetic hint function name
      * (`previewHint_<scope>`), one overload per element in the array. When any element
      * does not match [PreviewLabFirBuiltIns.SCOPE_VALIDATION_REGEX] the whole entry is
@@ -354,85 +348,54 @@ internal class PreviewHintFirGenerator(
     private val collectScopeParameterIndex: Int = 3
 
     /**
-     * Resolves the `@ComposePreviewLabOption(collectScope = [...])` argument for [symbol].
-     * Returns `null` (and reports a `CompilerMessageSeverity.ERROR` per offending element)
-     * when any element violates [PreviewLabFirBuiltIns.SCOPE_VALIDATION_REGEX] — invalid
-     * characters can't safely become part of a Kotlin identifier, so the whole entry is
-     * dropped to avoid emitting half-baked hint declarations.
+     * Resolves the `@ComposePreviewLabOption(collectScopes = [...])` argument for [symbol]
+     * into a concrete list of scope strings, substituting the sentinel
+     * `ComposePreviewLabOption.DefaultCollectScope` ( = `"default"`) with the module-level
+     * `composePreviewLab.collectPreviews.defaultCollectScope` Gradle DSL value
+     * ([PreviewLabFirBuiltIns.config]'s `defaultCollectScope`). That means a library
+     * module pinning every preview to a library-specific bucket only needs the Gradle DSL
+     * line — no per-`@Preview` annotation required.
      *
-     * **Resolution rules**:
-     * - no `@ComposePreviewLabOption` → `[DefaultCollectScope]`
-     * - `@ComposePreviewLabOption()` (`collectScope` defaulted) → `[DefaultCollectScope]`
-     * - `@ComposePreviewLabOption(collectScope = ["design"])` → `["design"]`
-     * - `@ComposePreviewLabOption(collectScope = ["design", "showcase"])` → `["design", "showcase"]`
+     * **Resolution rules** (assuming Gradle DSL `defaultCollectScope = "acme_ui"`):
+     * - no `@ComposePreviewLabOption` → `["acme_ui"]`
+     * - `@ComposePreviewLabOption()` (`collectScopes` defaulted) → `["acme_ui"]`
+     * - `@ComposePreviewLabOption(collectScopes = ["acme_ui"])` → `["acme_ui"]`
+     * - `@ComposePreviewLabOption(collectScopes = ["custom"])` → `["custom"]` (override wins)
+     * - `@ComposePreviewLabOption(collectScopes = ["custom", DefaultCollectScope])` → `["custom", "acme_ui"]`
      *
-     * The readout walks the raw `argumentList.arguments` because the stdlib helpers do not
-     * cover `Array<String>` annotation arguments. `FirArrayLiteral` (Kotlin 2.4+) and
-     * `FirArrayOfCall` (Kotlin 2.0–2.3) are both handled by inspecting
-     * `org.jetbrains.kotlin.fir.expressions.FirCall.arguments` reflectively — both classes
-     * expose the same `arguments: List<FirExpression>` shape, so a single loop covers
-     * every supported version.
+     * Validation against `[A-Za-z0-9_]+` happens in
+     * [me.tbsten.compose.preview.lab.compiler.fir.checkers.CollectScopeAnnotationChecker]
+     * during the FIR `CHECKERS` phase, so by the time this method runs any value that
+     * does not match has already been surfaced as a clickable diagnostic. We still
+     * defensively drop invalid elements here to avoid emitting Kotlin identifiers that
+     * would crash the compiler downstream — a silent drop is fine because the Checker has
+     * already failed the build.
      */
     private fun resolveCollectScopes(symbol: FirNamedFunctionSymbol, sourceFqn: String): List<String>? {
         symbol.lazyResolveToPhase(FirResolvePhase.ANNOTATION_ARGUMENTS)
+        val moduleDefault = session.previewLabFirBuiltIns.config.defaultCollectScope
         val optionAnnotation = symbol.resolvedAnnotationsWithArguments
             .firstOrNull { it.toAnnotationClassIdSafe(session) == PreviewLabFirBuiltIns.COMPOSE_PREVIEW_LAB_OPTION_CLASS_ID }
-            ?: return listOf(PreviewLabFirBuiltIns.DefaultCollectScope)
+            ?: return listOf(moduleDefault)
 
-        val scopes = optionAnnotation.readCollectScopesFromRawArguments()
-            ?: listOf(PreviewLabFirBuiltIns.DefaultCollectScope)
+        val rawScopes = optionAnnotation.readCollectScopesFromRawArguments()
+            ?.takeUnless { it.isEmpty() }
+            ?: return listOf(moduleDefault)
 
-        if (scopes.isEmpty()) return listOf(PreviewLabFirBuiltIns.DefaultCollectScope)
-
-        val invalid = scopes.filterNot { PreviewLabFirBuiltIns.SCOPE_VALIDATION_REGEX.matches(it) }
-        if (invalid.isNotEmpty()) {
-            val location = symbol.compilerMessageLocation()
-            invalid.forEach { bad ->
-                messageCollector.report(
-                    CompilerMessageSeverity.ERROR,
-                    "[ComposePreviewLab] @ComposePreviewLabOption(collectScope = [..., \"$bad\", ...]) on " +
-                        "$sourceFqn contains a value that is not a valid scope identifier. Allowed " +
-                        "characters: [A-Za-z0-9_]+ (each value is embedded into the synthetic hint " +
-                        "function name).",
-                    location,
-                )
-            }
-            return null
-        }
-        return scopes.distinct()
-    }
-
-    /**
-     * Builds a `CompilerMessageLocation` pointing at the FIR symbol's declaration site so
-     * that `MessageCollector.report` produces a clickable location in IDE / CI logs.
-     *
-     * Returns `null` (which `MessageCollector` treats as "no location available") when the
-     * symbol has no PSI-backed source — for example synthetic FIR built from a light tree
-     * whose `KtPsiSourceElement` is unavailable. Line / column are derived by counting
-     * newlines up to `startOffset` because `KtSourceElement` does not expose them
-     * directly; the count is bounded to the file text length to be safe.
-     */
-    private fun FirNamedFunctionSymbol.compilerMessageLocation(): CompilerMessageLocation? {
-        val source = source ?: return null
-        val psi = (source as? org.jetbrains.kotlin.KtPsiSourceElement)?.psi ?: return null
-        val containingFile = psi.containingFile ?: return null
-        val path = containingFile.virtualFile?.path ?: containingFile.name
-        val text = containingFile.text ?: return null
-        val safeOffset = source.startOffset.coerceIn(0, text.length)
-        val before = text.substring(0, safeOffset)
-        val line = before.count { it == '\n' } + 1
-        val lastNewline = before.lastIndexOf('\n')
-        val column = if (lastNewline >= 0) safeOffset - lastNewline else safeOffset + 1
-        return CompilerMessageLocation.create(path, line, column, null)
+        val resolved = rawScopes
+            .map { if (it == PreviewLabFirBuiltIns.DefaultCollectScope) moduleDefault else it }
+            .filter { PreviewLabFirBuiltIns.SCOPE_VALIDATION_REGEX.matches(it) }
+            .distinct()
+        return resolved.ifEmpty { null }
     }
 
     /**
      * Manual fallback that reads the `Array<String>` `collectScope` argument from the raw
      * `argumentList.arguments` of the FIR annotation. Accepts:
      *
-     * - `(collectScope = ["design"])` — `FirArrayLiteral` / `FirArrayOfCall` named.
+     * - `(collectScopes = ["design"])` — `FirArrayLiteral` / `FirArrayOfCall` named.
      * - `("X", false, "id", ["design"])` — positional array at [collectScopeParameterIndex].
-     * - `(collectScope = "design")` — defensive single-string fallback for callers that
+     * - `(collectScopes = "design")` — defensive single-string fallback for callers that
      *   were compiled against a pre-Array binary baseline.
      */
     private fun org.jetbrains.kotlin.fir.expressions.FirAnnotation.readCollectScopesFromRawArguments(): List<String>? {
@@ -598,7 +561,7 @@ internal class PreviewHintFirGenerator(
         /**
          * Collection scopes this preview participates in. One marker class is emitted, and
          * one `previewHint_<scope>` overload is emitted per element. `["default"]` when no
-         * `@ComposePreviewLabOption(collectScope = [...])` is present.
+         * `@ComposePreviewLabOption(collectScopes = [...])` is present.
          */
         val scopes: List<String>,
     )

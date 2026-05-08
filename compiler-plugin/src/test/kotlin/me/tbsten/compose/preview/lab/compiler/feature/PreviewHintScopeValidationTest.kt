@@ -10,24 +10,29 @@ import me.tbsten.compose.preview.lab.compiler.CompilerPluginTestBase
 import me.tbsten.compose.preview.lab.compiler.isAtLeast
 
 /**
- * Validates that invalid scope inputs are rejected with a clear `MessageCollector.ERROR`
- * rather than producing silently-broken hint emission or empty buckets.
+ * Validates that invalid scope inputs are rejected with a clear compile-time error rather
+ * than producing silently-broken hint emission or empty buckets.
  *
- * Two layers reject invalid input:
+ * Two layers reject invalid input — both surface the same `[ComposePreviewLab]` prefix in
+ * the build output, but they target different shapes of mistake and run at different
+ * points in the pipeline:
  *
- * - **FIR**: `@ComposePreviewLabOption(collectScope = ["..."])` whose value falls outside
- *   `[A-Za-z0-9_]+` is rejected by `PreviewHintFirGenerator`.
- * - **IR**: `collect[All]ModulePreviews(scope = ...)` rejects arguments that are not an
- *   `IrConst<String>` by the time the IR pass runs, and literals that fail the same regex.
- *   References to a `const val` are accepted because they reach the IR pass already
- *   inlined to `IrConst<String>`; non-`const` `val`s, string concatenations
- *   (`"a" + "b"`), and other expressions are rejected.
+ * - **FIR `CollectScopeAnnotationChecker` / `CollectScopeCallChecker`** — runs at the
+ *   FIR analysis (`CHECKERS`) phase, so errors surface in the IDE as red squigglies and
+ *   in `gradle build` before any IR generation runs. Rejects literals that violate
+ *   `[A-Za-z0-9_]+` (in both `@ComposePreviewLabOption(collectScopes = [...])` annotations
+ *   and `collect[All]ModulePreviews(scope = "...")` call sites) plus call-site arguments
+ *   that are clearly non-literal (string concatenations, function calls).
+ * - **IR `PreviewLabIrBodyFiller`** — second-line check for call-site `scope` arguments
+ *   that look like a property access (`val design`). At FIR analysis time we cannot tell
+ *   a `const val` reference (legal — inlined to `IrConst<String>`) from a non-`const`
+ *   `val` reference (illegal — never inlined), so the IR pass — which sees the
+ *   const-folded result — is where this gets caught.
  *
  * **Test gating**: cases that depend on FIR-emitted hints only run on Kotlin 2.3.21+
- * ([CompatContext.supportsKlibCrossModuleHint]). Some IR-side rejection tests run on every
- * version (the IR pass always sees the call), but the cross-module ones still need 2.3.21+
- * so the consumer-side discovery path is exercised. Each individual test pins its
- * `.config(enabled = supports)` accordingly.
+ * ([CompatContext.supportsKlibCrossModuleHint]). The annotation-side checker tests do not
+ * need the hint generator to be active — the checker runs unconditionally — but they are
+ * gated on 2.3.21+ anyway because the rest of the test suite is.
  */
 class PreviewHintScopeValidationTest :
     FunSpec({
@@ -46,7 +51,7 @@ class PreviewHintScopeValidationTest :
                             package self
 
                             @org.jetbrains.compose.ui.tooling.preview.Preview
-                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScope = ["has space"])
+                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScopes = ["has space"])
                             fun A() {}
                             """,
                         ),
@@ -68,7 +73,7 @@ class PreviewHintScopeValidationTest :
                             package self
 
                             @org.jetbrains.compose.ui.tooling.preview.Preview
-                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScope = ["with-hyphen"])
+                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScopes = ["with-hyphen"])
                             fun A() {}
                             """,
                         ),
@@ -88,7 +93,7 @@ class PreviewHintScopeValidationTest :
                             package self
 
                             @org.jetbrains.compose.ui.tooling.preview.Preview
-                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScope = ["v2"])
+                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScopes = ["v2"])
                             fun A() {}
                             """,
                         ),
@@ -114,7 +119,9 @@ class PreviewHintScopeValidationTest :
                 assertSoftly {
                     result.exitCode shouldBe KotlinCompilation.ExitCode.COMPILATION_ERROR
                     result.messages shouldContain "[ComposePreviewLab]"
-                    result.messages shouldContain "collectModulePreviews(scope = \"has space\")"
+                    // FIR `CollectScopeCallChecker` flags the offending literal directly,
+                    // so the rendered message names the value plus the regex rule.
+                    result.messages shouldContain "has space"
                     result.messages shouldContain "[A-Za-z0-9_]+"
                 }
             }

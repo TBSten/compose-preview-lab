@@ -1,8 +1,14 @@
 public abstract interface annotation class me/tbsten/compose/preview/lab/ComposePreviewLabOption : java/lang/annotation/Annotation {
-	public abstract fun collectScope ()[Ljava/lang/String;
+	public static final field Companion Lme/tbsten/compose/preview/lab/ComposePreviewLabOption$Companion;
+	public static final field DefaultCollectScope Ljava/lang/String;
+	public abstract fun collectScopes ()[Ljava/lang/String;
 	public abstract fun displayName ()Ljava/lang/String;
 	public abstract fun id ()Ljava/lang/String;
 	public abstract fun ignore ()Z
+}
+
+public final class me/tbsten/compose/preview/lab/ComposePreviewLabOption$Companion {
+	public static final field DefaultCollectScope Ljava/lang/String;
 }
 
 public abstract interface annotation class me/tbsten/compose/preview/lab/ExperimentalComposePreviewLabApi : java/lang/annotation/Annotation {

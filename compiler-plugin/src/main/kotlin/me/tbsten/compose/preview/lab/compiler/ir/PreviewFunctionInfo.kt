@@ -15,11 +15,11 @@ internal data class PreviewFunctionInfo(
     val code: String?,
     val kdoc: String?,
     /**
-     * Collection scopes from `@ComposePreviewLabOption(collectScope = [...])`, defaulting to
+     * Collection scopes from `@ComposePreviewLabOption(collectScopes = [...])`, defaulting to
      * `["default"]` when no annotation or scope override is present. The IR pass uses this to
      * filter the same-module preview list per `collect[All]ModulePreviews(scope = ...)`
      * call: a preview ends up in the result whenever the requested scope appears anywhere
-     * in this list (so `collectScope = ["design", "showcase"]` makes the same preview show
+     * in this list (so `collectScopes = ["design", "showcase"]` makes the same preview show
      * up in both galleries).
      */
     val scopes: List<String>,

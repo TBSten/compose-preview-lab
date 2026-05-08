@@ -36,12 +36,12 @@ class PreviewHintScopeIgnoreInteropTest :
                         @org.jetbrains.compose.ui.tooling.preview.Preview
                         @me.tbsten.compose.preview.lab.ComposePreviewLabOption(
                             ignore = true,
-                            collectScope = ["design"],
+                            collectScopes = ["design"],
                         )
                         fun Hidden() {}
 
                         @org.jetbrains.compose.ui.tooling.preview.Preview
-                        @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScope = ["design"])
+                        @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScopes = ["design"])
                         fun Visible() {}
                         """,
                     ),
@@ -63,7 +63,7 @@ class PreviewHintScopeIgnoreInteropTest :
                     .previewIds() shouldContainExactlyInAnyOrder listOf("self.Visible")
             }
 
-        test("ignore=false + collectScope = X is collected under X")
+        test("ignore=false + collectScopes = X is collected under X")
             .config(enabled = supports) {
                 val result = base.compile(
                     SourceFile.kotlin(
@@ -74,7 +74,7 @@ class PreviewHintScopeIgnoreInteropTest :
                         @org.jetbrains.compose.ui.tooling.preview.Preview
                         @me.tbsten.compose.preview.lab.ComposePreviewLabOption(
                             ignore = false,
-                            collectScope = ["design"],
+                            collectScopes = ["design"],
                         )
                         fun Visible() {}
                         """,
@@ -109,14 +109,14 @@ class PreviewHintScopeIgnoreInteropTest :
                         @org.jetbrains.compose.ui.tooling.preview.Preview
                         @me.tbsten.compose.preview.lab.ComposePreviewLabOption(
                             ignore = true,
-                            collectScope = ["design"],
+                            collectScopes = ["design"],
                         )
                         fun H1() {}
 
                         @org.jetbrains.compose.ui.tooling.preview.Preview
                         @me.tbsten.compose.preview.lab.ComposePreviewLabOption(
                             ignore = true,
-                            collectScope = ["design"],
+                            collectScopes = ["design"],
                         )
                         fun H2() {}
                         """,

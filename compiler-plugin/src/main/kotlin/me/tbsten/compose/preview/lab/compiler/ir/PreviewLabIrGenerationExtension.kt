@@ -163,7 +163,7 @@ class PreviewLabIrGenerationExtension(
         val id = resolve(
             (optionAnno?.findArgumentByName("id") as? IrConst)?.value as? String ?: "{{qualifiedName}}",
         )
-        val scopes = readScopesArgument(optionAnno?.findArgumentByName("collectScope"))
+        val scopes = readScopesArgument(optionAnno?.findArgumentByName("collectScopes"))
 
         val fileEntry = func.file.fileEntry
         val rawPath = fileEntry.name
@@ -190,12 +190,12 @@ class PreviewLabIrGenerationExtension(
  *
  * **Sample call → result**:
  * ```kotlin
- * // @ComposePreviewLabOption(displayName = "X", ignore = false, id = "Y", collectScope = ["d"])
- * optionAnno.findArgumentByName("collectScope")  // → IrVararg [IrConst("d")]
+ * // @ComposePreviewLabOption(displayName = "X", ignore = false, id = "Y", collectScopes = ["d"])
+ * optionAnno.findArgumentByName("collectScopes")  // → IrVararg [IrConst("d")]
  * optionAnno.findArgumentByName("ignore")        // → IrConst(false)
  *
  * // @ComposePreviewLabOption(displayName = "X")  ← collectScope omitted, default applies
- * optionAnno.findArgumentByName("collectScope")  // → IrVararg [IrConst("default")]
+ * optionAnno.findArgumentByName("collectScopes")  // → IrVararg [IrConst("default")]
  *                                                //   (the annotation's declared default)
  *
  * optionAnno.findArgumentByName("missing")       // → null  (no such parameter)
@@ -223,11 +223,11 @@ private fun IrConstructorCall.findArgumentByName(name: String): IrExpression? {
 
 /**
  * Reads the `Array<String>` annotation argument for `collectScope` off the IR
- * representation of `@ComposePreviewLabOption(collectScope = [...])`.
+ * representation of `@ComposePreviewLabOption(collectScopes = [...])`.
  *
  * **Sample call → result**:
  * ```kotlin
- * // @ComposePreviewLabOption(collectScope = ["design", "showcase"])
+ * // @ComposePreviewLabOption(collectScopes = ["design", "showcase"])
  * readScopesArgument(<IrVararg of IrConst("design"), IrConst("showcase")>)
  *   → ["design", "showcase"]
  *
@@ -236,7 +236,7 @@ private fun IrConstructorCall.findArgumentByName(name: String): IrExpression? {
  * ```
  *
  * Annotation `Array<String>` arguments arrive as `IrVararg` whose elements are
- * `IrConst<String>` — both for source-side `@ComposePreviewLabOption(collectScope = [...])`
+ * `IrConst<String>` — both for source-side `@ComposePreviewLabOption(collectScopes = [...])`
  * usages (`Fir2IrVisitor.convertToArrayLiteral`) and for usages read from compiled
  * dependencies (`IrBodyDeserializer` for KLIB / .class). This was empirically verified by
  * gating the previous IrConst / `else` fallback branches with `error(...)` and re-running

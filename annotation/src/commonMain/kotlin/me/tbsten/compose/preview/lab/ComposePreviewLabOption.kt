@@ -36,13 +36,13 @@ package me.tbsten.compose.preview.lab
  * `collectScope` declares the "buckets" under which this preview is collected. Each entry
  * becomes a key for `collectModulePreviews(scope = "...")` /
  * `collectAllModulePreviews(scope = "...")` on the consumer side, so a preview with
- * `collectScope = ["design", "showcase"]` is picked up by both
+ * `collectScopes = ["design", "showcase"]` is picked up by both
  * `collectAllModulePreviews(scope = "design")` and
  * `collectAllModulePreviews(scope = "showcase")` — one preview, multiple galleries — without
  * any duplication on the source side.
  *
  * ```kt
- * @ComposePreviewLabOption(collectScope = ["design", "showcase"])
+ * @ComposePreviewLabOption(collectScopes = ["design", "showcase"])
  * @Preview
  * @Composable
  * fun ButtonShowcase() { MyButton() }
@@ -62,7 +62,7 @@ package me.tbsten.compose.preview.lab
  * @property displayName {{package}}, {{simpleName}}, {{qualifiedName}} or a custom string. It does not have to match other Previews as it does not function like an ID. `. Each segment separated by ` is considered a group.
  * @property ignore if true, Compose Preview Lab does not collect this Preview. The exclusion applies in both directions: the same module's `collectModulePreviews()` drops it via the IR-side filter, and consumer modules' `collectAllModulePreviews()` cannot discover it because no per-declaration hint is emitted in the first place.
  * @property id An ID to identify each Preview. It can be used for navigation within the PreviewLabNavController. The same placeholder as displayName can be used.
- * @property collectScope The collection scopes this preview participates in. See the *About `collectScope`* section above for the semantics, the validation rules, and a multi-scope example.
+ * @property collectScopes The collection scopes this preview participates in. See the *About `collectScope`* section above for the semantics, the validation rules, and a multi-scope example.
  */
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.FUNCTION)
@@ -70,5 +70,30 @@ annotation class ComposePreviewLabOption(
     val displayName: String = "{{qualifiedName}}",
     val ignore: Boolean = false,
     val id: String = "{{qualifiedName}}",
-    val collectScope: Array<String> = ["default"],
-)
+    val collectScopes: Array<String> = [DefaultCollectScope],
+) {
+    public companion object {
+        /**
+         * The single source-of-truth string the whole `collectScope` system bottoms out on.
+         *
+         * It is used as:
+         * - the default value of [collectScopes] (this annotation's `Array<String>` parameter),
+         * - the default `scope` of [collectModulePreviews] / [collectAllModulePreviews] in
+         *   user-facing call sites, and
+         * - the default of `composePreviewLab.collectPreviews.defaultCollectScope` in the
+         *   Gradle DSL (the per-module scope that the compiler plugin substitutes for any
+         *   `[DefaultCollectScope]`-shaped per-preview / per-call value).
+         *
+         * Resolution order at compile time, per `@Preview` and per `collect[All]ModulePreviews`
+         * call:
+         * 1. If the explicit annotation argument or call-site argument is anything other than
+         *    `[DefaultCollectScope]` / `DefaultCollectScope`, it wins as-is.
+         * 2. Otherwise, the compiler plugin substitutes the module's
+         *    `composePreviewLab.collectPreviews.defaultCollectScope` (set via the Gradle DSL)
+         *    so a library can pin all of its previews to a library-specific bucket without
+         *    annotating each `@Preview`.
+         * 3. If the Gradle DSL was not set either, the runtime default `"default"` applies.
+         */
+        public const val DefaultCollectScope: String = "default"
+    }
+}

@@ -132,4 +132,39 @@ abstract class CollectPreviewsConfig @Inject constructor(objects: ObjectFactory)
      */
     var enabled: Boolean by objects.property<Boolean>()
         .convention(true)
+
+    /**
+     * Module-level default scope for `@Preview` hints emitted from this module.
+     *
+     * The compiler plugin substitutes any `@ComposePreviewLabOption(collectScopes = [...])` /
+     * `collect[All]ModulePreviews(scope = ...)` value of `"default"` (the
+     * `ComposePreviewLabOption.DefaultCollectScope` sentinel) with this string before
+     * embedding it into the synthetic `previewHint_<scope>` function name. The typical
+     * use is to pin a library module's previews to a library-specific bucket so they do
+     * not leak into a consumer app's `collectAllModulePreviews()` call:
+     *
+     * ```kotlin
+     * // uiLib/build.gradle.kts
+     * composePreviewLab {
+     *     collectPreviews {
+     *         defaultCollectScope = "acme_ui"
+     *     }
+     * }
+     *
+     * // uiLib/src/commonMain/kotlin/Button.kt
+     * @Preview                      // no @ComposePreviewLabOption needed
+     * @Composable
+     * fun ButtonPreview() { Button() }
+     * // ↑ emitted under previewHint_acme_ui because of the DSL above.
+     * ```
+     *
+     * Defaults to `"default"` so existing builds keep producing `previewHint_default`
+     * without any DSL change.
+     *
+     * The value must match `[A-Za-z0-9_]+` because it is embedded into a Kotlin identifier;
+     * an invalid value is rejected by the compiler plugin's command-line processor with a
+     * clear error before any source file is compiled.
+     */
+    var defaultCollectScope: String by objects.property<String>()
+        .convention("default")
 }

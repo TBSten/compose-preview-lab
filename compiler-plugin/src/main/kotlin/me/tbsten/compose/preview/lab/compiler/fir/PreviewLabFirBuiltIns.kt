@@ -37,7 +37,7 @@ internal class PreviewLabFirBuiltIns(session: FirSession, val config: PluginConf
 
         /**
          * Prefix of every per-declaration hint function. Full name is `previewHint_<scope>`,
-         * where `<scope>` is the value of `@ComposePreviewLabOption(collectScope = ...)` (or
+         * where `<scope>` is the value of `@ComposePreviewLabOption(collectScopes = ...)` (or
          * `"default"` when not set). Encoding the scope into the function name lets the IR
          * side filter hints purely by `referenceFunctions(CallableId(HINT_PACKAGE, name))` —
          * no per-hint inspection is needed.
@@ -45,7 +45,7 @@ internal class PreviewLabFirBuiltIns(session: FirSession, val config: PluginConf
         const val PreviewHintFunctionPrefix: String = "previewHint_"
 
         /**
-         * Default `collectScope` value used when no `@ComposePreviewLabOption(collectScope = ...)`
+         * Default `collectScope` value used when no `@ComposePreviewLabOption(collectScopes = ...)`
          * is present. Must be a valid identifier-shaped scope so it can be embedded directly
          * into the synthetic hint function name (`previewHint_default`).
          */
@@ -108,8 +108,8 @@ internal class PreviewLabFirBuiltIns(session: FirSession, val config: PluginConf
         /** `@ComposePreviewLabOption(ignore = ...)` argument name. */
         val IGNORE_NAME: Name = Name.identifier("ignore")
 
-        /** `@ComposePreviewLabOption(collectScope = ...)` argument name. */
-        val COLLECT_SCOPE_NAME: Name = Name.identifier("collectScope")
+        /** `@ComposePreviewLabOption(collectScopes = ...)` argument name. */
+        val COLLECT_SCOPE_NAME: Name = Name.identifier("collectScopes")
     }
 }
 

@@ -9,14 +9,19 @@
 open annotation class me.tbsten.compose.preview.lab/ComposePreviewLabOption : kotlin/Annotation { // me.tbsten.compose.preview.lab/ComposePreviewLabOption|null[0]
     constructor <init>(kotlin/String = ..., kotlin/Boolean = ..., kotlin/String = ..., kotlin/Array<kotlin/String> = ...) // me.tbsten.compose.preview.lab/ComposePreviewLabOption.<init>|<init>(kotlin.String;kotlin.Boolean;kotlin.String;kotlin.Array<kotlin.String>){}[0]
 
-    final val collectScope // me.tbsten.compose.preview.lab/ComposePreviewLabOption.collectScope|{}collectScope[0]
-        final fun <get-collectScope>(): kotlin/Array<kotlin/String> // me.tbsten.compose.preview.lab/ComposePreviewLabOption.collectScope.<get-collectScope>|<get-collectScope>(){}[0]
+    final val collectScopes // me.tbsten.compose.preview.lab/ComposePreviewLabOption.collectScopes|{}collectScopes[0]
+        final fun <get-collectScopes>(): kotlin/Array<kotlin/String> // me.tbsten.compose.preview.lab/ComposePreviewLabOption.collectScopes.<get-collectScopes>|<get-collectScopes>(){}[0]
     final val displayName // me.tbsten.compose.preview.lab/ComposePreviewLabOption.displayName|{}displayName[0]
         final fun <get-displayName>(): kotlin/String // me.tbsten.compose.preview.lab/ComposePreviewLabOption.displayName.<get-displayName>|<get-displayName>(){}[0]
     final val id // me.tbsten.compose.preview.lab/ComposePreviewLabOption.id|{}id[0]
         final fun <get-id>(): kotlin/String // me.tbsten.compose.preview.lab/ComposePreviewLabOption.id.<get-id>|<get-id>(){}[0]
     final val ignore // me.tbsten.compose.preview.lab/ComposePreviewLabOption.ignore|{}ignore[0]
         final fun <get-ignore>(): kotlin/Boolean // me.tbsten.compose.preview.lab/ComposePreviewLabOption.ignore.<get-ignore>|<get-ignore>(){}[0]
+
+    final object Companion { // me.tbsten.compose.preview.lab/ComposePreviewLabOption.Companion|null[0]
+        final const val DefaultCollectScope // me.tbsten.compose.preview.lab/ComposePreviewLabOption.Companion.DefaultCollectScope|{}DefaultCollectScope[0]
+            final fun <get-DefaultCollectScope>(): kotlin/String // me.tbsten.compose.preview.lab/ComposePreviewLabOption.Companion.DefaultCollectScope.<get-DefaultCollectScope>|<get-DefaultCollectScope>(){}[0]
+    }
 }
 
 open annotation class me.tbsten.compose.preview.lab/ExperimentalComposePreviewLabApi : kotlin/Annotation { // me.tbsten.compose.preview.lab/ExperimentalComposePreviewLabApi|null[0]

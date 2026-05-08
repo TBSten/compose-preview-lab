@@ -26,7 +26,7 @@ package me.tbsten.compose.preview.lab
  * ```
  *
  * @param scope The collection scope to draw from. Only previews annotated with the matching
- * `@ComposePreviewLabOption(collectScope = ["..."])` end up in the result; previews without an
+ * `@ComposePreviewLabOption(collectScopes = ["..."])` end up in the result; previews without an
  * explicit scope use `"default"`. The argument must reach the compiler plugin's IR pass as a
  * compile-time string constant — an inline string literal or a `const val` reference both
  * work, because both end up as an `IrConst<String>` before our pass runs. Non-`const`
@@ -37,7 +37,7 @@ package me.tbsten.compose.preview.lab
  * @see collectAllModulePreviews
  */
 @OptIn(InternalComposePreviewLabApi::class)
-public fun collectModulePreviews(scope: String = "default"): PreviewExport = PreviewExport(
+public fun collectModulePreviews(scope: String = ComposePreviewLabOption.DefaultCollectScope): PreviewExport = PreviewExport(
     lazy {
         error(
             "[ComposePreviewLab] collectModulePreviews(scope = \"$scope\") was not replaced by the compiler plugin. " +
@@ -92,7 +92,7 @@ public fun collectModulePreviews(scope: String = "default"): PreviewExport = Pre
  * ```
  *
  * @param scope The collection scope to draw from. Only previews annotated with the matching
- * `@ComposePreviewLabOption(collectScope = ["..."])` end up in the result; previews without an
+ * `@ComposePreviewLabOption(collectScopes = ["..."])` end up in the result; previews without an
  * explicit scope use `"default"`. The argument must reach the compiler plugin's IR pass as a
  * compile-time string constant — an inline string literal or a `const val` reference both
  * work, because both end up as an `IrConst<String>` before our pass runs. Non-`const`
@@ -103,7 +103,7 @@ public fun collectModulePreviews(scope: String = "default"): PreviewExport = Pre
  * @see collectModulePreviews
  */
 @OptIn(InternalComposePreviewLabApi::class)
-public fun collectAllModulePreviews(scope: String = "default"): PreviewExport = PreviewExport(
+public fun collectAllModulePreviews(scope: String = ComposePreviewLabOption.DefaultCollectScope): PreviewExport = PreviewExport(
     lazy {
         error(
             "[ComposePreviewLab] collectAllModulePreviews(scope = \"$scope\") was not replaced by the compiler plugin. " +

@@ -12,13 +12,13 @@ import me.tbsten.compose.preview.lab.compiler.isAtLeast
 import me.tbsten.compose.preview.lab.compiler.loadCollectedPreviews
 
 /**
- * End-to-end behaviour of `@ComposePreviewLabOption(collectScope = ["..."])` and
+ * End-to-end behaviour of `@ComposePreviewLabOption(collectScopes = ["..."])` and
  * `collect[All]ModulePreviews(scope = "...")`.
  *
  * Covers the happy paths:
  *
  * - resolution: a preview without the annotation lands in `"default"`; an explicit
- *   `collectScope = ["design"]` lands under `"design"`.
+ *   `collectScopes = ["design"]` lands under `"design"`.
  * - emission: every emitted hint function is named `previewHint_<scope>` so cross-module
  *   discovery can filter by scope at lookup time.
  * - cross-module filter: an app that calls `collectAllModulePreviews(scope = "design")` only
@@ -80,7 +80,7 @@ class PreviewHintScopeTest :
         }
 
         context("explicit scope") {
-            test("@ComposePreviewLabOption(collectScope = \"design\") emits previewHint_design")
+            test("@ComposePreviewLabOption(collectScopes = \"design\") emits previewHint_design")
                 .config(enabled = supports) {
                     val result = base.compile(
                         SourceFile.kotlin(
@@ -89,7 +89,7 @@ class PreviewHintScopeTest :
                             package self
 
                             @org.jetbrains.compose.ui.tooling.preview.Preview
-                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScope = ["design"])
+                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScopes = ["design"])
                             fun Themed() {}
                             """,
                         ),
@@ -113,11 +113,11 @@ class PreviewHintScopeTest :
                             fun A() {}
 
                             @org.jetbrains.compose.ui.tooling.preview.Preview
-                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScope = ["buttons"])
+                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScopes = ["buttons"])
                             fun B() {}
 
                             @org.jetbrains.compose.ui.tooling.preview.Preview
-                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScope = ["layouts"])
+                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScopes = ["layouts"])
                             fun C() {}
                             """,
                         ),
@@ -151,11 +151,11 @@ class PreviewHintScopeTest :
                             fun Plain() {}
 
                             @org.jetbrains.compose.ui.tooling.preview.Preview
-                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScope = ["buttons"])
+                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScopes = ["buttons"])
                             fun PrimaryButton() {}
 
                             @org.jetbrains.compose.ui.tooling.preview.Preview
-                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScope = ["buttons"])
+                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScopes = ["buttons"])
                             fun SecondaryButton() {}
                             """,
                         ),
@@ -189,7 +189,7 @@ class PreviewHintScopeTest :
                             fun Plain() {}
 
                             @org.jetbrains.compose.ui.tooling.preview.Preview
-                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScope = ["buttons"])
+                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScopes = ["buttons"])
                             fun PrimaryButton() {}
                             """,
                         ),
@@ -211,7 +211,7 @@ class PreviewHintScopeTest :
                             package self
 
                             @org.jetbrains.compose.ui.tooling.preview.Preview
-                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScope = ["buttons"])
+                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScopes = ["buttons"])
                             fun PrimaryButton() {}
                             """,
                         ),
@@ -245,11 +245,11 @@ class PreviewHintScopeTest :
                             fun Plain() {}
 
                             @org.jetbrains.compose.ui.tooling.preview.Preview
-                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScope = ["design"])
+                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScopes = ["design"])
                             fun ThemeShowcase() {}
 
                             @org.jetbrains.compose.ui.tooling.preview.Preview
-                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScope = ["design"])
+                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScopes = ["design"])
                             fun ColorPalette() {}
                             """,
                         ),
@@ -291,11 +291,11 @@ class PreviewHintScopeTest :
                             package uilib
 
                             @org.jetbrains.compose.ui.tooling.preview.Preview
-                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScope = ["design"])
+                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScopes = ["design"])
                             fun A() {}
 
                             @org.jetbrains.compose.ui.tooling.preview.Preview
-                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScope = ["feature"])
+                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScopes = ["feature"])
                             fun B() {}
                             """,
                         ),
@@ -337,11 +337,11 @@ class PreviewHintScopeTest :
                             package uilib
 
                             @org.jetbrains.compose.ui.tooling.preview.Preview
-                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScope = ["design"])
+                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScopes = ["design"])
                             fun DesignA() {}
 
                             @org.jetbrains.compose.ui.tooling.preview.Preview
-                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScope = ["feature"])
+                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScopes = ["feature"])
                             fun FeatureA() {}
 
                             @org.jetbrains.compose.ui.tooling.preview.Preview
@@ -379,7 +379,7 @@ class PreviewHintScopeTest :
                 }
         }
         context("multi-scope (one preview, multiple buckets)") {
-            test("@ComposePreviewLabOption(collectScope = [\"design\", \"showcase\"]) lands the same preview in both buckets")
+            test("@ComposePreviewLabOption(collectScopes = [\"design\", \"showcase\"]) lands the same preview in both buckets")
                 .config(enabled = supports) {
                     val libResult = base.compile(
                         SourceFile.kotlin(
@@ -389,7 +389,7 @@ class PreviewHintScopeTest :
 
                             @org.jetbrains.compose.ui.tooling.preview.Preview
                             @me.tbsten.compose.preview.lab.ComposePreviewLabOption(
-                                collectScope = ["design", "showcase"]
+                                collectScopes = ["design", "showcase"]
                             )
                             fun Shared() {}
                             """,
