@@ -4,6 +4,7 @@
 
 package me.tbsten.compose.preview.lab.compiler.fir
 
+import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.descriptors.Visibilities
@@ -98,7 +99,8 @@ import org.jetbrains.kotlin.name.Name
  * [ContributionHintFirGenerator](https://github.com/ZacSweers/metro/blob/main/compiler/src/main/kotlin/dev/zacsweers/metro/compiler/fir/generators/ContributionHintFirGenerator.kt),
  * combined with the fixed-name discovery approach of the legacy module-aggregation hint.
  */
-internal class PreviewHintFirGenerator(session: FirSession) : FirDeclarationGenerationExtension(session) {
+internal class PreviewHintFirGenerator(session: FirSession, private val compat: CompatContext,) :
+    FirDeclarationGenerationExtension(session) {
 
     /**
      * Predicate that locates the `@Preview` functions to generate hints for. Targets both
@@ -171,13 +173,10 @@ internal class PreviewHintFirGenerator(session: FirSession) : FirDeclarationGene
         //   external implementations. Deferred because `sealed` + `@Deprecated(HIDDEN)` needs
         //   cross-Kotlin-version (2.1 through 2.4-Beta) and KLIB IC validation.
         //   follow-up: .local/ticket/followup-sealed-hint-marker-interface.md
-        // TODO: add `@Deprecated(level = HIDDEN)` so user code cannot accidentally reference
-        //   the marker. Deferred because building the FIR annotation has non-trivial
-        //   boilerplate that needs cross-Kotlin-version compatibility checks.
-        //   follow-up: .local/ticket/followup-deprecated-hidden-hint-declarations.md
         val klass = createTopLevelClass(classId, Keys.PreviewLabHintMarkerInterface, ClassKind.INTERFACE) {
             modality = Modality.ABSTRACT
         }
+        klass.markAsDeprecatedHidden(session, compat)
         return klass.symbol
     }
 
@@ -224,9 +223,6 @@ internal class PreviewHintFirGenerator(session: FirSession) : FirDeclarationGene
                         "generateTopLevelClassLikeDeclaration, but symbol provider returned null",
                 )
             val fileName = "PreviewHint_${entry.hash}.kt"
-            // TODO: add `@Deprecated(level = HIDDEN)` so user code cannot directly invoke
-            //   `previewHint(...)`. Cross-module discovery via `referenceFunctions` should
-            //   still work. follow-up: .local/ticket/followup-deprecated-hidden-hint-declarations.md
             createTopLevelFunction(
                 Keys.PreviewLabHint,
                 callableId,
@@ -242,7 +238,7 @@ internal class PreviewHintFirGenerator(session: FirSession) : FirDeclarationGene
                     name = Name.identifier("value"),
                     type = markerSymbol.constructType(isMarkedNullable = true),
                 )
-            }.symbol
+            }.also { it.markAsDeprecatedHidden(session, compat) }.symbol
         }
     }
 

@@ -24,8 +24,9 @@ class PreviewLabFirExtensionRegistrar(private val config: PluginConfig) : FirExt
     override fun ExtensionRegistrarContext.configurePlugin() {
         +({ session: FirSession -> PreviewLabFirBuiltIns(session, config) })
         +::PreviewLabFirStatusTransformerExtension
-        if (CompatContext.load().supportsKlibCrossModuleHint()) {
-            +::PreviewHintFirGenerator
+        val compat = CompatContext.load()
+        if (compat.supportsKlibCrossModuleHint()) {
+            +({ session: FirSession -> PreviewHintFirGenerator(session, compat) })
         }
     }
 }
