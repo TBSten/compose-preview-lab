@@ -7,16 +7,16 @@ import io.kotest.matchers.shouldBe
 import me.tbsten.compose.preview.lab.compiler.CompilerPluginTestBase
 
 /**
- * collectModulePreviews() 呼び出し検出のテスト。
+ * Tests for detection of `collectModulePreviews()` call sites.
  *
- * `val previews by collectModulePreviews()` と書くだけで
- * IR フェーズが Lazy の中身を差し替え、@Preview 関数のリストが注入されることを検証する。
+ * Verifies that simply writing `val previews by collectModulePreviews()` is enough for
+ * the IR phase to replace the `Lazy` body and inject the list of `@Preview` functions.
  */
 class CollectPreviewsTest :
     FunSpec({
         val base = CompilerPluginTestBase()
 
-        test("val by collectModulePreviews() に @Preview 関数が収集される") {
+        test("val by collectModulePreviews() collects @Preview functions") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Previews.kt",
@@ -47,7 +47,7 @@ class CollectPreviewsTest :
             previews.size shouldBe 1
         }
 
-        test("@Preview が 0 個でも空リストでコンパイル成功") {
+        test("compiles successfully with an empty list when zero @Preview functions are present") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Entry.kt",
@@ -69,7 +69,7 @@ class CollectPreviewsTest :
             previews.size shouldBe 0
         }
 
-        test("収集された要素が正しい id を持つ") {
+        test("collected entries carry the correct id") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Previews.kt",

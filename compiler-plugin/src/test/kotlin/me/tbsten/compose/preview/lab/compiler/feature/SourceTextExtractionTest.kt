@@ -13,7 +13,7 @@ class SourceTextExtractionTest :
     FunSpec({
         val base = CompilerPluginTestBase()
 
-        test("CollectedPreview.code にソースコード文字列が含まれる") {
+        test("CollectedPreview.code contains the source code string") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Preview.kt",
@@ -36,7 +36,7 @@ class SourceTextExtractionTest :
             code!! shouldContain "42"
         }
 
-        test("KDoc がある場合に kdoc フィールドに反映される") {
+        test("kdoc field is populated when a KDoc is present") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Preview.kt",
@@ -58,7 +58,7 @@ class SourceTextExtractionTest :
             kdoc!! shouldContain "KDoc comment"
         }
 
-        test("KDoc がない場合に kdoc が null") {
+        test("kdoc field is null when no KDoc is present") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Preview.kt",
@@ -78,7 +78,7 @@ class SourceTextExtractionTest :
             kdoc shouldBe null
         }
 
-        test("式ボディ (= ...) の関数から code が抽出される") {
+        test("code is extracted from an expression-body function (= ...)") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Preview.kt",

@@ -42,20 +42,6 @@ internal class PreviewLabIrBodyFiller(
     private val irBuilder = PreviewListIrBuilder(pluginContext, previews, config, compatContext)
 
     /**
-     * Tracks whether at least one hint function was emitted by this transformer.
-     *
-     * Consumed by [PreviewLabIrGenerationExtension] to decide whether to fall back to
-     * auto-hint generation: if no `collectModulePreviews()` / `collectAllModulePreviews()`
-     * sentinel exists in the module, no hint will have been emitted here, and the
-     * module's `@Preview` functions need to be exported via the auto path.
-     *
-     * **Kotlin 2.3.21+**: Hints are emitted by [PreviewLabHintFirGenerator], so this is always false.
-     * The hint discovery happens via [PreviewListIrBuilder.collectDependencyGetters].
-     */
-    var didGenerateAnyHint: Boolean = false
-        private set
-
-    /**
      * Visits each property declaration and replaces the initializer if it matches
      * `collectModulePreviews()` or `collectAllModulePreviews()`.
      */
@@ -115,15 +101,18 @@ internal class PreviewLabIrBodyFiller(
      *         distinctPreviewsById(
      *             mutableListOf<CollectedPreview>().apply {
      *                 addAll(listOf(CollectedPreview(...) { MyButton() })) // this module
-     *                 addAll(uiLibPreviews)                                 // dep module via hint (by-delegate getter returns List<CollectedPreview>)
+     *                 add(previewHint(null))                                // each @Preview from a dep module via per-declaration hint
+     *                 add(previewHint(null))
      *             }
      *         )
      *     }
      * )
      * ```
      *
-     * On JVM, also emits a hint function so downstream `collectAllModulePreviews()` can discover
-     * this property via classpath scanning (see [GeneratePreviewExportHint]).
+     * Cross-module discovery is implemented by [HintDiscovery] using `referenceFunctions`
+     * to find the `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview`
+     * functions emitted by the per-declaration hint generator
+     * ([me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGenerator]).
      */
     private fun replaceCollectPreviewsProperty(property: IrProperty) {
         val delegateField = property.backingField ?: return

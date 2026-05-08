@@ -9,17 +9,20 @@ import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 
 /**
- * JS_IR 版のテストヘルパー。`CompilerPluginTestBase` の JS counterpart。
+ * JS_IR test helper. The JS counterpart of `CompilerPluginTestBase`.
  *
- * KLIB IdSignature 衝突 / cross-module marker class discovery が JS_IR backend で
- * 正しく動くことを検証するテスト用。
+ * Used to verify that KLIB IdSignature collision avoidance and cross-module marker class
+ * discovery work correctly under the JS_IR backend.
  *
- * **JVM 版との差分**:
- * - `inheritClassPath` は JS_IR では classpath だけ参照され、`-libraries` (KLIB) には
- *   伝わらない。代わりにスタブを毎モジュールでインライン source として積む。
- * - 依存モジュール参照は `kotlincArguments = listOf("-libraries", "<klib1>:<klib2>")` で渡す。
- *   `KotlinJsCompilation.jsArgs()` は `args.libraries = stdlib` を設定するが、
- *   `parseCommandLineArguments(kotlincArguments, args)` がその後に走るので上書きできる。
+ * **Differences from the JVM helper**:
+ * - `inheritClassPath` only feeds the JS_IR classpath; it does not propagate to
+ *   `-libraries` (KLIB). To compensate, the stub sources are added inline to every
+ *   compilation.
+ * - Dependency-module references are passed via
+ *   `kotlincArguments = listOf("-libraries", "<klib1>:<klib2>")`. While
+ *   `KotlinJsCompilation.jsArgs()` sets `args.libraries = stdlib`, the call to
+ *   `parseCommandLineArguments(kotlincArguments, args)` runs afterwards and can
+ *   overwrite it.
  */
 @OptIn(ExperimentalCompilerApi::class)
 open class CompilerPluginJsTestBase {
@@ -92,13 +95,15 @@ open class CompilerPluginJsTestBase {
     )
 
     /**
-     * JS_IR `.klib` 出力を 1 モジュール分作る。
+     * Produces one JS_IR `.klib` for a single module.
      *
-     * - [extraLibraries] は `-libraries` に追加される `.klib` パス (Stage1 出力など)
-     * - `previewAnnotationStubs` / `collectPreviewsStubs` は毎呼び出しでインライン化されるため、
-     *   2 段ビルド時は依存側 KLIB と app 側 KLIB の両方に同じ stub class が含まれる。これは
-     *   `IdSignature` レベルでは衝突しないが、preview lab plugin が依存解決時に自モジュールを
-     *   除外するロジック (`IR_EXTERNAL_DECLARATION_STUB`) によって正しく扱われる。
+     * - [extraLibraries] is appended to `-libraries` as additional `.klib` paths (e.g.
+     *   the Stage 1 output).
+     * - `previewAnnotationStubs` / `collectPreviewsStubs` are inlined on every call, so a
+     *   two-stage build ends up shipping the same stub classes in both the dependency's
+     *   KLIB and the app's KLIB. This does not collide at the `IdSignature` level: the
+     *   plugin's dependency-resolution logic excludes self-emitted declarations via
+     *   `IR_EXTERNAL_DECLARATION_STUB`.
      */
     fun compileJs(
         vararg sources: SourceFile,
@@ -164,8 +169,8 @@ open class CompilerPluginJsTestBase {
 }
 
 /**
- * 出力 `.klib` ファイルを返す。`KotlinJsCompilation.outputDir` 配下に
- * `<moduleName>.klib` (or unpacked dir) が生成される。
+ * Returns the produced `.klib` files. `KotlinJsCompilation.outputDir` contains a
+ * `<moduleName>.klib` (or an unpacked directory).
  */
 internal fun JsCompilationResult.klibFiles(): List<java.io.File> {
     val outputDir = this.outputDirectory

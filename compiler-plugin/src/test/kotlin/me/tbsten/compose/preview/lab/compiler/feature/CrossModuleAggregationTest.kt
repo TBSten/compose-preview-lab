@@ -14,20 +14,25 @@ class CrossModuleAggregationTest :
             val base = CompilerPluginTestBase()
 
             /*
-             * `collectAllModulePreviews()` が依存モジュールの preview を **手動 Gradle 設定なしで**
-             * 自動集約することを 2 段 kctfork compilation で検証する。
+             * Verifies that `collectAllModulePreviews()` automatically aggregates the
+             * previews from dependency modules **without any manual Gradle wiring**, via
+             * a two-stage kctfork compilation.
              *
-             * 流れ:
-             * 1. uiLib1 / uiLib2 をそれぞれ独立にコンパイル
-             *    (compiler plugin の hint generator が `me.tbsten.compose.preview.lab.exports.previewLabExport`
-             *     hint 関数を synthetic file で生成する)
-             * 2. app を uiLib1 / uiLib2 の output を classpath に追加してコンパイル
-             *    (compiler plugin の `collectAllModulePreviews()` 置換ロジックが、依存 jar から
-             *     hint 関数を `pluginContext.referenceFunctions` で発見し、原 property を resolve、
-             *     その値を集約に組み込む)
-             * 3. リフレクションで `app.appPreviews` を読み出し、両モジュールの preview が含まれることを検証
+             * Flow:
+             * 1. Compile uiLib1 / uiLib2 independently. (The compiler plugin's FIR
+             *    generator emits one
+             *    `me.tbsten.compose.preview.lab.hints.previewHint(value: PreviewHintMarker_..._<hash>?): CollectedPreview`
+             *    hint per `@Preview`, with a sibling marker interface in the same
+             *    package.)
+             * 2. Compile app with uiLib1 / uiLib2 outputs added to its classpath. (The
+             *    compiler plugin's `collectAllModulePreviews()` rewrite discovers each
+             *    hint via `pluginContext.referenceFunctions(CallableId(HINT_PACKAGE, "previewHint"))`,
+             *    invokes it with `null`, and folds the returned `CollectedPreview` into
+             *    the aggregated list.)
+             * 3. Read `app.appPreviews` via reflection and assert that both modules'
+             *    previews are present.
              */
-            test("collectAllModulePreviews() が依存モジュール 2 つの preview を手動設定なしで集約する") {
+            test("collectAllModulePreviews() aggregates two dependency modules' previews without manual wiring") {
                 // Stage 1a: uiLib1
                 val lib1Result = base.compile(
                     SourceFile.kotlin(
@@ -63,7 +68,7 @@ class CrossModuleAggregationTest :
                 )
                 lib2Result.exitCode shouldBe KotlinCompilation.ExitCode.OK
 
-                // Stage 2: app — uiLib1/uiLib2 の output を classpath に追加して compile
+                // Stage 2: app — compile with uiLib1/uiLib2 outputs added to the classpath.
                 val appResult = base.compile(
                     SourceFile.kotlin(
                         "App.kt",
@@ -79,7 +84,7 @@ class CrossModuleAggregationTest :
                 )
                 appResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
 
-                // 検証: appPreviews には app + uiLib1 + uiLib2 の合計 4 つの preview が含まれる
+                // Assert: appPreviews contains 4 entries total — app + uiLib1 (×2) + uiLib2.
                 val previews = appResult.loadCollectedPreviews(propertyName = "appPreviews")
                 val ids = previews.map { p -> p::class.members.find { it.name == "id" }!!.call(p) as String }
                 ids shouldContainExactlyInAnyOrder listOf(
@@ -90,7 +95,7 @@ class CrossModuleAggregationTest :
                 )
             }
 
-            test("依存なしの単一モジュールでも collectAllModulePreviews() が動く") {
+            test("collectAllModulePreviews() works on a standalone module with no dependencies") {
                 val result = base.compile(
                     SourceFile.kotlin(
                         "App.kt",
@@ -109,9 +114,9 @@ class CrossModuleAggregationTest :
                 previews.size shouldBe 1
             }
 
-            test("依存モジュール側で collectAllModulePreviews() を使った property も上位の集約に含まれる") {
-                // Stage 1: uiLib — このモジュール自身が collectAllModulePreviews() を使う
-                // (依存無しなので uiLibPreviews には UiLibPreview のみ含まれる)
+            test("a dependency module that itself uses collectAllModulePreviews() still gets aggregated upstream") {
+                // Stage 1: uiLib — this module itself calls collectAllModulePreviews().
+                // (It has no dependencies, so uiLibPreviews contains only UiLibPreview.)
                 val uiLibResult = base.compile(
                     SourceFile.kotlin(
                         "UiLib.kt",
@@ -127,7 +132,7 @@ class CrossModuleAggregationTest :
                 )
                 uiLibResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
 
-                // Stage 2: app — uiLib を classpath に追加して collectAllModulePreviews() で集約
+                // Stage 2: app — add uiLib to the classpath and aggregate with collectAllModulePreviews().
                 val appResult = base.compile(
                     SourceFile.kotlin(
                         "App.kt",
@@ -151,10 +156,11 @@ class CrossModuleAggregationTest :
                 )
             }
 
-            test("collectModulePreviews() なしで @Preview だけ持つ依存モジュールも自動収集される") {
-                // 子モジュールが `val xxxPreviews by collectModulePreviews()` を一切書かなくても、
-                // compiler plugin が auto provider function + hint を自動生成し、
-                // app の `collectAllModulePreviews()` から発見される。
+            test("a dependency module with @Preview but no collectModulePreviews() is still auto-collected") {
+                // Even if the child module never writes
+                // `val xxxPreviews by collectModulePreviews()`, the compiler plugin
+                // synthesizes an auto-provider function plus a hint, which the app's
+                // `collectAllModulePreviews()` then discovers.
                 val libResult = base.compile(
                     SourceFile.kotlin(
                         "UiLib.kt",
@@ -167,7 +173,7 @@ class CrossModuleAggregationTest :
                     @org.jetbrains.compose.ui.tooling.preview.Preview
                     fun UiLibPreview2() {}
 
-                    // collectModulePreviews() は意図的に書かない
+                    // Intentionally no collectModulePreviews() call.
                     """,
                     ),
                 )
@@ -197,9 +203,10 @@ class CrossModuleAggregationTest :
                 )
             }
 
-            test("default package (package 宣言なし) のモジュールでも auto-collect が動く") {
-                // package 宣言を持たないファイルでも provider 関数名生成パスが正常に動作すること。
-                // (sanitizedPkg は `DEFAULT_PACKAGE_TOKEN` にフォールバックする)
+            test("auto-collect also works for modules in the default (no-declared) package") {
+                // Verifies that the provider-name generation path also handles files
+                // without a package declaration.
+                // (sanitizedPkg falls back to `DEFAULT_PACKAGE_TOKEN`.)
                 val libResult = base.compile(
                     SourceFile.kotlin(
                         "RootPkgLib.kt",
@@ -233,9 +240,9 @@ class CrossModuleAggregationTest :
                 ids shouldContainExactlyInAnyOrder listOf("app.AppPreview", "RootPreview")
             }
 
-            test("同一モジュール内の複数パッケージにまたがる @Preview がすべて auto-collect される") {
-                // provider 関数名は最初の preview の package から派生するが、
-                // body に含まれる preview は package を問わず全部であることを保証する。
+            test("@Previews spread across multiple packages within one module are all auto-collected") {
+                // The provider function name is derived from the first preview's package,
+                // but the body must include every preview regardless of package.
                 val libResult = base.compile(
                     SourceFile.kotlin(
                         "FeatureA.kt",
@@ -284,11 +291,12 @@ class CrossModuleAggregationTest :
                 )
             }
 
-            test("同じパッケージを共有する 2 つの auto-collect 依存モジュールが両方とも収集される") {
-                // 複数の依存モジュールが同じパッケージ名を使うケース
-                // (例: マルチモジュールプロジェクトでモジュール間で base package を共有する)。
-                // provider function 名がパッケージのみから派生していると名前衝突して
-                // 片方の preview がサイレントに脱落する回帰を防ぐ。
+            test("two auto-collect dependency modules that share the same package are both collected") {
+                // Covers the case where multiple dependency modules use the same package
+                // name (e.g. a multi-module project where modules share a base package).
+                // Guards against regressions where the provider function name was derived
+                // from only the package and one preview silently disappeared due to a
+                // name collision.
                 val libAResult = base.compile(
                     SourceFile.kotlin(
                         "LibA.kt",
@@ -342,8 +350,8 @@ class CrossModuleAggregationTest :
                 )
             }
 
-            test("auto-collect モジュールと manual collectModulePreviews() モジュールが混在しても重複しない") {
-                // Stage 1: manualLib — 明示的に collectModulePreviews() を書く
+            test("auto-collect and manual collectModulePreviews() modules can be mixed without duplicates") {
+                // Stage 1: manualLib — explicitly writes collectModulePreviews().
                 val manualLibResult = base.compile(
                     SourceFile.kotlin(
                         "ManualLib.kt",
@@ -359,7 +367,7 @@ class CrossModuleAggregationTest :
                 )
                 manualLibResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
 
-                // Stage 2: autoLib — collectModulePreviews() を書かない (auto-hint 経路)
+                // Stage 2: autoLib — no collectModulePreviews() call (auto-hint path).
                 val autoLibResult = base.compile(
                     SourceFile.kotlin(
                         "AutoLib.kt",
@@ -373,7 +381,7 @@ class CrossModuleAggregationTest :
                 )
                 autoLibResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
 
-                // Stage 3: app — 両モジュールを classpath に追加
+                // Stage 3: app — add both modules to the classpath.
                 val appResult = base.compile(
                     SourceFile.kotlin(
                         "App.kt",
@@ -398,8 +406,8 @@ class CrossModuleAggregationTest :
                 )
             }
 
-            test("3 段の入れ子: app(all) → ui(all) → core(single) で全 preview が集約され重複しない") {
-                // Stage 1: core — collectModulePreviews()
+            test("3-level nesting: app(all) → ui(all) → core(single) aggregates every preview without duplicates") {
+                // Stage 1: core — collectModulePreviews().
                 val coreResult = base.compile(
                     SourceFile.kotlin(
                         "CoreLib.kt",
@@ -415,8 +423,8 @@ class CrossModuleAggregationTest :
                 )
                 coreResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
 
-                // Stage 2: ui — core を classpath に追加して collectAllModulePreviews()
-                // (uiPreviews には UiPreview + CorePreview が含まれる)
+                // Stage 2: ui — add core to the classpath and call
+                // collectAllModulePreviews(). (uiPreviews contains UiPreview + CorePreview.)
                 val uiResult = base.compile(
                     SourceFile.kotlin(
                         "UiLib.kt",
@@ -433,9 +441,10 @@ class CrossModuleAggregationTest :
                 )
                 uiResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
 
-                // Stage 3: app — ui と core を classpath に追加して collectAllModulePreviews()
-                // app は ui の集約結果 (Ui+Core) と core の hint 由来 (Core) の双方を発見するが、
-                // 期待動作としては id 単位で重複排除されること
+                // Stage 3: app — add both ui and core to the classpath and call
+                // collectAllModulePreviews(). app discovers both ui's aggregated result
+                // (Ui+Core) and core's hint-emitted entry (Core); the expected behavior
+                // is that the result is deduplicated by id.
                 val appResult = base.compile(
                     SourceFile.kotlin(
                         "App.kt",

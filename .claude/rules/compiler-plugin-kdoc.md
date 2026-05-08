@@ -17,6 +17,8 @@ paths:
 
 ## 要件
 
+基本的に英語で書く。
+
 これらの関数の KDoc には、**何が入って・何が出る/書き換わるか** を Kotlin
 ソース相当の擬似コードで示すこと。最低限、以下のいずれかのパターンを使う:
 
@@ -26,6 +28,16 @@ paths:
 
 擬似コードは「semantically equivalent な Kotlin ソース」で十分 (`@Composable lambda` を素朴な lambda で書く、など)。**バイトコードや
 IR dump をそのまま貼る必要はない** が、読み手が compile 結果を頭で再現できる粒度であること。
+
+### 利用箇所の列挙はしない
+
+KDoc に「`Used by:` / `使用箇所:` / `Callers:`」のような **呼び出し元の列挙** は書かないこと。 列挙は実装が増えるたびに drift し、 メンテコストが高い。 必要に応じて以下のように **使い方の例** だけ示すこと:
+
+- `Sample call → Resulting IR` 形式の usage example を 1〜2 個示す
+- `[他クラス参照]` リンクで呼び出し関係をたどれるようにする
+- 「いつ呼ばれるか」のセマンティクスは散文で短く書く (`pluginContext.referenceFunctions(...)` で発見される時、 など)
+
+呼び出しグラフは IDE の Find Usages が真の source of truth。 KDoc 側に二重管理しない。
 
 ## 例
 
@@ -122,9 +134,34 @@ fun replaceCollectPreviewsProperty(property: IrProperty)
 
 → 読み手は IR を頭で Kotlin に戻す必要があり、認知負荷が高い。**Kotlin ソースで書く**。
 
+### Bad — 利用箇所を列挙
+
+```kotlin
+/**
+ * Hint stub の origin として使われる key。
+ *
+ * Used by:
+ * - PreviewHintFirGenerator.generateFunctions
+ * - PreviewHintIrBodyFiller.fillHintBody
+ * - PreviewLabIrBodyFiller.replaceCollectPreviewsProperty
+ */
+object PreviewLabHint : GeneratedDeclarationKey()
+```
+
+→ 呼び出し元はリファクタや機能追加で増減する。 KDoc 側で列挙すると簡単に古くなる。 代わりに 1 行の semantics と link で十分:
+
+```kotlin
+/**
+ * Hint stub の origin として使われる key。 IR 側 ([PreviewHintIrBodyFiller]) は
+ * この key で hint 関数を識別して body を埋める。
+ */
+object PreviewLabHint : GeneratedDeclarationKey()
+```
+
 ## チェックリスト (PR レビュー時)
 
 - [ ] `compiler-plugin/.../ir/` 配下に新規追加された public/internal 関数すべてに KDoc がある
 - [ ] KDoc に Before/After (or Input/Generated) の **Kotlin 擬似コードブロック** がある
 - [ ] 例で使われている FQN や型名は実装と一致している
 - [ ] IR dump やバイトコードをそのまま貼っていない (Kotlin ソースで書かれている)
+- [ ] `Used by:` / `使用箇所:` / `Callers:` のような呼び出し元 **列挙** がない (IDE の Find Usages に任せる)

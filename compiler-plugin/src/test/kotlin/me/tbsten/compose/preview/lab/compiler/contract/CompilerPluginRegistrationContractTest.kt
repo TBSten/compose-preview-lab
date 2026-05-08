@@ -10,7 +10,7 @@ class CompilerPluginRegistrationContractTest :
     FunSpec({
         val base = CompilerPluginTestBase()
 
-        test("CompilerPluginRegistrar + CommandLineProcessor で SubpluginOption を受け取れる") {
+        test("CompilerPluginRegistrar + CommandLineProcessor receives SubpluginOption") {
             val source = SourceFile.kotlin(
                 "Main.kt",
                 """

@@ -9,14 +9,15 @@ import me.tbsten.compose.preview.lab.compiler.CompilerPluginTestBase
 import me.tbsten.compose.preview.lab.compiler.loadCollectedPreviews
 
 /**
- * `collectModulePreviews()` で集まった CollectedPreview の各メタデータ
- * (id, displayName, filePath, ソート順, ignore, placeholder 解決, etc.) を検証する。
+ * Verifies the metadata fields on the `CollectedPreview` entries returned by
+ * `collectModulePreviews()` (id, displayName, filePath, sort order, ignore, placeholder
+ * resolution, etc.).
  */
 class CollectedPreviewMetadataTest :
     FunSpec({
         val base = CompilerPluginTestBase()
 
-        test("CollectedPreview が正しい id を持つ") {
+        test("CollectedPreview has the correct id") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Preview.kt",
@@ -36,7 +37,7 @@ class CollectedPreviewMetadataTest :
             id shouldBe "test.source.MyPreview"
         }
 
-        test("CollectedPreview が正しい displayName を持つ") {
+        test("CollectedPreview has the correct displayName") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Preview.kt",
@@ -56,7 +57,7 @@ class CollectedPreviewMetadataTest :
             displayName shouldBe "test.source.DisplayNamePreview"
         }
 
-        test("@ComposePreviewLabOption(displayName) でカスタム displayName が反映される") {
+        test("@ComposePreviewLabOption(displayName) applies a custom displayName") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Preview.kt",
@@ -77,7 +78,7 @@ class CollectedPreviewMetadataTest :
             displayName shouldBe "Custom Name"
         }
 
-        test("CollectedPreview が filePath を持つ") {
+        test("CollectedPreview has a filePath") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Preview.kt",
@@ -97,7 +98,7 @@ class CollectedPreviewMetadataTest :
             filePath shouldNotBe null
         }
 
-        test("収集された CollectedPreview が displayName でソートされている") {
+        test("collected CollectedPreviews are sorted by displayName") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Preview.kt",
@@ -124,7 +125,7 @@ class CollectedPreviewMetadataTest :
             names shouldBe names.sorted()
         }
 
-        test("@Preview 関数が 0 個の場合は空リスト (コンパイルは成功する)") {
+        test("zero @Preview functions produces an empty list (compilation still succeeds)") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "NoPreviews.kt",
@@ -136,12 +137,12 @@ class CollectedPreviewMetadataTest :
                 ),
                 base.collectModulePreviewsEntry(),
             )
-            // @Preview がなくてもコンパイルエラーにならない
+            // No @Preview present, but compilation must still succeed.
             result.exitCode shouldBe KotlinCompilation.ExitCode.OK
             result.loadCollectedPreviews().size shouldBe 0
         }
 
-        test("@ComposePreviewLabOption(id) でカスタム id が反映される") {
+        test("@ComposePreviewLabOption(id) applies a custom id") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Preview.kt",
@@ -162,7 +163,7 @@ class CollectedPreviewMetadataTest :
             id shouldBe "my-custom-id"
         }
 
-        test("プレースホルダー {{package}} {{simpleName}} {{qualifiedName}} が正しく解決される") {
+        test("placeholders {{package}} / {{simpleName}} / {{qualifiedName}} resolve correctly") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Preview.kt",

@@ -11,7 +11,7 @@ class PreviewDiscoveryTest :
     FunSpec({
         val base = CompilerPluginTestBase()
 
-        test("@Preview 関数がコンパイル後に collectModulePreviews() で取得できる") {
+        test("@Preview functions are reachable through collectModulePreviews() after compilation") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Previews.kt",
@@ -29,7 +29,7 @@ class PreviewDiscoveryTest :
             result.loadCollectedPreviews().size shouldBe 1
         }
 
-        test("Android の @Preview も収集される") {
+        test("Android `@Preview` is also collected") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "AndroidPreview.kt",
@@ -47,7 +47,7 @@ class PreviewDiscoveryTest :
             result.loadCollectedPreviews().size shouldBe 1
         }
 
-        test("@ComposePreviewLabOption(ignore=true) の関数はスキップされる") {
+        test("functions marked @ComposePreviewLabOption(ignore=true) are skipped") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Ignored.kt",
@@ -69,7 +69,7 @@ class PreviewDiscoveryTest :
             result.loadCollectedPreviews().size shouldBe 1
         }
 
-        test("@Preview が付いていない関数は収集されない") {
+        test("functions without @Preview are not collected") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Mixed.kt",
@@ -89,7 +89,7 @@ class PreviewDiscoveryTest :
             result.loadCollectedPreviews().size shouldBe 1
         }
 
-        test("Android と CMP の @Preview が混在する場合に両方収集される") {
+        test("when Android and CMP @Preview coexist, both are collected") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "MixedPreviews.kt",
@@ -110,7 +110,7 @@ class PreviewDiscoveryTest :
             result.loadCollectedPreviews().size shouldBe 2
         }
 
-        test("同一ファイル内に複数の @Preview 関数がある場合に全て収集される") {
+        test("multiple @Preview functions in the same file are all collected") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "MultiPreviews.kt",
@@ -134,7 +134,7 @@ class PreviewDiscoveryTest :
             result.loadCollectedPreviews().size shouldBe 3
         }
 
-        test("異なるパッケージの同名 @Preview 関数が衝突しない") {
+        test("same-name @Preview functions in different packages do not collide") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "com/example/a/Preview.kt",

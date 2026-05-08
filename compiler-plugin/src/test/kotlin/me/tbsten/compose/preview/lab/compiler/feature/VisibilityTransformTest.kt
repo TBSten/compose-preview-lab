@@ -12,7 +12,7 @@ class VisibilityTransformTest :
     FunSpec({
         val base = CompilerPluginTestBase()
 
-        test("private な @Preview 関数が internal に変更され collectModulePreviews() から参照できる") {
+        test("a private @Preview function is widened to internal and reachable from collectModulePreviews()") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "PrivatePreview.kt",
@@ -27,11 +27,12 @@ class VisibilityTransformTest :
             )
             result.exitCode shouldBe KotlinCompilation.ExitCode.OK
 
-            // collectModulePreviews() から参照できること (= コンパイルが通ること自体が証拠)
+            // Reachable from collectModulePreviews() — the fact that compilation
+            // succeeds is itself the evidence.
             result.loadCollectedPreviews().size shouldBe 1
         }
 
-        test("public な @Preview 関数の visibility は変更されない") {
+        test("a public @Preview function's visibility is left unchanged") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "PublicPreview.kt",
@@ -50,12 +51,12 @@ class VisibilityTransformTest :
                 .loadClass("test.source.PublicPreviewKt")
                 .methods
                 .find { it.name == "PublicPreview" }
-            // public のまま (Modifiers.isPublic)
+            // Stays public (Modifiers.isPublic).
             method shouldNotBe null
             java.lang.reflect.Modifier.isPublic(method!!.modifiers) shouldBe true
         }
 
-        test("internal な @Preview 関数は visibility が変更されない") {
+        test("an internal @Preview function's visibility is left unchanged") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "InternalPreview.kt",
@@ -70,7 +71,8 @@ class VisibilityTransformTest :
             )
             result.exitCode shouldBe KotlinCompilation.ExitCode.OK
 
-            // internal は JVM では public になるため、コンパイルが通ることで確認
+            // `internal` is mangled to public on the JVM, so successful compilation is
+            // sufficient evidence that the visibility is unchanged.
             result.loadCollectedPreviews().size shouldBe 1
         }
     })

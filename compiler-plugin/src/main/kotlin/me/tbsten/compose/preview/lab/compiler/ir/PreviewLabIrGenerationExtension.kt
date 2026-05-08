@@ -8,14 +8,19 @@ import me.tbsten.compose.preview.lab.compiler.compat.getAnnotationCompat
 import me.tbsten.compose.preview.lab.compiler.compat.hasAnnotationCompat
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.cli.common.messages.CompilerMessageLocation
+import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
+import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.IrConst
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
+import org.jetbrains.kotlin.ir.types.classFqName
+import org.jetbrains.kotlin.ir.types.isMarkedNullable
 import org.jetbrains.kotlin.ir.util.file
+import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.platform.jvm.isJvm
 
 /**
  * IR generation extension for Compose Preview Lab.
@@ -41,42 +46,43 @@ class PreviewLabIrGenerationExtension(
             PreviewLabIrBodyFiller(pluginContext, config, moduleFragment, previews, compatContext, messageCollector)
         compatContext.transformModuleFragment(moduleFragment, bodyFiller)
 
-        // Fill bodies into the marker classes / hint functions emitted by
-        // `PreviewLabHintFirGenerator`. Bodies cannot be generated at the FIR layer, so the FIR
-        // generator hands the IR pass empty constructors / functions and we materialize them
-        // here. Skipping this step makes the JVM backend assert with
-        // `Function has no body: CONSTRUCTOR GENERATED[Keys.PreviewLabHintMarker]`.
+        // Body filler for the per-declaration hints. Fills the body of every
+        // `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` emitted by the
+        // FIR generator (the function name is fixed to `previewHint`; the hash is
+        // recovered from the marker class short name).
+        // Hint emission does not filter `ignore=true`, so the lookup used by the body
+        // filler must include ignored previews too.
         if (compatContext.supportsKlibCrossModuleHint()) {
+            val previewsIncludingIgnored = collectPreviewsIncludingIgnored(moduleFragment)
+            val previewsByHash = buildPreviewByHashMap(previewsIncludingIgnored) { hash, existing, conflicting ->
+                val existingSignature = existing.function.canonicalSignatureForReport()
+                val conflictingSignature = conflicting.function.canonicalSignatureForReport()
+                val message = "[ComposePreviewLab] hint hash collision detected on `$hash`. " +
+                    "Two distinct @Preview functions hash to the same value: " +
+                    "`$existingSignature` and `$conflictingSignature`. " +
+                    "This is astronomically rare (~10⁻⁷ at 1k previews) but indicates a SHA-256 " +
+                    "truncation collision. Workaround: rename one of the functions or its package."
+                // Report at the *new* (conflicting) function's location so the build log points at
+                // the second @Preview that triggered the collision; the first one is named in the
+                // message body.
+                messageCollector.report(
+                    CompilerMessageSeverity.ERROR,
+                    message,
+                    conflicting.function.compilerMessageLocation(),
+                )
+            }
             compatContext.transformModuleFragment(
                 moduleFragment,
-                PreviewLabHintIrBodyFiller(pluginContext, compatContext, previews, config),
+                PreviewHintIrBodyFiller(pluginContext, compatContext, previewsByHash),
             )
         }
-
-        // Auto-provider emission.
-        //
-        // - Kotlin 2.3.21+ (any platform): `PreviewLabHintFirGenerator` declared one
-        //   `previewLabAutoProvider_<hash>` stub alongside each marker / hint via FIR's
-        //   standard declaration pipeline; `PreviewLabHintIrBodyFiller` (above) just filled
-        //   the body. Going through FIR is what gives the function a proper KLIB IdSignature
-        //   that consumers can resolve. The leaf-only emission gate in
-        //   `PreviewLabHintEntries.compute` ensures exactly one provider per Kotlin module
-        //   compile, even for KMP modules with multiple source-set sessions.
-        // - Older Kotlin (JVM only via the existing version gate): no FIR hint runs, so we
-        //   fall back to the legacy IR-based path that emits both the provider and a
-        //   `previewLabExport(PreviewExport)` hint. Conditioned on `!bodyFiller.didGenerateAnyHint`
-        //   and `previews.isNotEmpty()` to keep the previous behaviour intact.
-        if (!compatContext.supportsKlibCrossModuleHint() &&
-            previews.isNotEmpty() &&
-            !bodyFiller.didGenerateAnyHint &&
-            pluginContext.platform?.isJvm() == true
-        ) {
-            val sourceFile = previews.first().function.file
-            val legacyHash = computeAutoProviderName(moduleFragment, config).asString()
-                .removePrefix(AutoProviderPrefix)
-            GenerateAutoPreviewExport(pluginContext, moduleFragment, compatContext, previews, config)
-                .invoke(sourceFile, legacyHash)
-        }
+        // On older Kotlin (<2.3.21) the hint generator is not active, so
+        // collectAllModulePreviews() cannot perform cross-module aggregation.
+        // PreviewLabIrBodyFiller.reportUnsupportedCollectAllError detects the
+        // `val by collectAllModulePreviews()` by-delegate pattern in the IR phase and
+        // surfaces a compile-time error via MessageCollector.
+        // collectModulePreviews() on its own only injects this module's previews via
+        // an IR transform, so it works without a version gate.
     }
 
     private fun collectPreviews(moduleFragment: IrModuleFragment): List<PreviewFunctionInfo> {
@@ -88,6 +94,23 @@ class PreviewLabIrGenerationExtension(
             }
         }
         return result.sortedBy { it.displayName }
+    }
+
+    /**
+     * Collects every `@Preview`-annotated function including those marked
+     * `@ComposePreviewLabOption(ignore = true)`. The per-declaration hint body filler must
+     * fill the body even for `ignore = true`, so it uses this function instead of the
+     * filtered [collectPreviews].
+     */
+    private fun collectPreviewsIncludingIgnored(moduleFragment: IrModuleFragment): List<PreviewFunctionInfo> {
+        val result = mutableListOf<PreviewFunctionInfo>()
+        for (file in moduleFragment.files) {
+            for (decl in file.declarations) {
+                if (decl !is IrSimpleFunction) continue
+                buildPreviewInfoOrNull(decl, includeIgnored = true)?.let { result.add(it) }
+            }
+        }
+        return result
     }
 
     /**
@@ -118,12 +141,21 @@ class PreviewLabIrGenerationExtension(
      * Template placeholders `{{package}}`, `{{simpleName}}`, `{{qualifiedName}}` are resolved
      * in both `displayName` and `id`.
      */
-    private fun buildPreviewInfo(func: IrSimpleFunction): PreviewFunctionInfo? {
+    private fun buildPreviewInfo(func: IrSimpleFunction): PreviewFunctionInfo? =
+        buildPreviewInfoOrNull(func, includeIgnored = false)
+
+    /**
+     * Internal variant of [buildPreviewInfo]. When [includeIgnored] = true, returns a
+     * [PreviewFunctionInfo] even for `ignore = true` previews, instead of dropping them.
+     * Used by the per-declaration hint body filler so that hint bodies for
+     * `@ComposePreviewLabOption(ignore = true)` previews can still be filled in.
+     */
+    internal fun buildPreviewInfoOrNull(func: IrSimpleFunction, includeIgnored: Boolean): PreviewFunctionInfo? {
         if (!func.hasAnnotationCompat(CMP_PREVIEW_FQ) && !func.hasAnnotationCompat(ANDROID_PREVIEW_FQ)) return null
 
         val optionAnno = func.getAnnotationCompat(CPL_OPTION_FQ)
         val ignore = (optionAnno?.arguments?.getOrNull(1) as? IrConst)?.value as? Boolean ?: false
-        if (ignore) return null
+        if (ignore && !includeIgnored) return null
 
         val packageName = func.file.packageFqName.asString()
         val simpleName = func.name.asString()
@@ -155,4 +187,30 @@ class PreviewLabIrGenerationExtension(
 
         return PreviewFunctionInfo(func, id, displayName, filePath, startLineNumber, endLineNumber, code, kdoc)
     }
+}
+
+/**
+ * Builds a human-readable signature in the form `<sourceFqn>(<paramType1>, <paramType2>, ...)`.
+ *
+ * Used in hash-collision error reports where same-name overloads must be told apart.
+ * Carries the same information as the canonical key fed into the hash, but uses
+ * `, ` instead of `,` as the separator to read more naturally.
+ */
+private fun IrSimpleFunction.canonicalSignatureForReport(): String {
+    val params = parameters.filter { it.kind == IrParameterKind.Regular }.joinToString(", ") { p ->
+        val classFqn = p.type.classFqName?.asString() ?: "?"
+        if (p.type.isMarkedNullable()) "$classFqn?" else classFqn
+    }
+    return "${kotlinFqName.asString()}($params)"
+}
+
+/**
+ * Build a [CompilerMessageLocation] pointing at the function's declaration site so that
+ * `MessageCollector.report` produces a clickable location in IDE / CI logs.
+ */
+private fun IrSimpleFunction.compilerMessageLocation(): CompilerMessageLocation? {
+    val fileEntry = file.fileEntry
+    val line = fileEntry.getLineNumber(startOffset) + 1
+    val column = fileEntry.getColumnNumber(startOffset) + 1
+    return CompilerMessageLocation.create(fileEntry.name, line, column, lineContent = null)
 }

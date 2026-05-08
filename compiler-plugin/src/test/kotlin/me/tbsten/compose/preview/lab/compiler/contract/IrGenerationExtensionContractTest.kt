@@ -9,13 +9,13 @@ import me.tbsten.compose.preview.lab.compiler.CompilerPluginTestBase
 import me.tbsten.compose.preview.lab.compiler.loadCollectedPreviews
 
 /**
- * IrGenerationExtension の Compiler API 挙動を検証するコントラクトテスト。
+ * Contract test that verifies the compiler-API behavior of `IrGenerationExtension`.
  */
 class IrGenerationExtensionContractTest :
     FunSpec({
         val base = CompilerPluginTestBase()
 
-        test("IR で IrConstructorCall を構築してデータクラスのインスタンスを生成できる") {
+        test("can build an IrConstructorCall in IR to create a data-class instance") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Input.kt",
@@ -36,7 +36,7 @@ class IrGenerationExtensionContractTest :
             idField shouldNotBe null
         }
 
-        test("IR で lambda 式を構築できる") {
+        test("can build a lambda expression in IR") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Input.kt",

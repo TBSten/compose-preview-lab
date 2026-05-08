@@ -11,7 +11,7 @@ class AggregationTest :
     FunSpec({
         val base = CompilerPluginTestBase()
 
-        test("collectAllModulePreviews() に @Preview 関数が収集される") {
+        test("collectAllModulePreviews() collects @Preview functions") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Preview.kt",
@@ -29,7 +29,7 @@ class AggregationTest :
             result.loadCollectedPreviews(propertyName = "allPreviews").size shouldBe 1
         }
 
-        test("単一モジュールで collectAllModulePreviews() が collectModulePreviews() と同じ内容になる") {
+        test("collectAllModulePreviews() matches collectModulePreviews() in a single-module project") {
             val result = base.compile(
                 SourceFile.kotlin(
                     "Preview.kt",

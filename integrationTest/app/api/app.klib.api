@@ -7,6 +7,8 @@
 // - Show declarations: true
 
 // Library unique name: <Compose-Preview-Lab-Integration-Test:app>
+abstract interface me.tbsten.compose.preview.lab.hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_ComposeMultiplatformWizardDefaultUIPreview_iogqwxq2 // me.tbsten.compose.preview.lab.hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_ComposeMultiplatformWizardDefaultUIPreview_iogqwxq2|null[0]
+
 final object app/FeaturedFileList : kotlin.collections/Map<kotlin/String, kotlin.collections/List<kotlin/String>> { // app/FeaturedFileList|null[0]
     final val entries // app/FeaturedFileList.entries|{}entries[0]
         final fun <get-entries>(): kotlin.collections/Set<kotlin.collections/Map.Entry<kotlin/String, kotlin.collections/List<kotlin/String>>> // app/FeaturedFileList.entries.<get-entries>|<get-entries>(){}[0]
@@ -50,6 +52,7 @@ final fun compose_preview_lab_integration_test.app.generated.resources/compose_p
 final fun compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_font$stableprop_getter(): kotlin/Int // compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_font$stableprop_getter|compose_preview_lab_integration_test_app_generated_resources_Res_font$stableprop_getter(){}[0]
 final fun compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_plurals$stableprop_getter(): kotlin/Int // compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_plurals$stableprop_getter|compose_preview_lab_integration_test_app_generated_resources_Res_plurals$stableprop_getter(){}[0]
 final fun compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_string$stableprop_getter(): kotlin/Int // compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_string$stableprop_getter|compose_preview_lab_integration_test_app_generated_resources_Res_string$stableprop_getter(){}[0]
+final fun me.tbsten.compose.preview.lab.hints/previewHint(me.tbsten.compose.preview.lab.hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_ComposeMultiplatformWizardDefaultUIPreview_iogqwxq2?): me.tbsten.compose.preview.lab/CollectedPreview // me.tbsten.compose.preview.lab.hints/previewHint|previewHint(me.tbsten.compose.preview.lab.hints.PreviewHintMarker_me_tbsten_compose_preview_lab_sample_ComposeMultiplatformWizardDefaultUIPreview_iogqwxq2?){}[0]
 
 // Targets: [ios]
 final fun /MainViewController(): platform.UIKit/UIViewController // /MainViewController|MainViewController(){}[0]

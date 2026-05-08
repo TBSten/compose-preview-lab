@@ -64,34 +64,6 @@ public interface CompatContext {
     public fun addConstructorCallAnnotation(function: IrSimpleFunction, type: IrType, constructorSymbol: IrConstructorSymbol)
 
     /**
-     * Builds an annotation with constructor [arguments] and adds it to [function].
-     *
-     * In Kotlin 2.1–2.3 annotations are positional `IrConstructorCallImpl.arguments[i]`.
-     * In Kotlin 2.4 annotations switched to `IrAnnotationImpl.argumentMapping: Map<Name, IrExpression>`.
-     * This method abstracts that difference: pass [arguments] in declaration order; the impl
-     * resolves parameter names from [constructorSymbol] when needed.
-     *
-     * **Sample call**:
-     * ```kotlin
-     * addConstructorCallAnnotationWithArgs(
-     *     func, previewExportHintType, hintCtorSymbol,
-     *     listOf(irString(builder, "com.example.myPreviews")),
-     * )
-     * ```
-     *
-     * **Result** (semantically):
-     * ```kotlin
-     * func.annotations += @PreviewExportHint(fqn = "com.example.myPreviews")
-     * ```
-     */
-    public fun addConstructorCallAnnotationWithArgs(
-        function: IrSimpleFunction,
-        type: IrType,
-        constructorSymbol: IrConstructorSymbol,
-        arguments: List<IrExpression>,
-    )
-
-    /**
      * Builds `irCall(callee)` using the version-appropriate IR builder receiver type.
      *
      * In Kotlin 2.2.0 the receiver of [org.jetbrains.kotlin.ir.builders.irCall] was widened
