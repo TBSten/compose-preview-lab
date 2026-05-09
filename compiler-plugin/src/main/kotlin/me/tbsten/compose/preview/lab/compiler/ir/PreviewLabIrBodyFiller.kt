@@ -2,6 +2,7 @@
 
 package me.tbsten.compose.preview.lab.compiler.ir
 
+import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.fir.PreviewLabFirBuiltIns
@@ -167,7 +168,7 @@ internal class PreviewLabIrBodyFiller(
                 // module's configured default scope" rather than the literal string.
                 // This is what makes a Gradle-DSL-only library configuration work without
                 // every consumer call having to repeat the scope string.
-                if (rawValue == PreviewLabFirBuiltIns.DefaultCollectScope) config.defaultCollectScope else rawValue
+                if (rawValue == ComposePreviewLabOption.DefaultCollectScope) config.defaultCollectScope else rawValue
             }
             is ScopeArgResult.NonLiteral -> {
                 reportNonLiteralScopeError(property, callName)

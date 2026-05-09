@@ -1,5 +1,7 @@
 package me.tbsten.compose.preview.lab
 
+import kotlin.jvm.JvmOverloads
+
 /**
  * Provides a delegate that collects `@Preview` functions from **this module only**.
  *
@@ -44,6 +46,7 @@ package me.tbsten.compose.preview.lab
  * @return a [PreviewExport] delegate wrapping the collected preview list; the body is replaced by the compiler plugin
  * @see collectAllModulePreviews
  */
+@JvmOverloads
 @OptIn(InternalComposePreviewLabApi::class)
 public fun collectModulePreviews(scope: String = ComposePreviewLabOption.DefaultCollectScope): PreviewExport = PreviewExport(
     lazy {
@@ -118,6 +121,7 @@ public fun collectModulePreviews(scope: String = ComposePreviewLabOption.Default
  * @return a [PreviewExport] delegate wrapping the aggregated preview list; the body is replaced by the compiler plugin
  * @see collectModulePreviews
  */
+@JvmOverloads
 @OptIn(InternalComposePreviewLabApi::class)
 public fun collectAllModulePreviews(scope: String = ComposePreviewLabOption.DefaultCollectScope): PreviewExport = PreviewExport(
     lazy {

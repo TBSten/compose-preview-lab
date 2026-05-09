@@ -4,6 +4,7 @@
 
 package me.tbsten.compose.preview.lab.compiler.fir
 
+import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.Modality
@@ -385,7 +386,7 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
             ?: return listOf(moduleDefault)
 
         val resolved = rawScopes
-            .map { if (it == PreviewLabFirBuiltIns.DefaultCollectScope) moduleDefault else it }
+            .map { if (it == ComposePreviewLabOption.DefaultCollectScope) moduleDefault else it }
             .filter { PreviewLabFirBuiltIns.SCOPE_VALIDATION_REGEX.matches(it) }
             .distinct()
         return resolved.ifEmpty { null }

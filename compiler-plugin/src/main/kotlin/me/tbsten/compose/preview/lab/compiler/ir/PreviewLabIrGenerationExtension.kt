@@ -2,6 +2,7 @@
 
 package me.tbsten.compose.preview.lab.compiler.ir
 
+import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.getAnnotationCompat
@@ -170,7 +171,9 @@ class PreviewLabIrGenerationExtension(
         // resolve to `"acme_ui"` (substituted) but its unannotated previews stay pinned
         // to `["default"]`, so the in-module filter `scope in scopes` ends up empty.
         val rawScopes = readScopesArgument(optionAnno?.findArgumentByName("collectScopes"))
-        val scopes = rawScopes.map { if (it == DefaultCollectScope) config.defaultCollectScope else it }
+        val scopes = rawScopes.map {
+            if (it == ComposePreviewLabOption.DefaultCollectScope) config.defaultCollectScope else it
+        }
 
         val fileEntry = func.file.fileEntry
         val rawPath = fileEntry.name
@@ -259,18 +262,11 @@ private fun readScopesArgument(arg: IrExpression?): List<String> {
     // shape is the only one we need to recognise here. Verified empirically by gating
     // an `is IrConst -> error(...)` branch and re-running the entire
     // `:compiler-plugin:test` matrix without a single hit.
-    val vararg = arg as? IrVararg ?: return listOf(DefaultCollectScope)
+    val vararg = arg as? IrVararg ?: return listOf(ComposePreviewLabOption.DefaultCollectScope)
     return vararg.elements
         .mapNotNull { (it as? IrConst)?.value as? String }
-        .ifEmpty { listOf(DefaultCollectScope) }
+        .ifEmpty { listOf(ComposePreviewLabOption.DefaultCollectScope) }
 }
-
-/**
- * Mirror of `PreviewLabFirBuiltIns.DefaultCollectScope` for the IR side. The two layers
- * agree on `"default"` so previews without an explicit scope flow through the corresponding
- * default-scope `collect[All]ModulePreviews()` call automatically.
- */
-private const val DefaultCollectScope: String = "default"
 
 /**
  * Builds a human-readable signature in the form `<sourceFqn>(<paramType1>, <paramType2>, ...)`.

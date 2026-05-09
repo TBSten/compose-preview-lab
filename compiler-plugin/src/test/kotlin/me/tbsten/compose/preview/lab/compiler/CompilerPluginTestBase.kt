@@ -48,14 +48,22 @@ open class CompilerPluginTestBase {
         ),
     )
 
-    /** Stubs of `collectModulePreviews` / `collectAllModulePreviews` / `distinctPreviewsById`. */
+    /**
+     * Stubs of `collectModulePreviews` / `collectAllModulePreviews` / `distinctPreviewsById`.
+     *
+     * The default scope value is interpolated from
+     * [me.tbsten.compose.preview.lab.ComposePreviewLabOption.DefaultCollectScope] so the test
+     * stub stays in lockstep with the production sentinel — changing the constant on the
+     * annotation side propagates here automatically (and would cause this stub to compile
+     * with the new value rather than silently desyncing on `"default"`).
+     */
     private val collectPreviewsStubs = listOf(
         SourceFile.kotlin(
             "CollectModulePreviews.kt",
             """
             package me.tbsten.compose.preview.lab
-            fun collectModulePreviews(scope: String = "default"): PreviewExport = PreviewExport(lazy { emptyList() })
-            fun collectAllModulePreviews(scope: String = "default"): PreviewExport = PreviewExport(lazy { emptyList() })
+            fun collectModulePreviews(scope: String = "${me.tbsten.compose.preview.lab.ComposePreviewLabOption.DefaultCollectScope}"): PreviewExport = PreviewExport(lazy { emptyList() })
+            fun collectAllModulePreviews(scope: String = "${me.tbsten.compose.preview.lab.ComposePreviewLabOption.DefaultCollectScope}"): PreviewExport = PreviewExport(lazy { emptyList() })
             fun distinctPreviewsById(previews: List<CollectedPreview>): List<CollectedPreview> =
                 previews.distinctBy { it.id }
             """,

@@ -1,5 +1,6 @@
 package me.tbsten.compose.preview.lab.compiler
 
+import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.CompilerConfigurationKey
 
@@ -40,13 +41,14 @@ data class PluginConfig(
      * The string is validated against `[A-Za-z0-9_]+` at command-line-processor time so an
      * invalid Gradle DSL value fails the build before any source is compiled.
      */
-    val defaultCollectScope: String = "default",
+    val defaultCollectScope: String = ComposePreviewLabOption.DefaultCollectScope,
 ) {
     companion object {
         fun from(configuration: CompilerConfiguration): PluginConfig = PluginConfig(
             projectRootPath = configuration.get(KEY_PROJECT_ROOT_PATH),
             collectPreviewsEnabled = configuration.get(KEY_COLLECT_PREVIEWS_ENABLED) ?: true,
-            defaultCollectScope = configuration.get(KEY_DEFAULT_COLLECT_SCOPE) ?: "default",
+            defaultCollectScope = configuration.get(KEY_DEFAULT_COLLECT_SCOPE)
+                ?: ComposePreviewLabOption.DefaultCollectScope,
         )
     }
 }

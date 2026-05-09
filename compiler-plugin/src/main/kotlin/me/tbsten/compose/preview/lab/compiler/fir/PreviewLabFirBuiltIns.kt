@@ -45,13 +45,6 @@ internal class PreviewLabFirBuiltIns(session: FirSession, val config: PluginConf
         const val PreviewHintFunctionPrefix: String = "previewHint_"
 
         /**
-         * Default `collectScope` value used when no `@ComposePreviewLabOption(collectScopes = ...)`
-         * is present. Must be a valid identifier-shaped scope so it can be embedded directly
-         * into the synthetic hint function name (`previewHint_default`).
-         */
-        const val DefaultCollectScope: String = "default"
-
-        /**
          * Builds the hint function callable id for a given scope. The hint function name
          * always lives in [HINT_PACKAGE], so per-scope discovery only needs to vary the
          * callable name suffix.

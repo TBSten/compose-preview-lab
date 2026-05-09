@@ -166,5 +166,5 @@ abstract class CollectPreviewsConfig @Inject constructor(objects: ObjectFactory)
      * clear error before any source file is compiled.
      */
     var defaultCollectScope: String by objects.property<String>()
-        .convention("default")
+        .convention(ComposePreviewLabOption.DefaultCollectScope)
 }
