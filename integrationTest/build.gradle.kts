@@ -19,6 +19,11 @@ apiValidation {
         listOf(
             "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
             "me.tbsten.compose.preview.lab.UiComposePreviewLabApi",
+            // Mirror root build.gradle.kts: experimental signatures are intentionally excluded
+            // from BCV baseline so experimental→stable promotions show up as concrete diffs.
+            // See root build.gradle.kts for the full Known Limitation note about the
+            // `@property:` JVM/Android asymmetric leak.
+            "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
         ),
     )
 
