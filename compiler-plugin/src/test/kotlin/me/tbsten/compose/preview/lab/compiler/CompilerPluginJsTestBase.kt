@@ -70,6 +70,15 @@ open class CompilerPluginJsTestBase {
             """
             package me.tbsten.compose.preview.lab
 
+            @RequiresOptIn(message = "Internal")
+            @Retention(AnnotationRetention.BINARY)
+            annotation class InternalComposePreviewLabApi
+
+            @InternalComposePreviewLabApi
+            @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
+            @Retention(AnnotationRetention.BINARY)
+            annotation class SyntheticPreviewHint
+
             class CollectedPreview(
                 val id: String,
                 val displayName: String,
