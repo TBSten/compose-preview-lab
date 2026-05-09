@@ -46,8 +46,17 @@ package me.tbsten.compose.preview.lab
  * DSL line in the library — every `@Preview` in that module is then automatically
  * registered under the library scope, with no per-`@Preview` annotation required:
  *
+ * Because the entire scope feature is currently
+ * `@ExperimentalComposePreviewLabApi`-gated (see [ExperimentalComposePreviewLabApi]),
+ * any consumer of `collectScopes` / `collect[All]ModulePreviews(scope = ...)` /
+ * `composePreviewLab.collectPreviews.defaultCollectScope` must opt in. Examples below
+ * place the marker at file scope so they compile when copy-pasted as-is.
+ *
  * ```kotlin
  * // -- inside :ui-library / build.gradle.kts --
+ * // (Gradle build scripts do not propagate Kotlin opt-in. The DSL property is marked
+ * //  experimental for IDE/programmatic-access guidance only — the scripted call below
+ * //  compiles without `@OptIn`.)
  * composePreviewLab {
  *     collectPreviews {
  *         defaultCollectScope = "acme_ui"
@@ -61,6 +70,8 @@ package me.tbsten.compose.preview.lab
  * // ↑ emitted under previewHint_acme_ui because of the DSL above.
  *
  * // -- inside :ui-library / Previews.kt --
+ * @file:OptIn(me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi::class)
+ *
  * val libraryGallery by collectAllModulePreviews(scope = "acme_ui")
  *
  * // -- inside :app (depends on :ui-library) --
@@ -75,6 +86,10 @@ package me.tbsten.compose.preview.lab
  * it. So you can leave `@ComposePreviewLabOption.collectScopes` at its default
  * everywhere and still get module-level isolation.
  *
+ * Note: the no-arg `collectAllModulePreviews()` overload remains stable and does not
+ * require `@OptIn`; only the `scope: String` overload (and the `collectScopes`
+ * annotation argument used to populate it) is currently experimental.
+ *
  * #### Secondary use case — one preview registered in multiple scopes
  *
  * When a single preview legitimately belongs in more than one bucket (e.g. a "showcase"
@@ -82,6 +97,8 @@ package me.tbsten.compose.preview.lab
  * annotation form takes over and lists every scope explicitly:
  *
  * ```kotlin
+ * @file:OptIn(me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi::class)
+ *
  * @ComposePreviewLabOption(collectScopes = ["acme_ui", "showcase"])
  * @Preview @Composable
  * fun ButtonShowcase() { PrimaryButton() }

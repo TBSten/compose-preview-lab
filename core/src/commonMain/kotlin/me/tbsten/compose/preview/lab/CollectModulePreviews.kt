@@ -13,16 +13,41 @@ package me.tbsten.compose.preview.lab
  * The same wrapper acts as a marker type that downstream modules pick up automatically —
  * see [collectAllModulePreviews].
  *
+ * This stable no-arg overload delegates to the experimental scope-aware overload with the
+ * default-scope sentinel, so consumers do not have to opt in unless they need explicit
+ * scope filtering. See the scope-aware overload for the full scope semantics.
+ *
  * Example — single-module preview collection:
  * ```kotlin
  * val myPreviews by collectModulePreviews()
- * val buttonPreviews by collectModulePreviews(scope = "buttons")
  * ```
  *
  * Example — used in a library module with public visibility:
  * ```kotlin
  * // uiLib/src/commonMain/kotlin/Previews.kt
  * val uiLibPreviews by collectModulePreviews()
+ * ```
+ *
+ * @return a [PreviewExport] delegate wrapping the collected preview list; the body is replaced by the compiler plugin
+ * @see collectAllModulePreviews
+ */
+@OptIn(InternalComposePreviewLabApi::class, ExperimentalComposePreviewLabApi::class)
+public fun collectModulePreviews(): PreviewExport = collectModulePreviews(scope = ComposePreviewLabOption.DefaultCollectScope)
+
+/**
+ * Scope-aware variant of [collectModulePreviews] that limits the result to previews
+ * whose `@ComposePreviewLabOption(collectScopes = [...])` array contains [scope].
+ *
+ * **Experimental**: the scope feature is still stabilizing. Consumers must opt in with
+ * `@OptIn(ExperimentalComposePreviewLabApi::class)` (or `@file:OptIn(...)`) to call this
+ * overload. The no-arg [collectModulePreviews] overload remains stable for callers that
+ * do not need explicit scope filtering.
+ *
+ * Example:
+ * ```kotlin
+ * @file:OptIn(me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi::class)
+ *
+ * val buttonPreviews by collectModulePreviews(scope = "buttons")
  * ```
  *
  * @param scope The collection scope to draw from. Only previews annotated with the
@@ -44,9 +69,6 @@ package me.tbsten.compose.preview.lab
  * @return a [PreviewExport] delegate wrapping the collected preview list; the body is replaced by the compiler plugin
  * @see collectAllModulePreviews
  */
-@OptIn(InternalComposePreviewLabApi::class, ExperimentalComposePreviewLabApi::class)
-public fun collectModulePreviews(): PreviewExport = collectModulePreviews(scope = ComposePreviewLabOption.DefaultCollectScope)
-
 @ExperimentalComposePreviewLabApi
 @OptIn(InternalComposePreviewLabApi::class)
 public fun collectModulePreviews(scope: String): PreviewExport = PreviewExport(
@@ -91,7 +113,6 @@ public fun collectModulePreviews(scope: String): PreviewExport = PreviewExport(
  * ```kotlin
  * // app/src/commonMain/kotlin/Previews.kt
  * val appPreviews by collectAllModulePreviews()
- * val designPreviews by collectAllModulePreviews(scope = "design")
  * ```
  *
  * Example — dependency module just applies the Gradle plugin; no `Previews.kt` file required:
@@ -101,6 +122,33 @@ public fun collectModulePreviews(scope: String): PreviewExport = PreviewExport(
  *     id("me.tbsten.compose.preview.lab")
  * }
  * // any @Preview function in uiLib is now picked up by upstream collectAllModulePreviews()
+ * ```
+ *
+ * This stable no-arg overload delegates to the experimental scope-aware overload with the
+ * default-scope sentinel, so consumers do not have to opt in unless they need explicit
+ * scope filtering. See the scope-aware overload below for the full scope semantics.
+ *
+ * @return a [PreviewExport] delegate wrapping the aggregated preview list; the body is replaced by the compiler plugin
+ * @see collectModulePreviews
+ */
+@OptIn(InternalComposePreviewLabApi::class, ExperimentalComposePreviewLabApi::class)
+public fun collectAllModulePreviews(): PreviewExport =
+    collectAllModulePreviews(scope = ComposePreviewLabOption.DefaultCollectScope)
+
+/**
+ * Scope-aware variant of [collectAllModulePreviews] that limits the aggregated result to
+ * previews whose `@ComposePreviewLabOption(collectScopes = [...])` array contains [scope].
+ *
+ * **Experimental**: the scope feature is still stabilizing. Consumers must opt in with
+ * `@OptIn(ExperimentalComposePreviewLabApi::class)` (or `@file:OptIn(...)`) to call this
+ * overload. The no-arg [collectAllModulePreviews] overload remains stable for callers that
+ * do not need explicit scope filtering.
+ *
+ * Example:
+ * ```kotlin
+ * @file:OptIn(me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi::class)
+ *
+ * val designPreviews by collectAllModulePreviews(scope = "design")
  * ```
  *
  * @param scope The collection scope to draw from. Only previews annotated with the
@@ -126,10 +174,6 @@ public fun collectModulePreviews(scope: String): PreviewExport = PreviewExport(
  * @return a [PreviewExport] delegate wrapping the aggregated preview list; the body is replaced by the compiler plugin
  * @see collectModulePreviews
  */
-@OptIn(InternalComposePreviewLabApi::class, ExperimentalComposePreviewLabApi::class)
-public fun collectAllModulePreviews(): PreviewExport =
-    collectAllModulePreviews(scope = ComposePreviewLabOption.DefaultCollectScope)
-
 @ExperimentalComposePreviewLabApi
 @OptIn(InternalComposePreviewLabApi::class)
 public fun collectAllModulePreviews(scope: String): PreviewExport = PreviewExport(
