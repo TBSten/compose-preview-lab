@@ -1,3 +1,8 @@
+---
+name: failure-classification
+description: pr-fix-loop の Step 4 で使用する CI failure 種別判定ヒューリスティクス。 transient infra (api.foojay.io / 5xx / network) → lint (ktlintCheck / eslint) → binary compat (apiCheck / BCV) → test (jvmTest / jsBrowserTest / iosTest) → build (compileKotlin / assembleDebug) → unknown の順で上から試して、 最初にマッチしたものを採用する。 transient を最初に置くのは「コードに触らず rerun だけで済む」 ケースを誤ってコード側に分類しないため。 各種別ごとに「ジョブ名 / ログ特徴 / 委譲先 fix-ci-* skill」 を整理。 false-positive ヒューリスティクス (warning vs fail / job 名と task 名の使い分け) も記載。
+---
+
 # Failure classification heuristics
 
 CI job が `conclusion == "FAILURE"` だったときの種別判定。 上から順に試して、 最初にマッチしたものを採用する。 transient infra を **最初** に置くのは、 その種別なら「コードに触らず rerun だけ」 で済むので、 誤ってコード側に分類して fix-ci-* に委ねないため。
@@ -38,7 +43,7 @@ CI job が `conclusion == "FAILURE"` だったときの種別判定。 上から
 
 委譲先: **fix-ci-binary** skill。 委譲先が apiDump で再生成する手順を知っていることを前提とする。
 
-注意: integrationTest など **composite build** がある場合、 親の apiDump と integrationTest 側の apiDump が **別々** に必要なケースあり。 fix-ci-binary がそのへんを面倒見るか、 このスキルから別途指示する。
+注意: integrationTest のような **独立した Gradle プロジェクト** (= composite build ではなく、 root と別の `gradlew` を持つ project) がある場合、 親の apiDump と integrationTest 側の apiDump が **別々** に必要なケースあり (= `(cd integrationTest && ./gradlew apiDump)` を別途実行する)。 fix-ci-binary がそのへんを面倒見るか、 このスキルから別途指示する。
 
 ## 4. test
 
