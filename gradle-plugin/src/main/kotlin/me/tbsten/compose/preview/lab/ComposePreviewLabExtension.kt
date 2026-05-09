@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalComposePreviewLabApi::class)
+
 package me.tbsten.compose.preview.lab
 
 import javax.inject.Inject
@@ -164,7 +166,15 @@ abstract class CollectPreviewsConfig @Inject constructor(objects: ObjectFactory)
      * The value must match `[A-Za-z0-9_]+` because it is embedded into a Kotlin identifier;
      * an invalid value is rejected by the compiler plugin's command-line processor with a
      * clear error before any source file is compiled.
+     *
+     * **Experimental**: this knob is part of the still-stabilizing collectScopes design and
+     * may change shape (or move under a different DSL block) before stable release. Opt in
+     * with `@OptIn(ExperimentalComposePreviewLabApi::class)` at the consuming Kotlin source
+     * site; the Gradle DSL itself does not enforce the opt-in (Gradle scripts have no
+     * Kotlin opt-in propagation), but the annotation surfaces a warning in the IDE for
+     * direct programmatic access.
      */
+    @ExperimentalComposePreviewLabApi
     var defaultCollectScope: String by objects.property<String>()
         .convention(ComposePreviewLabOption.DefaultCollectScope)
 }

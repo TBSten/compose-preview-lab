@@ -44,9 +44,10 @@ package me.tbsten.compose.preview.lab
  * @return a [PreviewExport] delegate wrapping the collected preview list; the body is replaced by the compiler plugin
  * @see collectAllModulePreviews
  */
-@OptIn(InternalComposePreviewLabApi::class)
+@OptIn(InternalComposePreviewLabApi::class, ExperimentalComposePreviewLabApi::class)
 public fun collectModulePreviews(): PreviewExport = collectModulePreviews(scope = ComposePreviewLabOption.DefaultCollectScope)
 
+@ExperimentalComposePreviewLabApi
 @OptIn(InternalComposePreviewLabApi::class)
 public fun collectModulePreviews(scope: String): PreviewExport = PreviewExport(
     lazy {
@@ -125,10 +126,11 @@ public fun collectModulePreviews(scope: String): PreviewExport = PreviewExport(
  * @return a [PreviewExport] delegate wrapping the aggregated preview list; the body is replaced by the compiler plugin
  * @see collectModulePreviews
  */
-@OptIn(InternalComposePreviewLabApi::class)
+@OptIn(InternalComposePreviewLabApi::class, ExperimentalComposePreviewLabApi::class)
 public fun collectAllModulePreviews(): PreviewExport =
     collectAllModulePreviews(scope = ComposePreviewLabOption.DefaultCollectScope)
 
+@ExperimentalComposePreviewLabApi
 @OptIn(InternalComposePreviewLabApi::class)
 public fun collectAllModulePreviews(scope: String): PreviewExport = PreviewExport(
     lazy {

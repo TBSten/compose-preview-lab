@@ -66,25 +66,6 @@ final class me.tbsten.compose.preview.lab/PreviewExport { // me.tbsten.compose.p
     final fun getValue(kotlin/Any?, kotlin.reflect/KProperty<*>): kotlin.collections/List<me.tbsten.compose.preview.lab/CollectedPreview> // me.tbsten.compose.preview.lab/PreviewExport.getValue|getValue(kotlin.Any?;kotlin.reflect.KProperty<*>){}[0]
 }
 
-final class me.tbsten.compose.preview.lab/PreviewLabEvent { // me.tbsten.compose.preview.lab/PreviewLabEvent|null[0]
-    constructor <init>(kotlin/String, kotlin/String? = ..., kotlin.time/Instant = ...) // me.tbsten.compose.preview.lab/PreviewLabEvent.<init>|<init>(kotlin.String;kotlin.String?;kotlin.time.Instant){}[0]
-
-    final val createAt // me.tbsten.compose.preview.lab/PreviewLabEvent.createAt|{}createAt[0]
-        final fun <get-createAt>(): kotlin.time/Instant // me.tbsten.compose.preview.lab/PreviewLabEvent.createAt.<get-createAt>|<get-createAt>(){}[0]
-    final val description // me.tbsten.compose.preview.lab/PreviewLabEvent.description|{}description[0]
-        final fun <get-description>(): kotlin/String? // me.tbsten.compose.preview.lab/PreviewLabEvent.description.<get-description>|<get-description>(){}[0]
-    final val title // me.tbsten.compose.preview.lab/PreviewLabEvent.title|{}title[0]
-        final fun <get-title>(): kotlin/String // me.tbsten.compose.preview.lab/PreviewLabEvent.title.<get-title>|<get-title>(){}[0]
-
-    final fun component1(): kotlin/String // me.tbsten.compose.preview.lab/PreviewLabEvent.component1|component1(){}[0]
-    final fun component2(): kotlin/String? // me.tbsten.compose.preview.lab/PreviewLabEvent.component2|component2(){}[0]
-    final fun component3(): kotlin.time/Instant // me.tbsten.compose.preview.lab/PreviewLabEvent.component3|component3(){}[0]
-    final fun copy(kotlin/String = ..., kotlin/String? = ..., kotlin.time/Instant = ...): me.tbsten.compose.preview.lab/PreviewLabEvent // me.tbsten.compose.preview.lab/PreviewLabEvent.copy|copy(kotlin.String;kotlin.String?;kotlin.time.Instant){}[0]
-    final fun equals(kotlin/Any?): kotlin/Boolean // me.tbsten.compose.preview.lab/PreviewLabEvent.equals|equals(kotlin.Any?){}[0]
-    final fun hashCode(): kotlin/Int // me.tbsten.compose.preview.lab/PreviewLabEvent.hashCode|hashCode(){}[0]
-    final fun toString(): kotlin/String // me.tbsten.compose.preview.lab/PreviewLabEvent.toString|toString(){}[0]
-}
-
 final val me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_array$stableprop // me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_array$stableprop|#static{}me_tbsten_compose_preview_lab_core_generated_resources_Res_array$stableprop[0]
 final val me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_drawable$stableprop // me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_drawable$stableprop|#static{}me_tbsten_compose_preview_lab_core_generated_resources_Res_drawable$stableprop[0]
 final val me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_font$stableprop // me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_font$stableprop|#static{}me_tbsten_compose_preview_lab_core_generated_resources_Res_font$stableprop[0]
@@ -105,9 +86,7 @@ final fun me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compo
 final fun me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_string$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab.core.generated.resources/me_tbsten_compose_preview_lab_core_generated_resources_Res_string$stableprop_getter|me_tbsten_compose_preview_lab_core_generated_resources_Res_string$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab/PreviewLabPreview(kotlin/String, kotlin/String = ..., kotlin/String? = ..., kotlin/Int? = ..., kotlin/Int? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>): me.tbsten.compose.preview.lab/PreviewLabPreview // me.tbsten.compose.preview.lab/PreviewLabPreview|PreviewLabPreview(kotlin.String;kotlin.String;kotlin.String?;kotlin.Int?;kotlin.Int?;kotlin.String?;kotlin.String?;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>){}[0]
 final fun me.tbsten.compose.preview.lab/collectAllModulePreviews(): me.tbsten.compose.preview.lab/PreviewExport // me.tbsten.compose.preview.lab/collectAllModulePreviews|collectAllModulePreviews(){}[0]
-final fun me.tbsten.compose.preview.lab/collectAllModulePreviews(kotlin/String): me.tbsten.compose.preview.lab/PreviewExport // me.tbsten.compose.preview.lab/collectAllModulePreviews|collectAllModulePreviews(kotlin.String){}[0]
 final fun me.tbsten.compose.preview.lab/collectModulePreviews(): me.tbsten.compose.preview.lab/PreviewExport // me.tbsten.compose.preview.lab/collectModulePreviews|collectModulePreviews(){}[0]
-final fun me.tbsten.compose.preview.lab/collectModulePreviews(kotlin/String): me.tbsten.compose.preview.lab/PreviewExport // me.tbsten.compose.preview.lab/collectModulePreviews|collectModulePreviews(kotlin.String){}[0]
 final fun me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_CollectedPreview$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_CollectedPreview$stableprop_getter|me_tbsten_compose_preview_lab_CollectedPreview$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewExport$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewExport$stableprop_getter|me_tbsten_compose_preview_lab_PreviewExport$stableprop_getter(){}[0]
 final fun me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLabEvent$stableprop_getter(): kotlin/Int // me.tbsten.compose.preview.lab/me_tbsten_compose_preview_lab_PreviewLabEvent$stableprop_getter|me_tbsten_compose_preview_lab_PreviewLabEvent$stableprop_getter(){}[0]

@@ -46,6 +46,11 @@ apiValidation {
         listOf(
             "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
             "me.tbsten.compose.preview.lab.UiComposePreviewLabApi",
+            // Experimental signatures are intentionally excluded from BCV baseline so
+            // experimental→stable promotions show up as concrete diffs (the marker
+            // would otherwise be invisible to apiCheck because BCV does not record
+            // @RequiresOptIn markers in dump output).
+            "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
         ),
     )
 }

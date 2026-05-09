@@ -6,14 +6,6 @@
 // - Show declarations: true
 
 // Library unique name: <me.tbsten.compose.preview.lab:extension-navigation>
-final class me.tbsten.compose.preview.lab.extension.navigation/NavControllerField : me.tbsten.compose.preview.lab/ImmutablePreviewLabField<androidx.navigation/NavHostController> { // me.tbsten.compose.preview.lab.extension.navigation/NavControllerField|null[0]
-    constructor <init>(kotlin/String, androidx.navigation/NavHostController, kotlin.collections/List<me.tbsten.compose.preview.lab/PreviewLabField<out kotlin/Any>> = ...) // me.tbsten.compose.preview.lab.extension.navigation/NavControllerField.<init>|<init>(kotlin.String;androidx.navigation.NavHostController;kotlin.collections.List<me.tbsten.compose.preview.lab.PreviewLabField<out|kotlin.Any>>){}[0]
-
-    final fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.extension.navigation/NavControllerField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
-    final fun serializer(): kotlin/Nothing? // me.tbsten.compose.preview.lab.extension.navigation/NavControllerField.serializer|serializer(){}[0]
-    final fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.extension.navigation/NavControllerField.valueCode|valueCode(){}[0]
-}
-
 final val me.tbsten.compose.preview.lab.extension.navigation/me_tbsten_compose_preview_lab_extension_navigation_NavControllerField$stableprop // me.tbsten.compose.preview.lab.extension.navigation/me_tbsten_compose_preview_lab_extension_navigation_NavControllerField$stableprop|#static{}me_tbsten_compose_preview_lab_extension_navigation_NavControllerField$stableprop[0]
 final val me.tbsten.compose.preview.lab.extension_navigation.generated.resources/me_tbsten_compose_preview_lab_extension_navigation_generated_resources_Res_array$stableprop // me.tbsten.compose.preview.lab.extension_navigation.generated.resources/me_tbsten_compose_preview_lab_extension_navigation_generated_resources_Res_array$stableprop|#static{}me_tbsten_compose_preview_lab_extension_navigation_generated_resources_Res_array$stableprop[0]
 final val me.tbsten.compose.preview.lab.extension_navigation.generated.resources/me_tbsten_compose_preview_lab_extension_navigation_generated_resources_Res_drawable$stableprop // me.tbsten.compose.preview.lab.extension_navigation.generated.resources/me_tbsten_compose_preview_lab_extension_navigation_generated_resources_Res_drawable$stableprop|#static{}me_tbsten_compose_preview_lab_extension_navigation_generated_resources_Res_drawable$stableprop[0]

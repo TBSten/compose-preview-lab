@@ -8,13 +8,3 @@ public final class me/tbsten/compose/preview/lab/extension/navigation/Composable
 	public final fun getLambda$796828198$extension_navigation ()Lkotlin/jvm/functions/Function2;
 }
 
-public final class me/tbsten/compose/preview/lab/extension/navigation/NavControllerField : me/tbsten/compose/preview/lab/ImmutablePreviewLabField {
-	public static final field $stable I
-	public fun <init> (Ljava/lang/String;Landroidx/navigation/NavHostController;Ljava/util/List;)V
-	public synthetic fun <init> (Ljava/lang/String;Landroidx/navigation/NavHostController;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun Content (Landroidx/compose/runtime/Composer;I)V
-	public fun serializer ()Ljava/lang/Void;
-	public synthetic fun serializer ()Lkotlinx/serialization/KSerializer;
-	public fun valueCode ()Ljava/lang/String;
-}
-

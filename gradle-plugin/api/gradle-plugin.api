@@ -1,8 +1,6 @@
 public abstract class me/tbsten/compose/preview/lab/CollectPreviewsConfig {
 	public fun <init> (Lorg/gradle/api/model/ObjectFactory;)V
-	public final fun getDefaultCollectScope ()Ljava/lang/String;
 	public final fun getEnabled ()Z
-	public final fun setDefaultCollectScope (Ljava/lang/String;)V
 	public final fun setEnabled (Z)V
 }
 

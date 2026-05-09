@@ -107,6 +107,7 @@ annotation class ComposePreviewLabOption(
     val displayName: String = "{{qualifiedName}}",
     val ignore: Boolean = false,
     val id: String = "{{qualifiedName}}",
+    @property:ExperimentalComposePreviewLabApi
     val collectScopes: Array<String> = [DefaultCollectScope],
 ) {
     public companion object {
@@ -131,6 +132,7 @@ annotation class ComposePreviewLabOption(
          *    annotating each `@Preview`.
          * 3. If the Gradle DSL was not set either, the runtime default `"default"` applies.
          */
+        @ExperimentalComposePreviewLabApi
         public const val DefaultCollectScope: String = "default"
     }
 }

@@ -90,6 +90,14 @@ open class CompilerPluginTestBase {
         // FirIncompatibleClassExpressionChecker crashing in Kotlin 2.1.x when
         // languageVersion="2.0" is used (source must not be null).
         this.languageVersion = testLanguageVersion
+        // The collectScopes feature is marked @ExperimentalComposePreviewLabApi on the
+        // production side. Test fixtures freely write `@ComposePreviewLabOption(collectScopes = ...)`
+        // and `collect[All]ModulePreviews(scope = "...")` to exercise the IR pipeline,
+        // so opt in unconditionally here rather than peppering every inline source with
+        // `@file:OptIn(...)`.
+        this.kotlincArguments = this.kotlincArguments + listOf(
+            "-opt-in=me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
+        )
         if (needsCompatibilityFlags) {
             this.kotlincArguments = this.kotlincArguments + listOf(
                 "-Xskip-prerelease-check",
