@@ -8,6 +8,27 @@ model: opus
 
 PR の探索的検証で 5 並列 subagent を kick する際の標準ルール。 各 iter で subagent を起動する前に本ファイルを参照し、 prompt に必要事項を組み込む。
 
+## 0. Core constraints (= 全運用の前提、 違反禁止)
+
+過去 phase で **ユーザが 4 回以上繰り返し指摘した** 最重要ルール。 §1 以降の細則より優先する:
+
+### Constraint A: 止まらない (= 4 回ユーザ指摘)
+
+1 ループ完了通知後に「次どうしますか?」 とユーザに聞き返す行為は **禁止**。 §17 終了条件 list を機械的に通し、 未達なら次 iter を即 kick、 達成なら close 処理 → 終了報告。 メンテナ反応待ちで動的検証が薄い時間も止まらず ticket 整理 / FINAL-SUMMARY update / cluster 分析で deadline まで埋める。
+
+過去事例: 4 回繰り返し指摘されるまで §17 が skill 化されず、 各 iter 完了後に聞き返す事故で総合効率 -20-30%。
+
+### Constraint B: ユーザ指摘 → 即 skill 反映 (= 7 回ユーザ指摘)
+
+ユーザが運用上の指摘 (新ルール / 追加観点 / プロセス改善) を **1 回でも** すれば、 即本 SKILL.md に反映する。 ad-hoc に適用 (= memory / 一時 prompt 調整) で済ませると、 次 iter 以降 drift する。
+
+反映 flow:
+1. 指摘を受けた turn で SKILL.md を Edit
+2. commit (= 探索終了後に bulk 反映ではなく即時)
+3. 反映済みであることをユーザに短く報告
+
+過去事例: skill 化 lag = 平均 5-10 iter (全 20 iter の 25-50%)、 反省会自体も PR 作成後に依頼される始末。
+
 ## 1. 全体ワークフロー
 
 1. **本 SKILL.md を再読** (1 ループ開始前に毎回。 ユーザの追加指示で update されている可能性あり)
@@ -159,8 +180,21 @@ EOF
 3. 既投稿コメントへの **自己訂正** → 別投稿で訂正 (cluster と分けて履歴明示)
 4. メンテナ最近の force-push が P1 を直接 fix → ticket を `resolved/` に移動、 投稿は次 P1 まで保留
 5. 同 iter 内に既に 1 通投稿済 → 追加投稿は ROI 飽和判定 (saturation で見送り)
-6. 累計コメント **10 通超** → 飽和域、 narrow 絞り込みで P1 のみ
-7. メンテナ反応 latency が短い (< 1h) → active phase、 cluster 投稿 ROI 高 (但し noise リスク)
+6. 累計コメント **8 通超** → 飽和警戒域、 narrow 絞り込みで P1 のみ
+7. 累計コメント **12 通超** → no more hard limit (= PR が noise レベル)
+8. メンテナ反応 latency が短い (< 1h) → active phase、 cluster 投稿 ROI 高 (但し noise リスク)
+
+### 投稿前の動的 PoC 検証 (= iter 17 case B reverse 教訓)
+
+**修正案を含む PR コメントを投稿する場合、 投稿前に最低 1 回は動的 PoC で検証する**。 過去事例: iter 17 cat2 の修正案 `@get:` qualifier 提案が iter 18 cat3 で **Kotlin compiler に構文禁止** と 5 platform 全 fail で disprove、 自己訂正コメントを次 iter で投稿する経路を強いた。
+
+検証 checklist:
+- [ ] 修正案を sandbox dir に適用 (`.local/<exploration-name>/tmp/iter<N>-poc/`)
+- [ ] 主要 platform (jvm + android + klib) で `:compileKotlin*` を回す
+- [ ] 期待挙動を assert (= apiDump diff / runtime behavior / compile error 有無)
+- [ ] reverse 結果が出ないこと確認 (= compiler が syntax 禁止、 build 全 fail 等)
+
+PoC が通れば PR コメント投稿、 通らなければ修正案を変えて再 PoC、 もしくは「fix 不能 = 明文化」 に切り替え。
 
 ## 8. gradle 隔離
 
@@ -205,6 +239,28 @@ source 改変が必要な場合は **必ず sandbox に隔離**:
 - 長時間 task は `timeout 30m` で kill
 - 結果を log に記録してから完了報告
 
+### deadline 動的変更 protocol
+
+ユーザから deadline 変更指示が来た場合 (例: 「12:00 → 5:00 に変更」):
+
+1. **即 cron update**: 既存 deadline cron を `CronDelete` → 新時刻で `CronCreate` (= one-shot、 deadline 直前 3 min fire 推奨)
+2. **ticket reserve range 再計算**: 残 iter 数で reserve scheme を縮小 (= 残 iter 1-2 なら sequential mode 推奨)
+3. **§17 終了条件 list を即チェック**: 新 deadline で「超過」 が早期 true なら close 処理発動
+4. **進行中 subagent への影響評価**: deadline 短縮で in-flight subagent が間に合わない場合、 完了を待つか kill 判断
+5. **FINAL-SUMMARY の deadline 表記更新**
+
+過去事例: ユーザ「5 時超えたら一旦終了」 で 12:00 → 5:00 へ変更、 cron `e566872c` 削除 + `edc9068e` 新設で対応。 但し protocol が事前 skill 化されていなかったため判断が遅れた。
+
+### 残 deadline < 1.5h での sequential mode 自動 trigger
+
+deadline 残 1.5h を切ったら、 **5 並列 kick を禁止し sequential mode に自動切替**:
+
+- 5 並列だと build/ race + working tree 衝突リスクが顕在化、 final clean-up に時間が取られる
+- sequential mode = 1-2 cat focus、 25-30 分以内で完結
+- final iter は **clean-up 兼ねた 1-2 件起票** で OK、 ROI 鈍化判定材料に使う
+
+主管側が iter kick 前に `date` で残時間を計算、 < 1.5h なら sequential prompt template を選択。
+
 ## 11. 必読 file (各 cat 共通)
 
 各 cat 起動時に subagent prompt で以下を必読指示:
@@ -215,6 +271,18 @@ source 改変が必要な場合は **必ず sandbox に隔離**:
 - 関連 ticket file の本文 (重要 ticket のみ、 全件読む必要なし)
 
 **主管側 (= subagent kick する側) も** 各 iter 開始前に本 SKILL.md を Read で再読する (= ユーザ追加指示の取りこぼし防止)。
+
+### 環境整備の default sweep (= iter 1 で必ず回す)
+
+各探索の **iter 1** で以下の sweep を default 実行 (= release blocker / docs gap の早期発見):
+
+1. **docs site grep**: `grep -rn "<主機能 keyword>" docs/ README.md CHANGELOG.md` で 0 件 hit を確認 (= release blocker 候補、 過去事例 #0177 で iter 19 まで遅延)
+2. **PR description grep**: `gh pr view <NNN> --json body --jq .body | grep "BREAKING"` で破壊的変更の明示確認
+3. **api dump baseline 整合**: `git diff --stat -- '*.api' '*.klib.api'` で baseline drift 即確認
+4. **CI warning baseline 数**: `gh run view <run-id> --log | grep -ic warning` で baseline 数を記録、 後 iter で増減観察
+5. **CHANGELOG.md / RELEASE-NOTES.md 存在確認** (`find . -name "CHANGELOG*"` で 0 件なら #0186 系の C-7 family 候補)
+
+これらは static で時間 < 5 min、 iter 1 cat1 / cat2 で必ず回す。
 
 ### log 完全保存ルール (= user CLAUDE.md 由来)
 
@@ -254,7 +322,18 @@ gh run view <run-id> --log > .local/<exploration-name>/tmp/iter<N>-cat<X>-<ts>-g
 - internal modifier の使い方
 - error message スタイル (source location / Gradle DSL hint)
 
-PR186/187 の現実装と対比し、 設計優劣を判定。 ticket 化候補があれば起票。
+対象 PR の現実装と対比し、 設計優劣を判定。 ticket 化候補があれば起票。
+
+### cat5 は iter 1 から rotation in 推奨 (= 後付けではない)
+
+過去事例で cat5 を iter 14 から「他 KCP 比較」 に rotate した結果、 iter 1-13 で P1 として扱った #0079 (KLIB IdSignature cross-jar dedup) が iter 17 cat5 で「Metro も同 limitation = release blocker から除外可能」 と判明、 P 評価を 12-13 iter 後に修正。 = **早期に他 KCP 業界 norm を確認していれば P 評価の妥当性が初期段階で確保できた**。
+
+iter 1 cat5 配分:
+- iter 1: 当該 PR の主要 KCP design pattern × 3-4 件 (Metro 必須 + 直近の同種 PR 比較対象 2-3 件)
+- iter 2-3: 不足 angle を埋める比較
+- iter 4 以降: angle 飽和したら他 cat に rotate
+
+cat1-4 と並行して iter 1 から比較を回し、 設計選択の妥当性を early に audit。
 
 ## 13. autonomous angle 選択
 
@@ -323,7 +402,9 @@ latency 短縮 (例: 9h → 40min) は **メンテナ active phase 入りの sig
 5. **どれかに該当すれば終了処理**:
    - FINAL-SUMMARY.md に終了時 snapshot 記録
    - ユーザに終了報告 (deadline 達 / 累計件数 / P0/P1 残数 / メンテナ反応サマリ / 投稿 PR コメント数)
-   - 終了後の cron / 監視 task は CronDelete で停止
+   - **cron / 監視 task を全件 clean up**: `CronList` で全 job 列挙 → deadline 通知 cron 以外をすべて `CronDelete`、 `<<autonomous-loop>>` `<<autonomous-loop-dynamic>>` 系 sentinel が close 後に fire する事故を防止 (= 過去事例で `b6efca95` autonomous-loop が close 後に fire、 静かに終了したが整理不足)
+   - working tree clean 最終確認 (`git status --porcelain` で untracked が想定内のもののみ)
+   - **反省会 (KPT) の実施**: Keep / Problem / Try を整理、 改善案を本 SKILL.md に反映してから skill 化を完了 (= 過去事例で PR 作成後に反省会依頼が来て後追い修正した教訓)
 
 この 5 段の check は **各 iter の閉じ際** に必ず通る。 ここを skip すると loop が止まる原因になる (= 過去事例)。
 
@@ -353,7 +434,38 @@ deadline 直前の最終 iter は **5 並列ではなく 1-2 cat focus の seque
 - **cron / autonomous-loop sentinel が fire**: §17 の autonomous-loop sentinel 取り扱いに従う (= 静かに終了)
 - **deadline 到達**: 終了報告 + cron 削除確認 + working tree clean 確認
 
-## 19. 累積 ticket family cluster (各探索 phase の最終 snapshot)
+## 19. 反省 meta-analysis (= 過去 phase の指摘累計)
+
+過去 phase で **どのテーマがユーザに何回指摘されたか** を記録し、 重要度判断と次 phase の skill 改善に使う:
+
+| 指摘テーマ | ユーザ指摘回数 | 反映先 section | skill 化 lag |
+|---|---:|---|---:|
+| 止まらない (loop 継続) | 4 | §0 Constraint A + §17 | iter 17 以降 (= 80% 経過) |
+| skill 化 cycle | 7 | §0 Constraint B + §17 step 5 | iter 13 以降 |
+| MCP / PDCA 活用 | 4 | §3 | iter 13 以降 |
+| 他 KCP / Metro 比較 | 3 | §12 | iter 14 (= 70% 経過) |
+| CI ログ / api dump | 3 | §4 / §5 | iter 8 / iter 13 |
+| 設定ファイル幅広く | 1 | §3 step 2 | 同 turn |
+| 並列数 / 競合 | 1 | §8 | 同 turn |
+| ライブラリユーザ pattern | 1 | context/04 (= 個別 phase) | 同 turn |
+| deadline 動的変更 | 1 | §10 | 同 phase 内 |
+| 反省会 cycle | 1 | §17 step 5 | 同 phase 内 (PR 作成後) |
+
+### lag pattern
+
+- **指摘回数 1 回 = 同 turn 反映 (= ベスト)**
+- **指摘回数 2-3 回 = phase 中盤反映 (= 改善余地あり)**
+- **指摘回数 4 回以上 = 大幅 lag (= core constraint への昇格を検討)**
+
+= ユーザが繰り返し指摘するルールほど skill 化が遅れる傾向 (= 知見の depth と skill 化の coupling 不足)。
+
+### 次 phase の improvement 指標
+
+- 全 lag を「同 turn 反映 (= 1 回指摘で skill 化)」 に近付ける
+- 探索開始前に過去 phase の §19 table を読み、 既知の重要 constraint (= §0) を default 適用
+- phase 終了時 (§17 step 5) に新 indication を §19 に追記
+
+## 20. 累積 ticket family cluster (各探索 phase の最終 snapshot)
 
 各探索 phase 終了時に cluster を整理し、 follow-up PR の scope 設計材料にする。 family 分類例 (= 一般的に再利用可能な分類軸):
 
