@@ -15,8 +15,6 @@ open annotation class me.tbsten.compose.preview.lab/ComposePreviewLabOption : ko
         final fun <get-id>(): kotlin/String // me.tbsten.compose.preview.lab/ComposePreviewLabOption.id.<get-id>|<get-id>(){}[0]
     final val ignore // me.tbsten.compose.preview.lab/ComposePreviewLabOption.ignore|{}ignore[0]
         final fun <get-ignore>(): kotlin/Boolean // me.tbsten.compose.preview.lab/ComposePreviewLabOption.ignore.<get-ignore>|<get-ignore>(){}[0]
-
-    final object Companion // me.tbsten.compose.preview.lab/ComposePreviewLabOption.Companion|null[0]
 }
 
 open annotation class me.tbsten.compose.preview.lab/ExperimentalComposePreviewLabApi : kotlin/Annotation { // me.tbsten.compose.preview.lab/ExperimentalComposePreviewLabApi|null[0]

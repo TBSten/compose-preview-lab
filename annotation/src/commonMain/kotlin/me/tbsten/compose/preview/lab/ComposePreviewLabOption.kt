@@ -138,6 +138,18 @@ annotation class ComposePreviewLabOption(
     @property:ExperimentalComposePreviewLabApi
     val collectScopes: Array<String> = [DefaultCollectScope],
 ) {
+    /**
+     * Companion object holding the [DefaultCollectScope] sentinel.
+     *
+     * **Experimental**: the whole companion is `@ExperimentalComposePreviewLabApi`-gated
+     * because everything it currently exposes belongs to the still-stabilizing scope
+     * feature. Marking the companion (rather than just the const inside) keeps the
+     * `Companion` class itself out of the BCV baseline — without this marker, the empty
+     * companion class signature stays in `*.api` / `*.klib.api` baselines forever even
+     * after we eventually remove or move `DefaultCollectScope`, locking in the
+     * `Companion` class as ABI surface even though it has no stable members.
+     */
+    @ExperimentalComposePreviewLabApi
     public companion object {
         /**
          * The single source-of-truth string the whole `collectScope` system bottoms out on.
@@ -159,6 +171,18 @@ annotation class ComposePreviewLabOption(
          *    so a library can pin all of its previews to a library-specific bucket without
          *    annotating each `@Preview`.
          * 3. If the Gradle DSL was not set either, the runtime default `"default"` applies.
+         *
+         * Both the surrounding `Companion` and this const carry
+         * `@ExperimentalComposePreviewLabApi` for **complementary** reasons:
+         * - the companion-level marker keeps the `Companion` *class* itself out of every
+         *   BCV baseline (KLIB/JVM/Android), so an empty companion does not lock-in as ABI
+         *   if the const ever moves elsewhere.
+         * - the const-level marker keeps the const *member* itself filtered: on KLIB this
+         *   nests with the companion-level filter, and on JVM/Android the const surfaces
+         *   directly as a `public static final field` on the outer `ComposePreviewLabOption`
+         *   class (the companion-level annotation does **not** propagate to that flattened
+         *   field — see the root build.gradle.kts Known Limitation note for details), so
+         *   without this marker the field stays in JVM/Android baselines forever.
          */
         @ExperimentalComposePreviewLabApi
         public const val DefaultCollectScope: String = "default"
