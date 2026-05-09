@@ -217,10 +217,11 @@ public fun collectAllModulePreviews(scope: String): PreviewExport = PreviewExpor
  * (`commonMain` has no portable stderr API across all CMP targets, so stdout is
  * intentional.)
  *
- * The compiler plugin also attempts a best-effort compile-time warning at
- * [HintDiscovery.discoverHints][me.tbsten.compose.preview.lab.compiler.ir.discoverHints]
- * when its symbol scan returns duplicate hints, but the same upstream collapse means
- * that warning rarely fires; the runtime signal here is the durable detection path.
+ * The compiler plugin also attempts a best-effort compile-time warning when its symbol
+ * scan returns duplicate hints (in `HintDiscovery.discoverHints`, which lives in the
+ * `:compiler-plugin` module and is therefore not Dokka-linkable from here), but the
+ * same upstream collapse means that warning rarely fires; the runtime signal here is
+ * the durable detection path.
  *
  * Resolution: **rename the underlying `@Preview` function** in one of the colliding
  * artifacts so its FQN no longer matches. `@ComposePreviewLabOption(id = "...")`

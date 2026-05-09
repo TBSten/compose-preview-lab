@@ -41,10 +41,22 @@ private val SyntheticPreviewHintClassId = ClassId(
  * list without further FIR resolution work.
  */
 private fun buildSimpleAnnotation(session: FirSession, classId: ClassId): FirAnnotation = buildAnnotation {
+    // Hard-fail when the annotation symbol can't be resolved: the FIR generator runs only
+    // when the user has applied the Compose Preview Lab Gradle plugin, which always pulls
+    // `:annotation` onto the compilation classpath as a transitive dependency. A null
+    // here therefore signals one of two unrecoverable states — a plugin/runtime version
+    // mismatch (different `:annotation` jar than the plugin expects) or a kctfork test
+    // that does not inline the annotation stub. Both are bugs in the calling environment,
+    // not in user code, so a clear stack trace is preferable to silently falling back
+    // (which would disable `@InternalComposePreviewLabApi` BCV filtering and the
+    // squatting guard simultaneously).
     val annoSymbol = session.symbolProvider.getClassLikeSymbolByClassId(classId) as? FirRegularClassSymbol
         ?: error(
-            "$classId annotation symbol is not resolvable from the FIR session. " +
-                "annotation module must be on the classpath for the per-declaration hint generator.",
+            "$classId annotation symbol is not resolvable from the FIR session. The Compose " +
+                "Preview Lab `:annotation` module must be on the compilation classpath for the " +
+                "per-declaration hint generator. If this fires from a kctfork-style test, ensure " +
+                "the test base inlines the annotation stub for both `@InternalComposePreviewLabApi` " +
+                "and `@SyntheticPreviewHint` (see `CompilerPluginTestBase` / `CompilerPluginJsTestBase`).",
         )
 
     annotationTypeRef = annoSymbol.constructType().toFirResolvedTypeRef()
