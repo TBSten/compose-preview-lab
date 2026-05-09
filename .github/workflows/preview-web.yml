@@ -22,7 +22,7 @@ jobs:
         id: get_version
         run: echo "version=$(./gradlew -q logVersion)" >> "$GITHUB_OUTPUT"
       - name: Build Dokka Documentation
-        run: ./gradlew :dokkaDocs:dokkaGenerate
+        run: ./gradlew :dokkaDocs:dokkaGenerate --warning-mode all
       - name: Save version
         run: echo "${{ steps.get_version.outputs.version }}" > ./version.txt
       - name: Upload Dokka artifacts
@@ -63,7 +63,7 @@ jobs:
           safe-chain setup-ci
       - run: mkdir -p ./public
       - name: Build PreviewLabGallery JS contents
-        run: cd docs && ./gradlew :sample:buildProductionPreviewLabGallery
+        run: cd docs && ./gradlew :sample:buildProductionPreviewLabGallery --warning-mode all
       - name: Build Docusaurus
         run: cd docs/web && npm ci && npm run build
       - name: Copy web documentation to public
