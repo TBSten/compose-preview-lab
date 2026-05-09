@@ -4,13 +4,6 @@ public final class me/tbsten/compose/preview/lab/hints/ComposableSingletons$Prev
 	public final fun getLambda$1903612633$uiLibReversed_release ()Lkotlin/jvm/functions/Function2;
 }
 
-public abstract interface class me/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_libreversed_MyButtonPreview_04g2qjkw {
-}
-
-public final class me/tbsten/compose/preview/lab/hints/PreviewHint_04g2qjkwKt {
-	public static final synthetic fun previewHint_default (Lme/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_libreversed_MyButtonPreview_04g2qjkw;)Lme/tbsten/compose/preview/lab/CollectedPreview;
-}
-
 public final class me/tbsten/compose/preview/lab/sample/libreversed/ComposableSingletons$MyButtonKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/sample/libreversed/ComposableSingletons$MyButtonKt;
 	public fun <init> ()V
