@@ -26,9 +26,7 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
  *   `previewHint_<scope>(...)` overload or `PreviewHintMarker_*` interface ends up in the
  *   module's classpath.
  */
-class PreviewLabFirExtensionRegistrar(
-    private val config: PluginConfig,
-) : FirExtensionRegistrar() {
+class PreviewLabFirExtensionRegistrar(private val config: PluginConfig) : FirExtensionRegistrar() {
 
     override fun ExtensionRegistrarContext.configurePlugin() {
         +({ session: FirSession -> PreviewLabFirBuiltIns(session, config) })

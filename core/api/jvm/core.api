@@ -1,10 +1,8 @@
 public final class me/tbsten/compose/preview/lab/CollectModulePreviewsKt {
 	public static final fun collectAllModulePreviews ()Lme/tbsten/compose/preview/lab/PreviewExport;
 	public static final fun collectAllModulePreviews (Ljava/lang/String;)Lme/tbsten/compose/preview/lab/PreviewExport;
-	public static synthetic fun collectAllModulePreviews$default (Ljava/lang/String;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/PreviewExport;
 	public static final fun collectModulePreviews ()Lme/tbsten/compose/preview/lab/PreviewExport;
 	public static final fun collectModulePreviews (Ljava/lang/String;)Lme/tbsten/compose/preview/lab/PreviewExport;
-	public static synthetic fun collectModulePreviews$default (Ljava/lang/String;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/PreviewExport;
 }
 
 public final class me/tbsten/compose/preview/lab/CollectedPreview : me/tbsten/compose/preview/lab/PreviewLabPreview {

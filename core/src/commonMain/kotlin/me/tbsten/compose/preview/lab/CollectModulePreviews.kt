@@ -1,7 +1,5 @@
 package me.tbsten.compose.preview.lab
 
-import kotlin.jvm.JvmOverloads
-
 /**
  * Provides a delegate that collects `@Preview` functions from **this module only**.
  *
@@ -46,9 +44,11 @@ import kotlin.jvm.JvmOverloads
  * @return a [PreviewExport] delegate wrapping the collected preview list; the body is replaced by the compiler plugin
  * @see collectAllModulePreviews
  */
-@JvmOverloads
 @OptIn(InternalComposePreviewLabApi::class)
-public fun collectModulePreviews(scope: String = ComposePreviewLabOption.DefaultCollectScope): PreviewExport = PreviewExport(
+public fun collectModulePreviews(): PreviewExport = collectModulePreviews(scope = ComposePreviewLabOption.DefaultCollectScope)
+
+@OptIn(InternalComposePreviewLabApi::class)
+public fun collectModulePreviews(scope: String): PreviewExport = PreviewExport(
     lazy {
         error(
             "[ComposePreviewLab] collectModulePreviews(scope = \"$scope\") was not replaced by the compiler plugin. " +
@@ -125,9 +125,12 @@ public fun collectModulePreviews(scope: String = ComposePreviewLabOption.Default
  * @return a [PreviewExport] delegate wrapping the aggregated preview list; the body is replaced by the compiler plugin
  * @see collectModulePreviews
  */
-@JvmOverloads
 @OptIn(InternalComposePreviewLabApi::class)
-public fun collectAllModulePreviews(scope: String = ComposePreviewLabOption.DefaultCollectScope): PreviewExport = PreviewExport(
+public fun collectAllModulePreviews(): PreviewExport =
+    collectAllModulePreviews(scope = ComposePreviewLabOption.DefaultCollectScope)
+
+@OptIn(InternalComposePreviewLabApi::class)
+public fun collectAllModulePreviews(scope: String): PreviewExport = PreviewExport(
     lazy {
         error(
             "[ComposePreviewLab] collectAllModulePreviews(scope = \"$scope\") was not replaced by the compiler plugin. " +
