@@ -212,10 +212,11 @@ public fun collectAllModulePreviews(scope: String): PreviewExport = PreviewExpor
  * silently lost. The runtime can detect this only by observing duplicate
  * `CollectedPreview.id` values reaching this aggregator, which is rare because the
  * same FQN collapse already eliminated one of them upstream. We surface those
- * duplicates as a `println` line on stdout so users have a chance to notice ("why
- * does my preview not show up?") before chasing it through compiled artifacts.
- * (`commonMain` has no portable stderr API across all CMP targets, so stdout is
- * intentional.)
+ * duplicates via [warnDuplicatePreview], which routes per platform: JVM / Android /
+ * iOS keep the existing stdout behavior so build / test logs continue to surface the
+ * warning, while JS / Wasm JS write via `console.warn` so the warning lights up in
+ * browser DevTools (yellow highlighting) and survives headless test runners that
+ * filter `console.log`.
  *
  * The compiler plugin also attempts a best-effort compile-time warning when its symbol
  * scan returns duplicate hints (in `HintDiscovery.discoverHints`, which lives in the
@@ -229,6 +230,11 @@ public fun collectAllModulePreviews(scope: String): PreviewExport = PreviewExpor
  * IR time before the override id is read on JVM / Android, and on KLIB-based targets
  * the linker further dedups by IdSignature. Renaming the function is the only fix that
  * works on every CMP target.
+ *
+ * **Web visibility caveat**: even with `console.warn`, browser console output is not
+ * visible to a user who has not opened DevTools. If a `@Preview` "disappears" on a JS /
+ * Wasm JS deploy target, opening DevTools is the first triage step — the warning fires
+ * once per app launch, on first read of the `collect[All]ModulePreviews()` property.
  *
  * Internal API — meant only as a callsite for the compiler plugin.
  */
@@ -252,12 +258,13 @@ public fun distinctPreviewsById(previews: List<CollectedPreview>): List<Collecte
             dupCounts[preview.id] = if (existing == null) 2 else existing + 1
         }
     }
-    // stdout println keeps the runtime dependency-free (no logger framework) and works
-    // across every CMP target without an expect/actual indirection. The warning fires
+    // [warnDuplicatePreview] routes per platform — stdout on JVM / Android / iOS,
+    // `console.warn` on JS / Wasm JS — so the warning is visible in the medium where
+    // users most often look for runtime signals on each target. The warning fires
     // once per app launch even if the duplicated preview is never displayed, so users
     // see it during dev iteration.
     for ((id, count) in dupCounts) {
-        println(
+        warnDuplicatePreview(
             "[ComposePreviewLab] WARNING: $count `CollectedPreview` entries share " +
                 "id=\"$id\". Likely cause: a `@Preview` with the same fully-qualified name " +
                 "is declared in two or more dependency artifacts on the classpath, so their " +
