@@ -204,21 +204,30 @@ public fun collectAllModulePreviews(scope: String): PreviewExport = PreviewExpor
  * one hint chain. Deduplicating by `id` guarantees a stable result regardless of how many
  * paths a preview travels through.
  *
- * **Cross-artifact same-FQN previews surface here**: when two dependency modules declare
- * a `@Preview` with identical fully-qualified name (e.g. both expose
+ * **Cross-artifact same-FQN previews — silent edge case**: when two dependency modules
+ * declare a `@Preview` with identical fully-qualified name (e.g. both expose
  * `com.example.SharedPreview()`), the FIR/IR generator produces a marker class with the
- * same `<canonical-key>` hash on both sides. The compiler / classloader resolves the
- * collision by picking one classfile non-deterministically — the **other** preview's
- * body is silently lost. The runtime can detect this only by observing duplicate
- * `CollectedPreview.id` values reaching this aggregator. We surface those duplicates as
- * a `println` line on stdout so users have a chance to notice ("why does my preview not
- * show up?") before chasing it through compiled artifacts. (`commonMain` has no portable
- * stderr API across all CMP targets, so stdout is intentional.) Resolution: **rename
- * the underlying `@Preview` function** in one of the colliding artifacts so its FQN no
- * longer matches. `@ComposePreviewLabOption(id = "...")` override does NOT help on any
- * platform: the FQN-based hint generator name collides at IR time before the override id
- * is read on JVM / Android, and on KLIB-based targets the linker further dedups by
- * IdSignature. Renaming the function is the only fix that works on every CMP target.
+ * same `<canonical-key>` hash on both sides. The JVM classloader and the KLIB linker
+ * each resolve the duplicate to a single symbol — the **other** preview's body is
+ * silently lost. The runtime can detect this only by observing duplicate
+ * `CollectedPreview.id` values reaching this aggregator, which is rare because the
+ * same FQN collapse already eliminated one of them upstream. We surface those
+ * duplicates as a `println` line on stdout so users have a chance to notice ("why
+ * does my preview not show up?") before chasing it through compiled artifacts.
+ * (`commonMain` has no portable stderr API across all CMP targets, so stdout is
+ * intentional.)
+ *
+ * The compiler plugin also attempts a best-effort compile-time warning at
+ * [HintDiscovery.discoverHints][me.tbsten.compose.preview.lab.compiler.ir.discoverHints]
+ * when its symbol scan returns duplicate hints, but the same upstream collapse means
+ * that warning rarely fires; the runtime signal here is the durable detection path.
+ *
+ * Resolution: **rename the underlying `@Preview` function** in one of the colliding
+ * artifacts so its FQN no longer matches. `@ComposePreviewLabOption(id = "...")`
+ * override does NOT help on any platform: the FQN-based hint generator name collides at
+ * IR time before the override id is read on JVM / Android, and on KLIB-based targets
+ * the linker further dedups by IdSignature. Renaming the function is the only fix that
+ * works on every CMP target.
  *
  * Internal API — meant only as a callsite for the compiler plugin.
  */
