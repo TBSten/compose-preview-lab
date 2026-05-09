@@ -100,6 +100,17 @@ package me.tbsten.compose.preview.lab
  * @property ignore if true, Compose Preview Lab does not collect this Preview. The exclusion applies in both directions: the same module's `collectModulePreviews()` drops it via the IR-side filter, and consumer modules' `collectAllModulePreviews()` cannot discover it because no per-declaration hint is emitted in the first place.
  * @property id An ID to identify each Preview. It can be used for navigation within the PreviewLabNavController. The same placeholder as displayName can be used.
  * @property collectScopes The collection scopes this preview participates in. See the *About `collectScopes`* section above; the typical project picks a single scope per module via the Gradle DSL and leaves this at its default — explicit per-`@Preview` overrides are reserved for the rare multi-scope case.
+ *
+ * **Note on experimental marker visibility (BCV)**: this property is marked with
+ * `@property:ExperimentalComposePreviewLabApi` so the use-site requires opt-in. Be aware
+ * that BCV's `nonPublicMarkers` filter only suppresses this property in the **KLIB**
+ * baseline; the **JVM** and **Android** baselines still record the abstract getter because
+ * Kotlin attaches `@property:` markers to a synthetic `<name>$annotations()` helper rather
+ * than the getter itself, and BCV's method-level annotation scan does not pick that up.
+ * The use-site qualifiers `@get:` / `@field:` / `@param:` are forbidden on `@RequiresOptIn`
+ * markers by Kotlin's opt-in mechanism, so the asymmetry cannot be fixed from the Kotlin
+ * source side alone. Treat the eventual experimental→stable promotion of `collectScopes`
+ * as a **release-notes / KDoc concern**, not a baseline-diff signal.
  */
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.FUNCTION)

@@ -50,6 +50,19 @@ apiValidation {
             // experimental→stable promotions show up as concrete diffs (the marker
             // would otherwise be invisible to apiCheck because BCV does not record
             // @RequiresOptIn markers in dump output).
+            //
+            // Known limitation (#issuecomment-4413236974, #issuecomment-4413308245):
+            // annotation-class properties marked with `@property:ExperimentalComposePreviewLabApi`
+            // (e.g. `ComposePreviewLabOption.collectScopes`) are filtered correctly only on
+            // KLIB targets. On JVM / Android the Kotlin compiler attaches the marker to a
+            // synthetic `<name>$annotations()` helper rather than the abstract getter, so
+            // BCV's method-level annotation scan does not see the marker and the property
+            // signature stays in `*.api` baselines. The use-site qualifiers `@get:` /
+            // `@field:` / `@param:` are forbidden on `@RequiresOptIn` markers by Kotlin's
+            // opt-in mechanism, so we cannot work around this from the Kotlin source side
+            // alone. Tracked for upstream (BCV); until then, treat experimental→stable
+            // promotions of annotation-class properties as a release-notes / KDoc concern,
+            // not a baseline-diff signal.
             "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
         ),
     )
