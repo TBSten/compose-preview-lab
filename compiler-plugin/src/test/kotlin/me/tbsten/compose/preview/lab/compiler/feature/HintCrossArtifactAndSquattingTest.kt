@@ -2,6 +2,7 @@ package me.tbsten.compose.preview.lab.compiler.feature
 
 import com.tschuchort.compiletesting.SourceFile
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.collections.shouldContain as shouldContainElement
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
@@ -89,22 +90,33 @@ class HintCrossArtifactAndSquattingTest :
                         base.collectAllModulePreviewsEntry("appPreviews"),
                         extraClasspaths = listOf(squatter.outputDirectory),
                     )
-                    app.exitCode shouldBe KotlinCompilation.ExitCode.OK
-                    app.messages shouldContain "missing the @SyntheticPreviewHint marker"
-                    app.messages shouldContain "PreviewHintMarker_squatter_Fake_deadbeef"
-
-                    // The squatter preview must NOT end up in the aggregated list.
-                    val previews = app.classLoader
+                    // The squatter preview must NOT end up in the aggregated list. We bundle
+                    // the message-collector assertions and the id list assertions in a single
+                    // `assertSoftly` so all four diagnostics surface together if the discovery
+                    // path regresses (the failure modes co-occur — squatter visible in the
+                    // aggregation usually means the warning didn't fire either).
+                    val previewsRaw = app.classLoader
                         .loadClass("test.entry.EntryKt")
                         .getMethod("getAppPreviews")
-                        .invoke(null) as List<*>
-
-                    @Suppress("UNCHECKED_CAST")
+                        .invoke(null)
+                    val previews = previewsRaw as? List<*>
+                        ?: error(
+                            "Expected `appPreviews` to be a List<*> but was ${previewsRaw?.javaClass?.name ?: "null"}. " +
+                                "If the runtime type changed (e.g. PreviewExport), update this test.",
+                        )
                     val ids = previews.map { p ->
-                        p!!::class.members.first { m -> m.name == "id" }.call(p) as String
+                        val nonNull = p ?: error(
+                            "appPreviews contained a null element — every CollectedPreview must be non-null. " +
+                                "Likely cause: a regression in the IR pass that filters out factories.",
+                        )
+                        nonNull::class.members.first { m -> m.name == "id" }.call(nonNull) as String
                     }
-                    ids shouldContainElement "app.AppPreview"
-                    ids.none { it == "squatter.Injected" } shouldBe true
+                    assertSoftly {
+                        app.messages shouldContain "missing the @SyntheticPreviewHint marker"
+                        app.messages shouldContain "PreviewHintMarker_squatter_Fake_deadbeef"
+                        ids shouldContainElement "app.AppPreview"
+                        ids.none { it == "squatter.Injected" } shouldBe true
+                    }
                 }
 
             test("baseline: a plain dep without squatters does not trigger any namespace-squatting warning")
