@@ -256,6 +256,109 @@ class DefaultCollectScopeDslTest :
             }
         }
 
+        context("consumer-side substitution is per-module (negative isolation guarantee)") {
+            test("library lib_a + consumer app_b: each module's sentinel resolves to its own DSL value")
+                .config(enabled = supports) {
+                    // Library's `defaultCollectScope = "lib_a"` pins its previews to `lib_a`.
+                    val libResult = base.compile(
+                        SourceFile.kotlin(
+                            "UiLib.kt",
+                            """
+                            package uilib
+
+                            @org.jetbrains.compose.ui.tooling.preview.Preview
+                            fun LibPreview() {}
+                            """,
+                        ),
+                        pluginOptions = pluginOptions("lib_a"),
+                    )
+                    libResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
+
+                    // Consumer has its own `defaultCollectScope = "app_b"` and calls
+                    // `collectAllModulePreviews()` (= sentinel). The compiler plugin must
+                    // substitute the consumer's value `"app_b"`, NOT the library's `"lib_a"`.
+                    // Result: app sees its own `app_b` previews + nothing from lib (since
+                    // lib's previews are under `lib_a`, not `app_b`).
+                    val appResult = base.compile(
+                        SourceFile.kotlin(
+                            "App.kt",
+                            """
+                            package app
+
+                            @org.jetbrains.compose.ui.tooling.preview.Preview
+                            fun AppPreview() {}
+                            """,
+                        ),
+                        base.collectAllModulePreviewsEntry("appPreviews"),
+                        pluginOptions = pluginOptions("app_b"),
+                        extraClasspaths = listOf(libResult.outputDirectory),
+                    )
+                    appResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
+
+                    // Negative assertion: library's previews must NOT bleed into the
+                    // consumer's default-scope call. This is the single load-bearing
+                    // guarantee of the per-module substitution design.
+                    appResult.loadCollectedPreviews("appPreviews")
+                        .previewIds() shouldContainExactlyInAnyOrder listOf("app.AppPreview")
+                }
+        }
+
+        context("cross-module ignore × scopes interop") {
+            test("ignore = true on a dep-module preview keeps it out of scoped collectAllModulePreviews(scope = ...)")
+                .config(enabled = supports) {
+                    // Library has 2 previews under "design": one ignored, one visible.
+                    val libResult = base.compile(
+                        SourceFile.kotlin(
+                            "UiLib.kt",
+                            """
+                            package uilib
+
+                            @org.jetbrains.compose.ui.tooling.preview.Preview
+                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(
+                                collectScopes = ["design"],
+                                ignore = true,
+                            )
+                            fun IgnoredDesign() {}
+
+                            @org.jetbrains.compose.ui.tooling.preview.Preview
+                            @me.tbsten.compose.preview.lab.ComposePreviewLabOption(collectScopes = ["design"])
+                            fun VisibleDesign() {}
+                            """,
+                        ),
+                    )
+                    libResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
+
+                    // Sanity check: only the visible preview's hint facade was emitted.
+                    val emittedScopeFunctions = libResult.outputDirectory.previewHintFacadeNames()
+                        .flatMap { libResult.classLoader.loadClass(it).declaredMethods.toList() }
+                        .map { it.name }
+                        .filter { it.startsWith("previewHint_") && '$' !in it }
+                        .distinct()
+                    emittedScopeFunctions shouldContainExactlyInAnyOrder listOf("previewHint_design")
+
+                    // Consumer reads scope = "design" and must see ONLY the non-ignored
+                    // preview. The ignored one was never emitted, so cross-module
+                    // discovery (referenceFunctions) cannot pick it up.
+                    val appResult = base.compile(
+                        SourceFile.kotlin(
+                            "Entry.kt",
+                            """
+                            package test.entry
+
+                            import me.tbsten.compose.preview.lab.collectAllModulePreviews
+
+                            val designGallery by collectAllModulePreviews(scope = "design")
+                            """,
+                        ),
+                        extraClasspaths = listOf(libResult.outputDirectory),
+                    )
+                    appResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
+
+                    appResult.loadCollectedPreviews("designGallery")
+                        .previewIds() shouldContainExactlyInAnyOrder listOf("uilib.VisibleDesign")
+                }
+        }
+
         context("same-module collect filter respects defaultCollectScope") {
             test("collectModulePreviews() in a module with defaultCollectScope=acme_ui sees that module's unscoped previews")
                 .config(enabled = supports) {

@@ -66,7 +66,7 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
      *
      * The defaults match the behavior of every existing build, so adding this DSL block
      * is opt-in. The most common knob is `enabled = false`, which **prevents this module
-     * from emitting any preview hints** (no marker interface, no `previewHint(...)`
+     * from emitting any preview hints** (no marker interface, no `previewHint_<scope>(...)`
      * overload), so its previews cannot leak into downstream `collectAllModulePreviews()`
      * consumers. As a deliberate policy gate, **`collectModulePreviews()` /
      * `collectAllModulePreviews()` call sites inside the same disabled module are
@@ -100,7 +100,7 @@ abstract class CollectPreviewsConfig @Inject constructor(objects: ObjectFactory)
      * Whether this module participates in per-declaration preview hint emission.
      *
      * - `true` (default) — `@Preview` functions in this module emit a marker interface and
-     *   a `previewHint(...)` overload, so they can be discovered cross-module by
+     *   a `previewHint_<scope>(...)` overload, so they can be discovered cross-module by
      *   `collectAllModulePreviews()` consumers.
      * - `false` — the compiler plugin emits no marker / hint pair for this module **and**
      *   any `collectModulePreviews()` / `collectAllModulePreviews()` call site in the same

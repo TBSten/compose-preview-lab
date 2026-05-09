@@ -67,7 +67,9 @@ internal class CollectScopeAnnotationChecker : FirDeclarationChecker<FirNamedFun
      * 2. Fallback walk of `argumentList.arguments` — for the rare case where the mapping
      *    is empty (observed for inherit-classpath kctfork builds and some predicate
      *    re-entry paths). Recognises both `FirNamedArgumentExpression(name = ...)` and
-     *    a positional `[A-Za-z0-9_]+`-shaped literal at parameter index 3.
+     *    a positional argument expression at parameter index 3 (the `Array<String>`
+     *    `collectScopes` slot — the per-element string-literal validation happens
+     *    later, in [collectStringLiteralElements]).
      */
     private fun FirAnnotation.findCollectScopesArgument(): FirExpression? {
         val mapped = (this as? FirAnnotationCall)

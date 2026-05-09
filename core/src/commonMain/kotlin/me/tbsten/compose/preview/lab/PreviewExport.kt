@@ -12,7 +12,7 @@ import kotlin.reflect.KProperty
  *
  * Cross-module preview discovery does **not** rely on this type — it is handled by the compiler
  * plugin emitting per-`@Preview` hint functions
- * (`previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` in the
+ * (`previewHint_<scope>(value: PreviewHintMarker_<hash>?): CollectedPreview` in the
  * `me.tbsten.compose.preview.lab.hints` package) that the consumer side resolves through
  * `IrPluginContext.referenceFunctions`.
  *
