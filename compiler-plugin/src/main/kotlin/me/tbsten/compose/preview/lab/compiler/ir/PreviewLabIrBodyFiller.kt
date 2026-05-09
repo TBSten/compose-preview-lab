@@ -4,9 +4,9 @@ package me.tbsten.compose.preview.lab.compiler.ir
 
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
+import me.tbsten.compose.preview.lab.compiler.ir.util.declarationLocation
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
-import org.jetbrains.kotlin.cli.common.messages.CompilerMessageLocation
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.ir.IrStatement
@@ -14,7 +14,6 @@ import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.declarations.IrField
 import org.jetbrains.kotlin.ir.declarations.IrProperty
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
-import org.jetbrains.kotlin.ir.util.file
 import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 import org.jetbrains.kotlin.name.FqName
@@ -118,6 +117,20 @@ internal class PreviewLabIrBodyFiller(
         val delegateField = property.backingField ?: return
         val isAll = isCollectAllCall(delegateField)
 
+        // Module-level gate: when `collectPreviewsEnabled = false` for this module the FIR
+        // hint generator was not registered, so no marker interface or `previewHint(...)`
+        // overload was emitted alongside the @Preview functions. The @Preview functions
+        // themselves are still compiled and live on the classpath; what is missing is the
+        // discovery surface that `collect[All]ModulePreviews()` relies on. Dependency hints
+        // (those imported from other modules) are still technically reachable, but we
+        // intentionally treat the disabled module as "owns no preview surface" — pairing
+        // the flag with a local collect call is almost always a configuration mistake.
+        // Reporting an error keeps users from getting a silently-empty list at runtime.
+        if (!config.collectPreviewsEnabled) {
+            reportCollectPreviewsDisabledError(property, isAll)
+            return
+        }
+
         // Version gate: cross-module aggregation requires Kotlin 2.3.21+ across every platform
         // (the FIR-based KLIB-safe hint generator depends on KT-82395 being fixed). When the
         // current compiler is older we report a structured error here so users get a clear
@@ -179,19 +192,43 @@ internal class PreviewLabIrBodyFiller(
      * throw at runtime if the build somehow proceeds).
      */
     private fun reportUnsupportedCollectAllError(property: IrProperty) {
-        val location = runCatching { property.file }.getOrNull()?.fileEntry?.let { entry ->
-            val offset = property.startOffset.takeIf { it >= 0 } ?: return@let null
-            val line = entry.getLineNumber(offset) + 1
-            val column = entry.getColumnNumber(offset) + 1
-            CompilerMessageLocation.create(entry.name, line, column, null)
-        }
         messageCollector.report(
             CompilerMessageSeverity.ERROR,
             "[ComposePreviewLab] collectAllModulePreviews() requires Kotlin 2.3.21 or later " +
                 "for cross-module preview aggregation. " +
                 "Either upgrade Kotlin to 2.3.21+, or use collectModulePreviews() for " +
                 "single-module collection.",
-            location,
+            declarationLocation(property),
+        )
+    }
+
+    /**
+     * Reports the disabled-module error for any `collect[All]ModulePreviews()` call site
+     * found while `collectPreviewsEnabled = false`.
+     *
+     * **Input** (semantically): the property's IR node for
+     * ```kotlin
+     * val previews by collectModulePreviews()       // or collectAllModulePreviews()
+     * ```
+     * compiled with `composePreviewLab.collectPreviews.enabled = false` in the Gradle
+     * configuration.
+     *
+     * **Output**: `CompilerMessageSeverity.ERROR` pointing at the property declaration.
+     * The disabled flag suppresses every per-declaration hint emission for this module
+     * (and consequently every cross-module aggregation it might participate in), so any
+     * call site is almost certainly a configuration mistake — surfacing it as a compile
+     * error is better than letting users observe a silently-empty list at runtime.
+     */
+    private fun reportCollectPreviewsDisabledError(property: IrProperty, isAll: Boolean) {
+        val callName = if (isAll) "collectAllModulePreviews()" else "collectModulePreviews()"
+        messageCollector.report(
+            CompilerMessageSeverity.ERROR,
+            "[ComposePreviewLab] $callName cannot be used in this module because " +
+                "the `collectPreviewsEnabled` plugin option is false " +
+                "(typically set via `composePreviewLab.collectPreviews.enabled` in the Gradle DSL, " +
+                "or via the `-P plugin:...:collectPreviewsEnabled=...` compiler option in non-Gradle setups). " +
+                "Either remove the call, or re-enable the option for this module.",
+            declarationLocation(property),
         )
     }
 

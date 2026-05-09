@@ -39,6 +39,7 @@ class ComposePreviewLabSubplugin : KotlinCompilerPluginSupportPlugin {
         return project.provider {
             listOf(
                 SubpluginOption("projectRootPath", extension.projectRootPath),
+                SubpluginOption("collectPreviewsEnabled", extension.collectPreviews.enabled.toString()),
             )
         }
     }
