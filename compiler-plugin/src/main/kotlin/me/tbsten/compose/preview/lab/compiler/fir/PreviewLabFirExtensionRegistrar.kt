@@ -3,7 +3,6 @@ package me.tbsten.compose.preview.lab.compiler.fir
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.fir.checkers.PreviewLabFirCheckersExtension
-import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
 
@@ -29,7 +28,6 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
  */
 class PreviewLabFirExtensionRegistrar(
     private val config: PluginConfig,
-    private val messageCollector: MessageCollector = MessageCollector.NONE,
 ) : FirExtensionRegistrar() {
 
     override fun ExtensionRegistrarContext.configurePlugin() {

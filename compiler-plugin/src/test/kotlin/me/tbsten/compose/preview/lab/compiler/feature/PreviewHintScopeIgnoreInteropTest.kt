@@ -11,9 +11,10 @@ import me.tbsten.compose.preview.lab.compiler.isAtLeast
 import me.tbsten.compose.preview.lab.compiler.loadCollectedPreviews
 
 /**
- * Verifies how `@ComposePreviewLabOption(ignore = true)` and the new `collectScope`
- * interact. The two options are independent: `ignore` is a hard binary skip per
- * declaration, `collectScope` is a soft per-bucket filter.
+ * Verifies how `@ComposePreviewLabOption(ignore = true)` and the `collectScopes`
+ * array interact. The two options are independent: `ignore` is a hard binary skip per
+ * declaration, `collectScopes` is a soft per-bucket filter (the CALL side uses the
+ * single-valued `scope` parameter on `collect[All]ModulePreviews(scope = ...)`).
  *
  * **Skipped on Kotlin < 2.3.21**: the per-declaration hint generator only runs on
  * Kotlin 2.3.21+ ([CompatContext.supportsKlibCrossModuleHint]).
@@ -25,7 +26,7 @@ class PreviewHintScopeIgnoreInteropTest :
         val testKotlinVersion = System.getProperty("test.kotlin.version") ?: "2.3.21"
         val supports = testKotlinVersion.isAtLeast(2, 3, 21)
 
-        test("ignore=true wins over collectScope: the preview is dropped from every bucket")
+        test("ignore=true wins over collectScopes: the preview is dropped from every bucket")
             .config(enabled = supports) {
                 val result = base.compile(
                     SourceFile.kotlin(
@@ -98,7 +99,7 @@ class PreviewHintScopeIgnoreInteropTest :
                 result.loadCollectedPreviews(propertyName = "defaultOne").shouldBeEmpty()
             }
 
-        test("only ignored previews under collectScope X means X bucket is empty")
+        test("only ignored previews under collectScopes [X] means X bucket is empty")
             .config(enabled = supports) {
                 val result = base.compile(
                     SourceFile.kotlin(

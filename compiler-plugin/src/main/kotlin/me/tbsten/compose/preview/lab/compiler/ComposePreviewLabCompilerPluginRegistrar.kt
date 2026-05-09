@@ -38,7 +38,7 @@ class ComposePreviewLabCompilerPluginRegistrar : CompilerPluginRegistrar() {
         // changed between Kotlin 2.3 and 2.4, so resolve `registerExtension(...)` reflectively.
         registerExtensionCompat(
             FirExtensionRegistrarAdapter.Companion,
-            PreviewLabFirExtensionRegistrar(config, messageCollector),
+            PreviewLabFirExtensionRegistrar(config),
         )
         registerExtensionCompat(
             IrGenerationExtension.Companion,

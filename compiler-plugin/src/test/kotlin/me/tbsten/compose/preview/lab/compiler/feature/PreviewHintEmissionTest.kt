@@ -87,7 +87,7 @@ class PreviewHintEmissionTest :
                 // The hint function name encodes the scope (`previewHint_<scope>`); the
                 // marker class parameter disambiguates calls within a scope. From Java
                 // reflection we recover the method by passing the marker param's `Class`
-                // object to `getMethod`. Without `@ComposePreviewLabOption(collectScope)`
+                // object to `getMethod`. Without `@ComposePreviewLabOption(collectScopes = [...])`
                 // the scope is `"default"`.
                 val markerClass = result.classLoader
                     .loadClass(
