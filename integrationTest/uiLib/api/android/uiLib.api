@@ -1,13 +1,13 @@
 public final class me/tbsten/compose/preview/lab/hints/ComposableSingletons$PreviewHint_8wxhg4imKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/hints/ComposableSingletons$PreviewHint_8wxhg4imKt;
 	public fun <init> ()V
-	public final fun getLambda$-1529867815$uiLib_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-632424613$uiLib_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class me/tbsten/compose/preview/lab/hints/ComposableSingletons$PreviewHint_umm6awb4Kt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/hints/ComposableSingletons$PreviewHint_umm6awb4Kt;
 	public fun <init> ()V
-	public final fun getLambda$-156328132$uiLib_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-597314950$uiLib_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public abstract interface class me/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_lib_MyButtonPreview_8wxhg4im {
@@ -17,11 +17,11 @@ public abstract interface class me/tbsten/compose/preview/lab/hints/PreviewHintM
 }
 
 public final class me/tbsten/compose/preview/lab/hints/PreviewHint_8wxhg4imKt {
-	public static final synthetic fun previewHint (Lme/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_lib_MyButtonPreview_8wxhg4im;)Lme/tbsten/compose/preview/lab/CollectedPreview;
+	public static final synthetic fun previewHint_default (Lme/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_lib_MyButtonPreview_8wxhg4im;)Lme/tbsten/compose/preview/lab/CollectedPreview;
 }
 
 public final class me/tbsten/compose/preview/lab/hints/PreviewHint_umm6awb4Kt {
-	public static final synthetic fun previewHint (Lme/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_lib_MyTextFieldPreview_umm6awb4;)Lme/tbsten/compose/preview/lab/CollectedPreview;
+	public static final synthetic fun previewHint_default (Lme/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_lib_MyTextFieldPreview_umm6awb4;)Lme/tbsten/compose/preview/lab/CollectedPreview;
 }
 
 public final class me/tbsten/compose/preview/lab/sample/lib/ComposableSingletons$MyButtonKt {

@@ -84,14 +84,16 @@ class PreviewHintEmissionTest :
                 )
                 val hintFacade = result.classLoader
                     .loadClass("me.tbsten.compose.preview.lab.hints.PreviewHint_${expectedHash}Kt")
-                // The hint function name is fixed (`previewHint`); the marker class
-                // parameter disambiguates the call. From Java reflection we recover the
-                // method by passing the marker param's `Class` object to `getMethod`.
+                // The hint function name encodes the scope (`previewHint_<scope>`); the
+                // marker class parameter disambiguates calls within a scope. From Java
+                // reflection we recover the method by passing the marker param's `Class`
+                // object to `getMethod`. Without `@ComposePreviewLabOption(collectScopes = [...])`
+                // the scope is `"default"`.
                 val markerClass = result.classLoader
                     .loadClass(
                         "me.tbsten.compose.preview.lab.hints.${buildMarkerShortName("test.source.MyButton", expectedHash)}"
                     )
-                val hintMethod = hintFacade.getMethod("previewHint", markerClass)
+                val hintMethod = hintFacade.getMethod("previewHint_default", markerClass)
 
                 // Invoking hint(null) returns a CollectedPreview instance.
                 val collected = hintMethod.invoke(null, null)

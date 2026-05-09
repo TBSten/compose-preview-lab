@@ -25,6 +25,14 @@ class ComposePreviewLabCommandLineProcessor : CommandLineProcessor {
                 "collect[All]ModulePreviews() compile (default: true)",
             required = false,
         ),
+        CliOption(
+            optionName = OptionDefaultCollectScope,
+            valueDescription = "<scope>",
+            description = "Module-level default scope substituted whenever a per-@Preview / " +
+                "per-call scope is the literal \"default\". Must match [A-Za-z0-9_]+ " +
+                "(default: \"default\")",
+            required = false,
+        ),
     )
 
     override fun processOption(option: AbstractCliOption, value: String, configuration: CompilerConfiguration,) {
@@ -42,6 +50,21 @@ class ComposePreviewLabCommandLineProcessor : CommandLineProcessor {
                     )
                 configuration.put(KEY_COLLECT_PREVIEWS_ENABLED, parsed)
             }
+            OptionDefaultCollectScope -> {
+                // The value is embedded into the synthetic `previewHint_<scope>` Kotlin
+                // identifier, so reject anything that wouldn't parse as one. Caught here
+                // (option-processing time = before any source file is compiled) the user
+                // sees the error before opening their first build log line — far earlier
+                // than catching the same typo at FIR / IR phase.
+                if (!ScopeIdentifierRegex.matches(value)) {
+                    throw CliOptionProcessingException(
+                        "Invalid value for $OptionDefaultCollectScope: \"$value\". " +
+                            "Expected a Kotlin-identifier-safe scope matching [A-Za-z0-9_]+ " +
+                            "(it is embedded into the synthetic previewHint_<scope> function name).",
+                    )
+                }
+                configuration.put(KEY_DEFAULT_COLLECT_SCOPE, value)
+            }
             else -> throw CliOptionProcessingException("Unknown option: ${option.optionName}")
         }
     }
@@ -50,5 +73,12 @@ class ComposePreviewLabCommandLineProcessor : CommandLineProcessor {
         const val PluginId = "me.tbsten.compose.preview.lab.compiler"
         const val OptionProjectRootPath = "projectRootPath"
         const val OptionCollectPreviewsEnabled = "collectPreviewsEnabled"
+        const val OptionDefaultCollectScope = "defaultCollectScope"
+
+        /**
+         * Mirror of `PreviewLabFirBuiltIns.SCOPE_VALIDATION_REGEX` — kept literal here to
+         * avoid pulling in the FIR module from the CLI processor entry point.
+         */
+        private val ScopeIdentifierRegex: Regex = Regex("[A-Za-z0-9_]+")
     }
 }

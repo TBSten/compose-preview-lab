@@ -12,31 +12,33 @@ import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.types.classFqName
 
 /**
- * Discovers per-declaration hints **emitted by dependency modules**. Performs a fixed-name
- * lookup of `me.tbsten.compose.preview.lab.hints.previewHint` via
- * `pluginContext.referenceFunctions` so every hint on the classpath is found.
+ * Discovers per-declaration hints **emitted by dependency modules** for a given
+ * collection scope. Performs a per-scope `previewHint_<scope>` lookup via
+ * `pluginContext.referenceFunctions` so every hint on the classpath that participates in
+ * [scope] is found. Hints emitted under a different scope are skipped without inspection.
  *
  * **Sample call**:
  * ```kotlin
- * val hints = discoverHints(pluginContext, compatContext)
- * // → returns the IrSimpleFunctions emitted by dependency modules:
- * //   `previewHint(value: PreviewHintMarker_uilib_button_MyButton_<hash1>?): CollectedPreview`,
- * //   `previewHint(value: PreviewHintMarker_uilib_text_MyText_<hash2>?): CollectedPreview`, ...
- * //   (hints from the current module are filtered out)
+ * val hints = discoverHints(pluginContext, compatContext, scope = "design")
+ * // → returns the IrSimpleFunctions emitted by dependency modules under "design":
+ * //   `previewHint_design(value: PreviewHintMarker_uilib_design_MyButton_<hash1>?): CollectedPreview`,
+ * //   `previewHint_design(value: PreviewHintMarker_uilib_design_MyText_<hash2>?): CollectedPreview`, ...
+ * //   (hints from the current module and hints from other scopes are filtered out)
  * ```
  *
  * # Design points
  *
- * ## Fixed name + marker param
+ * ## Scope-suffixed name + marker param
  *
- * The hint function name is fixed (`previewHint`); the marker class on the parameter is
- * unique per `@Preview`. The KLIB IdSignature is derived from `(name, paramTypes)`, so a
- * different marker yields a different IdSignature. A single
- * `referenceFunctions(fixed-name)` call discovers every hint across the classpath.
+ * The hint function name encodes the scope (`previewHint_<scope>`); the marker class on the
+ * parameter is unique per `@Preview`. The KLIB IdSignature is derived from
+ * `(name, paramTypes)`, so a different marker yields a different IdSignature. A single
+ * `referenceFunctions(per-scope name)` call discovers every hint across the classpath that
+ * participates in the requested scope, with no after-the-fact filtering needed.
  *
  * ```kotlin
- * pluginContext.referenceFunctions(CallableId(HINT_PACKAGE, Name.identifier("previewHint")))
- * // → returns every previewHint(...) from this module + dependency modules
+ * pluginContext.referenceFunctions(CallableId(HINT_PACKAGE, Name.identifier("previewHint_design")))
+ * // → returns every previewHint_design(...) from this module + dependency modules
  * ```
  *
  * ## Cross-module gate
@@ -63,14 +65,18 @@ import org.jetbrains.kotlin.ir.types.classFqName
  * name. We continue to use the existing API for now and will migrate when K2 grows a
  * classpath-wide finder (follow-up).
  */
-internal fun discoverHints(pluginContext: IrPluginContext, compatContext: CompatContext,): List<IrSimpleFunction> {
+internal fun discoverHints(
+    pluginContext: IrPluginContext,
+    compatContext: CompatContext,
+    scope: String,
+): List<IrSimpleFunction> {
     if (!compatContext.supportsKlibCrossModuleHint()) return emptyList()
 
     // `referenceFunctions` is deprecated in K2, but the recommended replacements
     // (`finderForBuiltins` / `finderForSource`) do not support classpath-wide fixed-name
     // lookup, so we keep using the existing API. See KDoc for details.
     @Suppress("DEPRECATION")
-    val hintSymbols = pluginContext.referenceFunctions(PreviewLabFirBuiltIns.HINT_FUNCTION_CALLABLE_ID)
+    val hintSymbols = pluginContext.referenceFunctions(PreviewLabFirBuiltIns.hintFunctionCallableId(scope))
 
     return hintSymbols.mapNotNull { hintSymbol ->
         val hintFunction = hintSymbol.owner

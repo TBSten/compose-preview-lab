@@ -13,6 +13,10 @@ package me.tbsten.compose.preview.lab
  * The same wrapper acts as a marker type that downstream modules pick up automatically —
  * see [collectAllModulePreviews].
  *
+ * This stable no-arg overload delegates to the experimental scope-aware overload with the
+ * default-scope sentinel, so consumers do not have to opt in unless they need explicit
+ * scope filtering. See the scope-aware overload for the full scope semantics.
+ *
  * Example — single-module preview collection:
  * ```kotlin
  * val myPreviews by collectModulePreviews()
@@ -27,12 +31,57 @@ package me.tbsten.compose.preview.lab
  * @return a [PreviewExport] delegate wrapping the collected preview list; the body is replaced by the compiler plugin
  * @see collectAllModulePreviews
  */
+@OptIn(InternalComposePreviewLabApi::class, ExperimentalComposePreviewLabApi::class)
+public fun collectModulePreviews(): PreviewExport = collectModulePreviews(scope = ComposePreviewLabOption.DefaultCollectScope)
+
+/**
+ * Scope-aware variant of [collectModulePreviews] that limits the result to previews
+ * whose `@ComposePreviewLabOption(collectScopes = [...])` array contains [scope].
+ *
+ * **Experimental**: the scope feature is still stabilizing. Consumers must opt in with
+ * `@OptIn(ExperimentalComposePreviewLabApi::class)` (or `@file:OptIn(...)`) to call this
+ * overload. The no-arg [collectModulePreviews] overload remains stable for callers that
+ * do not need explicit scope filtering.
+ *
+ * Example:
+ * ```kotlin
+ * @file:OptIn(me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi::class)
+ *
+ * val buttonPreviews by collectModulePreviews(scope = "buttons")
+ * ```
+ *
+ * @param scope The collection scope to draw from. Only previews annotated with the
+ * matching `@ComposePreviewLabOption(collectScopes = ["..."])` end up in the result.
+ * The literal value `"default"` (= [ComposePreviewLabOption.DefaultCollectScope]) acts as
+ * a sentinel: it does **not** mean a literal `"default"` bucket — the compiler plugin
+ * substitutes it with the module's `composePreviewLab.collectPreviews.defaultCollectScope`
+ * Gradle DSL value (which itself defaults to `"default"`). So a library that pins every
+ * preview to its own bucket via `defaultCollectScope = "acme_ui"` automatically reads
+ * back the same bucket here.
+ *
+ * The argument must reach the compiler plugin's IR pass as a compile-time string
+ * constant — an inline string literal or a `const val` reference both work, because
+ * both end up as an `IrConst<String>` before our pass runs. Non-`const` vals, string
+ * concatenations, and other expressions that produce an `IrCall` /
+ * `IrStringConcatenation` are reported as compile errors. The resolved value must also
+ * match `[A-Za-z0-9_]+` because the plugin embeds it into the synthetic hint function
+ * name.
+ * @return a [PreviewExport] delegate wrapping the collected preview list; the body is replaced by the compiler plugin
+ * @see collectAllModulePreviews
+ */
+@ExperimentalComposePreviewLabApi
 @OptIn(InternalComposePreviewLabApi::class)
-public fun collectModulePreviews(): PreviewExport = PreviewExport(
+public fun collectModulePreviews(scope: String): PreviewExport = PreviewExport(
     lazy {
         error(
-            "[ComposePreviewLab] collectModulePreviews() was not replaced by the compiler plugin. " +
-                "Make sure the Compose Preview Lab compiler plugin is applied to this module.",
+            "[ComposePreviewLab] collectModulePreviews(scope = \"$scope\") was not replaced by the compiler plugin. " +
+                "Apply the Compose Preview Lab Gradle plugin to this module:\n" +
+                "  // build.gradle.kts\n" +
+                "  plugins {\n" +
+                "      id(\"me.tbsten.compose.preview.lab\")\n" +
+                "  }\n" +
+                "Then re-run the build. See https://github.com/TBSten/compose-preview-lab " +
+                "for the full setup guide.",
         )
     },
 )
@@ -49,7 +98,7 @@ public fun collectModulePreviews(): PreviewExport = PreviewExport(
  *
  * **Cross-module aggregation works on every Compose Multiplatform target** (JVM / Android /
  * JS / Wasm JS / iOS) when running Kotlin 2.3.21 or later. The compiler plugin emits a
- * per-`@Preview` hint (`previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` in the
+ * per-`@Preview` hint (`previewHint_<scope>(value: PreviewHintMarker_<hash>?): CollectedPreview` in the
  * `me.tbsten.compose.preview.lab.hints` package) and the consumer side discovers them via
  * `IrPluginContext.referenceFunctions`, which works equally for JVM bytecode and KLIB modules.
  *
@@ -75,15 +124,70 @@ public fun collectModulePreviews(): PreviewExport = PreviewExport(
  * // any @Preview function in uiLib is now picked up by upstream collectAllModulePreviews()
  * ```
  *
+ * This stable no-arg overload delegates to the experimental scope-aware overload with the
+ * default-scope sentinel, so consumers do not have to opt in unless they need explicit
+ * scope filtering. See the scope-aware overload below for the full scope semantics.
+ *
  * @return a [PreviewExport] delegate wrapping the aggregated preview list; the body is replaced by the compiler plugin
  * @see collectModulePreviews
  */
+@OptIn(InternalComposePreviewLabApi::class, ExperimentalComposePreviewLabApi::class)
+public fun collectAllModulePreviews(): PreviewExport =
+    collectAllModulePreviews(scope = ComposePreviewLabOption.DefaultCollectScope)
+
+/**
+ * Scope-aware variant of [collectAllModulePreviews] that limits the aggregated result to
+ * previews whose `@ComposePreviewLabOption(collectScopes = [...])` array contains [scope].
+ *
+ * **Experimental**: the scope feature is still stabilizing. Consumers must opt in with
+ * `@OptIn(ExperimentalComposePreviewLabApi::class)` (or `@file:OptIn(...)`) to call this
+ * overload. The no-arg [collectAllModulePreviews] overload remains stable for callers that
+ * do not need explicit scope filtering.
+ *
+ * Example:
+ * ```kotlin
+ * @file:OptIn(me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi::class)
+ *
+ * val designPreviews by collectAllModulePreviews(scope = "design")
+ * ```
+ *
+ * @param scope The collection scope to draw from. Only previews annotated with the
+ * matching `@ComposePreviewLabOption(collectScopes = ["..."])` end up in the result.
+ * The literal value `"default"` (= [ComposePreviewLabOption.DefaultCollectScope]) acts as
+ * a sentinel: it does **not** mean a literal `"default"` bucket — the compiler plugin
+ * substitutes it with the **calling** module's
+ * `composePreviewLab.collectPreviews.defaultCollectScope` Gradle DSL value (which itself
+ * defaults to `"default"`). The substitution is **strictly per-module**: a library that
+ * pins its own previews to `defaultCollectScope = "acme_ui"` will register them under
+ * `acme_ui`, but a downstream consumer app's `collectAllModulePreviews()` (= the
+ * sentinel, substituted with the *consumer's* DSL value) will **NOT** see them unless the
+ * consumer explicitly asks `collectAllModulePreviews(scope = "acme_ui")`. This isolation
+ * is the primary reason the DSL exists.
+ *
+ * The argument must reach the compiler plugin's IR pass as a compile-time string
+ * constant — an inline string literal or a `const val` reference both work, because
+ * both end up as an `IrConst<String>` before our pass runs. Non-`const` vals, string
+ * concatenations, and other expressions that produce an `IrCall` /
+ * `IrStringConcatenation` are reported as compile errors. The resolved value must also
+ * match `[A-Za-z0-9_]+` because the plugin embeds it into the synthetic hint function
+ * name.
+ * @return a [PreviewExport] delegate wrapping the aggregated preview list; the body is replaced by the compiler plugin
+ * @see collectModulePreviews
+ */
+@ExperimentalComposePreviewLabApi
 @OptIn(InternalComposePreviewLabApi::class)
-public fun collectAllModulePreviews(): PreviewExport = PreviewExport(
+public fun collectAllModulePreviews(scope: String): PreviewExport = PreviewExport(
     lazy {
         error(
-            "[ComposePreviewLab] collectAllModulePreviews() was not replaced by the compiler plugin. " +
-                "Make sure the Compose Preview Lab compiler plugin is applied to this module.",
+            "[ComposePreviewLab] collectAllModulePreviews(scope = \"$scope\") was not replaced by the compiler plugin. " +
+                "Apply the Compose Preview Lab Gradle plugin to this module and to every " +
+                "dependency module whose previews you want to aggregate:\n" +
+                "  // build.gradle.kts\n" +
+                "  plugins {\n" +
+                "      id(\"me.tbsten.compose.preview.lab\")\n" +
+                "  }\n" +
+                "Then re-run the build. Cross-module discovery requires Kotlin 2.3.21+. " +
+                "See https://github.com/TBSten/compose-preview-lab for the full setup guide.",
         )
     },
 )
@@ -94,7 +198,7 @@ public fun collectAllModulePreviews(): PreviewExport = PreviewExport(
  *
  * Called from the IR generated by `collectAllModulePreviews()` to merge previews from this
  * module with previews discovered through the per-declaration hint mechanism
- * (`previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview` functions). When a
+ * (`previewHint_<scope>(value: PreviewHintMarker_<hash>?): CollectedPreview` functions). When a
  * dependency module also uses `collectAllModulePreviews()` (i.e. it re-exports its own
  * dependencies), the same `CollectedPreview` may reach the aggregator through more than
  * one hint chain. Deduplicating by `id` guarantees a stable result regardless of how many

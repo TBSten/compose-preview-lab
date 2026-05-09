@@ -36,13 +36,31 @@ internal class PreviewLabFirBuiltIns(session: FirSession, val config: PluginConf
         val HINT_PACKAGE: FqName = FqName("me.tbsten.compose.preview.lab.hints")
 
         /**
-         * Fixed callable name shared by every per-declaration hint function. The marker class
-         * parameter type disambiguates the IdSignature per `@Preview`.
+         * Prefix of every per-declaration hint function. Full name is `previewHint_<scope>`,
+         * where `<scope>` is the value of `@ComposePreviewLabOption(collectScopes = ...)` (or
+         * `"default"` when not set). Encoding the scope into the function name lets the IR
+         * side filter hints purely by `referenceFunctions(CallableId(HINT_PACKAGE, name))` —
+         * no per-hint inspection is needed.
          */
-        val HINT_FUNCTION_NAME: Name = Name.identifier("previewHint")
+        const val PreviewHintFunctionPrefix: String = "previewHint_"
 
-        /** `me.tbsten.compose.preview.lab.hints/previewHint`. */
-        val HINT_FUNCTION_CALLABLE_ID: CallableId = CallableId(HINT_PACKAGE, HINT_FUNCTION_NAME)
+        /**
+         * Builds the hint function callable id for a given scope. The hint function name
+         * always lives in [HINT_PACKAGE], so per-scope discovery only needs to vary the
+         * callable name suffix.
+         */
+        fun hintFunctionCallableId(scope: String): CallableId =
+            CallableId(HINT_PACKAGE, Name.identifier(PreviewHintFunctionPrefix + scope))
+
+        /**
+         * Validation rule for `collectScope` values.
+         *
+         * The scope is embedded directly into a Kotlin identifier (`previewHint_<scope>`),
+         * so anything outside `[A-Za-z0-9_]+` would either fail to compile or, worse,
+         * accidentally land on an unrelated function name. Validating up front lets us
+         * surface the mistake as a clear `MessageCollector` error instead.
+         */
+        val SCOPE_VALIDATION_REGEX: Regex = Regex("[A-Za-z0-9_]+")
 
         /**
          * Prefix of the per-`@Preview` marker interface name. Full name is
@@ -82,6 +100,9 @@ internal class PreviewLabFirBuiltIns(session: FirSession, val config: PluginConf
 
         /** `@ComposePreviewLabOption(ignore = ...)` argument name. */
         val IGNORE_NAME: Name = Name.identifier("ignore")
+
+        /** `@ComposePreviewLabOption(collectScopes = ...)` argument name. */
+        val COLLECT_SCOPE_NAME: Name = Name.identifier("collectScopes")
     }
 }
 

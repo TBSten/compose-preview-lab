@@ -48,14 +48,22 @@ open class CompilerPluginTestBase {
         ),
     )
 
-    /** Stubs of `collectModulePreviews` / `collectAllModulePreviews` / `distinctPreviewsById`. */
+    /**
+     * Stubs of `collectModulePreviews` / `collectAllModulePreviews` / `distinctPreviewsById`.
+     *
+     * The default scope value is interpolated from
+     * [me.tbsten.compose.preview.lab.ComposePreviewLabOption.DefaultCollectScope] so the test
+     * stub stays in lockstep with the production sentinel — changing the constant on the
+     * annotation side propagates here automatically (and would cause this stub to compile
+     * with the new value rather than silently desyncing on `"default"`).
+     */
     private val collectPreviewsStubs = listOf(
         SourceFile.kotlin(
             "CollectModulePreviews.kt",
             """
             package me.tbsten.compose.preview.lab
-            fun collectModulePreviews(): PreviewExport = PreviewExport(lazy { emptyList() })
-            fun collectAllModulePreviews(): PreviewExport = PreviewExport(lazy { emptyList() })
+            fun collectModulePreviews(scope: String = "${me.tbsten.compose.preview.lab.ComposePreviewLabOption.DefaultCollectScope}"): PreviewExport = PreviewExport(lazy { emptyList() })
+            fun collectAllModulePreviews(scope: String = "${me.tbsten.compose.preview.lab.ComposePreviewLabOption.DefaultCollectScope}"): PreviewExport = PreviewExport(lazy { emptyList() })
             fun distinctPreviewsById(previews: List<CollectedPreview>): List<CollectedPreview> =
                 previews.distinctBy { it.id }
             """,
@@ -82,6 +90,14 @@ open class CompilerPluginTestBase {
         // FirIncompatibleClassExpressionChecker crashing in Kotlin 2.1.x when
         // languageVersion="2.0" is used (source must not be null).
         this.languageVersion = testLanguageVersion
+        // The collectScopes feature is marked @ExperimentalComposePreviewLabApi on the
+        // production side. Test fixtures freely write `@ComposePreviewLabOption(collectScopes = ...)`
+        // and `collect[All]ModulePreviews(scope = "...")` to exercise the IR pipeline,
+        // so opt in unconditionally here rather than peppering every inline source with
+        // `@file:OptIn(...)`.
+        this.kotlincArguments = this.kotlincArguments + listOf(
+            "-opt-in=me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
+        )
         if (needsCompatibilityFlags) {
             this.kotlincArguments = this.kotlincArguments + listOf(
                 "-Xskip-prerelease-check",

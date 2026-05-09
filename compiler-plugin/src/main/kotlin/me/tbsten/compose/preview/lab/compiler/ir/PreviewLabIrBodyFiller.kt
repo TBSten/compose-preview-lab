@@ -2,8 +2,10 @@
 
 package me.tbsten.compose.preview.lab.compiler.ir
 
+import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
+import me.tbsten.compose.preview.lab.compiler.fir.PreviewLabFirBuiltIns
 import me.tbsten.compose.preview.lab.compiler.ir.util.declarationLocation
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
@@ -11,8 +13,10 @@ import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
-import org.jetbrains.kotlin.ir.declarations.IrField
 import org.jetbrains.kotlin.ir.declarations.IrProperty
+import org.jetbrains.kotlin.ir.expressions.IrCall
+import org.jetbrains.kotlin.ir.expressions.IrConst
+import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
@@ -115,7 +119,8 @@ internal class PreviewLabIrBodyFiller(
      */
     private fun replaceCollectPreviewsProperty(property: IrProperty) {
         val delegateField = property.backingField ?: return
-        val isAll = isCollectAllCall(delegateField)
+        val collectCall = delegateField.initializer?.expression as? IrCall ?: return
+        val isAll = collectCall.symbol.owner.kotlinFqName == collectAllModulePreviewsFq
 
         // Module-level gate: when `collectPreviewsEnabled = false` for this module the FIR
         // hint generator was not registered, so no marker interface or `previewHint(...)`
@@ -140,6 +145,37 @@ internal class PreviewLabIrBodyFiller(
             return
         }
 
+        val callName = if (isAll) "collectAllModulePreviews" else "collectModulePreviews"
+        // Regex validation runs in the FIR `CHECKERS` phase
+        // (`me.tbsten.compose.preview.lab.compiler.fir.checkers.CollectScopeCallChecker`)
+        // for inline string literals, but the FIR side cannot distinguish a `const val`
+        // reference from a plain `val` reference at analysis time — they both arrive as
+        // a `FirPropertyAccessExpression`. The const-folding into `IrConst<String>` only
+        // happens between FIR and IR, so the IR pass is the first place we observe the
+        // resolved-but-still-pre-checker `const val` value. We re-validate the regex here
+        // so a `private const val BAD = "has space"; collectModulePreviews(scope = BAD)`
+        // bypass would have been caught during embedding into the synthetic identifier.
+        val scope = when (val resolution = resolveScopeArg(collectCall)) {
+            is ScopeArgResult.Default -> config.defaultCollectScope
+            is ScopeArgResult.Literal -> {
+                val rawValue = resolution.value
+                if (!PreviewLabFirBuiltIns.SCOPE_VALIDATION_REGEX.matches(rawValue)) {
+                    reportInvalidScopeError(property, callName, rawValue)
+                    return
+                }
+                // Sentinel substitution: a literal `"default"` (the
+                // `ComposePreviewLabOption.DefaultCollectScope` value) means "use the
+                // module's configured default scope" rather than the literal string.
+                // This is what makes a Gradle-DSL-only library configuration work without
+                // every consumer call having to repeat the scope string.
+                if (rawValue == ComposePreviewLabOption.DefaultCollectScope) config.defaultCollectScope else rawValue
+            }
+            is ScopeArgResult.NonLiteral -> {
+                reportNonLiteralScopeError(property, callName)
+                return
+            }
+        }
+
         val builder = DeclarationIrBuilder(pluginContext, property.symbol)
 
         // The synthetic lambda needs an IrFunction as its parent.
@@ -154,9 +190,9 @@ internal class PreviewLabIrBodyFiller(
                     " with a getter, not a backing field",
             )
 
-        val thisModulePreviews = irBuilder.buildPreviewsListExpr(builder, lambdaParent)
+        val thisModulePreviews = irBuilder.buildPreviewsListExpr(builder, lambdaParent, scope)
         val previewListExpr = if (isAll) {
-            irBuilder.buildConcatenatedPreviewsExpr(builder, thisModulePreviews)
+            irBuilder.buildConcatenatedPreviewsExpr(builder, thisModulePreviews, scope)
         } else {
             thisModulePreviews
         }
@@ -233,12 +269,79 @@ internal class PreviewLabIrBodyFiller(
     }
 
     /**
-     * Checks whether the delegate field was initialized with `collectAllModulePreviews()`
-     * (as opposed to `collectModulePreviews()`).
+     * Reports the strict-literal-only error for `collect[All]ModulePreviews(scope = ...)`.
+     *
+     * The FIR `CollectScopeCallChecker` already flags clear-cut non-literals (string
+     * concatenations, function calls). It cannot flag plain (non-`const`) `val` references
+     * at FIR analysis time because `const val` references — which ARE allowed — look
+     * identical to it (both arrive as `FirPropertyAccessExpression`). The IR pass is the
+     * first place where the const-folded `IrConst<String>` distinction is observable, so
+     * we keep this rejection here as the second-line check.
      */
-    private fun isCollectAllCall(delegateField: IrField): Boolean {
-        val initializer = delegateField.initializer?.expression ?: return false
-        if (initializer !is org.jetbrains.kotlin.ir.expressions.IrCall) return false
-        return initializer.symbol.owner.kotlinFqName == collectAllModulePreviewsFq
+    private fun reportNonLiteralScopeError(property: IrProperty, callName: String) {
+        messageCollector.report(
+            CompilerMessageSeverity.ERROR,
+            "[ComposePreviewLab] $callName(scope = ...) accepts only a compile-time string " +
+                "constant — an inline string literal or a `const val` reference. Non-`const` " +
+                "vals, string concatenations, and other expressions are reported as errors " +
+                "because the value is embedded into the synthetic hint function name at " +
+                "IR-pass time.",
+            declarationLocation(property),
+        )
+    }
+
+    /**
+     * Reports the regex-violation error for a literal `collect[All]ModulePreviews(scope = ...)`
+     * value that reached IR through const-folding.
+     *
+     * The FIR `CollectScopeCallChecker` catches inline string literals
+     * (`scope = "has-hyphen"`) at analysis time, but a `const val` reference is
+     * indistinguishable from a non-`const` `val` reference at FIR time and is therefore
+     * left to the IR pass. By the time we get here the const-folded `IrConst<String>` is
+     * a hand-written-literal-equivalent, so the same regex must apply — otherwise a
+     * `private const val BAD = "has space"; collectModulePreviews(scope = BAD)` would
+     * silently bypass validation and the synthetic `previewHint_<scope>` lookup would
+     * either throw on `Name.identifier(...)` or land on an unrelated identifier.
+     */
+    private fun reportInvalidScopeError(property: IrProperty, callName: String, scope: String) {
+        messageCollector.report(
+            CompilerMessageSeverity.ERROR,
+            "[ComposePreviewLab] $callName(scope = \"$scope\") is not a valid scope " +
+                "identifier. Allowed characters: [A-Za-z0-9_]+ (the value is embedded into " +
+                "the synthetic previewHint_<scope> function name). This usually means a " +
+                "`const val` referenced as `scope = MY_CONST` evaluates to an invalid " +
+                "string at compile time.",
+            declarationLocation(property),
+        )
+    }
+
+    /**
+     * Outcome of inspecting the `scope = ...` argument of a
+     * `collect[All]ModulePreviews(...)` call site.
+     */
+    private sealed interface ScopeArgResult {
+        /** The user omitted the argument (`arguments[0] == null`); use the runtime default. */
+        data object Default : ScopeArgResult
+
+        /** The user supplied an `IrConst<String>`; the value is the chosen scope. */
+        data class Literal(val value: String) : ScopeArgResult
+
+        /** The user supplied a non-literal expression (named const, concat, ...). */
+        data class NonLiteral(val expr: IrExpression) : ScopeArgResult
+    }
+
+    /**
+     * Inspects the `scope` argument on a `collect[All]ModulePreviews(...)` IR call.
+     *
+     * `IrCall.arguments[0]` is the first regular value parameter for top-level functions;
+     * `null` means the user omitted the argument (Kotlin compiler keeps that as the
+     * sentinel for default-arg invocations all the way through to the IR pass).
+     */
+    private fun resolveScopeArg(call: IrCall): ScopeArgResult {
+        val arg = call.arguments.getOrNull(0) ?: return ScopeArgResult.Default
+        return when {
+            arg is IrConst && arg.value is String -> ScopeArgResult.Literal(arg.value as String)
+            else -> ScopeArgResult.NonLiteral(arg)
+        }
     }
 }

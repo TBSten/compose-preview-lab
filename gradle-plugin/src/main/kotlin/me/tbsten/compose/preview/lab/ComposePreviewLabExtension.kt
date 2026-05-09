@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalComposePreviewLabApi::class)
+
 package me.tbsten.compose.preview.lab
 
 import javax.inject.Inject
@@ -66,7 +68,7 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
      *
      * The defaults match the behavior of every existing build, so adding this DSL block
      * is opt-in. The most common knob is `enabled = false`, which **prevents this module
-     * from emitting any preview hints** (no marker interface, no `previewHint(...)`
+     * from emitting any preview hints** (no marker interface, no `previewHint_<scope>(...)`
      * overload), so its previews cannot leak into downstream `collectAllModulePreviews()`
      * consumers. As a deliberate policy gate, **`collectModulePreviews()` /
      * `collectAllModulePreviews()` call sites inside the same disabled module are
@@ -100,7 +102,7 @@ abstract class CollectPreviewsConfig @Inject constructor(objects: ObjectFactory)
      * Whether this module participates in per-declaration preview hint emission.
      *
      * - `true` (default) — `@Preview` functions in this module emit a marker interface and
-     *   a `previewHint(...)` overload, so they can be discovered cross-module by
+     *   a `previewHint_<scope>(...)` overload, so they can be discovered cross-module by
      *   `collectAllModulePreviews()` consumers.
      * - `false` — the compiler plugin emits no marker / hint pair for this module **and**
      *   any `collectModulePreviews()` / `collectAllModulePreviews()` call site in the same
@@ -132,4 +134,47 @@ abstract class CollectPreviewsConfig @Inject constructor(objects: ObjectFactory)
      */
     var enabled: Boolean by objects.property<Boolean>()
         .convention(true)
+
+    /**
+     * Module-level default scope for `@Preview` hints emitted from this module.
+     *
+     * The compiler plugin substitutes any `@ComposePreviewLabOption(collectScopes = [...])` /
+     * `collect[All]ModulePreviews(scope = ...)` value of `"default"` (the
+     * `ComposePreviewLabOption.DefaultCollectScope` sentinel) with this string before
+     * embedding it into the synthetic `previewHint_<scope>` function name. The typical
+     * use is to pin a library module's previews to a library-specific bucket so they do
+     * not leak into a consumer app's `collectAllModulePreviews()` call:
+     *
+     * ```kotlin
+     * // uiLib/build.gradle.kts
+     * composePreviewLab {
+     *     collectPreviews {
+     *         defaultCollectScope = "acme_ui"
+     *     }
+     * }
+     *
+     * // uiLib/src/commonMain/kotlin/Button.kt
+     * @Preview                      // no @ComposePreviewLabOption needed
+     * @Composable
+     * fun ButtonPreview() { Button() }
+     * // ↑ emitted under previewHint_acme_ui because of the DSL above.
+     * ```
+     *
+     * Defaults to `"default"` so existing builds keep producing `previewHint_default`
+     * without any DSL change.
+     *
+     * The value must match `[A-Za-z0-9_]+` because it is embedded into a Kotlin identifier;
+     * an invalid value is rejected by the compiler plugin's command-line processor with a
+     * clear error before any source file is compiled.
+     *
+     * **Experimental**: this knob is part of the still-stabilizing collectScopes design and
+     * may change shape (or move under a different DSL block) before stable release. Opt in
+     * with `@OptIn(ExperimentalComposePreviewLabApi::class)` at the consuming Kotlin source
+     * site; the Gradle DSL itself does not enforce the opt-in (Gradle scripts have no
+     * Kotlin opt-in propagation), but the annotation surfaces a warning in the IDE for
+     * direct programmatic access.
+     */
+    @ExperimentalComposePreviewLabApi
+    var defaultCollectScope: String by objects.property<String>()
+        .convention(ComposePreviewLabOption.DefaultCollectScope)
 }
