@@ -145,8 +145,9 @@ public interface CompatContext {
      * `getTopLevelCallableIds` API — i.e. whether the per-`@Preview` hint generator
      * (`PreviewHintFirGenerator`) can be registered without crashing the FIR session.
      *
-     * The API stabilized in Kotlin 2.3.x, so this returns `true` from `compat-k230`
-     * onwards (covers 2.3.0+) and `false` on the earlier 2.1.x / 2.2.x compat modules.
+     * The API stabilized in Kotlin 2.3.20, so this returns `true` from `compat-k2320`
+     * onwards (covers 2.3.20+) and `false` on the earlier 2.1.x / 2.2.x / 2.3.0–2.3.19
+     * compat modules.
      *
      * **Platform-independent**: the FIR generator emits the same marker class +
      * `previewHint_<scope>` overload regardless of target — JVM compiles them to
@@ -156,6 +157,7 @@ public interface CompatContext {
      *
      * Implementations:
      * - `compat-k210` / `compat-k222` / `compat-k2220` / `compat-k230` → `false`
+     *   (the last covers 2.3.0–2.3.19, where the FIR API was still experimental)
      * - `compat-k2320` (Kotlin 2.3.20+) / `compat-k2321` / `compat-k240_beta2` → `true`
      */
     public fun supportsFirHintGeneration(): Boolean
@@ -168,7 +170,7 @@ public interface CompatContext {
      * `collectAllModulePreviews()` discovers dependency-module hints by walking
      * `referenceFunctions(CallableId(HINT_PACKAGE, "previewHint_<scope>"))`. On JVM /
      * Android this works on every Kotlin version that supports
-     * [supportsFirHintGeneration] (= 2.3.0+), because classfile-based dependency
+     * [supportsFirHintGeneration] (= 2.3.20+), because classfile-based dependency
      * resolution has no incremental-compile complications. On KLIB-based targets, the
      * `referenceFunctions` walk only became safe after KT-82395 was fixed in
      * **Kotlin 2.3.21 / 2.4.0-Beta2+**. Earlier Kotlin 2.3.x versions emit

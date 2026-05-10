@@ -21,13 +21,13 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
  *   defaulting to `previewHint_default` when no scope is specified) for each `@Preview`.
  *   **Only registered when both** the running Kotlin compiler exposes a stable
  *   `FirDeclarationGenerationExtension.getTopLevelClassIds` /
- *   `getTopLevelCallableIds` API (Kotlin 2.3.0+, surfaced via
+ *   `getTopLevelCallableIds` API (Kotlin 2.3.20+, surfaced via
  *   [CompatContext.supportsFirHintGeneration]) **and** `collectPreviewsEnabled`
  *   is `true` for this module ([PluginConfig.collectPreviewsEnabled]). The IR-side
  *   cross-module discovery has separate KLIB IC-safety constraints (see
  *   [CompatContext.supportsKlibCrossModuleHint]) — those gate the IR pass, not this
  *   FIR registration, so JVM / Android consumers benefit from the per-declaration hint
- *   pipeline on Kotlin 2.3.0+ even though the KLIB IC fix only landed in 2.3.21.
+ *   pipeline on Kotlin 2.3.20+ even though the KLIB IC fix only landed in 2.3.21.
  *   Skipping the registration when `collectPreviewsEnabled = false` is what guarantees
  *   that no `previewHint_<scope>(...)` overload or `PreviewHintMarker_*` interface ends
  *   up in the module's classpath.

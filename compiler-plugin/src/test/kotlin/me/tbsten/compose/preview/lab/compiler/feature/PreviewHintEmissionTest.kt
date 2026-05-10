@@ -23,8 +23,12 @@ import me.tbsten.compose.preview.lab.compiler.isAtLeast
  * disambiguates the IdSignature per `@Preview` (the fixed-name + marker pattern).
  * Cross-module discovery walks every hint via `referenceFunctions(fixed-name)`.
  *
- * **Skipped on Kotlin < 2.3.21**: the hint generator only runs on Kotlin 2.3.21+
- * ([CompatContext.supportsKlibCrossModuleHint][me.tbsten.compose.preview.lab.compiler.compat.CompatContext.supportsKlibCrossModuleHint]).
+ * **Skipped on Kotlin < 2.3.20**: the FIR per-declaration generator
+ * (`PreviewHintFirGenerator`) is only registered on Kotlin 2.3.20+, where the
+ * `FirDeclarationGenerationExtension.getTopLevelClassIds` /
+ * `getTopLevelCallableIds` API stabilizes. See
+ * [CompatContext.supportsFirHintGeneration][me.tbsten.compose.preview.lab.compiler.compat.CompatContext.supportsFirHintGeneration]
+ * (the runtime gate `supports = isAtLeast(2, 3, 20)` mirrors that flag).
  */
 class PreviewHintEmissionTest :
     FunSpec({

@@ -19,12 +19,13 @@ import org.jetbrains.kotlin.platform.jvm.isJvm
  * `CompatContext.supportsKlibCrossModuleHint()` (= 2.3.21+) before walking dep-module
  * hints. JVM / Android consumers don't have the IC issue and can run the discovery on
  * any Kotlin version that supports `CompatContext.supportsFirHintGeneration()`
- * (= 2.3.0+).
+ * (= 2.3.20+).
  *
- * `Native` is not in `kotlin.platform` as a single helper, so we check by exclusion:
- * any platform that's neither JVM nor Common is treated as KLIB-based for our gate.
- * Android Native (NDK) would also be treated as KLIB-based, which is correct
- * (Android Native targets are Konan-based).
+ * `Native` is not in `kotlin.platform` as a single helper, so we use an explicit
+ * `isJs() || isWasm() || isNative()` allowlist to identify KLIB-based platforms (after
+ * short-circuiting on JVM / null). Anything that hits the allowlist is treated as
+ * KLIB-based for our gate. Android Native (NDK) is captured by `isNative()`, which is
+ * correct (Android Native targets are Konan-based).
  */
 internal val TargetPlatform?.requiresKlibIcSafetyForCrossModuleHint: Boolean
     get() {

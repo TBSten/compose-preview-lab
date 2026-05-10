@@ -52,7 +52,7 @@ private val SyntheticPreviewHintFqn = FqName("me.tbsten.compose.preview.lab.Synt
  * The caller
  * ([PreviewLabIrBodyFiller.replaceCollectPreviewsProperty][me.tbsten.compose.preview.lab.compiler.ir.PreviewLabIrBodyFiller])
  * pre-checks the platform-aware gate (JVM / Android: only
- * `CompatContext.supportsFirHintGeneration` required = 2.3.0+; KLIB targets:
+ * `CompatContext.supportsFirHintGeneration` required = 2.3.20+; KLIB targets:
  * additionally `CompatContext.supportsKlibCrossModuleHint` required = 2.3.21+) and
  * aborts the IR transform with an early error report when KLIB IC safety is
  * unavailable. By the time [discoverHints] is invoked the gate condition is assumed to

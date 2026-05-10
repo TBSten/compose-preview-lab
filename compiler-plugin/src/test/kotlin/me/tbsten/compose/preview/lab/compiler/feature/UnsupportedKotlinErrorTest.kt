@@ -18,11 +18,12 @@ import me.tbsten.compose.preview.lab.compiler.isAtLeast
  * (`scripts/compiler-plugin-test.sh`) swaps in different `kotlin-compiler-embeddable`
  * versions to exercise the older code path. It uses `CompilerPluginJsTestBase`
  * deliberately: on JVM / Android the FIR per-declaration generator runs from Kotlin
- * 2.3.0+ and cross-module discovery succeeds without the KLIB IC fix, so the
- * unsupported-target error only fires for KLIB targets (JS / Wasm JS / Native) with
- * Kotlin < 2.3.21. The negative counterpart (= the gated `PreviewHintEmissionTest` /
+ * 2.3.20+ (= `supportsFirHintGeneration` flips to `true` in `compat-k2320`) and
+ * cross-module discovery succeeds without the KLIB IC fix, so the unsupported-target
+ * error only fires for KLIB targets (JS / Wasm JS / Native) with Kotlin < 2.3.21.
+ * The positive counterpart (= the gated `PreviewHintEmissionTest` /
  * `PreviewHintDiscoveryTest` / etc.) lives in JVM-base tests gated on
- * `isAtLeast(2, 3, 0)`.
+ * `isAtLeast(2, 3, 20)`.
  */
 class UnsupportedKotlinErrorTest :
     FunSpec({
