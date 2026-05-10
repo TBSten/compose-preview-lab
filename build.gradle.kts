@@ -38,6 +38,7 @@ apiValidation {
             projects.compilerPlugin.compatK222.name,
             projects.compilerPlugin.compatK2220.name,
             projects.compilerPlugin.compatK230.name,
+            projects.compilerPlugin.compatK2320.name,
             projects.compilerPlugin.compatK2321.name,
             projects.compilerPlugin.compatK240Beta2.name,
         ),
