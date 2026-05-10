@@ -22,27 +22,22 @@ allprojects {
 apiValidation {
     @OptIn(ExperimentalBCVApi::class)
     klib.enabled = true
-    // The compiler-plugin and its compat layers are internal compiler infrastructure,
-    // not consumer-facing API. The plugin entry point is a Gradle plugin DSL — the
+    // dev module: standalone Compose preview app, not a published library.
+    ignoredProjects.add(projects.dev.name)
+    // compiler-plugin + every compat-kXXX shim is internal compiler infrastructure
+    // (not consumer-facing API). The plugin entry point is a Gradle plugin DSL; the
     // FIR/IR generators inside `:compiler-plugin` and the per-Kotlin-version compat
     // implementations are bundled into a shadow jar and loaded by the Kotlin compiler
     // via ServiceLoader. Each new Kotlin version requires a new compat-kXXX module
     // that intentionally tracks compiler API drift, so a BCV baseline here would
     // flag every legitimate addition as a breaking change.
-    ignoredProjects.addAll(
-        listOf(
-            projects.dev.name,
-            projects.compilerPlugin.name,
-            projects.compilerPlugin.compat.name,
-            projects.compilerPlugin.compatK210.name,
-            projects.compilerPlugin.compatK222.name,
-            projects.compilerPlugin.compatK2220.name,
-            projects.compilerPlugin.compatK230.name,
-            projects.compilerPlugin.compatK2320.name,
-            projects.compilerPlugin.compatK2321.name,
-            projects.compilerPlugin.compatK240Beta2.name,
-        ),
-    )
+    //
+    // Enumerate by path pattern so adding a new compat-kXXX module does not require
+    // remembering to extend this list (= avoids the spuriously-generated `.api`
+    // baseline that motivated this comment).
+    rootProject.subprojects
+        .filter { it.path == ":compiler-plugin" || it.path.startsWith(":compiler-plugin:") }
+        .forEach { ignoredProjects.add(it.name) }
     nonPublicMarkers.addAll(
         listOf(
             "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
