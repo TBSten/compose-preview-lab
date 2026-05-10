@@ -190,13 +190,12 @@ internal class PreviewLabIrBodyFiller(
                     " with a getter, not a backing field",
             )
 
-        val thisModulePreviews = irBuilder.buildPreviewsListExpr(builder, lambdaParent, scope)
-        val previewListExpr = if (isAll) {
-            irBuilder.buildConcatenatedPreviewsExpr(builder, thisModulePreviews, scope)
+        val sequenceExpr = if (isAll) {
+            irBuilder.buildConcatenatedPreviewsExpr(builder, lambdaParent, scope)
         } else {
-            thisModulePreviews
+            irBuilder.buildPreviewsSequenceExpr(builder, lambdaParent, scope)
         }
-        val lazyExpr = irBuilder.buildLazyCall(builder, previewListExpr, lambdaParent)
+        val lazyExpr = irBuilder.buildLazyCall(builder, sequenceExpr, lambdaParent)
         val previewExportExpr = irBuilder.buildPreviewExportCall(builder, lazyExpr)
 
         delegateField.initializer = pluginContext.irFactory.createExpressionBody(

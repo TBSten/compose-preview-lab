@@ -8,24 +8,20 @@ import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
-import org.jetbrains.kotlin.ir.builders.IrBuilderWithScope
 import org.jetbrains.kotlin.ir.builders.declarations.buildFun
-import org.jetbrains.kotlin.ir.builders.irBlock
 import org.jetbrains.kotlin.ir.builders.irBlockBody
 import org.jetbrains.kotlin.ir.builders.irReturn
-import org.jetbrains.kotlin.ir.builders.irTemporary
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.IrExpression
-import org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl
 import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin
 import org.jetbrains.kotlin.ir.expressions.IrVararg
+import org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrFunctionExpressionImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
-import org.jetbrains.kotlin.ir.types.classFqName
 import org.jetbrains.kotlin.ir.types.typeWith
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 import org.jetbrains.kotlin.ir.util.constructors
@@ -36,11 +32,36 @@ import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.SpecialNames
 
 /**
- * Builds the IR for the full preview list.
+ * Builds the IR that backs `val x by collectModulePreviews()` and
+ * `val x by collectAllModulePreviews()`. The output is always a
+ * `PreviewExport(lazy { Sequence<CollectedPreview> })`; the difference between the two
+ * call sites lives in *how* the inner sequence is composed (this-module-only vs.
+ * concatenated across the classpath, with `distinctPreviewsByIdSequence` dedup).
  *
- * - `listOf(CollectedPreview(...), ...)` / `emptyList()` construction
- * - `lazy { ... }` wrapping
- * - cross-module concatenation (`mutableListOf().apply { addAll(...) }`)
+ * **Sample call (single module, two `@Preview` declarations)**:
+ *
+ * ```kotlin
+ * val previews = listOf(PreviewFunctionInfo("My1", ...), PreviewFunctionInfo("My2", ...))
+ * val builder = PreviewListIrBuilder(pluginContext, previews, config, compat)
+ * val sequenceExpr = builder.buildPreviewsSequenceExpr(decl, parent, scope = "default")
+ * val lazyExpr = builder.buildLazyCall(decl, sequenceExpr, parent)
+ * val ctorCall = builder.buildPreviewExportCall(decl, lazyExpr)
+ * ```
+ *
+ * **Result IR is equivalent to**:
+ *
+ * ```kotlin
+ * PreviewExport(lazy {
+ *     lazyPreviewSequence(
+ *         { CollectedPreview("My1", "My1", ..., content = { My1() }) },
+ *         { CollectedPreview("My2", "My2", ..., content = { My2() }) },
+ *     )
+ * })
+ * ```
+ *
+ * Each `CollectedPreview(...)` constructor call is wrapped in a `() -> CollectedPreview`
+ * factory lambda so that drained-only-as-needed iteration (`asSequence().take(2)`) avoids
+ * allocating the `@Composable` lambda for previews the consumer never reads.
  */
 internal class PreviewListIrBuilder(
     private val pluginContext: IrPluginContext,
@@ -52,52 +73,119 @@ internal class PreviewListIrBuilder(
 
     private val collectedPreviewType get() = previewBuilder.collectedPreviewType
 
-    private val listOfCollectedPreviewType by lazy {
+    private val sequenceOfCollectedPreviewType by lazy {
         pluginContext.referenceClass(
-            ClassId(FqName("kotlin.collections"), Name.identifier("List")),
+            ClassId(FqName("kotlin.sequences"), Name.identifier("Sequence")),
         )!!.typeWith(collectedPreviewType)
+    }
+
+    /** `() -> CollectedPreview` factory-lambda type used for the `lazyPreviewSequence` vararg. */
+    private val factoryLambdaType by lazy {
+        pluginContext.irBuiltIns.functionN(0).typeWith(collectedPreviewType)
+    }
+
+    private val lazyPreviewSequenceFun by lazy {
+        pluginContext.referenceFunctions(
+            CallableId(FqName("me.tbsten.compose.preview.lab"), Name.identifier("lazyPreviewSequence")),
+        ).firstOrNull() ?: error(
+            "me.tbsten.compose.preview.lab.lazyPreviewSequence not found on the compilation classpath. " +
+                "This usually means the compose-preview-lab runtime/core dependency is missing or there is " +
+                "a core/plugin version mismatch.",
+        )
     }
 
     // ----- Preview list construction -----
 
     /**
-     * Builds either `listOf(CollectedPreview(...), ...)` or `emptyList()` for the previews
-     * that participate in [scope]. A preview enters the result whenever [scope] appears
-     * anywhere in its `@ComposePreviewLabOption(collectScopes = [...])` array, so the same
-     * preview can show up in multiple `collectModulePreviews(scope = "...")` call sites
-     * if it lists multiple scopes.
+     * Builds `lazyPreviewSequence({ CollectedPreview(...) }, { CollectedPreview(...) }, ...)`
+     * for the previews that participate in [scope]. A preview enters the result whenever
+     * [scope] appears anywhere in its `@ComposePreviewLabOption(collectScopes = [...])`
+     * array, so the same preview can show up in multiple `collectModulePreviews(scope = ...)`
+     * call sites if it lists multiple scopes.
+     *
+     * **Empty-case sample**: with no preview matching the scope, emits
+     * `lazyPreviewSequence()` (no factories), which returns an empty sequence at runtime.
      */
-    fun buildPreviewsListExpr(builder: DeclarationIrBuilder, parent: IrDeclarationParent, scope: String): IrExpression {
+    fun buildPreviewsSequenceExpr(builder: DeclarationIrBuilder, parent: IrDeclarationParent, scope: String): IrExpression {
         val scopedPreviews = previews.filter { scope in it.scopes }
-        if (scopedPreviews.isEmpty()) return buildEmptyListCall(builder)
-
-        val listOfFun = pluginContext.referenceFunctions(
-            CallableId(FqName("kotlin.collections"), Name.identifier("listOf")),
-        ).first { fn ->
-            val valueParams = fn.owner.parameters.filter { it.kind == IrParameterKind.Regular }
-            valueParams.size == 1 && valueParams[0].varargElementType != null
+        val factories = scopedPreviews.map { previewInfo ->
+            buildPreviewFactoryLambda(builder, parent) { factoryFun ->
+                previewBuilder.buildCollectedPreviewCall(previewInfo, builder, factoryFun)
+            }
         }
+        return buildLazyPreviewSequenceCall(builder, factories)
+    }
 
-        val elements = scopedPreviews.map { previewBuilder.buildCollectedPreviewCall(it, builder, parent) }
+    /**
+     * Per-builder counter used to give every synthesized factory lambda a distinct name.
+     *
+     * Sibling anonymous lambdas with `SpecialNames.ANONYMOUS` and identical body shape
+     * end up colliding under the JVM lowering's `<containing>$N` mangling — the
+     * "Platform declaration clash: `_get_previews_$0()`" error from kctfork. Tagging
+     * each factory with `previewFactory_$N` keeps the IR-level name unique without
+     * leaking into the public byte-code surface (the lambdas remain `LOCAL`).
+     */
+    private var factoryLambdaCounter: Int = 0
 
+    /**
+     * Wraps a single `CollectedPreview(...)` constructor call (built by [bodyBuilder]) in a
+     * `() -> CollectedPreview` factory lambda. The lambda body returns `bodyBuilder()`; the
+     * `Composable` content lambda inside `CollectedPreview` is therefore not allocated until
+     * the sequence iteration reaches this element.
+     */
+    private fun buildPreviewFactoryLambda(
+        builder: DeclarationIrBuilder,
+        declarationParent: IrDeclarationParent,
+        bodyBuilder: (factoryFun: org.jetbrains.kotlin.ir.declarations.IrSimpleFunction) -> IrExpression,
+    ): IrFunctionExpressionImpl {
+        val factoryName = Name.identifier("previewFactory_${factoryLambdaCounter++}")
+        val lambdaFun = pluginContext.irFactory.buildFun {
+            startOffset = SYNTHETIC_OFFSET
+            endOffset = SYNTHETIC_OFFSET
+            name = factoryName
+            returnType = collectedPreviewType
+            origin = IrDeclarationOriginCompat.LOCAL_FUNCTION_FOR_LAMBDA
+            visibility = DescriptorVisibilities.LOCAL
+        }.apply {
+            parent = declarationParent
+            body = DeclarationIrBuilder(pluginContext, symbol).irBlockBody {
+                // Pass the lambda itself in as the `parent` for any nested IR (e.g. each
+                // `CollectedPreview`'s `content = @Composable { ... }` lambda must be parented
+                // here, not at the property getter — otherwise sibling content lambdas across
+                // different factories all hash to `_get_previews_$0` under JVM lowering and
+                // collide with "Platform declaration clash".
+                +irReturn(bodyBuilder(this@apply))
+            }
+        }
+        return IrFunctionExpressionImpl(
+            startOffset = SYNTHETIC_OFFSET,
+            endOffset = SYNTHETIC_OFFSET,
+            type = factoryLambdaType,
+            origin = IrStatementOrigin.LAMBDA,
+            function = lambdaFun,
+        )
+    }
+
+    /**
+     * Builds `lazyPreviewSequence(*factories)`. Empty [factories] still emits a call —
+     * `lazyPreviewSequence()` returns an empty `Sequence<CollectedPreview>` at runtime.
+     */
+    private fun buildLazyPreviewSequenceCall(builder: DeclarationIrBuilder, factories: List<IrExpression>): IrExpression {
         val vararg: IrVararg = IrVarargImpl(
             startOffset = SYNTHETIC_OFFSET,
             endOffset = SYNTHETIC_OFFSET,
-            type = pluginContext.irBuiltIns.arrayClass.typeWith(collectedPreviewType),
-            varargElementType = collectedPreviewType,
-            elements = elements.toMutableList(),
+            type = pluginContext.irBuiltIns.arrayClass.typeWith(factoryLambdaType),
+            varargElementType = factoryLambdaType,
+            elements = factories.toMutableList(),
         )
 
-        return compatContext.irCall(builder, listOfFun, listOfCollectedPreviewType, listOf(collectedPreviewType)).apply {
+        return compatContext.irCall(
+            builder,
+            lazyPreviewSequenceFun,
+            sequenceOfCollectedPreviewType,
+        ).apply {
             arguments[0] = vararg
         }
-    }
-
-    private fun buildEmptyListCall(builder: IrBuilderWithScope): IrExpression {
-        val emptyListFun = pluginContext.referenceFunctions(
-            CallableId(FqName("kotlin.collections"), Name.identifier("emptyList")),
-        ).first()
-        return compatContext.irCall(builder, emptyListFun, listOfCollectedPreviewType, listOf(collectedPreviewType))
     }
 
     // ----- PreviewExport wrapper -----
@@ -113,10 +201,12 @@ internal class PreviewListIrBuilder(
     }
 
     /**
-     * Builds the IR for `PreviewExport(<lazyExpr>)` where [lazyExpr] is a `Lazy<List<CollectedPreview>>`
-     * expression. The backing field of properties declared as
-     * `val x by collectModulePreviews()` / `val x by collectAllModulePreviews()` ends up holding
-     * the resulting `PreviewExport` instance.
+     * Builds the IR for `PreviewExport(<lazyExpr>)` where [lazyExpr] is a
+     * `Lazy<Sequence<CollectedPreview>>`. The backing field of properties declared as
+     * `val x by collectModulePreviews()` / `val x by collectAllModulePreviews()` ends up
+     * holding the resulting `PreviewExport` instance; the property's `getValue` then returns
+     * the `PreviewExport` itself, so consumers pick `asList()` or `asSequence()` at the use
+     * site.
      */
     fun buildPreviewExportCall(builder: DeclarationIrBuilder, lazyExpr: IrExpression): IrExpression {
         val ctor = previewExportClass.constructors.first()
@@ -134,8 +224,21 @@ internal class PreviewListIrBuilder(
 
     // ----- Lazy wrapper -----
 
-    /** Builds the IR for `lazy { valueExpr }`. */
-    fun buildLazyCall(builder: DeclarationIrBuilder, valueExpr: IrExpression, parent: IrDeclarationParent): IrExpression {
+    /**
+     * Builds `lazy { valueExpr }` where [valueExpr] has type `Sequence<CollectedPreview>`.
+     *
+     * The lazy is needed because `valueExpr` is itself the
+     * `lazyPreviewSequence({...}, ...)` call: while each `CollectedPreview` inside the
+     * sequence is lazily realized per-element, the *act* of looking up
+     * `lazyPreviewSequence` and constructing the factory-lambda array still runs at the
+     * first `getValue`. Wrapping in `lazy` defers that one-shot setup to the property's
+     * first access.
+     */
+    fun buildLazyCall(
+        builder: DeclarationIrBuilder,
+        valueExpr: IrExpression,
+        declarationParent: IrDeclarationParent
+    ): IrExpression {
         val lazyFun = pluginContext.referenceFunctions(
             CallableId(FqName("kotlin"), Name.identifier("lazy")),
         ).first { fn ->
@@ -146,17 +249,17 @@ internal class PreviewListIrBuilder(
             startOffset = SYNTHETIC_OFFSET
             endOffset = SYNTHETIC_OFFSET
             name = SpecialNames.ANONYMOUS
-            returnType = listOfCollectedPreviewType
+            returnType = sequenceOfCollectedPreviewType
             origin = IrDeclarationOriginCompat.LOCAL_FUNCTION_FOR_LAMBDA
             visibility = DescriptorVisibilities.LOCAL
-        }.also { lambda ->
-            lambda.parent = parent
-            lambda.body = DeclarationIrBuilder(pluginContext, lambda.symbol).irBlockBody {
+        }.apply {
+            parent = declarationParent
+            body = DeclarationIrBuilder(pluginContext, symbol).irBlockBody {
                 +irReturn(valueExpr)
             }
         }
 
-        val lambdaType = pluginContext.irBuiltIns.functionN(0).typeWith(listOfCollectedPreviewType)
+        val lambdaType = pluginContext.irBuiltIns.functionN(0).typeWith(sequenceOfCollectedPreviewType)
 
         val lambdaExpr = IrFunctionExpressionImpl(
             startOffset = SYNTHETIC_OFFSET,
@@ -171,8 +274,8 @@ internal class PreviewListIrBuilder(
             lazyFun,
             pluginContext.referenceClass(
                 ClassId(FqName("kotlin"), Name.identifier("Lazy")),
-            )!!.typeWith(listOfCollectedPreviewType),
-            listOf(listOfCollectedPreviewType),
+            )!!.typeWith(sequenceOfCollectedPreviewType),
+            listOf(sequenceOfCollectedPreviewType),
         ).apply {
             arguments[0] = lambdaExpr
         }
@@ -181,17 +284,13 @@ internal class PreviewListIrBuilder(
     // ----- Cross-module concatenation -----
 
     /**
-     * Lazily-cached lookup of `me.tbsten.compose.preview.lab.distinctPreviewsById`.
-     *
-     * `referenceFunctions(CallableId)` walks every classpath entry, so caching avoids redoing
-     * the scan when [buildConcatenatedPreviewsExpr] is invoked for multiple
-     * `collectAllModulePreviews()` properties in the same compilation.
+     * Lazily-cached lookup of `me.tbsten.compose.preview.lab.distinctPreviewsByIdSequence`.
      */
-    private val distinctPreviewsByIdFun by lazy {
+    private val distinctPreviewsByIdSequenceFun by lazy {
         pluginContext.referenceFunctions(
-            CallableId(FqName("me.tbsten.compose.preview.lab"), Name.identifier("distinctPreviewsById")),
+            CallableId(FqName("me.tbsten.compose.preview.lab"), Name.identifier("distinctPreviewsByIdSequence")),
         ).firstOrNull() ?: error(
-            "me.tbsten.compose.preview.lab.distinctPreviewsById not found on the compilation classpath. " +
+            "me.tbsten.compose.preview.lab.distinctPreviewsByIdSequence not found on the compilation classpath. " +
                 "This usually means the compose-preview-lab runtime/core dependency is missing or there is " +
                 "a core/plugin version mismatch.",
         )
@@ -204,10 +303,7 @@ internal class PreviewListIrBuilder(
      * `previewHint_<scope>(value: PreviewHintMarker_<hash>?): CollectedPreview`. In
      * [buildConcatenatedPreviewsExpr] the marker argument exists only to disambiguate the
      * IdSignature, so `null` is passed and each hint contributes one `CollectedPreview`
-     * via `add(hint(null))` (1 hint = 1 `@Preview`).
-     *
-     * Caching by scope ensures the (potentially expensive) package walk in [discoverHints]
-     * runs at most once per requested scope per [PreviewListIrBuilder] instance.
+     * factory wrapping `previewHint_<scope>(null)`.
      */
     private val cachedHintsByScope: MutableMap<String, List<IrSimpleFunction>> = mutableMapOf()
 
@@ -215,108 +311,62 @@ internal class PreviewListIrBuilder(
         cachedHintsByScope.getOrPut(scope) { discoverHints(pluginContext, compatContext, scope) }
 
     /**
-     * Builds an expression that concatenates this module's previews with previews from
-     * dependency modules and removes id-duplicates.
+     * Builds the cross-module concatenation expression for `collectAllModulePreviews()`.
      *
-     * Generates (semantically equivalent):
+     * **Generated IR (semantically equivalent)**:
+     *
      * ```kotlin
-     * distinctPreviewsById(
-     *     mutableListOf<CollectedPreview>().apply {
-     *         addAll(thisModulePreviews)
-     *         add(previewHint(null))   // one entry per dep-module @Preview, via per-declaration hint
-     *         add(previewHint(null))
-     *         // ... (one add(...) per discovered hint)
-     *     }
+     * distinctPreviewsByIdSequence(
+     *     lazyPreviewSequence(
+     *         // this module's @Preview factories
+     *         { CollectedPreview("id1", ...) },
+     *         { CollectedPreview("id2", ...) },
+     *         // dep-module hint factories (one per discovered hint)
+     *         { previewHint_<scope>(null) },
+     *         { previewHint_<scope>(null) },
+     *     )
      * )
      * ```
      *
-     * Each cross-module entry is produced by invoking the per-declaration
-     * `previewHint(value: PreviewHintMarker_<...>?): CollectedPreview` function emitted
-     * by [me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGenerator]. The marker
-     * parameter exists only to disambiguate the IdSignature, so passing `null` is safe.
+     * Each cross-module factory wraps `previewHint_<scope>(null)` so the dep-side
+     * `CollectedPreview(...)` constructor is invoked only when the consumer's iteration
+     * reaches that element (e.g. `previews.asSequence().firstOrNull { ... }` stops as soon
+     * as a hit is found). `distinctPreviewsByIdSequence` then folds duplicates by id while
+     * preserving encounter order.
      *
-     * `distinctPreviewsById` is needed because a dependency that itself uses
+     * `distinctPreviewsByIdSequence` is needed because a dependency that itself uses
      * `collectAllModulePreviews()` re-exports its transitive previews. Without dedup, an
-     * `app(all) → ui(all) → core(single)` chain would yield each `core` preview twice (once
-     * via `core`'s hint, once via `ui`'s hint).
+     * `app(all) → ui(all) → core(single)` chain would yield each `core` preview twice
+     * (once via `core`'s hint, once via `ui`'s hint).
      */
     fun buildConcatenatedPreviewsExpr(
         builder: DeclarationIrBuilder,
-        thisModulePreviews: IrExpression,
+        parent: IrDeclarationParent,
         scope: String,
     ): IrExpression {
         val hints = hintsForScope(scope)
-        val distinctFun = distinctPreviewsByIdFun
+        val scopedPreviews = previews.filter { scope in it.scopes }
 
-        if (hints.isEmpty()) {
-            return compatContext.irCall(builder, distinctFun, listOfCollectedPreviewType).apply {
-                arguments[0] = thisModulePreviews
+        val thisModuleFactories = scopedPreviews.map { previewInfo ->
+            buildPreviewFactoryLambda(builder, parent) { factoryFun ->
+                previewBuilder.buildCollectedPreviewCall(previewInfo, builder, factoryFun)
             }
         }
 
-        val mutableListOfFun = pluginContext.referenceFunctions(
-            CallableId(FqName("kotlin.collections"), Name.identifier("mutableListOf")),
-        ).first { fn ->
-            fn.owner.parameters.filter { it.kind == IrParameterKind.Regular }.isEmpty()
-        }
-
-        // `MutableCollection<in T>.addAll(...)` has Iterable / Sequence / Array overloads,
-        // so filtering only on "1 Regular param" can pick an unintended overload (e.g.
-        // Array<out T>) and break IR type matching. `thisModulePreviews` is a
-        // `List<CollectedPreview>`, so explicitly narrow to the Iterable overload by
-        // parameter type.
-        val addAllFun = pluginContext.referenceFunctions(
-            CallableId(FqName("kotlin.collections"), Name.identifier("addAll")),
-        ).first { fn ->
-            val params = fn.owner.parameters.filter { it.kind == IrParameterKind.Regular }
-            params.size == 1 &&
-                params[0].varargElementType == null &&
-                params[0].type.classFqName?.asString() == "kotlin.collections.Iterable"
-        }
-        val addFun = pluginContext.referenceFunctions(
-            CallableId(
-                ClassId(FqName("kotlin.collections"), Name.identifier("MutableCollection")),
-                Name.identifier("add"),
-            ),
-        ).first { fn ->
-            val params = fn.owner.parameters.filter { it.kind == IrParameterKind.Regular }
-            params.size == 1
-        }
-
-        val mutableListType = pluginContext.referenceClass(
-            ClassId(FqName("kotlin.collections"), Name.identifier("MutableList")),
-        )!!.typeWith(collectedPreviewType)
-
-        val concatenatedExpr = builder.irBlock {
-            val listVar = irTemporary(
-                compatContext.irCall(this, mutableListOfFun, mutableListType, listOf(collectedPreviewType)),
-            )
-            +compatContext.irCall(this, addAllFun, pluginContext.irBuiltIns.booleanType, listOf(collectedPreviewType)).apply {
-                arguments[0] = compatContext.irGet(this@irBlock, listVar)
-                arguments[1] = thisModulePreviews
-            }
-            // Per-declaration hint: each hint returns one CollectedPreview, so we push it
-            // onto the list via `add(hint(null))`. The hint signature is
-            // `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview`; the marker
-            // parameter exists only to disambiguate the IdSignature, so passing `null` is
-            // sufficient.
-            for (hintFn in hints) {
+        val hintFactories = hints.map { hintFn ->
+            buildPreviewFactoryLambda(builder, parent) { _ ->
                 val markerParam = hintFn.parameters.firstOrNull { it.kind == IrParameterKind.Regular }
-                val hintCall = compatContext.irCall(this, hintFn.symbol, collectedPreviewType).apply {
+                compatContext.irCall(builder, hintFn.symbol, collectedPreviewType).apply {
                     if (markerParam != null) {
                         arguments[0] = IrConstImpl.constNull(SYNTHETIC_OFFSET, SYNTHETIC_OFFSET, markerParam.type)
                     }
                 }
-                +compatContext.irCall(this, addFun, pluginContext.irBuiltIns.booleanType).apply {
-                    arguments[0] = compatContext.irGet(this@irBlock, listVar)
-                    arguments[1] = hintCall
-                }
             }
-            +compatContext.irGet(this, listVar)
         }
 
-        return compatContext.irCall(builder, distinctFun, listOfCollectedPreviewType).apply {
-            arguments[0] = concatenatedExpr
+        val sequenceExpr = buildLazyPreviewSequenceCall(builder, thisModuleFactories + hintFactories)
+        return compatContext.irCall(builder, distinctPreviewsByIdSequenceFun, sequenceOfCollectedPreviewType).apply {
+            arguments[0] = sequenceExpr
         }
     }
 }
