@@ -98,4 +98,117 @@ interface ComposePreviewLabCompilerPluginError {
         INVALID_USAGE,
         VERSION_GATE,
     }
+
+    /**
+     * Reusable reply / next-action snippets shared across error implementations.
+     *
+     * Centralising these snippets keeps wording consistent and lets the FIR-side
+     * `CollectScopeErrors` reference the same character class definition that the
+     * IR-side `InvalidScopeIrError` does, preventing message drift between the two layers
+     * of the regex defence.
+     *
+     * Nested inside [ComposePreviewLabCompilerPluginError] so error implementations can
+     * reach the reply snippets with the unqualified `Replies.*` form; callers that prefer
+     * the short form can `import ComposePreviewLabCompilerPluginError.Replies` at the
+     * top of `Errors.kt`. The companion alias [me.tbsten.compose.preview.lab.compiler.error.Replies]
+     * (declared in `Replies.kt`) is a top-level typealias for callers that want the
+     * shortest possible form.
+     */
+    object Replies {
+        /**
+         * Generic fallback for defensive / internal-invariant errors. Used when the user
+         * cannot reasonably trigger the error from valid source code.
+         */
+        const val Unknown: String =
+            "This is an unexpected internal error. " +
+                "Please report it at https://github.com/TBSten/compose-preview-lab/issues/new " +
+                "with the surrounding compiler output."
+
+        /**
+         * Reply for `UnsupportedCollectAllError` — the user invoked
+         * `collectAllModulePreviews()` on a Kotlin compiler that does not meet the
+         * platform-dependent minimum version: JVM/Android need 2.3.20+ for the FIR
+         * per-declaration hint generator; KLIB targets (JS / Wasm JS / Native)
+         * additionally need 2.3.21+ for the KT-82395 `referenceFunctions` IC-safety fix.
+         *
+         * Includes a `collectModulePreviews()` fallback snippet so users get a copy-pasteable
+         * downgrade path instead of being forced to upgrade Kotlin.
+         */
+        val UpgradeKotlin2321: String =
+            """
+            Either upgrade the Kotlin compiler to the minimum version for your target
+            (2.3.20+ on JVM/Android or 2.3.21+ on KLIB targets such as JS / Wasm JS / Native),
+            or replace `collectAllModulePreviews()` with `collectModulePreviews()` to collect
+            only this module's @Preview functions:
+
+              // your-feature.kt
+              val previews by collectModulePreviews()
+            """.trimIndent()
+
+        /**
+         * Reply for `CollectPreviewsDisabledError` — the module has the
+         * `composePreviewLab.collectPreviews.enabled` Gradle option set to `false` but a
+         * `collect[All]ModulePreviews()` call site is still present.
+         *
+         * Includes the full `composePreviewLab { collectPreviews { enabled.set(true) } }`
+         * Gradle DSL snippet so users get a copy-pasteable fix.
+         */
+        val EnableCollectPreviews: String =
+            """
+            Either remove the `collect[All]ModulePreviews()` call site from this module, or
+            re-enable preview collection in the Gradle DSL:
+
+              // build.gradle.kts
+              composePreviewLab {
+                  collectPreviews {
+                      enabled.set(true)
+                  }
+              }
+            """.trimIndent()
+
+        /**
+         * Reply for `InvalidScopeIrError` — IR-side mirror of the FIR
+         * `INVALID_COLLECT_SCOPE_VALUE` diagnostic. Wording matches
+         * `CollectScopeErrors.INVALID_COLLECT_SCOPE_VALUE` renderer template so the two
+         * defence layers stay in lockstep.
+         *
+         * Includes the `@ComposePreviewLabOption(collectScopes = [...])` annotation form
+         * users should adopt instead of passing an invalid string.
+         */
+        val ScopeFormatAllowed: String =
+            """
+            Allowed characters: [A-Za-z0-9_]+ — the value is embedded into the synthetic
+            `previewHint_<scope>` function name, so any character outside the regex would
+            produce an invalid Kotlin identifier. Use a sanitized scope identifier on both
+            the @Preview side and the collect call:
+
+              @Preview
+              @ComposePreviewLabOption(collectScopes = ["acme_ui"])
+              fun MyButtonPreview() { ... }
+
+              val previews by collectModulePreviews(scope = "acme_ui")
+            """.trimIndent()
+
+        /**
+         * Reply for `NonLiteralScopeIrError` — IR-side mirror of the FIR
+         * `NON_LITERAL_COLLECT_SCOPE` diagnostic.
+         *
+         * Includes the `@ComposePreviewLabOption(collectScopes = [...])` annotation form so
+         * users see the canonical way to surface a non-default scope.
+         */
+        val LiteralScopeOnly: String =
+            """
+            Pass a compile-time string constant for `scope = ...` — either an inline string
+            literal (`scope = "acme_ui"`) or a `const val` reference. Non-`const` vals,
+            string concatenations, and function calls cannot be embedded into the synthetic
+            identifier and are rejected. Tag the matching @Preview functions on the producer
+            side with @ComposePreviewLabOption so they participate in the scope:
+
+              @Preview
+              @ComposePreviewLabOption(collectScopes = ["acme_ui"])
+              fun MyButtonPreview() { ... }
+
+              val previews by collectModulePreviews(scope = "acme_ui")
+            """.trimIndent()
+    }
 }
