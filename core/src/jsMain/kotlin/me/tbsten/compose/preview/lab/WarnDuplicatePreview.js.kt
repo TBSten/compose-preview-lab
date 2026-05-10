@@ -1,8 +1,8 @@
 package me.tbsten.compose.preview.lab
 
-import kotlin.js.js
+import kotlin.js.console
 
 @InternalComposePreviewLabApi
 public actual fun warnDuplicatePreview(message: String) {
-    js("console.warn(message)")
+    console.warn(message)
 }
