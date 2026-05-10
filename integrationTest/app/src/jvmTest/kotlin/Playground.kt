@@ -12,7 +12,7 @@ class Playground {
     fun play() = runComposeUiTest {
         setContent {
             PreviewLabGallery(
-                previewList = appPreviews,
+                previewList = appPreviews.toList(),
                 featuredFileList = app.FeaturedFileList,
             )
         }

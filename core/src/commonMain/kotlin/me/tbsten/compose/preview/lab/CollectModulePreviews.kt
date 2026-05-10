@@ -1,5 +1,7 @@
 package me.tbsten.compose.preview.lab
 
+import kotlin.properties.ReadOnlyProperty
+
 /**
  * Provides a delegate that collects `@Preview` functions from **this module only**.
  *
@@ -32,7 +34,8 @@ package me.tbsten.compose.preview.lab
  * @see collectAllModulePreviews
  */
 @OptIn(InternalComposePreviewLabApi::class, ExperimentalComposePreviewLabApi::class)
-public fun collectModulePreviews(): PreviewExport = collectModulePreviews(scope = ComposePreviewLabOption.DefaultCollectScope)
+public fun collectModulePreviews(): ReadOnlyProperty<Any?, Sequence<CollectedPreview>> =
+    collectModulePreviews(scope = ComposePreviewLabOption.DefaultCollectScope)
 
 /**
  * Scope-aware variant of [collectModulePreviews] that limits the result to previews
@@ -71,7 +74,7 @@ public fun collectModulePreviews(): PreviewExport = collectModulePreviews(scope 
  */
 @ExperimentalComposePreviewLabApi
 @OptIn(InternalComposePreviewLabApi::class)
-public fun collectModulePreviews(scope: String): PreviewExport = PreviewExport(
+public fun collectModulePreviews(scope: String): ReadOnlyProperty<Any?, Sequence<CollectedPreview>> = PreviewExport(
     lazy {
         error(
             "[ComposePreviewLab] collectModulePreviews(scope = \"$scope\") was not replaced by the compiler plugin. " +
@@ -132,7 +135,7 @@ public fun collectModulePreviews(scope: String): PreviewExport = PreviewExport(
  * @see collectModulePreviews
  */
 @OptIn(InternalComposePreviewLabApi::class, ExperimentalComposePreviewLabApi::class)
-public fun collectAllModulePreviews(): PreviewExport =
+public fun collectAllModulePreviews(): ReadOnlyProperty<Any?, Sequence<CollectedPreview>> =
     collectAllModulePreviews(scope = ComposePreviewLabOption.DefaultCollectScope)
 
 /**
@@ -176,7 +179,7 @@ public fun collectAllModulePreviews(): PreviewExport =
  */
 @ExperimentalComposePreviewLabApi
 @OptIn(InternalComposePreviewLabApi::class)
-public fun collectAllModulePreviews(scope: String): PreviewExport = PreviewExport(
+public fun collectAllModulePreviews(scope: String): ReadOnlyProperty<Any?, Sequence<CollectedPreview>> = PreviewExport(
     lazy {
         error(
             "[ComposePreviewLab] collectAllModulePreviews(scope = \"$scope\") was not replaced by the compiler plugin. " +
@@ -279,4 +282,81 @@ public fun distinctPreviewsById(previews: List<CollectedPreview>): List<Collecte
         )
     }
     return distinct
+}
+
+/**
+ * Sequence-shaped variant of [distinctPreviewsById] used by the compiler plugin's
+ * `collectAllModulePreviews()` IR rewrite. Walks [previews] once, yields each first
+ * occurrence by [CollectedPreview.id] in encounter order, and on the final
+ * `next() == null` step prints one stdout warning per id that collided two-or-more
+ * times.
+ *
+ * The behavior matches [distinctPreviewsById] except the fold is lazy: an early-exit
+ * consumer (`previews.firstOrNull { ... }`, `previews.take(2)`) only iterates the
+ * prefix it needs, and dup detection runs only over that prefix. A consumer that
+ * drains the sequence via `previews.toList()` sees the full warning set, identical
+ * to the pre-laziness behavior — and uses the per-platform [warnDuplicatePreview]
+ * routing so JS / Wasm JS surface the warning via `console.warn` rather than
+ * `console.log`.
+ *
+ * Internal API — meant only as a callsite for the compiler plugin.
+ */
+@InternalComposePreviewLabApi
+public fun distinctPreviewsByIdSequence(previews: Sequence<CollectedPreview>): Sequence<CollectedPreview> = sequence {
+    val seen = HashSet<String>()
+    val dupCounts = HashMap<String, Int>()
+    for (preview in previews) {
+        if (seen.add(preview.id)) {
+            yield(preview)
+        } else {
+            val existing = dupCounts[preview.id]
+            dupCounts[preview.id] = if (existing == null) 2 else existing + 1
+        }
+    }
+    for ((id, count) in dupCounts) {
+        warnDuplicatePreview(
+            "[ComposePreviewLab] WARNING: $count `CollectedPreview` entries share " +
+                "id=\"$id\". Likely cause: a `@Preview` with the same fully-qualified name " +
+                "is declared in two or more dependency artifacts on the classpath, so their " +
+                "marker / hint classes collide and only one survives — the other preview's " +
+                "body is unreachable. Resolution: rename the underlying `@Preview` function " +
+                "in one of the artifacts so the FQN no longer collides. " +
+                "(`@ComposePreviewLabOption(id = \"...\")` override does NOT help on any " +
+                "CMP target: the FQN-based hint generator name collides at IR time before " +
+                "the override id is read on JVM / Android, and on KLIB-based targets the " +
+                "linker further dedups by IdSignature. Renaming the function is the only " +
+                "portable fix.)",
+        )
+    }
+}
+
+/**
+ * Returns a [Sequence] that yields one [CollectedPreview] per element of [factories],
+ * invoking each factory lambda the first time the corresponding element is requested.
+ *
+ * **Sample call (from compiler-plugin IR)**:
+ * ```kotlin
+ * lazyPreviewSequence(
+ *     { CollectedPreview("id1", "Preview1", ..., content = { Preview1() }) },
+ *     { CollectedPreview("id2", "Preview2", ..., content = { Preview2() }) },
+ * )
+ * ```
+ *
+ * **Result** (semantically): a `Sequence<CollectedPreview>` that, when iterated to
+ * completion, returns both `CollectedPreview` instances in order. Each factory lambda
+ * is invoked at most once per iteration; partial consumption (`take(1).toList()`) leaves
+ * the second factory unevaluated. The returned sequence is multi-iterable: walking it
+ * twice invokes each factory twice.
+ *
+ * The factory-lambda indirection is what enables the laziness — building a `List` of
+ * `CollectedPreview` directly would force every `@Composable` lambda inside each
+ * preview to be allocated up front.
+ *
+ * Internal API — meant only as a callsite for the compiler plugin.
+ */
+@InternalComposePreviewLabApi
+public fun lazyPreviewSequence(vararg factories: () -> CollectedPreview,): Sequence<CollectedPreview> = Sequence {
+    iterator {
+        for (factory in factories) yield(factory())
+    }
 }

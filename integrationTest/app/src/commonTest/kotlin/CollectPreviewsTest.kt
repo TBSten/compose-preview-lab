@@ -7,6 +7,6 @@ class CollectPreviewsTest {
 
     @Test
     fun collectModulePreviewsContainsThisModulePreviews() {
-        assertTrue(appPreviews.size == appModulePreviews.size + 2)
+        assertTrue(appPreviews.toList().size == appModulePreviews.toList().size + 2)
     }
 }

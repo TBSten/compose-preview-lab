@@ -17,14 +17,16 @@ class CrossModuleCollectPreviewsTest {
 
     @Test
     fun collectAllModulePreviewsAggregatesDependencyModules() {
+        val all = appPreviews.toList()
+        val module = appModulePreviews.toList()
         assertTrue(
-            appPreviews.isNotEmpty(),
+            all.isNotEmpty(),
             "collectAllModulePreviews() should return at least one preview",
         )
         assertTrue(
-            appPreviews.size > appModulePreviews.size,
-            "collectAllModulePreviews() (${appPreviews.size}) should include strictly " +
-                "more previews than collectModulePreviews() (${appModulePreviews.size}); " +
+            all.size > module.size,
+            "collectAllModulePreviews() (${all.size}) should include strictly " +
+                "more previews than collectModulePreviews() (${module.size}); " +
                 "missing dependency-module previews indicates the KLIB hint discovery " +
                 "is broken on this target.",
         )
@@ -37,7 +39,7 @@ class CrossModuleCollectPreviewsTest {
      */
     @Test
     fun collectAllModulePreviewsDeduplicatesById() {
-        val ids = appPreviews.map { it.id }
+        val ids = appPreviews.toList().map { it.id }
         assertTrue(
             ids.size == ids.distinct().size,
             "appPreviews has id duplicates: ${ids.groupingBy { it }.eachCount().filter { it.value > 1 }}",
@@ -57,11 +59,12 @@ class CrossModuleCollectPreviewsTest {
      */
     @Test
     fun collectAllModulePreviewsPreservesCustomIdAndDisplayNameAcrossModules() {
-        val custom = appPreviews.singleOrNull { it.id == "MyButtonPreview" }
+        val all = appPreviews.toList()
+        val custom = all.singleOrNull { it.id == "MyButtonPreview" }
         assertTrue(
             custom != null,
             "appPreviews missing the cross-module @ComposePreviewLabOption(id=\"MyButtonPreview\") entry. " +
-                "Found ids: ${appPreviews.map { it.id }}",
+                "Found ids: ${all.map { it.id }}",
         )
         assertTrue(
             custom.displayName == "UI Component in library module Preview",

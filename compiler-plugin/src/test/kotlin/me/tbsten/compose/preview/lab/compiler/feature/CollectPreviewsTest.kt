@@ -5,6 +5,7 @@ import com.tschuchort.compiletesting.SourceFile
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import me.tbsten.compose.preview.lab.compiler.CompilerPluginTestBase
+import me.tbsten.compose.preview.lab.compiler.loadCollectedPreviews
 
 /**
  * Tests for detection of `collectModulePreviews()` call sites.
@@ -40,10 +41,7 @@ class CollectPreviewsTest :
             )
             result.exitCode shouldBe KotlinCompilation.ExitCode.OK
 
-            val entryClass = result.classLoader.loadClass("test.entry.EntryKt")
-
-            @Suppress("UNCHECKED_CAST")
-            val previews = entryClass.getMethod("getMyPreviews").invoke(null) as List<Any>
+            val previews = result.loadCollectedPreviews("myPreviews")
             previews.size shouldBe 1
         }
 
@@ -62,10 +60,7 @@ class CollectPreviewsTest :
             )
             result.exitCode shouldBe KotlinCompilation.ExitCode.OK
 
-            val entryClass = result.classLoader.loadClass("test.entry.EntryKt")
-
-            @Suppress("UNCHECKED_CAST")
-            val previews = entryClass.getMethod("getNoPreviews").invoke(null) as List<Any>
+            val previews = result.loadCollectedPreviews("noPreviews")
             previews.size shouldBe 0
         }
 
@@ -93,10 +88,7 @@ class CollectPreviewsTest :
             )
             result.exitCode shouldBe KotlinCompilation.ExitCode.OK
 
-            val entryClass = result.classLoader.loadClass("test.entry.EntryKt")
-
-            @Suppress("UNCHECKED_CAST")
-            val previews = entryClass.getMethod("getPreviews").invoke(null) as List<Any>
+            val previews = result.loadCollectedPreviews("previews")
             val id = previews[0]::class.members.find { it.name == "id" }!!.call(previews[0])
             id shouldBe "test.source.MyPreview"
         }

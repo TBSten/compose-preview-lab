@@ -1,5 +1,6 @@
 package app
 
+import io.kotest.assertions.assertSoftly
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.ints.shouldBeGreaterThan
@@ -13,7 +14,13 @@ import io.kotest.matchers.ints.shouldBeGreaterThan
 class CollectPreviewsCrossModuleTest :
     FunSpec({
         test("collectAllModulePreviews は依存モジュールの Preview も含み collectModulePreviews より多い") {
-            appPreviews.shouldNotBeEmpty()
-            appPreviews.size shouldBeGreaterThan appModulePreviews.size
+            // Materialize once: `appPreviews` is a `Sequence`, repeated `toList()` calls
+            // re-run every per-`@Preview` factory and re-allocate the list.
+            val all = appPreviews.toList()
+            val module = appModulePreviews.toList()
+            assertSoftly {
+                all.shouldNotBeEmpty()
+                all.size shouldBeGreaterThan module.size
+            }
         }
     })

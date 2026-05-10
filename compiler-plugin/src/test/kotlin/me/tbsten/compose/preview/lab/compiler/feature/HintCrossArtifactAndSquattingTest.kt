@@ -9,6 +9,7 @@ import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldNotContain
 import me.tbsten.compose.preview.lab.compiler.CompilerPluginTestBase
 import me.tbsten.compose.preview.lab.compiler.isAtLeast
+import me.tbsten.compose.preview.lab.compiler.loadCollectedPreviews
 import com.tschuchort.compiletesting.KotlinCompilation
 
 /**
@@ -95,21 +96,9 @@ class HintCrossArtifactAndSquattingTest :
                     // `assertSoftly` so all four diagnostics surface together if the discovery
                     // path regresses (the failure modes co-occur — squatter visible in the
                     // aggregation usually means the warning didn't fire either).
-                    val previewsRaw = app.classLoader
-                        .loadClass("test.entry.EntryKt")
-                        .getMethod("getAppPreviews")
-                        .invoke(null)
-                    val previews = previewsRaw as? List<*>
-                        ?: error(
-                            "Expected `appPreviews` to be a List<*> but was ${previewsRaw?.javaClass?.name ?: "null"}. " +
-                                "If the runtime type changed (e.g. PreviewExport), update this test.",
-                        )
+                    val previews = app.loadCollectedPreviews("appPreviews")
                     val ids = previews.map { p ->
-                        val nonNull = p ?: error(
-                            "appPreviews contained a null element — every CollectedPreview must be non-null. " +
-                                "Likely cause: a regression in the IR pass that filters out factories.",
-                        )
-                        nonNull::class.members.first { m -> m.name == "id" }.call(nonNull) as String
+                        p::class.members.first { m -> m.name == "id" }.call(p) as String
                     }
                     assertSoftly {
                         app.messages shouldContain "missing the @SyntheticPreviewHint marker"

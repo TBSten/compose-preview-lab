@@ -12,8 +12,8 @@ public final class MainKt {
 public final class app/ComposableSingletons$PreviewsKt {
 	public static final field INSTANCE Lapp/ComposableSingletons$PreviewsKt;
 	public fun <init> ()V
-	public final fun getLambda$-1571401955$app ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$1997758206$app ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1334418623$app ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-755644074$app ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class app/FeaturedFileList : java/util/Map, kotlin/jvm/internal/markers/KMappedMarker {
@@ -65,8 +65,8 @@ public final class app/FeaturedFileList : java/util/Map, kotlin/jvm/internal/mar
 }
 
 public final class app/PreviewsKt {
-	public static final fun getAppModulePreviews ()Ljava/util/List;
-	public static final fun getAppPreviews ()Ljava/util/List;
+	public static final fun getAppModulePreviews ()Lkotlin/sequences/Sequence;
+	public static final fun getAppPreviews ()Lkotlin/sequences/Sequence;
 }
 
 public final class me/tbsten/compose/preview/lab/hints/ComposableSingletons$PreviewHint_iogqwxq2Kt {

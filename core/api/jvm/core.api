@@ -1,6 +1,6 @@
 public final class me/tbsten/compose/preview/lab/CollectModulePreviewsKt {
-	public static final fun collectAllModulePreviews ()Lme/tbsten/compose/preview/lab/PreviewExport;
-	public static final fun collectModulePreviews ()Lme/tbsten/compose/preview/lab/PreviewExport;
+	public static final fun collectAllModulePreviews ()Lkotlin/properties/ReadOnlyProperty;
+	public static final fun collectModulePreviews ()Lkotlin/properties/ReadOnlyProperty;
 }
 
 public final class me/tbsten/compose/preview/lab/CollectedPreview : me/tbsten/compose/preview/lab/PreviewLabPreview {
@@ -38,10 +38,10 @@ public final class me/tbsten/compose/preview/lab/LocalPreviewLabPreviewKt {
 	public static final fun getLocalPreviewLabPreview ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 }
 
-public final class me/tbsten/compose/preview/lab/PreviewExport {
+public final class me/tbsten/compose/preview/lab/PreviewExport : kotlin/properties/ReadOnlyProperty {
 	public static final field $stable I
-	public final fun getValue ()Ljava/util/List;
-	public final fun getValue (Ljava/lang/Object;Lkotlin/reflect/KProperty;)Ljava/util/List;
+	public synthetic fun getValue (Ljava/lang/Object;Lkotlin/reflect/KProperty;)Ljava/lang/Object;
+	public fun getValue (Ljava/lang/Object;Lkotlin/reflect/KProperty;)Lkotlin/sequences/Sequence;
 }
 
 public abstract interface class me/tbsten/compose/preview/lab/PreviewLabPreview {
