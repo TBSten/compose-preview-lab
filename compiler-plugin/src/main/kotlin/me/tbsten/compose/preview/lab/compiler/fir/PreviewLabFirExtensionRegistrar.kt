@@ -2,6 +2,7 @@ package me.tbsten.compose.preview.lab.compiler.fir
 
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
+import me.tbsten.compose.preview.lab.compiler.feature.transformPrivatePreviewToInternal.fir.visibilityPromotion.PreviewLabFirStatusTransformerExtension
 import me.tbsten.compose.preview.lab.compiler.fir.checkers.PreviewLabFirCheckersExtension
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar

@@ -1,10 +1,10 @@
-package me.tbsten.compose.preview.lab.compiler.fir
+package me.tbsten.compose.preview.lab.compiler.feature.transformPrivatePreviewToInternal.fir.visibilityPromotion
 
+import me.tbsten.compose.preview.lab.compiler.compat.isFirFunction
 import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationStatus
-import me.tbsten.compose.preview.lab.compiler.compat.isFirFunction
 import org.jetbrains.kotlin.fir.declarations.FirMemberDeclaration
 import org.jetbrains.kotlin.fir.declarations.hasAnnotation
 import org.jetbrains.kotlin.fir.declarations.utils.visibility
