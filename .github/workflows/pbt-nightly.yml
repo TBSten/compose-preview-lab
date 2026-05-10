@@ -26,10 +26,15 @@ jobs:
             compose_version: '1.11.0-alpha04'
             gradle_version: ''
             name: 'Kotlin 2.3.20'
-          - kotlin_version: '2.4.0-Beta1'
+            # `collectAllModulePreviews()` requires Kotlin 2.3.21+ (see
+            # `scripts/supported-kotlin-versions.txt`); the integrationTest / docs apps
+            # both use it and would fail to compile here. Library PBT alone exercises the
+            # `collectModulePreviews()` lower bound, which is what 2.3.20 is meant to cover.
+            skip_cross_module_apps: true
+          - kotlin_version: '2.4.0-Beta2'
             compose_version: '1.11.0-alpha04'
             gradle_version: '9.4.1'
-            name: 'Kotlin 2.4.0-Beta1'
+            name: 'Kotlin 2.4.0-Beta2'
     runs-on: ubuntu-latest
     name: PBT ${{ matrix.name }} (${{ inputs.iterations || '5000' }} iterations)
     steps:
@@ -70,10 +75,12 @@ jobs:
         run: ./gradlew publishToMavenLocal --warning-mode all
 
       - name: Run Integration Test PBT
+        if: '!matrix.skip_cross_module_apps'
         shell: bash
         run: cd ./integrationTest && ./gradlew :app:jvmTest -Dkotest.tags="PBT" -Ptest.property.iterations=${{ inputs.iterations || '5000' }} --warning-mode all
 
       - name: Run Docs PBT
+        if: '!matrix.skip_cross_module_apps'
         shell: bash
         run: cd ./docs && ./gradlew jvmTest -Dkotest.tags="PBT" -Ptest.property.iterations=${{ inputs.iterations || '5000' }} --warning-mode all
 
