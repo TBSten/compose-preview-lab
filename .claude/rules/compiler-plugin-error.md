@@ -1,6 +1,6 @@
 ---
 paths:
-    - "compiler-plugin/src/main/kotlin/me/tbsten/compose/preview/lab/compiler/**/*.kt"
+    - "compiler-plugin/**/*.kt"
 ---
 
 # Rule: compiler-plugin の error / warning は構造化 Error / Warning interface 経由で書く
