@@ -25,6 +25,13 @@ public class CompatContextImpl : CompatContext by K230CompatContextImpl() {
 
     override fun supportsFirHintGeneration(): Boolean = true
 
+    // Kotlin 2.3.20 introduced `org.jetbrains.kotlin.fir.declarations.FirNamedFunction`,
+    // the type referenced from `PreviewLabFirCheckersExtension.simpleFunctionCheckers`.
+    // The class is now safe to load on this and later Kotlin versions, so we re-enable
+    // checker registration. (compat-k2321 / compat-k240_beta2 inherit this `true` via
+    // delegation.)
+    override fun supportsFirCheckers(): Boolean = true
+
     public class Factory : CompatContext.Factory {
         override val minVersion: String = "2.3.20"
         override fun create(): CompatContext = CompatContextImpl()

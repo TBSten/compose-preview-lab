@@ -108,6 +108,15 @@ public class CompatContextImpl : CompatContext {
     // Cross-module discovery on KLIB targets is gated on this flag at the IR-pass layer.
     override fun supportsKlibCrossModuleHint(): Boolean = false
 
+    // Kotlin 2.3.0–2.3.10: `org.jetbrains.kotlin.fir.declarations.FirNamedFunction` does
+    // not exist yet (introduced in 2.3.20 — it superseded the earlier `FirSimpleFunction`
+    // parameterization for `simpleFunctionCheckers`). Skip checker registration so the
+    // JVM classloader never tries to load `PreviewLabFirCheckersExtension` (whose
+    // `simpleFunctionCheckers: Set<FirDeclarationChecker<FirNamedFunction>>` field
+    // references the missing class) and we avoid `NoClassDefFoundError` at plugin startup.
+    // The 2.3.20 patch (`compat-k2320`) flips this on.
+    override fun supportsFirCheckers(): Boolean = false
+
     // 2.3.x: same `FirAnnotationContainer.getDeprecationsProvider(session)` extension as 2.1 / 2.2.
     override fun getDeprecationsProviderCompat(
         declaration: FirAnnotationContainer,

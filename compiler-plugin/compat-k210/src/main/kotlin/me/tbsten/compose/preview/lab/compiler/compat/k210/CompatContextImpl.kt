@@ -105,6 +105,12 @@ public class CompatContextImpl : CompatContext {
 
     override fun supportsKlibCrossModuleHint(): Boolean = false
 
+    // Kotlin 2.1.x: `org.jetbrains.kotlin.fir.declarations.FirNamedFunction` does not
+    // exist yet (introduced in 2.3.20). Skip checker registration so the JVM classloader
+    // never tries to load `PreviewLabFirCheckersExtension` and we avoid
+    // `NoClassDefFoundError` at plugin startup.
+    override fun supportsFirCheckers(): Boolean = false
+
     // 2.1.x: `FirAnnotationContainer.getDeprecationsProvider(session)` is the canonical
     // extension; no type narrowing yet.
     override fun getDeprecationsProviderCompat(

@@ -52,6 +52,10 @@ public class CompatContextImpl : CompatContext by K230CompatContextImpl() {
 
     override fun supportsKlibCrossModuleHint(): Boolean = true
 
+    // `FirNamedFunction` exists from Kotlin 2.3.20 onwards, so the checker registration is
+    // safe on 2.4+ as well.
+    override fun supportsFirCheckers(): Boolean = true
+
     // Kotlin 2.4.0-Beta2: the receiver of `fun getDeprecationsProvider(session)` was narrowed
     // from `FirAnnotationContainer` to `FirCallableDeclaration` / `FirClassLikeDeclaration`,
     // and the `FirAnnotationContainer` overload was removed. Dispatch on the concrete

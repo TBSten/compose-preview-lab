@@ -19,29 +19,31 @@ echo "[compiler-plugin-test] log: $LOG"
 
 
 # Kotlin 2.1.x / 2.2.x: the FIR per-declaration generator (`PreviewHintFirGenerator`)
-# is not registered (`CompatContext.supportsFirHintGeneration = false`), so every
-# gated test self-skips at runtime. The whole `:compiler-plugin:test` task is
-# excluded here as a small wall-clock win — running the suite just to skip every
-# gated case still takes ~30s of Gradle setup.
+# is not registered (`CompatContext.supportsFirHintGeneration = false`) and the FIR
+# checker extension is also gated off (`CompatContext.supportsFirCheckers = false`,
+# `FirNamedFunction` does not exist on these versions). Every test under
+# `:compiler-plugin:test` is therefore either ungated (= would run) or gated and
+# self-skipping; running the task adds ~30s of Gradle setup for negligible coverage
+# gain, so we exclude it here for wall-clock efficiency.
 #
-# Kotlin 2.3.0 / 2.3.10: an unrelated pre-existing API drift bites these versions —
-# `org.jetbrains.kotlin.fir.declarations.FirNamedFunction` (referenced by
-# `CollectScopeAnnotationChecker` / `PreviewLabFirCheckersExtension`) does not exist
-# yet, so the always-on FIR checker extension fails class loading via
-# `NoClassDefFoundError`. The cure (= compat layer for FIR checker classes) is its
-# own ticket; until then we keep these excluded.
+# Kotlin 2.3.0 / 2.3.10: same as above — `supportsFirHintGeneration = false` (FIR
+# generator stable from 2.3.20) and `supportsFirCheckers = false` (`FirNamedFunction`
+# introduced in 2.3.20). The compat-layer split keeps the JVM classloader away from
+# `PreviewLabFirCheckersExtension`, so the plugin starts successfully and ungated
+# contract tests run (= verifies plugin registration itself works on these versions),
+# but every gated test still self-skips. The task is included in the matrix to keep
+# the registration regression signal active.
 #
 # Kotlin 2.3.20+: the FIR generator IS registered (via `compat-k2320`) and the
 # checker classes resolve. JVM-targeting kctfork tests pass; the single KLIB-targeting
 # test (`CrossModuleAggregationKlibTest`) self-skips on 2.3.20 via its own
 # `isAtLeast(2, 3, 21)` gate. The KLIB-only `UnsupportedKotlinErrorTest` runs on
-# 2.3.20 (= the inverse gate) and verifies the error path. So 2.3.20 is no longer
-# excluded.
+# 2.3.20 (= the inverse gate) and verifies the error path.
 TEST_EXCLUDES=""
 case "$VERSION" in
-    2.1.* | 2.2.* | 2.3.0 | 2.3.10)
+    2.1.* | 2.2.*)
         TEST_EXCLUDES="--exclude-task :compiler-plugin:test"
-        echo "[compiler-plugin-test] Skipping :compiler-plugin:test for Kotlin $VERSION (FIR hint generator not registered or FIR checker API drift)"
+        echo "[compiler-plugin-test] Skipping :compiler-plugin:test for Kotlin $VERSION (no actionable coverage — FIR hint generator + checker both gated off)"
         ;;
 esac
 

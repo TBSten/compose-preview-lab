@@ -155,8 +155,8 @@ public interface CompatContext {
      * see [supportsKlibCrossModuleHint] for the KLIB IC-safety requirement.
      *
      * Implementations:
-     * - `compat-k210` / `compat-k222` / `compat-k2220` → `false`
-     * - `compat-k230` (Kotlin 2.3.0+) / `compat-k2321` / `compat-k240_beta2` → `true`
+     * - `compat-k210` / `compat-k222` / `compat-k2220` / `compat-k230` → `false`
+     * - `compat-k2320` (Kotlin 2.3.20+) / `compat-k2321` / `compat-k240_beta2` → `true`
      */
     public fun supportsFirHintGeneration(): Boolean
 
@@ -187,6 +187,32 @@ public interface CompatContext {
      * - `compat-k2321` (Kotlin 2.3.21+) / `compat-k240_beta2` → `true`
      */
     public fun supportsKlibCrossModuleHint(): Boolean
+
+    /**
+     * Returns whether the runtime Kotlin compiler exposes the
+     * `org.jetbrains.kotlin.fir.declarations.FirNamedFunction` declaration class — i.e.
+     * whether `PreviewLabFirCheckersExtension` (`FirAdditionalCheckersExtension` whose
+     * `simpleFunctionCheckers` field is typed `Set<FirDeclarationChecker<FirNamedFunction>>`)
+     * can be loaded without throwing `NoClassDefFoundError` at plugin startup.
+     *
+     * `FirNamedFunction` was introduced in Kotlin 2.3.20 (it superseded the `FirSimpleFunction`
+     * type as the parameterization for `simpleFunctionCheckers`). Earlier Kotlin versions
+     * (2.1.x / 2.2.x / 2.3.0–2.3.10) ship a different class hierarchy and the JVM classloader
+     * fails fast when it sees the `FirNamedFunction` type reference inside our checker class.
+     * Without this gate, the entire compiler plugin fails to start on those Kotlin versions —
+     * even for tests / production code that have no need for the checkers.
+     *
+     * The checker logic itself is functionally optional: validation also happens at IR-pass
+     * time (`PreviewLabIrBodyFiller`'s `reportNonLiteralScopeError` / `reportInvalidScopeError`),
+     * which catches the same constraint violations on Kotlin versions where the FIR checker is
+     * skipped. Skipping the checker registration on pre-2.3.20 therefore degrades only the
+     * IDE-side red-squiggly experience (errors still fire at compile time).
+     *
+     * Implementations:
+     * - `compat-k210` / `compat-k222` / `compat-k2220` / `compat-k230` → `false`
+     * - `compat-k2320` (Kotlin 2.3.20+) / `compat-k2321` / `compat-k240_beta2` → `true`
+     */
+    public fun supportsFirCheckers(): Boolean
 
     /**
      * Returns the [DeprecationsProvider] for [declaration] so the FIR / IDE deprecation
