@@ -39,7 +39,7 @@ class PreviewHintScopeValidationTest :
         val base = CompilerPluginTestBase()
 
         val testKotlinVersion = System.getProperty("test.kotlin.version") ?: "2.3.21"
-        val supports = testKotlinVersion.isAtLeast(2, 3, 21)
+        val supports = testKotlinVersion.isAtLeast(2, 3, 20)
 
         context("annotation-side scope shape (FIR)") {
             test("collectScope with a space is rejected with an actionable error")

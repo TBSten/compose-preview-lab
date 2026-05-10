@@ -24,7 +24,7 @@ class PreviewHintScopeIgnoreInteropTest :
         val base = CompilerPluginTestBase()
 
         val testKotlinVersion = System.getProperty("test.kotlin.version") ?: "2.3.21"
-        val supports = testKotlinVersion.isAtLeast(2, 3, 21)
+        val supports = testKotlinVersion.isAtLeast(2, 3, 20)
 
         test("ignore=true wins over collectScopes: the preview is dropped from every bucket")
             .config(enabled = supports) {

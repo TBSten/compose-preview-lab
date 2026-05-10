@@ -6,11 +6,25 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import me.tbsten.compose.preview.lab.compiler.CompilerPluginTestBase
+import me.tbsten.compose.preview.lab.compiler.isAtLeast
 import me.tbsten.compose.preview.lab.compiler.loadCollectedPreviews
 
+/**
+ * **Skipped on Kotlin < 2.3.20**: every test below uses `collectAllModulePreviews()`,
+ * which requires the per-`@Preview` hint emission performed by `PreviewHintFirGenerator`.
+ * That generator is only registered when `CompatContext.supportsFirHintGeneration()`
+ * returns `true` (= Kotlin 2.3.20+). On earlier Kotlin versions hints are not emitted,
+ * the aggregation returns an empty list, and the assertions here would fail spuriously.
+ *
+ * The whole spec block early-returns when the gate is closed so the tests do not
+ * register at all (kotest reports them as 0 tests for this class on pre-2.3.20).
+ */
 class CrossModuleAggregationTest :
     FunSpec(
-        {
+        body@{
+            val testKotlinVersion = System.getProperty("test.kotlin.version") ?: "2.3.21"
+            if (!testKotlinVersion.isAtLeast(2, 3, 20)) return@body
+
             val base = CompilerPluginTestBase()
 
             /*

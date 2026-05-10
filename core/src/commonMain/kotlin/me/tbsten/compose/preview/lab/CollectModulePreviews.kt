@@ -99,18 +99,33 @@ public fun collectModulePreviews(scope: String): ReadOnlyProperty<Any?, Sequence
  * module is enough; **`collectModulePreviews()` does not need to be declared** there. Modules
  * that do declare it explicitly continue to work unchanged.
  *
- * **Cross-module aggregation works on every Compose Multiplatform target** (JVM / Android /
- * JS / Wasm JS / iOS) when running Kotlin 2.3.21 or later. The compiler plugin emits a
- * per-`@Preview` hint (`previewHint_<scope>(value: PreviewHintMarker_<hash>?): CollectedPreview` in the
+ * **Cross-module aggregation by target / Kotlin version**:
+ * - **JVM / Android**: works from Kotlin **2.3.20** (the FIR per-declaration hint
+ *   generator stabilised in 2.3.20; JVM bytecode dependency resolution has no
+ *   incremental-compile complications).
+ * - **JS / Wasm JS / iOS / Native**: works from Kotlin **2.3.21** (additionally
+ *   requires the KT-82395 KLIB IC fix that landed in 2.3.21).
+ *
+ * The compiler plugin emits a per-`@Preview` hint
+ * (`previewHint_<scope>(value: PreviewHintMarker_<hash>?): CollectedPreview` in the
  * `me.tbsten.compose.preview.lab.hints` package) and the consumer side discovers them via
  * `IrPluginContext.referenceFunctions`, which works equally for JVM bytecode and KLIB modules.
  *
- * Older Kotlin (pre-2.3.21) does not support the FIR-based hint generator. The plugin's
- * IR pass detects the `val x by collectAllModulePreviews()` delegated-property pattern and
- * reports a compile-time error with a clear upgrade-or-downgrade message. Direct calls outside
- * a property delegate (which are not the supported usage) compile and fall back to the
+ * On older Kotlin the plugin's IR pass detects the
+ * `val x by collectAllModulePreviews()` delegated-property pattern and reports a
+ * compile-time error with a clear upgrade-or-downgrade message. Direct calls outside a
+ * property delegate (which are not the supported usage) compile and fall back to the
  * `IllegalStateException` thrown by the placeholder body. `collectModulePreviews()`
  * (single-module) continues to work on every Kotlin version.
+ *
+ * **Mixed-classpath caveat**: the aggregation only sees dependency-module previews if the
+ * dependency artifact itself was compiled with the Compose Preview Lab plugin under
+ * **Kotlin 2.3.20+** (so its bytecode / KLIB carries the synthetic
+ * `previewHint_<scope>` overloads we walk via `referenceFunctions`). A dependency built
+ * with an older compiler — or built without the plugin — emits no marker / hint pair and
+ * is silently absent from the aggregated result. Compose Preview Lab cannot detect this
+ * at compile time; if a known-existing dep `@Preview` does not show up downstream, check
+ * the dep's Kotlin version + plugin application first.
  *
  * Example — app module aggregating its own previews and any library previews on the classpath:
  * ```kotlin

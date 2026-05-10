@@ -19,27 +19,44 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
  *   `fun previewHint_<scope>(value: PreviewHintMarker_..._<hash>?): CollectedPreview`
  *   overload per scope listed in `@ComposePreviewLabOption(collectScopes = [...])`,
  *   defaulting to `previewHint_default` when no scope is specified) for each `@Preview`.
- *   **Only registered when both** the running Kotlin compiler supports it (Kotlin 2.3.21+,
- *   surfaced via [CompatContext.supportsKlibCrossModuleHint]) **and** `collectPreviewsEnabled`
- *   is `true` for this module ([PluginConfig.collectPreviewsEnabled]). Skipping the
- *   registration when `collectPreviewsEnabled = false` is what guarantees that no
- *   `previewHint_<scope>(...)` overload or `PreviewHintMarker_*` interface ends up in the
- *   module's classpath.
+ *   **Only registered when both** the running Kotlin compiler exposes a stable
+ *   `FirDeclarationGenerationExtension.getTopLevelClassIds` /
+ *   `getTopLevelCallableIds` API (Kotlin 2.3.20+, surfaced via
+ *   [CompatContext.supportsFirHintGeneration]) **and** `collectPreviewsEnabled`
+ *   is `true` for this module ([PluginConfig.collectPreviewsEnabled]). The IR-side
+ *   cross-module discovery has separate KLIB IC-safety constraints (see
+ *   [CompatContext.supportsKlibCrossModuleHint]) — those gate the IR pass, not this
+ *   FIR registration, so JVM / Android consumers benefit from the per-declaration hint
+ *   pipeline on Kotlin 2.3.20+ even though the KLIB IC fix only landed in 2.3.21.
+ *   Skipping the registration when `collectPreviewsEnabled = false` is what guarantees
+ *   that no `previewHint_<scope>(...)` overload or `PreviewHintMarker_*` interface ends
+ *   up in the module's classpath.
  */
 class PreviewLabFirExtensionRegistrar(private val config: PluginConfig) : FirExtensionRegistrar() {
 
     override fun ExtensionRegistrarContext.configurePlugin() {
+        val compat = CompatContext.load()
         +({ session: FirSession -> PreviewLabFirBuiltIns(session, config) })
         +::PreviewLabFirStatusTransformerExtension
-        // Always-on validation. Runs in the FIR analysis (CHECKERS) phase so invalid
-        // collectScope values surface in the IDE highlighter and at compile time before
-        // the generator / IR pass even start. The checkers extension is the canonical
-        // single-source-of-truth validation point — it works regardless of build system,
-        // platform, or Kotlin version (no compat gate needed because the checkers API has
-        // been stable since 2.0).
-        +::PreviewLabFirCheckersExtension
-        val compat = CompatContext.load()
-        if (compat.supportsKlibCrossModuleHint() && config.collectPreviewsEnabled) {
+        // FIR analysis (CHECKERS) phase validation for `collectScope`. Surfaces invalid
+        // values in the IDE highlighter and at compile time before the generator / IR
+        // pass even start.
+        //
+        // **Compat gate**: `PreviewLabFirCheckersExtension`'s `simpleFunctionCheckers`
+        // field is typed `Set<FirDeclarationChecker<FirNamedFunction>>`, where
+        // `FirNamedFunction` is a Kotlin 2.3.20+ class (it superseded `FirSimpleFunction`
+        // as the parameterization for declaration checkers). Loading the extension on
+        // earlier Kotlin versions throws `NoClassDefFoundError` at plugin startup, so the
+        // gate keeps the JVM classloader away from the extension class on those versions
+        // (the `+::PreviewLabFirCheckersExtension` callable reference is evaluated lazily
+        // — JVM class loading is triggered only when the `if` branch executes).
+        // IR-pass validation (`reportNonLiteralScopeError` / `reportInvalidScopeError` in
+        // `PreviewLabIrBodyFiller`) remains active on every Kotlin version as a second-line
+        // check, so violations still surface at compile time without the FIR highlighter.
+        if (compat.supportsFirCheckers()) {
+            +::PreviewLabFirCheckersExtension
+        }
+        if (compat.supportsFirHintGeneration() && config.collectPreviewsEnabled) {
             +({ session: FirSession -> PreviewHintFirGenerator(session, compat) })
         }
     }

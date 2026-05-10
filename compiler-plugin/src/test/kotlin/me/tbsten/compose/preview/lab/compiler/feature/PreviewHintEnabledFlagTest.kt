@@ -40,7 +40,7 @@ class PreviewHintEnabledFlagTest :
         val base = CompilerPluginTestBase()
 
         val testKotlinVersion = System.getProperty("test.kotlin.version") ?: "2.3.21"
-        val supports = testKotlinVersion.isAtLeast(2, 3, 21)
+        val supports = testKotlinVersion.isAtLeast(2, 3, 20)
 
         val pluginId = "me.tbsten.compose.preview.lab.compiler"
         val disabled = listOf(PluginOption(pluginId, "collectPreviewsEnabled", "false"))

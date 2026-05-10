@@ -36,7 +36,7 @@ class PreviewHintDiscoveryTest :
         val base = CompilerPluginTestBase()
 
         val testKotlinVersion = System.getProperty("test.kotlin.version") ?: "2.3.21"
-        val supports = testKotlinVersion.isAtLeast(2, 3, 21)
+        val supports = testKotlinVersion.isAtLeast(2, 3, 20)
 
         test("collectAllModulePreviews() discovers and uses cross-module per-declaration hints")
             .config(enabled = supports) {

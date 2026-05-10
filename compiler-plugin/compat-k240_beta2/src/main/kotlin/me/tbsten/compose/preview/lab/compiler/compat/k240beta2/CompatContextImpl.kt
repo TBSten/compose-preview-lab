@@ -46,8 +46,15 @@ public class CompatContextImpl : CompatContext by K230CompatContextImpl() {
         function.annotations = function.annotations + annotation
     }
 
-    // Kotlin 2.4.0-Beta2+: FIR top-level decl gen is stable on KLIB and KT-82395 is fixed.
+    // Kotlin 2.4.0-Beta2+: FIR top-level decl gen is stable AND KT-82395 (JS/Wasm IC) is
+    // fixed. Both gates are on.
+    override fun supportsFirHintGeneration(): Boolean = true
+
     override fun supportsKlibCrossModuleHint(): Boolean = true
+
+    // `FirNamedFunction` exists from Kotlin 2.3.20 onwards, so the checker registration is
+    // safe on 2.4+ as well.
+    override fun supportsFirCheckers(): Boolean = true
 
     // Kotlin 2.4.0-Beta2: the receiver of `fun getDeprecationsProvider(session)` was narrowed
     // from `FirAnnotationContainer` to `FirCallableDeclaration` / `FirClassLikeDeclaration`,

@@ -36,7 +36,7 @@ class PreviewHintMarkerSealOrHiddenTest :
         val base = CompilerPluginTestBase()
 
         val testKotlinVersion = System.getProperty("test.kotlin.version") ?: "2.3.21"
-        val supports = testKotlinVersion.isAtLeast(2, 3, 21)
+        val supports = testKotlinVersion.isAtLeast(2, 3, 20)
 
         test("HIDDEN alone keeps consumers from extending the marker (sealed-ization is redundant)")
             .config(enabled = supports) {

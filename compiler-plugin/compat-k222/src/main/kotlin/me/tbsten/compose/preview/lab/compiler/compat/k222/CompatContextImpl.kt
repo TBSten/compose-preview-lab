@@ -93,8 +93,18 @@ public class CompatContextImpl : CompatContext {
         moduleFragment.transform(transformer as IrElementTransformerVoid, null)
     }
 
-    // FIR top-level declaration generation is unstable on KLIB targets in Kotlin 2.2.x.
+    // Kotlin 2.2.x: `FirDeclarationGenerationExtension.getTopLevelClassIds` /
+    // `getTopLevelCallableIds` were not stable enough to register the per-`@Preview`
+    // hint generator without crashing the FIR session. Both gates are off.
+    override fun supportsFirHintGeneration(): Boolean = false
+
     override fun supportsKlibCrossModuleHint(): Boolean = false
+
+    // Kotlin 2.2.x: `org.jetbrains.kotlin.fir.declarations.FirNamedFunction` does not
+    // exist yet (introduced in 2.3.20). Skip checker registration so the JVM classloader
+    // never tries to load `PreviewLabFirCheckersExtension` and we avoid
+    // `NoClassDefFoundError` at plugin startup.
+    override fun supportsFirCheckers(): Boolean = false
 
     // 2.2.x: same `FirAnnotationContainer.getDeprecationsProvider(session)` extension as 2.1.
     override fun getDeprecationsProviderCompat(

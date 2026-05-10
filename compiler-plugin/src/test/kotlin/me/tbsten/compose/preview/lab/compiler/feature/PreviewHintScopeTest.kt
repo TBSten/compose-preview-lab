@@ -34,7 +34,7 @@ class PreviewHintScopeTest :
         val base = CompilerPluginTestBase()
 
         val testKotlinVersion = System.getProperty("test.kotlin.version") ?: "2.3.21"
-        val supports = testKotlinVersion.isAtLeast(2, 3, 21)
+        val supports = testKotlinVersion.isAtLeast(2, 3, 20)
 
         context("default scope (no annotation)") {
             test("preview without @ComposePreviewLabOption emits previewHint_default")

@@ -96,9 +96,26 @@ public class CompatContextImpl : CompatContext {
         moduleFragment.transform(transformer as IrElementTransformerVoid, null)
     }
 
+    // Kotlin 2.3.0–2.3.19: `FirDeclarationGenerationExtension.getTopLevelClassIds` /
+    // `getTopLevelCallableIds` were experimental — registering the per-`@Preview` hint
+    // generator on those versions crashed the FIR session. The 2.3.20 patch
+    // (`compat-k2320`) flips this on once the FIR API became stable.
+    override fun supportsFirHintGeneration(): Boolean = false
+
     // Kotlin 2.3.0–2.3.20: KT-82395 (JS/Wasm IC × top-level decl gen) is still open, so the
-    // FIR-based hint generator cannot run safely. The 2.3.21 patch (compat-k2321) flips this on.
+    // IR-side `referenceFunctions` walk leaks stale entries through the KLIB incremental-
+    // compile cache on JS / Wasm. The 2.3.21 patch (`compat-k2321`) flips this on.
+    // Cross-module discovery on KLIB targets is gated on this flag at the IR-pass layer.
     override fun supportsKlibCrossModuleHint(): Boolean = false
+
+    // Kotlin 2.3.0–2.3.10: `org.jetbrains.kotlin.fir.declarations.FirNamedFunction` does
+    // not exist yet (introduced in 2.3.20 — it superseded the earlier `FirSimpleFunction`
+    // parameterization for `simpleFunctionCheckers`). Skip checker registration so the
+    // JVM classloader never tries to load `PreviewLabFirCheckersExtension` (whose
+    // `simpleFunctionCheckers: Set<FirDeclarationChecker<FirNamedFunction>>` field
+    // references the missing class) and we avoid `NoClassDefFoundError` at plugin startup.
+    // The 2.3.20 patch (`compat-k2320`) flips this on.
+    override fun supportsFirCheckers(): Boolean = false
 
     // 2.3.x: same `FirAnnotationContainer.getDeprecationsProvider(session)` extension as 2.1 / 2.2.
     override fun getDeprecationsProviderCompat(
