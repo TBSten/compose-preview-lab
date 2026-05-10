@@ -414,7 +414,7 @@ class DefaultCollectScopeDslTest :
                 )
                 assertSoftly {
                     result.exitCode shouldBe KotlinCompilation.ExitCode.COMPILATION_ERROR
-                    result.messages shouldContain "[ComposePreviewLab]"
+                    result.messages shouldContain "[ComposePreviewLab/"
                     result.messages shouldContain "has space"
                     result.messages shouldContain "[A-Za-z0-9_]+"
                 }

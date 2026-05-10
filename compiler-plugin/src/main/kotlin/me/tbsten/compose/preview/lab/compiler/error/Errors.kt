@@ -51,7 +51,7 @@ class CollectPreviewsDisabledError(private val callName: String) : ComposePrevie
     override val categories: List<Category> =
         listOf(Category.IR, Category.INVALID_USAGE, Category.PREVIEW_COLLECTION)
     override val message: String =
-        "$callName() cannot be used in this module because the `collectPreviewsEnabled` plugin option is false"
+        "$callName cannot be used in this module because the `collectPreviewsEnabled` plugin option is false"
     override val description: String =
         "The disabled flag suppresses every per-declaration hint emission for this module " +
             "(and consequently every cross-module aggregation it might participate in), so any " +

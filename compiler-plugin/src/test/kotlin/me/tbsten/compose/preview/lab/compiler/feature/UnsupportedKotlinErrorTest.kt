@@ -50,7 +50,7 @@ class UnsupportedKotlinErrorTest :
                 assertSoftly {
                     result.exitCode shouldBe KotlinCompilation.ExitCode.COMPILATION_ERROR
                     // The error message must be specific enough that a user can act on it.
-                    result.messages shouldContain "[ComposePreviewLab]"
+                    result.messages shouldContain "[ComposePreviewLab/"
                     result.messages shouldContain "collectAllModulePreviews()"
                     result.messages shouldContain "Kotlin 2.3.21"
                     // And it should mention the workaround.
