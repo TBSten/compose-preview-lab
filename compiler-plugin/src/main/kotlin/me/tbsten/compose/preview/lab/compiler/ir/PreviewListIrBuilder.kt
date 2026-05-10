@@ -7,7 +7,7 @@ import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
 import me.tbsten.compose.preview.lab.compiler.error.PreviewExportNotFoundError
 import me.tbsten.compose.preview.lab.compiler.error.RuntimeFunctionNotFoundError
-import me.tbsten.compose.preview.lab.compiler.error.throwAsException
+import me.tbsten.compose.preview.lab.compiler.error.orThrow
 import me.tbsten.compose.preview.lab.compiler.utils.callableIdOf
 import me.tbsten.compose.preview.lab.compiler.utils.classIdOf
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -89,7 +89,7 @@ internal class PreviewListIrBuilder(
     private val lazyPreviewSequenceFun by lazy {
         val callableId = callableIdOf("me.tbsten.compose.preview.lab", "lazyPreviewSequence")
         pluginContext.referenceFunctions(callableId).firstOrNull()
-            ?: RuntimeFunctionNotFoundError(callableId).throwAsException()
+            .orThrow { RuntimeFunctionNotFoundError(callableId) }
     }
 
     // ----- Preview list construction -----
@@ -191,7 +191,7 @@ internal class PreviewListIrBuilder(
     private val previewExportClass by lazy {
         pluginContext.referenceClass(
             classIdOf("me.tbsten.compose.preview.lab", "PreviewExport"),
-        ) ?: PreviewExportNotFoundError().throwAsException()
+        ).orThrow { PreviewExportNotFoundError() }
     }
 
     private val previewExportType by lazy {
@@ -287,7 +287,7 @@ internal class PreviewListIrBuilder(
     private val distinctPreviewsByIdSequenceFun by lazy {
         val callableId = callableIdOf("me.tbsten.compose.preview.lab", "distinctPreviewsByIdSequence")
         pluginContext.referenceFunctions(callableId).firstOrNull()
-            ?: RuntimeFunctionNotFoundError(callableId).throwAsException()
+            .orThrow { RuntimeFunctionNotFoundError(callableId) }
     }
 
     /**

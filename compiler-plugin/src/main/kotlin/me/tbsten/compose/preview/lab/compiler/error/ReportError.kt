@@ -98,32 +98,3 @@ internal fun buildErrorBody(error: ComposePreviewLabCompilerPluginError): String
         }
     }
 }.trimEnd('\n')
-
-/**
- * Exception that wraps a structured [ComposePreviewLabCompilerPluginError] for the
- * defensive `error("...")` ports.
- *
- * The message is built once via [buildErrorBody] so that the eventual stack-trace log
- * line reads identically to the corresponding `MessageCollector.report(...)` output.
- * `IllegalStateException` is the underlying type so callers that catch the existing
- * `error("...")` `IllegalStateException` keep working unchanged.
- */
-class ComposePreviewLabCompilerPluginException(val error: ComposePreviewLabCompilerPluginError, cause: Throwable? = null) :
-    IllegalStateException(buildErrorBody(error), cause)
-
-/**
- * Throws [this] error as a [ComposePreviewLabCompilerPluginException]. Replacement for
- * raw `error("...")` calls in defensive `?:` chains (see `Errors.kt`:
- * `PropertyHasNoGetterError`, `PreviewExportNotFoundError`,
- * `RuntimeFunctionNotFoundError`).
- *
- * **Sample call**:
- * ```kotlin
- * val getter = property.getter ?: PropertyHasNoGetterError(callableId).throwAsException()
- * ```
- *
- * Return type is `Nothing` so the call composes with the `?: ...` chain without an
- * extra `return @run` shim.
- */
-fun ComposePreviewLabCompilerPluginError.throwAsException(cause: Throwable? = null): Nothing =
-    throw ComposePreviewLabCompilerPluginException(error = this, cause = cause)

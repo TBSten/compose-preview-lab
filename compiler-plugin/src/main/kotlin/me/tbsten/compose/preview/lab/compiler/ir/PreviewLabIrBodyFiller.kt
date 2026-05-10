@@ -10,8 +10,8 @@ import me.tbsten.compose.preview.lab.compiler.error.InvalidScopeIrError
 import me.tbsten.compose.preview.lab.compiler.error.NonLiteralScopeIrError
 import me.tbsten.compose.preview.lab.compiler.error.PropertyHasNoGetterError
 import me.tbsten.compose.preview.lab.compiler.error.UnsupportedCollectAllError
+import me.tbsten.compose.preview.lab.compiler.error.orThrow
 import me.tbsten.compose.preview.lab.compiler.error.report
-import me.tbsten.compose.preview.lab.compiler.error.throwAsException
 import me.tbsten.compose.preview.lab.compiler.fir.PreviewLabFirBuiltIns
 import me.tbsten.compose.preview.lab.compiler.ir.util.declarationLocation
 import me.tbsten.compose.preview.lab.compiler.utils.callableIdOf
@@ -216,9 +216,7 @@ internal class PreviewLabIrBodyFiller(
         // (The Kotlin 2.3+ JVM backend asserts on lambdas whose parent is an IrFile via
         // `MethodSignatureMapper.mapToMethodHandle` with "Unexpected parent: FILE".)
         val lambdaParent: IrDeclarationParent = property.getter
-            ?: PropertyHasNoGetterError(
-                callableIdOf("me.tbsten.compose.preview.lab", callName),
-            ).throwAsException()
+            .orThrow { PropertyHasNoGetterError(callableIdOf("me.tbsten.compose.preview.lab", callName)) }
 
         val sequenceExpr = if (isAll) {
             irBuilder.buildConcatenatedPreviewsExpr(builder, lambdaParent, scope)
