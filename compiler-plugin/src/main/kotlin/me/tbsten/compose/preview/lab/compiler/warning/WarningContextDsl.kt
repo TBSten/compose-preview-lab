@@ -1,7 +1,5 @@
 package me.tbsten.compose.preview.lab.compiler.warning
 
-import me.tbsten.compose.preview.lab.compiler.error.ContextEntry
-
 /**
  * `@DslMarker` for the [WarningContextBuilder] DSL.
  *
@@ -11,54 +9,50 @@ import me.tbsten.compose.preview.lab.compiler.error.ContextEntry
  * not from `ErrorContextBuilder`. Keeping the warning marker separate from
  * `@ErrorContextDsl` lets each builder evolve its own DSL surface (extension functions /
  * operators tagged with one marker do not bleed into the other receiver's scope).
- *
- * Cross-DSL isolation (preventing an outer `ErrorContextBuilder` from leaking into a
- * nested warning `contextOf { ... }` block, or vice versa) is **not** provided here —
- * that would require sharing a single marker across both builders, which is intentionally
- * avoided because nested cross-DSL composition has no production use case in the plugin.
  */
 @DslMarker
 annotation class WarningContextDsl
 
 /**
- * Mutable builder used by [contextOf] to assemble the `List<ContextEntry>` for a
- * [ComposePreviewLabCompilerPluginWarning] implementation. Identical in shape to
- * `ErrorContextBuilder` — see the error-side KDoc for the design rationale.
+ * Mutable builder used by [contextOf] to assemble the `List<String>` for a
+ * [ComposePreviewLabCompilerPluginWarning] implementation. Mirrors `ErrorContextBuilder`
+ * — see the error-side KDoc for the design rationale.
  *
  * **Sample call**:
  * ```kotlin
  * override val context = contextOf {
- *     +"hint_marker"(markerFqn)
- *     +"scope"(scope)
+ *     "hint_marker"(markerFqn)
+ *     "scope"(scope)
+ *     "isVersionGated"()
  * }
+ * // → listOf("hint_marker: <markerFqn>", "scope: <scope>", "isVersionGated")
  * ```
  */
 @WarningContextDsl
 class WarningContextBuilder internal constructor() {
-    private val entries = mutableListOf<ContextEntry>()
+    private val entries = mutableListOf<String>()
 
-    /** Plain function alternative to `+"label"(value)` for readability-sensitive sites. */
-    fun entry(label: String, value: String): ContextEntry = ContextEntry(label = label, value = value)
+    /** `"label"(value)` → appends `"<label>: <value>"`. */
+    operator fun String.invoke(value: String) {
+        entries.add("$this: $value")
+    }
 
-    /** `"label"(value)` → `ContextEntry(label="label", value=value)`. */
-    operator fun String.invoke(value: String): ContextEntry = ContextEntry(label = this, value = value)
-
-    /** Appends [this] entry to the builder's accumulating list. */
-    operator fun ContextEntry.unaryPlus() {
+    /** `"isHoge"()` → appends the receiver verbatim (no-arg overload for boolean / tag entries). */
+    operator fun String.invoke() {
         entries.add(this)
     }
 
     /** Snapshot of the accumulated entries in insertion order. */
-    internal fun build(): List<ContextEntry> = entries.toList()
+    internal fun build(): List<String> = entries.toList()
 }
 
 /**
- * Builds a `List<ContextEntry>` using the [WarningContextBuilder] DSL.
+ * Builds a `List<String>` using the [WarningContextBuilder] DSL.
  *
  * Restricted to `ComposePreviewLabCompilerPluginWarning` receivers (parallel to the
  * error-side `ComposePreviewLabCompilerPluginError.contextOf`) so the DSL cannot be
  * called outside a warning implementation's `override val context = ...` site.
  */
 @Suppress("UnusedReceiverParameter")
-fun ComposePreviewLabCompilerPluginWarning.contextOf(block: WarningContextBuilder.() -> Unit): List<ContextEntry> =
+fun ComposePreviewLabCompilerPluginWarning.contextOf(block: WarningContextBuilder.() -> Unit): List<String> =
     WarningContextBuilder().apply(block).build()

@@ -1,7 +1,6 @@
 package me.tbsten.compose.preview.lab.compiler.warning
 
 import me.tbsten.compose.preview.lab.compiler.error.ComposePreviewLabCompilerPluginError
-import me.tbsten.compose.preview.lab.compiler.error.ContextEntry
 
 /**
  * Structured representation of a warning reported by the compose-preview-lab compiler
@@ -23,8 +22,12 @@ interface ComposePreviewLabCompilerPluginWarning {
     /** Optional multi-line static explanation. */
     val description: String? get() = null
 
-    /** Ordered list of `(label, value)` pairs describing dynamic context. */
-    val context: List<ContextEntry> get() = emptyList()
+    /**
+     * Ordered list of pre-rendered context lines (see
+     * [ComposePreviewLabCompilerPluginError.context]). Build with the warning-side
+     * [contextOf] DSL.
+     */
+    val context: List<String> get() = emptyList()
 
     /** Ordered list of human-readable next-action suggestions. */
     val replies: List<String>

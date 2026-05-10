@@ -41,8 +41,8 @@ class UnsupportedCollectAllError(private val callName: String) : ComposePreviewL
             "targets only, the IR `referenceFunctions` walk being IC-safe (Kotlin 2.3.21+ " +
             "for the KT-82395 fix). JVM / Android consumers do not need (2); KLIB consumers " +
             "need both. The applicable gate is unmet for this compilation."
-    override val context: List<ContextEntry> = contextOf {
-        +"call"(callName)
+    override val context: List<String> = contextOf {
+        "call"(callName)
     }
     override val replies: List<String> = listOf(Replies.UpgradeKotlin2321)
 }
@@ -57,15 +57,16 @@ class CollectPreviewsDisabledError(private val callName: String) : ComposePrevie
     override val categories: List<Category> =
         listOf(Category.IR, Category.INVALID_USAGE, Category.PREVIEW_COLLECTION)
     override val message: String =
-        "$callName cannot be used in this module because the `collectPreviewsEnabled` plugin option is false"
+        "$callName cannot be used in this module because the `composePreviewLab.collectPreviews.enabled` " +
+            "Gradle option is false"
     override val description: String =
         "The disabled flag suppresses every per-declaration hint emission for this module " +
             "(and consequently every cross-module aggregation it might participate in), so any " +
             "call site is almost certainly a configuration mistake. Reporting an error keeps " +
             "users from observing a silently-empty list at runtime."
-    override val context: List<ContextEntry> = contextOf {
-        +"call"(callName)
-        +"collectPreviewsEnabled"("false")
+    override val context: List<String> = contextOf {
+        "call"(callName)
+        "collectPreviewsEnabled"("false")
     }
     override val replies: List<String> = listOf(Replies.EnableCollectPreviews)
 }
@@ -88,8 +89,8 @@ class NonLiteralScopeIrError(private val callName: String) : ComposePreviewLabCo
             "`CollectScopeCallChecker` rejects clear-cut non-literals (string concatenations, " +
             "function calls), but a plain (non-`const`) `val` reference cannot be told apart " +
             "from a `const val` at FIR time and is therefore left to this IR-pass check."
-    override val context: List<ContextEntry> = contextOf {
-        +"call"(callName)
+    override val context: List<String> = contextOf {
+        "call"(callName)
     }
     override val replies: List<String> = listOf(Replies.LiteralScopeOnly)
 }
@@ -112,9 +113,9 @@ class InvalidScopeIrError(private val callName: String, private val scope: Strin
             "FIR `CollectScopeCallChecker` catches inline string literals at analysis time " +
             "but a `const val` reference is indistinguishable from a non-`const` `val` " +
             "reference at FIR time and is therefore left to this IR-pass check."
-    override val context: List<ContextEntry> = contextOf {
-        +"call"(callName)
-        +"scope"(scope)
+    override val context: List<String> = contextOf {
+        "call"(callName)
+        "scope"(scope)
     }
     override val replies: List<String> = listOf(Replies.ScopeFormatAllowed)
 }
@@ -140,10 +141,10 @@ class HintHashCollisionError(private val hash: String, private val previewA: Str
             "marker-interface collision would silently break per-declaration hint discovery, " +
             "so the plugin surfaces it as an ERROR. Workaround: rename one of the functions " +
             "or its package."
-    override val context: List<ContextEntry> = contextOf {
-        +"hash"(hash)
-        +"preview_a"(previewA)
-        +"preview_b"(previewB)
+    override val context: List<String> = contextOf {
+        "hash"(hash)
+        "preview_a"(previewA)
+        "preview_b"(previewB)
     }
     override val replies: List<String> = listOf(Replies.Unknown)
 }
@@ -184,8 +185,8 @@ class RuntimeFunctionNotFoundError(private val callableId: CallableId) : Compose
             "the listed callable, but it returned no candidates. This usually means the " +
             "compose-preview-lab runtime / core dependency is missing or there is a core / " +
             "plugin version mismatch."
-    override val context: List<ContextEntry> = contextOf {
-        +"callable"(callableId.asSingleFqName().asString())
+    override val context: List<String> = contextOf {
+        "callable"(callableId.asSingleFqName().asString())
     }
     override val replies: List<String> = listOf(Replies.Unknown)
 }
@@ -206,8 +207,8 @@ class PropertyHasNoGetterError(private val callableId: CallableId) : ComposePrev
         "Reached an `IrProperty` whose `getter` slot is null while transforming a " +
             "`by collect[All]ModulePreviews()` delegate. The Kotlin property model guarantees " +
             "every observable property has a getter, so this branch is a defensive guard."
-    override val context: List<ContextEntry> = contextOf {
-        +"callable"(callableId.asSingleFqName().asString())
+    override val context: List<String> = contextOf {
+        "callable"(callableId.asSingleFqName().asString())
     }
     override val replies: List<String> = listOf(Replies.Unknown)
 }

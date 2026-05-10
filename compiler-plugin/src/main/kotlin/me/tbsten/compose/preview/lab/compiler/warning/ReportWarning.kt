@@ -44,7 +44,7 @@ internal fun buildWarningBody(warning: ComposePreviewLabCompilerPluginWarning): 
         appendLine()
         appendLine("  Context:")
         warning.context.forEach { entry ->
-            appendLine("    ${entry.label}: ${entry.value}")
+            appendLine("    $entry")
         }
     }
 

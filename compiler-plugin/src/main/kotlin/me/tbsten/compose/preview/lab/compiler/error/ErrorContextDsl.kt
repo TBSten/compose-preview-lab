@@ -9,80 +9,77 @@ package me.tbsten.compose.preview.lab.compiler.error
  * "ContextDsl" marker shared with `WarningContextBuilder`) is to keep the two builders
  * independently extensible — future `Error`-specific DSL helpers can be added under
  * `@ErrorContextDsl` without changing how warning receivers behave, and vice versa.
- *
- * Cross-DSL isolation (e.g. preventing an outer `ErrorContextBuilder` receiver from
- * being implicitly visible inside a nested `contextOf { ... }` on the warning side) is
- * **not** provided by this marker — that requires a shared marker, which is intentionally
- * avoided because nested cross-DSL composition has no production use case here.
  */
 @DslMarker
 annotation class ErrorContextDsl
 
 /**
- * Mutable builder used by [contextOf] to assemble the `List<ContextEntry>` for an
+ * Mutable builder used by [contextOf] to assemble the `List<String>` for an
  * [ComposePreviewLabCompilerPluginError] implementation.
+ *
+ * The accumulated list contains one rendered "Context:" line per entry. Two shorthand
+ * forms are supported, both spelled as a `String` invocation so no `+` prefix is needed:
+ *
+ * - `"label"(value)` — `label: value` style. The receiver `String` is the label, and
+ *   the operator invocation appends `"<label>: <value>"`.
+ * - `"isHoge"()` — single-token boolean / tag style. Use the no-argument
+ *   `String.invoke()` overload to append the receiver verbatim, sidestepping the noisy
+ *   `"isHoge: true"` shape for boolean flag entries.
  *
  * **Sample call**:
  * ```kotlin
  * val entries = ErrorContextBuilder().apply {
- *     +"hash"("abc1234")
- *     +"preview_a"("com.example.A(Int)")
+ *     "hash"("abc1234")
+ *     "preview_a"("com.example.A(Int)")
+ *     "isHoge"()
  * }.build()
- * // entries == listOf(ContextEntry("hash", "abc1234"), ContextEntry("preview_a", "com.example.A(Int)"))
+ * // entries == listOf("hash: abc1234", "preview_a: com.example.A(Int)", "isHoge")
  * ```
  *
- * Same `label` may be appended multiple times — the builder preserves insertion order
- * and does not deduplicate. The two-step `+"label"(value)` syntax is the recommended
- * shorthand; the plain alternative [entry] is provided for cases where the operator
- * chain is harder to read (e.g. `if`-conditional entries inside a higher-order helper).
+ * Insertion order is preserved and duplicate labels are not deduplicated.
  */
 @ErrorContextDsl
 class ErrorContextBuilder internal constructor() {
-    private val entries = mutableListOf<ContextEntry>()
+    private val entries = mutableListOf<String>()
 
     /**
-     * Plain function alternative to `+"label"(value)` for callers that prefer not to
-     * read the two-step operator chain.
+     * Appends `<this>: <value>` to the accumulating list. Designed to be called as a
+     * top-level expression inside the [contextOf] block:
      *
      * ```kotlin
      * override val context = contextOf {
-     *     +entry("hash", hash)
-     *     +entry("preview_a", previewA)
+     *     "hash"(hash)        // → "hash: <hash>"
+     *     "preview_a"(previewA)
      * }
      * ```
-     *
-     * Returns a [ContextEntry] without appending it to the builder; combine with
-     * [unaryPlus] to add it to the resulting list.
      */
-    fun entry(label: String, value: String): ContextEntry = ContextEntry(label = label, value = value)
+    operator fun String.invoke(value: String) {
+        entries.add("$this: $value")
+    }
 
     /**
-     * Treats a `String` receiver as a label and creates a [ContextEntry] paired with
-     * [value]. Designed to compose with [unaryPlus] for the
-     * `+"label"(value)` shorthand:
+     * Appends the receiver `String` verbatim to the accumulating list. Use this no-arg
+     * overload for boolean / tag entries where the noisy `"isHoge: true"` shape is
+     * undesired:
      *
      * ```kotlin
      * override val context = contextOf {
-     *     +"hash"(hash)        // == +entry("hash", hash)
+     *     "isVersionGated"()
+     *     "call"(callName)
      * }
+     * // → listOf("isVersionGated", "call: <callName>")
      * ```
      */
-    operator fun String.invoke(value: String): ContextEntry = ContextEntry(label = this, value = value)
-
-    /**
-     * Appends [this] entry to the builder's accumulating list. Returns `Unit` because
-     * the entry has already been recorded — chaining is intentionally unsupported.
-     */
-    operator fun ContextEntry.unaryPlus() {
+    operator fun String.invoke() {
         entries.add(this)
     }
 
     /** Snapshot of the accumulated entries in insertion order. */
-    internal fun build(): List<ContextEntry> = entries.toList()
+    internal fun build(): List<String> = entries.toList()
 }
 
 /**
- * Builds a `List<ContextEntry>` using the [ErrorContextBuilder] DSL.
+ * Builds a `List<String>` using the [ErrorContextBuilder] DSL.
  *
  * Restricted to `ComposePreviewLabCompilerPluginError` receivers so that the DSL cannot
  * leak into unrelated `override val context` definitions (e.g. on the parallel Warning
@@ -93,13 +90,13 @@ class ErrorContextBuilder internal constructor() {
  * ```kotlin
  * class HintHashCollisionError(...) : ComposePreviewLabCompilerPluginError {
  *     override val context = contextOf {
- *         +"hash"(hash)
- *         +"preview_a"(previewA)
- *         +"preview_b"(previewB)
+ *         "hash"(hash)
+ *         "preview_a"(previewA)
+ *         "preview_b"(previewB)
  *     }
  * }
  * ```
  */
 @Suppress("UnusedReceiverParameter")
-fun ComposePreviewLabCompilerPluginError.contextOf(block: ErrorContextBuilder.() -> Unit): List<ContextEntry> =
+fun ComposePreviewLabCompilerPluginError.contextOf(block: ErrorContextBuilder.() -> Unit): List<String> =
     ErrorContextBuilder().apply(block).build()

@@ -86,7 +86,7 @@ internal fun buildErrorBody(error: ComposePreviewLabCompilerPluginError): String
         appendLine()
         appendLine("  Context:")
         error.context.forEach { entry ->
-            appendLine("    ${entry.label}: ${entry.value}")
+            appendLine("    $entry")
         }
     }
 

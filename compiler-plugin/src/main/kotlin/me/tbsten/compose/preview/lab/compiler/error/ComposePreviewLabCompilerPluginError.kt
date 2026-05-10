@@ -12,7 +12,7 @@ package me.tbsten.compose.preview.lab.compiler.error
  *
  * Concrete error implementations live in `Errors.kt`. Each implementation receives the
  * dynamic values it needs (FQN, hash, version, ...) as constructor parameters, and
- * surfaces them through [context] using the `contextOf { +"label"(value) }` DSL so the
+ * surfaces them through [context] using the `contextOf { "label"(value) }` DSL so the
  * rendered error message follows a consistent shape (see `ReportError.kt::buildErrorBody`).
  *
  * **Sample rendered output** (from `ReportError.kt::buildErrorBody`):
@@ -50,16 +50,24 @@ interface ComposePreviewLabCompilerPluginError {
     val description: String? get() = null
 
     /**
-     * Ordered list of `(label, value)` pairs that describe the dynamic context for the
-     * specific failure (FQN involved, hash that collided, version that was detected, ...).
-     * Renderer prints each as `<label>: <value>` under a "Context:" header.
+     * Ordered list of pre-rendered context lines. Renderer prints each verbatim under a
+     * "Context:" header. Build the list with the [ErrorContextBuilder] DSL via
+     * [contextOf]:
      *
-     * Same label may appear multiple times (e.g. two `"preview"` entries for the two
-     * collided previews). [ContextEntry] is a top-level data class in this package so
-     * the same type can be shared with the parallel `warning/` framework without a
-     * `typealias` re-export.
+     * ```kotlin
+     * override val context = contextOf {
+     *     "hash"(hash)            // → "hash: <hash>"
+     *     "preview_a"(previewA)   // → "preview_a: <previewA>"
+     *     "isVersionGated"()      // → "isVersionGated" (boolean flag form)
+     * }
+     * ```
+     *
+     * Same `label` may appear multiple times (e.g. two `"preview"` entries for the two
+     * collided previews). The receiving type is `List<String>` rather than a dedicated
+     * data class so callers can mix `label: value` entries with boolean-tag entries
+     * without a paired `boolean` field per row.
      */
-    val context: List<ContextEntry> get() = emptyList()
+    val context: List<String> get() = emptyList()
 
     /**
      * Ordered list of human-readable suggested replies / next actions. Renderer prints
