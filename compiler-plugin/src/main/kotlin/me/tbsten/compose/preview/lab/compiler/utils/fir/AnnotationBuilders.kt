@@ -15,7 +15,8 @@ import org.jetbrains.kotlin.name.ClassId
  *
  * **Sample call**:
  * ```kotlin
- * val anno = InternalApiClassId.buildSimpleAnnotation(session)
+ * val classId = classIdOf("me.tbsten.compose.preview.lab", "InternalComposePreviewLabApi")
+ * val anno = classId.buildSimpleAnnotation(session)
  * ```
  *
  * **Result** (semantically):
@@ -33,16 +34,19 @@ import org.jetbrains.kotlin.name.ClassId
  * version mismatch, or a kctfork-style test that did not inline the annotation stub),
  * not a user code issue.
  */
-internal fun ClassId.buildSimpleAnnotation(session: FirSession): FirAnnotation = buildAnnotation {
-    val annoSymbol = session.symbolProvider.getClassLikeSymbolByClassId(this@buildSimpleAnnotation) as? FirRegularClassSymbol
-        ?: error(
-            "${this@buildSimpleAnnotation} annotation symbol is not resolvable from the FIR session. The Compose " +
-                "Preview Lab `:annotation` module must be on the compilation classpath for the " +
-                "per-declaration hint generator. If this fires from a kctfork-style test, ensure " +
-                "the test base inlines the annotation stub for both `@InternalComposePreviewLabApi` " +
-                "and `@SyntheticPreviewHint` (see `CompilerPluginTestBase` / `CompilerPluginJsTestBase`).",
-        )
+internal fun ClassId.buildSimpleAnnotation(session: FirSession): FirAnnotation {
+    val classId = this
+    return buildAnnotation {
+        val annoSymbol = session.symbolProvider.getClassLikeSymbolByClassId(classId) as? FirRegularClassSymbol
+            ?: error(
+                "$classId annotation symbol is not resolvable from the FIR session. The Compose " +
+                    "Preview Lab `:annotation` module must be on the compilation classpath for the " +
+                    "per-declaration hint generator. If this fires from a kctfork-style test, ensure " +
+                    "the test base inlines the annotation stub for both `@InternalComposePreviewLabApi` " +
+                    "and `@SyntheticPreviewHint` (see `CompilerPluginTestBase` / `CompilerPluginJsTestBase`).",
+            )
 
-    annotationTypeRef = annoSymbol.constructType().toFirResolvedTypeRef()
-    argumentMapping = buildAnnotationArgumentMapping {}
+        annotationTypeRef = annoSymbol.constructType().toFirResolvedTypeRef()
+        argumentMapping = buildAnnotationArgumentMapping {}
+    }
 }

@@ -27,6 +27,9 @@ internal fun classIdOf(packageName: String, name: String): ClassId = ClassId(FqN
  * callableIdOf("kotlin", "lazy")
  * // == CallableId(FqName("kotlin"), Name.identifier("lazy"))
  * ```
+ *
+ * Class-scoped callables (e.g. `Companion.foo`) are out of scope; if a use case appears,
+ * add an overload that takes a `ClassId` as the parent, or accepts a pre-computed [FqName].
  */
 internal fun callableIdOf(packageName: String, name: String): CallableId =
     CallableId(FqName(packageName), Name.identifier(name))
