@@ -198,11 +198,7 @@ interface ComposePreviewLabCompilerPluginError {
          */
         val LiteralScopeOnly: String =
             """
-            Pass a compile-time string constant for `scope = ...` — either an inline string
-            literal (`scope = "acme_ui"`) or a `const val` reference. Non-`const` vals,
-            string concatenations, and function calls cannot be embedded into the synthetic
-            identifier and are rejected. Tag the matching @Preview functions on the producer
-            side with @ComposePreviewLabOption so they participate in the scope:
+            Pass a compile-time string constant for `scope = ...` — either an inline string literal (`scope = "acme_ui"`) or a `const val` reference. Non-`const` vals, string concatenations, and function calls cannot be embedded into the synthetic identifier and are rejected. Tag the matching @Preview functions on the producer side with @ComposePreviewLabOption so they participate in the scope:
 
               @Preview
               @ComposePreviewLabOption(collectScopes = ["acme_ui"])
