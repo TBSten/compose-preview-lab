@@ -5,6 +5,9 @@ package me.tbsten.compose.preview.lab.compiler.ir
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
+import me.tbsten.compose.preview.lab.compiler.error.PreviewExportNotFoundError
+import me.tbsten.compose.preview.lab.compiler.error.RuntimeFunctionNotFoundError
+import me.tbsten.compose.preview.lab.compiler.error.throwAsException
 import me.tbsten.compose.preview.lab.compiler.utils.callableIdOf
 import me.tbsten.compose.preview.lab.compiler.utils.classIdOf
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -84,13 +87,9 @@ internal class PreviewListIrBuilder(
     }
 
     private val lazyPreviewSequenceFun by lazy {
-        pluginContext.referenceFunctions(
-            callableIdOf("me.tbsten.compose.preview.lab", "lazyPreviewSequence"),
-        ).firstOrNull() ?: error(
-            "me.tbsten.compose.preview.lab.lazyPreviewSequence not found on the compilation classpath. " +
-                "This usually means the compose-preview-lab runtime/core dependency is missing or there is " +
-                "a core/plugin version mismatch.",
-        )
+        val callableId = callableIdOf("me.tbsten.compose.preview.lab", "lazyPreviewSequence")
+        pluginContext.referenceFunctions(callableId).firstOrNull()
+            ?: RuntimeFunctionNotFoundError(callableId).throwAsException()
     }
 
     // ----- Preview list construction -----
@@ -192,7 +191,7 @@ internal class PreviewListIrBuilder(
     private val previewExportClass by lazy {
         pluginContext.referenceClass(
             classIdOf("me.tbsten.compose.preview.lab", "PreviewExport"),
-        ) ?: error("PreviewExport class not found on classpath")
+        ) ?: PreviewExportNotFoundError().throwAsException()
     }
 
     private val previewExportType by lazy {
@@ -286,13 +285,9 @@ internal class PreviewListIrBuilder(
      * Lazily-cached lookup of `me.tbsten.compose.preview.lab.distinctPreviewsByIdSequence`.
      */
     private val distinctPreviewsByIdSequenceFun by lazy {
-        pluginContext.referenceFunctions(
-            callableIdOf("me.tbsten.compose.preview.lab", "distinctPreviewsByIdSequence"),
-        ).firstOrNull() ?: error(
-            "me.tbsten.compose.preview.lab.distinctPreviewsByIdSequence not found on the compilation classpath. " +
-                "This usually means the compose-preview-lab runtime/core dependency is missing or there is " +
-                "a core/plugin version mismatch.",
-        )
+        val callableId = callableIdOf("me.tbsten.compose.preview.lab", "distinctPreviewsByIdSequence")
+        pluginContext.referenceFunctions(callableId).firstOrNull()
+            ?: RuntimeFunctionNotFoundError(callableId).throwAsException()
     }
 
     /**

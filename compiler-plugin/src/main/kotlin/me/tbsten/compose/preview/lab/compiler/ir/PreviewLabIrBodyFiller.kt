@@ -8,10 +8,13 @@ import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.error.CollectPreviewsDisabledError
 import me.tbsten.compose.preview.lab.compiler.error.InvalidScopeIrError
 import me.tbsten.compose.preview.lab.compiler.error.NonLiteralScopeIrError
+import me.tbsten.compose.preview.lab.compiler.error.PropertyHasNoGetterError
 import me.tbsten.compose.preview.lab.compiler.error.UnsupportedCollectAllError
 import me.tbsten.compose.preview.lab.compiler.error.report
+import me.tbsten.compose.preview.lab.compiler.error.throwAsException
 import me.tbsten.compose.preview.lab.compiler.fir.PreviewLabFirBuiltIns
 import me.tbsten.compose.preview.lab.compiler.ir.util.declarationLocation
+import me.tbsten.compose.preview.lab.compiler.utils.callableIdOf
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
@@ -212,11 +215,11 @@ internal class PreviewLabIrBodyFiller(
         // as a stand-in parent.
         // (The Kotlin 2.3+ JVM backend asserts on lambdas whose parent is an IrFile via
         // `MethodSignatureMapper.mapToMethodHandle` with "Unexpected parent: FILE".)
+        val callableName = if (isAll) "collectAllModulePreviews" else "collectModulePreviews"
         val lambdaParent: IrDeclarationParent = property.getter
-            ?: error(
-                "collectModulePreviews/collectAllModulePreviews delegate must be on a property" +
-                    " with a getter, not a backing field",
-            )
+            ?: PropertyHasNoGetterError(
+                callableIdOf("me.tbsten.compose.preview.lab", callableName),
+            ).throwAsException()
 
         val sequenceExpr = if (isAll) {
             irBuilder.buildConcatenatedPreviewsExpr(builder, lambdaParent, scope)
