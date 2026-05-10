@@ -22,19 +22,7 @@ allprojects {
 apiValidation {
     @OptIn(ExperimentalBCVApi::class)
     klib.enabled = true
-    // dev module: standalone Compose preview app, not a published library.
     ignoredProjects.add(projects.dev.name)
-    // compiler-plugin + every compat-kXXX shim is internal compiler infrastructure
-    // (not consumer-facing API). The plugin entry point is a Gradle plugin DSL; the
-    // FIR/IR generators inside `:compiler-plugin` and the per-Kotlin-version compat
-    // implementations are bundled into a shadow jar and loaded by the Kotlin compiler
-    // via ServiceLoader. Each new Kotlin version requires a new compat-kXXX module
-    // that intentionally tracks compiler API drift, so a BCV baseline here would
-    // flag every legitimate addition as a breaking change.
-    //
-    // Enumerate by path pattern so adding a new compat-kXXX module does not require
-    // remembering to extend this list (= avoids the spuriously-generated `.api`
-    // baseline that motivated this comment).
     rootProject.subprojects
         .filter { it.path == ":compiler-plugin" || it.path.startsWith(":compiler-plugin:") }
         .forEach { ignoredProjects.add(it.name) }
@@ -42,23 +30,6 @@ apiValidation {
         listOf(
             "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
             "me.tbsten.compose.preview.lab.UiComposePreviewLabApi",
-            // Experimental signatures are intentionally excluded from BCV baseline so
-            // experimental→stable promotions show up as concrete diffs (the marker
-            // would otherwise be invisible to apiCheck because BCV does not record
-            // @RequiresOptIn markers in dump output).
-            //
-            // Known limitation (#issuecomment-4413236974, #issuecomment-4413308245):
-            // annotation-class properties marked with `@property:ExperimentalComposePreviewLabApi`
-            // (e.g. `ComposePreviewLabOption.collectScopes`) are filtered correctly only on
-            // KLIB targets. On JVM / Android the Kotlin compiler attaches the marker to a
-            // synthetic `<name>$annotations()` helper rather than the abstract getter, so
-            // BCV's method-level annotation scan does not see the marker and the property
-            // signature stays in `*.api` baselines. The use-site qualifiers `@get:` /
-            // `@field:` / `@param:` are forbidden on `@RequiresOptIn` markers by Kotlin's
-            // opt-in mechanism, so we cannot work around this from the Kotlin source side
-            // alone. Tracked for upstream (BCV); until then, treat experimental→stable
-            // promotions of annotation-class properties as a release-notes / KDoc concern,
-            // not a baseline-diff signal.
             "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
         ),
     )
