@@ -2,9 +2,10 @@
 
 package me.tbsten.compose.preview.lab.compiler.ir
 
+import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
-import me.tbsten.compose.preview.lab.compiler.fir.PreviewLabFirBuiltIns
+import me.tbsten.compose.preview.lab.compiler.utils.ir.requiresKlibIcSafetyForCrossModuleHint
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
@@ -110,7 +111,7 @@ internal fun discoverHints(
     // (`finderForBuiltins` / `finderForSource`) do not support classpath-wide fixed-name
     // lookup, so we keep using the existing API. See KDoc for details.
     @Suppress("DEPRECATION")
-    val hintSymbols = pluginContext.referenceFunctions(PreviewLabFirBuiltIns.hintFunctionCallableId(scope))
+    val hintSymbols = pluginContext.referenceFunctions(PreviewLabConstants.hintFunctionCallableId(scope))
 
     // `messageCollector` is itself deprecated in favour of `diagnosticReporter`, but
     // emitting sourceless diagnostics through `IrDiagnosticReporter` requires a
@@ -131,8 +132,8 @@ internal fun discoverHints(
         val regularParams = hintFunction.parameters.filter { it.kind == IrParameterKind.Regular }
         if (regularParams.size != 1) return@mapNotNull null
         val markerFqn = regularParams[0].type.classFqName ?: return@mapNotNull null
-        if (markerFqn.parent() != PreviewLabFirBuiltIns.HINT_PACKAGE) return@mapNotNull null
-        if (!markerFqn.shortName().asString().startsWith(PreviewLabFirBuiltIns.PreviewHintMarkerPrefix)) return@mapNotNull null
+        if (markerFqn.parent() != PreviewLabConstants.HINT_PACKAGE) return@mapNotNull null
+        if (!markerFqn.shortName().asString().startsWith(PreviewLabConstants.PreviewHintMarkerPrefix)) return@mapNotNull null
         if (hintFunction.returnType.classFqName?.asString() != CollectedPreviewFqn) return@mapNotNull null
 
         hintFunction to markerFqn
@@ -148,7 +149,7 @@ internal fun discoverHints(
         } else {
             messageCollector.report(
                 CompilerMessageSeverity.WARNING,
-                "Compose Preview Lab: a function in '${PreviewLabFirBuiltIns.HINT_PACKAGE.asString()}' " +
+                "Compose Preview Lab: a function in '${PreviewLabConstants.HINT_PACKAGE.asString()}' " +
                     "matching the per-scope hint shape is missing the @SyntheticPreviewHint marker " +
                     "(marker parameter '$markerFqn'). Only the Compose Preview Lab compiler plugin " +
                     "should emit declarations into this package; the candidate will be ignored to " +

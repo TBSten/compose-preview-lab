@@ -1,6 +1,6 @@
 package me.tbsten.compose.preview.lab.compiler.fir.checkers
 
-import me.tbsten.compose.preview.lab.compiler.fir.PreviewLabFirBuiltIns
+import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.reportOn
@@ -44,7 +44,7 @@ internal class CollectScopeAnnotationChecker : FirDeclarationChecker<FirNamedFun
         val collectScopesArg = annotation.findCollectScopesArgument() ?: return
         val elements = collectScopesArg.collectStringLiteralElements() ?: return
         for ((elementSource, value) in elements) {
-            if (!PreviewLabFirBuiltIns.SCOPE_VALIDATION_REGEX.matches(value)) {
+            if (!PreviewLabConstants.SCOPE_VALIDATION_REGEX.matches(value)) {
                 reporter.reportOn(
                     elementSource ?: collectScopesArg.source,
                     CollectScopeErrors.INVALID_COLLECT_SCOPE_VALUE,
@@ -56,7 +56,7 @@ internal class CollectScopeAnnotationChecker : FirDeclarationChecker<FirNamedFun
     }
 
     private fun FirAnnotation.isComposePreviewLabOption(): Boolean =
-        annotationTypeRef.coneType.classId == PreviewLabFirBuiltIns.COMPOSE_PREVIEW_LAB_OPTION_CLASS_ID
+        annotationTypeRef.coneType.classId == PreviewLabConstants.COMPOSE_PREVIEW_LAB_OPTION_CLASS_ID
 
     /**
      * Finds the `collectScopes` argument expression off [this] annotation.
@@ -73,14 +73,14 @@ internal class CollectScopeAnnotationChecker : FirDeclarationChecker<FirNamedFun
      */
     private fun FirAnnotation.findCollectScopesArgument(): FirExpression? {
         val mapped = (this as? FirAnnotationCall)
-            ?.argumentMapping?.mapping?.get(PreviewLabFirBuiltIns.COLLECT_SCOPE_NAME)
+            ?.argumentMapping?.mapping?.get(PreviewLabConstants.COLLECT_SCOPE_NAME)
         if (mapped != null) return mapped
 
         val annotationCall = this as? FirAnnotationCall ?: return null
         for ((index, argument) in annotationCall.argumentList.arguments.withIndex()) {
             when (argument) {
                 is FirNamedArgumentExpression ->
-                    if (argument.name == PreviewLabFirBuiltIns.COLLECT_SCOPE_NAME) return argument.expression
+                    if (argument.name == PreviewLabConstants.COLLECT_SCOPE_NAME) return argument.expression
                 else ->
                     if (index == CollectScopesParameterIndex) return argument
             }

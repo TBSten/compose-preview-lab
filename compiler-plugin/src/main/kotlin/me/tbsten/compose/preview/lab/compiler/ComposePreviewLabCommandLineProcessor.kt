@@ -76,8 +76,9 @@ class ComposePreviewLabCommandLineProcessor : CommandLineProcessor {
         const val OptionDefaultCollectScope = "defaultCollectScope"
 
         /**
-         * Mirror of `PreviewLabFirBuiltIns.SCOPE_VALIDATION_REGEX` — kept literal here to
-         * avoid pulling in the FIR module from the CLI processor entry point.
+         * Mirror of [PreviewLabConstants.SCOPE_VALIDATION_REGEX] — kept literal here to
+         * avoid pulling the [PreviewLabConstants] object into the CLI processor entry point
+         * (this file runs before any FIR / IR plugin component is loaded).
          */
         private val ScopeIdentifierRegex: Regex = Regex("[A-Za-z0-9_]+")
     }

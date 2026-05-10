@@ -12,9 +12,11 @@ import me.tbsten.compose.preview.lab.compiler.error.PropertyHasNoGetterError
 import me.tbsten.compose.preview.lab.compiler.error.UnsupportedCollectAllError
 import me.tbsten.compose.preview.lab.compiler.error.orThrow
 import me.tbsten.compose.preview.lab.compiler.error.report
-import me.tbsten.compose.preview.lab.compiler.fir.PreviewLabFirBuiltIns
-import me.tbsten.compose.preview.lab.compiler.ir.util.declarationLocation
+import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
+import me.tbsten.compose.preview.lab.compiler.error.throwAsException
 import me.tbsten.compose.preview.lab.compiler.utils.callableIdOf
+import me.tbsten.compose.preview.lab.compiler.utils.ir.compilerMessageLocation
+import me.tbsten.compose.preview.lab.compiler.utils.ir.requiresKlibIcSafetyForCrossModuleHint
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
@@ -140,7 +142,7 @@ internal class PreviewLabIrBodyFiller(
         // Reporting an error keeps users from getting a silently-empty list at runtime.
         if (!config.collectPreviewsEnabled) {
             val callName = if (isAll) "collectAllModulePreviews()" else "collectModulePreviews()"
-            messageCollector.report(CollectPreviewsDisabledError(callName), declarationLocation(property))
+            messageCollector.report(CollectPreviewsDisabledError(callName), property.compilerMessageLocation())
             return
         }
 
@@ -155,7 +157,7 @@ internal class PreviewLabIrBodyFiller(
         if (isAll && !compatContext.supportsFirHintGeneration()) {
             messageCollector.report(
                 UnsupportedCollectAllError("collectAllModulePreviews"),
-                declarationLocation(property),
+                property.compilerMessageLocation(),
             )
             return
         }
@@ -165,7 +167,7 @@ internal class PreviewLabIrBodyFiller(
         ) {
             messageCollector.report(
                 UnsupportedCollectAllError("collectAllModulePreviews"),
-                declarationLocation(property),
+                property.compilerMessageLocation(),
             )
             return
         }
@@ -184,10 +186,10 @@ internal class PreviewLabIrBodyFiller(
             is ScopeArgResult.Default -> config.defaultCollectScope
             is ScopeArgResult.Literal -> {
                 val rawValue = resolution.value
-                if (!PreviewLabFirBuiltIns.SCOPE_VALIDATION_REGEX.matches(rawValue)) {
+                if (!PreviewLabConstants.SCOPE_VALIDATION_REGEX.matches(rawValue)) {
                     messageCollector.report(
                         InvalidScopeIrError(callName, rawValue),
-                        declarationLocation(property),
+                        property.compilerMessageLocation(),
                     )
                     return
                 }
@@ -201,7 +203,7 @@ internal class PreviewLabIrBodyFiller(
             is ScopeArgResult.NonLiteral -> {
                 messageCollector.report(
                     NonLiteralScopeIrError(callName),
-                    declarationLocation(property),
+                    property.compilerMessageLocation(),
                 )
                 return
             }

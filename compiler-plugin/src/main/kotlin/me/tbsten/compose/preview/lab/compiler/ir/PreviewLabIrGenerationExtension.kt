@@ -9,9 +9,9 @@ import me.tbsten.compose.preview.lab.compiler.compat.getAnnotationCompat
 import me.tbsten.compose.preview.lab.compiler.compat.hasAnnotationCompat
 import me.tbsten.compose.preview.lab.compiler.error.HintHashCollisionError
 import me.tbsten.compose.preview.lab.compiler.error.report
+import me.tbsten.compose.preview.lab.compiler.utils.ir.compilerMessageLocation
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
-import org.jetbrains.kotlin.cli.common.messages.CompilerMessageLocation
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
@@ -286,15 +286,4 @@ private fun IrSimpleFunction.canonicalSignatureForReport(): String {
         if (p.type.isMarkedNullable()) "$classFqn?" else classFqn
     }
     return "${kotlinFqName.asString()}($params)"
-}
-
-/**
- * Build a [CompilerMessageLocation] pointing at the function's declaration site so that
- * `MessageCollector.report` produces a clickable location in IDE / CI logs.
- */
-private fun IrSimpleFunction.compilerMessageLocation(): CompilerMessageLocation? {
-    val fileEntry = file.fileEntry
-    val line = fileEntry.getLineNumber(startOffset) + 1
-    val column = fileEntry.getColumnNumber(startOffset) + 1
-    return CompilerMessageLocation.create(fileEntry.name, line, column, lineContent = null)
 }

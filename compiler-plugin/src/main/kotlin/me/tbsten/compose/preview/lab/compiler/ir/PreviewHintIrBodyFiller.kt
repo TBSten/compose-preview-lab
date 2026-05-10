@@ -2,9 +2,9 @@
 
 package me.tbsten.compose.preview.lab.compiler.ir
 
+import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.fir.Keys
-import me.tbsten.compose.preview.lab.compiler.fir.PreviewLabFirBuiltIns
 import me.tbsten.compose.preview.lab.compiler.fir.buildPreviewHintCanonicalKey
 import me.tbsten.compose.preview.lab.compiler.fir.computeHintHash
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -122,11 +122,11 @@ internal class PreviewHintIrBodyFiller(
         if (regularParams.size != 1) return
         val markerFqn = regularParams[0].type.classFqName ?: return
         val markerShortName = markerFqn.shortName().asString()
-        if (!markerShortName.startsWith(PreviewLabFirBuiltIns.PreviewHintMarkerPrefix)) return
+        if (!markerShortName.startsWith(PreviewLabConstants.PreviewHintMarkerPrefix)) return
         // The marker name is `PreviewHintMarker_<sanitized_fqn>_<hash>`. The hash is a
-        // fixed-length ([PreviewLabFirBuiltIns.HashLength]) base-36 string, so a tail
+        // fixed-length ([PreviewLabConstants.HashLength]) base-36 string, so a tail
         // slice recovers it.
-        val hash = markerShortName.takeLast(PreviewLabFirBuiltIns.HashLength)
+        val hash = markerShortName.takeLast(PreviewLabConstants.HashLength)
         val previewInfo = previewsByHash[hash] ?: return
 
         val builder = DeclarationIrBuilder(pluginContext, declaration.symbol)

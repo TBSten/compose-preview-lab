@@ -1,6 +1,7 @@
 package me.tbsten.compose.preview.lab.compiler.fir
 
 import java.security.MessageDigest
+import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
 
 /**
  * Hash function that derives the per-declaration hint suffix from a `@Preview`'s
@@ -78,7 +79,7 @@ internal fun buildPreviewHintCanonicalKey(sourceFqn: String, parameterTypeFqns: 
  */
 internal fun buildMarkerShortName(sourceFqn: String, hash: String): String {
     val sanitizedFqn = sourceFqn.replace(NonIdentifierCharRegex, "_")
-    return "${PreviewLabFirBuiltIns.PreviewHintMarkerPrefix}${sanitizedFqn}_$hash"
+    return "${PreviewLabConstants.PreviewHintMarkerPrefix}${sanitizedFqn}_$hash"
 }
 
 /** Characters that are not legal in a non-backticked Kotlin identifier. */

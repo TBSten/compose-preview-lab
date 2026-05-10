@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.compiler.ir
+package me.tbsten.compose.preview.lab.compiler.utils.ir
 
 import org.jetbrains.kotlin.platform.TargetPlatform
 import org.jetbrains.kotlin.platform.isJs
@@ -26,6 +26,12 @@ import org.jetbrains.kotlin.platform.jvm.isJvm
  * short-circuiting on JVM / null). Anything that hits the allowlist is treated as
  * KLIB-based for our gate. Android Native (NDK) is captured by `isNative()`, which is
  * correct (Android Native targets are Konan-based).
+ *
+ * **Sample**: `pluginContext.platform.requiresKlibIcSafetyForCrossModuleHint`
+ * - JVM module → `false`
+ * - Android module (JVM-targeting) → `false`
+ * - iOS / macOS Native module → `true`
+ * - JS module → `true`
  */
 internal val TargetPlatform?.requiresKlibIcSafetyForCrossModuleHint: Boolean
     get() {
