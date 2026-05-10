@@ -7,6 +7,7 @@ import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
 import me.tbsten.compose.preview.lab.compiler.error.PreviewExportNotFoundError
 import me.tbsten.compose.preview.lab.compiler.error.RuntimeFunctionNotFoundError
+import me.tbsten.compose.preview.lab.compiler.error.StdlibClassNotFoundError
 import me.tbsten.compose.preview.lab.compiler.error.orThrow
 import me.tbsten.compose.preview.lab.compiler.utils.callableIdOf
 import me.tbsten.compose.preview.lab.compiler.utils.classIdOf
@@ -78,7 +79,8 @@ internal class PreviewListIrBuilder(
     private val sequenceOfCollectedPreviewType by lazy {
         pluginContext.referenceClass(
             classIdOf("kotlin.sequences", "Sequence"),
-        )!!.typeWith(collectedPreviewType)
+        ).orThrow { StdlibClassNotFoundError("kotlin.sequences.Sequence") }
+            .typeWith(collectedPreviewType)
     }
 
     /** `() -> CollectedPreview` factory-lambda type used for the `lazyPreviewSequence` vararg. */
@@ -267,12 +269,13 @@ internal class PreviewListIrBuilder(
             function = lambdaFun,
         )
 
+        val lazyClass = pluginContext.referenceClass(
+            classIdOf("kotlin", "Lazy"),
+        ).orThrow { StdlibClassNotFoundError("kotlin.Lazy") }
         return compatContext.irCall(
             builder,
             lazyFun,
-            pluginContext.referenceClass(
-                classIdOf("kotlin", "Lazy"),
-            )!!.typeWith(sequenceOfCollectedPreviewType),
+            lazyClass.typeWith(sequenceOfCollectedPreviewType),
             listOf(sequenceOfCollectedPreviewType),
         ).apply {
             arguments[0] = lambdaExpr

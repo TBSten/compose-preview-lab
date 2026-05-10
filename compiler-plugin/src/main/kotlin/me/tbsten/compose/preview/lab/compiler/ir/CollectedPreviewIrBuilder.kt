@@ -5,6 +5,8 @@ package me.tbsten.compose.preview.lab.compiler.ir
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
 import me.tbsten.compose.preview.lab.compiler.compat.addConstructorCallAnnotation
+import me.tbsten.compose.preview.lab.compiler.error.CollectedPreviewNotFoundError
+import me.tbsten.compose.preview.lab.compiler.error.orThrow
 import me.tbsten.compose.preview.lab.compiler.utils.classIdOf
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
@@ -37,7 +39,7 @@ internal class CollectedPreviewIrBuilder(
     val collectedPreviewClass by lazy {
         pluginContext.referenceClass(
             classIdOf("me.tbsten.compose.preview.lab", "CollectedPreview"),
-        )!!
+        ).orThrow { CollectedPreviewNotFoundError() }
     }
     val collectedPreviewType by lazy { compatContext.getDefaultType(collectedPreviewClass) }
 

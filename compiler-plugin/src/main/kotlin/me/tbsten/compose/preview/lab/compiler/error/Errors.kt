@@ -170,6 +170,45 @@ class PreviewExportNotFoundError : ComposePreviewLabCompilerPluginError {
 }
 
 /**
+ * `[ComposePreviewLab/IR] CollectedPreview class not found on the compilation classpath`.
+ * Defensive: thrown when `pluginContext.referenceClass(CollectedPreview)` returns `null`,
+ * matching the [PreviewExportNotFoundError] shape for the second runtime class the IR
+ * pass relies on. Surfaces the same misconfiguration (missing runtime jar / version
+ * mismatch) but with the actual class name in the message so the user can disambiguate.
+ */
+class CollectedPreviewNotFoundError : ComposePreviewLabCompilerPluginError {
+    override val categories: List<Category> = listOf(Category.IR)
+    override val message: String = "CollectedPreview class not found on the compilation classpath"
+    override val description: String =
+        "Expected `me.tbsten.compose.preview.lab.CollectedPreview` to be resolvable through " +
+            "the IR plugin context, but `referenceClass(...)` returned null. This usually " +
+            "means the compose-preview-lab runtime / core dependency is missing or there is " +
+            "a core / plugin version mismatch."
+    override val replies: List<String> = listOf(Replies.Unknown)
+}
+
+/**
+ * `[ComposePreviewLab/IR] <classFqn> not found on the compilation classpath`. Defensive
+ * thrown when `pluginContext.referenceClass(classId)` returns `null` for a kotlin
+ * stdlib class the IR pass relies on (`kotlin.sequences.Sequence`, `kotlin.Lazy`).
+ * Kotlin stdlib is always on the classpath, so this branch is an unreachable guard rather
+ * than a user-facing diagnostic; surfacing a structured Error rather than `!!` keeps the
+ * bug report actionable.
+ */
+class StdlibClassNotFoundError(private val classFqn: String) : ComposePreviewLabCompilerPluginError {
+    override val categories: List<Category> = listOf(Category.IR)
+    override val message: String = "$classFqn not found on the compilation classpath"
+    override val description: String =
+        "Expected the Kotlin stdlib class to be resolvable through the IR plugin context, " +
+            "but `referenceClass(...)` returned null. Kotlin stdlib is always on the classpath, " +
+            "so this is an internal invariant failure rather than a user misconfiguration."
+    override val context: List<String> = contextOf {
+        "class"(classFqn)
+    }
+    override val replies: List<String> = listOf(Replies.Unknown)
+}
+
+/**
  * `[ComposePreviewLab/IR] <fqn> not found on the compilation classpath`. Defensive
  * thrown when `pluginContext.referenceFunctions(callableId)` returns empty for a
  * runtime function that the IR pass relies on (`lazyPreviewSequence` /
