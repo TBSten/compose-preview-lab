@@ -7,9 +7,9 @@ import io.kotest.matchers.collections.shouldExist
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import me.tbsten.compose.preview.lab.compiler.CompilerPluginTestBase
-import me.tbsten.compose.preview.lab.compiler.fir.buildMarkerShortName
-import me.tbsten.compose.preview.lab.compiler.fir.buildPreviewHintCanonicalKey
-import me.tbsten.compose.preview.lab.compiler.fir.computeHintHash
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.buildMarkerShortName
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.buildPreviewHintCanonicalKey
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.computeHintHash
 import me.tbsten.compose.preview.lab.compiler.isAtLeast
 
 /**

@@ -8,6 +8,12 @@ import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.getBooleanArgumentCompat
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewKeys
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.buildMarkerShortName
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.buildPreviewHintCanonicalKey
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.computeHintHash
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.parameterTypeFqns
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.previewLabFirBuiltIns
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.descriptors.Visibilities
@@ -238,7 +244,7 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
         val shortName = classId.shortClassName.asString()
         if (shortName !in hashByMarkerShortName) return null
 
-        val klass = createTopLevelClass(classId, Keys.PreviewLabHintMarkerInterface, ClassKind.INTERFACE) {
+        val klass = createTopLevelClass(classId, PreviewKeys.PreviewLabHintMarkerInterface, ClassKind.INTERFACE) {
             modality = Modality.ABSTRACT
         }
         klass.markAsDeprecatedHidden(session, compat)
@@ -267,7 +273,7 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
      * `referenceFunctions` lookup, so cross-module discovery is filtered at lookup time
      * rather than after the fact.
      *
-     * No body is emitted here (FIR cannot hold a body). The [Keys.PreviewLabHint] origin
+     * No body is emitted here (FIR cannot hold a body). The [PreviewKeys.PreviewLabHint] origin
      * is the signal that the IR side
      * ([me.tbsten.compose.preview.lab.compiler.ir.PreviewHintIrBodyFiller]) uses to fill in
      * a body that returns the corresponding `CollectedPreview(...)` constructor call.
@@ -301,7 +307,7 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
                 )
             val fileName = "PreviewHint_${entry.hash}.kt"
             createTopLevelFunction(
-                Keys.PreviewLabHint,
+                PreviewKeys.PreviewLabHint,
                 callableId,
                 collectedPreviewType,
                 fileName,
@@ -386,7 +392,8 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
      * into a concrete list of scope strings, substituting the sentinel
      * `ComposePreviewLabOption.DefaultCollectScope` ( = `"default"`) with the module-level
      * `composePreviewLab.collectPreviews.defaultCollectScope` Gradle DSL value
-     * ([PreviewLabFirBuiltIns.config]'s `defaultCollectScope`). That means a library
+     * ([me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewLabFirBuiltIns.config]'s
+     * `defaultCollectScope`). That means a library
      * module pinning every preview to a library-specific bucket only needs the Gradle DSL
      * line — no per-`@Preview` annotation required.
      *

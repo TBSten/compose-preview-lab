@@ -9,6 +9,7 @@ import me.tbsten.compose.preview.lab.compiler.compat.getAnnotationCompat
 import me.tbsten.compose.preview.lab.compiler.compat.hasAnnotationCompat
 import me.tbsten.compose.preview.lab.compiler.error.HintHashCollisionError
 import me.tbsten.compose.preview.lab.compiler.error.report
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewFunctionInfo
 import me.tbsten.compose.preview.lab.compiler.utils.ir.compilerMessageLocation
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext

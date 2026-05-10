@@ -6,6 +6,7 @@ import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
 import me.tbsten.compose.preview.lab.compiler.error.PreviewExportNotFoundError
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewFunctionInfo
 import me.tbsten.compose.preview.lab.compiler.error.RuntimeFunctionNotFoundError
 import me.tbsten.compose.preview.lab.compiler.error.StdlibClassNotFoundError
 import me.tbsten.compose.preview.lab.compiler.error.orThrow

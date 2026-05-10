@@ -7,6 +7,7 @@ import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
 import me.tbsten.compose.preview.lab.compiler.compat.addConstructorCallAnnotation
 import me.tbsten.compose.preview.lab.compiler.error.CollectedPreviewNotFoundError
 import me.tbsten.compose.preview.lab.compiler.error.orThrow
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewFunctionInfo
 import me.tbsten.compose.preview.lab.compiler.utils.classIdOf
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder

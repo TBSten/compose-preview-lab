@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.compiler.fir
+package me.tbsten.compose.preview.lab.compiler.feature.previewCollection
 
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import org.jetbrains.kotlin.fir.FirSession

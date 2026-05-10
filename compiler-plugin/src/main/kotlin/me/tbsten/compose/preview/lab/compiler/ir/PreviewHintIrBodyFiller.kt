@@ -4,9 +4,11 @@ package me.tbsten.compose.preview.lab.compiler.ir
 
 import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
-import me.tbsten.compose.preview.lab.compiler.fir.Keys
-import me.tbsten.compose.preview.lab.compiler.fir.buildPreviewHintCanonicalKey
-import me.tbsten.compose.preview.lab.compiler.fir.computeHintHash
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewFunctionInfo
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewKeys
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.buildPreviewHintCanonicalKey
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.computeHintHash
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.parameterTypeFqns
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.ir.IrStatement
@@ -17,7 +19,6 @@ import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.types.classFqName
-import org.jetbrains.kotlin.ir.types.isMarkedNullable
 import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 
@@ -82,7 +83,7 @@ internal class PreviewHintIrBodyFiller(
      * Rewrites the hint function body to an `irReturn` of the `CollectedPreview(...)`
      * constructor call.
      *
-     * Only functions with the `Keys.PreviewLabHint` origin are touched. The original
+     * Only functions with the `PreviewKeys.PreviewLabHint` origin are touched. The original
      * `@Preview` is identified from the marker class short name on the hint's
      * `value: PreviewHintMarker_<sanitized_fqn>_<hash>?` parameter.
      *
@@ -102,7 +103,7 @@ internal class PreviewHintIrBodyFiller(
         if (declaration.body != null) return super.visitSimpleFunction(declaration)
         val origin = declaration.origin
         when {
-            origin is IrDeclarationOrigin.GeneratedByPlugin && origin.pluginKey === Keys.PreviewLabHint -> {
+            origin is IrDeclarationOrigin.GeneratedByPlugin && origin.pluginKey === PreviewKeys.PreviewLabHint -> {
                 fillHintBody(declaration)
             }
         }
@@ -179,7 +180,7 @@ internal fun buildPreviewByHashMap(
     val keyed = previews.mapNotNull { preview ->
         val sourceFqn = preview.function.kotlinFqName.asString()
         if (sourceFqn.isEmpty()) return@mapNotNull null
-        val parameterTypeFqns = preview.function.parameterTypeFqnsForHash()
+        val parameterTypeFqns = preview.function.parameterTypeFqns()
         val canonicalKey = buildPreviewHintCanonicalKey(sourceFqn, parameterTypeFqns)
         canonicalKey to preview
     }
@@ -226,26 +227,3 @@ internal fun <V> buildHashMapWithCollisionDetection(
         put(h, value)
     }
 }
-
-/**
- * Converts an IR `IrSimpleFunction`'s value parameter types into the FQN list used in the
- * hint canonical key. Must produce the same format as the FIR side
- * [me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGenerator].
- *
- * **Format** (shared between FIR and IR):
- * - `<classFqn>` (classId resolved, non-nullable type)
- * - `<classFqn>?` (classId resolved, nullable type)
- * - `?` (classId unresolved = generic type parameter or resolution failure; nullability
- *   is ignored in this case)
- *
- * Ignoring nullability when the classId is unresolved keeps the format minimal — there is
- * little additional information to encode about an unknown type — and ensures the
- * canonical key is identical on the FIR and IR sides.
- */
-private fun IrSimpleFunction.parameterTypeFqnsForHash(): List<String> = parameters
-    .filter { it.kind == IrParameterKind.Regular }
-    .map { param ->
-        val type = param.type
-        val classFqn = type.classFqName?.asString() ?: return@map "?"
-        if (type.isMarkedNullable()) "$classFqn?" else classFqn
-    }

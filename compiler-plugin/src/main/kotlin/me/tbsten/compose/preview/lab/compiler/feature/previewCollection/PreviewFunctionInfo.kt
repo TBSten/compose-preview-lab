@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.compiler.ir
+package me.tbsten.compose.preview.lab.compiler.feature.previewCollection
 
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 

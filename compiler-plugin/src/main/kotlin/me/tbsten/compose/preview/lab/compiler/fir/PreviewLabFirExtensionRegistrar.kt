@@ -2,6 +2,8 @@ package me.tbsten.compose.preview.lab.compiler.fir
 
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.HintEntriesProvider
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewLabFirBuiltIns
 import me.tbsten.compose.preview.lab.compiler.feature.transformPrivatePreviewToInternal.fir.visibilityPromotion.PreviewLabFirStatusTransformerExtension
 import me.tbsten.compose.preview.lab.compiler.fir.checkers.PreviewLabFirCheckersExtension
 import org.jetbrains.kotlin.fir.FirSession
@@ -11,8 +13,13 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
  * Registers all of Compose Preview Lab's FIR extensions.
  *
  * Registered extensions:
- * - [PreviewLabFirBuiltIns] (`FirExtensionSessionComponent`) — shared FQN/CallableId constants
- *   plus [PluginConfig], accessible from any FIR extension via `session.previewLabFirBuiltIns`.
+ * - [PreviewLabFirBuiltIns] (`FirExtensionSessionComponent`) — session-bound
+ *   [PluginConfig] wrapper, accessible from any FIR extension via
+ *   `session.previewLabFirBuiltIns`. Pure-data identifiers live on
+ *   [me.tbsten.compose.preview.lab.compiler.PreviewLabConstants] instead.
+ * - [HintEntriesProvider] (`FirExtensionSessionComponent`) — session-scoped lazy
+ *   cache of the per-`@Preview` hint / marker metadata list, shared by the hint
+ *   and marker generators.
  * - [PreviewLabFirStatusTransformerExtension] — widens `private @Preview` functions to
  *   `internal` so generated code can call them.
  * - [PreviewHintFirGenerator] — emits the per-declaration hint
@@ -38,6 +45,12 @@ class PreviewLabFirExtensionRegistrar(private val config: PluginConfig) : FirExt
     override fun ExtensionRegistrarContext.configurePlugin() {
         val compat = CompatContext.load()
         +({ session: FirSession -> PreviewLabFirBuiltIns(session, config) })
+        // Session-scoped lazy cache of `@Preview` → hint/marker metadata. Registered as
+        // its own `FirExtensionSessionComponent` so both the (future) hint generator and
+        // marker generator share the same instance (= the SSoT for "which @Preview
+        // functions are in this session"). Holding the cache outside `PreviewLabFirBuiltIns`
+        // keeps the latter scoped to plain `config` access.
+        +(::HintEntriesProvider)
         +::PreviewLabFirStatusTransformerExtension
         // FIR analysis (CHECKERS) phase validation for `collectScope`. Surfaces invalid
         // values in the IDE highlighter and at compile time before the generator / IR

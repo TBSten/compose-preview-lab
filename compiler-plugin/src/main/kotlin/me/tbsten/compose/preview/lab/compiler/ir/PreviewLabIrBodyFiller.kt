@@ -14,6 +14,7 @@ import me.tbsten.compose.preview.lab.compiler.error.orThrow
 import me.tbsten.compose.preview.lab.compiler.error.report
 import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
 import me.tbsten.compose.preview.lab.compiler.error.throwAsException
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewFunctionInfo
 import me.tbsten.compose.preview.lab.compiler.utils.callableIdOf
 import me.tbsten.compose.preview.lab.compiler.utils.ir.compilerMessageLocation
 import me.tbsten.compose.preview.lab.compiler.utils.ir.requiresKlibIcSafetyForCrossModuleHint
