@@ -136,11 +136,22 @@ internal class PreviewLabIrBodyFiller(
             return
         }
 
-        // Version gate: cross-module aggregation requires Kotlin 2.3.21+ across every platform
-        // (the FIR-based KLIB-safe hint generator depends on KT-82395 being fixed). When the
-        // current compiler is older we report a structured error here so users get a clear
-        // upgrade path rather than a silent half-broken aggregation.
-        if (isAll && !compatContext.supportsKlibCrossModuleHint()) {
+        // Version gate: cross-module aggregation depends on (1) the FIR per-declaration
+        // hint generator being registered (= `supportsFirHintGeneration` = Kotlin 2.3.0+)
+        // for the marker / hint declarations to exist on dep-module classpaths, and (2)
+        // on KLIB targets only, the IR-side `referenceFunctions` walk being IC-safe
+        // (= `supportsKlibCrossModuleHint` = Kotlin 2.3.21+ for the KT-82395 fix). JVM /
+        // Android consumers don't suffer the IC issue and run cross-module discovery on
+        // any 2.3.0+ compiler. When the gate is unmet we report a structured error here
+        // so users get a clear upgrade path rather than a silent half-broken aggregation.
+        if (isAll && !compatContext.supportsFirHintGeneration()) {
+            reportUnsupportedCollectAllError(property)
+            return
+        }
+        if (isAll &&
+            pluginContext.platform.requiresKlibIcSafetyForCrossModuleHint &&
+            !compatContext.supportsKlibCrossModuleHint()
+        ) {
             reportUnsupportedCollectAllError(property)
             return
         }

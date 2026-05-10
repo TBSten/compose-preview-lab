@@ -51,9 +51,14 @@ private val SyntheticPreviewHintFqn = FqName("me.tbsten.compose.preview.lab.Synt
  *
  * The caller
  * ([PreviewLabIrBodyFiller.replaceCollectPreviewsProperty][me.tbsten.compose.preview.lab.compiler.ir.PreviewLabIrBodyFiller])
- * pre-checks [CompatContext.supportsKlibCrossModuleHint] and aborts the IR transform with
- * an early error report when not supported, so by the time [discoverHints] is invoked the
- * gate condition is assumed to hold.
+ * pre-checks the platform-aware gate (JVM / Android: only
+ * `CompatContext.supportsFirHintGeneration` required = 2.3.0+; KLIB targets:
+ * additionally `CompatContext.supportsKlibCrossModuleHint` required = 2.3.21+) and
+ * aborts the IR transform with an early error report when KLIB IC safety is
+ * unavailable. By the time [discoverHints] is invoked the gate condition is assumed to
+ * hold; the fall-through `return emptyList()` here is a defensive belt-and-braces so a
+ * misconfigured caller (= calling this directly without the upstream check) returns
+ * nothing rather than triggering a stale-IC walk.
  *
  * ## Filter conditions
  *
@@ -94,7 +99,12 @@ internal fun discoverHints(
     compatContext: CompatContext,
     scope: String,
 ): List<IrSimpleFunction> {
-    if (!compatContext.supportsKlibCrossModuleHint()) return emptyList()
+    if (!compatContext.supportsFirHintGeneration()) return emptyList()
+    if (pluginContext.platform.requiresKlibIcSafetyForCrossModuleHint &&
+        !compatContext.supportsKlibCrossModuleHint()
+    ) {
+        return emptyList()
+    }
 
     // `referenceFunctions` is deprecated in K2, but the recommended replacements
     // (`finderForBuiltins` / `finderForSource`) do not support classpath-wide fixed-name

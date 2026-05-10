@@ -19,12 +19,18 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
  *   `fun previewHint_<scope>(value: PreviewHintMarker_..._<hash>?): CollectedPreview`
  *   overload per scope listed in `@ComposePreviewLabOption(collectScopes = [...])`,
  *   defaulting to `previewHint_default` when no scope is specified) for each `@Preview`.
- *   **Only registered when both** the running Kotlin compiler supports it (Kotlin 2.3.21+,
- *   surfaced via [CompatContext.supportsKlibCrossModuleHint]) **and** `collectPreviewsEnabled`
- *   is `true` for this module ([PluginConfig.collectPreviewsEnabled]). Skipping the
- *   registration when `collectPreviewsEnabled = false` is what guarantees that no
- *   `previewHint_<scope>(...)` overload or `PreviewHintMarker_*` interface ends up in the
- *   module's classpath.
+ *   **Only registered when both** the running Kotlin compiler exposes a stable
+ *   `FirDeclarationGenerationExtension.getTopLevelClassIds` /
+ *   `getTopLevelCallableIds` API (Kotlin 2.3.0+, surfaced via
+ *   [CompatContext.supportsFirHintGeneration]) **and** `collectPreviewsEnabled`
+ *   is `true` for this module ([PluginConfig.collectPreviewsEnabled]). The IR-side
+ *   cross-module discovery has separate KLIB IC-safety constraints (see
+ *   [CompatContext.supportsKlibCrossModuleHint]) — those gate the IR pass, not this
+ *   FIR registration, so JVM / Android consumers benefit from the per-declaration hint
+ *   pipeline on Kotlin 2.3.0+ even though the KLIB IC fix only landed in 2.3.21.
+ *   Skipping the registration when `collectPreviewsEnabled = false` is what guarantees
+ *   that no `previewHint_<scope>(...)` overload or `PreviewHintMarker_*` interface ends
+ *   up in the module's classpath.
  */
 class PreviewLabFirExtensionRegistrar(private val config: PluginConfig) : FirExtensionRegistrar() {
 
@@ -39,7 +45,7 @@ class PreviewLabFirExtensionRegistrar(private val config: PluginConfig) : FirExt
         // been stable since 2.0).
         +::PreviewLabFirCheckersExtension
         val compat = CompatContext.load()
-        if (compat.supportsKlibCrossModuleHint() && config.collectPreviewsEnabled) {
+        if (compat.supportsFirHintGeneration() && config.collectPreviewsEnabled) {
             +({ session: FirSession -> PreviewHintFirGenerator(session, compat) })
         }
     }

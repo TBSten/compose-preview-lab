@@ -62,7 +62,14 @@ class PreviewLabIrGenerationExtension(
         // emitted preview's truncated SHA-256 hash collides with an ignored preview's hash
         // and produces a false-positive collision ERROR. `collectPreviews` already excludes
         // ignored entries.
-        if (compatContext.supportsKlibCrossModuleHint()) {
+        // The hint body filler runs whenever the FIR per-declaration generator is
+        // registered (= 2.3.0+ via `supportsFirHintGeneration`). On JVM / Android the
+        // FIR-emitted markers + hints become classfiles and the body filler injects the
+        // `CollectedPreview(...)` constructor call into each hint at IR time. On KLIB
+        // targets the same body filler runs, but the consumer-side cross-module
+        // discovery is additionally gated on `supportsKlibCrossModuleHint` (KT-82395
+        // fix) inside `HintDiscovery` / `PreviewLabIrBodyFiller`.
+        if (compatContext.supportsFirHintGeneration()) {
             val previewsByHash = buildPreviewByHashMap(previews) { hash, existing, conflicting ->
                 val existingSignature = existing.function.canonicalSignatureForReport()
                 val conflictingSignature = conflicting.function.canonicalSignatureForReport()
@@ -85,13 +92,14 @@ class PreviewLabIrGenerationExtension(
                 PreviewHintIrBodyFiller(pluginContext, compatContext, previewsByHash),
             )
         }
-        // On older Kotlin (<2.3.21) the hint generator is not active, so
+        // On Kotlin <2.3.0 the FIR hint generator is not registered, so
         // collectAllModulePreviews() cannot perform cross-module aggregation.
         // PreviewLabIrBodyFiller.reportUnsupportedCollectAllError detects the
         // `val by collectAllModulePreviews()` by-delegate pattern in the IR phase and
-        // surfaces a compile-time error via MessageCollector.
-        // collectModulePreviews() on its own only injects this module's previews via
-        // an IR transform, so it works without a version gate.
+        // surfaces a compile-time error via MessageCollector. On Kotlin 2.3.0–2.3.20
+        // for KLIB targets, the body filler also reports the unsupported-platform error
+        // (the KLIB IC safety gate). collectModulePreviews() on its own only injects
+        // this module's previews via an IR transform, so it works without a version gate.
     }
 
     private fun collectPreviews(moduleFragment: IrModuleFragment): List<PreviewFunctionInfo> {
