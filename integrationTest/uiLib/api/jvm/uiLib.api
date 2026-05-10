@@ -10,20 +10,6 @@ public final class me/tbsten/compose/preview/lab/hints/ComposableSingletons$Prev
 	public final fun getLambda$-597314950$uiLib ()Lkotlin/jvm/functions/Function2;
 }
 
-public abstract interface class me/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_lib_MyButtonPreview_8wxhg4im {
-}
-
-public abstract interface class me/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_lib_MyTextFieldPreview_umm6awb4 {
-}
-
-public final class me/tbsten/compose/preview/lab/hints/PreviewHint_8wxhg4imKt {
-	public static final synthetic fun previewHint_default (Lme/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_lib_MyButtonPreview_8wxhg4im;)Lme/tbsten/compose/preview/lab/CollectedPreview;
-}
-
-public final class me/tbsten/compose/preview/lab/hints/PreviewHint_umm6awb4Kt {
-	public static final synthetic fun previewHint_default (Lme/tbsten/compose/preview/lab/hints/PreviewHintMarker_me_tbsten_compose_preview_lab_sample_lib_MyTextFieldPreview_umm6awb4;)Lme/tbsten/compose/preview/lab/CollectedPreview;
-}
-
 public final class me/tbsten/compose/preview/lab/sample/lib/ComposableSingletons$MyButtonKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/sample/lib/ComposableSingletons$MyButtonKt;
 	public fun <init> ()V

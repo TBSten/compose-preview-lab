@@ -45,8 +45,14 @@ import org.jetbrains.kotlin.name.Name
  * // file: PreviewHint_<hash>.kt
  * package me.tbsten.compose.preview.lab.hints
  *
+ * @kotlin.Deprecated("...", level = HIDDEN)
+ * @me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+ * @me.tbsten.compose.preview.lab.SyntheticPreviewHint
  * public interface PreviewHintMarker_com_example_app_MyButtonPreview_<hash>
  *
+ * @kotlin.Deprecated("...", level = HIDDEN)
+ * @me.tbsten.compose.preview.lab.InternalComposePreviewLabApi
+ * @me.tbsten.compose.preview.lab.SyntheticPreviewHint
  * public fun previewHint_default(value: PreviewHintMarker_com_example_app_MyButtonPreview_<hash>?): CollectedPreview =
  *     error("Stub! Filled by IR.")
  * ```
@@ -54,6 +60,16 @@ import org.jetbrains.kotlin.name.Name
  * Only the return type and function name are declared at the FIR layer; the
  * `CollectedPreview(...)` constructor call carrying the actual metadata is injected by the
  * IR side ([me.tbsten.compose.preview.lab.compiler.ir.PreviewHintIrBodyFiller]).
+ *
+ * The two non-`@Deprecated` markers serve complementary roles:
+ * * `@InternalComposePreviewLabApi` keeps the marker class and the hint function out of the
+ *   BCV baseline on every CMP target (KLIB / JVM / Android), via the existing
+ *   `nonPublicMarkers` filter in `apiValidation`.
+ * * `@SyntheticPreviewHint` is the IR-side `HintDiscovery`'s positive proof that this
+ *   declaration was emitted by *us*. Third-party code that happens to live in the
+ *   `me.tbsten.compose.preview.lab.hints` package — whether by accident or by namespace
+ *   squatting — cannot be picked up by `collectAllModulePreviews()` because it lacks the
+ *   marker.
  *
  * # Design points
  *
@@ -210,6 +226,11 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
      * an external `class MyMarker : PreviewHintMarker_<sanitized_fqn>_<hash>` does not
      * compile — sealed-ization would be redundant. See
      * `PreviewHintMarkerSealOrHiddenTest` for the executable proof.
+     *
+     * `markAsInternalSyntheticHint` then layers `@InternalComposePreviewLabApi` (so BCV
+     * filters this class out of every target's baseline) and `@SyntheticPreviewHint` (so
+     * the IR-side hint discovery can distinguish plugin-emitted markers from any other
+     * class that ends up in the same package).
      */
     override fun generateTopLevelClassLikeDeclaration(classId: ClassId): FirClassLikeSymbol<*>? {
         if (classId.packageFqName != PreviewLabFirBuiltIns.HINT_PACKAGE) return null
@@ -220,6 +241,7 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
             modality = Modality.ABSTRACT
         }
         klass.markAsDeprecatedHidden(session, compat)
+        klass.markAsInternalSyntheticHint(session, compat)
         return klass.symbol
     }
 
@@ -248,6 +270,11 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
      * is the signal that the IR side
      * ([me.tbsten.compose.preview.lab.compiler.ir.PreviewHintIrBodyFiller]) uses to fill in
      * a body that returns the corresponding `CollectedPreview(...)` constructor call.
+     *
+     * Each generated hint function is then annotated by `markAsInternalSyntheticHint`,
+     * which attaches `@InternalComposePreviewLabApi` (BCV filtering) and
+     * `@SyntheticPreviewHint` (IR-side `HintDiscovery` positive-proof marker so namespace
+     * squatting cannot inject hints into a downstream consumer's `collectAllModulePreviews`).
      */
     override fun generateFunctions(callableId: CallableId, context: MemberGenerationContext?): List<FirNamedFunctionSymbol> {
         // Unrecognised callable id → not ours to generate. The pre-computed map covers the
@@ -287,7 +314,10 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
                     name = Name.identifier("value"),
                     type = markerSymbol.constructType(isMarkedNullable = true),
                 )
-            }.also { it.markAsDeprecatedHidden(session, compat) }.symbol
+            }.also {
+                it.markAsDeprecatedHidden(session, compat)
+                it.markAsInternalSyntheticHint(session, compat)
+            }.symbol
         }
     }
 
