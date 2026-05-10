@@ -215,10 +215,9 @@ internal class PreviewLabIrBodyFiller(
         // as a stand-in parent.
         // (The Kotlin 2.3+ JVM backend asserts on lambdas whose parent is an IrFile via
         // `MethodSignatureMapper.mapToMethodHandle` with "Unexpected parent: FILE".)
-        val callableName = if (isAll) "collectAllModulePreviews" else "collectModulePreviews"
         val lambdaParent: IrDeclarationParent = property.getter
             ?: PropertyHasNoGetterError(
-                callableIdOf("me.tbsten.compose.preview.lab", callableName),
+                callableIdOf("me.tbsten.compose.preview.lab", callName),
             ).throwAsException()
 
         val sequenceExpr = if (isAll) {
