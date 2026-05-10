@@ -90,15 +90,22 @@ open class CompilerPluginJsTestBase {
                 val content: () -> Unit,
             )
 
-            class PreviewExport(private val delegate: Lazy<List<CollectedPreview>>) {
-                operator fun getValue(thisRef: Any?, property: kotlin.reflect.KProperty<*>): List<CollectedPreview> =
+            class PreviewExport(private val delegate: Lazy<Sequence<CollectedPreview>>) :
+                kotlin.properties.ReadOnlyProperty<Any?, Sequence<CollectedPreview>> {
+                override operator fun getValue(thisRef: Any?, property: kotlin.reflect.KProperty<*>): Sequence<CollectedPreview> =
                     delegate.value
             }
 
-            fun collectModulePreviews(): PreviewExport = PreviewExport(lazy { emptyList() })
-            fun collectAllModulePreviews(): PreviewExport = PreviewExport(lazy { emptyList() })
+            fun collectModulePreviews(): kotlin.properties.ReadOnlyProperty<Any?, Sequence<CollectedPreview>> =
+                PreviewExport(lazy { emptySequence() })
+            fun collectAllModulePreviews(): kotlin.properties.ReadOnlyProperty<Any?, Sequence<CollectedPreview>> =
+                PreviewExport(lazy { emptySequence() })
             fun distinctPreviewsById(previews: List<CollectedPreview>): List<CollectedPreview> =
                 previews.distinctBy { it.id }
+            fun distinctPreviewsByIdSequence(previews: Sequence<CollectedPreview>): Sequence<CollectedPreview> =
+                previews.distinctBy { it.id }
+            fun lazyPreviewSequence(vararg factories: () -> CollectedPreview): Sequence<CollectedPreview> =
+                Sequence { iterator { for (f in factories) yield(f()) } }
             """,
         ),
     )
