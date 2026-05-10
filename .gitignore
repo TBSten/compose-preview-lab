@@ -17,6 +17,7 @@ Pods/
 *yarn.lock
 .claude/*.local.*
 .claude/scheduled_tasks.lock
+.claude/worktrees/
 integrationTest/.claude/settings.local.json
 integrationTest/web/.claude/settings.local.json
 docs/web/.claude/settings.local.json
