@@ -13,6 +13,28 @@ paths:
 
 - `compat/` および `compat-k*/` 配下 — Kotlin compiler API のバージョン差を吸収する境界レイヤなので、原則 touch しない方針 (CLAUDE.md 参照)
 - **FIR diagnostic (`KtDiagnosticFactory*` + `KtDiagnosticsContainer`)** — Kotlin 標準の診断仕組みに乗せる必要があるため、`Error` interface への移行対象外。renderer chain と factory が密結合のため統合不可。`feature/previewCollection/fir/scopeValidation/CollectScopeErrors.kt` (Ticket 1 後の path) はこのカテゴリ
+- **FIR-side defensive `error(\"...\")`** — FIR 拡張 (FirDeclarationGenerationExtension / FirStatusTransformerExtension) 内の symbol 解決失敗ガードは、 FIR `KtDiagnosticFactory` でも IR `MessageCollector` でもなく `IllegalStateException` を投げるのが Kotlin compiler API の慣例。`Error` interface に乗せると semantic がずれるため対象外 (= 下記「段階的移行中の既知の rule 違反」末尾も同カテゴリ)
+
+## 段階的移行中の既知の rule 違反
+
+Ticket 0 (本 rule 導入時) では、 以下 5 sites を意図的に **未移行のまま** 残している。 後続 ticket での解消を予定。
+
+### Ticket 4 で移行予定 (IR-side WARNING 2 件)
+
+`compiler-plugin/src/main/kotlin/me/tbsten/compose/preview/lab/compiler/ir/HintDiscovery.kt:149/170` の
+`messageCollector.report(CompilerMessageSeverity.WARNING, "[ComposePreviewLab] ...")` 直書き 2 件。
+
+これは Ticket 4 で **`warning/Warnings.kt` に対応する Warning 実装を追加 + `messageCollector.report(warning, location)` extension に置換** する予定。 Ticket 0 では warning framework の skeleton (`ComposePreviewLabCompilerPluginWarning` interface + DSL + reporter + placeholder `Warnings` object) のみ用意し、 実 warning 実装は Ticket 4 に委ねた。
+
+### Ticket 0 のまま維持 (FIR-side defensive `error()` 3 件)
+
+以下 3 sites は FIR 拡張の symbol 解決失敗ガードで、 `Error` interface ではなく Kotlin compiler API 慣例の `IllegalStateException` を保持する:
+
+- `compiler-plugin/src/main/kotlin/me/tbsten/compose/preview/lab/compiler/fir/PreviewHintFirGenerator.kt:297` — FIR 生成拡張が hint 関数 owner class を解決できない場合の defensive guard
+- `compiler-plugin/src/main/kotlin/me/tbsten/compose/preview/lab/compiler/fir/Deprecation.kt:56` — `@Deprecated` 注釈の `level` parameter を resolve できない場合の defensive guard
+- `compiler-plugin/src/main/kotlin/me/tbsten/compose/preview/lab/compiler/utils/fir/AnnotationBuilders.kt:41` — annotation FQN が FIR session symbol provider に存在しない場合の defensive guard
+
+これらは ↑ 「FIR-side defensive `error()`」適用範囲外と整合する (= rule 違反とはみなさない)。 移行予定なし。
 
 ## 要件
 

@@ -3,9 +3,19 @@ package me.tbsten.compose.preview.lab.compiler.warning
 import me.tbsten.compose.preview.lab.compiler.error.ContextEntry
 
 /**
- * `@DslMarker` for the [WarningContextBuilder] DSL. Separate from the error-side
- * `@ErrorContextDsl` annotation so nested receiver scopes (e.g. a warning being built
- * inside an `if`-guard on an error code path) cannot accidentally cross over.
+ * `@DslMarker` for the [WarningContextBuilder] DSL.
+ *
+ * Per the Kotlin DSL marker rules ([scope control](https://kotlinlang.org/docs/type-safe-builders.html#scope-control-dslmarker)),
+ * only receivers tagged with the **same** `@DslMarker` annotation isolate each other,
+ * so this marker isolates nested `WarningContextBuilder` receivers from one another —
+ * not from `ErrorContextBuilder`. Keeping the warning marker separate from
+ * `@ErrorContextDsl` lets each builder evolve its own DSL surface (extension functions /
+ * operators tagged with one marker do not bleed into the other receiver's scope).
+ *
+ * Cross-DSL isolation (preventing an outer `ErrorContextBuilder` from leaking into a
+ * nested warning `contextOf { ... }` block, or vice versa) is **not** provided here —
+ * that would require sharing a single marker across both builders, which is intentionally
+ * avoided because nested cross-DSL composition has no production use case in the plugin.
  */
 @DslMarker
 annotation class WarningContextDsl

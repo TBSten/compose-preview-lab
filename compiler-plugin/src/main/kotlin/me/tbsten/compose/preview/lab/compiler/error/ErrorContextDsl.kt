@@ -3,9 +3,17 @@ package me.tbsten.compose.preview.lab.compiler.error
 /**
  * `@DslMarker` for the [ErrorContextBuilder] DSL.
  *
- * Prevents implicit calls from outer receiver scopes that also happen to be tagged with
- * a different `@DslMarker`, so a future `WarningContextBuilder` invocation inside a
- * `contextOf { ... }` block won't be silently resolved against the wrong builder.
+ * Per the Kotlin DSL marker rules ([scope control](https://kotlinlang.org/docs/type-safe-builders.html#scope-control-dslmarker)),
+ * only receivers tagged with the **same** `@DslMarker` annotation isolate each other.
+ * The point of giving `ErrorContextBuilder` its own marker (rather than reusing a
+ * "ContextDsl" marker shared with `WarningContextBuilder`) is to keep the two builders
+ * independently extensible — future `Error`-specific DSL helpers can be added under
+ * `@ErrorContextDsl` without changing how warning receivers behave, and vice versa.
+ *
+ * Cross-DSL isolation (e.g. preventing an outer `ErrorContextBuilder` receiver from
+ * being implicitly visible inside a nested `contextOf { ... }` on the warning side) is
+ * **not** provided by this marker — that requires a shared marker, which is intentionally
+ * avoided because nested cross-DSL composition has no production use case here.
  */
 @DslMarker
 annotation class ErrorContextDsl

@@ -27,13 +27,19 @@ object Replies {
 
     /**
      * Reply for `UnsupportedCollectAllError` (#3) — the user invoked
-     * `collectAllModulePreviews()` on a Kotlin compiler that lacks the FIR per-declaration
-     * hint generator (= < 2.3.20) or the KLIB IC fix (= < 2.3.21 for KLIB targets).
+     * `collectAllModulePreviews()` on a Kotlin compiler that does not meet the
+     * platform-dependent minimum version: JVM/Android need 2.3.20+ for the FIR
+     * per-declaration hint generator; KLIB targets (JS / Wasm JS / Native)
+     * additionally need 2.3.21+ for the KT-82395 `referenceFunctions` IC-safety fix.
+     *
+     * Wording matches `UnsupportedCollectAllError.description` so the two surfaces
+     * stay in sync.
      */
     const val UpgradeKotlin2321: String =
-        "Either upgrade the Kotlin compiler to 2.3.21 or later, or replace " +
-            "`collectAllModulePreviews()` with `collectModulePreviews()` to collect only " +
-            "this module's @Preview functions."
+        "Either upgrade the Kotlin compiler to the minimum version for your target " +
+            "(2.3.20+ on JVM/Android or 2.3.21+ on KLIB targets such as JS / Wasm JS / Native), " +
+            "or replace `collectAllModulePreviews()` with `collectModulePreviews()` to collect " +
+            "only this module's @Preview functions."
 
     /**
      * Reply for `CollectPreviewsDisabledError` (#4) — the module has

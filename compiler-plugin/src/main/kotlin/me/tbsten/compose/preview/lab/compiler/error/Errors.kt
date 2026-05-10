@@ -20,21 +20,27 @@ import org.jetbrains.kotlin.name.CallableId
 // -----------------------------------------------------------------------------
 
 /**
- * `[ComposePreviewLab/IR,VERSION_GATE] collectAllModulePreviews() requires Kotlin 2.3.21
- * or later`. Fires when a `val previews by collectAllModulePreviews()` site is reached on
- * a Kotlin compiler that lacks the FIR per-declaration hint generator (< 2.3.20) or, for
- * KLIB targets, the KT-82395 fix (< 2.3.21).
+ * `[ComposePreviewLab/IR,PREVIEW_COLLECTION,VERSION_GATE] collectAllModulePreviews()
+ * requires Kotlin 2.3.20+ on JVM/Android or 2.3.21+ on KLIB targets`. Fires when a
+ * `val previews by collectAllModulePreviews()` site is reached on a Kotlin compiler
+ * that does not meet the platform-dependent minimum version: JVM/Android need only
+ * the FIR per-declaration hint generator (= 2.3.20+ via `supportsFirHintGeneration`),
+ * while KLIB targets (JS / Wasm JS / Native) additionally need the KT-82395
+ * `referenceFunctions` IC-safety fix (= 2.3.21+ via `supportsKlibCrossModuleHint`).
  */
 class UnsupportedCollectAllError(private val callName: String) : ComposePreviewLabCompilerPluginError {
-    override val categories: List<Category> = listOf(Category.IR, Category.VERSION_GATE)
+    override val categories: List<Category> =
+        listOf(Category.IR, Category.PREVIEW_COLLECTION, Category.VERSION_GATE)
     override val message: String =
-        "$callName() requires Kotlin 2.3.21 or later for cross-module preview aggregation"
+        "$callName() requires Kotlin 2.3.20+ on JVM/Android or Kotlin 2.3.21+ on KLIB targets " +
+            "(JS/Wasm JS/Native) for cross-module preview aggregation"
     override val description: String =
         "Cross-module aggregation depends on (1) the FIR per-declaration hint generator " +
             "being registered (Kotlin 2.3.20+) for marker / hint declarations to exist on " +
-            "dependency-module classpaths, and (2) on KLIB targets only, the IR `referenceFunctions` " +
-            "walk being IC-safe (Kotlin 2.3.21+ for the KT-82395 fix). Neither gate is met for " +
-            "this compilation."
+            "dependency-module classpaths — required for every target — and (2) on KLIB " +
+            "targets only, the IR `referenceFunctions` walk being IC-safe (Kotlin 2.3.21+ " +
+            "for the KT-82395 fix). JVM / Android consumers do not need (2); KLIB consumers " +
+            "need both. The applicable gate is unmet for this compilation."
     override val context: List<ContextEntry> = contextOf {
         +"call"(callName)
     }
