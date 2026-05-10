@@ -13,6 +13,7 @@ import org.w3c.dom.Element
 @OptIn(ExperimentalJsExport::class, ExperimentalWasmJsInterop::class)
 @JsExport
 val appPreviewList = appPreviews
+    .toList()
     .toJsArray()
 
 @OptIn(ExperimentalJsExport::class, ExperimentalWasmJsInterop::class, ExperimentalComposePreviewLabApi::class)
