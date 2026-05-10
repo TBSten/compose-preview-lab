@@ -7,12 +7,15 @@ import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.DeprecationsProvider
 import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirClassLikeDeclaration
+import org.jetbrains.kotlin.fir.declarations.getBooleanArgument
 import org.jetbrains.kotlin.fir.declarations.getDeprecationsProvider
+import org.jetbrains.kotlin.fir.expressions.FirAnnotation
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.impl.IrAnnotationImpl
 import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
+import org.jetbrains.kotlin.name.Name
 
 /**
  * Compatibility layer for Kotlin 2.4.0-Beta2 and later.
@@ -58,6 +61,14 @@ public class CompatContextImpl : CompatContext by K230CompatContextImpl() {
         is FirClassLikeDeclaration -> declaration.getDeprecationsProvider(session)
         else -> null
     }
+
+    // Kotlin 2.4.0-Beta1 dropped the `session` parameter from the stdlib helper; the
+    // resolved name → expression mapping is now read directly off `FirAnnotation`.
+    override fun getBooleanArgumentCompat(
+        annotation: FirAnnotation,
+        name: Name,
+        @Suppress("UNUSED_PARAMETER") session: FirSession,
+    ): Boolean? = annotation.getBooleanArgument(name)
 
     public class Factory : CompatContext.Factory {
         override val minVersion: String = "2.4.0-Beta2"
