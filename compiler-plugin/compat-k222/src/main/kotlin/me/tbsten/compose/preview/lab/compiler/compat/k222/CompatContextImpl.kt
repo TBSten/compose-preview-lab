@@ -93,7 +93,11 @@ public class CompatContextImpl : CompatContext {
         moduleFragment.transform(transformer as IrElementTransformerVoid, null)
     }
 
-    // FIR top-level declaration generation is unstable on KLIB targets in Kotlin 2.2.x.
+    // Kotlin 2.2.x: `FirDeclarationGenerationExtension.getTopLevelClassIds` /
+    // `getTopLevelCallableIds` were not stable enough to register the per-`@Preview`
+    // hint generator without crashing the FIR session. Both gates are off.
+    override fun supportsFirHintGeneration(): Boolean = false
+
     override fun supportsKlibCrossModuleHint(): Boolean = false
 
     // 2.2.x: same `FirAnnotationContainer.getDeprecationsProvider(session)` extension as 2.1.
