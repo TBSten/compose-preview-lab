@@ -76,18 +76,24 @@ internal object CollectScopeErrors : KtDiagnosticsContainer() {
         // any other name would be a no-op.
         @Suppress("ktlint:standard:property-naming")
         override val MAP: KtDiagnosticFactoryToRendererMap by KtDiagnosticFactoryToRendererMap("ComposePreviewLab") { map ->
+            // The `[ComposePreviewLab/FIR,...]` prefix mirrors the IR-side
+            // `[ComposePreviewLab/IR,...]` shape produced by
+            // `error/ReportError.kt::buildErrorBody`. Keeping the two layers in lockstep
+            // gives users a single, consistent diagnostic format regardless of which phase
+            // surfaces the rejection. The categories here are the FIR-side analogues of
+            // `Category.INVALID_USAGE` + `Category.PREVIEW_COLLECTION`.
             map.put(
                 INVALID_COLLECT_SCOPE_VALUE,
-                "[ComposePreviewLab] \"{0}\" is not a valid collectScope value. Allowed " +
-                    "characters: [A-Za-z0-9_]+ (the value is embedded into the synthetic " +
-                    "previewHint_<scope> function name).",
+                "[ComposePreviewLab/FIR,INVALID_USAGE,PREVIEW_COLLECTION] \"{0}\" is not a valid " +
+                    "collectScope value. Allowed characters: [A-Za-z0-9_]+ (the value is " +
+                    "embedded into the synthetic previewHint_<scope> function name).",
                 CommonRenderers.STRING,
             )
             map.put(
                 NON_LITERAL_COLLECT_SCOPE,
-                "[ComposePreviewLab] {0}(scope = ...) accepts only a compile-time string " +
-                    "constant — an inline string literal or a `const val` reference. " +
-                    "Non-`const` vals, string concatenations, and other expressions are " +
+                "[ComposePreviewLab/FIR,INVALID_USAGE,PREVIEW_COLLECTION] {0}(scope = ...) accepts " +
+                    "only a compile-time string constant — an inline string literal or a `const val` " +
+                    "reference. Non-`const` vals, string concatenations, and other expressions are " +
                     "rejected because the value is embedded into the synthetic " +
                     "previewHint_<scope> function name at compile time.",
                 CommonRenderers.STRING,

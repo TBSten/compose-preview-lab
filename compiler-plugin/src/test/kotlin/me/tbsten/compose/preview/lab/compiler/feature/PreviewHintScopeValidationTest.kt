@@ -13,9 +13,10 @@ import me.tbsten.compose.preview.lab.compiler.isAtLeast
  * Validates that invalid scope inputs are rejected with a clear compile-time error rather
  * than producing silently-broken hint emission or empty buckets.
  *
- * Two layers reject invalid input — both surface the same `[ComposePreviewLab]` prefix in
- * the build output, but they target different shapes of mistake and run at different
- * points in the pipeline:
+ * Two layers reject invalid input — both surface a `[ComposePreviewLab/<phase>,...]`
+ * prefix in the build output (FIR side renders `[ComposePreviewLab/FIR,...]`; IR side
+ * renders `[ComposePreviewLab/IR,...]`), but they target different shapes of mistake and
+ * run at different points in the pipeline:
  *
  * - **FIR `CollectScopeAnnotationChecker` / `CollectScopeCallChecker`** — runs at the
  *   FIR analysis (`CHECKERS`) phase, so errors surface in the IDE as red squigglies and
@@ -58,7 +59,7 @@ class PreviewHintScopeValidationTest :
                     )
                     assertSoftly {
                         result.exitCode shouldBe KotlinCompilation.ExitCode.COMPILATION_ERROR
-                        result.messages shouldContain "[ComposePreviewLab]"
+                        result.messages shouldContain "[ComposePreviewLab/"
                         result.messages shouldContain "has space"
                         result.messages shouldContain "[A-Za-z0-9_]+"
                     }
@@ -118,7 +119,7 @@ class PreviewHintScopeValidationTest :
                 )
                 assertSoftly {
                     result.exitCode shouldBe KotlinCompilation.ExitCode.COMPILATION_ERROR
-                    result.messages shouldContain "[ComposePreviewLab]"
+                    result.messages shouldContain "[ComposePreviewLab/"
                     // FIR `CollectScopeCallChecker` flags the offending literal directly,
                     // so the rendered message names the value plus the regex rule.
                     result.messages shouldContain "has space"
@@ -164,7 +165,7 @@ class PreviewHintScopeValidationTest :
                 )
                 assertSoftly {
                     result.exitCode shouldBe KotlinCompilation.ExitCode.COMPILATION_ERROR
-                    result.messages shouldContain "[ComposePreviewLab]"
+                    result.messages shouldContain "[ComposePreviewLab/"
                     result.messages shouldContain "inline string literal"
                 }
             }
