@@ -34,9 +34,9 @@ final object app/FeaturedFileList : kotlin.collections/Map<kotlin/String, kotlin
 }
 
 final val app/appModulePreviews // app/appModulePreviews|{}appModulePreviews[0]
-    final fun <get-appModulePreviews>(): kotlin.collections/List<me.tbsten.compose.preview.lab/CollectedPreview> // app/appModulePreviews.<get-appModulePreviews>|<get-appModulePreviews>(){}[0]
+    final fun <get-appModulePreviews>(): kotlin.sequences/Sequence<me.tbsten.compose.preview.lab/CollectedPreview> // app/appModulePreviews.<get-appModulePreviews>|<get-appModulePreviews>(){}[0]
 final val app/appPreviews // app/appPreviews|{}appPreviews[0]
-    final fun <get-appPreviews>(): kotlin.collections/List<me.tbsten.compose.preview.lab/CollectedPreview> // app/appPreviews.<get-appPreviews>|<get-appPreviews>(){}[0]
+    final fun <get-appPreviews>(): kotlin.sequences/Sequence<me.tbsten.compose.preview.lab/CollectedPreview> // app/appPreviews.<get-appPreviews>|<get-appPreviews>(){}[0]
 final val app/app_FeaturedFileList$stableprop // app/app_FeaturedFileList$stableprop|#static{}app_FeaturedFileList$stableprop[0]
 final val compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_array$stableprop // compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_array$stableprop|#static{}compose_preview_lab_integration_test_app_generated_resources_Res_array$stableprop[0]
 final val compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_drawable$stableprop // compose_preview_lab_integration_test.app.generated.resources/compose_preview_lab_integration_test_app_generated_resources_Res_drawable$stableprop|#static{}compose_preview_lab_integration_test_app_generated_resources_Res_drawable$stableprop[0]
