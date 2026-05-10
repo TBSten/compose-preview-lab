@@ -1,6 +1,7 @@
 package me.tbsten.compose.preview.lab.compiler.fir
 
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
+import me.tbsten.compose.preview.lab.compiler.utils.classIdOf
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirClassLikeDeclaration
@@ -12,18 +13,10 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
 import org.jetbrains.kotlin.fir.toFirResolvedTypeRef
 import org.jetbrains.kotlin.fir.types.constructType
 import org.jetbrains.kotlin.name.ClassId
-import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.name.Name
 
-private val InternalApiClassId = ClassId(
-    FqName("me.tbsten.compose.preview.lab"),
-    Name.identifier("InternalComposePreviewLabApi"),
-)
+private val InternalApiClassId = classIdOf("me.tbsten.compose.preview.lab", "InternalComposePreviewLabApi")
 
-private val SyntheticPreviewHintClassId = ClassId(
-    FqName("me.tbsten.compose.preview.lab"),
-    Name.identifier("SyntheticPreviewHint"),
-)
+private val SyntheticPreviewHintClassId = classIdOf("me.tbsten.compose.preview.lab", "SyntheticPreviewHint")
 
 /**
  * Builds a no-arg FIR annotation for the given `ClassId`.

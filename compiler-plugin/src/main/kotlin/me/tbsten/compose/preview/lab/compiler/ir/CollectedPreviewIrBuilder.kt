@@ -25,9 +25,6 @@ import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.makeNullable
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 import org.jetbrains.kotlin.ir.util.constructors
-import org.jetbrains.kotlin.name.ClassId
-import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.SpecialNames
 
 /**
@@ -153,10 +150,7 @@ internal class CollectedPreviewIrBuilder(
     }
 
     private fun addComposableAnnotationIfAvailable(func: IrSimpleFunction) {
-        val composableClassId = ClassId(
-            FqName("androidx.compose.runtime"),
-            Name.identifier("Composable"),
-        )
+        val composableClassId = classIdOf("androidx.compose.runtime", "Composable")
         val composableClass = pluginContext.referenceClass(composableClassId) ?: return
         val ctor = composableClass.constructors.firstOrNull() ?: return
         func.addConstructorCallAnnotation(
