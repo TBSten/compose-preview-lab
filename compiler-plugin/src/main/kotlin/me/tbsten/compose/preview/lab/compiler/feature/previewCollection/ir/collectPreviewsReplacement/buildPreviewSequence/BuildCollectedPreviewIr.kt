@@ -1,6 +1,6 @@
 @file:OptIn(UnsafeDuringIrConstructionAPI::class)
 
-package me.tbsten.compose.preview.lab.compiler.ir
+package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.buildPreviewSequence
 
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
@@ -31,12 +31,28 @@ import org.jetbrains.kotlin.ir.util.constructors
 import org.jetbrains.kotlin.name.SpecialNames
 
 /**
- * Builds the IR for individual [CollectedPreview] instances.
+ * Builds the IR for an individual `CollectedPreview` constructor call from a
+ * [PreviewFunctionInfo]. The `@Composable` content lambda is synthesized here so the
+ * preview function is invoked exactly when the consumer dereferences the entry.
+ *
+ * **Sample call → result**:
+ * ```kotlin
+ * val ir = BuildCollectedPreviewIr(pluginContext, compatContext)
+ *     .invoke(previewInfo, builder, parentDeclaration)
+ * // result IR ≡
+ * //   CollectedPreview(
+ * //       id = "com.example.MyButton",
+ * //       displayName = "com.example.MyButton",
+ * //       filePath = ..., startLineNumber = ..., endLineNumber = ...,
+ * //       code = "{ ... }", kdoc = null,
+ * //   ) { MyButton() }
+ * ```
+ *
+ * Class follows the `Build<...>Ir { operator fun invoke(...) }` convention used across
+ * `buildPreviewSequence/`. Constructed once per IR transformer; reuses lazy lookups on
+ * the runtime `CollectedPreview` class.
  */
-internal class CollectedPreviewIrBuilder(
-    private val pluginContext: IrPluginContext,
-    private val compatContext: CompatContext,
-) {
+internal class BuildCollectedPreviewIr(private val pluginContext: IrPluginContext, private val compatContext: CompatContext,) {
     val collectedPreviewClass by lazy {
         pluginContext.referenceClass(
             classIdOf("me.tbsten.compose.preview.lab", "CollectedPreview"),
@@ -67,7 +83,7 @@ internal class CollectedPreviewIrBuilder(
      * Nullable fields (`filePath`, `startLineNumber`, `endLineNumber`, `code`, `kdoc`) are
      * emitted as `IrConst(null)` when the corresponding [PreviewFunctionInfo] field is null.
      */
-    fun buildCollectedPreviewCall(
+    operator fun invoke(
         preview: PreviewFunctionInfo,
         builder: DeclarationIrBuilder,
         parent: IrDeclarationParent,

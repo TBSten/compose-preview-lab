@@ -1,6 +1,6 @@
 @file:OptIn(UnsafeDuringIrConstructionAPI::class)
 
-package me.tbsten.compose.preview.lab.compiler.ir
+package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.buildPreviewSequence
 
 import java.io.File
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction

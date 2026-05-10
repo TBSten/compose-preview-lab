@@ -10,6 +10,10 @@ import me.tbsten.compose.preview.lab.compiler.compat.hasAnnotationCompat
 import me.tbsten.compose.preview.lab.compiler.error.HintHashCollisionError
 import me.tbsten.compose.preview.lab.compiler.error.report
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewFunctionInfo
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.BuildPreviewByHashMap
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.buildPreviewSequence.extractSourceText
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.FillPreviewHintIrBody
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.ReplaceCollectPreviewsFunBody
 import me.tbsten.compose.preview.lab.compiler.utils.ir.compilerMessageLocation
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -49,7 +53,7 @@ class PreviewLabIrGenerationExtension(
         val previews = collectPreviews(moduleFragment)
         val compatContext = CompatContext.load()
         val bodyFiller =
-            PreviewLabIrBodyFiller(pluginContext, config, moduleFragment, previews, compatContext, messageCollector)
+            ReplaceCollectPreviewsFunBody(pluginContext, config, moduleFragment, previews, compatContext, messageCollector)
         compatContext.transformModuleFragment(moduleFragment, bodyFiller)
 
         // Body filler for the per-declaration hints. Fills the body of every
@@ -72,7 +76,7 @@ class PreviewLabIrGenerationExtension(
         // discovery is additionally gated on `supportsKlibCrossModuleHint` (KT-82395
         // fix) inside `HintDiscovery` / `PreviewLabIrBodyFiller`.
         if (compatContext.supportsFirHintGeneration()) {
-            val previewsByHash = buildPreviewByHashMap(previews) { hash, existing, conflicting ->
+            val previewsByHash = BuildPreviewByHashMap().invoke(previews) { hash, existing, conflicting ->
                 val existingSignature = existing.function.canonicalSignatureForReport()
                 val conflictingSignature = conflicting.function.canonicalSignatureForReport()
                 // Report at the *new* (conflicting) function's location so the build log points at
@@ -85,7 +89,7 @@ class PreviewLabIrGenerationExtension(
             }
             compatContext.transformModuleFragment(
                 moduleFragment,
-                PreviewHintIrBodyFiller(pluginContext, compatContext, previewsByHash),
+                FillPreviewHintIrBody(pluginContext, compatContext, previewsByHash),
             )
         }
         // On Kotlin <2.3.20 the FIR hint generator is not registered (the FIR top-level

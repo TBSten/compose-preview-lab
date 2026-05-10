@@ -1,9 +1,10 @@
 @file:OptIn(UnsafeDuringIrConstructionAPI::class)
 
-package me.tbsten.compose.preview.lab.compiler.ir
+package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement
 
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
+import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.error.CollectPreviewsDisabledError
 import me.tbsten.compose.preview.lab.compiler.error.InvalidScopeIrError
@@ -12,9 +13,12 @@ import me.tbsten.compose.preview.lab.compiler.error.PropertyHasNoGetterError
 import me.tbsten.compose.preview.lab.compiler.error.UnsupportedCollectAllError
 import me.tbsten.compose.preview.lab.compiler.error.orThrow
 import me.tbsten.compose.preview.lab.compiler.error.report
-import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
 import me.tbsten.compose.preview.lab.compiler.error.throwAsException
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewFunctionInfo
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.buildPreviewSequence.BuildConcatenatedPreviewSequencesIr
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.buildPreviewSequence.BuildLazyWrapperIr
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.buildPreviewSequence.BuildPreviewExportIr
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.buildPreviewSequence.BuildPreviewSequenceIr
 import me.tbsten.compose.preview.lab.compiler.utils.callableIdOf
 import me.tbsten.compose.preview.lab.compiler.utils.ir.compilerMessageLocation
 import me.tbsten.compose.preview.lab.compiler.utils.ir.requiresKlibIcSafetyForCrossModuleHint
@@ -30,17 +34,40 @@ import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
-import org.jetbrains.kotlin.name.FqName
 
 /**
- * Transforms the IR tree to replace preview-collection property initializers
- * with the actual list of collected `@Preview` functions.
+ * IR transformer that replaces preview-collection property initializers with the actual
+ * list of collected `@Preview` functions.
  *
  * Handles two patterns:
  * 1. `val x by collectModulePreviews()` — this module's previews only
  * 2. `val x by collectAllModulePreviews()` — this module + dependency modules
+ *
+ * The transform runs once per `IrProperty` whose backing-field initializer points at the
+ * sentinel `collect[All]ModulePreviews()` call. Other IR is untouched.
+ *
+ * **Before** (`collectModulePreviews()`):
+ * ```kotlin
+ * val myPreviews by collectModulePreviews()
+ * // delegate field initializer = collectModulePreviews() sentinel call
+ * ```
+ *
+ * **After** (semantically equivalent):
+ * ```kotlin
+ * val myPreviews by PreviewExport(
+ *     lazy {
+ *         lazyPreviewSequence(
+ *             { CollectedPreview("com.example.MyButton", ..., content = { MyButton() }) },
+ *         )
+ *     }
+ * )
+ * ```
+ *
+ * `collectAllModulePreviews()` additionally concatenates dependency hints; see
+ * `BuildConcatenatedPreviewSequencesIr`. Class is named after the action it performs
+ * (`Replace<...>FunBody`) per the project class-naming convention.
  */
-internal class PreviewLabIrBodyFiller(
+internal class ReplaceCollectPreviewsFunBody(
     private val pluginContext: IrPluginContext,
     private val config: PluginConfig,
     private val moduleFragment: org.jetbrains.kotlin.ir.declarations.IrModuleFragment,
@@ -49,10 +76,13 @@ internal class PreviewLabIrBodyFiller(
     private val messageCollector: MessageCollector = MessageCollector.NONE,
 ) : IrElementTransformerVoid() {
 
-    private val collectModulePreviewsFq = FqName("me.tbsten.compose.preview.lab.collectModulePreviews")
-    private val collectAllModulePreviewsFq = FqName("me.tbsten.compose.preview.lab.collectAllModulePreviews")
+    private val collectModulePreviewsFq = PreviewLabConstants.COLLECT_MODULE_PREVIEWS_FQN
+    private val collectAllModulePreviewsFq = PreviewLabConstants.COLLECT_ALL_MODULE_PREVIEWS_FQN
 
-    private val irBuilder = PreviewListIrBuilder(pluginContext, previews, config, compatContext)
+    private val sequenceBuilder = BuildPreviewSequenceIr(pluginContext, previews, config, compatContext)
+    private val concatenatedBuilder = BuildConcatenatedPreviewSequencesIr(sequenceBuilder.context, previews)
+    private val lazyWrapperBuilder = BuildLazyWrapperIr(sequenceBuilder.context)
+    private val previewExportBuilder = BuildPreviewExportIr(sequenceBuilder.context)
 
     /**
      * Visits each property declaration and replaces the initializer if it matches
@@ -222,12 +252,12 @@ internal class PreviewLabIrBodyFiller(
             .orThrow { PropertyHasNoGetterError(callableIdOf("me.tbsten.compose.preview.lab", callName)) }
 
         val sequenceExpr = if (isAll) {
-            irBuilder.buildConcatenatedPreviewsExpr(builder, lambdaParent, scope)
+            concatenatedBuilder(builder, lambdaParent, scope)
         } else {
-            irBuilder.buildPreviewsSequenceExpr(builder, lambdaParent, scope)
+            sequenceBuilder(builder, lambdaParent, scope)
         }
-        val lazyExpr = irBuilder.buildLazyCall(builder, sequenceExpr, lambdaParent)
-        val previewExportExpr = irBuilder.buildPreviewExportCall(builder, lazyExpr)
+        val lazyExpr = lazyWrapperBuilder(builder, sequenceExpr, lambdaParent)
+        val previewExportExpr = previewExportBuilder(builder, lazyExpr)
 
         delegateField.initializer = pluginContext.irFactory.createExpressionBody(
             startOffset = property.startOffset,

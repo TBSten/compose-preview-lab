@@ -1,6 +1,6 @@
 @file:OptIn(UnsafeDuringIrConstructionAPI::class)
 
-package me.tbsten.compose.preview.lab.compiler.ir
+package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement
 
 import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
