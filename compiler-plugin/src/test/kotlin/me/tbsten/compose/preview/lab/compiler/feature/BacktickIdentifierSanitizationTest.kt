@@ -8,7 +8,7 @@ import io.kotest.matchers.collections.shouldExist
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldMatch
 import me.tbsten.compose.preview.lab.compiler.CompilerPluginTestBase
-import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewHintMarkerPrefix
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.buildMarkerShortName
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.buildPreviewHintCanonicalKey
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.computeHintHash
@@ -32,7 +32,7 @@ class BacktickIdentifierSanitizationTest :
         val supports = testKotlinVersion.isAtLeast(2, 3, 20)
 
         test("buildMarkerShortName replaces every non-identifier character with '_'") {
-            val identifierLegal = Regex("^${PreviewLabConstants.PreviewHintMarkerPrefix}[A-Za-z0-9_]+\$")
+            val identifierLegal = Regex("^$PreviewHintMarkerPrefix[A-Za-z0-9_]+\$")
 
             assertSoftly {
                 // Plain identifier: dots become underscores.

@@ -1,7 +1,5 @@
 package me.tbsten.compose.preview.lab.compiler.feature.previewCollection
 
-import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
-
 // Single source of truth for the marker interface short name
 // (`PreviewHintMarker_<sanitized_fqn>_<hash>`).
 //
@@ -14,6 +12,18 @@ import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
 //   `@SyntheticPreviewHint` annotation).
 //
 // All three go through this file so the format never drifts.
+
+/**
+ * Prefix of the per-`@Preview` marker interface name. Full name is
+ * `PreviewHintMarker_<sanitized_fqn>_<hash>` where `<sanitized_fqn>` is the source
+ * FQN with `.` replaced by `_` (debugging aid) and `<hash>` is the canonical-key
+ * sha256 ([HashLength] chars, used for overload disambiguation and as the
+ * cross-FIR/IR matching key).
+ */
+internal const val PreviewHintMarkerPrefix: String = "PreviewHintMarker_"
+
+/** Length of the hash suffix on marker / hint declarations (matches `computeHintHash`). */
+internal const val HashLength: Int = 8
 
 /** Characters that are not legal in a non-backticked Kotlin identifier. */
 private val NonIdentifierCharRegex = Regex("[^A-Za-z0-9_]")
@@ -40,7 +50,7 @@ private val NonIdentifierCharRegex = Regex("[^A-Za-z0-9_]")
  */
 internal fun buildMarkerShortName(sourceFqn: String, hash: String): String {
     val sanitizedFqn = sourceFqn.replace(NonIdentifierCharRegex, "_")
-    return "${PreviewLabConstants.PreviewHintMarkerPrefix}${sanitizedFqn}_$hash"
+    return "$PreviewHintMarkerPrefix${sanitizedFqn}_$hash"
 }
 
 /**
@@ -52,18 +62,18 @@ internal fun buildMarkerShortName(sourceFqn: String, hash: String): String {
  * - `isMarkerShortName("PreviewHintMarker_uilib_MyButton_a3k9z2x1")` → `true`
  * - `isMarkerShortName("MyOwnInterface")` → `false`
  */
-internal fun isMarkerShortName(shortName: String): Boolean = shortName.startsWith(PreviewLabConstants.PreviewHintMarkerPrefix)
+internal fun isMarkerShortName(shortName: String): Boolean = shortName.startsWith(PreviewHintMarkerPrefix)
 
 /**
  * Recovers the hash suffix from a marker class short name.
  *
  * The marker name format is `PreviewHintMarker_<sanitized_fqn>_<hash>`. The hash is a
- * fixed-length ([PreviewLabConstants.HashLength]) base-36 string, so a tail slice
- * recovers it without parsing the sanitized portion (which is lossy).
+ * fixed-length ([HashLength]) base-36 string, so a tail slice recovers it without
+ * parsing the sanitized portion (which is lossy).
  *
  * **Sample**: `extractHashFromMarkerShortName("PreviewHintMarker_uilib_MyButton_a3k9z2x1")` → `"a3k9z2x1"`
  *
  * Caller is responsible for first ensuring [isMarkerShortName] holds — passing a
  * non-marker name returns its trailing 8 characters silently.
  */
-internal fun extractHashFromMarkerShortName(shortName: String): String = shortName.takeLast(PreviewLabConstants.HashLength)
+internal fun extractHashFromMarkerShortName(shortName: String): String = shortName.takeLast(HashLength)

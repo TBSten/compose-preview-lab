@@ -16,8 +16,9 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
  * Registered extensions:
  * - [PreviewLabFirBuiltIns] (`FirExtensionSessionComponent`) — session-bound
  *   [PluginConfig] wrapper, accessible from any FIR extension via
- *   `session.previewLabFirBuiltIns`. Pure-data identifiers live on
- *   [me.tbsten.compose.preview.lab.compiler.PreviewLabConstants] instead.
+ *   `session.previewLabFirBuiltIns`. Pure-data identifiers live as top-level
+ *   `val`s / `const`s inside `feature/previewCollection/` (e.g. `HINT_PACKAGE`,
+ *   `COLLECTED_PREVIEW_CLASS_ID`, `PreviewHintFunctionPrefix`).
  * - [HintEntriesProvider] (`FirExtensionSessionComponent`) — session-scoped lazy
  *   cache of the per-`@Preview` hint / marker metadata list, shared by the hint
  *   and marker generators.

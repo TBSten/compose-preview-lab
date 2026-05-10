@@ -1,6 +1,5 @@
 package me.tbsten.compose.preview.lab.compiler.feature.previewCollection
 
-import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
 import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.Name
 
@@ -20,16 +19,23 @@ import org.jetbrains.kotlin.name.Name
 // Both sides go through the helpers in this file so the name format cannot drift.
 
 /**
+ * Prefix of every per-declaration hint function. Full name is `previewHint_<scope>`,
+ * where `<scope>` is the value of `@ComposePreviewLabOption(collectScopes = ...)` (or
+ * `"default"` when not set). Encoding the scope into the function name lets the IR
+ * side filter hints purely by `referenceFunctions(CallableId(HINT_PACKAGE, name))` —
+ * no per-hint inspection is needed.
+ */
+internal const val PreviewHintFunctionPrefix: String = "previewHint_"
+
+/**
  * Builds the hint function callable id for [scope].
  *
  * **Sample call**: `hintFunctionCallableId("design")`
  *
  * **Result**: `CallableId(FqName("me.tbsten.compose.preview.lab.hints"), Name.identifier("previewHint_design"))`
- *
- * Convenience wrapper around [PreviewLabConstants.hintFunctionCallableId] kept close to the
- * other naming helpers in this feature directory; both paths return identical values.
  */
-internal fun hintFunctionCallableId(scope: String): CallableId = PreviewLabConstants.hintFunctionCallableId(scope)
+internal fun hintFunctionCallableId(scope: String): CallableId =
+    CallableId(HINT_PACKAGE, Name.identifier(PreviewHintFunctionPrefix + scope))
 
 /**
  * Whether a candidate top-level callable name matches the synthesized hint function
@@ -40,7 +46,7 @@ internal fun hintFunctionCallableId(scope: String): CallableId = PreviewLabConst
  * - `isHintFunctionName(Name.identifier("renderPreview"))` → `false`
  *
  * The check is structural only — it does not validate that the suffix is a legal scope
- * identifier. Pair with [PreviewLabConstants.SCOPE_VALIDATION_REGEX] when a strict match
- * is required (e.g. discovery-side filtering of arbitrary classpath callables).
+ * identifier. Pair with `SCOPE_VALIDATION_REGEX` when a strict match is required (e.g.
+ * discovery-side filtering of arbitrary classpath callables).
  */
-internal fun isHintFunctionName(name: Name): Boolean = name.asString().startsWith(PreviewLabConstants.PreviewHintFunctionPrefix)
+internal fun isHintFunctionName(name: Name): Boolean = name.asString().startsWith(PreviewHintFunctionPrefix)

@@ -1,7 +1,8 @@
 package me.tbsten.compose.preview.lab.compiler.feature.previewCollection
 
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.scopeValidation.SCOPE_VALIDATION_REGEX
+
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
 import me.tbsten.compose.preview.lab.compiler.compat.getBooleanArgumentCompat
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
@@ -59,7 +60,7 @@ internal data class HintEntry(
  * ```kotlin
  * override fun getTopLevelClassIds(): Set<ClassId> =
  *     session.hintEntriesProvider.hintEntries.mapTo(mutableSetOf()) { entry ->
- *         ClassId(PreviewLabConstants.HINT_PACKAGE, Name.identifier(entry.markerShortName))
+ *         ClassId(HINT_PACKAGE, Name.identifier(entry.markerShortName))
  *     }
  * ```
  */
@@ -128,7 +129,7 @@ internal class HintEntriesProvider(session: FirSession) : FirExtensionSessionCom
         symbol.lazyResolveToPhase(FirResolvePhase.ANNOTATION_ARGUMENTS)
         val moduleDefault = session.previewLabFirBuiltIns.config.defaultCollectScope
         val optionAnnotation = symbol.resolvedAnnotationsWithArguments
-            .firstOrNull { it.toAnnotationClassIdSafe(session) == PreviewLabConstants.COMPOSE_PREVIEW_LAB_OPTION_CLASS_ID }
+            .firstOrNull { it.toAnnotationClassIdSafe(session) == COMPOSE_PREVIEW_LAB_OPTION_CLASS_ID }
             ?: return listOf(moduleDefault)
 
         val rawScopes = optionAnnotation.readCollectScopesFromRawArguments()
@@ -137,7 +138,7 @@ internal class HintEntriesProvider(session: FirSession) : FirExtensionSessionCom
 
         val resolved = rawScopes
             .map { if (it == ComposePreviewLabOption.DefaultCollectScope) moduleDefault else it }
-            .filter { PreviewLabConstants.SCOPE_VALIDATION_REGEX.matches(it) }
+            .filter { SCOPE_VALIDATION_REGEX.matches(it) }
             .distinct()
         return resolved.ifEmpty { null }
     }
@@ -156,7 +157,7 @@ internal class HintEntriesProvider(session: FirSession) : FirExtensionSessionCom
                 else -> null to argument
             }
             val isCollectScopeArgument = when {
-                argumentName == PreviewLabConstants.COLLECT_SCOPE_NAME -> true
+                argumentName == COLLECT_SCOPE_NAME -> true
                 argumentName != null -> false
                 else -> argumentIndex == CollectScopesParameterIndex
             }
@@ -191,10 +192,10 @@ internal class HintEntriesProvider(session: FirSession) : FirExtensionSessionCom
     private fun FirNamedFunctionSymbol.isIgnoredByComposePreviewLabOption(): Boolean {
         lazyResolveToPhase(FirResolvePhase.ANNOTATION_ARGUMENTS)
         val optionAnnotation = resolvedAnnotationsWithArguments
-            .firstOrNull { it.toAnnotationClassIdSafe(session) == PreviewLabConstants.COMPOSE_PREVIEW_LAB_OPTION_CLASS_ID }
+            .firstOrNull { it.toAnnotationClassIdSafe(session) == COMPOSE_PREVIEW_LAB_OPTION_CLASS_ID }
             ?: return false
 
-        optionAnnotation.getBooleanArgumentCompat(PreviewLabConstants.IGNORE_NAME, session)?.let { return it }
+        optionAnnotation.getBooleanArgumentCompat(IGNORE_NAME, session)?.let { return it }
 
         val annotationCall = optionAnnotation as? FirAnnotationCall ?: return false
         for ((argumentIndex, argument) in annotationCall.argumentList.arguments.withIndex()) {
@@ -203,7 +204,7 @@ internal class HintEntriesProvider(session: FirSession) : FirExtensionSessionCom
                 else -> null to argument
             }
             val isIgnoreArgument = when {
-                argumentName == PreviewLabConstants.IGNORE_NAME -> true
+                argumentName == IGNORE_NAME -> true
                 argumentName != null -> false
                 else -> argumentIndex == IgnoreParameterIndex
             }

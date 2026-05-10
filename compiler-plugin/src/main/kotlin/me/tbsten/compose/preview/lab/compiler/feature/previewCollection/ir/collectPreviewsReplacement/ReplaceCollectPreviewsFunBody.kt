@@ -2,9 +2,10 @@
 
 package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement
 
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.scopeValidation.SCOPE_VALIDATION_REGEX
+
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
-import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.error.CollectPreviewsDisabledError
 import me.tbsten.compose.preview.lab.compiler.error.InvalidScopeIrError
@@ -13,7 +14,6 @@ import me.tbsten.compose.preview.lab.compiler.error.PropertyHasNoGetterError
 import me.tbsten.compose.preview.lab.compiler.error.UnsupportedCollectAllError
 import me.tbsten.compose.preview.lab.compiler.error.orThrow
 import me.tbsten.compose.preview.lab.compiler.error.report
-import me.tbsten.compose.preview.lab.compiler.error.throwAsException
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewFunctionInfo
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.buildPreviewSequence.BuildConcatenatedPreviewSequencesIr
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.buildPreviewSequence.BuildLazyWrapperIr
@@ -76,8 +76,8 @@ internal class ReplaceCollectPreviewsFunBody(
     private val messageCollector: MessageCollector = MessageCollector.NONE,
 ) : IrElementTransformerVoid() {
 
-    private val collectModulePreviewsFq = PreviewLabConstants.COLLECT_MODULE_PREVIEWS_FQN
-    private val collectAllModulePreviewsFq = PreviewLabConstants.COLLECT_ALL_MODULE_PREVIEWS_FQN
+    private val collectModulePreviewsFq = COLLECT_MODULE_PREVIEWS_FQN
+    private val collectAllModulePreviewsFq = COLLECT_ALL_MODULE_PREVIEWS_FQN
 
     private val sequenceBuilder = BuildPreviewSequenceIr(pluginContext, previews, config, compatContext)
     private val concatenatedBuilder = BuildConcatenatedPreviewSequencesIr(sequenceBuilder.context, previews)
@@ -217,7 +217,7 @@ internal class ReplaceCollectPreviewsFunBody(
             is ScopeArgResult.Default -> config.defaultCollectScope
             is ScopeArgResult.Literal -> {
                 val rawValue = resolution.value
-                if (!PreviewLabConstants.SCOPE_VALIDATION_REGEX.matches(rawValue)) {
+                if (!SCOPE_VALIDATION_REGEX.matches(rawValue)) {
                     messageCollector.report(
                         InvalidScopeIrError(callName, rawValue),
                         property.compilerMessageLocation(),

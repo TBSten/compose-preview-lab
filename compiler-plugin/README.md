@@ -19,7 +19,9 @@ compiler-plugin/
 │   ├── ComposePreviewLabCompilerPluginRegistrar.kt   # 最上位エントリ点 (Kotlin compiler plugin API)
 │   ├── ComposePreviewLabCommandLineProcessor.kt      # CLI オプション → Config
 │   ├── PluginConfig.kt                                # Config データクラス
-│   ├── PreviewLabConstants.kt                         # FQN / ClassId / CallableId / Name / Regex の SSoT
+│   │                                                  # (FQN / ClassId / CallableId / Name / Regex 等の SSoT は
+│   │                                                  #  各 logic の近く `feature/previewCollection/` 配下に
+│   │                                                  #  top-level `val` / `const val` として配置)
 │   │
 │   ├── error/                                         # 構造化 Error interface (ticket-0)
 │   │   ├── ComposePreviewLabCompilerPluginError.kt
@@ -43,11 +45,14 @@ compiler-plugin/
 │   │
 │   ├── feature/
 │   │   ├── previewCollection/                         # feature: @Preview 収集
+│   │   │   ├── HintPackage.kt                         # HINT_PACKAGE (`me.tbsten.compose.preview.lab.hints`)
 │   │   │   ├── HintCanonicalKey.kt                    # computeHintHash / buildPreviewHintCanonicalKey
-│   │   │   ├── HintFunName.kt                         # hintFunctionCallableId / isHintFunctionName
-│   │   │   ├── MarkerInterfaceName.kt                 # buildMarkerShortName / extractHashFromMarkerShortName
+│   │   │   ├── HintFunName.kt                         # PreviewHintFunctionPrefix / hintFunctionCallableId / isHintFunctionName
+│   │   │   ├── MarkerInterfaceName.kt                 # PreviewHintMarkerPrefix / HashLength / buildMarkerShortName / extractHashFromMarkerShortName
 │   │   │   ├── ParameterTypeFqns.kt                   # FIR / IR 共通の format spec
-│   │   │   ├── PreviewAnnotationPredicates.kt         # @Preview / @ComposePreviewLabOption 用 FIR LookupPredicate
+│   │   │   ├── PreviewAnnotationPredicates.kt         # @Preview FIR LookupPredicate (CMP / Android FQN)
+│   │   │   ├── ComposePreviewLabOptionRefs.kt         # @ComposePreviewLabOption FQN / ClassId / 引数 Name
+│   │   │   ├── CollectedPreviewClassId.kt             # COLLECTED_PREVIEW_CLASS_ID (hint 関数の戻り値 / IR ctor target)
 │   │   │   ├── PreviewFunctionInfo.kt                 # 収集メタデータ (data class)
 │   │   │   ├── PreviewKeys.kt                         # GeneratedDeclarationKey (PreviewLabHint / PreviewLabHintMarkerInterface)
 │   │   │   ├── PreviewLabFirBuiltIns.kt               # FirExtensionSessionComponent (Config wrapper)
@@ -63,10 +68,12 @@ compiler-plugin/
 │   │   │   │       ├── CheckCollectScopeAnnotation.kt
 │   │   │   │       ├── CheckCollectScopeCall.kt
 │   │   │   │       ├── CollectScopeErrors.kt          # KtDiagnosticFactory*
-│   │   │   │       └── PreviewLabFirCheckersExtension.kt
+│   │   │   │       ├── PreviewLabFirCheckersExtension.kt
+│   │   │   │       └── ScopeValidationRegex.kt        # SCOPE_VALIDATION_REGEX (FIR Checker + IR const-fold 双方が参照)
 │   │   │   │
 │   │   │   └── ir/
 │   │   │       └── collectPreviewsReplacement/        # logic: collect[All]ModulePreviews 呼び出しの IR 置換
+│   │   │           ├── CollectPreviewsCallFqns.kt         # COLLECT_MODULE_PREVIEWS_FQN / COLLECT_ALL_MODULE_PREVIEWS_FQN
 │   │   │           ├── ReplaceCollectPreviewsFunBody.kt   # IrElementTransformerVoid (`visitProperty` → 置換)
 │   │   │           ├── DiscoverHints.kt                   # cross-module hint 発見 (referenceFunctions)
 │   │   │           ├── FillPreviewHintIrBody.kt           # previewHint_<scope> stub body 埋め込み

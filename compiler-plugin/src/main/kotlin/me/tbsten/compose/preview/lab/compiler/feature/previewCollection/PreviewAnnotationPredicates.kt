@@ -1,7 +1,15 @@
 package me.tbsten.compose.preview.lab.compiler.feature.previewCollection
 
-import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
 import org.jetbrains.kotlin.fir.extensions.predicate.LookupPredicate
+import org.jetbrains.kotlin.name.FqName
+
+/** CMP `@Preview` annotation FQN (used for predicate registration). */
+internal val CMP_PREVIEW_ANNOTATION_FQN: FqName =
+    FqName("org.jetbrains.compose.ui.tooling.preview.Preview")
+
+/** Android `@Preview` annotation FQN (used for predicate registration). */
+internal val ANDROID_PREVIEW_ANNOTATION_FQN: FqName =
+    FqName("androidx.compose.ui.tooling.preview.Preview")
 
 /**
  * FIR `LookupPredicate`s shared by the `previewCollection` feature.
@@ -31,10 +39,7 @@ internal object PreviewAnnotationPredicates {
      * `@Preview` annotation FQNs.
      */
     val previewPredicate: LookupPredicate = LookupPredicate.create {
-        annotated(
-            PreviewLabConstants.CMP_PREVIEW_ANNOTATION_FQN,
-            PreviewLabConstants.ANDROID_PREVIEW_ANNOTATION_FQN,
-        )
+        annotated(CMP_PREVIEW_ANNOTATION_FQN, ANDROID_PREVIEW_ANNOTATION_FQN)
     }
 
     /**
@@ -50,6 +55,6 @@ internal object PreviewAnnotationPredicates {
      * see the resolved arguments reliably.
      */
     val optionPredicate: LookupPredicate = LookupPredicate.create {
-        annotated(PreviewLabConstants.COMPOSE_PREVIEW_LAB_OPTION_FQN)
+        annotated(COMPOSE_PREVIEW_LAB_OPTION_FQN)
     }
 }

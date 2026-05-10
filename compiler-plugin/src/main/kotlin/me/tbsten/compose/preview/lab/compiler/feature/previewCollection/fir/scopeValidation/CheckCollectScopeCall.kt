@@ -1,6 +1,8 @@
 package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.scopeValidation
 
-import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.COLLECT_ALL_MODULE_PREVIEWS_FQN
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.COLLECT_MODULE_PREVIEWS_FQN
+
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
@@ -51,7 +53,7 @@ internal class CheckCollectScopeCall : FirExpressionChecker<FirFunctionCall>(Mpp
         when (scopeArgument) {
             is FirLiteralExpression -> {
                 val value = scopeArgument.value as? String ?: return
-                if (!PreviewLabConstants.SCOPE_VALIDATION_REGEX.matches(value)) {
+                if (!SCOPE_VALIDATION_REGEX.matches(value)) {
                     reporter.reportOn(
                         scopeArgument.source,
                         CollectScopeErrors.INVALID_COLLECT_SCOPE_VALUE,
@@ -102,8 +104,8 @@ internal class CheckCollectScopeCall : FirExpressionChecker<FirFunctionCall>(Mpp
 
     companion object {
         private val COLLECT_PREVIEWS_FQNS: Set<FqName> = setOf(
-            PreviewLabConstants.COLLECT_MODULE_PREVIEWS_FQN,
-            PreviewLabConstants.COLLECT_ALL_MODULE_PREVIEWS_FQN,
+            COLLECT_MODULE_PREVIEWS_FQN,
+            COLLECT_ALL_MODULE_PREVIEWS_FQN,
         )
     }
 }

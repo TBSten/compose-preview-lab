@@ -5,7 +5,6 @@
 package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.hintAndMarkerGeneration
 
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.getBooleanArgumentCompat
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewKeys
@@ -14,6 +13,16 @@ import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.buildPre
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.computeHintHash
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.parameterTypeFqns
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.previewLabFirBuiltIns
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ANDROID_PREVIEW_ANNOTATION_FQN
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.CMP_PREVIEW_ANNOTATION_FQN
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.COLLECTED_PREVIEW_CLASS_ID
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.COLLECT_SCOPE_NAME
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.COMPOSE_PREVIEW_LAB_OPTION_CLASS_ID
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.COMPOSE_PREVIEW_LAB_OPTION_FQN
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.HINT_PACKAGE
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.IGNORE_NAME
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.hintFunctionCallableId
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.scopeValidation.SCOPE_VALIDATION_REGEX
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.hintGeneration.markAsDeprecatedHidden
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.markAsInternalSyntheticHint
 import org.jetbrains.kotlin.descriptors.ClassKind
@@ -137,8 +146,8 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
      */
     private val previewPredicate: LookupPredicate = LookupPredicate.create {
         annotated(
-            PreviewLabConstants.CMP_PREVIEW_ANNOTATION_FQN,
-            PreviewLabConstants.ANDROID_PREVIEW_ANNOTATION_FQN,
+            CMP_PREVIEW_ANNOTATION_FQN,
+            ANDROID_PREVIEW_ANNOTATION_FQN,
         )
     }
 
@@ -154,7 +163,7 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
      * `ignore = true` reliably.
      */
     private val optionPredicate: LookupPredicate = LookupPredicate.create {
-        annotated(PreviewLabConstants.COMPOSE_PREVIEW_LAB_OPTION_FQN)
+        annotated(COMPOSE_PREVIEW_LAB_OPTION_FQN)
     }
 
     /**
@@ -181,7 +190,7 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
         buildMap<CallableId, MutableList<HintEntry>> {
             hintEntries.forEach { entry ->
                 entry.scopes.forEach { scope ->
-                    val callableId = PreviewLabConstants.hintFunctionCallableId(scope)
+                    val callableId = hintFunctionCallableId(scope)
                     getOrPut(callableId) { mutableListOf() }.add(entry)
                 }
             }
@@ -194,7 +203,7 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
     }
 
     override fun getTopLevelClassIds(): Set<ClassId> = hintEntries.mapTo(mutableSetOf()) { entry ->
-        ClassId(PreviewLabConstants.HINT_PACKAGE, Name.identifier(entry.markerShortName))
+        ClassId(HINT_PACKAGE, Name.identifier(entry.markerShortName))
     }
 
     override fun getTopLevelCallableIds(): Set<CallableId> {
@@ -204,11 +213,11 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
         // different previews or from the same preview registered into multiple scopes) can
         // share the same scope-suffixed callable name without colliding.
         return hintEntries.flatMapTo(mutableSetOf()) { entry ->
-            entry.scopes.map { PreviewLabConstants.hintFunctionCallableId(it) }
+            entry.scopes.map { hintFunctionCallableId(it) }
         }
     }
 
-    override fun hasPackage(packageFqName: FqName): Boolean = packageFqName == PreviewLabConstants.HINT_PACKAGE
+    override fun hasPackage(packageFqName: FqName): Boolean = packageFqName == HINT_PACKAGE
 
     /**
      * Generates the marker interface.
@@ -242,7 +251,7 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
      * class that ends up in the same package).
      */
     override fun generateTopLevelClassLikeDeclaration(classId: ClassId): FirClassLikeSymbol<*>? {
-        if (classId.packageFqName != PreviewLabConstants.HINT_PACKAGE) return null
+        if (classId.packageFqName != HINT_PACKAGE) return null
         val shortName = classId.shortClassName.asString()
         if (shortName !in hashByMarkerShortName) return null
 
@@ -292,13 +301,13 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
         val matchingEntries = entriesByHintCallableId[callableId] ?: return emptyList()
 
         val collectedPreviewSymbol = session.symbolProvider
-            .getClassLikeSymbolByClassId(PreviewLabConstants.COLLECTED_PREVIEW_CLASS_ID)
+            .getClassLikeSymbolByClassId(COLLECTED_PREVIEW_CLASS_ID)
             ?: return emptyList()
         val collectedPreviewType = collectedPreviewSymbol.constructType(emptyArray())
 
         return matchingEntries.map { entry ->
             val markerClassId = ClassId(
-                PreviewLabConstants.HINT_PACKAGE,
+                HINT_PACKAGE,
                 Name.identifier(entry.markerShortName),
             )
             val markerSymbol = session.symbolProvider
@@ -418,7 +427,7 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
         symbol.lazyResolveToPhase(FirResolvePhase.ANNOTATION_ARGUMENTS)
         val moduleDefault = session.previewLabFirBuiltIns.config.defaultCollectScope
         val optionAnnotation = symbol.resolvedAnnotationsWithArguments
-            .firstOrNull { it.toAnnotationClassIdSafe(session) == PreviewLabConstants.COMPOSE_PREVIEW_LAB_OPTION_CLASS_ID }
+            .firstOrNull { it.toAnnotationClassIdSafe(session) == COMPOSE_PREVIEW_LAB_OPTION_CLASS_ID }
             ?: return listOf(moduleDefault)
 
         val rawScopes = optionAnnotation.readCollectScopesFromRawArguments()
@@ -427,7 +436,7 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
 
         val resolved = rawScopes
             .map { if (it == ComposePreviewLabOption.DefaultCollectScope) moduleDefault else it }
-            .filter { PreviewLabConstants.SCOPE_VALIDATION_REGEX.matches(it) }
+            .filter { SCOPE_VALIDATION_REGEX.matches(it) }
             .distinct()
         return resolved.ifEmpty { null }
     }
@@ -450,7 +459,7 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
                 else -> null to argument
             }
             val isCollectScopeArgument = when {
-                argumentName == PreviewLabConstants.COLLECT_SCOPE_NAME -> true
+                argumentName == COLLECT_SCOPE_NAME -> true
                 argumentName != null -> false
                 else -> argumentIndex == collectScopeParameterIndex
             }
@@ -537,13 +546,13 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
     private fun FirNamedFunctionSymbol.isIgnoredByComposePreviewLabOption(): Boolean {
         lazyResolveToPhase(FirResolvePhase.ANNOTATION_ARGUMENTS)
         val optionAnnotation = resolvedAnnotationsWithArguments
-            .firstOrNull { it.toAnnotationClassIdSafe(session) == PreviewLabConstants.COMPOSE_PREVIEW_LAB_OPTION_CLASS_ID }
+            .firstOrNull { it.toAnnotationClassIdSafe(session) == COMPOSE_PREVIEW_LAB_OPTION_CLASS_ID }
             ?: return false
 
         // Fast path: stdlib helper using the resolved name → expression mapping. Returns
         // null when the mapping is empty (common in our tests' inherit-classpath setup),
         // which falls through to the manual argument walk below.
-        optionAnnotation.getBooleanArgumentCompat(PreviewLabConstants.IGNORE_NAME, session)?.let { return it }
+        optionAnnotation.getBooleanArgumentCompat(IGNORE_NAME, session)?.let { return it }
 
         // Fallback: walk the raw argument list. Accepts named (`ignore = true`) directly,
         // and positional Boolean literals only when they sit in the `ignore` parameter
@@ -558,7 +567,7 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
                 else -> null to argument
             }
             val isIgnoreArgument = when {
-                argumentName == PreviewLabConstants.IGNORE_NAME -> true
+                argumentName == IGNORE_NAME -> true
                 argumentName != null -> false // some other named argument
                 else -> argumentIndex == ignoreParameterIndex // positional fallback
             }
