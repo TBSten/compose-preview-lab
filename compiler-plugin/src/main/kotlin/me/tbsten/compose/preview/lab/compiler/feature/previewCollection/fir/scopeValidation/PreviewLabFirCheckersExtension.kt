@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.compiler.fir.checkers
+package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.scopeValidation
 
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.DeclarationCheckers
@@ -19,8 +19,8 @@ import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
  * though there are two trigger points (per-`@Preview` annotation argument and per-call
  * scope argument):
  *
- * - [CollectScopeAnnotationChecker] — validates `@ComposePreviewLabOption(collectScopes = [...])`.
- * - [CollectScopeCallChecker] — validates `collect[All]ModulePreviews(scope = ...)`.
+ * - [CheckCollectScopeAnnotation] — validates `@ComposePreviewLabOption(collectScopes = [...])`.
+ * - [CheckCollectScopeCall] — validates `collect[All]ModulePreviews(scope = ...)`.
  *
  * Sample registration result, per source file: every `@Preview` and every
  * `collect[All]ModulePreviews(...)` call passes through these checkers exactly once during
@@ -31,13 +31,13 @@ internal class PreviewLabFirCheckersExtension(session: FirSession) : FirAddition
 
     override val declarationCheckers: DeclarationCheckers = object : DeclarationCheckers() {
         override val simpleFunctionCheckers: Set<FirDeclarationChecker<FirNamedFunction>> = setOf(
-            CollectScopeAnnotationChecker(),
+            CheckCollectScopeAnnotation(),
         )
     }
 
     override val expressionCheckers: ExpressionCheckers = object : ExpressionCheckers() {
         override val functionCallCheckers: Set<FirExpressionChecker<FirFunctionCall>> = setOf(
-            CollectScopeCallChecker(),
+            CheckCollectScopeCall(),
         )
     }
 }

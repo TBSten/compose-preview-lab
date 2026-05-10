@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.compiler.fir
+package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.hintGeneration
 
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import org.jetbrains.kotlin.fir.FirSession

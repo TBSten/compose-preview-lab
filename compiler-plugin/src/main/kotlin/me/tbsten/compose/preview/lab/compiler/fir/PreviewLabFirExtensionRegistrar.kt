@@ -5,7 +5,8 @@ import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.HintEntriesProvider
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewLabFirBuiltIns
 import me.tbsten.compose.preview.lab.compiler.feature.transformPrivatePreviewToInternal.fir.visibilityPromotion.PreviewLabFirStatusTransformerExtension
-import me.tbsten.compose.preview.lab.compiler.fir.checkers.PreviewLabFirCheckersExtension
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.scopeValidation.PreviewLabFirCheckersExtension
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.hintAndMarkerGeneration.PreviewHintFirGenerator
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
 

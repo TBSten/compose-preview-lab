@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.compiler.fir.checkers
+package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.scopeValidation
 
 import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
@@ -38,7 +38,7 @@ import org.jetbrains.kotlin.name.FqName
  * pass, so they reach the embedding step as a literal. The checker leaves them alone here
  * (no false positive); if the inlined value violates the regex, the IR side reports it.
  */
-internal class CollectScopeCallChecker : FirExpressionChecker<FirFunctionCall>(MppCheckerKind.Common) {
+internal class CheckCollectScopeCall : FirExpressionChecker<FirFunctionCall>(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: FirFunctionCall) {
         val callableSymbol = expression.toResolvedCallableSymbol() as? FirNamedFunctionSymbol ?: return

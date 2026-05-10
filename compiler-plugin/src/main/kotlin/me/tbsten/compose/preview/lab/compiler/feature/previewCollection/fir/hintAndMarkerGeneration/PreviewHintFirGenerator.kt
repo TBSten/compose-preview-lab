@@ -2,7 +2,7 @@
     org.jetbrains.kotlin.fir.extensions.ExperimentalTopLevelDeclarationsGenerationApi::class,
 )
 
-package me.tbsten.compose.preview.lab.compiler.fir
+package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.hintAndMarkerGeneration
 
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
@@ -14,6 +14,8 @@ import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.buildPre
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.computeHintHash
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.parameterTypeFqns
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.previewLabFirBuiltIns
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.hintGeneration.markAsDeprecatedHidden
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.markAsInternalSyntheticHint
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.descriptors.Visibilities

@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.compiler.fir.checkers
+package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.scopeValidation
 
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactory1
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactoryToRendererMap

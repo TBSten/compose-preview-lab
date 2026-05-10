@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.compiler.fir
+package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir
 
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.utils.classIdOf

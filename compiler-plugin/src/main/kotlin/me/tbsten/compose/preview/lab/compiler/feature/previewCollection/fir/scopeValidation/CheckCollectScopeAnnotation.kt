@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.compiler.fir.checkers
+package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.scopeValidation
 
 import me.tbsten.compose.preview.lab.compiler.PreviewLabConstants
 import org.jetbrains.kotlin.KtSourceElement
@@ -37,7 +37,7 @@ import org.jetbrains.kotlin.fir.types.coneType
  * underline the exact bad string instead of the entire array literal, so the user can
  * fix one value without re-reading the others.
  */
-internal class CollectScopeAnnotationChecker : FirDeclarationChecker<FirNamedFunction>(MppCheckerKind.Common) {
+internal class CheckCollectScopeAnnotation : FirDeclarationChecker<FirNamedFunction>(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(declaration: FirNamedFunction) {
         val annotation = declaration.annotations.firstOrNull { it.isComposePreviewLabOption() } ?: return
