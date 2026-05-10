@@ -6,12 +6,12 @@ package me.tbsten.compose.preview.lab.compiler.fir
 
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
+import me.tbsten.compose.preview.lab.compiler.compat.getBooleanArgumentCompat
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
-import org.jetbrains.kotlin.fir.declarations.getBooleanArgument
 import org.jetbrains.kotlin.fir.declarations.toAnnotationClassIdSafe
 import org.jetbrains.kotlin.fir.extensions.FirDeclarationGenerationExtension
 import org.jetbrains.kotlin.fir.extensions.FirDeclarationPredicateRegistrar
@@ -503,7 +503,7 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
         // Fast path: stdlib helper using the resolved name → expression mapping. Returns
         // null when the mapping is empty (common in our tests' inherit-classpath setup),
         // which falls through to the manual argument walk below.
-        optionAnnotation.getBooleanArgument(PreviewLabFirBuiltIns.IGNORE_NAME, session)?.let { return it }
+        optionAnnotation.getBooleanArgumentCompat(PreviewLabFirBuiltIns.IGNORE_NAME, session)?.let { return it }
 
         // Fallback: walk the raw argument list. Accepts named (`ignore = true`) directly,
         // and positional Boolean literals only when they sit in the `ignore` parameter

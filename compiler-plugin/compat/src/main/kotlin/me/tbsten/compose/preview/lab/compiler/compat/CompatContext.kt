@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.fir.FirAnnotationContainer
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.DeprecationsProvider
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
+import org.jetbrains.kotlin.fir.expressions.FirAnnotation
 import org.jetbrains.kotlin.ir.IrFileEntry
 import org.jetbrains.kotlin.ir.builders.IrBuilderWithScope
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
@@ -20,6 +21,7 @@ import org.jetbrains.kotlin.ir.symbols.IrFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.types.IrSimpleType
 import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.name.Name
 
 /**
  * SPI that absorbs version-specific differences in the Kotlin compiler API.
@@ -177,6 +179,24 @@ public interface CompatContext {
      * version.
      */
     public fun getDeprecationsProviderCompat(declaration: FirAnnotationContainer, session: FirSession): DeprecationsProvider?
+
+    /**
+     * Returns the resolved `Boolean` argument named [name] from [annotation], or `null` when
+     * the argument is absent or unresolvable.
+     *
+     * Wraps the stdlib `FirAnnotation.getBooleanArgument` helper, whose signature changed in
+     * Kotlin 2.4.0-Beta1: the `session: FirSession` parameter was removed (the helper now
+     * reads the resolved name → expression mapping directly off the annotation). The pre-2.4
+     * 2-arg form does not exist in 2.4+, and vice versa, so the call has to live in a compat
+     * module compiled against the matching baseline.
+     *
+     * **Sample call**: `getBooleanArgumentCompat(optionAnnotation, IGNORE_NAME, session)`
+     *
+     * **Result** (semantically): `true` for `@ComposePreviewLabOption(ignore = true)`,
+     * `false` for `@ComposePreviewLabOption(ignore = false)`, `null` when the `ignore`
+     * argument is omitted or the resolved-arguments mapping is not yet populated.
+     */
+    public fun getBooleanArgumentCompat(annotation: FirAnnotation, name: Name, session: FirSession): Boolean?
 
     /**
      * Applies [transformer] to [moduleFragment] using the version-appropriate IR visitor API.

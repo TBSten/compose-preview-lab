@@ -1,9 +1,12 @@
 package me.tbsten.compose.preview.lab.compiler.compat
 
+import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
+import org.jetbrains.kotlin.fir.expressions.FirAnnotation
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
 import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.name.Name
 
 /**
  * Access point for the version-specific Kotlin compiler API.
@@ -26,3 +29,10 @@ internal fun FirDeclaration.isFirFunction(): Boolean = compatContext.isFirFuncti
  */
 internal fun IrSimpleFunction.addConstructorCallAnnotation(type: IrType, constructorSymbol: IrConstructorSymbol) =
     compatContext.addConstructorCallAnnotation(this, type, constructorSymbol)
+
+/**
+ * Returns the resolved `Boolean` argument named [name] from this annotation, or `null` when
+ * the argument is absent. See [CompatContext.getBooleanArgumentCompat].
+ */
+internal fun FirAnnotation.getBooleanArgumentCompat(name: Name, session: FirSession): Boolean? =
+    compatContext.getBooleanArgumentCompat(this, name, session)

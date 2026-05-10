@@ -6,7 +6,9 @@ import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.DeprecationsProvider
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirFunction
+import org.jetbrains.kotlin.fir.declarations.getBooleanArgument
 import org.jetbrains.kotlin.fir.declarations.getDeprecationsProvider
+import org.jetbrains.kotlin.fir.expressions.FirAnnotation
 import org.jetbrains.kotlin.ir.builders.IrBuilderWithScope
 import org.jetbrains.kotlin.ir.builders.irCall
 import org.jetbrains.kotlin.ir.builders.irGet
@@ -30,6 +32,7 @@ import org.jetbrains.kotlin.ir.types.IrSimpleType
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.defaultType
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
+import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 
 /**
@@ -102,6 +105,10 @@ public class CompatContextImpl : CompatContext {
         declaration: FirAnnotationContainer,
         session: FirSession,
     ): DeprecationsProvider = declaration.getDeprecationsProvider(session)
+
+    // Pre-2.4: stdlib helper requires `(name, session)` to read the resolved mapping.
+    override fun getBooleanArgumentCompat(annotation: FirAnnotation, name: Name, session: FirSession,): Boolean? =
+        annotation.getBooleanArgument(name, session)
 
     public class Factory : CompatContext.Factory {
         override val minVersion: String = "2.3.0"
