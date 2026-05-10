@@ -108,7 +108,7 @@ public class CompatContextImpl : CompatContext {
         session: FirSession,
     ): DeprecationsProvider = declaration.getDeprecationsProvider(session)
 
-    // Pre-2.4 the stdlib helper requires `(name, session)`; the `session` lookups the
+    // Pre-2.4 the stdlib helper requires `(name, session)`; the `session` looks up the
     // resolved name → expression mapping via the annotation's resolved type.
     override fun getBooleanArgumentCompat(annotation: FirAnnotation, name: Name, session: FirSession,): Boolean? =
         annotation.getBooleanArgument(name, session)

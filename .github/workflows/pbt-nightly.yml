@@ -22,15 +22,10 @@ jobs:
             compose_version: ''
             gradle_version: ''
             name: 'default'
-          - kotlin_version: '2.3.20'
+          - kotlin_version: '2.3.21'
             compose_version: '1.11.0-alpha04'
             gradle_version: ''
-            name: 'Kotlin 2.3.20'
-            # `collectAllModulePreviews()` requires Kotlin 2.3.21+ (see
-            # `scripts/supported-kotlin-versions.txt`); the integrationTest / docs apps
-            # both use it and would fail to compile here. Library PBT alone exercises the
-            # `collectModulePreviews()` lower bound, which is what 2.3.20 is meant to cover.
-            skip_cross_module_apps: true
+            name: 'Kotlin 2.3.21'
           - kotlin_version: '2.4.0-Beta2'
             compose_version: '1.11.0-alpha04'
             gradle_version: '9.4.1'

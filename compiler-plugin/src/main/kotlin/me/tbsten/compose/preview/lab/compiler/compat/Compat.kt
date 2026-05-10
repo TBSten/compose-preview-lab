@@ -32,7 +32,7 @@ internal fun IrSimpleFunction.addConstructorCallAnnotation(type: IrType, constru
 
 /**
  * Returns the resolved `Boolean` argument named [name] from this annotation, or `null` when
- * the argument is absent. See [CompatContext.getBooleanArgumentCompat].
+ * the argument is absent or unresolvable. See [CompatContext.getBooleanArgumentCompat].
  */
 internal fun FirAnnotation.getBooleanArgumentCompat(name: Name, session: FirSession): Boolean? =
     compatContext.getBooleanArgumentCompat(this, name, session)
