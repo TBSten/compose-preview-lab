@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 
 /**
- * JS_IR test helper. The JS counterpart of `CompilerPluginTestBase`.
+ * JS_IR test helper. The JS counterpart of [CompilerPluginTestBase].
  *
  * Used to verify that KLIB IdSignature collision avoidance and cross-module marker class
  * discovery work correctly under the JS_IR backend.
@@ -23,6 +23,20 @@ import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
  *   `KotlinJsCompilation.jsArgs()` sets `args.libraries = stdlib`, the call to
  *   `parseCommandLineArguments(kotlincArguments, args)` runs afterwards and can
  *   overwrite it.
+ *
+ * **References**:
+ * - [kctfork (Kotlin Compile Testing fork) docs](https://github.com/ZacSweers/kotlin-compile-testing)
+ *   — the underlying compile-test runner; [KotlinJsCompilation](https://github.com/ZacSweers/kotlin-compile-testing/blob/main/core/src/main/kotlin/com/tschuchort/compiletesting/KotlinJsCompilation.kt)
+ *   is the entry point exercised by [compileJs].
+ * - [Kotlin docs · JS-IR backend](https://kotlinlang.org/docs/js-ir-compiler.html) — the
+ *   compilation pipeline this helper drives.
+ * - [KLIB ABI design](https://github.com/Kotlin/KEEP/blob/main/proposals/klib/klib-abi-dump-manifest.md)
+ *   — IdSignature / klib ABI background; explains why per-module marker classes are
+ *   needed for cross-module hint dedup.
+ * - [KT-82395](https://youtrack.jetbrains.com/issue/KT-82395) — the JS/Wasm
+ *   incremental-compile bug that gates `CompatContext.supportsKlibCrossModuleHint()`
+ *   on Kotlin 2.3.21+. Tests exercising cross-module discovery from this helper rely on
+ *   that fix.
  */
 @OptIn(ExperimentalCompilerApi::class)
 open class CompilerPluginJsTestBase {
@@ -120,6 +134,16 @@ open class CompilerPluginJsTestBase {
      *   KLIB and the app's KLIB. This does not collide at the `IdSignature` level: the
      *   plugin's dependency-resolution logic excludes self-emitted declarations via
      *   `IR_EXTERNAL_DECLARATION_STUB`.
+     *
+     * **References**:
+     * - [`KotlinJsCompilation`](https://github.com/ZacSweers/kotlin-compile-testing/blob/main/core/src/main/kotlin/com/tschuchort/compiletesting/KotlinJsCompilation.kt)
+     *   — the kctfork JS_IR entry point this method drives.
+     * - [Kotlin docs · `-libraries` flag](https://kotlinlang.org/docs/compiler-reference.html#kotlin-js-compiler-options)
+     *   — the kotlinc-js argument for KLIB classpath that we override here when
+     *   [extraLibraries] is non-empty.
+     * - [Kotlin source · K2JsCompilerArgumentsParser](https://github.com/JetBrains/kotlin/blob/master/compiler/cli/cli-js/src/org/jetbrains/kotlin/cli/js/K2JsCompilerArguments.kt)
+     *   — `parseCommandLineArguments` runs after `jsArgs()` so our `-libraries`
+     *   override takes precedence.
      */
     fun compileJs(
         vararg sources: SourceFile,
@@ -187,6 +211,12 @@ open class CompilerPluginJsTestBase {
 /**
  * Returns the produced `.klib` files. `KotlinJsCompilation.outputDir` contains a
  * `<moduleName>.klib` (or an unpacked directory).
+ *
+ * **References**:
+ * - [Kotlin docs · KLIB format](https://kotlinlang.org/docs/native-libraries.html#library-format)
+ *   — describes the on-disk layout (.klib archive vs unpacked dir).
+ * - [`KotlinJsCompilation.outputDirectory`](https://github.com/ZacSweers/kotlin-compile-testing/blob/main/core/src/main/kotlin/com/tschuchort/compiletesting/KotlinJsCompilation.kt)
+ *   — the result-side accessor we walk.
  */
 internal fun JsCompilationResult.klibFiles(): List<java.io.File> {
     val outputDir = this.outputDirectory
@@ -197,6 +227,14 @@ internal fun JsCompilationResult.klibFiles(): List<java.io.File> {
     return outputDir.listFiles { f -> f.isDirectory }?.toList() ?: emptyList()
 }
 
+/**
+ * Asserts the JS compilation succeeded; on failure, dumps the messages so the test log
+ * shows kotlinc's stderr inline rather than a bare "expected OK" diff.
+ *
+ * **References**:
+ * - [`KotlinCompilation.ExitCode`](https://github.com/ZacSweers/kotlin-compile-testing/blob/main/core/src/main/kotlin/com/tschuchort/compiletesting/KotlinCompilation.kt)
+ *   — the kctfork exit-code enum we check against.
+ */
 internal fun JsCompilationResult.assertOk() {
     if (this.exitCode != KotlinCompilation.ExitCode.OK) {
         error("JS compilation failed with ${this.exitCode}:\n${this.messages}")

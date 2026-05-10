@@ -29,7 +29,7 @@ class BacktickIdentifierSanitizationTest :
         val base = CompilerPluginTestBase()
 
         val testKotlinVersion = System.getProperty("test.kotlin.version") ?: "2.3.21"
-        val supports = testKotlinVersion.isAtLeast(2, 3, 21)
+        val supports = testKotlinVersion.isAtLeast(2, 3, 20)
 
         test("buildMarkerShortName replaces every non-identifier character with '_'") {
             val identifierLegal = Regex("^${PreviewLabFirBuiltIns.PreviewHintMarkerPrefix}[A-Za-z0-9_]+\$")

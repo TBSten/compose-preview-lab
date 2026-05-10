@@ -28,7 +28,7 @@ class PreviewHintHiddenDeprecationTest :
         val base = CompilerPluginTestBase()
 
         val testKotlinVersion = System.getProperty("test.kotlin.version") ?: "2.3.21"
-        val supports = testKotlinVersion.isAtLeast(2, 3, 21)
+        val supports = testKotlinVersion.isAtLeast(2, 3, 20)
 
         test("every emitted PreviewHintMarker_* interface carries @Deprecated")
             .config(enabled = supports) {

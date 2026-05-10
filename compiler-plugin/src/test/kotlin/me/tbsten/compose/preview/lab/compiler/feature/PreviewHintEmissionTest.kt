@@ -31,7 +31,7 @@ class PreviewHintEmissionTest :
         val base = CompilerPluginTestBase()
 
         val testKotlinVersion = System.getProperty("test.kotlin.version") ?: "2.3.21"
-        val supports = testKotlinVersion.isAtLeast(2, 3, 21)
+        val supports = testKotlinVersion.isAtLeast(2, 3, 20)
 
         test("emits one (marker, previewHint(marker?)) pair per @Preview")
             .config(enabled = supports) {

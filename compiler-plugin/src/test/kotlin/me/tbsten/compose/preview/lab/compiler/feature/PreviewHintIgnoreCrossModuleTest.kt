@@ -31,7 +31,7 @@ class PreviewHintIgnoreCrossModuleTest :
         val base = CompilerPluginTestBase()
 
         val testKotlinVersion = System.getProperty("test.kotlin.version") ?: "2.3.21"
-        val supports = testKotlinVersion.isAtLeast(2, 3, 21)
+        val supports = testKotlinVersion.isAtLeast(2, 3, 20)
 
         context("cross-module ignore filter (the core fix)") {
             test("ignore=true preview from a dependency module is absent from collectAllModulePreviews()")
