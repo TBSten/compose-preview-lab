@@ -1,5 +1,7 @@
 # Hint / Marker Naming (Single Source of Truth)
 
+> [日本語版](./hint-naming.ja.md)
+
 In the `previewCollection` feature, every single `@Preview` produces **one marker interface** and
 **as many hint functions as there are scopes**. The name formats of these declarations must agree at
 **three sites** — the FIR generation side, the IR restore side, and the IR discovery side. If they ever
