@@ -1,6 +1,8 @@
 package me.tbsten.compose.preview.lab.compiler.feature.transformPrivatePreviewToInternal.fir.visibilityPromotion
 
 import me.tbsten.compose.preview.lab.compiler.compat.isFirFunction
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ANDROID_PREVIEW_ANNOTATION_FQN
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.CMP_PREVIEW_ANNOTATION_FQN
 import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
@@ -14,7 +16,6 @@ import org.jetbrains.kotlin.fir.extensions.transform
 import org.jetbrains.kotlin.fir.types.ConeClassLikeType
 import org.jetbrains.kotlin.fir.types.FirResolvedTypeRef
 import org.jetbrains.kotlin.name.ClassId
-import org.jetbrains.kotlin.name.FqName
 
 /**
  * Widens the visibility of `@Preview`-annotated `private` functions to `internal`.
@@ -25,8 +26,8 @@ import org.jetbrains.kotlin.name.FqName
 class PreviewLabFirStatusTransformerExtension(session: FirSession) : FirStatusTransformerExtension(session) {
 
     private val previewAnnotations = listOf(
-        ClassId.topLevel(FqName("org.jetbrains.compose.ui.tooling.preview.Preview")),
-        ClassId.topLevel(FqName("androidx.compose.ui.tooling.preview.Preview")),
+        ClassId.topLevel(CMP_PREVIEW_ANNOTATION_FQN),
+        ClassId.topLevel(ANDROID_PREVIEW_ANNOTATION_FQN),
     )
 
     /**

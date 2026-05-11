@@ -1,15 +1,12 @@
 package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir
 
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
-import me.tbsten.compose.preview.lab.compiler.utils.classIdOf
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.INTERNAL_COMPOSE_PREVIEW_LAB_API_CLASS_ID
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.SYNTHETIC_PREVIEW_HINT_CLASS_ID
 import me.tbsten.compose.preview.lab.compiler.utils.fir.buildSimpleAnnotation
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirClassLikeDeclaration
-
-private val InternalApiClassId = classIdOf("me.tbsten.compose.preview.lab", "InternalComposePreviewLabApi")
-
-private val SyntheticPreviewHintClassId = classIdOf("me.tbsten.compose.preview.lab", "SyntheticPreviewHint")
 
 /**
  * Attaches `@InternalComposePreviewLabApi` + `@SyntheticPreviewHint` to a synthesized FIR
@@ -41,8 +38,8 @@ private val SyntheticPreviewHintClassId = classIdOf("me.tbsten.compose.preview.l
 internal fun FirClassLikeDeclaration.markAsInternalSyntheticHint(session: FirSession, compat: CompatContext) {
     replaceAnnotations(
         annotations + listOf(
-            InternalApiClassId.buildSimpleAnnotation(session),
-            SyntheticPreviewHintClassId.buildSimpleAnnotation(session),
+            INTERNAL_COMPOSE_PREVIEW_LAB_API_CLASS_ID.buildSimpleAnnotation(session),
+            SYNTHETIC_PREVIEW_HINT_CLASS_ID.buildSimpleAnnotation(session),
         ),
     )
     compat.getDeprecationsProviderCompat(this, session)?.let(::replaceDeprecationsProvider)
@@ -59,8 +56,8 @@ internal fun FirClassLikeDeclaration.markAsInternalSyntheticHint(session: FirSes
 internal fun FirCallableDeclaration.markAsInternalSyntheticHint(session: FirSession, compat: CompatContext) {
     replaceAnnotations(
         annotations + listOf(
-            InternalApiClassId.buildSimpleAnnotation(session),
-            SyntheticPreviewHintClassId.buildSimpleAnnotation(session),
+            INTERNAL_COMPOSE_PREVIEW_LAB_API_CLASS_ID.buildSimpleAnnotation(session),
+            SYNTHETIC_PREVIEW_HINT_CLASS_ID.buildSimpleAnnotation(session),
         ),
     )
     compat.getDeprecationsProviderCompat(this, session)?.let(::replaceDeprecationsProvider)

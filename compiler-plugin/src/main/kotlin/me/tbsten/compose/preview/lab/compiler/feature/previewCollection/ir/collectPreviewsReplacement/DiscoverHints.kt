@@ -2,8 +2,10 @@
 
 package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement
 
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.COLLECTED_PREVIEW_CLASS_ID
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.HINT_PACKAGE
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewHintMarkerPrefix
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.SYNTHETIC_PREVIEW_HINT_CLASS_ID
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.hintFunctionCallableId
 
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
@@ -16,10 +18,6 @@ import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.types.classFqName
 import org.jetbrains.kotlin.ir.util.hasAnnotation
-import org.jetbrains.kotlin.name.FqName
-
-/** FQN of the marker annotation that the FIR generator stamps on every plugin-emitted hint. */
-private val SyntheticPreviewHintFqn = FqName("me.tbsten.compose.preview.lab.SyntheticPreviewHint")
 
 /**
  * Discovers per-declaration hints **emitted by dependency modules** for a given
@@ -137,7 +135,9 @@ internal fun discoverHints(
         val markerFqn = regularParams[0].type.classFqName ?: return@mapNotNull null
         if (markerFqn.parent() != HINT_PACKAGE) return@mapNotNull null
         if (!markerFqn.shortName().asString().startsWith(PreviewHintMarkerPrefix)) return@mapNotNull null
-        if (hintFunction.returnType.classFqName?.asString() != CollectedPreviewFqn) return@mapNotNull null
+        if (hintFunction.returnType.classFqName?.asString() != COLLECTED_PREVIEW_CLASS_ID.asFqNameString()) {
+            return@mapNotNull null
+        }
 
         hintFunction to markerFqn
     }
@@ -147,7 +147,7 @@ internal fun discoverHints(
     // included in a downstream `collectAllModulePreviews()`. Require the
     // plugin-stamped `@SyntheticPreviewHint` marker as positive proof of authenticity.
     val authentic = structuralCandidates.filter { (hintFunction, markerFqn) ->
-        if (hintFunction.hasAnnotation(SyntheticPreviewHintFqn)) {
+        if (hintFunction.hasAnnotation(SYNTHETIC_PREVIEW_HINT_CLASS_ID.asSingleFqName())) {
             true
         } else {
             messageCollector.report(
@@ -183,5 +183,3 @@ internal fun discoverHints(
 
     return authentic.map { (hintFunction, _) -> hintFunction }
 }
-
-private const val CollectedPreviewFqn = "me.tbsten.compose.preview.lab.CollectedPreview"

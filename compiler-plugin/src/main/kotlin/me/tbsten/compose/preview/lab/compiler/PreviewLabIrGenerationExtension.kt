@@ -8,6 +8,9 @@ import me.tbsten.compose.preview.lab.compiler.compat.getAnnotationCompat
 import me.tbsten.compose.preview.lab.compiler.compat.hasAnnotationCompat
 import me.tbsten.compose.preview.lab.compiler.error.HintHashCollisionError
 import me.tbsten.compose.preview.lab.compiler.error.report
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ANDROID_PREVIEW_ANNOTATION_FQN
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.CMP_PREVIEW_ANNOTATION_FQN
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.COMPOSE_PREVIEW_LAB_OPTION_FQN
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewFunctionInfo
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.BuildPreviewByHashMap
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.buildPreviewSequence.extractSourceText
@@ -29,7 +32,6 @@ import org.jetbrains.kotlin.ir.types.classFqName
 import org.jetbrains.kotlin.ir.types.isMarkedNullable
 import org.jetbrains.kotlin.ir.util.file
 import org.jetbrains.kotlin.ir.util.kotlinFqName
-import org.jetbrains.kotlin.name.FqName
 
 /**
  * IR generation extension for Compose Preview Lab.
@@ -41,12 +43,6 @@ class PreviewLabIrGenerationExtension(
     private val config: PluginConfig,
     private val messageCollector: MessageCollector = MessageCollector.NONE,
 ) : IrGenerationExtension {
-
-    companion object {
-        private val CMP_PREVIEW_FQ = FqName("org.jetbrains.compose.ui.tooling.preview.Preview")
-        private val ANDROID_PREVIEW_FQ = FqName("androidx.compose.ui.tooling.preview.Preview")
-        private val CPL_OPTION_FQ = FqName("me.tbsten.compose.preview.lab.ComposePreviewLabOption")
-    }
 
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
         val previews = collectPreviews(moduleFragment)
@@ -152,9 +148,13 @@ class PreviewLabIrGenerationExtension(
      * `@ComposePreviewLabOption(ignore = true)` previews can still be filled in.
      */
     internal fun buildPreviewInfoOrNull(func: IrSimpleFunction, includeIgnored: Boolean): PreviewFunctionInfo? {
-        if (!func.hasAnnotationCompat(CMP_PREVIEW_FQ) && !func.hasAnnotationCompat(ANDROID_PREVIEW_FQ)) return null
+        if (!func.hasAnnotationCompat(CMP_PREVIEW_ANNOTATION_FQN) &&
+            !func.hasAnnotationCompat(ANDROID_PREVIEW_ANNOTATION_FQN)
+        ) {
+            return null
+        }
 
-        val optionAnno = func.getAnnotationCompat(CPL_OPTION_FQ)
+        val optionAnno = func.getAnnotationCompat(COMPOSE_PREVIEW_LAB_OPTION_FQN)
         val ignore = (optionAnno?.findArgumentByName("ignore") as? IrConst)?.value as? Boolean ?: false
         if (ignore && !includeIgnored) return null
 
