@@ -4,12 +4,9 @@ package me.tbsten.compose.preview.lab
 
 import javax.inject.Inject
 import org.gradle.api.Action
-import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory
-import org.gradle.kotlin.dsl.getValue
-import org.gradle.kotlin.dsl.property
-import org.gradle.kotlin.dsl.provideDelegate
-import org.gradle.kotlin.dsl.setValue
+import org.gradle.api.provider.Property
+import org.gradle.kotlin.dsl.newInstance
 
 /**
  * Configuration extension for Compose Preview Lab Gradle plugin
@@ -19,10 +16,10 @@ import org.gradle.kotlin.dsl.setValue
  *
  * ```kotlin
  * composePreviewLab {
- *     generatePackage = "myModule"
- *     generateFeaturedFiles = true
+ *     generatePackage.set("myModule")
+ *     generateFeaturedFiles.set(true)
  *     collectPreviews {
- *         enabled = false
+ *         enabled.set(false)
  *     }
  * }
  * ```
@@ -30,8 +27,16 @@ import org.gradle.kotlin.dsl.setValue
  * Every property below can also be set via `gradle.properties` (or `-PcomposePreviewLab.*=...`).
  * Precedence: DSL block > gradle.properties > built-in default.
  * See [ComposePreviewLabProperties] for the full key list.
+ *
+ * **Implementation note**: this extension intentionally injects **only**
+ * [ObjectFactory], which is one of the Gradle-supported `@Inject` services.
+ * The `gradle.properties` → convention wiring is performed by
+ * [ComposePreviewLabGradlePlugin.apply] (which has full [org.gradle.api.Project] access)
+ * rather than inside the extension constructor, because injecting `Project` into
+ * managed extension types is **not supported** by Gradle and may break in future
+ * versions (see Gradle service-injection docs).
  */
-abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFactory, project: Project) {
+abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFactory) {
     /**
      * Package name for generated preview lists
      *
@@ -42,17 +47,7 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
      *
      * Can also be set via `gradle.properties`: `composePreviewLab.generatePackage=...`.
      */
-    var generatePackage: String by objects.property<String>()
-        .convention(
-            stringProp(
-                project = project,
-                key = ComposePreviewLabProperties.GeneratePackage,
-                default = project.name
-                    .split(Regex("(\\.)|_|-"))
-                    .mapIndexed { index, word -> if (index == 0) word else word.replaceFirstChar { it.uppercase() } }
-                    .joinToString(""),
-            ),
-        )
+    abstract val generatePackage: Property<String>
 
     /**
      * Root path of the project for file path resolution
@@ -62,14 +57,7 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
      *
      * Can also be set via `gradle.properties`: `composePreviewLab.projectRootPath=...`.
      */
-    var projectRootPath: String by objects.property<String>()
-        .convention(
-            stringProp(
-                project = project,
-                key = ComposePreviewLabProperties.ProjectRootPath,
-                default = project.rootProject.projectDir.absolutePath,
-            ),
-        )
+    abstract val projectRootPath: Property<String>
 
     /**
      * Controls generation of FeaturedFileList from .composepreviewlab/featured/ directory
@@ -80,14 +68,7 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
      *
      * Can also be set via `gradle.properties`: `composePreviewLab.generateFeaturedFiles=true|false`.
      */
-    var generateFeaturedFiles: Boolean by objects.property<Boolean>()
-        .convention(
-            boolProp(
-                project = project,
-                key = ComposePreviewLabProperties.GenerateFeaturedFiles,
-                default = false,
-            ),
-        )
+    abstract val generateFeaturedFiles: Property<Boolean>
 
     /**
      * Per-module configuration for the per-declaration preview hint pipeline.
@@ -104,7 +85,7 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
      * whose previews must never leak into a downstream consumer or whose hint emission
      * cost is not justified. See [CollectPreviewsConfig] for the full set of options.
      */
-    val collectPreviews: CollectPreviewsConfig = objects.newInstance(CollectPreviewsConfig::class.java, project)
+    val collectPreviews: CollectPreviewsConfig = objects.newInstance<CollectPreviewsConfig>()
 
     /** Kotlin-DSL friendly accessor for [collectPreviews]. */
     fun collectPreviews(action: Action<CollectPreviewsConfig>) {
@@ -118,12 +99,16 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
  * ```kotlin
  * composePreviewLab {
  *     collectPreviews {
- *         enabled = false
+ *         enabled.set(false)
  *     }
  * }
  * ```
+ *
+ * Constructor takes only [ObjectFactory] (a Gradle-supported `@Inject` service);
+ * convention values for [enabled] / [defaultCollectScope] are wired by
+ * [ComposePreviewLabGradlePlugin.apply].
  */
-abstract class CollectPreviewsConfig @Inject constructor(objects: ObjectFactory, project: Project) {
+abstract class CollectPreviewsConfig @Inject constructor(@Suppress("unused") objects: ObjectFactory) {
     /**
      * Whether this module participates in per-declaration preview hint emission.
      *
@@ -150,14 +135,7 @@ abstract class CollectPreviewsConfig @Inject constructor(objects: ObjectFactory,
      * either add it (recommended), or re-dump the baseline once after toggling
      * (`./gradlew apiDump`) so the new baseline records the absence of hints.
      */
-    var enabled: Boolean by objects.property<Boolean>()
-        .convention(
-            boolProp(
-                project = project,
-                key = ComposePreviewLabProperties.CollectPreviewsEnabled,
-                default = true,
-            ),
-        )
+    abstract val enabled: Property<Boolean>
 
     /**
      * Module-level default scope for `@Preview` hints emitted from this module.
@@ -173,7 +151,7 @@ abstract class CollectPreviewsConfig @Inject constructor(objects: ObjectFactory,
      * // uiLib/build.gradle.kts
      * composePreviewLab {
      *     collectPreviews {
-     *         defaultCollectScope = "acme_ui"
+     *         defaultCollectScope.set("acme_ui")
      *     }
      * }
      *
@@ -188,8 +166,9 @@ abstract class CollectPreviewsConfig @Inject constructor(objects: ObjectFactory,
      * without any DSL change.
      *
      * The value must match `[A-Za-z0-9_]+` because it is embedded into a Kotlin identifier;
-     * an invalid value is rejected by the compiler plugin's command-line processor with a
-     * clear error before any source file is compiled.
+     * the Gradle plugin validates this **early** (at configuration time) for values coming
+     * from `gradle.properties` / `-P`, and the compiler plugin's command-line processor
+     * provides a second-layer guard for DSL-set values.
      *
      * **Experimental**: this knob is part of the still-stabilizing collectScopes design and
      * may change shape (or move under a different DSL block) before stable release. Opt in
@@ -199,12 +178,5 @@ abstract class CollectPreviewsConfig @Inject constructor(objects: ObjectFactory,
      * direct programmatic access.
      */
     @ExperimentalComposePreviewLabApi
-    var defaultCollectScope: String by objects.property<String>()
-        .convention(
-            stringProp(
-                project = project,
-                key = ComposePreviewLabProperties.CollectPreviewsDefaultCollectScope,
-                default = ComposePreviewLabOption.DefaultCollectScope,
-            ),
-        )
+    abstract val defaultCollectScope: Property<String>
 }

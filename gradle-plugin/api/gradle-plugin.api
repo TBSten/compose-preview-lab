@@ -1,19 +1,15 @@
 public abstract class me/tbsten/compose/preview/lab/CollectPreviewsConfig {
-	public fun <init> (Lorg/gradle/api/model/ObjectFactory;Lorg/gradle/api/Project;)V
-	public final fun getEnabled ()Z
-	public final fun setEnabled (Z)V
+	public fun <init> (Lorg/gradle/api/model/ObjectFactory;)V
+	public abstract fun getEnabled ()Lorg/gradle/api/provider/Property;
 }
 
 public abstract class me/tbsten/compose/preview/lab/ComposePreviewLabExtension {
-	public fun <init> (Lorg/gradle/api/model/ObjectFactory;Lorg/gradle/api/Project;)V
+	public fun <init> (Lorg/gradle/api/model/ObjectFactory;)V
 	public final fun collectPreviews (Lorg/gradle/api/Action;)V
 	public final fun getCollectPreviews ()Lme/tbsten/compose/preview/lab/CollectPreviewsConfig;
-	public final fun getGenerateFeaturedFiles ()Z
-	public final fun getGeneratePackage ()Ljava/lang/String;
-	public final fun getProjectRootPath ()Ljava/lang/String;
-	public final fun setGenerateFeaturedFiles (Z)V
-	public final fun setGeneratePackage (Ljava/lang/String;)V
-	public final fun setProjectRootPath (Ljava/lang/String;)V
+	public abstract fun getGenerateFeaturedFiles ()Lorg/gradle/api/provider/Property;
+	public abstract fun getGeneratePackage ()Lorg/gradle/api/provider/Property;
+	public abstract fun getProjectRootPath ()Lorg/gradle/api/provider/Property;
 }
 
 public final class me/tbsten/compose/preview/lab/ComposePreviewLabGradlePlugin : org/gradle/api/Plugin {

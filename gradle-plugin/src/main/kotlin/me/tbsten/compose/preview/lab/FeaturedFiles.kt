@@ -16,18 +16,18 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 internal fun Project.configureFeaturedFiles(extension: ComposePreviewLabExtension) {
     afterEvaluate {
-        if (extension.generateFeaturedFiles) {
+        if (extension.generateFeaturedFiles.get()) {
             val outputDir = layout.buildDirectory.dir("generated/composepreviewlab/")
             val internalGenerateFeaturedFilesCode =
                 tasks.register<GenerateFeaturedFilesCode>("internalGenerateFeaturedFilesCode") {
                     group = "compose preview lab internal"
-                    this.packageName = extension.generatePackage
+                    this.packageName = extension.generatePackage.get()
                     this.featuredFilesDir.set(
                         rootProject
                             .layout.projectDirectory
                             .dir(".composepreviewlab/featured"),
                     )
-                    this.projectRootPath = extension.projectRootPath
+                    this.projectRootPath = extension.projectRootPath.get()
                     this.outputDir = outputDir.also { it.get().asFile.mkdirs() }
                 }
 
