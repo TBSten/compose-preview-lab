@@ -5,6 +5,8 @@ package me.tbsten.compose.preview.lab.compiler.ir
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
+import me.tbsten.compose.preview.lab.compiler.utils.callableIdOf
+import me.tbsten.compose.preview.lab.compiler.utils.classIdOf
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
@@ -25,9 +27,6 @@ import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.types.typeWith
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 import org.jetbrains.kotlin.ir.util.constructors
-import org.jetbrains.kotlin.name.CallableId
-import org.jetbrains.kotlin.name.ClassId
-import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.SpecialNames
 
@@ -75,7 +74,7 @@ internal class PreviewListIrBuilder(
 
     private val sequenceOfCollectedPreviewType by lazy {
         pluginContext.referenceClass(
-            ClassId(FqName("kotlin.sequences"), Name.identifier("Sequence")),
+            classIdOf("kotlin.sequences", "Sequence"),
         )!!.typeWith(collectedPreviewType)
     }
 
@@ -86,7 +85,7 @@ internal class PreviewListIrBuilder(
 
     private val lazyPreviewSequenceFun by lazy {
         pluginContext.referenceFunctions(
-            CallableId(FqName("me.tbsten.compose.preview.lab"), Name.identifier("lazyPreviewSequence")),
+            callableIdOf("me.tbsten.compose.preview.lab", "lazyPreviewSequence"),
         ).firstOrNull() ?: error(
             "me.tbsten.compose.preview.lab.lazyPreviewSequence not found on the compilation classpath. " +
                 "This usually means the compose-preview-lab runtime/core dependency is missing or there is " +
@@ -192,7 +191,7 @@ internal class PreviewListIrBuilder(
 
     private val previewExportClass by lazy {
         pluginContext.referenceClass(
-            ClassId(FqName("me.tbsten.compose.preview.lab"), Name.identifier("PreviewExport")),
+            classIdOf("me.tbsten.compose.preview.lab", "PreviewExport"),
         ) ?: error("PreviewExport class not found on classpath")
     }
 
@@ -240,7 +239,7 @@ internal class PreviewListIrBuilder(
         declarationParent: IrDeclarationParent
     ): IrExpression {
         val lazyFun = pluginContext.referenceFunctions(
-            CallableId(FqName("kotlin"), Name.identifier("lazy")),
+            callableIdOf("kotlin", "lazy"),
         ).first { fn ->
             fn.owner.parameters.filter { it.kind == IrParameterKind.Regular }.size == 1
         }
@@ -273,7 +272,7 @@ internal class PreviewListIrBuilder(
             builder,
             lazyFun,
             pluginContext.referenceClass(
-                ClassId(FqName("kotlin"), Name.identifier("Lazy")),
+                classIdOf("kotlin", "Lazy"),
             )!!.typeWith(sequenceOfCollectedPreviewType),
             listOf(sequenceOfCollectedPreviewType),
         ).apply {
@@ -288,7 +287,7 @@ internal class PreviewListIrBuilder(
      */
     private val distinctPreviewsByIdSequenceFun by lazy {
         pluginContext.referenceFunctions(
-            CallableId(FqName("me.tbsten.compose.preview.lab"), Name.identifier("distinctPreviewsByIdSequence")),
+            callableIdOf("me.tbsten.compose.preview.lab", "distinctPreviewsByIdSequence"),
         ).firstOrNull() ?: error(
             "me.tbsten.compose.preview.lab.distinctPreviewsByIdSequence not found on the compilation classpath. " +
                 "This usually means the compose-preview-lab runtime/core dependency is missing or there is " +

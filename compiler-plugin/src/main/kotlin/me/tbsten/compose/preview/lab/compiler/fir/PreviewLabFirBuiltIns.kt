@@ -1,6 +1,7 @@
 package me.tbsten.compose.preview.lab.compiler.fir
 
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
+import me.tbsten.compose.preview.lab.compiler.utils.classIdOf
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.name.CallableId
@@ -27,10 +28,7 @@ internal class PreviewLabFirBuiltIns(session: FirSession, val config: PluginConf
             FqName.fromSegments(listOf("me", "tbsten", "compose", "preview", "lab", "collectAllModulePreviews"))
 
         /** `me.tbsten.compose.preview.lab.CollectedPreview` `ClassId` — return type of every hint function. */
-        val COLLECTED_PREVIEW_CLASS_ID: ClassId = ClassId(
-            FqName("me.tbsten.compose.preview.lab"),
-            Name.identifier("CollectedPreview"),
-        )
+        val COLLECTED_PREVIEW_CLASS_ID: ClassId = classIdOf("me.tbsten.compose.preview.lab", "CollectedPreview")
 
         /** Package that owns every per-declaration hint function and marker interface. */
         val HINT_PACKAGE: FqName = FqName("me.tbsten.compose.preview.lab.hints")
