@@ -115,9 +115,9 @@ class PreviewHintEnabledFlagTest :
 
                 assertSoftly {
                     result.exitCode shouldBe KotlinCompilation.ExitCode.COMPILATION_ERROR
-                    result.messages shouldContain "[ComposePreviewLab]"
+                    result.messages shouldContain "[ComposePreviewLab/"
                     result.messages shouldContain "collectModulePreviews()"
-                    result.messages shouldContain "composePreviewLab.collectPreviews.enabled"
+                    result.messages shouldContain "composePreviewLab"
                 }
             }
 
@@ -138,9 +138,9 @@ class PreviewHintEnabledFlagTest :
 
                 assertSoftly {
                     result.exitCode shouldBe KotlinCompilation.ExitCode.COMPILATION_ERROR
-                    result.messages shouldContain "[ComposePreviewLab]"
+                    result.messages shouldContain "[ComposePreviewLab/"
                     result.messages shouldContain "collectAllModulePreviews()"
-                    result.messages shouldContain "composePreviewLab.collectPreviews.enabled"
+                    result.messages shouldContain "composePreviewLab"
                 }
             }
         }

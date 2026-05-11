@@ -5,6 +5,10 @@ package me.tbsten.compose.preview.lab.compiler.ir
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
+import me.tbsten.compose.preview.lab.compiler.error.PreviewExportNotFoundError
+import me.tbsten.compose.preview.lab.compiler.error.RuntimeFunctionNotFoundError
+import me.tbsten.compose.preview.lab.compiler.error.StdlibClassNotFoundError
+import me.tbsten.compose.preview.lab.compiler.error.orThrow
 import me.tbsten.compose.preview.lab.compiler.utils.callableIdOf
 import me.tbsten.compose.preview.lab.compiler.utils.classIdOf
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -75,7 +79,8 @@ internal class PreviewListIrBuilder(
     private val sequenceOfCollectedPreviewType by lazy {
         pluginContext.referenceClass(
             classIdOf("kotlin.sequences", "Sequence"),
-        )!!.typeWith(collectedPreviewType)
+        ).orThrow { StdlibClassNotFoundError("kotlin.sequences.Sequence") }
+            .typeWith(collectedPreviewType)
     }
 
     /** `() -> CollectedPreview` factory-lambda type used for the `lazyPreviewSequence` vararg. */
@@ -84,13 +89,9 @@ internal class PreviewListIrBuilder(
     }
 
     private val lazyPreviewSequenceFun by lazy {
-        pluginContext.referenceFunctions(
-            callableIdOf("me.tbsten.compose.preview.lab", "lazyPreviewSequence"),
-        ).firstOrNull() ?: error(
-            "me.tbsten.compose.preview.lab.lazyPreviewSequence not found on the compilation classpath. " +
-                "This usually means the compose-preview-lab runtime/core dependency is missing or there is " +
-                "a core/plugin version mismatch.",
-        )
+        val callableId = callableIdOf("me.tbsten.compose.preview.lab", "lazyPreviewSequence")
+        pluginContext.referenceFunctions(callableId).firstOrNull()
+            .orThrow { RuntimeFunctionNotFoundError(callableId) }
     }
 
     // ----- Preview list construction -----
@@ -192,7 +193,7 @@ internal class PreviewListIrBuilder(
     private val previewExportClass by lazy {
         pluginContext.referenceClass(
             classIdOf("me.tbsten.compose.preview.lab", "PreviewExport"),
-        ) ?: error("PreviewExport class not found on classpath")
+        ).orThrow { PreviewExportNotFoundError() }
     }
 
     private val previewExportType by lazy {
@@ -268,12 +269,13 @@ internal class PreviewListIrBuilder(
             function = lambdaFun,
         )
 
+        val lazyClass = pluginContext.referenceClass(
+            classIdOf("kotlin", "Lazy"),
+        ).orThrow { StdlibClassNotFoundError("kotlin.Lazy") }
         return compatContext.irCall(
             builder,
             lazyFun,
-            pluginContext.referenceClass(
-                classIdOf("kotlin", "Lazy"),
-            )!!.typeWith(sequenceOfCollectedPreviewType),
+            lazyClass.typeWith(sequenceOfCollectedPreviewType),
             listOf(sequenceOfCollectedPreviewType),
         ).apply {
             arguments[0] = lambdaExpr
@@ -286,13 +288,9 @@ internal class PreviewListIrBuilder(
      * Lazily-cached lookup of `me.tbsten.compose.preview.lab.distinctPreviewsByIdSequence`.
      */
     private val distinctPreviewsByIdSequenceFun by lazy {
-        pluginContext.referenceFunctions(
-            callableIdOf("me.tbsten.compose.preview.lab", "distinctPreviewsByIdSequence"),
-        ).firstOrNull() ?: error(
-            "me.tbsten.compose.preview.lab.distinctPreviewsByIdSequence not found on the compilation classpath. " +
-                "This usually means the compose-preview-lab runtime/core dependency is missing or there is " +
-                "a core/plugin version mismatch.",
-        )
+        val callableId = callableIdOf("me.tbsten.compose.preview.lab", "distinctPreviewsByIdSequence")
+        pluginContext.referenceFunctions(callableId).firstOrNull()
+            .orThrow { RuntimeFunctionNotFoundError(callableId) }
     }
 
     /**

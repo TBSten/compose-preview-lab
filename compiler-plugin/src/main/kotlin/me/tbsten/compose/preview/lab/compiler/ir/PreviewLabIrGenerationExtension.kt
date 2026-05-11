@@ -7,10 +7,11 @@ import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.getAnnotationCompat
 import me.tbsten.compose.preview.lab.compiler.compat.hasAnnotationCompat
+import me.tbsten.compose.preview.lab.compiler.error.HintHashCollisionError
+import me.tbsten.compose.preview.lab.compiler.error.report
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageLocation
-import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
@@ -73,17 +74,11 @@ class PreviewLabIrGenerationExtension(
             val previewsByHash = buildPreviewByHashMap(previews) { hash, existing, conflicting ->
                 val existingSignature = existing.function.canonicalSignatureForReport()
                 val conflictingSignature = conflicting.function.canonicalSignatureForReport()
-                val message = "[ComposePreviewLab] hint hash collision detected on `$hash`. " +
-                    "Two distinct @Preview functions hash to the same value: " +
-                    "`$existingSignature` and `$conflictingSignature`. " +
-                    "This is astronomically rare (~10⁻⁷ at 1k previews) but indicates a SHA-256 " +
-                    "truncation collision. Workaround: rename one of the functions or its package."
                 // Report at the *new* (conflicting) function's location so the build log points at
                 // the second @Preview that triggered the collision; the first one is named in the
-                // message body.
+                // message body / context.
                 messageCollector.report(
-                    CompilerMessageSeverity.ERROR,
-                    message,
+                    HintHashCollisionError(hash, existingSignature, conflictingSignature),
                     conflicting.function.compilerMessageLocation(),
                 )
             }

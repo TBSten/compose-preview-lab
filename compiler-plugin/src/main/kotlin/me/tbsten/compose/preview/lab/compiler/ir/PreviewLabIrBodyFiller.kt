@@ -5,11 +5,18 @@ package me.tbsten.compose.preview.lab.compiler.ir
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
+import me.tbsten.compose.preview.lab.compiler.error.CollectPreviewsDisabledError
+import me.tbsten.compose.preview.lab.compiler.error.InvalidScopeIrError
+import me.tbsten.compose.preview.lab.compiler.error.NonLiteralScopeIrError
+import me.tbsten.compose.preview.lab.compiler.error.PropertyHasNoGetterError
+import me.tbsten.compose.preview.lab.compiler.error.UnsupportedCollectAllError
+import me.tbsten.compose.preview.lab.compiler.error.orThrow
+import me.tbsten.compose.preview.lab.compiler.error.report
 import me.tbsten.compose.preview.lab.compiler.fir.PreviewLabFirBuiltIns
 import me.tbsten.compose.preview.lab.compiler.ir.util.declarationLocation
+import me.tbsten.compose.preview.lab.compiler.utils.callableIdOf
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
-import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
@@ -132,7 +139,8 @@ internal class PreviewLabIrBodyFiller(
         // the flag with a local collect call is almost always a configuration mistake.
         // Reporting an error keeps users from getting a silently-empty list at runtime.
         if (!config.collectPreviewsEnabled) {
-            reportCollectPreviewsDisabledError(property, isAll)
+            val callName = if (isAll) "collectAllModulePreviews()" else "collectModulePreviews()"
+            messageCollector.report(CollectPreviewsDisabledError(callName), declarationLocation(property))
             return
         }
 
@@ -145,14 +153,20 @@ internal class PreviewLabIrBodyFiller(
         // any 2.3.20+ compiler. When the gate is unmet we report a structured error here
         // so users get a clear upgrade path rather than a silent half-broken aggregation.
         if (isAll && !compatContext.supportsFirHintGeneration()) {
-            reportUnsupportedCollectAllError(property)
+            messageCollector.report(
+                UnsupportedCollectAllError("collectAllModulePreviews"),
+                declarationLocation(property),
+            )
             return
         }
         if (isAll &&
             pluginContext.platform.requiresKlibIcSafetyForCrossModuleHint &&
             !compatContext.supportsKlibCrossModuleHint()
         ) {
-            reportUnsupportedCollectAllError(property)
+            messageCollector.report(
+                UnsupportedCollectAllError("collectAllModulePreviews"),
+                declarationLocation(property),
+            )
             return
         }
 
@@ -171,7 +185,10 @@ internal class PreviewLabIrBodyFiller(
             is ScopeArgResult.Literal -> {
                 val rawValue = resolution.value
                 if (!PreviewLabFirBuiltIns.SCOPE_VALIDATION_REGEX.matches(rawValue)) {
-                    reportInvalidScopeError(property, callName, rawValue)
+                    messageCollector.report(
+                        InvalidScopeIrError(callName, rawValue),
+                        declarationLocation(property),
+                    )
                     return
                 }
                 // Sentinel substitution: a literal `"default"` (the
@@ -182,7 +199,10 @@ internal class PreviewLabIrBodyFiller(
                 if (rawValue == ComposePreviewLabOption.DefaultCollectScope) config.defaultCollectScope else rawValue
             }
             is ScopeArgResult.NonLiteral -> {
-                reportNonLiteralScopeError(property, callName)
+                messageCollector.report(
+                    NonLiteralScopeIrError(callName),
+                    declarationLocation(property),
+                )
                 return
             }
         }
@@ -196,10 +216,7 @@ internal class PreviewLabIrBodyFiller(
         // (The Kotlin 2.3+ JVM backend asserts on lambdas whose parent is an IrFile via
         // `MethodSignatureMapper.mapToMethodHandle` with "Unexpected parent: FILE".)
         val lambdaParent: IrDeclarationParent = property.getter
-            ?: error(
-                "collectModulePreviews/collectAllModulePreviews delegate must be on a property" +
-                    " with a getter, not a backing field",
-            )
+            .orThrow { PropertyHasNoGetterError(callableIdOf("me.tbsten.compose.preview.lab", callName)) }
 
         val sequenceExpr = if (isAll) {
             irBuilder.buildConcatenatedPreviewsExpr(builder, lambdaParent, scope)
@@ -220,109 +237,6 @@ internal class PreviewLabIrBodyFiller(
         // Cross-module aggregation requires Kotlin 2.3.21+ for the FIR-based marker class
         // solution that avoids KLIB IdSignature collisions. Older Kotlin versions are no longer
         // supported by this compiler plugin.
-    }
-
-    /**
-     * Reports the Kotlin-version-gate error for `collectAllModulePreviews()`.
-     *
-     * **Input** (semantically): the property's IR node for
-     * ```kotlin
-     * val previews by collectAllModulePreviews()
-     * ```
-     * compiled by a Kotlin compiler older than 2.3.21.
-     *
-     * **Output**: a `CompilerMessageSeverity.ERROR` reported through [messageCollector]
-     * pointing at the property declaration, which causes the build to fail with a clear
-     * upgrade-or-downgrade message. The IR is left untouched (the property keeps its
-     * sentinel `collectAllModulePreviews()` initializer and the property's getter will
-     * throw at runtime if the build somehow proceeds).
-     */
-    private fun reportUnsupportedCollectAllError(property: IrProperty) {
-        messageCollector.report(
-            CompilerMessageSeverity.ERROR,
-            "[ComposePreviewLab] collectAllModulePreviews() requires Kotlin 2.3.21 or later " +
-                "for cross-module preview aggregation. " +
-                "Either upgrade Kotlin to 2.3.21+, or use collectModulePreviews() for " +
-                "single-module collection.",
-            declarationLocation(property),
-        )
-    }
-
-    /**
-     * Reports the disabled-module error for any `collect[All]ModulePreviews()` call site
-     * found while `collectPreviewsEnabled = false`.
-     *
-     * **Input** (semantically): the property's IR node for
-     * ```kotlin
-     * val previews by collectModulePreviews()       // or collectAllModulePreviews()
-     * ```
-     * compiled with `composePreviewLab.collectPreviews.enabled = false` in the Gradle
-     * configuration.
-     *
-     * **Output**: `CompilerMessageSeverity.ERROR` pointing at the property declaration.
-     * The disabled flag suppresses every per-declaration hint emission for this module
-     * (and consequently every cross-module aggregation it might participate in), so any
-     * call site is almost certainly a configuration mistake — surfacing it as a compile
-     * error is better than letting users observe a silently-empty list at runtime.
-     */
-    private fun reportCollectPreviewsDisabledError(property: IrProperty, isAll: Boolean) {
-        val callName = if (isAll) "collectAllModulePreviews()" else "collectModulePreviews()"
-        messageCollector.report(
-            CompilerMessageSeverity.ERROR,
-            "[ComposePreviewLab] $callName cannot be used in this module because " +
-                "the `collectPreviewsEnabled` plugin option is false " +
-                "(typically set via `composePreviewLab.collectPreviews.enabled` in the Gradle DSL, " +
-                "or via the `-P plugin:...:collectPreviewsEnabled=...` compiler option in non-Gradle setups). " +
-                "Either remove the call, or re-enable the option for this module.",
-            declarationLocation(property),
-        )
-    }
-
-    /**
-     * Reports the strict-literal-only error for `collect[All]ModulePreviews(scope = ...)`.
-     *
-     * The FIR `CollectScopeCallChecker` already flags clear-cut non-literals (string
-     * concatenations, function calls). It cannot flag plain (non-`const`) `val` references
-     * at FIR analysis time because `const val` references — which ARE allowed — look
-     * identical to it (both arrive as `FirPropertyAccessExpression`). The IR pass is the
-     * first place where the const-folded `IrConst<String>` distinction is observable, so
-     * we keep this rejection here as the second-line check.
-     */
-    private fun reportNonLiteralScopeError(property: IrProperty, callName: String) {
-        messageCollector.report(
-            CompilerMessageSeverity.ERROR,
-            "[ComposePreviewLab] $callName(scope = ...) accepts only a compile-time string " +
-                "constant — an inline string literal or a `const val` reference. Non-`const` " +
-                "vals, string concatenations, and other expressions are reported as errors " +
-                "because the value is embedded into the synthetic hint function name at " +
-                "IR-pass time.",
-            declarationLocation(property),
-        )
-    }
-
-    /**
-     * Reports the regex-violation error for a literal `collect[All]ModulePreviews(scope = ...)`
-     * value that reached IR through const-folding.
-     *
-     * The FIR `CollectScopeCallChecker` catches inline string literals
-     * (`scope = "has-hyphen"`) at analysis time, but a `const val` reference is
-     * indistinguishable from a non-`const` `val` reference at FIR time and is therefore
-     * left to the IR pass. By the time we get here the const-folded `IrConst<String>` is
-     * a hand-written-literal-equivalent, so the same regex must apply — otherwise a
-     * `private const val BAD = "has space"; collectModulePreviews(scope = BAD)` would
-     * silently bypass validation and the synthetic `previewHint_<scope>` lookup would
-     * either throw on `Name.identifier(...)` or land on an unrelated identifier.
-     */
-    private fun reportInvalidScopeError(property: IrProperty, callName: String, scope: String) {
-        messageCollector.report(
-            CompilerMessageSeverity.ERROR,
-            "[ComposePreviewLab] $callName(scope = \"$scope\") is not a valid scope " +
-                "identifier. Allowed characters: [A-Za-z0-9_]+ (the value is embedded into " +
-                "the synthetic previewHint_<scope> function name). This usually means a " +
-                "`const val` referenced as `scope = MY_CONST` evaluates to an invalid " +
-                "string at compile time.",
-            declarationLocation(property),
-        )
     }
 
     /**
