@@ -1,79 +1,83 @@
 # Feature: previewCollection
 
-`@Preview` 関数の **収集**、 `collect[All]ModulePreviews()` の置換、 cross-module hint discovery を担う feature。
+The feature responsible for **collecting** `@Preview` functions, replacing `collect[All]ModulePreviews()`, and discovering hints across modules.
 
-このディレクトリは feature の **設計ドキュメント entrypoint** で、 各 logic の詳細トピックは別ファイルに分かれている。
-ディレクトリ構造そのものの overview は [`compiler-plugin/README.md`](../../README.md) のみが持つ (SSoT)。
-本 README は feature 内の **構成 logic 一覧** と **各詳細トピックへの導線** に専念する。
+This directory is the **entrypoint for the feature's design documents**, and each logic-level topic lives in a dedicated file.
+The overview of the directory structure itself is owned exclusively by [`compiler-plugin/README.md`](../../README.md) (SSoT).
+This README focuses on the **list of constituent logics** in the feature and on **links into each detailed topic**.
 
 ---
 
 ## Feature Overview
 
-ユーザ側コード:
+User-side code:
 
 ```kotlin
 @Preview fun MyButton() { ... }
-val myPreviews by collectModulePreviews()        // module 内のみ
-val allPreviews by collectAllModulePreviews()    // module + dependency modules
+val myPreviews by collectModulePreviews()        // current module only
+val allPreviews by collectAllModulePreviews()    // current module + dependency modules
 ```
 
-これを「 plugin が `@Preview` を収集して `myPreviews` / `allPreviews` に注入する」 ように見せるための処理を、
-FIR phase + IR phase の 2 段階で実現する。
+The plugin makes this look as if it "collects all `@Preview` functions and injects them into `myPreviews` / `allPreviews`",
+implementing that illusion in two phases: FIR phase + IR phase.
 
 ```
 FIR phase
-├── scopeValidation/              — collectScopes / scope 引数の literal / regex 検証 (IDE red-squiggly)
-└── hintAndMarkerGeneration/      — 各 @Preview に対して marker interface + previewHint_<scope> stub を合成
+├── scopeValidation/              — collectScopes / scope-argument literal / regex validation (IDE red-squiggly)
+└── hintAndMarkerGeneration/      — synthesizes a marker interface + previewHint_<scope> stub for every @Preview
 
 IR phase
-└── collectPreviewsReplacement/   — collect[All]ModulePreviews() を置換 + dependency hint 発見 + hint body 埋め込み
-    └── buildPreviewSequence/     — lazyPreviewSequence + PreviewExport IR を構築 (sub-logic)
+└── collectPreviewsReplacement/   — rewrites collect[All]ModulePreviews(), discovers dependency hints, fills hint bodies
+    └── buildPreviewSequence/     — builds the lazyPreviewSequence + PreviewExport IR (sub-logic)
 ```
 
 ---
 
-## 構成 logic 一覧
+## List of constituent logics
 
-### FIR 側
+### FIR side
 
-- **hintAndMarkerGeneration** — `@Preview` ごとに marker interface (`PreviewHintMarker_<sanitized_fqn>_<hash>`) と
-  hint 関数 (`previewHint_<scope>`) を synthesize。 詳細: [hint-generation.md](./hint-generation.md) /
+- **hintAndMarkerGeneration** — Synthesizes a marker interface (`PreviewHintMarker_<sanitized_fqn>_<hash>`) and
+  hint functions (`previewHint_<scope>`) for every `@Preview`. Details: [hint-generation.md](./hint-generation.md) /
   [marker-generation.md](./marker-generation.md)
-  - 設計初版では 2 logic 分離 (`hintGeneration/` + `markerGeneration/`) だったが、 PR #200 で 1 logic 統合形に。
-    維持 vs 再分離の判断基準は [marker-generation.md](./marker-generation.md) 参照
-  - 配置: [`fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt)
-  - helper: [`fir/hintGeneration/DeprecationHidden.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintGeneration/DeprecationHidden.kt) (hint/marker 双方で利用)、
-    [`fir/AttachInternalApi.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/AttachInternalApi.kt) (hint/marker 双方で利用)
-- **scopeValidation** — `@ComposePreviewLabOption(collectScopes = [...])` と
-  `collect[All]ModulePreviews(scope = ...)` の文字列引数を `[A-Za-z0-9_]+` で検証。 詳細: [scope-validation.md](./scope-validation.md)
-  - 配置: [`fir/scopeValidation/`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/scopeValidation/)
+  - The initial design split this into two logics (`hintGeneration/` + `markerGeneration/`), but PR #200 merged
+    them into a single logic. Criteria for keeping the unified form versus re-splitting are in
+    [marker-generation.md](./marker-generation.md).
+  - Location: [`fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt)
+  - Helpers: [`fir/hintGeneration/DeprecationHidden.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintGeneration/DeprecationHidden.kt) (shared by both hint and marker),
+    [`fir/AttachInternalApi.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/AttachInternalApi.kt) (shared by both hint and marker)
+- **scopeValidation** — Validates the string arguments of `@ComposePreviewLabOption(collectScopes = [...])` and
+  `collect[All]ModulePreviews(scope = ...)` against `[A-Za-z0-9_]+`. Details: [scope-validation.md](./scope-validation.md)
+  - Location: [`fir/scopeValidation/`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/scopeValidation/)
 
-### IR 側
+### IR side
 
-- **collectPreviewsReplacement** — `collect[All]ModulePreviews()` 呼び出しの IR 置換、 dependency module の hint 関数
-  発見、 hint stub body 埋め込み、 hash → preview map 構築。 詳細: [collect-previews-replacement.md](./collect-previews-replacement.md)
-  - 配置: [`ir/collectPreviewsReplacement/`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/)
-  - sub-logic **buildPreviewSequence** — `lazyPreviewSequence({factory}, ...)` / `lazy { ... }` / `PreviewExport(...)` /
-    cross-module 連結 IR 構築 (PR #196 系 Sequence refactor 反映)。 詳細は
-    [collect-previews-replacement.md](./collect-previews-replacement.md) の「sub-logic」セクション
-
----
-
-## 横断トピック
-
-- **[hint-naming.md](./hint-naming.md)** — `HintCanonicalKey` + `HintFunName` + `MarkerInterfaceName` の関係 SSoT。
-  どの class がどの命名関数を参照するか、 truncated hash 長さの設計判断、 sanitized FQN の情報損失設計など。
-  hint / marker / discovery の 3 sites の一致を保証するための **single source of truth** として、 他 logic doc から参照される
-- **[error-flow.md](./error-flow.md)** — FIR diagnostic (`KtDiagnosticFactory*`) と IR 構造化 Error
-  (`ComposePreviewLabCompilerPluginError`) の役割分担、 二重防衛が必要な理由、 各 Error 発火条件一覧
+- **collectPreviewsReplacement** — Replaces the IR of `collect[All]ModulePreviews()` calls, discovers hint
+  functions from dependency modules, fills hint stub bodies, and builds the hash → preview map.
+  Details: [collect-previews-replacement.md](./collect-previews-replacement.md)
+  - Location: [`ir/collectPreviewsReplacement/`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/)
+  - Sub-logic **buildPreviewSequence** — Builds IR for `lazyPreviewSequence({factory}, ...)` / `lazy { ... }` /
+    `PreviewExport(...)` and cross-module concatenation (reflecting the PR #196-series Sequence refactor).
+    For details, see the "sub-logic" section in [collect-previews-replacement.md](./collect-previews-replacement.md).
 
 ---
 
-## 読み順 (推奨)
+## Cross-cutting topics
 
-1. **[hint-naming.md](./hint-naming.md)** — 命名規則を頭に入れる。 全 logic doc がこの規則を前提に書かれている
-2. **[error-flow.md](./error-flow.md)** — 各 Error がどの phase / 役割で発火するかの全体地図
-3. **[hint-generation.md](./hint-generation.md)** + **[marker-generation.md](./marker-generation.md)** — FIR 生成側
-4. **[scope-validation.md](./scope-validation.md)** — FIR Checker 側 (= IDE 上のリアクション)
-5. **[collect-previews-replacement.md](./collect-previews-replacement.md)** — IR 側 (= 実際の置換と body 埋め込み)
+- **[hint-naming.md](./hint-naming.md)** — SSoT for the relationship between `HintCanonicalKey` + `HintFunName` +
+  `MarkerInterfaceName`. Which class references which naming function, the design rationale for the truncated hash
+  length, the lossy-by-design nature of `sanitized` FQNs, and more. Serves as the **single source of truth**
+  guaranteeing agreement among the three sites (hint / marker / discovery) and is referenced from the other logic docs.
+- **[error-flow.md](./error-flow.md)** — Division of responsibility between FIR diagnostics
+  (`KtDiagnosticFactory*`) and IR-side structured errors (`ComposePreviewLabCompilerPluginError`), why we need
+  two-level defense, and a list of trigger conditions for each error.
+
+---
+
+## Recommended reading order
+
+1. **[hint-naming.md](./hint-naming.md)** — Internalize the naming rules. Every logic doc assumes you know them.
+2. **[error-flow.md](./error-flow.md)** — The big-picture map of which error fires in which phase / role.
+3. **[hint-generation.md](./hint-generation.md)** + **[marker-generation.md](./marker-generation.md)** — The FIR generation side.
+4. **[scope-validation.md](./scope-validation.md)** — The FIR Checker side (i.e. how users see it in the IDE).
+5. **[collect-previews-replacement.md](./collect-previews-replacement.md)** — The IR side (i.e. the actual replacement and body filling).
