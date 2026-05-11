@@ -1,5 +1,7 @@
 # Logic: collectPreviews Replacement (+ sub-logic `buildPreviewSequence/`)
 
+> [日本語版](./collect-previews-replacement.ja.md)
+
 The logic that **rewrites the property delegate field initializer at IR phase** for
 `val previews by collectModulePreviews()` / `val allPreviews by collectAllModulePreviews()`, and embeds the
 actual `Sequence<CollectedPreview>` construction IR.
