@@ -1,16 +1,18 @@
 # Logic: collectPreviews Replacement (+ sub-logic `buildPreviewSequence/`)
 
-`val previews by collectModulePreviews()` / `val allPreviews by collectAllModulePreviews()` の
-**property delegate field initializer を IR phase で書き換え**、 actual な `Sequence<CollectedPreview>`
-構築 IR を埋め込む logic。
+The logic that **rewrites the property delegate field initializer at IR phase** for
+`val previews by collectModulePreviews()` / `val allPreviews by collectAllModulePreviews()`, and embeds the
+actual `Sequence<CollectedPreview>` construction IR.
 
-ユーザ目線では sentinel call (`collectModulePreviews()` / `collectAllModulePreviews()`) が「 module 内の全
-`@Preview` を集める」 マジックな関数だが、 実体は IR transform で書き換えられる **synthetic な call site** に過ぎない。
-同時に hint stub の body 埋め込み (= FIR 側 [`hintAndMarkerGeneration/`](./hint-generation.md) の続き) もこの logic 内で完結する。
+From the user's point of view, the sentinel calls `collectModulePreviews()` / `collectAllModulePreviews()` look
+like a magic function that "collects every `@Preview` inside the module"; in reality, they are nothing but a
+**synthetic call site** that gets rewritten by an IR transform. The same logic also fills in the hint stub
+bodies emitted by the FIR-side [`hintAndMarkerGeneration/`](./hint-generation.md), so the body-filling
+responsibility is owned end-to-end here.
 
 ---
 
-## 入出力 (Before / After)
+## Input / Output (Before / After)
 
 ### Input
 
@@ -45,100 +47,108 @@ val allPreviews by PreviewExport(
 )
 ```
 
-各 `CollectedPreview(...)` constructor call は `() -> CollectedPreview` factory lambda にラップされ、
-`asSequence().take(n)` イテレーション時に **必要な要素だけ** `@Composable { ... }` を allocate する遅延構築になる。
+Every `CollectedPreview(...)` constructor call is wrapped in a `() -> CollectedPreview` factory lambda, so that
+during `asSequence().take(n)` iteration **only the necessary elements** end up allocating their
+`@Composable { ... }` block — the rest stays unconstructed.
 
 ---
 
-## 構成: logic + sub-logic
+## Structure: logic + sub-logic
 
 ```
 collectPreviewsReplacement/
 ├── ReplaceCollectPreviewsFunBody.kt        # orchestrator (IrElementTransformerVoid)
 ├── CollectPreviewsCallFqns.kt              # COLLECT_MODULE_PREVIEWS_FQN / COLLECT_ALL_MODULE_PREVIEWS_FQN (SSoT)
-├── DiscoverHints.kt                        # cross-module hint 発見 (referenceFunctions per scope)
-├── FillPreviewHintIrBody.kt                # FIR が emit した previewHint_<scope> stub body 埋め込み
-├── BuildPreviewByHashMap.kt                # hash → PreviewFunctionInfo マップ構築
-├── HashMapWithCollisionDetection.kt        # 衝突検出付き map builder (preview-specific helper)
-└── buildPreviewSequence/                   # sub-logic: IR 構築 builder 群
-    ├── BuildPreviewSequenceIr.kt           # orchestrator + 共有 PreviewSequenceBuildContext
+├── DiscoverHints.kt                        # cross-module hint discovery (referenceFunctions per scope)
+├── FillPreviewHintIrBody.kt                # fills the body of the previewHint_<scope> stubs emitted by FIR
+├── BuildPreviewByHashMap.kt                # builds the hash → PreviewFunctionInfo map
+├── HashMapWithCollisionDetection.kt        # collision-detecting map builder (preview-specific helper)
+└── buildPreviewSequence/                   # sub-logic: IR construction builders
+    ├── BuildPreviewSequenceIr.kt           # orchestrator + shared PreviewSequenceBuildContext
     ├── BuildLazyWrapperIr.kt               # lazy { ... }
     ├── BuildPreviewExportIr.kt             # PreviewExport(...)
-    ├── BuildConcatenatedPreviewSequencesIr.kt  # cross-module 連結 + distinctPreviewsByIdSequence
+    ├── BuildConcatenatedPreviewSequencesIr.kt  # cross-module concatenation + distinctPreviewsByIdSequence
     ├── BuildCollectedPreviewIr.kt          # CollectedPreview(...) ctor call
-    └── ExtractedSourceText.kt              # source / KDoc 抽出 helper
+    └── ExtractedSourceText.kt              # source / KDoc extraction helper
 ```
 
 ---
 
-## logic 詳細
+## Logic details
 
 ### `ReplaceCollectPreviewsFunBody` — orchestrator
 
-`IrElementTransformerVoid` を継承し、 `visitProperty` で `val x by collect[All]ModulePreviews()` 構造を検出。
-発見した property の delegate field initializer を [`BuildPreviewSequenceIr`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/buildPreviewSequence/BuildPreviewSequenceIr.kt) /
+Inherits from `IrElementTransformerVoid`. `visitProperty` detects the `val x by collect[All]ModulePreviews()`
+shape, and delegates the rewrite of the discovered property's delegate field initializer to
+[`BuildPreviewSequenceIr`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/buildPreviewSequence/BuildPreviewSequenceIr.kt) /
 [`BuildPreviewExportIr`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/buildPreviewSequence/BuildPreviewExportIr.kt) /
 [`BuildLazyWrapperIr`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/buildPreviewSequence/BuildLazyWrapperIr.kt) /
-[`BuildConcatenatedPreviewSequencesIr`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/buildPreviewSequence/BuildConcatenatedPreviewSequencesIr.kt) に委譲して書き換える。
+[`BuildConcatenatedPreviewSequencesIr`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/buildPreviewSequence/BuildConcatenatedPreviewSequencesIr.kt).
 
-ここでは以下の 4 グループの Error 発火元になる ([error-flow.md](./error-flow.md) 参照):
+This file is the firing point for the following four groups of errors (see [error-flow.md](./error-flow.md)):
 
-- `UnsupportedCollectAllError` — Kotlin <2.3.20/<2.3.21 で `collectAllModulePreviews()`
-- `CollectPreviewsDisabledError` — `collectPreviewsEnabled=false` 時
-- `NonLiteralScopeIrError` / `InvalidScopeIrError` — scope 引数の IR-pass backstop
-- `PropertyHasNoGetterError` — defensive (`property.getter == null`)
+- `UnsupportedCollectAllError` — A `collectAllModulePreviews()` call on Kotlin <2.3.20/<2.3.21.
+- `CollectPreviewsDisabledError` — When `collectPreviewsEnabled=false`.
+- `NonLiteralScopeIrError` / `InvalidScopeIrError` — IR-pass backstop for the scope argument.
+- `PropertyHasNoGetterError` — Defensive (`property.getter == null`).
 
-### `DiscoverHints` — cross-module hint 発見
+### `DiscoverHints` — cross-module hint discovery
 
-`collectAllModulePreviews(scope = "design")` のとき、 dependency module が emit した
-`previewHint_design(value: PreviewHintMarker_<...>?): CollectedPreview` 関数群を `referenceFunctions(CallableId(HINT_PACKAGE, "previewHint_design"))`
-で 1 lookup で発見する。
+When the call is `collectAllModulePreviews(scope = "design")`, we discover every dependency-module-emitted
+`previewHint_design(value: PreviewHintMarker_<...>?): CollectedPreview` function in **one lookup** via
+`referenceFunctions(CallableId(HINT_PACKAGE, "previewHint_design"))`.
 
-#### scope を関数名に embed する設計のメリット
+#### Why embedding the scope in the function name pays off
 
-scope 違いの hint は **関数名が違う** ため、 lookup の時点で除外される。 per-hint annotation inspection が不要。
-詳細は [hint-naming.md](./hint-naming.md) 参照。
+Hints for other scopes have a **different function name**, so they are excluded at lookup time. No per-hint
+annotation inspection is required. See [hint-naming.md](./hint-naming.md).
 
 #### Platform gate
 
-KLIB targets (JS / Wasm / Native) は KT-82395 の `referenceFunctions` IC-safety fix (= Kotlin 2.3.21+) が必須。
-JVM / Android は Kotlin 2.3.20+ の FIR per-declaration hint generator (= `supportsFirHintGeneration`) だけで動く。
-gate は [`utils/ir/PlatformUtil.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/utils/ir/PlatformUtil.kt) の
-`TargetPlatform?.requiresKlibIcSafetyForCrossModuleHint` extension で抽象化されている。
+For KLIB targets (JS / Wasm / Native), KT-82395's `referenceFunctions` IC-safety fix (= Kotlin 2.3.21+) is
+mandatory. JVM / Android work with just Kotlin 2.3.20+ (FIR per-declaration hint generator,
+= `supportsFirHintGeneration`). The gate is abstracted in the
+`TargetPlatform?.requiresKlibIcSafetyForCrossModuleHint` extension defined in
+[`utils/ir/PlatformUtil.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/utils/ir/PlatformUtil.kt).
 
 #### Squatting guard / cross-artifact dup warning
 
-`@SyntheticPreviewHint` annotation の有無で「 plugin が emit した hint か user 手書きか」 を区別する
-(= namespace squatting guard)。 また同じ marker class が複数 artifact から見える場合
-(cross-artifact duplicate detection) も警告対象。
+We use the presence of `@SyntheticPreviewHint` to distinguish "a hint emitted by the plugin" from "a hint
+hand-written by the user" (= namespace-squatting guard). Likewise, if the same marker class is visible from
+multiple artifacts (cross-artifact duplicate detection), a warning is produced.
 
-> 2026-05 時点では `messageCollector.report(WARNING, ...)` の literal 直書きとして残っており、 Ticket 4 で
-> `warning/Warnings.kt` の `ComposePreviewLabCompilerPluginWarning` 実装に migrate 予定 (詳細は
-> [`.claude/rules/compiler-plugin-error.md`](../../../.claude/rules/compiler-plugin-error.md) 「段階的移行中の既知の rule 違反」)。
+> As of 2026-05, the warning is still written out as a literal `messageCollector.report(WARNING, ...)` call.
+> Ticket 4 will migrate it to a `ComposePreviewLabCompilerPluginWarning` implementation in `warning/Warnings.kt`
+> (see "Known rule violations during gradual migration" in
+> [`.claude/rules/compiler-plugin-error.md`](../../../.claude/rules/compiler-plugin-error.md)).
 
-### `FillPreviewHintIrBody` — hint stub body 埋め込み
+### `FillPreviewHintIrBody` — fills the hint stub body
 
-FIR 側 [`hintAndMarkerGeneration/PreviewHintFirGenerator`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt) が
-body なしで emit した `previewHint_<scope>(value: PreviewHintMarker_<...>?)` stub に、 IR phase で
-`return CollectedPreview(...)` を埋める。
+The FIR-side
+[`hintAndMarkerGeneration/PreviewHintFirGenerator`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt)
+emits `previewHint_<scope>(value: PreviewHintMarker_<...>?)` stubs without a body; at IR phase we fill in
+`return CollectedPreview(...)`.
 
-#### hint と `@Preview` の対応付け
+#### Pairing hints with `@Preview`s
 
-`previewHint_<scope>(value: PreviewHintMarker_<sanitized_fqn>_<hash>?)` の parameter 型 (marker class) の
-**短名末尾 8 文字** = hash を [`extractHashFromMarkerShortName`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/MarkerInterfaceName.kt) で取り出し、
-[`BuildPreviewByHashMap`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/BuildPreviewByHashMap.kt) が
-構築した `hash → PreviewFunctionInfo` map で lookup する。 FIR / IR 双方が同じ canonical key + hash function
-([`HintCanonicalKey.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/HintCanonicalKey.kt))
-を使うため、 一意な対応付けが成立する。
+The parameter type (marker class) of `previewHint_<scope>(value: PreviewHintMarker_<sanitized_fqn>_<hash>?)`
+ends with **8 fixed-length characters** representing the hash. We pull it out with
+[`extractHashFromMarkerShortName`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/MarkerInterfaceName.kt)
+and look it up in the `hash → PreviewFunctionInfo` map built by
+[`BuildPreviewByHashMap`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/BuildPreviewByHashMap.kt).
+Because both the FIR and IR sides use the same canonical key + hash function
+([`HintCanonicalKey.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/HintCanonicalKey.kt)),
+the correspondence is uniquely defined.
 
-#### Origin チェック
+#### Origin check
 
 `IrSimpleFunction.origin === IrDeclarationOrigin.GeneratedByPlugin && origin.pluginKey === PreviewKeys.PreviewLabHint`
-で「 FIR generator が emit した stub」 と限定。 visit 対象を絞ることで他の `previewHint_*` 名衝突に対する安全マージン。
+restricts us to "stubs emitted by the FIR generator". Narrowing the visit set this way gives us a safety margin
+against any other accidental `previewHint_*` name clashes.
 
 ### `BuildPreviewByHashMap` + `HashMapWithCollisionDetection`
 
-`hash → PreviewFunctionInfo` map を、 衝突検出 callback 付きで構築する。
+Builds the `hash → PreviewFunctionInfo` map with a collision-detection callback.
 
 ```kotlin
 BuildPreviewByHashMap().invoke(previews) { hash, existing, conflicting ->
@@ -149,115 +159,123 @@ BuildPreviewByHashMap().invoke(previews) { hash, existing, conflicting ->
 }
 ```
 
-- canonical key (`<sourceFqn>(<paramTypes>)`) を hash 入力としている。 同 FQN の overload は別 canonical key →
-  別 hash → 衝突しない
-- truncated SHA-256 (8 chars base-36) は約 41bit、 1k previews の真の衝突確率 ≈ `10^-7`
-- 同じ canonical key を 2 度 register するのは idempotent overwrite として扱い、 衝突扱いしない
-- `HashMapWithCollisionDetection.kt` は **preview-specific helper** として `utils/` ではなく logic 内に閉じる
-  (callback shape が preview の semantic に依存しているため一般化禁止。 詳細は同 file の KDoc 参照)
+- The hash input is the canonical key (`<sourceFqn>(<paramTypes>)`). Overloads sharing the same FQN have
+  different canonical keys → different hashes → no collision.
+- Truncated SHA-256 (8 base-36 chars) yields about 41 bits, so the true collision probability for 1k previews
+  is ≈ `10^-7`.
+- Registering the same canonical key twice is treated as an idempotent overwrite and is not flagged as a collision.
+- `HashMapWithCollisionDetection.kt` lives inside the logic rather than under `utils/` as a
+  **preview-specific helper** (the callback shape is bound to preview semantics, and generalizing it would
+  break that — see the KDoc in the file for details).
 
 ### `CollectPreviewsCallFqns`
 
 - `COLLECT_MODULE_PREVIEWS_FQN = "me.tbsten.compose.preview.lab.collectModulePreviews"`
 - `COLLECT_ALL_MODULE_PREVIEWS_FQN = "me.tbsten.compose.preview.lab.collectAllModulePreviews"`
 
-FQN の SSoT。 `ReplaceCollectPreviewsFunBody` (IR sentinel call 検出) と
-[`scopeValidation/CheckCollectScopeCall`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/scopeValidation/CheckCollectScopeCall.kt) (FIR Checker target) が同じ FQN を参照する。
+The SSoT for these FQNs. Referenced by `ReplaceCollectPreviewsFunBody` (IR sentinel-call detection) and by
+[`scopeValidation/CheckCollectScopeCall`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/scopeValidation/CheckCollectScopeCall.kt) (the FIR Checker target).
 
 ---
 
-## sub-logic `buildPreviewSequence/` 詳細
+## sub-logic `buildPreviewSequence/` details
 
-PR #196 系の Sequence refactor 反映済。 旧 `listOf(CollectedPreview(...), ...)` 経路は撤去され、
-`lazyPreviewSequence({ CollectedPreview(...) }, { CollectedPreview(...) }, ...)` の factory lambda vararg 形式に移行している。
+Reflects the PR #196-series Sequence refactor. The legacy `listOf(CollectedPreview(...), ...)` path has been
+removed; the code has moved to the factory-lambda vararg form
+`lazyPreviewSequence({ CollectedPreview(...) }, { CollectedPreview(...) }, ...)`.
 
 ### `BuildPreviewSequenceIr` (orchestrator)
 
-`lazyPreviewSequence(*factories)` の **同 module 専用** sequence を構築する builder。 sibling builder と
-共有する `PreviewSequenceBuildContext` を内部に持ち、 各 sub-builder にこの context を渡す。
+The builder for the **same-module-only** `lazyPreviewSequence(*factories)`. It internally owns a
+`PreviewSequenceBuildContext` that is shared with the sibling builders, and passes that context to each
+sub-builder.
 
-`PreviewSequenceBuildContext` は以下を share:
+`PreviewSequenceBuildContext` shares:
 
-- `lazyPreviewSequence` / `Sequence<CollectedPreview>` / factory lambda 型 (`() -> CollectedPreview`) の **lazy 解決**
-  (1 transformer 1 module あたり 1 回)
-- `factoryLambdaCounter` — sibling 匿名 factory lambda の JVM lowering 名衝突 (`<containing>$N` mangling) を回避する
-  ためのカウンタ。 各 factory に `previewFactory_$N` を付与
-- `previewBuilder: BuildCollectedPreviewIr` — `CollectedPreview(...)` ctor call の構築 reuse
+- **Lazy resolution** of `lazyPreviewSequence` / `Sequence<CollectedPreview>` / the factory lambda type
+  (`() -> CollectedPreview`) — once per transformer per module.
+- `factoryLambdaCounter` — A counter that avoids the JVM-lowered name collisions among sibling anonymous
+  factory lambdas (`<containing>$N` mangling). Each factory is named `previewFactory_$N`.
+- `previewBuilder: BuildCollectedPreviewIr` — Reuses the constructor-call build for `CollectedPreview(...)`.
 
 ### `BuildLazyWrapperIr`
 
-`lazy { sequenceExpr }` を構築するだけの最小 builder。 `kotlin.Lazy<Sequence<CollectedPreview>>` 型の値を返す。
+The minimal builder that constructs `lazy { sequenceExpr }`. Returns a value of type
+`kotlin.Lazy<Sequence<CollectedPreview>>`.
 
 ### `BuildPreviewExportIr`
 
-`PreviewExport(lazyExpr)` constructor call を構築。 [`PreviewExportNotFoundError`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/Errors.kt) の発火元。
+Builds the `PreviewExport(lazyExpr)` constructor call. The originator of
+[`PreviewExportNotFoundError`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/Errors.kt).
 
-### `BuildConcatenatedPreviewSequencesIr` (cross-module 連結)
+### `BuildConcatenatedPreviewSequencesIr` (cross-module concatenation)
 
-`collectAllModulePreviews()` のとき、 同 module の `lazyPreviewSequence({...}, ...)` と、 dependency module の
-`previewHint_<scope>(null)` 呼び出し結果群を `+` 演算子で連結し、 さらに
-`distinctPreviewsByIdSequence(...)` で id 重複を排除する。
+For `collectAllModulePreviews()`, concatenates the same-module `lazyPreviewSequence({...}, ...)` with the
+results of the dependency modules' `previewHint_<scope>(null)` calls using the `+` operator, then wraps the
+whole thing with `distinctPreviewsByIdSequence(...)` to drop id duplicates.
 
-`distinctPreviewsByIdSequence` の defensive lookup 失敗時は [`RuntimeFunctionNotFoundError`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/Errors.kt) で
-`.throwAsException()`。
+If the defensive lookup of `distinctPreviewsByIdSequence` fails, we
+`.throwAsException()` via [`RuntimeFunctionNotFoundError`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/Errors.kt).
 
 ### `BuildCollectedPreviewIr`
 
-1 件の `@Preview` から 1 件の `CollectedPreview(id, displayName, filePath, ..., content = @Composable { ... })`
-constructor call IR を構築する。 PR #196 以降は factory lambda 化は呼び出し側 (`BuildPreviewSequenceIr.invoke`) で行うため、
-ここでは ctor call の組み立てに専念する。
+Builds the IR for a single `CollectedPreview(id, displayName, filePath, ..., content = @Composable { ... })`
+constructor call from a single `@Preview`. Since PR #196, factory-lambda wrapping happens on the caller side
+(`BuildPreviewSequenceIr.invoke`), so this builder focuses purely on assembling the ctor call.
 
 ### `ExtractedSourceText`
 
-各 preview の source code / KDoc 抽出を担う data class + helper。 `CollectedPreview(code = "...", kdoc = "...")` に
-渡す素材を生成。
+A data class plus helpers responsible for extracting source code / KDoc for each preview. Produces the
+materials passed to `CollectedPreview(code = "...", kdoc = "...")`.
 
 ---
 
-## 設計判断
+## Design rationale
 
-### なぜ factory lambda 化するか
+### Why we wrap each entry in a factory lambda
 
-`CollectedPreview(content = @Composable { com.example.MyButton() })` を直接 sequence に並べると、
-sequence 構築時点で全 preview の `@Composable` lambda が allocate される。 大量 preview を持つ module で
-gallery の最初の 10 件しか表示しないケースでも全件 allocate されるとパフォーマンス劣化。
+Placing `CollectedPreview(content = @Composable { com.example.MyButton() })` directly into the sequence would
+cause every preview's `@Composable` lambda to be allocated at sequence-construction time. For modules with a
+large number of previews, the gallery often only shows the first 10 — allocating everything in that scenario
+is a performance loss.
 
-`{ CollectedPreview(...) }` の `() -> CollectedPreview` factory lambda にして
-`lazyPreviewSequence(*factories)` で iterate すると、 `asSequence().take(10)` で先頭 10 件のみが
-deal with される (= 残り N-10 件の `@Composable` lambda は never allocated)。
+By switching to `{ CollectedPreview(...) }` `() -> CollectedPreview` factory lambdas iterated by
+`lazyPreviewSequence(*factories)`, `asSequence().take(10)` only deals with the first 10 entries (= the
+`@Composable` lambdas of the remaining N-10 entries are never allocated).
 
-### なぜ `BuildPreviewSequenceIr` を orchestrator として残すか
+### Why we keep `BuildPreviewSequenceIr` as an orchestrator
 
-sub-builder (`BuildLazyWrapperIr` 等) を直接 `ReplaceCollectPreviewsFunBody` から call すると、
-`PreviewSequenceBuildContext` (= 共有 lookup cache) を毎回 inject する記述が散る。 orchestrator が
-context を 1 度作って sub-builder を呼ぶことで、 caller (= `ReplaceCollectPreviewsFunBody`) は
-`BuildPreviewSequenceIr(...).invoke(builder, parent, scope)` の 1 呼び出しで済む。
+If the caller (`ReplaceCollectPreviewsFunBody`) called the sub-builders (`BuildLazyWrapperIr` etc.) directly,
+it would need to inject `PreviewSequenceBuildContext` (= the shared lookup cache) every time, scattering the
+boilerplate. The orchestrator builds the context once and dispatches to the sub-builders, so the caller's
+side reduces to a single `BuildPreviewSequenceIr(...).invoke(builder, parent, scope)` call.
 
-### なぜ `HashMapWithCollisionDetection` は `utils/` に置かないか
+### Why `HashMapWithCollisionDetection` is not in `utils/`
 
-`onCollision` callback の shape (= `(hash, existing, conflicting)`) が preview semantic に密結合
-(「同じ canonical key を 2 度 register するのは idempotent overwrite として扱う」 という preview-specific ルール)。
-`utils/` に置くなら callback を非 preview-specific な API surface に直す必要があり、 抽象化コストが見合わない。
-詳細は [`HashMapWithCollisionDetection.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/HashMapWithCollisionDetection.kt) の KDoc 参照。
+The shape of the `onCollision` callback (= `(hash, existing, conflicting)`) is tightly coupled to preview
+semantics (the preview-specific rule "registering the same canonical key twice is treated as an idempotent
+overwrite"). Placing it in `utils/` would require rephrasing the callback to a non-preview-specific API
+surface, and the abstraction cost is not worth it. See the KDoc of
+[`HashMapWithCollisionDetection.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/HashMapWithCollisionDetection.kt) for details.
 
-### ignore = true は FIR side で既に除外済み
+### `ignore = true` is already filtered out on the FIR side
 
-[`HintEntriesProvider.computeHintEntries`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/HintEntriesProvider.kt) は
-`filterNot { it.isIgnoredByComposePreviewLabOption() }` で ignore を除外しているため、
-IR 側 `BuildPreviewByHashMap` に渡る `previews: List<PreviewFunctionInfo>` には ignore 済みのものは含まれない。
-これにより:
+[`HintEntriesProvider.computeHintEntries`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/HintEntriesProvider.kt)
+already excludes ignored previews via `filterNot { it.isIgnoredByComposePreviewLabOption() }`, so the
+`previews: List<PreviewFunctionInfo>` reaching the IR-side `BuildPreviewByHashMap` does not contain them.
+Consequently:
 
-- ignore preview の hash と通常 preview の hash が衝突しても false-positive ERROR にならない
-- hash map に余分なエントリが入らないので hint stub lookup も無駄打ちしない
+- An ignored preview's hash colliding with a real preview's hash never produces a false-positive ERROR.
+- The hash map contains no spurious entries, so hint-stub lookups do not waste work.
 
-詳細は [hint-generation.md](./hint-generation.md) 「ignore = true の扱い」を参照。
+See "Handling of `ignore = true`" in [hint-generation.md](./hint-generation.md).
 
 ---
 
-## 関連ドキュメント
+## Related documents
 
-- [hint-generation.md](./hint-generation.md) — FIR 側で emit される hint stub の全体像
-- [marker-generation.md](./marker-generation.md) — marker class の役割と hint との 1:N 関係
-- [hint-naming.md](./hint-naming.md) — IR 側で marker 短名から hash を復元する SSoT
-- [scope-validation.md](./scope-validation.md) — IR backstop check の FIR 側 counterpart
-- [error-flow.md](./error-flow.md) — Error 発火条件と reply 文言
+- [hint-generation.md](./hint-generation.md) — The full picture of the hint stubs emitted on the FIR side.
+- [marker-generation.md](./marker-generation.md) — Role of the marker class and its 1:N relationship to hints.
+- [hint-naming.md](./hint-naming.md) — SSoT for recovering the hash from the marker short name on the IR side.
+- [scope-validation.md](./scope-validation.md) — FIR-side counterpart of the IR backstop check.
+- [error-flow.md](./error-flow.md) — Trigger conditions and reply text for the errors.
