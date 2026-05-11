@@ -1,5 +1,8 @@
 # Logic: Scope Validation
 
+> [!WARNING]
+> このドキュメントは 生成 AI によって生成されています。
+
 > [English version](./scope-validation.md)
 
 `@ComposePreviewLabOption(collectScopes = [...])` annotation argument と

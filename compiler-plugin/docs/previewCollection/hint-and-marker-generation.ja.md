@@ -1,5 +1,8 @@
 # Hint / Marker Naming + Hint and Marker Generation
 
+> [!WARNING]
+> このドキュメントは 生成 AI によって生成されています。
+
 > [English version](./hint-and-marker-generation.md)
 
 `previewCollection` feature の中で密接に関連する 3 つのトピックを扱う:

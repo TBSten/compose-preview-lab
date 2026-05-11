@@ -1,5 +1,8 @@
 # Error Flow
 
+> [!WARNING]
+> このドキュメントは 生成 AI によって生成されています。
+
 > [English version](./error-flow.md)
 
 `previewCollection` feature が出すエラーは **3 軸 4 グループ** に分かれる。

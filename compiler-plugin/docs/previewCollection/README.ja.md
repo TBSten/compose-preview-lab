@@ -1,5 +1,8 @@
 # Feature: previewCollection
 
+> [!WARNING]
+> このドキュメントは 生成 AI によって生成されています。
+
 > [English version](./README.md)
 
 `@Preview` 関数の **収集**、 `collect[All]ModulePreviews()` の置換、 cross-module hint discovery を担う feature。

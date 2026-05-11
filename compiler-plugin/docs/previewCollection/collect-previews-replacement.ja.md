@@ -1,5 +1,8 @@
 # Logic: collectPreviews Replacement (+ sub-logic `buildPreviewSequence/`)
 
+> [!WARNING]
+> このドキュメントは 生成 AI によって生成されています。
+
 > [English version](./collect-previews-replacement.md)
 
 `val previews by collectModulePreviews()` / `val allPreviews by collectAllModulePreviews()` の

@@ -1,5 +1,8 @@
 # Feature: transformPrivatePreviewToInternal
 
+> [!WARNING]
+> このドキュメントは 生成 AI によって生成されています。
+
 > [English version](./README.md)
 
 `@Preview private fun` の visibility を **`internal` に昇格** する単一 logic feature。
