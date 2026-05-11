@@ -176,11 +176,14 @@ function splitIntoChunks(fullText, chunkLimit) {
     return chunks;
 }
 
-function buildWebhookUrl(webhook, { threadId, threadName, wait } = {}) {
+function buildWebhookUrl(webhook, { threadId, wait } = {}) {
+    // Discord 仕様: `thread_id` は URL クエリで渡すが、 `thread_name` は **JSON body** に
+    // 入れる必要がある。 URL クエリに thread_name を付けても無視され、 forum channel への
+    // 投稿は 400 ("must have a thread_name or thread_id") になる。
+    // そのため thread_name は呼び出し側で body に積み、 この関数は thread_id と wait のみ扱う。
     const url = new URL(webhook);
     if (wait) url.searchParams.set('wait', 'true');
     if (threadId) url.searchParams.set('thread_id', threadId);
-    if (threadName) url.searchParams.set('thread_name', threadName.slice(0, THREAD_NAME_LIMIT));
     return url.toString();
 }
 
@@ -190,12 +193,17 @@ function truncateContent(content) {
 }
 
 async function postMessage(webhook, content, opts, core) {
-    const url = buildWebhookUrl(webhook, opts);
+    const url = buildWebhookUrl(webhook, { threadId: opts.threadId, wait: opts.wait });
     const body = truncateContent(content);
+    const payload = { content: body, allowed_mentions: { parse: [] } };
+    if (opts.threadName) {
+        // `thread_name` は URL クエリではなく body に入れる (Discord 仕様)。
+        payload.thread_name = opts.threadName.slice(0, THREAD_NAME_LIMIT);
+    }
     const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: body, allowed_mentions: { parse: [] } }),
+        body: JSON.stringify(payload),
     });
     if (!res.ok) {
         const text = await res.text().catch(() => '');

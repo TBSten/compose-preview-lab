@@ -133,7 +133,9 @@ jobs:
             - 各 issue は SKILL.md と references/issue-format.md の固定フォーマットに従う
             - 60 分以内に完了させる。50 分時点で新規探索を打ち切り、既存 issue の整形と書き込みを優先
             - 最後に `.local/nightly-exploration/SUMMARY.md` に件数とカテゴリ別の内訳を書き出す
-          claude_args: '--allowedTools "Bash,Edit,Glob,Grep,Read,Write,WebFetch,WebSearch"'
+          claude_args: |
+            --model opus
+            --allowedTools "Bash,Edit,Glob,Grep,Read,Write,WebFetch,WebSearch"
 
       - name: Collect issue count
         id: collect
