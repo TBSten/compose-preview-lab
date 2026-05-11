@@ -59,8 +59,27 @@ function decorateSeverity(line) {
     return `${m[1]}${stars} (${m[2]})${m[3]}`;
 }
 
+// `**重要度**: P1` のような行から `⭐⭐⭐☆ P1` のような短縮ラベルを取り出す。
+// <details><summary> の中など 1 行で表示する場面用 (Markdown bold は描画されないので
+// `**` を含めない)。
+function severityToShortLabel(sevLine) {
+    if (!sevLine) return null;
+    const m = sevLine.match(/P[0-3]/);
+    if (!m) return null;
+    const stars = SEVERITY_STARS[m[0]];
+    return stars ? `${stars} ${m[0]}` : m[0];
+}
+
+// `**カテゴリ**: cat2 (CI ログ・apiDump)` のような行から `cat2` だけを取り出す。
+function categoryToShortLabel(catLine) {
+    if (!catLine) return null;
+    const m = catLine.match(/cat\d+/);
+    return m ? m[0] : null;
+}
+
 function extractIssue(filePath) {
     const text = fs.readFileSync(filePath, 'utf8');
+    const raw = text;
 
     let title = '(タイトル未設定)';
     for (const line of text.split(/\r?\n/)) {
@@ -103,7 +122,11 @@ function extractIssue(filePath) {
             .slice(0, 200);
     }
 
-    return { title, meta, detail };
+    // job summary の <details><summary> ラベル用に、 タイトル以外の情報を短縮形で取り出す。
+    const severityShort = severityToShortLabel(sevMatch ? sevMatch[0] : null);
+    const categoryShort = categoryToShortLabel(catMatch ? catMatch[0] : null);
+
+    return { title, meta, detail, raw, severityShort, categoryShort };
 }
 
 function readIssues(issuesDir) {
@@ -232,6 +255,57 @@ async function getWebhookChannelId(webhook) {
     }
 }
 
+// GitHub Actions の job summary に PBT と 探索的テストの結果を書き出す。
+// 各 issue は <details> で畳んで、 一覧の見通しを保つ。
+async function writeJobSummary({ core, env, issues }) {
+    if (!core || !core.summary || typeof core.summary.addHeading !== 'function') {
+        return;
+    }
+    const sendPbt = env.SEND_PBT === 'true';
+    const sendExp = env.SEND_EXP === 'true';
+    if (!sendPbt && !sendExp) return;
+
+    core.summary.addHeading('Nightly Checking 結果', 1);
+    if (env.ACTIONS_URL) {
+        core.summary.addRaw(`[Actions Run](${env.ACTIONS_URL})\n\n`);
+    }
+
+    if (sendPbt) {
+        core.summary.addHeading('🧪 PBT', 2);
+        core.summary.addRaw(`ステータス: \`${env.PBT_RESULT || '(unknown)'}\`\n\n`);
+    }
+
+    if (sendExp) {
+        core.summary.addHeading('🔍 探索的テスト', 2);
+        if (env.EXP_RESULT === 'failure' || env.EXP_RESULT === 'cancelled') {
+            core.summary.addRaw(
+                '> 探索ジョブが失敗または途中終了しています。 部分結果を表示します。\n\n',
+            );
+        }
+        core.summary.addRaw(`発見件数: **${env.EXP_COUNT || issues.length}件**\n\n`);
+
+        issues.forEach((issue, i) => {
+            // <details><summary>...</summary> ラベルには 重要度 / カテゴリ / タイトル を並べ、
+            // 折りたたんだ状態でも「何がどれくらい重要か」 一目で分かるようにする。
+            // <summary> 内では Markdown bold が描画されないので `**` は使わず、 `|` 区切りで並べる。
+            const labelParts = [];
+            if (issue.severityShort) labelParts.push(issue.severityShort);
+            if (issue.categoryShort) labelParts.push(issue.categoryShort);
+            labelParts.push(issue.title);
+            const summaryLabel = `📌 ${labelParts.join(' | ')}`;
+            const bodyWithoutTitle = issue.raw.replace(/^#\s+.+?\r?\n+/, '').trimEnd();
+            core.summary.addDetails(summaryLabel, `\n\n${bodyWithoutTitle}\n`);
+        });
+    }
+
+    try {
+        await core.summary.write();
+    } catch (err) {
+        // job summary 書き出しはベストエフォート。 失敗しても通知本体には影響させない。
+        core.warning?.(`Job summary の書き込みに失敗: ${err.message}`);
+    }
+}
+
 module.exports = async function notifyDiscord({ core, env = process.env }) {
     const webhook = env.DISCORD_WEBHOOK_URL;
     if (!webhook) {
@@ -249,6 +323,10 @@ module.exports = async function notifyDiscord({ core, env = process.env }) {
     const issues = sendExp ? readIssues(env.ISSUES_DIR || '.local/nightly-exploration/issues') : [];
     const summary = buildSummary(env, issues);
     const detailMessages = buildDetailMessages(issues);
+
+    // Discord 通知の前に job summary を書き出しておく。 Discord 投稿が失敗しても
+    // 結果は Actions UI 上で確認できる。
+    await writeJobSummary({ core, env, issues });
 
     const presetThreadId = (env.DISCORD_THREAD_ID || '').trim() || null;
     // thread 名は探索的テストの発見件数を主題にする (forum channel で run ごとに作られる
@@ -344,4 +422,5 @@ module.exports._internal = {
     buildDetailMessages,
     splitIntoChunks,
     buildWebhookUrl,
+    writeJobSummary,
 };
