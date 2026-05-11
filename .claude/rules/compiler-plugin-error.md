@@ -51,7 +51,7 @@ Ticket 0 (本 rule 導入時) では、 IR-side WARNING 2 件 + FIR-side defensi
 - `categories: List<Category>` — `IR` / `FIR` / `PREVIEW_COLLECTION` / `INVALID_USAGE` / `VERSION_GATE` / `TRANSFORM_PRIVATE_PREVIEW_TO_INTERNAL` から選ぶ。renderer が `[ComposePreviewLab/<categories>]` prefix として整形する
 - `message: String` — 1 行サマリー (prefix 直後に表示)
 - `description: String?` — 静的な発生条件 / 予防策の散文 (optional)
-- `context: List<ContextEntry>` — `contextOf { +"label"(value) }` DSL で動的値を詰める
+- `context: List<ContextEntry>` — `contextOf { "label"(value) }` DSL で動的値を詰める (`String.invoke(value)` で entry を append。 boolean / tag 用に no-arg `"isHoge"()` overload もあり)
 - `replies: List<String>` — 共通 reply は `error/Replies.kt` の const から取る (`Replies.Unknown` 等)
 
 ## Good / Bad 例
@@ -70,9 +70,9 @@ class HintHashCollisionError(
     override val description: String =
         "Two distinct @Preview functions hash to the same SHA-256 truncated 7-byte value."
     override val context = contextOf {
-        +"hash"(hash)
-        +"preview_a"(previewA)
-        +"preview_b"(previewB)
+        "hash"(hash)
+        "preview_a"(previewA)
+        "preview_b"(previewB)
     }
     override val replies = listOf(Replies.Unknown)
 }
@@ -122,9 +122,9 @@ private val lazyPreviewSequenceFun by lazy {
 
 `Error` と同じ要領で、 `warning/Warnings.kt` に
 `ComposePreviewLabCompilerPluginWarning` 実装 class を追加し、
-`messageCollector.report(warning, location)` extension で呼び出す。 Warning 側の DSL は
-`+"label"(value)` ではなく `"label"(value)` 形式 (label を直接 invoke して entry を
-append する) なので注意。
+`messageCollector.report(warning, location)` extension で呼び出す。 `contextOf { ... }`
+DSL も Error 側と完全に同一 (= `"label"(value)` で entry を append。 boolean / tag は
+no-arg overload `"isHoge"()` で append) で、 `+` prefix は使わない。
 
 ```kotlin
 // compiler-plugin/.../warning/Warnings.kt
@@ -141,7 +141,7 @@ class HintNamespaceSquattingWarning(
         "Only the compose-preview-lab compiler plugin should emit declarations into the " +
             "reserved hint package..."
     override val context = contextOf {
-        "hint_package"(packageName)   // ← warning は + 不要 (label が即 entry を add)
+        "hint_package"(packageName)
         "marker"(markerFqn)
     }
     override val replies = listOf(Replies.InvestigateHintsPackageOwner)
