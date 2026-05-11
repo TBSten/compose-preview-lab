@@ -36,17 +36,6 @@ import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
  *     }
  *     UserName(userName = userName)
  * }
- *
- * // Nullable with IntField for optional configuration
- * @Preview
- * @Composable
- * fun TimeoutPreview() = PreviewLab {
- *     val timeout: Int? = fieldValue {
- *         IntField("Timeout (seconds)", 30)
- *             .nullable(initialValue = null)
- *     }
- *     MyComponent(timeout = timeout) // null means no timeout
- * }
  * ```
  *
  * @see NullableField
@@ -71,19 +60,6 @@ fun <Value : Any> PreviewLabField<Value>.nullable(initialValue: Value? = this.in
  *             .nullable(initialValue = null)
  *     }
  *     UserProfile(avatarUrl = avatarUrl) // Show placeholder if null
- * }
- *
- * // Combining nullable with EnumField
- * enum class IconType { HOME, SEARCH, SETTINGS }
- * @Preview
- * @Composable
- * fun IconPreview() = PreviewLab {
- *
- *     val icon: IconType? = fieldValue {
- *         EnumField("Icon", IconType.HOME)
- *             .nullable()
- *     }
- *     MyButton(icon = icon) // Button without icon if null
  * }
  * ```
  *

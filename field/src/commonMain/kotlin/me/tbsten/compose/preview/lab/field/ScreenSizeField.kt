@@ -26,25 +26,8 @@ import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
  * ```kotlin
  * // Basic usage with default smartphone sizes
  * val screenSize = fieldValue { ScreenSizeField() }
- *
- * // Custom sizes with specific presets
- * val customScreenSize = fieldValue {
- *     ScreenSizeField(
- *         label = "Device Size",
- *         sizes = ScreenSize.SmartPhones + ScreenSize.Tablets
- *     )
- * }
- *
- * // With specific initial size
- * val tabletSize = fieldValue {
- *     ScreenSizeField(
- *         initialValue = ScreenSize.LargeTablet,
- *         sizes = ScreenSize.Tablets
- *     )
- * }
  * ```
  *
- * @param label Display label for the field
  * @param sizes List of available screen size options, defaults to medium smartphone
  * @param type UI presentation type, defaults to dropdown selection
  * @param initialValue Starting screen size selection
@@ -132,14 +115,6 @@ open class ScreenSizeField(
  * ```kotlin
  * // Create custom screen size
  * val customSize = ScreenSize(width = 400.dp, height = 800.dp, label = "Custom Phone")
- *
- * // Use predefined presets
- * val phone = ScreenSize.MediumSmartPhone
- * val tablet = ScreenSize.LargeTablet
- * val desktop = ScreenSize.MediumDesktop
- *
- * // Create landscape version
- * val landscapePhone = ScreenSize.MediumSmartPhone.reversed()
  * ```
  *
  * @param width Screen width in dp
@@ -181,12 +156,6 @@ class ScreenSize(val width: Dp, val height: Dp, val label: String = "${width}x$h
      * ScreenSize.MediumSmartPhone  // 375x667 dp
      * ScreenSize.LargeTablet       // 900x1440 dp
      * ScreenSize.MediumDesktop     // 1440x900 dp
-     *
-     * // Device categories
-     * ScreenSize.SmartPhones       // All smartphone sizes
-     * ScreenSize.Tablets          // All tablet sizes
-     * ScreenSize.Desktops         // All desktop sizes
-     * ScreenSize.AllPresets       // Every available preset
      * ```
      */
     companion object {

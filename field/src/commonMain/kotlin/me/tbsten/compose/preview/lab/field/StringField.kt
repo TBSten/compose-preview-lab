@@ -19,34 +19,6 @@ import me.tbsten.compose.preview.lab.field.component.TextFieldContent
  *     val text: String = fieldValue { StringField("Text", "Hello World!!") }
  *     Text(text = text)
  * }
- *
- * // With prefix and suffix
- * @Preview
- * @Composable
- * fun UrlPreview() = PreviewLab {
- *     val path: String = fieldValue {
- *         StringField(
- *             label = "Path",
- *             initialValue = "home",
- *             prefix = { Text("https://example.com/") },
- *             suffix = { Icon(Icons.Default.Link, null) }
- *         )
- *     }
- *     Text(text = "URL: https://example.com/$path")
- * }
- *
- * // For multiline text input
- * @Preview
- * @Composable
- * fun DescriptionPreview() = PreviewLab {
- *     val description: String = fieldValue {
- *         StringField(
- *             label = "Description",
- *             initialValue = "Enter your description here..."
- *         )
- *     }
- *     Text(text = description)
- * }
  * ```
  *
  * @param prefix The slot that will be displayed as the prefix of the TextField.

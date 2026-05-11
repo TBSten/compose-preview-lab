@@ -36,43 +36,6 @@ import me.tbsten.compose.preview.lab.field.modifier.padding
  *         Text("Styled Button")
  *     }
  * }
- *
- * // Custom initial modifier chain
- * @Preview
- * @Composable
- * fun CardPreview() = PreviewLab {
- *     val customModifier: Modifier = fieldValue {
- *         ModifierField(
- *             label = "Card Modifier",
- *             initialValue = ModifierFieldValue.mark()
- *                 .padding(16.dp)
- *                 .background(Color.Blue)
- *         )
- *     }
- *
- *     Card(modifier = customModifier) {
- *         Text("Custom Card")
- *     }
- * }
- *
- * // Pre-configured with multiple modifiers
- * @Preview
- * @Composable
- * fun BoxPreview() = PreviewLab {
- *     val containerModifier: Modifier = fieldValue {
- *         ModifierField(
- *             label = "Container",
- *             initialValue = ModifierFieldValue.mark()
- *                 .padding(all = 8.dp)
- *                 .background(Color.Gray.copy(alpha = 0.3f))
- *                 .border(width = 2.dp, color = Color.Black)
- *         )
- *     }
- *
- *     Box(modifier = containerModifier) {
- *         Text("Container Content")
- *     }
- * }
  * ```
  *
  * @param label Display label for the field in the inspector
@@ -122,20 +85,6 @@ class ModifierField(label: String, initialValue: ModifierFieldValueList = Modifi
  *         Text("Marked Content")
  *     }
  * }
- *
- * // Custom color marking
- * @Preview
- * @Composable
- * fun CustomMarkPreview() = PreviewLab {
- *     val modifier: Modifier = fieldValue {
- *         ModifierField(
- *             label = "Blue Marked",
- *             initialValue = ModifierFieldValue.mark(color = Color.Blue, borderWidth = 3.dp)
- *         )
- *     }
- *
- *     Text("Blue Marked Text", modifier = modifier)
- * }
  * ```
  *
  * @param color The color to use for both border and background (with adjusted alpha)
@@ -170,24 +119,6 @@ fun ModifierFieldValueList.mark(color: Color = Color.Red.copy(alpha = 0.5f), bor
  *     }
  *
  *     Text("Two-Color Marked", modifier = modifier)
- * }
- *
- * // Thick border marking
- * @Preview
- * @Composable
- * fun ThickBorderPreview() = PreviewLab {
- *     val modifier: Modifier = fieldValue {
- *         ModifierField(
- *             label = "Thick Border",
- *             initialValue = ModifierFieldValue.mark(
- *                 borderColor = Color.Green,
- *                 backgroundColor = Color.Green.copy(alpha = 0.2f),
- *                 borderWidth = 5.dp
- *             )
- *         )
- *     }
- *
- *     Box(modifier = modifier.size(100.dp))
  * }
  * ```
  *

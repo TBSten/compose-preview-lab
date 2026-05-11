@@ -40,14 +40,6 @@ import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
  * ```kotlin
  * // Basic usage
  * modifier = ModifierFieldValueList().captureSize()
- *
- * // Direct creation
- * val captureSizeField = CaptureSizeModifierFieldValue()
- *
- * // Usage in components
- * Box(modifier = modifier.apply { createModifier() }) {
- *     PreviewLabText("Hello World")
- * }
  * ```
  *
  * @see ModifierFieldValue
@@ -136,12 +128,6 @@ fun ModifierFieldValueList.captureSize() = then(
  * ```kotlin
  * // Offset capture in Root coordinate system
  * modifier = ModifierFieldValueList().captureOffset()
- *
- * // Offset capture in Screen coordinate system
- * modifier = ModifierFieldValueList().captureOffset(Type.PositionOnScreen)
- *
- * // Direct creation
- * val captureOffsetField = CaptureOffsetModifierFieldValue(Type.PositionInWindow)
  * ```
  *
  * @param initialCaptureType Initial coordinate system type (default: PositionInRoot)
@@ -236,9 +222,6 @@ class CaptureOffsetModifierFieldValue(initialCaptureType: Type = Type.PositionIn
  * ```kotlin
  * // Default (Root coordinate system) offset capture
  * modifier = ModifierFieldValueList().captureOffset()
- *
- * // Screen coordinate system offset capture
- * modifier = ModifierFieldValueList().captureOffset(CaptureOffsetModifierFieldValue.Type.PositionOnScreen)
  * ```
  *
  * @param captureType Coordinate system type to use (default: PositionInRoot)
@@ -264,12 +247,6 @@ fun ModifierFieldValueList.captureOffset(captureType: Type = Type.PositionInRoot
  * ```kotlin
  * // Rectangle information capture in Root coordinate system
  * modifier = ModifierFieldValueList().captureLayoutRect()
- *
- * // Rectangle information capture in Screen coordinate system
- * modifier = ModifierFieldValueList().captureLayoutRect(CaptureLayoutRectModifierFieldValue.Type.PositionInScreen)
- *
- * // Direct creation
- * val captureLayoutRectField = CaptureLayoutRectModifierFieldValue(CaptureLayoutRectModifierFieldValue.Type.BoundsInWindow)
  * ```
  *
  * @param initialCaptureType Initial coordinate system type (default: PositionInRoot)
@@ -367,9 +344,6 @@ class CaptureLayoutRectModifierFieldValue(initialCaptureType: Type = Type.Positi
  * ```kotlin
  * // Default (Root coordinate system) rectangle information capture
  * modifier = ModifierFieldValueList().captureLayoutRect()
- *
- * // Screen coordinate system rectangle information capture
- * modifier = ModifierFieldValueList().captureLayoutRect(CaptureLayoutRectModifierFieldValue.Type.PositionInScreen)
  * ```
  *
  * @param captureType Coordinate system type to use (default: PositionInRoot)

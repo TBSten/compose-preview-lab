@@ -30,16 +30,6 @@ import me.tbsten.compose.preview.lab.ui.components.PreviewLabTransformableTextFi
  * ```kotlin
  * // Semi-transparent overlay
  * val overlay = ModifierFieldValueList().alpha(0.7f)
- *
- * // Fade effect
- * val fadeOut = ModifierFieldValueList().alpha(0.3f)
- *
- * // Use in component
- * Box(
- *     modifier = overlay.createModifier()
- * ) {
- *     Text("Transparent content")
- * }
  * ```
  *
  * @param alpha Transparency level from 0.0 (fully transparent) to 1.0 (fully opaque)

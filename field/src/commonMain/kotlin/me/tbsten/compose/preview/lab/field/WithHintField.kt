@@ -60,37 +60,6 @@ sealed interface HintChoice<Value> {
  *     }
  *     Text("Sample Text", fontSize = fontSize.sp)
  * }
- *
- * // Adding hints to string fields (like common usernames or URLs)
- * @Preview
- * @Composable
- * fun ProfilePreview() = PreviewLab {
- *     val username: String = fieldValue {
- *         StringField(label = "Username", initialValue = "")
- *             .withHint(
- *                 "Alice" to "alice_wonder",
- *                 "Bob" to "bob_builder",
- *                 "Charlie" to "charlie_choco"
- *             )
- *     }
- *     ProfileCard(username = username)
- * }
- *
- * // Combining withHint with other field modifiers
- * @Preview
- * @Composable
- * fun ApiUrlPreview() = PreviewLab {
- *     val apiUrl: String = fieldValue {
- *         StringField(label = "API URL", initialValue = "https://api.example.com")
- *             .withHint(
- *                 "Production" to "https://api.example.com",
- *                 "Staging" to "https://staging.api.example.com",
- *                 "Development" to "https://dev.api.example.com",
- *                 "Local" to "http://localhost:3000"
- *             )
- *     }
- *     ApiClient(baseUrl = apiUrl)
- * }
  * ```
  *
  * @param choices Vararg of pairs where first is the hint label and second is the value
@@ -222,24 +191,6 @@ fun <Value> MutablePreviewLabField<Value>.withHint(
  *             )
  *     }
  *     Text("Multi-line text example", lineHeight = lineHeight.sp)
- * }
- *
- * // Adding action hints for custom operations
- * @Preview
- * @Composable
- * fun ListPreview() = PreviewLab {
- *     val items: List<String> = fieldValue {
- *         ListField(
- *             label = "items",
- *             elementField = { StringField(label, initialValue) },
- *             initialValue = emptyList(),
- *         )
- *             .withHintAction(
- *                 "Add 3 items" to { value = value + listOf("Item A", "Item B", "Item C") },
- *                 "Clear" to { value = emptyList() }
- *             )
- *     }
- *     ItemList(items = items)
  * }
  * ```
  *

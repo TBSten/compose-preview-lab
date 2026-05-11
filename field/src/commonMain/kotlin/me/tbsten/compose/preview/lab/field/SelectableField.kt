@@ -47,35 +47,6 @@ import me.tbsten.compose.preview.lab.ui.components.PreviewLabChip
  *     }
  *     MyApp(theme = theme)
  * }
- *
- * // With custom labels using CHIPS type
- * @Preview
- * @Composable
- * fun ButtonPreview() = PreviewLab {
- *     val size: Int = fieldValue {
- *         SelectableField(
- *             label = "Size",
- *             choices = listOf(32, 48, 64),
- *             choiceLabel = { "${it}dp" },
- *             type = SelectableField.Type.CHIPS
- *         )
- *     }
- *     MyButton(size = size)
- * }
- *
- * // Using builder syntax
- * @Preview
- * @Composable
- * fun IconPreview() = PreviewLab {
- *     val icon: ImageVector = fieldValue {
- *         SelectableField<ImageVector>(label = "Icon") {
- *             choice(Icons.Default.Home, "Home", isDefault = true)
- *             choice(Icons.Default.Search, "Search")
- *             choice(Icons.Default.Settings, "Settings")
- *         }
- *     }
- *     Icon(icon, contentDescription = null)
- * }
  * ```
  *
  * @param choiceLabel Text to be displayed in the UI to select a choice.
