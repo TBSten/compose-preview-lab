@@ -23,7 +23,7 @@ FIR phase + IR phase の 2 段階で実現する。
 
 ```
 FIR phase
-├── scopeValidation/              — collectScopes / scope 引数の literal / regex 検証 (IDE redsquiggly)
+├── scopeValidation/              — collectScopes / scope 引数の literal / regex 検証 (IDE red-squiggly)
 └── hintAndMarkerGeneration/      — 各 @Preview に対して marker interface + previewHint_<scope> stub を合成
 
 IR phase
