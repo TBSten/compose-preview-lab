@@ -43,21 +43,10 @@ class PreviewLabGalleryState @JsOnlyExportIgnore constructor(initialSelectedPrev
     var query by mutableStateOf("")
         @InternalComposePreviewLabApi set
 
-    /**
-     * Changes the search query
-     *
-     * Updates the search query string used for filtering Previews.
-     * This value is used by the filtering functionality to narrow down the Preview list.
-     *
-     * @param query New search query string
-     */
     fun onQueryChange(query: String) {
         this.query = query
     }
 
-    /**
-     * Select Preview.
-     */
     @JsOnlyExportIgnore
     fun select(groupName: String, preview: PreviewLabPreview) {
         val newSelectedPreview = SelectedPreview(groupName, preview)
@@ -69,7 +58,7 @@ class PreviewLabGalleryState @JsOnlyExportIgnore constructor(initialSelectedPrev
     }
 
     /**
-     * Deselects the selected Preview and returns it to the "nothing selected" state.
+     * Deselects the current preview and clears the compare panel (= "nothing selected" state).
      */
     fun unselect() {
         selectedPreview = null
@@ -77,15 +66,9 @@ class PreviewLabGalleryState @JsOnlyExportIgnore constructor(initialSelectedPrev
     }
 
     /**
-     * Adds a Preview to the compare panel
-     *
-     * In addition to the already selected Preview, adds a new Preview to the compare panel.
-     * If a Preview with the same name already exists, a sequentially numbered title is
-     * automatically assigned for distinction. Supports up to 100 Previews with the same name
-     * to prevent infinite loops.
-     *
-     * @param groupName Group name the Preview belongs to
-     * @param newPreview Preview to add to the compare panel
+     * Adds a preview to the compare panel. If a preview with the same display name is already
+     * panelled, a `(n)` suffix is appended for distinction. The dedupe loop is capped at 100
+     * iterations as a safety guard against pathologically duplicated names.
      */
     @JsOnlyExportIgnore
     fun addToComparePanel(groupName: String, newPreview: PreviewLabPreview) {
@@ -106,13 +89,8 @@ class PreviewLabGalleryState @JsOnlyExportIgnore constructor(initialSelectedPrev
     }
 
     /**
-     * Removes a Preview from the compare panel
-     *
-     * Specifies an index in the selected Preview list to remove the corresponding
-     * Preview from the compare panel. Index 0 is the main selected Preview,
-     * and index 1 and above are Previews in the compare panel.
-     *
-     * @param indexInSelectedPreviews Index position in the selected Preview list (1 or greater)
+     * Removes a panelled preview by its index in [selectedPreviews]. Index 0 is the main
+     * selected preview (use [unselect] for that one); index >=1 maps to the compare panel.
      */
     fun removeFromComparePanel(indexInSelectedPreviews: Int) {
         val indexInComparePanelPreviews = indexInSelectedPreviews - 1

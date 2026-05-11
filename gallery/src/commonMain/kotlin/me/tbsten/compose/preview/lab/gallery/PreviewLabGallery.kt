@@ -43,19 +43,18 @@ import me.tbsten.compose.preview.lab.ui.generated.resources.icon_remove
 import org.jetbrains.compose.resources.painterResource
 
 /**
- * The default group name used for showing all previews in the PreviewLabGallery.
- * This group contains all previews regardless of their featured file categorization.
+ * Catch-all group that bundles every preview regardless of `featuredFileList` categorisation.
  */
 const val AllGroupName = "all"
 
 /**
- * A Composable function that catalogs and displays a list of Previews. The left sidebar actually displays the list of Previews, and the selected Preview is displayed in the center of the screen.
+ * Catalogues a list of previews: list in the left sidebar, selected preview in the centre.
  *
- * @param previewList CollectedPreviews collected from gradle plugins, etc. Note that CollectedPreviews not specified here will not be displayed.
- * @param modifier Modifier to be applied to the root layout of the PreviewLabGallery.
- * @param state [PreviewLabGalleryState] to manage the state of the PreviewLabGallery. Preserves the state of the selected Preview, etc. By default, remember is used (i.e., the composition of the call to Composable is the scope of the state), but the scope (storage period) of the state can be adjusted by moving it to a state holder, such as ViewModel, if necessary.
- * @param openFileHandler By specifying OpenFileHandler, you can display a "Source Code" button that displays the source code corresponding to the Preview.
- * @param featuredFileList Map of group names to file paths for organizing previews into featured categories. Files matching these paths will be grouped under their respective category names in the preview list.
+ * @param previewList Previews to display. Only entries listed here surface in the gallery.
+ * @param state Defaults to `remember`; lift to a ViewModel etc. to outlive composition.
+ * @param openFileHandler Pass an [OpenFileHandler] to render a "Source Code" jump button.
+ * @param featuredFileList Group name → file path map for organising previews into named
+ *   categories; matching files are grouped under their category name in the sidebar.
  *
  * @see me.tbsten.compose.preview.lab.PreviewLabPreview
  * @see OpenFileHandler

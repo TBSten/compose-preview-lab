@@ -58,11 +58,8 @@ internal fun globToRegex(glob: String): Regex {
 }
 
 /**
- * Check if the given path matches a glob pattern.
- *
- * @param path The file path to check
- * @param pattern The glob pattern or exact path
- * @return true if the path matches the pattern
+ * Matches a path against [pattern]. Falls back to exact equality if [pattern] is not a glob.
+ * Both path and pattern have their `\` separators normalised to `/` before matching.
  */
 internal fun matchesGlob(path: String, pattern: String): Boolean {
     // Normalize path separators

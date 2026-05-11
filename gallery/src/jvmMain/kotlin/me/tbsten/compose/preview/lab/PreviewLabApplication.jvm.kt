@@ -19,59 +19,29 @@ import me.tbsten.compose.preview.lab.previewlab.openfilehandler.OpenFileHandler
 import me.tbsten.compose.preview.lab.ui.adaptive
 
 /**
- * Creates a desktop window application for previewing Compose components
- *
- * Launches a JVM desktop application with PreviewLab interface in a native window.
- * Provides full desktop integration with customizable window properties for
- * interactive component development and testing.
+ * Hosts [PreviewLabGallery] in a JVM desktop [Window]. Most parameters are forwarded as-is to
+ * Compose's [Window] (see its KDoc for window-level semantics).
  *
  * ```kotlin
- * // Basic desktop application
- * fun main() = application {
- *     PreviewLabGalleryWindows(
- *         previewList = myModule.PreviewList
- *     )
- * }
- *
- * // With file handler and featured files
  * fun main() = application {
  *     PreviewLabGalleryWindows(
  *         previewList = myModule.PreviewList,
  *         openFileHandler = UrlOpenFileHandler("https://github.com/user/repo/blob/main"),
  *         featuredFileList = myModule.FeaturedFileList,
- *     )
- * }
- *
- * // Custom window configuration
- * fun main() = application {
- *     PreviewLabGalleryWindows(
- *         previewList = myModule.PreviewList,
  *         windowState = rememberWindowState(size = DpSize(1400.dp, 900.dp)),
  *         title = "My Component Gallery",
  *     )
  * }
  * ```
  *
- * @param previewList Collection of previews to display in the interface
- * @param openFileHandler Handler for opening source files (optional)
- * @param featuredFileList Grouped file organization for navigation
- * @param state PreviewLabGalleryState for managing gallery state
- * @param windowState WindowState for managing window properties
- * @param onCloseRequest Callback invoked when window close is requested
- * @param visible Whether the window is visible
- * @param title Window title text
- * @param icon Window icon painter
- * @param undecorated Whether to remove window decorations
- * @param transparent Whether the window background is transparent
- * @param resizable Whether the window can be resized
- * @param enabled Whether the window is enabled for user interaction
- * @param focusable Whether the window can receive focus
- * @param alwaysOnTop Whether the window should stay on top of other windows
- * @param noSelectedContents Content to display when no preview is selected
- * @param onPreviewKeyEvent Callback for preview key events
- * @param onKeyEvent Callback for key events
+ * @param previewList Previews to display.
+ * @param openFileHandler Optional handler enabling a "Source Code" jump for each preview.
+ * @param featuredFileList Grouping map of file paths by category name.
+ * @param state Pull this out to a ViewModel etc. if the gallery state needs to outlive the
+ *   composition.
+ * @param noSelectedContents Content shown when nothing is selected — defaults to a
+ *   [PreviewListGrid] click target.
  * @see me.tbsten.compose.preview.lab.gallery.PreviewLabGallery
- * @see CollectedPreview
  * @see OpenFileHandler
  */
 @Composable
