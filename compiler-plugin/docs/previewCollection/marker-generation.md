@@ -1,5 +1,7 @@
 # Logic: Marker Generation
 
+> [日本語版](./marker-generation.ja.md)
+
 The FIR logic that synthesizes, for every `@Preview`, a single **marker interface**
 (`PreviewHintMarker_<sanitized_fqn>_<hash>`). It is used as the `value: <Marker>?` parameter type of the hint
 function and serves to disambiguate KLIB IdSignatures.
