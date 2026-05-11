@@ -46,42 +46,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
  *     }
  *     MyContainer(content = content)
  * }
- *
- * // With custom choices
- * @Preview
- * @Composable
- * fun IconSlotPreview() = PreviewLab {
- *     val icon: @Composable () -> Unit = fieldValue {
- *         ComposableField(
- *             label = "Icon",
- *             initialValue = ComposableFieldValue.Empty,
- *             choices = listOf(
- *                 ComposableFieldValue.Empty,
- *                 ComposableFieldValue("Home Icon") { Icon(Icons.Default.Home, null) },
- *                 ComposableFieldValue("Search Icon") { Icon(Icons.Default.Search, null) }
- *             )
- *         )
- *     }
- *     MyButton(icon = icon)
- * }
- *
- * // With text content options
- * @Preview
- * @Composable
- * fun HeaderPreview() = PreviewLab {
- *     val header: @Composable () -> Unit = fieldValue {
- *         ComposableField(
- *             label = "Header",
- *             initialValue = ComposableFieldValue.HeadingText,
- *             choices = listOf(
- *                 ComposableFieldValue.HeadingText,
- *                 ComposableFieldValue.SimpleText,
- *                 ComposableFieldValue.LongText
- *             )
- *         )
- *     }
- *     MyCard(header = header)
- * }
  * ```
  *
  * @param label The display label for this field
@@ -141,29 +105,6 @@ open class ComposableField(
  *     }
  *     MyBox(content = content)
  * }
- *
- * // Creating custom ComposableFieldValue
- * val CustomIcon: ComposableFieldValue = object : ComposableFieldValue {
- *     override val label: String = "Custom Icon"
- *
- *     @Composable
- *     override fun invoke() {
- *         Icon(Icons.Default.Star, contentDescription = null)
- *     }
- * }
- *
- * // Using in a preview
- * @Preview
- * @Composable
- * fun CustomPreview() = PreviewLab {
- *     val icon: @Composable () -> Unit = fieldValue {
- *         ComposableField(
- *             label = "Icon",
- *             initialValue = CustomIcon
- *         )
- *     }
- *     MyButton(icon = icon)
- * }
  * ```
  *
  * @see ComposableField
@@ -211,50 +152,6 @@ interface ComposableFieldValue {
      *         )
      *     }
      *     MyContainer(content = box)
-     * }
-     *
-     * // Fill dimensions
-     * @Preview
-     * @Composable
-     * fun FillBoxPreview() = PreviewLab {
-     *     val box: @Composable () -> Unit = fieldValue {
-     *         ComposableField(
-     *             label = "Background",
-     *             initialValue = ComposableFieldValue.ColorBox(
-     *                 Color.Gray,
-     *                 ComposableFieldValue.ColorBox.Fill,
-     *                 ComposableFieldValue.ColorBox.Fill
-     *             ),
-     *             choices = listOf(
-     *                 ComposableFieldValue.ColorBox(Color.Red, ComposableFieldValue.ColorBox.Fill, 100.dp),
-     *                 ComposableFieldValue.ColorBox(Color.Blue, 200.dp, ComposableFieldValue.ColorBox.Fill),
-     *                 ComposableFieldValue.ColorBox(Color.Green, ComposableFieldValue.ColorBox.Fill, ComposableFieldValue.ColorBox.Fill)
-     *             )
-     *         )
-     *     }
-     *     MyCard(background = box)
-     * }
-     *
-     * // With custom label
-     * @Preview
-     * @Composable
-     * fun LabeledBoxPreview() = PreviewLab {
-     *     val divider: @Composable () -> Unit = fieldValue {
-     *         ComposableField(
-     *             label = "Divider",
-     *             initialValue = ComposableFieldValue.ColorBox(
-     *                 Color.Gray,
-     *                 ComposableFieldValue.ColorBox.Fill,
-     *                 1.dp,
-     *                 label = "Thin Divider"
-     *             )
-     *         )
-     *     }
-     *     Column {
-     *         Text("Above")
-     *         divider()
-     *         Text("Below")
-     *     }
      * }
      * ```
      *
@@ -493,58 +390,6 @@ interface ComposableFieldValue {
  *         )
  *     }
  *     MyButton(icon = content)
- * }
- *
- * // Complex custom content
- * @Preview
- * @Composable
- * fun ComplexContentPreview() = PreviewLab {
- *     val slot: @Composable () -> Unit = fieldValue {
- *         ComposableField(
- *             label = "Slot Content",
- *             initialValue = ComposableFieldValue("Image + Text") {
- *                 Row {
- *                     Icon(Icons.Default.Image, null)
- *                     Text("With Image")
- *                 }
- *             },
- *             choices = listOf(
- *                 ComposableFieldValue("Text Only") { Text("Simple Text") },
- *                 ComposableFieldValue("Image + Text") {
- *                     Row {
- *                         Icon(Icons.Default.Image, null)
- *                         Text("With Image")
- *                     }
- *                 },
- *                 ComposableFieldValue("Complex") {
- *                     Column {
- *                         Text("Title", style = MaterialTheme.typography.h6)
- *                         Text("Subtitle", style = MaterialTheme.typography.body2)
- *                     }
- *                 }
- *             )
- *         )
- *     }
- *     MyCard(content = slot)
- * }
- *
- * // Mixing with predefined values
- * @Preview
- * @Composable
- * fun MixedContentPreview() = PreviewLab {
- *     val content: @Composable () -> Unit = fieldValue {
- *         ComposableField(
- *             label = "Content",
- *             initialValue = ComposableFieldValue.Empty,
- *             choices = listOf(
- *                 ComposableFieldValue.Empty,
- *                 ComposableFieldValue("Custom Icon") { Icon(Icons.Default.Settings, null) },
- *                 ComposableFieldValue.Red32X32,
- *                 ComposableFieldValue.SimpleText
- *             )
- *         )
- *     }
- *     MyContainer(trailing = content)
  * }
  * ```
  *

@@ -36,32 +36,6 @@ internal fun doubleValueCode(value: Double): String = when {
  *     }
  *     Counter(count = count)
  * }
- *
- * // With prefix and suffix for units
- * @Preview
- * @Composable
- * fun PricePreview() = PreviewLab {
- *     val price: Double = fieldValue {
- *         DoubleField(
- *             label = "Price",
- *             initialValue = 99.99,
- *             inputType = NumberField.InputType.TextField(
- *                 prefix = { Text("$") },
- *                 suffix = { Text("USD") }
- *             )
- *         )
- *     }
- *     PriceDisplay(price = price)
- * }
- *
- * // Multiple number fields for complex inputs
- * @Preview
- * @Composable
- * fun DimensionsPreview() = PreviewLab {
- *     val width: Int = fieldValue { IntField("Width", 100) }
- *     val height: Int = fieldValue { IntField("Height", 200) }
- *     Rectangle(width = width, height = height)
- * }
  * ```
  *
  * @param label label of the field.
@@ -144,32 +118,6 @@ abstract class NumberField<Num : Number>(
  *     }
  *     Counter(count = count)
  * }
- *
- * // With range constraints (hint values)
- * @Preview
- * @Composable
- * fun AgePreview() = PreviewLab {
- *     val age: Int = fieldValue {
- *         IntField("Age", 25)
- *     }
- *     UserProfile(age = age)
- * }
- *
- * // With prefix/suffix for units
- * @Preview
- * @Composable
- * fun DurationPreview() = PreviewLab {
- *     val duration: Int = fieldValue {
- *         IntField(
- *             label = "Duration",
- *             initialValue = 30,
- *             inputType = NumberField.InputType.TextField(
- *                 suffix = { Text("minutes") }
- *             )
- *         )
- *     }
- *     Timer(durationMinutes = duration)
- * }
  * ```
  *
  * @see NumberField
@@ -201,33 +149,6 @@ open class IntField(label: String, initialValue: Int, inputType: InputType = Inp
  *         LongField("Timestamp", 0L)
  *     }
  *     DateDisplay(timestamp = timestamp)
- * }
- *
- * // With range constraints (hint values)
- * @Preview
- * @Composable
- * fun FilePreview() = PreviewLab {
- *     val fileSize: Long = fieldValue {
- *         LongField("File Size (bytes)", 1024L)
- *         // Common file sizes: 0L, 1024L, 1048576L (1MB), 1073741824L (1GB)
- *     }
- *     FileSizeDisplay(sizeInBytes = fileSize)
- * }
- *
- * // With prefix/suffix for units
- * @Preview
- * @Composable
- * fun MemoryPreview() = PreviewLab {
- *     val memory: Long = fieldValue {
- *         LongField(
- *             label = "Memory",
- *             initialValue = 512L,
- *             inputType = NumberField.InputType.TextField(
- *                 suffix = { Text("MB") }
- *             )
- *         )
- *     }
- *     MemoryUsageIndicator(memoryMB = memory)
  * }
  * ```
  *
@@ -261,32 +182,6 @@ open class LongField(label: String, initialValue: Long, inputType: InputType = I
  *     }
  *     FlagDisplay(flag = flag)
  * }
- *
- * // With range constraints (hint values)
- * @Preview
- * @Composable
- * fun ColorComponentPreview() = PreviewLab {
- *     val red: Byte = fieldValue {
- *         ByteField("Red", 128.toByte())
- *     }
- *     ColorPreview(redComponent = red)
- * }
- *
- * // With prefix/suffix for context
- * @Preview
- * @Composable
- * fun NetworkPreview() = PreviewLab {
- *     val segment: Byte = fieldValue {
- *         ByteField(
- *             label = "IP Segment",
- *             initialValue = 1,
- *             inputType = NumberField.InputType.TextField(
- *                 prefix = { Text("192.168.0.") }
- *             )
- *         )
- *     }
- *     NetworkConfig(lastSegment = segment)
- * }
  * ```
  *
  * @see NumberField
@@ -319,34 +214,6 @@ open class ByteField(label: String, initialValue: Byte, inputType: InputType = I
  *     }
  *     PriceTag(price = price)
  * }
- *
- * // With range constraints (hint values)
- * @Preview
- * @Composable
- * fun WeightPreview() = PreviewLab {
- *     val weight: Double = fieldValue {
- *         DoubleField("Weight", 70.5)
- *         // Common weights: 0.0, 50.0, 70.5, 100.0, 150.0
- *     }
- *     WeightDisplay(kilograms = weight)
- * }
- *
- * // With prefix/suffix for currency
- * @Preview
- * @Composable
- * fun CurrencyPreview() = PreviewLab {
- *     val amount: Double = fieldValue {
- *         DoubleField(
- *             label = "Amount",
- *             initialValue = 1234.56,
- *             inputType = NumberField.InputType.TextField(
- *                 prefix = { Text("$") },
- *                 suffix = { Text("USD") }
- *             )
- *         )
- *     }
- *     PaymentSummary(amount = amount)
- * }
  * ```
  *
  * @see NumberField
@@ -378,33 +245,6 @@ open class DoubleField(label: String, initialValue: Double, inputType: InputType
  *         FloatField("Alpha", 0.5f)
  *     }
  *     TransparentBox(alpha = alpha)
- * }
- *
- * // With range constraints (hint values)
- * @Preview
- * @Composable
- * fun ProgressPreview() = PreviewLab {
- *     val progress: Float = fieldValue {
- *         FloatField("Progress", 0.5f)
- *         // Progress values: 0.0f, 0.25f, 0.5f, 0.75f, 1.0f
- *     }
- *     ProgressBar(progress = progress)
- * }
- *
- * // With prefix/suffix for percentage
- * @Preview
- * @Composable
- * fun OpacityPreview() = PreviewLab {
- *     val opacity: Float = fieldValue {
- *         FloatField(
- *             label = "Opacity",
- *             initialValue = 0.8f,
- *             inputType = NumberField.InputType.TextField(
- *                 suffix = { Text("%") }
- *             )
- *         )
- *     }
- *     ImageWithOpacity(opacity = opacity)
  * }
  * ```
  *

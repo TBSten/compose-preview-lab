@@ -55,38 +55,8 @@ import me.tbsten.compose.preview.lab.ui.components.colorpicker.PreviewLabColorPi
  *         Text("Padded Content")
  *     }
  * }
- *
- * // Size dimension field
- * @Preview
- * @Composable
- * fun ButtonSizePreview() = PreviewLab {
- *     val buttonSize: Dp = fieldValue { DpField("Button Size", 120.dp) }
- *
- *     Button(
- *         onClick = { },
- *         modifier = Modifier.size(buttonSize)
- *     ) {
- *         Text("Sized Button")
- *     }
- * }
- *
- * // Multiple dp fields for different dimensions
- * @Preview
- * @Composable
- * fun BoxSizePreview() = PreviewLab {
- *     val width: Dp = fieldValue { DpField("Width", 200.dp) }
- *     val height: Dp = fieldValue { DpField("Height", 100.dp) }
- *
- *     Box(
- *         modifier = Modifier
- *             .size(width = width, height = height)
- *             .background(Color.Blue)
- *     )
- * }
  * ```
  *
- * @param label Display label for the field
- * @param initialValue Starting Dp value
  * @see FloatField
  * @see SpField
  */
@@ -128,36 +98,8 @@ class DpField(label: String, initialValue: Dp) :
  *         fontSize = fontSize
  *     )
  * }
- *
- * // Title text size
- * @Preview
- * @Composable
- * fun TitlePreview() = PreviewLab {
- *     val titleSize: TextUnit = fieldValue { SpField("Title Size", 24.sp) }
- *
- *     Text(
- *         text = "Large Title",
- *         fontSize = titleSize,
- *         fontWeight = FontWeight.Bold
- *     )
- * }
- *
- * // Multiple text sizes
- * @Preview
- * @Composable
- * fun TypographyPreview() = PreviewLab {
- *     val headingSize: TextUnit = fieldValue { SpField("Heading", 32.sp) }
- *     val bodySize: TextUnit = fieldValue { SpField("Body", 16.sp) }
- *
- *     Column {
- *         Text("Heading", fontSize = headingSize)
- *         Text("Body text content", fontSize = bodySize)
- *     }
- * }
  * ```
  *
- * @param label Display label for the field
- * @param initialValue Starting TextUnit value
  * @see FloatField
  * @see DpField
  */
@@ -203,25 +145,8 @@ class SpField(label: String, initialValue: TextUnit) :
  *             .background(Color.Blue)
  *     )
  * }
- *
- * // Shadow offset
- * @Preview
- * @Composable
- * fun ShadowOffsetPreview() = PreviewLab {
- *     val shadowOffset: Offset = fieldValue { OffsetField("Shadow Offset", Offset(4f, 4f)) }
- *
- *     Canvas(modifier = Modifier.size(100.dp)) {
- *         drawRect(
- *             color = Color.Gray,
- *             topLeft = shadowOffset
- *         )
- *         drawRect(color = Color.Blue)
- *     }
- * }
  * ```
  *
- * @param label Display label for the field
- * @param initialValue Starting Offset value
  * @see DpOffsetField
  * @see me.tbsten.compose.preview.lab.MutablePreviewLabField
  */
@@ -277,41 +202,8 @@ class OffsetField(label: String, initialValue: Offset) :
  *         modifier = Modifier.offset(layoutOffset.x, layoutOffset.y)
  *     )
  * }
- *
- * // Positioning offset with box
- * @Preview
- * @Composable
- * fun PositionedBoxPreview() = PreviewLab {
- *     val position: DpOffset = fieldValue { DpOffsetField("Position", DpOffset.Zero) }
- *
- *     Box(modifier = Modifier.size(200.dp)) {
- *         Box(
- *             modifier = Modifier
- *                 .size(50.dp)
- *                 .offset(position.x, position.y)
- *                 .background(Color.Red)
- *         )
- *     }
- * }
- *
- * // Absolute positioning
- * @Preview
- * @Composable
- * fun AbsoluteOffsetPreview() = PreviewLab {
- *     val offset: DpOffset = fieldValue { DpOffsetField("Absolute Offset", DpOffset(32.dp, 24.dp)) }
- *
- *     Box(modifier = Modifier.size(150.dp).background(Color.LightGray)) {
- *         Icon(
- *             Icons.Default.Star,
- *             contentDescription = null,
- *             modifier = Modifier.absoluteOffset(offset.x, offset.y)
- *         )
- *     }
- * }
  * ```
  *
- * @param label Display label for the field
- * @param initialValue Starting DpOffset value
  * @see OffsetField
  * @see MutablePreviewLabField
  */
@@ -371,24 +263,8 @@ class DpOffsetField(label: String, initialValue: DpOffset) :
  *         drawRect(Color.Blue)
  *     }
  * }
- *
- * // Rectangle dimensions
- * @Preview
- * @Composable
- * fun RectangleSizePreview() = PreviewLab {
- *     val rectSize: Size = fieldValue { SizeField("Rectangle", Size(100f, 50f)) }
- *
- *     Canvas(modifier = Modifier.size(200.dp)) {
- *         drawRect(
- *             color = Color.Red,
- *             size = rectSize
- *         )
- *     }
- * }
  * ```
  *
- * @param label Display label for the field
- * @param initialValue Starting Size value
  * @see DpSizeField
  * @see MutablePreviewLabField
  */
@@ -446,38 +322,8 @@ class SizeField(label: String, initialValue: Size) :
  *         Text("Sized Button")
  *     }
  * }
- *
- * // Container dimensions
- * @Preview
- * @Composable
- * fun ContainerPreview() = PreviewLab {
- *     val containerSize: DpSize = fieldValue { DpSizeField("Container", DpSize(200.dp, 100.dp)) }
- *
- *     Box(
- *         modifier = Modifier
- *             .size(containerSize)
- *             .background(Color.LightGray)
- *     ) {
- *         Text("Container Content")
- *     }
- * }
- *
- * // Image dimensions
- * @Preview
- * @Composable
- * fun ImageSizePreview() = PreviewLab {
- *     val imageSize: DpSize = fieldValue { DpSizeField("Image Size", DpSize(150.dp, 150.dp)) }
- *
- *     Image(
- *         painter = painterResource(R.drawable.sample),
- *         contentDescription = null,
- *         modifier = Modifier.size(imageSize)
- *     )
- * }
  * ```
  *
- * @param label Display label for the field
- * @param initialValue Starting DpSize value
  * @see SizeField
  * @see MutablePreviewLabField
  */
@@ -538,37 +384,6 @@ class DpSizeField(label: String, initialValue: DpSize) :
  *         modifier = Modifier
  *             .size(100.dp)
  *             .background(backgroundColor)
- *     )
- * }
- *
- * // Multiple color fields
- * @Preview
- * @Composable
- * fun MultiColorPreview() = PreviewLab {
- *     val backgroundColor: Color = fieldValue { ColorField("Background", Color.White) }
- *     val textColor: Color = fieldValue { ColorField("Text Color", Color.Black) }
- *
- *     Box(
- *         modifier = Modifier
- *             .size(150.dp)
- *             .background(backgroundColor),
- *         contentAlignment = Alignment.Center
- *     ) {
- *         Text("Styled Text", color = textColor)
- *     }
- * }
- *
- * // Border color picker
- * @Preview
- * @Composable
- * fun BorderColorPreview() = PreviewLab {
- *     val borderColor: Color = fieldValue { ColorField("Border", Color.Red) }
- *
- *     Box(
- *         modifier = Modifier
- *             .size(100.dp)
- *             .border(3.dp, borderColor)
- *             .background(Color.LightGray)
  *     )
  * }
  * ```
