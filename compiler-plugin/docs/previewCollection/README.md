@@ -64,7 +64,7 @@ that have nothing to contribute.
 2. **hintAndMarkerGeneration (FIR side)** — `PreviewHintFirGenerator` walks every `@Preview` in the current
    module, synthesizes one marker interface plus per-scope `previewHint_<scope>(...)` function declarations,
    and registers them. **Fires only in the preview-defining module** (modules with no `@Preview` produce
-   nothing). Details: [hint-and-marker-generation.md](./hint-and-marker-generation.md) / [marker-generation.md](./marker-generation.md).
+   nothing). Details: [hint-and-marker-generation.md](./hint-and-marker-generation.md) (Part 2 — Hint Generation, Part 3 — Marker Generation).
 3. **transformPrivatePreviewToInternal** — A separate feature (see
    [`../transformPrivatePreviewToInternal/README.md`](../transformPrivatePreviewToInternal/README.md)) but
    sequenced before IR. Promotes `@Preview private fun` to `internal` so that the IR phase can legally emit
@@ -109,11 +109,11 @@ the FIR/IR phases simply each see both roles in the same module.
 ### FIR side
 
 - **hintAndMarkerGeneration** — Synthesizes a marker interface (`PreviewHintMarker_<sanitized_fqn>_<hash>`) and
-  hint functions (`previewHint_<scope>`) for every `@Preview`. Details: [hint-and-marker-generation.md](./hint-and-marker-generation.md) /
-  [marker-generation.md](./marker-generation.md)
+  hint functions (`previewHint_<scope>`) for every `@Preview`. Details: [hint-and-marker-generation.md](./hint-and-marker-generation.md)
+  (Part 2 — Hint Generation, Part 3 — Marker Generation)
   - The initial design split this into two logics (`hintGeneration/` + `markerGeneration/`), but PR #200 merged
     them into a single logic. Criteria for keeping the unified form versus re-splitting are in
-    [marker-generation.md](./marker-generation.md).
+    [hint-and-marker-generation.md](./hint-and-marker-generation.md) (Part 3 — Marker Generation).
   - Location: [`fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt)
   - Helpers: [`fir/hintGeneration/DeprecationHidden.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintGeneration/DeprecationHidden.kt) (shared by both hint and marker),
     [`fir/AttachInternalApi.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/AttachInternalApi.kt) (shared by both hint and marker)
@@ -150,6 +150,6 @@ the FIR/IR phases simply each see both roles in the same module.
 
 1. **[hint-and-marker-generation.md](./hint-and-marker-generation.md)** (Part 1 — Naming) — Internalize the naming rules. Every logic doc assumes you know them.
 2. **[error-flow.md](./error-flow.md)** — The big-picture map of which error fires in which phase / role.
-3. **[hint-and-marker-generation.md](./hint-and-marker-generation.md)** (Part 2 — Hint Generation) + **[marker-generation.md](./marker-generation.md)** — The FIR generation side.
+3. **[hint-and-marker-generation.md](./hint-and-marker-generation.md)** (Part 2 — Hint Generation, Part 3 — Marker Generation) — The FIR generation side.
 4. **[scope-validation.md](./scope-validation.md)** — The FIR Checker side (i.e. how users see it in the IDE).
 5. **[collect-previews-replacement.md](./collect-previews-replacement.md)** — The IR side (i.e. the actual replacement and body filling).

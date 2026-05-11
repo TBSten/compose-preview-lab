@@ -62,7 +62,7 @@ install され、 該当しない module では no-op となる。
 2. **hintAndMarkerGeneration (FIR 側)** — `PreviewHintFirGenerator` が現 module 内の全 `@Preview` を走査し、
    marker interface 1 つ + scope ごとの `previewHint_<scope>(...)` stub 関数 declaration を合成して register する。
    **Preview があるモジュールでのみ発火** (`@Preview` のない module では何も生成しない)。 詳細:
-   [hint-and-marker-generation.md](./hint-and-marker-generation.md) / [marker-generation.md](./marker-generation.md)
+   [hint-and-marker-generation.md](./hint-and-marker-generation.md) (Part 2 — Hint Generation, Part 3 — Marker Generation)
 3. **transformPrivatePreviewToInternal** — 別 feature だが (詳細:
    [`../transformPrivatePreviewToInternal/README.ja.md`](../transformPrivatePreviewToInternal/README.ja.md))、
    IR phase より前に sequencing される。 `@Preview private fun` を `internal` に昇格し、 IR phase で合成 hint body
@@ -106,10 +106,10 @@ install され、 該当しない module では no-op となる。
 ### FIR 側
 
 - **hintAndMarkerGeneration** — `@Preview` ごとに marker interface (`PreviewHintMarker_<sanitized_fqn>_<hash>`) と
-  hint 関数 (`previewHint_<scope>`) を synthesize。 詳細: [hint-and-marker-generation.md](./hint-and-marker-generation.md) /
-  [marker-generation.md](./marker-generation.md)
+  hint 関数 (`previewHint_<scope>`) を synthesize。 詳細: [hint-and-marker-generation.md](./hint-and-marker-generation.md)
+  (Part 2 — Hint Generation, Part 3 — Marker Generation)
   - 設計初版では 2 logic 分離 (`hintGeneration/` + `markerGeneration/`) だったが、 PR #200 で 1 logic 統合形に。
-    維持 vs 再分離の判断基準は [marker-generation.md](./marker-generation.md) 参照
+    維持 vs 再分離の判断基準は [hint-and-marker-generation.md](./hint-and-marker-generation.md) (Part 3 — Marker Generation) 参照
   - 配置: [`fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt)
   - helper: [`fir/hintGeneration/DeprecationHidden.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintGeneration/DeprecationHidden.kt) (hint/marker 双方で利用)、
     [`fir/AttachInternalApi.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/AttachInternalApi.kt) (hint/marker 双方で利用)
@@ -143,6 +143,6 @@ install され、 該当しない module では no-op となる。
 
 1. **[hint-and-marker-generation.md](./hint-and-marker-generation.md)** (Part 1 — Naming) — 命名規則を頭に入れる。 全 logic doc がこの規則を前提に書かれている
 2. **[error-flow.md](./error-flow.md)** — 各 Error がどの phase / 役割で発火するかの全体地図
-3. **[hint-and-marker-generation.md](./hint-and-marker-generation.md)** (Part 2 — Hint Generation) + **[marker-generation.md](./marker-generation.md)** — FIR 生成側
+3. **[hint-and-marker-generation.md](./hint-and-marker-generation.md)** (Part 2 — Hint Generation, Part 3 — Marker Generation) — FIR 生成側
 4. **[scope-validation.md](./scope-validation.md)** — FIR Checker 側 (= IDE 上のリアクション)
 5. **[collect-previews-replacement.md](./collect-previews-replacement.md)** — IR 側 (= 実際の置換と body 埋め込み)
