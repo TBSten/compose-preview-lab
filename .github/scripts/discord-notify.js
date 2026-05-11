@@ -132,9 +132,8 @@ function buildSummary(env, issues) {
         }
         lines.push(`発見件数: ${env.EXP_COUNT || '0'}件`);
         if (env.ACTIONS_URL) lines.push(`Actions: ${env.ACTIONS_URL}`);
-        if (issues.length > 0) {
-            lines.push('詳細は thread を参照してください。');
-        }
+        // 「詳細は thread を参照」 の案内は ルーティング結果が確定した後で
+        // 呼び出し側 (notifyDiscord) が付与する。 ここでは付けない。
     }
 
     return lines.join('\n');
@@ -231,30 +230,43 @@ module.exports = async function notifyDiscord({ core, env = process.env }) {
 
     const wantsThread = detailText.length > 0;
 
-    // 1 通目: サマリ。
-    // - DISCORD_THREAD_ID 指定なし: チャンネル本体に投稿。 wantsThread なら同時に
-    //   `thread_name` を渡して forum/media channel での新規 thread 作成を狙う。
-    // - DISCORD_THREAD_ID 指定あり: 全部その thread に投稿する。
-    const summaryOpts = presetThreadId
-        ? { threadId: presetThreadId, wait: true }
-        : wantsThread
-            ? { threadName, wait: true }
-            : { wait: false };
-
+    // 1 通目のルーティングと文言を、 thread が確保できる経路かどうかで出し分ける。
+    // - DISCORD_THREAD_ID 指定あり: summary も詳細も同じ thread に投稿。 案内文不要
+    //   (summary 自体が thread 内にあるので "詳細は thread を参照" は意味をなさない)。
+    // - 指定なし & 詳細あり: 1 通目に `thread_name` を付けて新規 thread 作成を狙う。
+    //   1 通目はチャンネル本体に残るため、 「詳細は thread を参照」 の案内文を付ける。
+    // - 指定なし & 詳細なし: チャンネルに summary だけ。 案内文なし。
+    // - 上の thread_name 投稿が HTTP エラーになった場合: 案内文を外した summary を
+    //   channel に再送し、 詳細もチャンネル連投にフォールバック。
     let resolvedThreadId = presetThreadId;
+    const summaryWithNote = `${summary}\n詳細は thread を参照してください。`;
+
+    let summaryToPost;
+    let summaryOpts;
+    if (presetThreadId) {
+        summaryToPost = summary;
+        summaryOpts = { threadId: presetThreadId, wait: false };
+    } else if (wantsThread) {
+        summaryToPost = summaryWithNote;
+        summaryOpts = { threadName, wait: true };
+    } else {
+        summaryToPost = summary;
+        summaryOpts = { wait: false };
+    }
+
     try {
-        const firstResponse = await postMessage(webhook, summary, summaryOpts, core);
+        const firstResponse = await postMessage(webhook, summaryToPost, summaryOpts, core);
         if (!resolvedThreadId && firstResponse && firstResponse.channel_id) {
             // forum/media channel で thread_name を指定すると、 レスポンスの channel_id が
             // 新たに作られた thread の ID になる。
             resolvedThreadId = firstResponse.channel_id;
         }
     } catch (err) {
-        // thread_name 付きの 1 通目が失敗した場合 (= forum channel ではなかった等):
-        // thread を諦めて、 thread_name なしで再送する。
         if (summaryOpts.threadName) {
+            // 通常のテキストチャンネル等で thread_name が拒否されるケース。
+            // 案内文を外した summary を channel に再送し、 詳細はチャンネル連投にする。
             core.warning(
-                `1 通目が thread_name 付きで失敗 (${err.message})。 thread_name を外して再送します。`,
+                `1 通目が thread_name 付きで失敗 (${err.message})。 案内文を外して channel 連投にフォールバックします。`,
             );
             await postMessage(webhook, summary, { wait: false }, core);
             resolvedThreadId = null;
