@@ -17,14 +17,7 @@ paths:
 
 ## 段階的移行中の既知の rule 違反
 
-Ticket 0 (本 rule 導入時) では、 以下 5 sites を意図的に **未移行のまま** 残している。 後続 ticket での解消を予定。
-
-### Ticket 4 で移行予定 (IR-side WARNING 2 件)
-
-`compiler-plugin/src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/DiscoverHints.kt:154/175` の
-`messageCollector.report(CompilerMessageSeverity.WARNING, "[ComposePreviewLab] ...")` 直書き 2 件。
-
-これは Ticket 4 で **`warning/Warnings.kt` に対応する Warning 実装を追加 + `messageCollector.report(warning, location)` extension に置換** する予定。 Ticket 0 では warning framework の skeleton (`ComposePreviewLabCompilerPluginWarning` interface + DSL + reporter + placeholder `Warnings` object) のみ用意し、 実 warning 実装は Ticket 4 に委ねた。
+Ticket 0 (本 rule 導入時) では、 IR-side WARNING 2 件 + FIR-side defensive `error()` 3 件の計 5 sites を未移行のまま残していた。 そのうち IR-side WARNING 2 件は **Ticket 4 (A) で構造化済み** (`HintNamespaceSquattingWarning` / `CrossArtifactHintDuplicateWarning` に置換)。 残る 3 件は移行予定なし。
 
 ### Ticket 0 のまま維持 (FIR-side defensive `error()` 3 件)
 
@@ -125,12 +118,81 @@ private val lazyPreviewSequenceFun by lazy {
 }
 ```
 
+### Good — WARNING を構造化
+
+`Error` と同じ要領で、 `warning/Warnings.kt` に
+`ComposePreviewLabCompilerPluginWarning` 実装 class を追加し、
+`messageCollector.report(warning, location)` extension で呼び出す。 Warning 側の DSL は
+`+"label"(value)` ではなく `"label"(value)` 形式 (label を直接 invoke して entry を
+append する) なので注意。
+
+```kotlin
+// compiler-plugin/.../warning/Warnings.kt
+class HintNamespaceSquattingWarning(
+    private val packageName: String,
+    private val markerFqn: String,
+) : ComposePreviewLabCompilerPluginWarning {
+    override val categories = listOf(Category.IR, Category.PREVIEW_COLLECTION)
+    override val message =
+        "a function in '$packageName' matching the per-scope hint shape is missing " +
+            "the @SyntheticPreviewHint marker (marker parameter '$markerFqn') — " +
+            "candidate dropped to prevent namespace squatting"
+    override val description: String =
+        "Only the compose-preview-lab compiler plugin should emit declarations into the " +
+            "reserved hint package..."
+    override val context = contextOf {
+        "hint_package"(packageName)   // ← warning は + 不要 (label が即 entry を add)
+        "marker"(markerFqn)
+    }
+    override val replies = listOf(Replies.InvestigateHintsPackageOwner)
+}
+
+// 呼び出し側
+messageCollector.report(
+    HintNamespaceSquattingWarning(
+        packageName = HINT_PACKAGE.asString(),
+        markerFqn = markerFqn.asString(),
+    ),
+    hintFunction.compilerMessageLocation(),
+)
+```
+
+### Bad — literal WARNING 直書き
+
+```kotlin
+// compiler-plugin/.../ir/HintDiscovery.kt
+messageCollector.report(
+    CompilerMessageSeverity.WARNING,
+    "Compose Preview Lab: a function in '${HINT_PACKAGE.asString()}' " +     // ← 構造化なし
+        "matching the per-scope hint shape is missing the @SyntheticPreviewHint marker " +
+        "(marker parameter '$markerFqn'). ...",
+)                                                                            // ← location も渡せていない
+```
+
 ## 例外: ComposePreviewLabCommandLineProcessor の `CliOptionProcessingException`
 
 `ComposePreviewLabCommandLineProcessor.kt:68` の
 `throw CliOptionProcessingException("Unknown option: $optionName")` は Kotlin compiler API の
 規約に従う defensive ガードで、Kotlin compiler 側のエラーハンドリングと整合させる必要があるため
 **そのまま維持** する。Error 実装でラップしない。
+
+## 新規 Warning を追加する時の手順
+
+(Ticket 4 後の運用想定)
+
+1. **判断**: 「処理を止める必要があるか」を最初に判断。 止める = `error/Errors.kt` (ERROR)、 止めない = `warning/Warnings.kt` (WARNING)。 境界が曖昧なものは Error 側に倒すか `@ComposePreviewLabOption` で opt-in に逃がす
+2. **false positive 検証**: 「ユーザーが意図的にそうしている可能性が高い」 入力にまで warning を出さないかを 3 軸で評価:
+   - ユーザーが知りたい状況か
+   - 処理を止めるほどではないか
+   - false positive にならないか
+3. **Kotlin 標準の警告との重複回避**: Kotlin compiler が出す deprecated / unused / unchecked cast 等の警告と重複しない、 本 plugin 固有の知識でしか出せないものに限定
+4. **`warning/Warnings.kt` に Warning class 追加**:
+   - constructor parameter として動的値を受け取る
+   - `categories: List<Category>` で `IR` / `FIR` + feature 軸 (`PREVIEW_COLLECTION` 等) を選ぶ
+   - `message` / `description` / `context` (= `contextOf { "label"(value) }`) / `replies` を `override`
+   - 共通 reply は `error/Replies.kt` (= `ComposePreviewLabCompilerPluginError.Replies` の typealias) の const から取る。 新規 reply を追加する場合は `Replies` object に const として追加し、 wording を 1 箇所で管理
+5. **呼び出し側**: `messageCollector.report(SomeWarning(args), location)` extension で呼ぶ。 `location` は `IrDeclaration.compilerMessageLocation()` (= `utils/ir/CompilerMessageLocation.kt`) で取得すると IDE 連携が効く
+6. **テスト**: 「warning が出る入力」 と 「warning が出ない正常入力」 の 両方を kctfork 経由で 検証 (false positive guard)
 
 ## チェックリスト (PR レビュー時)
 
@@ -141,3 +203,4 @@ private val lazyPreviewSequenceFun by lazy {
 - [ ] `categories` の選択が妥当 (`IR` / `FIR` + feature 軸 + 必要なら `INVALID_USAGE` / `VERSION_GATE`)
 - [ ] 共通 reply は `error/Replies.kt` の const から取る (Bug-report `Replies.Unknown` / version upgrade `Replies.UpgradeKotlin2321` 等)
 - [ ] FIR 側 `KtDiagnosticFactory` (= `CollectScopeErrors.kt`) は対象外として明示的に許容
+- [ ] 新規 Warning は false positive リスクを 3 軸で評価済み (「ユーザーが知りたい状況か」「処理を止めるほどでないか」「false positive にならないか」)
