@@ -46,9 +46,9 @@
 - IR 構造化 Error (`error.throwAsException()` 経由): `PreviewExportNotFoundError`, `RuntimeFunctionNotFoundError`, `PropertyHasNoGetterError`
 - FIR 側 defensive `IllegalStateException` (構造化対象外、 [`.claude/rules/compiler-plugin-error.md`](../../../.claude/rules/compiler-plugin-error.md)
   の「FIR-side defensive `error()`」例外で意図的に維持) 3 件:
-  - `compiler/fir/PreviewHintFirGenerator.kt:297` — hint 関数 owner class が解決できない場合
-  - `compiler/fir/Deprecation.kt:56` — `@Deprecated(level=...)` の `level` parameter が resolve できない場合
-  - `compiler/utils/fir/AnnotationBuilders.kt:41` — annotation FQN が FIR session symbol provider に存在しない場合
+  - [`feature/previewCollection/fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt) — hint 関数 owner class (marker symbol) が解決できない場合
+  - [`feature/previewCollection/fir/hintGeneration/DeprecationHidden.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintGeneration/DeprecationHidden.kt) — `kotlin.Deprecated` annotation symbol が resolve できない場合
+  - [`utils/fir/AnnotationBuilders.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/utils/fir/AnnotationBuilders.kt) — annotation FQN が FIR session symbol provider に存在しない場合
 - Kotlin compiler API 慣例維持: `ComposePreviewLabCommandLineProcessor.kt` の `CliOptionProcessingException`
   (CLI option `when` の `else` 分岐。 Kotlin compiler API 互換性のためそのまま維持)
 
