@@ -1,6 +1,5 @@
-package me.tbsten.compose.preview.lab.compiler.registry
+package me.tbsten.compose.preview.lab.compiler
 
-import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.HintEntriesProvider
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewLabFirBuiltIns

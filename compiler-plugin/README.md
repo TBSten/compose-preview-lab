@@ -92,20 +92,19 @@ compiler-plugin/
 │   │           └── visibilityPromotion/
 │   │               └── PreviewLabFirStatusTransformerExtension.kt  # private → internal 昇格
 │   │
-│   └── registry/                                       # FIR / IR extension registrar
-│       ├── PreviewLabFirExtensionRegistrar.kt
-│       └── PreviewLabIrGenerationExtension.kt
+│   ├── PreviewLabFirExtensionRegistrar.kt              # FIR 拡張の束ね役 (FirExtensionRegistrar 継承)
+│   └── PreviewLabIrGenerationExtension.kt              # IR 拡張の束ね役 (IrGenerationExtension 継承)
 │
 ├── src/main/resources/META-INF/services/              # CompilerPluginRegistrar / CommandLineProcessor 登録
 └── compat/                                            # 共有 SPI (`:compiler-plugin:compat`)
 
-compiler-plugin-compat-k210/         # Kotlin 2.1.20+ 実装
-compiler-plugin-compat-k222/         # Kotlin 2.2.x 実装
-compiler-plugin-compat-k2220/        # Kotlin 2.2.20+ の差分
-compiler-plugin-compat-k230/         # Kotlin 2.3.0–2.3.19 実装
-compiler-plugin-compat-k2320/        # Kotlin 2.3.20+ (FIR per-declaration hint gen)
-compiler-plugin-compat-k2321/        # Kotlin 2.3.21+ (KLIB IC safety, KT-82395 fix)
-compiler-plugin-compat-k240_beta2/   # Kotlin 2.4+ 実装
+compiler-plugin/compat-k210/         # Kotlin 2.1.20+ 実装 (`:compiler-plugin:compat-k210`)
+compiler-plugin/compat-k222/         # Kotlin 2.2.x 実装 (`:compiler-plugin:compat-k222`)
+compiler-plugin/compat-k2220/        # Kotlin 2.2.20+ の差分 (`:compiler-plugin:compat-k2220`)
+compiler-plugin/compat-k230/         # Kotlin 2.3.0–2.3.19 実装 (`:compiler-plugin:compat-k230`)
+compiler-plugin/compat-k2320/        # Kotlin 2.3.20+ (FIR per-declaration hint gen) (`:compiler-plugin:compat-k2320`)
+compiler-plugin/compat-k2321/        # Kotlin 2.3.21+ (KLIB IC safety, KT-82395 fix) (`:compiler-plugin:compat-k2321`)
+compiler-plugin/compat-k240_beta2/   # Kotlin 2.4+ 実装 (`:compiler-plugin:compat-k240_beta2`)
 ```
 
 ### feature / logic の用語
@@ -118,7 +117,7 @@ compiler-plugin-compat-k240_beta2/   # Kotlin 2.4+ 実装
 
 ## compat レイヤ
 
-`:compiler-plugin:compat` が共有 SPI (`CompatContext`) を提供し、 各 `compiler-plugin-compat-k***` モジュールは独自の `kotlin-compiler-embeddable:X.Y.Z` を `compileOnly` でピンしてバージョン固有のバイトコードを生成する。 最終的な `compiler-plugin` JAR は ShadowJar で全 compat module をバンドルし、 ServiceLoader が実行時の Kotlin バージョンに合致する `CompatContext.Factory` を選択する。
+`:compiler-plugin:compat` が共有 SPI (`CompatContext`) を提供し、 各 `:compiler-plugin:compat-k***` モジュール (リポジトリでは `compiler-plugin/compat-k***/` ディレクトリに配置) は独自の `kotlin-compiler-embeddable:X.Y.Z` を `compileOnly` でピンしてバージョン固有のバイトコードを生成する。 最終的な `compiler-plugin` JAR は ShadowJar で全 compat module をバンドルし、 ServiceLoader が実行時の Kotlin バージョンに合致する `CompatContext.Factory` を選択する。
 詳細は [`docs/support-kotlin-versions.md`](../docs/support-kotlin-versions.md) を参照。
 
 ## How It Works
@@ -135,7 +134,7 @@ ComposePreviewLabCompilerPluginRegistrar
   └── IrGenerationExtension.registerExtension(PreviewLabIrGenerationExtension(config, messageCollector))
 ```
 
-`PreviewLabFirExtensionRegistrar` (under `registry/`) は以下を順に登録する:
+`PreviewLabFirExtensionRegistrar` (root package 直下) は以下を順に登録する:
 
 1. `PreviewLabFirBuiltIns` — session-bound `PluginConfig` wrapper
 2. `HintEntriesProvider` — session-scoped lazy `hintEntries` cache (hint/marker 双方が参照する SSoT)

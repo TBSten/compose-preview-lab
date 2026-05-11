@@ -1,9 +1,8 @@
 @file:OptIn(UnsafeDuringIrConstructionAPI::class)
 
-package me.tbsten.compose.preview.lab.compiler.registry
+package me.tbsten.compose.preview.lab.compiler
 
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
-import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.getAnnotationCompat
 import me.tbsten.compose.preview.lab.compiler.compat.hasAnnotationCompat
