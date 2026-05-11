@@ -215,6 +215,10 @@ jobs:
           ACTIONS_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           ISSUES_DIR: .local/nightly-exploration/issues
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          # 任意: 既存 thread に投げ続けたい場合に secret として設定する。
+          # 未設定なら 1 通目に thread_name を付けて新規 thread 作成を試みる
+          # (forum/media channel 前提、 だめならチャンネル連投にフォールバック)。
+          DISCORD_THREAD_ID: ${{ secrets.DISCORD_THREAD_ID }}
         with:
           script: |
             const notify = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/discord-notify.js`);
