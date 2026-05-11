@@ -79,7 +79,7 @@ internal class ReplaceCollectPreviewsFunBody(
     private val collectModulePreviewsFq = COLLECT_MODULE_PREVIEWS_FQN
     private val collectAllModulePreviewsFq = COLLECT_ALL_MODULE_PREVIEWS_FQN
 
-    private val sequenceBuilder = BuildPreviewSequenceIr(pluginContext, previews, config, compatContext)
+    private val sequenceBuilder = BuildPreviewSequenceIr(pluginContext, previews, compatContext)
     private val concatenatedBuilder = BuildConcatenatedPreviewSequencesIr(sequenceBuilder.context, previews)
     private val lazyWrapperBuilder = BuildLazyWrapperIr(sequenceBuilder.context)
     private val previewExportBuilder = BuildPreviewExportIr(sequenceBuilder.context)
@@ -258,7 +258,7 @@ internal class ReplaceCollectPreviewsFunBody(
             sequenceBuilder(builder, lambdaParent, scope)
         }
         val lazyExpr = lazyWrapperBuilder(builder, sequenceExpr, lambdaParent)
-        val previewExportExpr = previewExportBuilder(builder, lazyExpr)
+        val previewExportExpr = previewExportBuilder(lazyExpr)
 
         delegateField.initializer = pluginContext.irFactory.createExpressionBody(
             startOffset = property.startOffset,

@@ -2,7 +2,6 @@
 
 package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.buildPreviewSequence
 
-import me.tbsten.compose.preview.lab.compiler.PluginConfig
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
 import me.tbsten.compose.preview.lab.compiler.error.RuntimeFunctionNotFoundError
@@ -35,7 +34,7 @@ import org.jetbrains.kotlin.name.Name
  *
  * **Sample call → resulting IR**:
  * ```kotlin
- * BuildPreviewSequenceIr(pluginContext, previews, config, compatContext)
+ * BuildPreviewSequenceIr(pluginContext, previews, compatContext)
  *     .invoke(builder, parent, scope = "default")
  * // result IR ≡
  * //   lazyPreviewSequence(
@@ -57,7 +56,6 @@ import org.jetbrains.kotlin.name.Name
 internal class BuildPreviewSequenceIr(
     private val pluginContext: IrPluginContext,
     private val previews: List<PreviewFunctionInfo>,
-    @Suppress("unused") private val config: PluginConfig,
     private val compatContext: CompatContext,
 ) {
 

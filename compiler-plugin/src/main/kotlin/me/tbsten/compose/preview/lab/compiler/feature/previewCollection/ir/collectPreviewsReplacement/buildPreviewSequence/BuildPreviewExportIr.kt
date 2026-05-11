@@ -5,7 +5,6 @@ package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.coll
 import me.tbsten.compose.preview.lab.compiler.error.PreviewExportNotFoundError
 import me.tbsten.compose.preview.lab.compiler.error.throwAsException
 import me.tbsten.compose.preview.lab.compiler.utils.classIdOf
-import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
@@ -19,8 +18,7 @@ import org.jetbrains.kotlin.ir.util.constructors
  *
  * **Sample call → resulting IR**:
  * ```kotlin
- * BuildPreviewExportIr(context)
- *     .invoke(builder, lazyExpr)
+ * BuildPreviewExportIr(context).invoke(lazyExpr)
  * // result IR ≡  PreviewExport(lazyExpr)
  * ```
  *
@@ -42,7 +40,7 @@ internal class BuildPreviewExportIr(private val context: PreviewSequenceBuildCon
 
     private val previewExportType by lazy { previewExportClass.typeWith() }
 
-    operator fun invoke(@Suppress("unused") builder: DeclarationIrBuilder, lazyExpr: IrExpression): IrExpression {
+    operator fun invoke(lazyExpr: IrExpression): IrExpression {
         val ctor = previewExportClass.constructors.first()
         return IrConstructorCallImpl(
             startOffset = SYNTHETIC_OFFSET,
