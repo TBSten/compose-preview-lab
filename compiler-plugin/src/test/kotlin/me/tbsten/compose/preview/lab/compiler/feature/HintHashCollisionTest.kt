@@ -4,7 +4,7 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.maps.shouldContainExactly
 import io.kotest.matchers.shouldBe
-import me.tbsten.compose.preview.lab.compiler.ir.buildHashMapWithCollisionDetection
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.buildHashMapWithCollisionDetection
 
 /**
  * Verifies the collision-detection seam used by `buildPreviewByHashMap`. Operates on

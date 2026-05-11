@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.cli.common.messages.MessageCollector
  * ```kotlin
  * messageCollector.report(
  *     HintHashCollisionError(hash, previewA, previewB),
- *     declarationLocation(property),
+ *     property.compilerMessageLocation(),
  * )
  * ```
  *
