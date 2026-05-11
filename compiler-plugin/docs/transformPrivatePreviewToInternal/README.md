@@ -1,25 +1,26 @@
 # Feature: transformPrivatePreviewToInternal
 
-`@Preview private fun` の visibility を **`internal` に昇格** する単一 logic feature。
+A single-logic feature that **promotes the visibility** of `@Preview private fun` declarations **to `internal`**.
 
-logic が 1 つしかないため、 詳細トピックを別 .md に分割せず本 README に集約する。
-ディレクトリ構造そのものの overview は [`compiler-plugin/README.md`](../../README.md) のみが持つ (SSoT)。
+Because there is only one logic, the detailed topics are not split into separate .md files; everything lives in
+this README. The overview of the directory structure itself is owned exclusively by
+[`compiler-plugin/README.md`](../../README.md) (SSoT).
 
 ---
 
 ## Feature Overview
 
-ユーザ側コード:
+User-side code:
 
 ```kotlin
 @Preview
-private fun MyButtonPreview() { ... }   // private のまま collection 側からは見えない
+private fun MyButtonPreview() { ... }   // stays private; collection side cannot see it.
 ```
 
-これに対し plugin は `private` を `internal` に書き換えることで:
+The plugin rewrites `private` to `internal`, achieving:
 
-- 同 module の collection-side コード (合成された preview list / hint 関数) から呼び出し可能にする
-- module 外への visibility は上げない (= `public` にはしない。 library API 表面を変えない)
+- The collection-side code in the same module (the synthesized preview list / hint functions) becomes able to call it.
+- Visibility outside the module is left unchanged (= we do not promote to `public`; the library's API surface is preserved).
 
 ```kotlin
 // After (semantically equivalent)
@@ -29,36 +30,39 @@ internal fun MyButtonPreview() { ... }
 
 ---
 
-## 構成 logic 一覧
+## List of constituent logics
 
-- **visibilityPromotion** — `private` を `internal` に昇格する `FirStatusTransformerExtension` logic。
-  - 配置: [`fir/visibilityPromotion/PreviewLabFirStatusTransformerExtension.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/transformPrivatePreviewToInternal/fir/visibilityPromotion/PreviewLabFirStatusTransformerExtension.kt)
-  - 代表クラス: `PreviewLabFirStatusTransformerExtension`
-    (Kotlin compiler API の `FirStatusTransformerExtension` 継承クラスなので、 慣例として `Extension` suffix 維持)
-
----
-
-## なぜ `private` → `internal` が必要か (動機)
-
-[previewCollection feature](../previewCollection/README.md) の **cross-module hint emission** と
-両立させるため:
-
-1. plugin が同 module の `@Preview` ごとに `previewHint_<scope>(value: PreviewHintMarker_<...>?): CollectedPreview` という
-   public な合成関数 (= hint stub) を emit する
-2. hint stub の body 内では、 該当 `@Preview` 関数を **直接呼び出す** ことで `CollectedPreview(content = { ... })` を構築する
-3. ところが `@Preview` 関数が `private` だと、 同 module 内とはいえ **synthetic な hint stub からは呼び出せない**
-   (Kotlin の visibility check は file/class scope ベース)
-
-そこで「 `private` を `internal` に格上げする」 ことで、 同 module synthetic hint からの呼び出しを通す。
-`public` まで上げないのは、 library 提供者の API 表面 (BCV baseline) を変えないため。
-
-`internal` 昇格された関数は consumer 側 (= dependency module) からは見えないため、 cross-module でも
-「 user の private な preview が dependency 経由で leak する」 リスクはない。
-hint stub は public だが、 hint stub の **body 内部** で internal 関数を呼ぶこと自体は同 module 内なので問題ない。
+- **visibilityPromotion** — A `FirStatusTransformerExtension` logic that promotes `private` to `internal`.
+  - Location: [`fir/visibilityPromotion/PreviewLabFirStatusTransformerExtension.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/transformPrivatePreviewToInternal/fir/visibilityPromotion/PreviewLabFirStatusTransformerExtension.kt)
+  - Representative class: `PreviewLabFirStatusTransformerExtension`
+    (Because it inherits from the Kotlin compiler API's `FirStatusTransformerExtension`, the `Extension`
+    suffix is kept as per convention.)
 
 ---
 
-## 入出力 (Before / After)
+## Why `private` → `internal` is necessary (motivation)
+
+To coexist with **cross-module hint emission** in the
+[previewCollection feature](../previewCollection/README.md):
+
+1. For each `@Preview` in the same module, the plugin emits a public synthetic function (= hint stub) with the
+   signature `previewHint_<scope>(value: PreviewHintMarker_<...>?): CollectedPreview`.
+2. Inside the hint stub's body, the corresponding `@Preview` function is **called directly** to build
+   `CollectedPreview(content = { ... })`.
+3. However, if the `@Preview` function is `private`, **the synthetic hint stub cannot call it** even from the
+   same module (Kotlin's visibility check is file/class-scope based).
+
+To get past this, we promote `private` to `internal`, which lets the same-module synthetic hint call through.
+We deliberately do not promote all the way to `public`, so as not to alter the library author's API surface
+(BCV baseline).
+
+Functions promoted to `internal` are still invisible to consumers (= dependency modules), so there is no risk
+of a user's private preview leaking across modules. The hint stub itself is public, but **calling an `internal`
+function from within the hint stub's body** is fine because both live in the same module.
+
+---
+
+## Input / Output (Before / After)
 
 ### Input
 
@@ -66,7 +70,7 @@ hint stub は public だが、 hint stub の **body 内部** で internal 関数
 @Preview
 private fun MyButtonPreview() { ... }
 
-@Preview                      // 元から internal / public のものは触らない
+@Preview                      // declarations that are already internal / public are left untouched.
 internal fun MyTextPreview() { ... }
 ```
 
@@ -74,54 +78,59 @@ internal fun MyTextPreview() { ... }
 
 ```kotlin
 @Preview
-internal fun MyButtonPreview() { ... }   // ← private が internal に書き換わった
+internal fun MyButtonPreview() { ... }   // ← private rewritten to internal
 
 @Preview
-internal fun MyTextPreview() { ... }     // 変化なし
+internal fun MyTextPreview() { ... }     // unchanged
 ```
 
 ---
 
-## 設計判断
+## Design rationale
 
-### なぜ `private` 専用か (`protected` / `internal` は対象外)
+### Why we target `private` only (`protected` / `internal` are out of scope)
 
-`needTransformStatus` で `Visibilities.Private` のみ true を返す。 理由:
+`needTransformStatus` returns true only for `Visibilities.Private`. Reasons:
 
-- `protected` は top-level に置けない (Kotlin の制約)。 nested の `@Preview` も対象外なので機能上不要
-- `internal` は既に同 module から呼べるので昇格不要
-- `public` も呼べるので昇格不要
+- `protected` cannot appear on top-level declarations (a Kotlin restriction). Nested `@Preview` is also out
+  of scope, so there is no functional need.
+- `internal` is already callable from the same module, so no promotion is required.
+- `public` is also callable, so no promotion is required.
 
-ターゲットを `private` だけに絞ることで、 「予期しない visibility 書き換え」 のリスクを最小化。
+Restricting the target to `private` minimizes the risk of "unexpected visibility rewrites".
 
-### なぜ `FirMemberDeclaration` cast が必要か
+### Why a `FirMemberDeclaration` cast is needed
 
-`needTransformStatus(declaration: FirDeclaration)` の引数は `FirDeclaration` 型 (visibility プロパティを持たない上位型) なので、
-`FirMemberDeclaration` への smart cast が必要。 `declaration !is FirMemberDeclaration` で false return することで、
-property / local function 等の non-member 宣言は素通りさせる。
+The parameter of `needTransformStatus(declaration: FirDeclaration)` is typed as `FirDeclaration` — a
+supertype that does not expose a visibility property — so a smart cast to `FirMemberDeclaration` is required.
+Returning false on `declaration !is FirMemberDeclaration` lets non-member declarations such as properties and
+local functions pass through unchanged.
 
-### `@Preview` 検出は CMP + Android の **両 annotation** に対応
+### `@Preview` detection handles **both annotations**: CMP + Android
 
 - `org.jetbrains.compose.ui.tooling.preview.Preview` (Compose Multiplatform)
 - `androidx.compose.ui.tooling.preview.Preview` (Android)
 
-`previewAnnotations` field に両 `ClassId` を持ち、 いずれかが付いていれば対象。 検出は **fast path** (= `hasAnnotation(classId, session)` で
-classpath 上の annotation class を直接 lookup) と **fallback** (= annotation の type reference から直接 `ClassId` を読む) の
-2 段構え。 これは Compose Multiplatform の場合、 CMP annotation class 自体が classpath にないことがあるため
-([`hasPreviewAnnotation` の KDoc](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/transformPrivatePreviewToInternal/fir/visibilityPromotion/PreviewLabFirStatusTransformerExtension.kt))。
+The `previewAnnotations` field holds both `ClassId`s and any one of them matching is sufficient. Detection
+is two-tiered: a **fast path** (look up the annotation class directly on the classpath via
+`hasAnnotation(classId, session)`) and a **fallback** (read the `ClassId` directly from the annotation's type
+reference). This is because, with Compose Multiplatform, the CMP annotation class itself may not be present
+on the classpath (see the KDoc of
+[`hasPreviewAnnotation`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/transformPrivatePreviewToInternal/fir/visibilityPromotion/PreviewLabFirStatusTransformerExtension.kt)).
 
-### なぜ `FirStatusTransformerExtension` を使うか
+### Why we use `FirStatusTransformerExtension`
 
-FIR の `FirStatusTransformerExtension` は、 declaration の `FirDeclarationStatus`
-(modality / visibility / inline 等) を **解決済み状態へ書き換える** ための正規 API。 declaration の status 解決が
-他 phase より早く確定するので、 後続の checker / generator が見るときには既に `internal` に見える。
+`FirStatusTransformerExtension` is the FIR canonical API for **rewriting a declaration's resolved
+`FirDeclarationStatus`** (modality / visibility / inline / etc.). Status resolution for declarations is finalized
+earlier than other phases, so by the time downstream checkers / generators run, the declaration already looks
+`internal` to them.
 
-`status.transform(visibility = Visibilities.Internal)` で immutable な新 status を作って返す
-(`FirDeclarationStatus` は immutable data shape なので copy-on-write)。
+We use `status.transform(visibility = Visibilities.Internal)` to produce a new immutable status
+(`FirDeclarationStatus` is an immutable data shape, hence copy-on-write).
 
 ---
 
-## 関連ドキュメント
+## Related documents
 
-- [previewCollection feature](../previewCollection/README.md) — visibility 昇格が必要な背景となる cross-module hint emission
-- [`compiler-plugin/README.md`](../../README.md) — ディレクトリ構造 overview と各 feature への入口
+- [previewCollection feature](../previewCollection/README.md) — Background on cross-module hint emission, which motivates the visibility promotion.
+- [`compiler-plugin/README.md`](../../README.md) — Directory structure overview and entrypoint to each feature.
