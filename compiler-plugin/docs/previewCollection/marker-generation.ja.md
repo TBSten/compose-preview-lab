@@ -109,7 +109,7 @@ public interface PreviewHintMarker_com_example_app_MyButtonPreview_<hash>
 末尾固定長 slice で hash を復元できるようにするため。 `sanitized(sourceFqn)` 部分は lossy (`.` と `_` の両方が `_` に
 潰される) ので parse できないが、 hash 部分が後置きの固定長なら parse 不要。
 
-詳細は [hint-naming.md](./hint-naming.md) を参照。
+詳細は [hint-and-marker-generation.md](./hint-and-marker-generation.md) (Part 1 — Naming) を参照。
 
 ### marker の visibility はなぜ `public` か
 
@@ -130,6 +130,5 @@ hint 関数の **signature 解決自体ができなくなる** (parameter 型の
 
 ## 関連ドキュメント
 
-- [hint-generation.md](./hint-generation.md) — hint stub 関数生成 (同 generator が担当)
-- [hint-naming.md](./hint-naming.md) — `MarkerInterfaceName` の SSoT 詳細
+- [hint-and-marker-generation.md](./hint-and-marker-generation.md) — hint stub 関数生成 (同 generator が担当) と `MarkerInterfaceName` を含む命名 SSoT
 - [collect-previews-replacement.md](./collect-previews-replacement.md) — IR 側で marker 短名から hash を復元 → preview lookup する流れ

@@ -115,7 +115,7 @@ So that [`extractHashFromMarkerShortName`](../../src/main/kotlin/me/tbsten/compo
 can recover the hash via a fixed-length tail slice. The `sanitized(sourceFqn)` part is lossy (`.` and `_` both
 collapse to `_`) and cannot be parsed reliably, but if the hash is placed at the end with a fixed length, no parsing is needed.
 
-See [hint-naming.md](./hint-naming.md) for details.
+See [hint-and-marker-generation.md](./hint-and-marker-generation.md) (Part 1 — Naming) for details.
 
 ### Why the marker's visibility is `public`
 
@@ -137,6 +137,5 @@ Together, these realize "binary visibility is public, but invisible as a user AP
 
 ## Related documents
 
-- [hint-generation.md](./hint-generation.md) — Hint stub function generation (handled by the same generator).
-- [hint-naming.md](./hint-naming.md) — Detailed SSoT for `MarkerInterfaceName`.
+- [hint-and-marker-generation.md](./hint-and-marker-generation.md) — Hint stub function generation (handled by the same generator) and naming SSoT including `MarkerInterfaceName`.
 - [collect-previews-replacement.md](./collect-previews-replacement.md) — How the IR side recovers the hash from the marker short name to look up the preview.

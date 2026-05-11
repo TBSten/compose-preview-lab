@@ -172,6 +172,6 @@ The following are excepted:
 
 ## Related documents
 
-- [hint-naming.md](./hint-naming.md) — Background on hash collisions that `HintHashCollisionError` detects.
+- [hint-and-marker-generation.md](./hint-and-marker-generation.md) (Part 1 — Naming) — Background on hash collisions that `HintHashCollisionError` detects.
 - [scope-validation.md](./scope-validation.md) — Detailed treatment of two-level defense (FIR Checker + IR ERROR).
 - [collect-previews-replacement.md](./collect-previews-replacement.md) — Logic-level detail of where the IR-side ERRORs fire.

@@ -139,6 +139,5 @@ FIR 側で `const val` を検出して値を取りに行こうとすると、 `c
 ## 関連ドキュメント
 
 - [error-flow.md](./error-flow.md) — FIR diagnostic vs IR 構造化 Error の役割分担 (本 logic は両側の発火元)
-- [hint-naming.md](./hint-naming.md) — scope が `previewHint_<scope>` に embed される設計
-- [hint-generation.md](./hint-generation.md) — 検証後の scope が hint 関数生成にどう使われるか
+- [hint-and-marker-generation.md](./hint-and-marker-generation.md) — Part 1 (Naming) で scope が `previewHint_<scope>` に embed される設計、 Part 2 (Hint Generation) で 検証後の scope が hint 関数生成にどう使われるかを扱う
 - [collect-previews-replacement.md](./collect-previews-replacement.md) — IR 側 backstop check の流れ

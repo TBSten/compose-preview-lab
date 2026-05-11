@@ -9,7 +9,7 @@ actual `Sequence<CollectedPreview>` construction IR.
 From the user's point of view, the sentinel calls `collectModulePreviews()` / `collectAllModulePreviews()` look
 like a magic function that "collects every `@Preview` inside the module"; in reality, they are nothing but a
 **synthetic call site** that gets rewritten by an IR transform. The same logic also fills in the hint stub
-bodies emitted by the FIR-side [`hintAndMarkerGeneration/`](./hint-generation.md), so the body-filling
+bodies emitted by the FIR-side [`hintAndMarkerGeneration/`](./hint-and-marker-generation.md), so the body-filling
 responsibility is owned end-to-end here.
 
 ---
@@ -103,7 +103,7 @@ When the call is `collectAllModulePreviews(scope = "design")`, we discover every
 #### Why embedding the scope in the function name pays off
 
 Hints for other scopes have a **different function name**, so they are excluded at lookup time. No per-hint
-annotation inspection is required. See [hint-naming.md](./hint-naming.md).
+annotation inspection is required. See [hint-and-marker-generation.md](./hint-and-marker-generation.md) (Part 1 — Naming).
 
 #### Platform gate
 
@@ -270,14 +270,13 @@ Consequently:
 - An ignored preview's hash colliding with a real preview's hash never produces a false-positive ERROR.
 - The hash map contains no spurious entries, so hint-stub lookups do not waste work.
 
-See "Handling of `ignore = true`" in [hint-generation.md](./hint-generation.md).
+See "Handling of `ignore = true`" in [hint-and-marker-generation.md](./hint-and-marker-generation.md) (Part 2 — Hint Generation).
 
 ---
 
 ## Related documents
 
-- [hint-generation.md](./hint-generation.md) — The full picture of the hint stubs emitted on the FIR side.
+- [hint-and-marker-generation.md](./hint-and-marker-generation.md) — The full picture of the hint stubs emitted on the FIR side (Part 2) and the naming SSoT for recovering the hash from the marker short name on the IR side (Part 1).
 - [marker-generation.md](./marker-generation.md) — Role of the marker class and its 1:N relationship to hints.
-- [hint-naming.md](./hint-naming.md) — SSoT for recovering the hash from the marker short name on the IR side.
 - [scope-validation.md](./scope-validation.md) — FIR-side counterpart of the IR backstop check.
 - [error-flow.md](./error-flow.md) — Trigger conditions and reply text for the errors.

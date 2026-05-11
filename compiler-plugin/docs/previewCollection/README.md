@@ -64,7 +64,7 @@ that have nothing to contribute.
 2. **hintAndMarkerGeneration (FIR side)** — `PreviewHintFirGenerator` walks every `@Preview` in the current
    module, synthesizes one marker interface plus per-scope `previewHint_<scope>(...)` function declarations,
    and registers them. **Fires only in the preview-defining module** (modules with no `@Preview` produce
-   nothing). Details: [hint-generation.md](./hint-generation.md) / [marker-generation.md](./marker-generation.md).
+   nothing). Details: [hint-and-marker-generation.md](./hint-and-marker-generation.md) / [marker-generation.md](./marker-generation.md).
 3. **transformPrivatePreviewToInternal** — A separate feature (see
    [`../transformPrivatePreviewToInternal/README.md`](../transformPrivatePreviewToInternal/README.md)) but
    sequenced before IR. Promotes `@Preview private fun` to `internal` so that the IR phase can legally emit
@@ -77,7 +77,7 @@ Also runs in both roles, but the heavy IR rewrites are split cleanly.
 4. **hintAndMarkerGeneration (IR side)** — `FillPreviewHintIrBody` fills in the bodies of the hint-stub functions
    that the FIR phase declared, threading the actual `@Preview` callable reference + `CollectedPreview` builder
    into each one. **Fires only in the preview-defining module** (only modules with `@Preview` produce stub
-   bodies to fill). Details: [hint-generation.md](./hint-generation.md).
+   bodies to fill). Details: [hint-and-marker-generation.md](./hint-and-marker-generation.md).
 5. **collectPreviewsReplacement** — In the **preview-collecting module**:
     - `DiscoverHints` scans this module and all dependency modules for the marker interface prefix and gathers
       the matching `previewHint_<scope>` functions.
@@ -109,7 +109,7 @@ the FIR/IR phases simply each see both roles in the same module.
 ### FIR side
 
 - **hintAndMarkerGeneration** — Synthesizes a marker interface (`PreviewHintMarker_<sanitized_fqn>_<hash>`) and
-  hint functions (`previewHint_<scope>`) for every `@Preview`. Details: [hint-generation.md](./hint-generation.md) /
+  hint functions (`previewHint_<scope>`) for every `@Preview`. Details: [hint-and-marker-generation.md](./hint-and-marker-generation.md) /
   [marker-generation.md](./marker-generation.md)
   - The initial design split this into two logics (`hintGeneration/` + `markerGeneration/`), but PR #200 merged
     them into a single logic. Criteria for keeping the unified form versus re-splitting are in
@@ -135,10 +135,11 @@ the FIR/IR phases simply each see both roles in the same module.
 
 ## Cross-cutting topics
 
-- **[hint-naming.md](./hint-naming.md)** — SSoT for the relationship between `HintCanonicalKey` + `HintFunName` +
-  `MarkerInterfaceName`. Which class references which naming function, the design rationale for the truncated hash
-  length, the lossy-by-design nature of `sanitized` FQNs, and more. Serves as the **single source of truth**
-  guaranteeing agreement among the three sites (hint / marker / discovery) and is referenced from the other logic docs.
+- **[hint-and-marker-generation.md](./hint-and-marker-generation.md)** — Part 1 is the SSoT for the relationship
+  between `HintCanonicalKey` + `HintFunName` + `MarkerInterfaceName`. Which class references which naming function,
+  the design rationale for the truncated hash length, the lossy-by-design nature of `sanitized` FQNs, and more.
+  Serves as the **single source of truth** guaranteeing agreement among the three sites (hint / marker / discovery)
+  and is referenced from the other logic docs. Part 2 covers the FIR hint-generation logic that materializes those names.
 - **[error-flow.md](./error-flow.md)** — Division of responsibility between FIR diagnostics
   (`KtDiagnosticFactory*`) and IR-side structured errors (`ComposePreviewLabCompilerPluginError`), why we need
   two-level defense, and a list of trigger conditions for each error.
@@ -147,8 +148,8 @@ the FIR/IR phases simply each see both roles in the same module.
 
 ## Recommended reading order
 
-1. **[hint-naming.md](./hint-naming.md)** — Internalize the naming rules. Every logic doc assumes you know them.
+1. **[hint-and-marker-generation.md](./hint-and-marker-generation.md)** (Part 1 — Naming) — Internalize the naming rules. Every logic doc assumes you know them.
 2. **[error-flow.md](./error-flow.md)** — The big-picture map of which error fires in which phase / role.
-3. **[hint-generation.md](./hint-generation.md)** + **[marker-generation.md](./marker-generation.md)** — The FIR generation side.
+3. **[hint-and-marker-generation.md](./hint-and-marker-generation.md)** (Part 2 — Hint Generation) + **[marker-generation.md](./marker-generation.md)** — The FIR generation side.
 4. **[scope-validation.md](./scope-validation.md)** — The FIR Checker side (i.e. how users see it in the IDE).
 5. **[collect-previews-replacement.md](./collect-previews-replacement.md)** — The IR side (i.e. the actual replacement and body filling).

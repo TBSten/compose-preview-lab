@@ -157,6 +157,6 @@ FIR diagnostic は [`CollectScopeErrors.kt`](../../src/main/kotlin/me/tbsten/com
 
 ## 関連ドキュメント
 
-- [hint-naming.md](./hint-naming.md) — `HintHashCollisionError` が検出する hash 衝突の背景
+- [hint-and-marker-generation.md](./hint-and-marker-generation.md) (Part 1 — Naming) — `HintHashCollisionError` が検出する hash 衝突の背景
 - [scope-validation.md](./scope-validation.md) — FIR Checker と IR ERROR の二重防衛詳細
 - [collect-previews-replacement.md](./collect-previews-replacement.md) — IR 側 ERROR 発火元の logic 詳細

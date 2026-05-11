@@ -145,6 +145,5 @@ negatives or false positives become much more likely. So:
 ## Related documents
 
 - [error-flow.md](./error-flow.md) — Role separation between FIR diagnostics and IR structured errors (this logic is the originator of both sides).
-- [hint-naming.md](./hint-naming.md) — The design that embeds the scope into `previewHint_<scope>`.
-- [hint-generation.md](./hint-generation.md) — How the validated scope is then used to generate hint functions.
+- [hint-and-marker-generation.md](./hint-and-marker-generation.md) — Part 1 (Naming) covers the design that embeds the scope into `previewHint_<scope>`, and Part 2 (Hint Generation) covers how the validated scope is then used to generate hint functions.
 - [collect-previews-replacement.md](./collect-previews-replacement.md) — The IR-side backstop check flow.

@@ -62,7 +62,7 @@ install され、 該当しない module では no-op となる。
 2. **hintAndMarkerGeneration (FIR 側)** — `PreviewHintFirGenerator` が現 module 内の全 `@Preview` を走査し、
    marker interface 1 つ + scope ごとの `previewHint_<scope>(...)` stub 関数 declaration を合成して register する。
    **Preview があるモジュールでのみ発火** (`@Preview` のない module では何も生成しない)。 詳細:
-   [hint-generation.md](./hint-generation.md) / [marker-generation.md](./marker-generation.md)
+   [hint-and-marker-generation.md](./hint-and-marker-generation.md) / [marker-generation.md](./marker-generation.md)
 3. **transformPrivatePreviewToInternal** — 別 feature だが (詳細:
    [`../transformPrivatePreviewToInternal/README.ja.md`](../transformPrivatePreviewToInternal/README.ja.md))、
    IR phase より前に sequencing される。 `@Preview private fun` を `internal` に昇格し、 IR phase で合成 hint body
@@ -75,7 +75,7 @@ install され、 該当しない module では no-op となる。
 4. **hintAndMarkerGeneration (IR 側)** — `FillPreviewHintIrBody` が、 FIR phase で declaration のみ作成された
    hint stub 関数の body を埋める。 各 stub の中で実際の `@Preview` callable reference と `CollectedPreview`
    builder を呼ぶ IR を構築する。 **Preview があるモジュールでのみ発火** (stub body を埋めるべき module は
-   `@Preview` を持つ module のみ)。 詳細: [hint-generation.md](./hint-generation.md)
+   `@Preview` を持つ module のみ)。 詳細: [hint-and-marker-generation.md](./hint-and-marker-generation.md)
 5. **collectPreviewsReplacement** — **Collect したいモジュール側で**:
     - `DiscoverHints` が現 module + 全依存先 module から marker interface prefix を持つ class を走査し、
       対応する `previewHint_<scope>` 関数を収集する
@@ -106,7 +106,7 @@ install され、 該当しない module では no-op となる。
 ### FIR 側
 
 - **hintAndMarkerGeneration** — `@Preview` ごとに marker interface (`PreviewHintMarker_<sanitized_fqn>_<hash>`) と
-  hint 関数 (`previewHint_<scope>`) を synthesize。 詳細: [hint-generation.md](./hint-generation.md) /
+  hint 関数 (`previewHint_<scope>`) を synthesize。 詳細: [hint-and-marker-generation.md](./hint-and-marker-generation.md) /
   [marker-generation.md](./marker-generation.md)
   - 設計初版では 2 logic 分離 (`hintGeneration/` + `markerGeneration/`) だったが、 PR #200 で 1 logic 統合形に。
     維持 vs 再分離の判断基準は [marker-generation.md](./marker-generation.md) 参照
@@ -130,9 +130,10 @@ install され、 該当しない module では no-op となる。
 
 ## 横断トピック
 
-- **[hint-naming.md](./hint-naming.md)** — `HintCanonicalKey` + `HintFunName` + `MarkerInterfaceName` の関係 SSoT。
-  どの class がどの命名関数を参照するか、 truncated hash 長さの設計判断、 sanitized FQN の情報損失設計など。
-  hint / marker / discovery の 3 sites の一致を保証するための **single source of truth** として、 他 logic doc から参照される
+- **[hint-and-marker-generation.md](./hint-and-marker-generation.md)** — Part 1 が `HintCanonicalKey` + `HintFunName` +
+  `MarkerInterfaceName` の関係 SSoT。 どの class がどの命名関数を参照するか、 truncated hash 長さの設計判断、
+  sanitized FQN の情報損失設計など。 hint / marker / discovery の 3 sites の一致を保証するための
+  **single source of truth** として、 他 logic doc から参照される。 Part 2 はその命名を実体化する FIR hint generation logic を扱う
 - **[error-flow.md](./error-flow.md)** — FIR diagnostic (`KtDiagnosticFactory*`) と IR 構造化 Error
   (`ComposePreviewLabCompilerPluginError`) の役割分担、 二重防衛が必要な理由、 各 Error 発火条件一覧
 
@@ -140,8 +141,8 @@ install され、 該当しない module では no-op となる。
 
 ## 読み順 (推奨)
 
-1. **[hint-naming.md](./hint-naming.md)** — 命名規則を頭に入れる。 全 logic doc がこの規則を前提に書かれている
+1. **[hint-and-marker-generation.md](./hint-and-marker-generation.md)** (Part 1 — Naming) — 命名規則を頭に入れる。 全 logic doc がこの規則を前提に書かれている
 2. **[error-flow.md](./error-flow.md)** — 各 Error がどの phase / 役割で発火するかの全体地図
-3. **[hint-generation.md](./hint-generation.md)** + **[marker-generation.md](./marker-generation.md)** — FIR 生成側
+3. **[hint-and-marker-generation.md](./hint-and-marker-generation.md)** (Part 2 — Hint Generation) + **[marker-generation.md](./marker-generation.md)** — FIR 生成側
 4. **[scope-validation.md](./scope-validation.md)** — FIR Checker 側 (= IDE 上のリアクション)
 5. **[collect-previews-replacement.md](./collect-previews-replacement.md)** — IR 側 (= 実際の置換と body 埋め込み)
