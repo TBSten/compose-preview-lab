@@ -102,7 +102,7 @@ hint が共存できる。
 | `PreviewHintMarkerPrefix` | `MarkerInterfaceName.kt` | `PreviewHintFirGenerator` | — | `DiscoverHints` (短名 prefix チェック) |
 | `HashLength` | `MarkerInterfaceName.kt` | `HintEntriesProvider` (indirect, via `computeHintHash` 出力長) | `extractHashFromMarkerShortName` 経由 | `extractHashFromMarkerShortName` 経由 |
 | `buildMarkerShortName` | `MarkerInterfaceName.kt` | `HintEntriesProvider.computeHintEntries` | — | — |
-| `isMarkerShortName` | `MarkerInterfaceName.kt` | — | `FillPreviewHintIrBody.visitSimpleFunction` (パラメータ型短名のチェック) | `DiscoverHints.invoke` (structural sanity check) |
+| `isMarkerShortName` | `MarkerInterfaceName.kt` | — | `FillPreviewHintIrBody.visitSimpleFunction` (パラメータ型短名のチェック) | `DiscoverHints` (`discoverHints` function, structural sanity check) |
 | `extractHashFromMarkerShortName` | `MarkerInterfaceName.kt` | — | `FillPreviewHintIrBody.visitSimpleFunction` | — |
 
 > **Find Usages との突合**: 上記表は実装の rename / 移動に弱い。 IDE の Find Usages を真の SSoT として扱い、
