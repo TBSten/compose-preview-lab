@@ -32,6 +32,32 @@ const CHUNK_LIMIT = 1900;
 const CONTENT_LIMIT = 1990;
 const THREAD_NAME_LIMIT = 100;
 
+// 重要度の星表記。 P0 が最重要 (4 個満点) で、 番号が増えるほど星が減る。
+// issue Markdown 本体は `P0`〜`P3` のまま保持し、 Discord 通知でだけ星に変換する。
+const SEVERITY_STARS = {
+    P0: '⭐⭐⭐⭐',
+    P1: '⭐⭐⭐☆',
+    P2: '⭐⭐☆☆',
+    P3: '⭐☆☆☆',
+};
+
+// 見出しに付ける絵文字。 被らないように 3 種類を割り当てる。
+const EMOJI = {
+    pbt: '🧪', // Property-Based Test → 試験管
+    exploration: '🔍', // 探索的テスト → 虫眼鏡
+    issue: '📌', // 個別 issue → ピン留め
+};
+
+function decorateSeverity(line) {
+    // 例: `**重要度**: P1` → `**重要度**: ⭐⭐⭐☆ (P1)`
+    //     `**重要度**: P1 補足` → `**重要度**: ⭐⭐⭐☆ (P1) 補足`
+    const m = line.match(/^(\s*\*\*重要度\*\*:\s*)(P[0-3])\b(.*)$/);
+    if (!m) return line;
+    const stars = SEVERITY_STARS[m[2]];
+    if (!stars) return line;
+    return `${m[1]}${stars} (${m[2]})${m[3]}`;
+}
+
 function extractIssue(filePath) {
     const text = fs.readFileSync(filePath, 'utf8');
 
@@ -46,19 +72,28 @@ function extractIssue(filePath) {
 
     const catMatch = text.match(/^\*\*カテゴリ\*\*:.+$/m);
     const sevMatch = text.match(/^\*\*重要度\*\*:.+$/m);
+    const sevDecorated = sevMatch ? decorateSeverity(sevMatch[0]) : null;
     let meta = '';
-    if (catMatch && sevMatch) {
-        meta = `${catMatch[0]} / ${sevMatch[0]}`;
+    if (catMatch && sevDecorated) {
+        meta = `${catMatch[0]} / ${sevDecorated}`;
     } else if (catMatch) {
         meta = catMatch[0];
-    } else if (sevMatch) {
-        meta = sevMatch[0];
+    } else if (sevDecorated) {
+        meta = sevDecorated;
     }
 
+    // `## 詳細` セクションを抜き出す。 JavaScript の RegExp は `\Z` を理解しない (リテラル
+     // 扱いになる) ので、 「ヘッダの位置を探す → ヘッダ次行から、 次の `##` までを切る」
+     // という 2 段階で処理する。
     let detail = '';
-    const detailMatch = text.match(/^## 詳細\s*\r?\n([\s\S]*?)(?=^## |\Z)/m);
-    if (detailMatch) {
-        detail = detailMatch[1]
+    const detailHeaderMatch = text.match(/^## 詳細[ \t]*$/m);
+    if (detailHeaderMatch) {
+        const afterHeader = text
+            .slice(detailHeaderMatch.index + detailHeaderMatch[0].length)
+            .replace(/^\r?\n/, '');
+        const nextHeader = afterHeader.search(/^## /m);
+        const body = nextHeader >= 0 ? afterHeader.slice(0, nextHeader) : afterHeader;
+        detail = body
             .split(/\r?\n/)
             .map((l) => l.trim())
             .filter((l) => l.length > 0)
@@ -84,14 +119,14 @@ function buildSummary(env, issues) {
     const lines = [];
 
     if (env.SEND_PBT === 'true') {
-        lines.push('# PBT');
+        lines.push(`# ${EMOJI.pbt} PBT`);
         lines.push(`ステータス: ${env.PBT_RESULT || '(unknown)'}`);
         if (env.ACTIONS_URL) lines.push(`Actions: ${env.ACTIONS_URL}`);
     }
 
     if (env.SEND_EXP === 'true') {
         if (lines.length > 0) lines.push('');
-        lines.push('# 探索的テスト');
+        lines.push(`# ${EMOJI.exploration} 探索的テスト`);
         if (env.EXP_RESULT === 'failure' || env.EXP_RESULT === 'cancelled') {
             lines.push('(探索ジョブが失敗または途中終了しています。 部分結果を表示します)');
         }
@@ -109,7 +144,7 @@ function buildDetailText(issues) {
     // 2 通目以降: 各 issue を `## 探索的テスト N. <title>` 形式で並べる。
     if (issues.length === 0) return '';
     const blocks = issues.map((issue, i) => {
-        const block = [`## 探索的テスト ${i + 1}. ${issue.title}`];
+        const block = [`## ${EMOJI.issue} 探索的テスト ${i + 1}. ${issue.title}`];
         if (issue.meta) block.push(issue.meta);
         if (issue.detail) block.push(issue.detail);
         return block.join('\n');
