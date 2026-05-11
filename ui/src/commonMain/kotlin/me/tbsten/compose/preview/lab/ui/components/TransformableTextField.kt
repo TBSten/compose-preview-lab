@@ -27,29 +27,15 @@ import me.tbsten.compose.preview.lab.ui.components.textfield.PreviewLabTextField
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.PreviewLabTextFieldColors
 
 /**
- * Interface for transforming values to and from string representation.
- *
- * Used by TransformableTextField to handle conversion between typed values
- * and their string representation for text field input/output.
- *
- * @param Value The type of value being transformed
+ * Bidirectional converter between [Value] and a text-field-friendly [String], used by
+ * [PreviewLabTransformableTextField] for typed input / output. Implementations should be
+ * symmetric — `fromString(toString(v))` must return a value equivalent to `v` for any `v`
+ * the UI will produce.
  */
 @UiComposePreviewLabApi
 interface PreviewLabTransformer<Value> {
-    /**
-     * Converts a value to its string representation.
-     *
-     * @param value The value to convert
-     * @return String representation of the value
-     */
     fun toString(value: Value): String
 
-    /**
-     * Converts a string back to a typed value.
-     *
-     * @param string The string to convert
-     * @return The typed value parsed from the string
-     */
     fun fromString(string: String): Value
 }
 
