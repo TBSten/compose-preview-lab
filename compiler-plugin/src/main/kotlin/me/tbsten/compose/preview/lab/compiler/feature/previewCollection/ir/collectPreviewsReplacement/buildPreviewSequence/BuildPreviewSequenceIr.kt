@@ -5,6 +5,8 @@ package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.coll
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
 import me.tbsten.compose.preview.lab.compiler.error.RuntimeFunctionNotFoundError
+import me.tbsten.compose.preview.lab.compiler.error.StdlibClassNotFoundError
+import me.tbsten.compose.preview.lab.compiler.error.orThrow
 import me.tbsten.compose.preview.lab.compiler.error.throwAsException
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewFunctionInfo
 import me.tbsten.compose.preview.lab.compiler.utils.callableIdOf
@@ -96,7 +98,8 @@ internal class PreviewSequenceBuildContext(val pluginContext: IrPluginContext, v
     val sequenceOfCollectedPreviewType: IrType by lazy {
         pluginContext.referenceClass(
             classIdOf("kotlin.sequences", "Sequence"),
-        )!!.typeWith(collectedPreviewType)
+        ).orThrow { StdlibClassNotFoundError("kotlin.sequences.Sequence") }
+            .typeWith(collectedPreviewType)
     }
 
     /** `() -> CollectedPreview` factory-lambda type used for the `lazyPreviewSequence` vararg. */

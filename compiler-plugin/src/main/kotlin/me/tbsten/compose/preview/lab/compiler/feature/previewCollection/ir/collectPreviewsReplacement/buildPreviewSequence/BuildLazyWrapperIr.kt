@@ -3,6 +3,8 @@
 package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.buildPreviewSequence
 
 import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
+import me.tbsten.compose.preview.lab.compiler.error.StdlibClassNotFoundError
+import me.tbsten.compose.preview.lab.compiler.error.orThrow
 import me.tbsten.compose.preview.lab.compiler.utils.callableIdOf
 import me.tbsten.compose.preview.lab.compiler.utils.classIdOf
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
@@ -77,12 +79,15 @@ internal class BuildLazyWrapperIr(private val context: PreviewSequenceBuildConte
             function = lambdaFun,
         )
 
+        val lazyType = context.pluginContext.referenceClass(
+            classIdOf("kotlin", "Lazy"),
+        ).orThrow { StdlibClassNotFoundError("kotlin.Lazy") }
+            .typeWith(context.sequenceOfCollectedPreviewType)
+
         return context.compatContext.irCall(
             builder,
             lazyFun,
-            context.pluginContext.referenceClass(
-                classIdOf("kotlin", "Lazy"),
-            )!!.typeWith(context.sequenceOfCollectedPreviewType),
+            lazyType,
             listOf(context.sequenceOfCollectedPreviewType),
         ).apply {
             arguments[0] = lambdaExpr

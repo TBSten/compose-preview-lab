@@ -10,9 +10,12 @@ import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.hintFunc
 
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.IrDeclarationOriginCompat
+import me.tbsten.compose.preview.lab.compiler.utils.ir.compilerMessageLocation
 import me.tbsten.compose.preview.lab.compiler.utils.ir.requiresKlibIcSafetyForCrossModuleHint
+import me.tbsten.compose.preview.lab.compiler.warning.CrossArtifactHintDuplicateWarning
+import me.tbsten.compose.preview.lab.compiler.warning.HintNamespaceSquattingWarning
+import me.tbsten.compose.preview.lab.compiler.warning.report
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
-import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
@@ -151,12 +154,11 @@ internal fun discoverHints(
             true
         } else {
             messageCollector.report(
-                CompilerMessageSeverity.WARNING,
-                "Compose Preview Lab: a function in '${HINT_PACKAGE.asString()}' " +
-                    "matching the per-scope hint shape is missing the @SyntheticPreviewHint marker " +
-                    "(marker parameter '$markerFqn'). Only the Compose Preview Lab compiler plugin " +
-                    "should emit declarations into this package; the candidate will be ignored to " +
-                    "prevent namespace squatting.",
+                HintNamespaceSquattingWarning(
+                    packageName = HINT_PACKAGE.asString(),
+                    markerFqn = markerFqn.asString(),
+                ),
+                hintFunction.compilerMessageLocation(),
             )
             false
         }
@@ -172,12 +174,12 @@ internal fun discoverHints(
         .filterValues { it.size > 1 }
         .forEach { (markerFqn, duplicates) ->
             messageCollector.report(
-                CompilerMessageSeverity.WARNING,
-                "Compose Preview Lab: ${duplicates.size} synthetic hint functions on the classpath " +
-                    "share marker '$markerFqn' (scope = '$scope'). The same `@Preview` is included via " +
-                    "multiple artifacts; runtime `distinctPreviewsById` retains the first occurrence " +
-                    "only. Verify the dependency tree if you did not intend to publish the same " +
-                    "preview source from two coordinates.",
+                CrossArtifactHintDuplicateWarning(
+                    count = duplicates.size,
+                    markerFqn = markerFqn.asString(),
+                    scope = scope,
+                ),
+                duplicates.first().first.compilerMessageLocation(),
             )
         }
 

@@ -206,5 +206,58 @@ interface ComposePreviewLabCompilerPluginError {
 
               val previews by collectModulePreviews(scope = "acme_ui")
             """.trimIndent()
+
+        /**
+         * Reply for `HintNamespaceSquattingWarning` — a third-party declaration inside
+         * `me.tbsten.compose.preview.lab.hints` matched the per-scope hint shape but did
+         * not carry the plugin-stamped `@SyntheticPreviewHint` marker. The candidate is
+         * dropped from the aggregated preview list to defend against namespace squatting.
+         *
+         * The reply walks users through the two most likely root causes (an unrelated
+         * library happened to declare into the reserved package, or a hand-rolled
+         * declaration accidentally landed in the hints package) and tells them they can
+         * safely ignore the warning when the candidate is intentional but not authored by
+         * the plugin.
+         */
+        val InvestigateHintsPackageOwner: String =
+            """
+            The `me.tbsten.compose.preview.lab.hints` package is reserved for declarations
+            emitted by the compose-preview-lab compiler plugin — every authentic hint is
+            marked with `@me.tbsten.compose.preview.lab.SyntheticPreviewHint`. A function in
+            the package without that marker either:
+
+              - originates from a third-party artifact that happens to declare into the
+                reserved package (likely a name collision with another preview library), or
+              - was added by hand to the consuming module (move it out of the reserved
+                package — top-level declarations elsewhere work fine).
+
+            If the candidate is intentional but not produced by the plugin, you can safely
+            ignore this warning; the candidate is dropped from the aggregated preview list
+            so the runtime behaviour is unchanged.
+            """.trimIndent()
+
+        /**
+         * Reply for `CrossArtifactHintDuplicateWarning` — `referenceFunctions` returned
+         * two or more hint stubs sharing the same marker FQN, meaning the same `@Preview`
+         * source is pulled in through more than one artifact coordinate. Runtime
+         * `distinctPreviewsById` already collapses the duplicates, so processing
+         * continues; the warning surfaces a likely dependency-graph misconfiguration.
+         */
+        val InvestigateDuplicateArtifacts: String =
+            """
+            Runtime `distinctPreviewsById` keeps the first occurrence so the user-visible
+            list stays correct, but the duplicated artifacts likely indicate one of:
+
+              - the same source module is published under two coordinates (e.g. a renamed
+                artifact still shipping alongside the original),
+              - a transitive dependency pulls in the same library at two different
+                versions, or
+              - an incremental-compile partial state surfaces both the cached and the
+                rebuilt symbol (rare; usually clears on a clean rebuild).
+
+            Inspect the resolved dependency graph (`./gradlew dependencies` /
+            `./gradlew :app:dependencies`) for duplicate paths to the artifact that owns
+            the marker FQN, or run a clean rebuild if you suspect IC state.
+            """.trimIndent()
     }
 }
