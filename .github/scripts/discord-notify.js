@@ -206,6 +206,39 @@ async function postMessage(webhook, content, opts, core) {
     return null;
 }
 
+// Webhook が紐付いている channel の ID を取得する。 通常のテキストチャンネル webhook に
+// `?thread_name=` を渡すと thread は作成されず channel 本体に投稿されるが、 レスポンスの
+// `channel_id` には webhook 自身の channel ID が入ってしまう。 これを「新規 thread の ID」 と
+// 誤認しないよう、 事前にこの値を取得して照合に使う。
+async function getWebhookChannelId(webhook) {
+    try {
+        const res = await fetch(webhook);
+        if (!res.ok) return null;
+        const json = await res.json();
+        return json && json.channel_id ? json.channel_id : null;
+    } catch {
+        return null;
+    }
+}
+
+// 既に投稿済みの webhook メッセージを PATCH で書き換える。 thread 作成に失敗した場合に
+// 1 通目の「詳細は thread を参照」 を消して整合性を取る用途。
+async function editMessage(webhook, messageId, content, core) {
+    const url = new URL(webhook);
+    url.pathname = url.pathname.replace(/\/$/, '') + `/messages/${messageId}`;
+    const body = truncateContent(content);
+    const res = await fetch(url.toString(), {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: body, allowed_mentions: { parse: [] } }),
+    });
+    if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        throw new Error(`Discord PATCH failed: HTTP ${res.status} ${text}`);
+    }
+    core.info(`Edited message ${messageId} (${body.length} chars)`);
+}
+
 module.exports = async function notifyDiscord({ core, env = process.env }) {
     const webhook = env.DISCORD_WEBHOOK_URL;
     if (!webhook) {
@@ -254,17 +287,45 @@ module.exports = async function notifyDiscord({ core, env = process.env }) {
         summaryOpts = { wait: false };
     }
 
+    // thread_name 経由で投稿する前に webhook の所属 channel_id を取得しておく
+    // (text channel webhook では thread_name が無視され channel に直接投稿されるが、
+    //  レスポンスの channel_id は webhook 自身の channel ID なので thread_id として
+    //  使い回せない。 事前に照合できる値を握っておく)。
+    const webhookChannelId = summaryOpts.threadName
+        ? await getWebhookChannelId(webhook)
+        : null;
+
     try {
         const firstResponse = await postMessage(webhook, summaryToPost, summaryOpts, core);
-        if (!resolvedThreadId && firstResponse && firstResponse.channel_id) {
-            // forum/media channel で thread_name を指定すると、 レスポンスの channel_id が
-            // 新たに作られた thread の ID になる。
-            resolvedThreadId = firstResponse.channel_id;
+        if (!resolvedThreadId && summaryOpts.threadName && firstResponse && firstResponse.channel_id) {
+            if (!webhookChannelId || firstResponse.channel_id !== webhookChannelId) {
+                // forum/media channel で thread_name 指定 → 新規 thread が作られた。
+                resolvedThreadId = firstResponse.channel_id;
+            } else {
+                // text channel で thread_name が無視され、 channel に直接投稿されたケース。
+                // 1 通目を edit して案内文を消し、 詳細は channel 連投にフォールバックする。
+                core.warning(
+                    `thread_name 付き投稿は受理されたが thread は作成されなかった ` +
+                    `(レスポンス channel_id=${firstResponse.channel_id} が webhook の channel と一致)。 ` +
+                    `1 通目を edit して案内文を外し、 channel 連投にフォールバックします。`,
+                );
+                if (firstResponse.id) {
+                    try {
+                        await editMessage(webhook, firstResponse.id, summary, core);
+                    } catch (e) {
+                        core.warning(
+                            `1 通目の edit に失敗 (${e.message})。 ` +
+                            `案内文が残ったまま channel に詳細を流します。`,
+                        );
+                    }
+                }
+                resolvedThreadId = null;
+            }
         }
     } catch (err) {
         if (summaryOpts.threadName) {
-            // 通常のテキストチャンネル等で thread_name が拒否されるケース。
-            // 案内文を外した summary を channel に再送し、 詳細はチャンネル連投にする。
+            // 通常のテキストチャンネル等で thread_name が HTTP エラーになるケース
+            // (現在の Discord 挙動では稀。 念のため残す)。
             core.warning(
                 `1 通目が thread_name 付きで失敗 (${err.message})。 案内文を外して channel 連投にフォールバックします。`,
             );
