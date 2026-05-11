@@ -59,6 +59,24 @@ function decorateSeverity(line) {
     return `${m[1]}${stars} (${m[2]})${m[3]}`;
 }
 
+// `**重要度**: P1` のような行から `⭐⭐⭐☆ P1` のような短縮ラベルを取り出す。
+// <details><summary> の中など 1 行で表示する場面用 (Markdown bold は描画されないので
+// `**` を含めない)。
+function severityToShortLabel(sevLine) {
+    if (!sevLine) return null;
+    const m = sevLine.match(/P[0-3]/);
+    if (!m) return null;
+    const stars = SEVERITY_STARS[m[0]];
+    return stars ? `${stars} ${m[0]}` : m[0];
+}
+
+// `**カテゴリ**: cat2 (CI ログ・apiDump)` のような行から `cat2` だけを取り出す。
+function categoryToShortLabel(catLine) {
+    if (!catLine) return null;
+    const m = catLine.match(/cat\d+/);
+    return m ? m[0] : null;
+}
+
 function extractIssue(filePath) {
     const text = fs.readFileSync(filePath, 'utf8');
     const raw = text;
@@ -104,7 +122,11 @@ function extractIssue(filePath) {
             .slice(0, 200);
     }
 
-    return { title, meta, detail, raw };
+    // job summary の <details><summary> ラベル用に、 タイトル以外の情報を短縮形で取り出す。
+    const severityShort = severityToShortLabel(sevMatch ? sevMatch[0] : null);
+    const categoryShort = categoryToShortLabel(catMatch ? catMatch[0] : null);
+
+    return { title, meta, detail, raw, severityShort, categoryShort };
 }
 
 function readIssues(issuesDir) {
@@ -263,9 +285,14 @@ async function writeJobSummary({ core, env, issues }) {
         core.summary.addRaw(`発見件数: **${env.EXP_COUNT || issues.length}件**\n\n`);
 
         issues.forEach((issue, i) => {
-            // <details><summary>📌 N. <title></summary> の中に issue Markdown 全文 (H1 行を除いた本文) を入れる。
-            // 直後の空行を保って GitHub Markdown レンダリングを有効化する。
-            const summaryLabel = `📌 探索的テスト ${i + 1}. ${issue.title}`;
+            // <details><summary>...</summary> ラベルには 重要度 / カテゴリ / タイトル を並べ、
+            // 折りたたんだ状態でも「何がどれくらい重要か」 一目で分かるようにする。
+            // <summary> 内では Markdown bold が描画されないので `**` は使わず、 `|` 区切りで並べる。
+            const labelParts = [];
+            if (issue.severityShort) labelParts.push(issue.severityShort);
+            if (issue.categoryShort) labelParts.push(issue.categoryShort);
+            labelParts.push(issue.title);
+            const summaryLabel = `📌 ${labelParts.join(' | ')}`;
             const bodyWithoutTitle = issue.raw.replace(/^#\s+.+?\r?\n+/, '').trimEnd();
             core.summary.addDetails(summaryLabel, `\n\n${bodyWithoutTitle}\n`);
         });
