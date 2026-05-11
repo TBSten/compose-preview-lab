@@ -47,7 +47,7 @@ import me.tbsten.compose.preview.lab.compiler.error.Replies
  *     marker: me.tbsten.compose.preview.lab.hints.PreviewHintMarker_squatter_Fake_deadbeef
  * ```
  */
-class HintNamespaceSquattingWarning(private val packageName: String, private val markerFqn: String,) :
+class HintNamespaceSquattingWarning(private val packageName: String, private val markerFqn: String) :
     ComposePreviewLabCompilerPluginWarning {
     override val categories: List<Category> = listOf(Category.IR, Category.PREVIEW_COLLECTION)
     override val message: String =
@@ -99,8 +99,16 @@ class HintNamespaceSquattingWarning(private val packageName: String, private val
  *     scope: default
  * ```
  */
-class CrossArtifactHintDuplicateWarning(private val count: Int, private val markerFqn: String, private val scope: String,) :
+class CrossArtifactHintDuplicateWarning(private val count: Int, private val markerFqn: String, private val scope: String) :
     ComposePreviewLabCompilerPluginWarning {
+    init {
+        // Invariant: this warning only fires after `.filterValues { it.size > 1 }`
+        // in DiscoverHints.kt, so callers must pass at least 2. Guarding here keeps
+        // the wording "$count synthetic hint functions ... share marker" honest
+        // (singular "1" would be a misleading regression).
+        require(count >= 2) { "count must be >= 2 (got $count)" }
+    }
+
     override val categories: List<Category> = listOf(Category.IR, Category.PREVIEW_COLLECTION)
     override val message: String =
         "$count synthetic hint functions on the classpath share marker '$markerFqn' (scope = '$scope') — " +
