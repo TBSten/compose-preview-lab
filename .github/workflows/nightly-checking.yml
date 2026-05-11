@@ -1,0 +1,221 @@
+name: Nightly Checking
+
+on:
+  schedule:
+    # Run daily at 5:00 AM JST (20:00 UTC)
+    - cron: '0 20 * * *'
+  workflow_dispatch:
+    inputs:
+      iterations:
+        description: 'Number of property test iterations'
+        required: false
+        default: '5000'
+        type: string
+      skip_exploratory:
+        description: 'Skip exploratory job (PBT only)'
+        required: false
+        default: 'false'
+        type: string
+
+jobs:
+  pbt:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - kotlin_version: ''
+            compose_version: ''
+            gradle_version: ''
+            name: 'default'
+          - kotlin_version: '2.3.21'
+            compose_version: '1.11.0-alpha04'
+            gradle_version: ''
+            name: 'Kotlin 2.3.21'
+          - kotlin_version: '2.4.0-Beta2'
+            compose_version: '1.11.0-alpha04'
+            gradle_version: '9.4.1'
+            name: 'Kotlin 2.4.0-Beta2'
+    runs-on: ubuntu-latest
+    name: PBT ${{ matrix.name }} (${{ inputs.iterations || '5000' }} iterations)
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java for Gradle
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+
+      - name: Switch Kotlin / Compose version
+        if: matrix.kotlin_version
+        shell: bash
+        run: |
+          sed -i "s/^kotlin = .*/kotlin = \"${{ matrix.kotlin_version }}\"/" gradle/libs.versions.toml
+          sed -i "s/^compose = .*/compose = \"${{ matrix.compose_version }}\"/" gradle/libs.versions.toml
+          echo "Updated versions:"
+          grep -E "^(kotlin|compose) = " gradle/libs.versions.toml
+
+      - name: Upgrade Gradle wrapper
+        if: matrix.gradle_version
+        shell: bash
+        run: |
+          sed -i "s|gradle-.*-bin.zip|gradle-${{ matrix.gradle_version }}-bin.zip|" gradle/wrapper/gradle-wrapper.properties
+
+      - name: Run Library PBT
+        shell: bash
+        run: ./gradlew jvmTest -Dkotest.tags="PBT" --warning-mode all
+
+      - name: Publish to Maven Local
+        if: matrix.kotlin_version
+        shell: bash
+        run: ./gradlew publishToMavenLocal --warning-mode all
+
+      - name: Run Integration Test PBT
+        if: '!matrix.skip_cross_module_apps'
+        shell: bash
+        run: cd ./integrationTest && ./gradlew :app:jvmTest -Dkotest.tags="PBT" -Ptest.property.iterations=${{ inputs.iterations || '5000' }} --warning-mode all
+
+      - name: Run Docs PBT
+        if: '!matrix.skip_cross_module_apps'
+        shell: bash
+        run: cd ./docs && ./gradlew jvmTest -Dkotest.tags="PBT" -Ptest.property.iterations=${{ inputs.iterations || '5000' }} --warning-mode all
+
+  exploratory:
+    # ジョブ自体は常に起動する (skip_exploratory=true でも notify-results が動くようにするため)。
+    # 実際の探索ステップだけを skip し、 collect / upload-artifact は常に実行する。
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    name: Claude exploratory verification
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    outputs:
+      issue_count: ${{ steps.collect.outputs.issue_count }}
+      has_issues: ${{ steps.collect.outputs.has_issues }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java for Gradle
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+
+      - name: Prepare issue output directory
+        shell: bash
+        run: |
+          mkdir -p .local/nightly-exploration/issues
+          mkdir -p .local/nightly-exploration/tmp
+
+      - name: Run Claude Code exploratory verification
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.skip_exploratory != 'true' }}
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            あなたは nightly CI 上で動く Claude Code です。
+            `.claude/skills/exploratory-nightly-verification/SKILL.md` を読み、
+            そこに書かれた運用規約に従って探索的検証を実施してください。
+
+            重要な不変条件:
+            - 発見した問題は **逐次** `.local/nightly-exploration/issues/<NN>-<slug>.md` に書き出すこと
+              （最後にまとめて出力しない。タイムアウトしても部分結果が残るように）
+            - ファイル命名は `01-...md` から始まる連番
+            - 各 issue は SKILL.md と references/issue-format.md の固定フォーマットに従う
+            - 60 分以内に完了させる。50 分時点で新規探索を打ち切り、既存 issue の整形と書き込みを優先
+            - 最後に `.local/nightly-exploration/SUMMARY.md` に件数とカテゴリ別の内訳を書き出す
+          claude_args: '--allowedTools "Bash,Edit,Glob,Grep,Read,Write,WebFetch,WebSearch"'
+
+      - name: Collect issue count
+        id: collect
+        if: always()
+        shell: bash
+        run: |
+          shopt -s nullglob
+          files=(.local/nightly-exploration/issues/*.md)
+          count=${#files[@]}
+          echo "issue_count=$count" >> "$GITHUB_OUTPUT"
+          if [ "$count" -gt 0 ]; then
+            echo "has_issues=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_issues=false" >> "$GITHUB_OUTPUT"
+          fi
+          echo "Detected $count issue file(s)."
+
+      - name: Upload exploration artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-exploration-issues
+          path: .local/nightly-exploration/
+          if-no-files-found: ignore
+          retention-days: 30
+
+  notify-results:
+    needs: [pbt, exploratory]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine sections to send
+        id: decide
+        shell: bash
+        env:
+          PBT_RESULT: ${{ needs.pbt.result }}
+          EXP_RESULT: ${{ needs.exploratory.result }}
+          EXP_HAS_ISSUES: ${{ needs.exploratory.outputs.has_issues }}
+        run: |
+          send_pbt="false"
+          if [ "$PBT_RESULT" = "failure" ] || [ "$PBT_RESULT" = "cancelled" ]; then
+            send_pbt="true"
+          fi
+
+          send_exp="false"
+          if [ "$EXP_HAS_ISSUES" = "true" ] || [ "$EXP_RESULT" = "failure" ] || [ "$EXP_RESULT" = "cancelled" ]; then
+            send_exp="true"
+          fi
+
+          any="false"
+          if [ "$send_pbt" = "true" ] || [ "$send_exp" = "true" ]; then
+            any="true"
+          fi
+
+          echo "send_pbt=$send_pbt" >> "$GITHUB_OUTPUT"
+          echo "send_exp=$send_exp" >> "$GITHUB_OUTPUT"
+          echo "any=$any" >> "$GITHUB_OUTPUT"
+          echo "PBT result=$PBT_RESULT (send=$send_pbt), exploratory result=$EXP_RESULT has_issues=$EXP_HAS_ISSUES (send=$send_exp)"
+
+      - name: Download exploration artifact
+        if: steps.decide.outputs.send_exp == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: nightly-exploration-issues
+          path: .local/nightly-exploration/
+        continue-on-error: true
+
+      - name: Build and post Discord notification
+        if: steps.decide.outputs.any == 'true'
+        uses: actions/github-script@v7
+        env:
+          SEND_PBT: ${{ steps.decide.outputs.send_pbt }}
+          SEND_EXP: ${{ steps.decide.outputs.send_exp }}
+          PBT_RESULT: ${{ needs.pbt.result }}
+          EXP_RESULT: ${{ needs.exploratory.result }}
+          EXP_COUNT: ${{ needs.exploratory.outputs.issue_count }}
+          ACTIONS_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          ISSUES_DIR: .local/nightly-exploration/issues
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        with:
+          script: |
+            const notify = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/discord-notify.js`);
+            await notify({ core });
