@@ -1,5 +1,7 @@
 # Logic: Hint Generation
 
+> [日本語版](./hint-generation.ja.md)
+
 The FIR logic that synthesizes, for every `@Preview`, the **hint stub function** used by cross-module discovery.
 As of 2026-05 this is **fused with marker interface generation into a single logic**, and a single
 `PreviewHintFirGenerator` (= [`fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt))
