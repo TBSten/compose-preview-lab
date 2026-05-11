@@ -23,9 +23,9 @@ package me.tbsten.compose.preview.lab
 annotation class ExperimentalComposePreviewLabApi
 
 /**
- * The API marked with this annotation is internal and should not be used outside of the Compose Preview Lab library.
- * If for some reason you have no choice but to use the library, please take the latest precautions when updating the library.
- * It may change or be removed in future versions without notice.
+ * The API marked with this annotation is internal and should not be used outside of the
+ * Compose Preview Lab library. It may change or be removed in future versions without notice;
+ * if you must depend on it, pin the library version and audit on every upgrade.
  *
  * | User | Status |
  * |---|---|
