@@ -26,9 +26,10 @@ package me.tbsten.compose.preview.lab
  *
  * `collectScopes` controls which `collect[All]ModulePreviews(scope = ...)` call picks up
  * this preview. Most projects pick one scope per module via the Gradle DSL and leave this
- * argument at its default. See `annotation/docs/collect-scopes.md`
- * for the full design rationale, primary / secondary use cases, and BCV-visibility
- * quirks of the experimental marker.
+ * argument at its default. See
+ * [annotation/docs/collect-scopes.md](https://github.com/TBSten/compose-preview-lab/blob/main/annotation/docs/collect-scopes.md)
+ * for the full design rationale, primary / secondary use cases, and BCV-visibility quirks
+ * of the experimental marker.
  *
  * @property displayName Placeholder template or custom string. Does not have to be unique
  *   (not used as an ID). Segments separated by `.` are treated as groups.
@@ -55,7 +56,7 @@ annotation class ComposePreviewLabOption(
      * Companion holding [DefaultCollectScope]. Marked `@ExperimentalComposePreviewLabApi`
      * so the empty `Companion` class itself stays out of BCV baselines if the const ever
      * moves — see the *Experimental marker visibility* section of
-     * `annotation/docs/collect-scopes.md`.
+     * [annotation/docs/collect-scopes.md](https://github.com/TBSten/compose-preview-lab/blob/main/annotation/docs/collect-scopes.md).
      */
     @ExperimentalComposePreviewLabApi
     public companion object {
@@ -70,7 +71,7 @@ annotation class ComposePreviewLabOption(
          * `Companion` so the flattened `public static final field` on JVM / Android stays
          * out of BCV baselines too (the companion-level annotation does not propagate to
          * that field). See
-         * `annotation/docs/collect-scopes.md`
+         * [annotation/docs/collect-scopes.md](https://github.com/TBSten/compose-preview-lab/blob/main/annotation/docs/collect-scopes.md)
          * for the full resolution semantics and BCV rationale.
          */
         @ExperimentalComposePreviewLabApi

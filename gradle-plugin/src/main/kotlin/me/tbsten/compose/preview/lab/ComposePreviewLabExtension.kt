@@ -120,8 +120,9 @@ abstract class CollectPreviewsConfig @Inject constructor(objects: ObjectFactory)
      * command-line processor.
      *
      * **Experimental** — part of the stabilizing `collectScopes` design. See
-     * `annotation/docs/collect-scopes.md` for the full design rationale and the opt-in
-     * propagation semantics across Gradle DSL → annotation → call-site.
+     * [annotation/docs/collect-scopes.md](https://github.com/TBSten/compose-preview-lab/blob/main/annotation/docs/collect-scopes.md)
+     * for the full design rationale and the opt-in propagation semantics across Gradle DSL
+     * → annotation → call-site.
      */
     @ExperimentalComposePreviewLabApi
     var defaultCollectScope: String by objects.property<String>()

@@ -32,7 +32,8 @@ public fun collectModulePreviews(): ReadOnlyProperty<Any?, Sequence<CollectedPre
 /**
  * Scope-aware variant of [collectModulePreviews] that limits the result to previews whose
  * `@ComposePreviewLabOption(collectScopes = [...])` array contains [scope]. See
- * `annotation/docs/collect-scopes.md` for the full scope-resolution semantics; the value
+ * [annotation/docs/collect-scopes.md](https://github.com/TBSten/compose-preview-lab/blob/main/annotation/docs/collect-scopes.md)
+ * for the full scope-resolution semantics; the value
  * `ComposePreviewLabOption.DefaultCollectScope` is a sentinel that the compiler plugin
  * substitutes with the module's `composePreviewLab.collectPreviews.defaultCollectScope`
  * Gradle DSL value at compile time.
@@ -82,8 +83,9 @@ public fun collectModulePreviews(scope: String): ReadOnlyProperty<Any?, Sequence
  * there. Modules that do declare it explicitly continue to work unchanged.
  *
  * Cross-module discovery requires Kotlin **2.3.20+** on JVM / Android and **2.3.21+** on
- * JS / Wasm JS / iOS / Native. See `core/docs/cross-module-aggregation.md` for the
- * version matrix, the Mixed-classpath caveat (dependencies built without the plugin are
+ * JS / Wasm JS / iOS / Native. See
+ * [core/docs/cross-module-aggregation.md](https://github.com/TBSten/compose-preview-lab/blob/main/core/docs/cross-module-aggregation.md)
+ * for the version matrix, the Mixed-classpath caveat (dependencies built without the plugin are
  * silently absent), and the per-platform warning routing for duplicate-id collisions.
  *
  * This stable no-arg overload delegates to the experimental scope-aware overload with the
@@ -114,8 +116,10 @@ public fun collectAllModulePreviews(): ReadOnlyProperty<Any?, Sequence<Collected
  * `defaultCollectScope = "acme_ui"` registers them under `acme_ui`, but a downstream
  * consumer app's `collectAllModulePreviews()` will **NOT** see them unless the consumer
  * explicitly asks `collectAllModulePreviews(scope = "acme_ui")`. See
- * `annotation/docs/collect-scopes.md` for the resolution semantics and
- * `core/docs/cross-module-aggregation.md` for the full discovery contract.
+ * [annotation/docs/collect-scopes.md](https://github.com/TBSten/compose-preview-lab/blob/main/annotation/docs/collect-scopes.md)
+ * for the resolution semantics and
+ * [core/docs/cross-module-aggregation.md](https://github.com/TBSten/compose-preview-lab/blob/main/core/docs/cross-module-aggregation.md)
+ * for the full discovery contract.
  *
  * **Experimental** — opt in with `@OptIn(ExperimentalComposePreviewLabApi::class)`. The
  * no-arg [collectAllModulePreviews] overload remains stable. The argument must reach the
@@ -155,7 +159,8 @@ public fun collectAllModulePreviews(scope: String): ReadOnlyProperty<Any?, Seque
  *
  * Duplicates indicate a cross-artifact same-FQN preview collision — the JVM classloader /
  * KLIB linker has already silently collapsed one of them, so the runtime signal here is
- * usually the only diagnostic the user sees. See `core/docs/cross-module-aggregation.md`
+ * usually the only diagnostic the user sees. See
+ * [core/docs/cross-module-aggregation.md](https://github.com/TBSten/compose-preview-lab/blob/main/core/docs/cross-module-aggregation.md)
  * for the resolution procedure (rename one of the colliding `@Preview` functions; the
  * `@ComposePreviewLabOption(id = "...")` override does NOT help).
  *

@@ -11,10 +11,10 @@ import kotlin.reflect.KProperty
  *
  * The sequence is wrapped in a [Lazy] so that the per-`@Preview` factory lambdas the
  * compiler plugin emits are not invoked until the property is first read. See
- * `core/docs/cross-module-aggregation.md` for the laziness rationale and the
- * discovery mechanism (which does **not** flow through this type — it is handled by the
- * compiler plugin's per-`@Preview` hint functions resolved via
- * `IrPluginContext.referenceFunctions`).
+ * [core/docs/cross-module-aggregation.md](https://github.com/TBSten/compose-preview-lab/blob/main/core/docs/cross-module-aggregation.md)
+ * for the laziness rationale and the discovery mechanism (which does **not** flow through
+ * this type — it is handled by the compiler plugin's per-`@Preview` hint functions resolved
+ * via `IrPluginContext.referenceFunctions`).
  *
  * Users do not construct this class directly — it is produced exclusively by the compiler
  * plugin.
