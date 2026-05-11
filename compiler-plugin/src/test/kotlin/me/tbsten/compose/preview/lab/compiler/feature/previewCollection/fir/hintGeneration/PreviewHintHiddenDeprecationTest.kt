@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.compiler.feature
+package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.hintGeneration
 
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
@@ -7,6 +7,8 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.shouldBe
 import me.tbsten.compose.preview.lab.compiler.CompilerPluginTestBase
+import me.tbsten.compose.preview.lab.compiler.feature.previewHintFacadeNames
+import me.tbsten.compose.preview.lab.compiler.feature.previewHintMarkerNames
 import me.tbsten.compose.preview.lab.compiler.isAtLeast
 
 /**
