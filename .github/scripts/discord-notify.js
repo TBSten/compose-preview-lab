@@ -9,15 +9,16 @@
 //   ISSUES_DIR              : .local/nightly-exploration/issues
 //   DISCORD_WEBHOOK_URL     : Discord webhook URL (必須)
 //   DISCORD_THREAD_ID       : (任意) 既存 thread の ID。 指定があればその thread に投稿する
-//   DISCORD_THREAD_NAME     : (任意) thread の名前。 デフォルトは "Nightly Checking YYYY-MM-DD"
+//   DISCORD_THREAD_NAME     : (任意) thread の名前。 デフォルトは "🔍 探索的テスト: 発見件数 N件"
 //
 // 動作:
 //   1. issue Markdown ファイルからタイトル / メタ行 / 詳細を抽出
 //   2. **1 通目**: チャンネル本体に **短いサマリ** (PBT セクション + 探索的テストヘッダー)
 //      を送る。 詳細 issue は含めない。 探索的テスト issue があるときは thread を作る or
-//      既存 thread を使う。
-//   3. **2 通目以降**: 詳細 issue の `## 探索的テスト N. ...` を thread に流す。
-//      thread が確保できなかった場合は最終手段としてチャンネルに連投する。
+//      既存 thread を使う。 forum/media channel ではこの 1 通目が thread の OP になる。
+//   3. **2 通目以降**: 各 issue を **1 件 1 message** として thread に投稿する
+//      (`## 探索的テスト N. ...`)。 thread が確保できなかった場合は最終手段として
+//      チャンネルに連投する。
 //
 // thread の確保方法:
 //   - `DISCORD_THREAD_ID` があれば既存 thread に投稿
@@ -139,16 +140,22 @@ function buildSummary(env, issues) {
     return lines.join('\n');
 }
 
-function buildDetailText(issues) {
-    // 2 通目以降: 各 issue を `## 探索的テスト N. <title>` 形式で並べる。
-    if (issues.length === 0) return '';
-    const blocks = issues.map((issue, i) => {
+function buildDetailMessages(issues) {
+    // 1 issue = 1 message として配列で返す (thread 内で各発見項目が独立した投稿として見える)。
+    // 単一 issue が CHUNK_LIMIT を超える稀ケースのみ、 行境界で更に分割する。
+    const messages = [];
+    issues.forEach((issue, i) => {
         const block = [`## ${EMOJI.issue} 探索的テスト ${i + 1}. ${issue.title}`];
         if (issue.meta) block.push(issue.meta);
         if (issue.detail) block.push(issue.detail);
-        return block.join('\n');
+        const content = block.join('\n');
+        if (content.length <= CHUNK_LIMIT) {
+            messages.push(content);
+        } else {
+            messages.push(...splitIntoChunks(content, CHUNK_LIMIT));
+        }
     });
-    return blocks.join('\n\n');
+    return messages;
 }
 
 function splitIntoChunks(fullText, chunkLimit) {
@@ -167,10 +174,6 @@ function splitIntoChunks(fullText, chunkLimit) {
     }
     if (current.length > 0) chunks.push(current);
     return chunks;
-}
-
-function todayYmd() {
-    return new Date().toISOString().slice(0, 10);
 }
 
 function buildWebhookUrl(webhook, { threadId, threadName, wait } = {}) {
@@ -206,6 +209,21 @@ async function postMessage(webhook, content, opts, core) {
     return null;
 }
 
+// Webhook が紐付いている channel の ID を取得する。 通常のテキストチャンネル webhook に
+// `?thread_name=` を渡すと thread は作成されず channel 本体に投稿されるが、 レスポンスの
+// `channel_id` には webhook 自身の channel ID が入ってしまう。 これを「新規 thread の ID」 と
+// 誤認しないよう、 事前にこの値を取得して照合に使う。
+async function getWebhookChannelId(webhook) {
+    try {
+        const res = await fetch(webhook);
+        if (!res.ok) return null;
+        const json = await res.json();
+        return json && json.channel_id ? json.channel_id : null;
+    } catch {
+        return null;
+    }
+}
+
 module.exports = async function notifyDiscord({ core, env = process.env }) {
     const webhook = env.DISCORD_WEBHOOK_URL;
     if (!webhook) {
@@ -222,51 +240,64 @@ module.exports = async function notifyDiscord({ core, env = process.env }) {
 
     const issues = sendExp ? readIssues(env.ISSUES_DIR || '.local/nightly-exploration/issues') : [];
     const summary = buildSummary(env, issues);
-    const detailText = buildDetailText(issues);
+    const detailMessages = buildDetailMessages(issues);
 
     const presetThreadId = (env.DISCORD_THREAD_ID || '').trim() || null;
+    // thread 名は探索的テストの発見件数を主題にする (forum channel で run ごとに作られる
+    // thread タイトルに、 一目で件数が分かる形で表示するため)。 issues.length は wantsThread
+    // 経路に入る前提なので 1 以上。 `DISCORD_THREAD_NAME` で上書きも可能。
     const threadName =
-        (env.DISCORD_THREAD_NAME || '').trim() || `Nightly Checking ${todayYmd()}`;
+        (env.DISCORD_THREAD_NAME || '').trim() ||
+        `🔍 探索的テスト: 発見件数 ${issues.length}件`;
 
-    const wantsThread = detailText.length > 0;
+    const wantsThread = detailMessages.length > 0;
 
-    // 1 通目のルーティングと文言を、 thread が確保できる経路かどうかで出し分ける。
-    // - DISCORD_THREAD_ID 指定あり: summary も詳細も同じ thread に投稿。 案内文不要
-    //   (summary 自体が thread 内にあるので "詳細は thread を参照" は意味をなさない)。
-    // - 指定なし & 詳細あり: 1 通目に `thread_name` を付けて新規 thread 作成を狙う。
-    //   1 通目はチャンネル本体に残るため、 「詳細は thread を参照」 の案内文を付ける。
-    // - 指定なし & 詳細なし: チャンネルに summary だけ。 案内文なし。
-    // - 上の thread_name 投稿が HTTP エラーになった場合: 案内文を外した summary を
-    //   channel に再送し、 詳細もチャンネル連投にフォールバック。
+    // 1 通目のルーティング。 summary はそのまま実行概要として送り出す:
+    // - forum/media channel + thread_name → 1 通目が新規 thread の OP として残り、 件数を含む
+    //   thread タイトルで一覧表示される
+    // - DISCORD_THREAD_ID 指定あり → その既存 thread の中に投稿される
+    // - text channel など (thread_name が無視されるケース) → channel 本体に投稿され、
+    //   詳細も channel に連投される (forum channel への移行を推奨)
     let resolvedThreadId = presetThreadId;
-    const summaryWithNote = `${summary}\n詳細は thread を参照してください。`;
-
-    let summaryToPost;
     let summaryOpts;
     if (presetThreadId) {
-        summaryToPost = summary;
         summaryOpts = { threadId: presetThreadId, wait: false };
     } else if (wantsThread) {
-        summaryToPost = summaryWithNote;
         summaryOpts = { threadName, wait: true };
     } else {
-        summaryToPost = summary;
         summaryOpts = { wait: false };
     }
 
+    // thread_name 経由で投稿する前に webhook の所属 channel_id を取得しておく
+    // (text channel webhook では thread_name が無視され channel に直接投稿されるが、
+    //  レスポンスの channel_id は webhook 自身の channel ID なので thread_id として
+    //  使い回せない。 事前に照合できる値を握っておく)。
+    const webhookChannelId = summaryOpts.threadName
+        ? await getWebhookChannelId(webhook)
+        : null;
+
     try {
-        const firstResponse = await postMessage(webhook, summaryToPost, summaryOpts, core);
-        if (!resolvedThreadId && firstResponse && firstResponse.channel_id) {
-            // forum/media channel で thread_name を指定すると、 レスポンスの channel_id が
-            // 新たに作られた thread の ID になる。
-            resolvedThreadId = firstResponse.channel_id;
+        const firstResponse = await postMessage(webhook, summary, summaryOpts, core);
+        if (!resolvedThreadId && summaryOpts.threadName && firstResponse && firstResponse.channel_id) {
+            if (!webhookChannelId || firstResponse.channel_id !== webhookChannelId) {
+                // forum/media channel で thread_name 指定 → 新規 thread が作られた。
+                resolvedThreadId = firstResponse.channel_id;
+            } else {
+                // text channel で thread_name が無視され、 channel に直接投稿されたケース。
+                // summary には案内文を含めていないため edit は不要、 詳細は channel 連投で出す。
+                core.warning(
+                    `thread_name 付き投稿は受理されたが thread は作成されなかった ` +
+                    `(レスポンス channel_id=${firstResponse.channel_id} が webhook の channel と一致)。 ` +
+                    `詳細は channel 連投にフォールバックします (forum channel への切り替えを推奨)。`,
+                );
+                resolvedThreadId = null;
+            }
         }
     } catch (err) {
         if (summaryOpts.threadName) {
-            // 通常のテキストチャンネル等で thread_name が拒否されるケース。
-            // 案内文を外した summary を channel に再送し、 詳細はチャンネル連投にする。
+            // thread_name 付き投稿が HTTP エラーになる稀なケース。 channel 連投にフォールバック。
             core.warning(
-                `1 通目が thread_name 付きで失敗 (${err.message})。 案内文を外して channel 連投にフォールバックします。`,
+                `1 通目が thread_name 付きで失敗 (${err.message})。 channel 連投にフォールバックします。`,
             );
             await postMessage(webhook, summary, { wait: false }, core);
             resolvedThreadId = null;
@@ -280,15 +311,18 @@ module.exports = async function notifyDiscord({ core, env = process.env }) {
         return;
     }
 
-    // 2 通目以降: 詳細を thread に流す。 thread 確保できなかった場合はチャンネル連投。
-    const detailChunks = splitIntoChunks(detailText, CHUNK_LIMIT);
-    core.info(`Detail split into ${detailChunks.length} chunk(s).`);
+    // 2 通目以降: 1 issue = 1 message として thread に流す
+    // (thread 確保できなかった場合は channel 連投)。
+    core.info(`Posting ${detailMessages.length} detail message(s).`);
 
-    for (let i = 0; i < detailChunks.length; i++) {
+    for (let i = 0; i < detailMessages.length; i++) {
         const opts = resolvedThreadId ? { threadId: resolvedThreadId } : {};
-        await postMessage(webhook, detailChunks[i], opts, core);
-        if (i + 1 < detailChunks.length) {
-            await new Promise((r) => setTimeout(r, 1000));
+        await postMessage(webhook, detailMessages[i], opts, core);
+        if (i + 1 < detailMessages.length) {
+            // Discord webhook rate limit: 30 req / min / channel. 500ms 間隔 = 120 req/min 相当
+            // だが thread への投稿は緩めなので 500ms で十分安全。 ただし 30 件超なら 1s に。
+            const delay = detailMessages.length > 30 ? 1000 : 500;
+            await new Promise((r) => setTimeout(r, delay));
         }
     }
 
@@ -299,7 +333,7 @@ module.exports._internal = {
     extractIssue,
     readIssues,
     buildSummary,
-    buildDetailText,
+    buildDetailMessages,
     splitIntoChunks,
     buildWebhookUrl,
 };
