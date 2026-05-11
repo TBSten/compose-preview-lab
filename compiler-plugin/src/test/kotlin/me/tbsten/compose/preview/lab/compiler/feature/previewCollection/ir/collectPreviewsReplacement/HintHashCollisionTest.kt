@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.compiler.feature
+package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldHaveSize
