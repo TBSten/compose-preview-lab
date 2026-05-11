@@ -85,7 +85,10 @@ internal fun boolProp(project: Project, key: String, default: Boolean): Provider
  * runs once per build, but only when the [Property.convention] is actually queried.
  */
 private fun rawStringProp(project: Project, key: String): Provider<String> {
-    val fromGradleProperty = project.providers.gradleProperty(key)
+    // `filter { it.isNotBlank() }` ensures a blank value in root `gradle.properties` (e.g.
+    // `composePreviewLab.generatePackage=` with an empty value) does NOT mask a non-blank
+    // subproject `gradle.properties` value picked up by `findProperty` fallback.
+    val fromGradleProperty = project.providers.gradleProperty(key).filter { it.isNotBlank() }
     val fromFindProperty = project.provider {
         // findProperty covers subproject gradle.properties files which `gradleProperty(...)` skips.
         (project.findProperty(key) as? String)?.takeIf { it.isNotBlank() }
@@ -148,9 +151,21 @@ internal fun unknownComposePreviewLabPropertyWarning(unknown: List<String>): Str
  *
  * Catches typos (`composePreviewLab.generatePackge=...`) that would otherwise be silently
  * ignored by Gradle. Designed to be cheap: one filtered scan per project.
+ *
+ * The warning is **deduplicated at the root-project level** via an `extraProperties` flag,
+ * so a typo in the root `gradle.properties` fires exactly once even when the plugin is
+ * applied to many subprojects. Without this, a monorepo with N modules emits the same
+ * warning N times for the same root-level typo (violates Single Source of Truth).
  */
 internal fun warnOnUnknownComposePreviewLabProperties(project: Project) {
     val unknown = unknownComposePreviewLabPropertyKeys(project.properties.keys)
     val message = unknownComposePreviewLabPropertyWarning(unknown) ?: return
-    project.logger.warn(message)
+    val rootProject = project.rootProject
+    val flagKey = "composePreviewLab._unknownKeyWarningEmitted"
+    synchronized(rootProject) {
+        val extra = rootProject.extensions.extraProperties
+        if (extra.has(flagKey)) return
+        extra.set(flagKey, true)
+        rootProject.logger.warn(message)
+    }
 }
