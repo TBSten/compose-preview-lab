@@ -1,5 +1,7 @@
 # Feature: previewCollection
 
+> [日本語版](./README.ja.md)
+
 The feature responsible for **collecting** `@Preview` functions, replacing `collect[All]ModulePreviews()`, and discovering hints across modules.
 
 This directory is the **entrypoint for the feature's design documents**, and each logic-level topic lives in a dedicated file.
