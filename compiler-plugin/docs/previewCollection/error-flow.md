@@ -1,160 +1,175 @@
 # Error Flow
 
-`previewCollection` feature が出すエラーは **3 軸 4 グループ** に分かれる。
-このドキュメントは「どの違反をどの軸で検出するか」「FIR diagnostic と IR 構造化 Error をなぜ二重に持つか」を扱う。
-個別 Error class の constructor 引数や `description` は KDoc (= [`error/Errors.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/Errors.kt))
-を参照。
+The errors emitted by the `previewCollection` feature split along **three axes and four groups**.
+This document covers "which violation is detected along which axis" and "why we maintain FIR diagnostics
+and IR structured errors as two parallel mechanisms".
+For per-error class constructor parameters and `description` text, refer to the KDocs
+in [`error/Errors.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/Errors.kt).
 
 ---
 
-## 軸 1: phase (FIR vs IR)
+## Axis 1: phase (FIR vs IR)
 
 ### FIR diagnostic (`KtDiagnosticFactory*`)
 
-- 配置: [`feature/previewCollection/fir/scopeValidation/CollectScopeErrors.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/scopeValidation/CollectScopeErrors.kt)
-- 仕組み: Kotlin 標準の `KtDiagnosticsContainer` + `BaseDiagnosticRendererFactory`。 IDE highlighter が直接読み、
-  red-squiggly underline が出る。
-- prefix: renderer 側で `[ComposePreviewLab/FIR,INVALID_USAGE,PREVIEW_COLLECTION]` を付与。
+- Location: [`feature/previewCollection/fir/scopeValidation/CollectScopeErrors.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/scopeValidation/CollectScopeErrors.kt)
+- Mechanism: Kotlin's standard `KtDiagnosticsContainer` + `BaseDiagnosticRendererFactory`. The IDE highlighter
+  reads it directly and renders a red-squiggly underline.
+- Prefix: The renderer prepends `[ComposePreviewLab/FIR,INVALID_USAGE,PREVIEW_COLLECTION]`.
 
-### IR 構造化 Error (`ComposePreviewLabCompilerPluginError`)
+### IR structured error (`ComposePreviewLabCompilerPluginError`)
 
-- 配置: [`error/Errors.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/Errors.kt)
-- 仕組み: `interface ComposePreviewLabCompilerPluginError` の実装 class。
-  `messageCollector.report(error, location)` extension ([`error/ReportError.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/ReportError.kt))
-  で kotlinc コンソールに流す。 defensive な不変条件は `error.throwAsException()`
-  ([`error/ThrowAsException.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/ThrowAsException.kt)) で `ComposePreviewLabCompilerPluginException` を throw。
-- prefix: `error/ReportError.kt::buildErrorBody` が `[ComposePreviewLab/<categories>]` を組み立てる。
+- Location: [`error/Errors.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/Errors.kt)
+- Mechanism: Implementation classes of `interface ComposePreviewLabCompilerPluginError`.
+  The `messageCollector.report(error, location)` extension
+  ([`error/ReportError.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/ReportError.kt))
+  routes them to the kotlinc console. Defensive invariants throw a `ComposePreviewLabCompilerPluginException`
+  via `error.throwAsException()`
+  ([`error/ThrowAsException.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/ThrowAsException.kt)).
+- Prefix: `error/ReportError.kt::buildErrorBody` assembles `[ComposePreviewLab/<categories>]`.
 
-> **なぜ別軸で管理するか**: `KtDiagnosticFactory` は `KtDiagnosticsContainer` + `BaseDiagnosticRendererFactory` の
-> 継承体系で、 renderer chain と factory 定義が密結合になっている。 これを `Error` interface 経由に変えると
-> Kotlin 標準の diagnostic 仕組み (IDE highlighter / source positioning strategy / renderer registration) から
-> 外れてしまうため、 FIR 側は標準仕組みに乗せる方針 (= ルール [`.claude/rules/compiler-plugin-error.md`](../../../.claude/rules/compiler-plugin-error.md)
-> の「FIR diagnostic は対象外」)。
-
----
-
-## 軸 2: 役割 (user-facing vs defensive)
-
-### user-facing — 利用者の API 誤用に対する診断
-
-- FIR diagnostic 2 件: `INVALID_COLLECT_SCOPE_VALUE`, `NON_LITERAL_COLLECT_SCOPE`
-- IR ERROR 4 件: `UnsupportedCollectAllError`, `CollectPreviewsDisabledError`, `NonLiteralScopeIrError`, `InvalidScopeIrError`
-- IR ERROR 1 件 (hash collision): `HintHashCollisionError` (実質 user-facing。 衝突解消は user 側 rename が必要)
-
-### defensive — 内部不変条件 / 到達不能ガード
-
-- IR 構造化 Error (`error.throwAsException()` 経由): `PreviewExportNotFoundError`, `RuntimeFunctionNotFoundError`, `PropertyHasNoGetterError`
-- FIR 側 defensive `IllegalStateException` (構造化対象外、 [`.claude/rules/compiler-plugin-error.md`](../../../.claude/rules/compiler-plugin-error.md)
-  の「FIR-side defensive `error()`」例外で意図的に維持) 3 件:
-  - [`feature/previewCollection/fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt) — hint 関数 owner class (marker symbol) が解決できない場合
-  - [`feature/previewCollection/fir/hintGeneration/DeprecationHidden.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintGeneration/DeprecationHidden.kt) — `kotlin.Deprecated` annotation symbol が resolve できない場合
-  - [`utils/fir/AnnotationBuilders.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/utils/fir/AnnotationBuilders.kt) — annotation FQN が FIR session symbol provider に存在しない場合
-- Kotlin compiler API 慣例維持: `ComposePreviewLabCommandLineProcessor.kt` の `CliOptionProcessingException`
-  (CLI option `when` の `else` 分岐。 Kotlin compiler API 互換性のためそのまま維持)
+> **Why maintain these as separate axes**: `KtDiagnosticFactory` is part of the
+> `KtDiagnosticsContainer` + `BaseDiagnosticRendererFactory` inheritance hierarchy, where the renderer chain and
+> factory definitions are tightly coupled. Replacing this with an `Error` interface would unhook us from Kotlin's
+> standard diagnostics machinery (IDE highlighter / source positioning strategy / renderer registration), so we
+> deliberately keep the FIR side on the standard rails (see the
+> "FIR diagnostics are out of scope" carve-out in [`.claude/rules/compiler-plugin-error.md`](../../../.claude/rules/compiler-plugin-error.md)).
 
 ---
 
-## 軸 3: 二重防衛 (FIR + IR の両側で検出するもの)
+## Axis 2: role (user-facing vs defensive)
 
-`@ComposePreviewLabOption(collectScopes = [...])` と `collect[All]ModulePreviews(scope = ...)` の引数検証は
-**FIR と IR の両方で行う**:
+### user-facing — diagnostics for API misuse by the user
 
-| 違反 | FIR side | IR side |
+- 2 FIR diagnostics: `INVALID_COLLECT_SCOPE_VALUE`, `NON_LITERAL_COLLECT_SCOPE`
+- 4 IR ERRORs: `UnsupportedCollectAllError`, `CollectPreviewsDisabledError`, `NonLiteralScopeIrError`, `InvalidScopeIrError`
+- 1 IR ERROR (hash collision): `HintHashCollisionError` (effectively user-facing — resolving the collision requires
+  the user to rename something)
+
+### defensive — internal invariants / unreachable-state guards
+
+- IR structured errors (raised via `error.throwAsException()`):
+  `PreviewExportNotFoundError`, `RuntimeFunctionNotFoundError`, `PropertyHasNoGetterError`
+- FIR-side defensive `IllegalStateException` calls (out of scope for the structured-error rule — kept intentionally
+  under the "FIR-side defensive `error()`" carve-out in
+  [`.claude/rules/compiler-plugin-error.md`](../../../.claude/rules/compiler-plugin-error.md)), 3 sites:
+  - [`feature/previewCollection/fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt) —
+    When the owning class (marker symbol) of a hint function cannot be resolved.
+  - [`feature/previewCollection/fir/hintGeneration/DeprecationHidden.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintGeneration/DeprecationHidden.kt) —
+    When the `kotlin.Deprecated` annotation symbol cannot be resolved.
+  - [`utils/fir/AnnotationBuilders.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/utils/fir/AnnotationBuilders.kt) —
+    When an annotation FQN is missing from the FIR session's symbol provider.
+- Kept for Kotlin compiler API conformance: the `CliOptionProcessingException` in `ComposePreviewLabCommandLineProcessor.kt`
+  (the `else` branch of the CLI-option `when`, retained for Kotlin compiler API compatibility).
+
+---
+
+## Axis 3: two-level defense (cases detected by both FIR and IR)
+
+The argument validation for `@ComposePreviewLabOption(collectScopes = [...])` and for
+`collect[All]ModulePreviews(scope = ...)` is **performed on both the FIR side and the IR side**:
+
+| Violation | FIR side | IR side |
 |---|---|---|
-| 文字列定数でない (関数呼び出し / 文字列連結 etc) | `NON_LITERAL_COLLECT_SCOPE` (diagnostic, [`CheckCollectScopeCall`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/scopeValidation/CheckCollectScopeCall.kt)) | `NonLiteralScopeIrError` ([`Errors.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/Errors.kt)) |
-| regex `[A-Za-z0-9_]+` 違反 | `INVALID_COLLECT_SCOPE_VALUE` (diagnostic, [`CheckCollectScopeAnnotation`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/scopeValidation/CheckCollectScopeAnnotation.kt) / `CheckCollectScopeCall`) | `InvalidScopeIrError` ([`Errors.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/Errors.kt)) |
+| Not a string constant (function call / string concatenation, etc.) | `NON_LITERAL_COLLECT_SCOPE` (diagnostic, [`CheckCollectScopeCall`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/scopeValidation/CheckCollectScopeCall.kt)) | `NonLiteralScopeIrError` ([`Errors.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/Errors.kt)) |
+| Violates regex `[A-Za-z0-9_]+` | `INVALID_COLLECT_SCOPE_VALUE` (diagnostic, [`CheckCollectScopeAnnotation`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/scopeValidation/CheckCollectScopeAnnotation.kt) / `CheckCollectScopeCall`) | `InvalidScopeIrError` ([`Errors.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/Errors.kt)) |
 
-### なぜ二重防衛が必要か
+### Why we need two-level defense
 
-FIR Checker は **analysis time** に source の literal / 式構造を見るが、
-`const val` 経由で渡された値は **同 phase 内で resolve できない** (FIR の literal value inspection は
-`val` と `const val` を区別できない場面がある)。
+The FIR Checker runs at **analysis time** and inspects source literals and expression structure, but values that
+arrive via `const val` **cannot always be resolved within the same phase** (FIR's literal-value inspection cannot
+reliably distinguish `val` from `const val` in every situation).
 
 ```kotlin
-private const val BAD_SCOPE = "has space"   // FIR は BAD_SCOPE の const-fold まで追えない
-collectModulePreviews(scope = BAD_SCOPE)    // FIR Checker は通過する
+private const val BAD_SCOPE = "has space"   // FIR cannot follow BAD_SCOPE's const-fold
+collectModulePreviews(scope = BAD_SCOPE)    // The FIR Checker lets this through.
 ```
 
-IR phase では `IrConst<String>` まで const-fold された値を直接見られるので、 `[A-Za-z0-9_]+` 違反 (= `InvalidScopeIrError`) や
-const-fold 不能 (= `NonLiteralScopeIrError`) を最終的に検出できる。
+By IR phase the value has been folded to an `IrConst<String>`, which the IR side can read directly. It can then
+detect both `[A-Za-z0-9_]+` violations (= `InvalidScopeIrError`) and cases that fail to const-fold
+(= `NonLiteralScopeIrError`) as the last line of defense.
 
-FIR Checker は **IDE 上の即時フィードバック** (= red-squiggly) のために、
-IR ERROR は **取りこぼした const-folded 違反の最終 backstop** のために存在する。
+The FIR Checker exists to provide **instant IDE feedback** (red-squiggly), and the IR ERRORs exist to act as
+the **final backstop for const-folded violations the FIR phase cannot catch**.
 
 ---
 
-## エラー一覧と発火条件
+## Error catalog and trigger conditions
 
-[`error/Errors.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/Errors.kt) の class と発火 phase / 場所:
+The classes in [`error/Errors.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/Errors.kt),
+with their firing phase and location:
 
-| Error class | 発火条件 | 報告場所 | category |
+| Error class | Trigger condition | Reported from | Category |
 |---|---|---|---|
-| `UnsupportedCollectAllError` | Kotlin <2.3.21 (KLIB) / <2.3.20 (JVM/Android) で `collectAllModulePreviews()` 呼び出し | `ReplaceCollectPreviewsFunBody` | IR, PREVIEW_COLLECTION, VERSION_GATE |
-| `CollectPreviewsDisabledError` | `collectPreviewsEnabled=false` で `collect[All]ModulePreviews()` 呼び出し (PR #186 由来) | `ReplaceCollectPreviewsFunBody` | IR, INVALID_USAGE, PREVIEW_COLLECTION |
-| `NonLiteralScopeIrError` | IR phase で scope が `IrConst<String>` でない (FIR `NON_LITERAL_COLLECT_SCOPE` のすり抜け backstop) | `ReplaceCollectPreviewsFunBody` | IR, INVALID_USAGE, PREVIEW_COLLECTION |
-| `InvalidScopeIrError` | const-folded `IrConst<String>` が regex 違反 (FIR `INVALID_COLLECT_SCOPE_VALUE` のすり抜け backstop) | `ReplaceCollectPreviewsFunBody` | IR, INVALID_USAGE, PREVIEW_COLLECTION |
-| `HintHashCollisionError` | 同 module 内 2 件の `@Preview` が同じ truncated hash を生む (`~10^-7` at 1k previews) | `PreviewLabIrGenerationExtension` (`BuildPreviewByHashMap` の `onCollision` callback) | IR, PREVIEW_COLLECTION |
-| `PreviewExportNotFoundError` | `pluginContext.referenceClass(PREVIEW_EXPORT_CLASS_ID)` が null (defensive) | `buildPreviewSequence/BuildPreviewExportIr` (`.throwAsException()`) | IR |
-| `RuntimeFunctionNotFoundError` | `referenceFunctions(callableId)` が空 (= `lazyPreviewSequence` / `distinctPreviewsByIdSequence` が classpath にない, defensive) | `buildPreviewSequence/BuildPreviewSequenceIr` / `BuildConcatenatedPreviewSequencesIr` (`.throwAsException()`) | IR |
-| `PropertyHasNoGetterError` | `IrProperty.getter == null` (defensive。 Kotlin property model 上到達不能) | `ReplaceCollectPreviewsFunBody` (`.throwAsException()`) | IR |
+| `UnsupportedCollectAllError` | A `collectAllModulePreviews()` call on Kotlin <2.3.21 (KLIB) / <2.3.20 (JVM/Android) | `ReplaceCollectPreviewsFunBody` | IR, PREVIEW_COLLECTION, VERSION_GATE |
+| `CollectPreviewsDisabledError` | A `collect[All]ModulePreviews()` call when `collectPreviewsEnabled=false` (introduced in PR #186) | `ReplaceCollectPreviewsFunBody` | IR, INVALID_USAGE, PREVIEW_COLLECTION |
+| `NonLiteralScopeIrError` | The scope argument is not an `IrConst<String>` at IR phase (the backstop for FIR `NON_LITERAL_COLLECT_SCOPE` slipping through) | `ReplaceCollectPreviewsFunBody` | IR, INVALID_USAGE, PREVIEW_COLLECTION |
+| `InvalidScopeIrError` | A const-folded `IrConst<String>` violates the regex (the backstop for FIR `INVALID_COLLECT_SCOPE_VALUE` slipping through) | `ReplaceCollectPreviewsFunBody` | IR, INVALID_USAGE, PREVIEW_COLLECTION |
+| `HintHashCollisionError` | Two `@Preview` functions in the same module produce the same truncated hash (`~10^-7` at 1k previews) | `PreviewLabIrGenerationExtension` (the `onCollision` callback of `BuildPreviewByHashMap`) | IR, PREVIEW_COLLECTION |
+| `PreviewExportNotFoundError` | `pluginContext.referenceClass(PREVIEW_EXPORT_CLASS_ID)` returns null (defensive) | `buildPreviewSequence/BuildPreviewExportIr` (`.throwAsException()`) | IR |
+| `RuntimeFunctionNotFoundError` | `referenceFunctions(callableId)` returns empty (i.e. `lazyPreviewSequence` / `distinctPreviewsByIdSequence` missing from the classpath, defensive) | `buildPreviewSequence/BuildPreviewSequenceIr` / `BuildConcatenatedPreviewSequencesIr` (`.throwAsException()`) | IR |
+| `PropertyHasNoGetterError` | `IrProperty.getter == null` (defensive — unreachable in the Kotlin property model) | `ReplaceCollectPreviewsFunBody` (`.throwAsException()`) | IR |
 
-FIR diagnostic は [`CollectScopeErrors.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/scopeValidation/CollectScopeErrors.kt)
-にまとまっている (2 factory)。
+The FIR diagnostics are consolidated in [`CollectScopeErrors.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/scopeValidation/CollectScopeErrors.kt)
+(two factories).
 
 ---
 
-## prefix 形式
+## Prefix format
 
-両系統ともユーザから見ると同じ形に揃える:
+Both pipelines surface the same shape to the user:
 
 ```
 [ComposePreviewLab/IR,INVALID_USAGE,PREVIEW_COLLECTION] collectModulePreviews(scope = ...) accepts only a compile-time string constant
 [ComposePreviewLab/FIR,INVALID_USAGE,PREVIEW_COLLECTION] collectModulePreviews(scope = ...) accepts only a compile-time string constant — ...
 ```
 
-- IR side: `error/ReportError.kt::buildErrorBody` が `categories` から組み立てる。
-- FIR side: [`CollectScopeErrors.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/scopeValidation/CollectScopeErrors.kt)
-  の `Renderer.MAP` 内で message template に直接埋め込み。 IR 側の `buildErrorBody` と format を手で揃えている (両者が drift しないよう留意)。
+- IR side: `error/ReportError.kt::buildErrorBody` builds the prefix from `categories`.
+- FIR side: Inside `Renderer.MAP` of
+  [`CollectScopeErrors.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/scopeValidation/CollectScopeErrors.kt)
+  the prefix is hand-embedded in the message templates. The format is hand-aligned with the IR side's
+  `buildErrorBody` (please keep an eye out for drift between the two).
 
-両者を揃えることで、 IDE と kotlinc コンソールで同じ違反が **同じ prefix** で見える。
-
----
-
-## reply 共通化 (`Replies.kt`)
-
-繰り返し使うガイダンス文言は [`error/Replies.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/Replies.kt) に const として集約:
-
-- `Replies.Unknown` — bug-report リンク (主に defensive Error 用)
-- `Replies.UpgradeKotlin2321` — Kotlin upgrade ガイダンス (`UnsupportedCollectAllError`)
-- `Replies.EnableCollectPreviews` — `collectPreviewsEnabled=true` 案内
-- `Replies.LiteralScopeOnly` — literal scope 制約の説明
-- `Replies.ScopeFormatAllowed` — regex の説明
-
-各 Error の `override val replies` から参照する。
+Aligning the two ensures that the same violation appears with the **same prefix** both in the IDE and on the kotlinc console.
 
 ---
 
-## ルール
+## Shared replies (`Replies.kt`)
 
-[`.claude/rules/compiler-plugin-error.md`](../../../.claude/rules/compiler-plugin-error.md) の通り、
-`compiler-plugin/` 配下では:
+Recurring guidance strings are consolidated as constants in
+[`error/Replies.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/error/Replies.kt):
 
-1. `messageCollector.report(CompilerMessageSeverity.ERROR, "...", ...)` の直書き禁止 →
-   `messageCollector.report(SomeError(...), location)`
-2. `messageCollector.report(CompilerMessageSeverity.WARNING, "...", ...)` の直書き禁止 →
-   `messageCollector.report(SomeWarning(...), location)`
-3. `error("...")` の直書き禁止 → `SomeError(...).throwAsException()`
+- `Replies.Unknown` — Bug-report link (mainly for defensive errors).
+- `Replies.UpgradeKotlin2321` — Kotlin upgrade guidance (`UnsupportedCollectAllError`).
+- `Replies.EnableCollectPreviews` — Guidance for `collectPreviewsEnabled=true`.
+- `Replies.LiteralScopeOnly` — Explanation of the literal-scope constraint.
+- `Replies.ScopeFormatAllowed` — Explanation of the regex.
 
-ただし以下は例外:
-
-- FIR diagnostic (`KtDiagnosticFactory*`) は Kotlin 標準仕組みに乗せるため対象外
-- FIR-side defensive `IllegalStateException` (symbol 解決失敗ガード) は Kotlin compiler API 慣例で維持
-- `ComposePreviewLabCommandLineProcessor.kt:68` の `CliOptionProcessingException` は維持
+Each error references them from its `override val replies`.
 
 ---
 
-## 関連ドキュメント
+## Rules
 
-- [hint-naming.md](./hint-naming.md) — `HintHashCollisionError` が検出する hash 衝突の背景
-- [scope-validation.md](./scope-validation.md) — FIR Checker と IR ERROR の二重防衛詳細
-- [collect-previews-replacement.md](./collect-previews-replacement.md) — IR 側 ERROR 発火元の logic 詳細
+Per [`.claude/rules/compiler-plugin-error.md`](../../../.claude/rules/compiler-plugin-error.md), within
+`compiler-plugin/`:
+
+1. Writing `messageCollector.report(CompilerMessageSeverity.ERROR, "...", ...)` directly is prohibited; use
+   `messageCollector.report(SomeError(...), location)` instead.
+2. Writing `messageCollector.report(CompilerMessageSeverity.WARNING, "...", ...)` directly is prohibited; use
+   `messageCollector.report(SomeWarning(...), location)` instead.
+3. Calling `error("...")` directly is prohibited; use `SomeError(...).throwAsException()` instead.
+
+The following are excepted:
+
+- FIR diagnostics (`KtDiagnosticFactory*`) — out of scope because they ride on Kotlin's standard machinery.
+- FIR-side defensive `IllegalStateException` (symbol-resolution-failure guards) — retained per Kotlin compiler API conventions.
+- The `CliOptionProcessingException` at `ComposePreviewLabCommandLineProcessor.kt:68` — retained as-is.
+
+---
+
+## Related documents
+
+- [hint-naming.md](./hint-naming.md) — Background on hash collisions that `HintHashCollisionError` detects.
+- [scope-validation.md](./scope-validation.md) — Detailed treatment of two-level defense (FIR Checker + IR ERROR).
+- [collect-previews-replacement.md](./collect-previews-replacement.md) — Logic-level detail of where the IR-side ERRORs fire.
