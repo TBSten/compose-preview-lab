@@ -59,13 +59,14 @@ import org.jetbrains.kotlin.name.Name
  *
  * Only the return type and function name are declared at the FIR layer; the
  * `CollectedPreview(...)` constructor call carrying the actual metadata is injected by the
- * IR side ([me.tbsten.compose.preview.lab.compiler.ir.PreviewHintIrBodyFiller]).
+ * IR side
+ * ([me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.FillPreviewHintIrBody]).
  *
  * The two non-`@Deprecated` markers serve complementary roles:
  * * `@InternalComposePreviewLabApi` keeps the marker class and the hint function out of the
  *   BCV baseline on every CMP target (KLIB / JVM / Android), via the existing
  *   `nonPublicMarkers` filter in `apiValidation`.
- * * `@SyntheticPreviewHint` is the IR-side `HintDiscovery`'s positive proof that this
+ * * `@SyntheticPreviewHint` is the IR-side `DiscoverHints`'s positive proof that this
  *   declaration was emitted by *us*. Third-party code that happens to live in the
  *   `me.tbsten.compose.preview.lab.hints` package — whether by accident or by namespace
  *   squatting — cannot be picked up by `collectAllModulePreviews()` because it lacks the
@@ -249,12 +250,13 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
      *
      * No body is emitted here (FIR cannot hold a body). The [PreviewKeys.PreviewLabHint] origin
      * is the signal that the IR side
-     * ([me.tbsten.compose.preview.lab.compiler.ir.PreviewHintIrBodyFiller]) uses to fill in
-     * a body that returns the corresponding `CollectedPreview(...)` constructor call.
+     * ([me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.FillPreviewHintIrBody])
+     * uses to fill in a body that returns the corresponding `CollectedPreview(...)`
+     * constructor call.
      *
      * Each generated hint function is then annotated by `markAsInternalSyntheticHint`,
      * which attaches `@InternalComposePreviewLabApi` (BCV filtering) and
-     * `@SyntheticPreviewHint` (IR-side `HintDiscovery` positive-proof marker so namespace
+     * `@SyntheticPreviewHint` (IR-side `DiscoverHints` positive-proof marker so namespace
      * squatting cannot inject hints into a downstream consumer's `collectAllModulePreviews`).
      */
     override fun generateFunctions(callableId: CallableId, context: MemberGenerationContext?): List<FirNamedFunctionSymbol> {

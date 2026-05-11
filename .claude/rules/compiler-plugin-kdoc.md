@@ -142,8 +142,8 @@ fun replaceCollectPreviewsProperty(property: IrProperty)
  *
  * Used by:
  * - PreviewHintFirGenerator.generateFunctions
- * - PreviewHintIrBodyFiller.fillHintBody
- * - PreviewLabIrBodyFiller.replaceCollectPreviewsProperty
+ * - FillPreviewHintIrBody.fillHintBody
+ * - ReplaceCollectPreviewsFunBody.replaceCollectPreviewsProperty
  */
 object PreviewLabHint : GeneratedDeclarationKey()
 ```
@@ -152,7 +152,7 @@ object PreviewLabHint : GeneratedDeclarationKey()
 
 ```kotlin
 /**
- * Hint stub の origin として使われる key。 IR 側 ([PreviewHintIrBodyFiller]) は
+ * Hint stub の origin として使われる key。 IR 側 ([FillPreviewHintIrBody]) は
  * この key で hint 関数を識別して body を埋める。
  */
 object PreviewLabHint : GeneratedDeclarationKey()

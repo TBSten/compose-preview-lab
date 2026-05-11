@@ -65,9 +65,10 @@ class PreviewLabFirExtensionRegistrar(private val config: PluginConfig) : FirExt
         // gate keeps the JVM classloader away from the extension class on those versions
         // (the `+::PreviewLabFirCheckersExtension` callable reference is evaluated lazily
         // — JVM class loading is triggered only when the `if` branch executes).
-        // IR-pass validation (`reportNonLiteralScopeError` / `reportInvalidScopeError` in
-        // `PreviewLabIrBodyFiller`) remains active on every Kotlin version as a second-line
-        // check, so violations still surface at compile time without the FIR highlighter.
+        // IR-pass validation (the `InvalidScopeIrError` / `NonLiteralScopeIrError` reports
+        // emitted inside `ReplaceCollectPreviewsFunBody`) remains active on every Kotlin
+        // version as a second-line check, so violations still surface at compile time
+        // without the FIR highlighter.
         if (compat.supportsFirCheckers()) {
             +::PreviewLabFirCheckersExtension
         }

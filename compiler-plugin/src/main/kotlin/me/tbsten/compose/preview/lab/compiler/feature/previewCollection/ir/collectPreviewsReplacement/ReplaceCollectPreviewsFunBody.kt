@@ -152,10 +152,11 @@ internal class ReplaceCollectPreviewsFunBody(
      * )
      * ```
      *
-     * Cross-module discovery is implemented by [HintDiscovery] using `referenceFunctions`
-     * to find the `previewHint(value: PreviewHintMarker_<hash>?): CollectedPreview`
+     * Cross-module discovery is implemented by [discoverHints] (in `DiscoverHints.kt`)
+     * using `referenceFunctions` to find the
+     * `previewHint_<scope>(value: PreviewHintMarker_<sanitized_fqn>_<hash>?): CollectedPreview`
      * functions emitted by the per-declaration hint generator
-     * ([me.tbsten.compose.preview.lab.compiler.fir.PreviewHintFirGenerator]).
+     * ([me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.hintAndMarkerGeneration.PreviewHintFirGenerator]).
      */
     private fun replaceCollectPreviewsProperty(property: IrProperty) {
         val delegateField = property.backingField ?: return
@@ -205,7 +206,7 @@ internal class ReplaceCollectPreviewsFunBody(
 
         val callName = if (isAll) "collectAllModulePreviews" else "collectModulePreviews"
         // Regex validation runs in the FIR `CHECKERS` phase
-        // (`me.tbsten.compose.preview.lab.compiler.fir.checkers.CollectScopeCallChecker`)
+        // (`feature/previewCollection/fir/scopeValidation/CheckCollectScopeCall`)
         // for inline string literals, but the FIR side cannot distinguish a `const val`
         // reference from a plain `val` reference at analysis time — they both arrive as
         // a `FirPropertyAccessExpression`. The const-folding into `IrConst<String>` only

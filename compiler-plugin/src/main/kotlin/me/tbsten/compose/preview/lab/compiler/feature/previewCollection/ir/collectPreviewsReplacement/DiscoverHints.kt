@@ -52,7 +52,7 @@ import org.jetbrains.kotlin.ir.util.hasAnnotation
  * ## Cross-module gate
  *
  * The caller
- * ([PreviewLabIrBodyFiller.replaceCollectPreviewsProperty][me.tbsten.compose.preview.lab.compiler.ir.PreviewLabIrBodyFiller])
+ * ([ReplaceCollectPreviewsFunBody.replaceCollectPreviewsProperty][ReplaceCollectPreviewsFunBody])
  * pre-checks the platform-aware gate (JVM / Android: only
  * `CompatContext.supportsFirHintGeneration` required = 2.3.20+; KLIB targets:
  * additionally `CompatContext.supportsKlibCrossModuleHint` required = 2.3.21+) and

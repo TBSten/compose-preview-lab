@@ -4,7 +4,7 @@ package me.tbsten.compose.preview.lab.compiler.feature.previewCollection
 // (`PreviewHintMarker_<sanitized_fqn>_<hash>`).
 //
 // Three call-sites participate:
-// - Generation side (FIR `GeneratePreviewHintMarkerFir`) emits the marker class.
+// - Generation side (FIR [PreviewHintFirGenerator]) emits the marker class.
 // - Restoration side (IR `FillPreviewHintIrBody`) recovers the hash from the marker
 //   parameter type's short name via `extractHashFromMarkerShortName`.
 // - Discovery side (IR `DiscoverHints`) accepts only marker classes whose short name

@@ -30,7 +30,7 @@ import org.jetbrains.kotlin.fir.declarations.FirClassLikeDeclaration
  * * `@InternalComposePreviewLabApi` removes the marker class from BCV baselines on
  *   every CMP target (KLIB / JVM / Android), via the existing `nonPublicMarkers`
  *   filter in `apiValidation`.
- * * `@SyntheticPreviewHint` lets the IR-side `HintDiscovery` distinguish plugin-emitted
+ * * `@SyntheticPreviewHint` lets the IR-side `DiscoverHints` distinguish plugin-emitted
  *   hints from third-party declarations that happen to live in the same
  *   `me.tbsten.compose.preview.lab.hints` package, so a downstream
  *   `collectAllModulePreviews()` cannot be poisoned by namespace squatting.

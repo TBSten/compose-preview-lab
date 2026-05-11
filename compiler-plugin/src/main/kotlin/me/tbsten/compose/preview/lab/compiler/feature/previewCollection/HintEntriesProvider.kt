@@ -39,16 +39,18 @@ internal data class HintEntry(
 )
 
 /**
- * Session-scoped cache of the per-`@Preview` [HintEntry] list, shared by the hint
- * function generator (`hintGeneration/GeneratePreviewHintFir`) and the marker interface
- * generator (`markerGeneration/GeneratePreviewHintMarkerFir`).
+ * Session-scoped cache of the per-`@Preview` [HintEntry] list, consumed by
+ * [me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.hintAndMarkerGeneration.PreviewHintFirGenerator]
+ * (which emits both the marker interface and the hint-function overloads from the same
+ * entry list).
  *
- * **Why a separate `FirExtensionSessionComponent`**: splitting hint and marker into
- * two independent `FirDeclarationGenerationExtension`s lets each one focus on its API
- * surface (callable vs class). Without this provider, each generator would walk
- * `predicateBasedProvider.getSymbolsByPredicate(...)` independently, re-resolving every
- * `@Preview` symbol's annotation arguments twice. The provider performs the walk once
- * (lazily on first touch) and exposes the same list to both consumers.
+ * **Why a separate `FirExtensionSessionComponent`**: extracting the walk lets the
+ * generator focus on declaration emission while this component owns the shared cache
+ * lifecycle. If hint and marker generation are later split into two
+ * `FirDeclarationGenerationExtension`s, the second consumer slots into the same cache
+ * without re-walking `predicateBasedProvider.getSymbolsByPredicate(...)`. The provider
+ * performs the walk once (lazily on first touch) and exposes the same list to every
+ * consumer.
  *
  * **Lazy by design**: the FIR predicate-based walk inside the provider's body triggers
  * a Kotlin 2.3.21 frontend resolution cycle if executed eagerly. Deferring the

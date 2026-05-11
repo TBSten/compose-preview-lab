@@ -14,11 +14,10 @@ internal val ANDROID_PREVIEW_ANNOTATION_FQN: FqName =
 /**
  * FIR `LookupPredicate`s shared by the `previewCollection` feature.
  *
- * Both the hint generator (`hintGeneration/GeneratePreviewHintFir`) and the marker
- * generator (`markerGeneration/GeneratePreviewHintMarkerFir`) walk the same set of
- * `@Preview`-annotated symbols. Centralising the predicate construction here keeps the
- * annotation FQN list (CMP + Android) in one place — anything that needs to react to
- * `@Preview` registers these predicates rather than redeclaring them.
+ * The combined hint + marker generator ([PreviewHintFirGenerator]) walks the same set
+ * of `@Preview`-annotated symbols. Centralising the predicate construction here keeps
+ * the annotation FQN list (CMP + Android) in one place — anything that needs to react
+ * to `@Preview` registers these predicates rather than redeclaring them.
  *
  * **Sample registration** (inside a `FirDeclarationGenerationExtension`):
  * ```kotlin

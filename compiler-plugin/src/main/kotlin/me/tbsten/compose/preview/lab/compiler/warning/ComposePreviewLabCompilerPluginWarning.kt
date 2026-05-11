@@ -9,8 +9,9 @@ import me.tbsten.compose.preview.lab.compiler.error.ComposePreviewLabCompilerPlu
  * error side without duplicating fields.
  *
  * Ticket 0 only ships the skeleton — concrete warning classes are added in Ticket 4
- * when the existing `ir/HintDiscovery.kt` squatting-guard and cross-artifact-dup
- * warnings are migrated.
+ * when the existing
+ * `feature/previewCollection/ir/collectPreviewsReplacement/DiscoverHints.kt`
+ * squatting-guard and cross-artifact-dup warnings are migrated.
  */
 interface ComposePreviewLabCompilerPluginWarning {
     /** See [ComposePreviewLabCompilerPluginError.categories]. */

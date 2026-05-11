@@ -86,7 +86,7 @@ class NonLiteralScopeIrError(private val callName: String) : ComposePreviewLabCo
     override val description: String =
         "The IR pass needs the value as an `IrConst<String>` so it can be embedded into " +
             "the synthetic `previewHint_<scope>` function name. The FIR " +
-            "`CollectScopeCallChecker` rejects clear-cut non-literals (string concatenations, " +
+            "`CheckCollectScopeCall` rejects clear-cut non-literals (string concatenations, " +
             "function calls), but a plain (non-`const`) `val` reference cannot be told apart " +
             "from a `const val` at FIR time and is therefore left to this IR-pass check."
     override val context: List<String> = contextOf {
@@ -110,7 +110,7 @@ class InvalidScopeIrError(private val callName: String, private val scope: Strin
         "$callName(scope = \"$scope\") is not a valid scope identifier"
     override val description: String =
         "The const-folded `IrConst<String>` value fails the scope identifier regex. The " +
-            "FIR `CollectScopeCallChecker` catches inline string literals at analysis time " +
+            "FIR `CheckCollectScopeCall` catches inline string literals at analysis time " +
             "but a `const val` reference is indistinguishable from a non-`const` `val` " +
             "reference at FIR time and is therefore left to this IR-pass check."
     override val context: List<String> = contextOf {

@@ -69,7 +69,7 @@ class PreviewLabIrGenerationExtension(
         // `CollectedPreview(...)` constructor call into each hint at IR time. On KLIB
         // targets the same body filler runs, but the consumer-side cross-module
         // discovery is additionally gated on `supportsKlibCrossModuleHint` (KT-82395
-        // fix) inside `HintDiscovery` / `PreviewLabIrBodyFiller`.
+        // fix) inside `DiscoverHints` / `ReplaceCollectPreviewsFunBody`.
         if (compatContext.supportsFirHintGeneration()) {
             val previewsByHash = BuildPreviewByHashMap().invoke(previews) { hash, existing, conflicting ->
                 val existingSignature = existing.function.canonicalSignatureForReport()
@@ -90,13 +90,16 @@ class PreviewLabIrGenerationExtension(
         // On Kotlin <2.3.20 the FIR hint generator is not registered (the FIR top-level
         // declaration generation API was experimental on 2.3.0–2.3.19 and stabilized in
         // 2.3.20 — see `compat-k2320`), so collectAllModulePreviews() cannot perform
-        // cross-module aggregation. PreviewLabIrBodyFiller.reportUnsupportedCollectAllError
-        // detects the `val by collectAllModulePreviews()` by-delegate pattern in the IR
-        // phase and surfaces a compile-time error via MessageCollector. On Kotlin 2.3.20
-        // (= the FIR gate is open) for KLIB targets, the body filler also reports the
-        // unsupported-platform error because the KLIB IC safety fix (KT-82395) only
-        // landed in 2.3.21. collectModulePreviews() on its own only injects this
-        // module's previews via an IR transform, so it works without a version gate.
+        // cross-module aggregation. `ReplaceCollectPreviewsFunBody` reports an
+        // `UnsupportedCollectAllError` whenever it encounters a
+        // `val by collectAllModulePreviews()` by-delegate property while
+        // `supportsFirHintGeneration()` is false, so users on older compilers get a
+        // structured upgrade hint instead of a silently-empty list. On Kotlin 2.3.20
+        // (= the FIR gate is open) for KLIB targets, the same error path also fires
+        // when `supportsKlibCrossModuleHint()` is false because the KLIB IC safety fix
+        // (KT-82395) only landed in 2.3.21. collectModulePreviews() on its own only
+        // injects this module's previews via an IR transform, so it works without a
+        // version gate.
     }
 
     private fun collectPreviews(moduleFragment: IrModuleFragment): List<PreviewFunctionInfo> {
@@ -174,8 +177,9 @@ class PreviewLabIrGenerationExtension(
             (optionAnno?.findArgumentByName("id") as? IrConst)?.value as? String ?: "{{qualifiedName}}",
         )
         // Substitute the `DefaultCollectScope` sentinel with the module's configured
-        // `defaultCollectScope` Gradle DSL value, the same way `PreviewLabIrBodyFiller`
-        // does for the *requested* scope on the call site. Without this, a module that
+        // `defaultCollectScope` Gradle DSL value, the same way
+        // `ReplaceCollectPreviewsFunBody` does for the *requested* scope on the call
+        // site. Without this, a module that
         // sets `defaultCollectScope = "acme_ui"` would have its `collectModulePreviews()`
         // resolve to `"acme_ui"` (substituted) but its unannotated previews stay pinned
         // to `["default"]`, so the in-module filter `scope in scopes` ends up empty.
