@@ -160,7 +160,7 @@ messageCollector.report(
 ### Bad — literal WARNING 直書き
 
 ```kotlin
-// compiler-plugin/.../ir/HintDiscovery.kt
+// compiler-plugin/.../feature/previewCollection/ir/collectPreviewsReplacement/DiscoverHints.kt
 messageCollector.report(
     CompilerMessageSeverity.WARNING,
     "Compose Preview Lab: a function in '${HINT_PACKAGE.asString()}' " +     // ← 構造化なし
