@@ -90,6 +90,10 @@ jobs:
       - name: Test Library
         shell: bash
         run: ./gradlew ${{ matrix.test_task }} ${{ matrix.kotest_tags && format('-Dkotest.tags="{0}"', matrix.kotest_tags) || '' }} --warning-mode all
+      - name: Test Gradle Plugin
+        if: matrix.test_task == 'jvmTest'
+        shell: bash
+        run: ./gradlew :gradle-plugin:test --warning-mode all
       - name: Test Integration Test
         shell: bash
         run: cd ./integrationTest && ./gradlew ${{ matrix.test_task }} ${{ matrix.kotest_tags && format('-Dkotest.tags="{0}"', matrix.kotest_tags) || '' }} --warning-mode all
