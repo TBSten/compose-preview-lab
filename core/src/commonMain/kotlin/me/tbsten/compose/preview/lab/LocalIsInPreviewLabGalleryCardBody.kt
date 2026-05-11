@@ -3,10 +3,11 @@ package me.tbsten.compose.preview.lab
 import androidx.compose.runtime.compositionLocalOf
 
 /**
- * CompositionLocal that indicates whether the current composition is inside a PreviewLabGallery card body.
- * When true, PreviewLab will skip rendering its full UI and only render the preview content directly.
- * This is used to show scaled-down preview thumbnails in the gallery view.
+ * `true` when the current composition is inside a PreviewLabGallery card body. Used by
+ * `PreviewLab` to skip its full UI (controls, inspectors, …) and render only the preview
+ * content, producing the scaled-down thumbnails the gallery displays.
  *
- * Using this CompositionLocal, you can display simple explanatory images instead of content in the PreviewLabGallery, or implement labels that appear only on the Gallery.
+ * Read this CompositionLocal from your composable if you want to render a gallery-only
+ * label / explanatory image instead of the live content.
  */
 val LocalIsInPreviewLabGalleryCardBody = compositionLocalOf { false }

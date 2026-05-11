@@ -6,32 +6,18 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 /**
- * Represents an event that occurred during preview interaction
- *
- * Captures user interactions and system events within the preview environment
- * for debugging and analysis purposes. Events are displayed in the Events inspector
- * tab with timestamps for tracking interaction sequences.
+ * Event surfaced in the Events inspector tab — typically emitted through
+ * [PreviewLabScope.onEvent][me.tbsten.compose.preview.lab.previewlab.PreviewLabScope.onEvent]
+ * rather than constructed directly. The default [createAt] timestamps the entry at creation.
  *
  * ```kotlin
- * // Events are typically created through PreviewLabScope
  * PreviewLab {
- *     Button(
- *         onClick = { onEvent("Button clicked", "User tapped the submit button") }
- *     ) {
+ *     Button(onClick = { onEvent("Button clicked", "User tapped the submit button") }) {
  *         Text("Submit")
  *     }
  * }
- *
- * // Events automatically include timestamp
- * val event = PreviewLabEvent(
- *     title = "Form submitted",
- *     description = "User completed the registration form"
- * )
  * ```
  *
- * @param title Brief event description displayed in the events list
- * @param description Detailed event information (optional)
- * @param createAt Timestamp when the event occurred (auto-generated)
  * @see me.tbsten.compose.preview.lab.previewlab.PreviewLabScope.onEvent
  */
 @Immutable
