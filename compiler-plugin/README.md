@@ -113,7 +113,10 @@ compiler-plugin/compat-k240_beta2/   # Kotlin 2.4+ 実装 (`:compiler-plugin:com
 - **logic** — feature 内の plugin 動作単位 (`hintAndMarkerGeneration`, `scopeValidation`, `collectPreviewsReplacement` ...)。 ディレクトリ名は **動詞句** (`<verb><Object>`) で、 配下の代表クラス名は **`動詞Xxx { operator fun invoke(...) }`** 形式に揃える (Kotlin compiler API 継承クラス除く)。
 - **sub-logic** — 更に細かい動作単位 (`buildPreviewSequence`)。
 
-詳細な class 命名規則と SSoT 維持規約は [`.local/compiler-plugin-restructure/`](../.local/compiler-plugin-restructure/) (本リファクタの設計ドキュメント) を参照。 永続的な詳細設計は ticket-3 で `compiler-plugin/docs/<feature-name>/` 配下に整備予定。
+各 feature の詳細設計・命名規則 SSoT・Error 役割分担などは **`compiler-plugin/docs/<feature-name>/README.md`** を entrypoint として読む:
+
+- [`docs/previewCollection/README.md`](docs/previewCollection/README.md) — `@Preview` の収集 / cross-module hint discovery (4 logic + sub-logic 1)
+- [`docs/transformPrivatePreviewToInternal/README.md`](docs/transformPrivatePreviewToInternal/README.md) — `private @Preview` の internal 昇格 (1 logic)
 
 ## compat レイヤ
 

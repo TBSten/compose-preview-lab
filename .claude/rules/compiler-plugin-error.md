@@ -23,9 +23,9 @@ Ticket 0 (本 rule 導入時) では、 IR-side WARNING 2 件 + FIR-side defensi
 
 以下 3 sites は FIR 拡張の symbol 解決失敗ガードで、 `Error` interface ではなく Kotlin compiler API 慣例の `IllegalStateException` を保持する:
 
-- `compiler-plugin/src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt:280` — FIR 生成拡張が hint 関数 owner class を解決できない場合の defensive guard
-- `compiler-plugin/src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintGeneration/DeprecationHidden.kt:56` — `@Deprecated` 注釈の `level` parameter を resolve できない場合の defensive guard
-- `compiler-plugin/src/main/kotlin/me/tbsten/compose/preview/lab/compiler/utils/fir/AnnotationBuilders.kt:41` — annotation FQN が FIR session symbol provider に存在しない場合の defensive guard
+- `compiler-plugin/src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt` — FIR 生成拡張が hint 関数 owner class (marker symbol) を解決できない場合の defensive guard
+- `compiler-plugin/src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintGeneration/DeprecationHidden.kt` — `kotlin.Deprecated` annotation symbol が FIR session から resolve できない場合の defensive guard
+- `compiler-plugin/src/main/kotlin/me/tbsten/compose/preview/lab/compiler/utils/fir/AnnotationBuilders.kt` — annotation FQN が FIR session symbol provider に存在しない場合の defensive guard
 
 これらは ↑ 「FIR-side defensive `error()`」適用範囲外と整合する (= rule 違反とはみなさない)。 移行予定なし。
 
