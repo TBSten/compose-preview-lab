@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.compiler.feature
+package me.tbsten.compose.preview.lab.compiler.feature.previewCollection
 
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
@@ -8,6 +8,7 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import me.tbsten.compose.preview.lab.compiler.CompilerPluginTestBase
+import me.tbsten.compose.preview.lab.compiler.feature.previewHintFacadeNames
 import me.tbsten.compose.preview.lab.compiler.isAtLeast
 import me.tbsten.compose.preview.lab.compiler.loadCollectedPreviews
 
