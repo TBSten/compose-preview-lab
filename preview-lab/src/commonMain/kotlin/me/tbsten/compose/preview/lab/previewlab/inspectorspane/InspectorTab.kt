@@ -20,85 +20,42 @@ import me.tbsten.compose.preview.lab.ui.generated.resources.icon_history
 import org.jetbrains.compose.resources.painterResource
 
 /**
- * Represents a tab in the PreviewLab inspector panel.
+ * Tab in the PreviewLab inspector panel. Implement this interface for a custom tab; the
+ * built-in [Fields], [Events], [KDoc], and [Code] objects below cover the standard cases.
  *
- * Built-in tabs (Fields and Events) are provided by [InspectorTab.Fields] and [InspectorTab.Events].
- * Custom tabs can be created by implementing this interface.
- *
- * ## Creating Custom Tabs
- *
- * To create a custom tab, implement this interface with your own tab content:
+ * Custom tab — implement [Content] with a [ContentContext] receiver to reach
+ * [PreviewLabState]:
  *
  * ```kt
  * object CustomTab : InspectorTab {
  *     override val title = "Custom"
- *     override val icon: @Composable () -> Painter = { painterResource(PreviewLabUiRes.drawable.icon_custom) }
+ *     override val icon: @Composable () -> Painter = { painterResource(...) }
  *
  *     @Composable
  *     override fun ContentContext.Content() {
- *         // Your custom tab content can access state via the ContentContext
  *         Column {
- *             Text("Custom Tab Content")
  *             Text("Field count: ${state.scope.fields.size}")
  *         }
  *     }
  * }
  * ```
  *
- * Then pass it to PreviewLab via the `inspectorTabs` parameter:
- *
- * ```kt
- * // Default tabs (Fields, Events) + custom tab
- * @Preview
- * @Composable
- * fun MyPreview() = PreviewLab(
- *     inspectorTabs = InspectorTab.defaults + listOf(CustomTab)
- * ) {
- *     MyComponent()
- * }
- *
- * // Custom tabs only (no default tabs)
- * @Preview
- * @Composable
- * fun MyPreview() = PreviewLab(
- *     inspectorTabs = listOf(CustomTab)
- * ) {
- *     MyComponent()
- * }
- * ```
+ * Pass the tab via `PreviewLab(inspectorTabs = InspectorTab.defaults + listOf(CustomTab))`.
  */
 interface InspectorTab {
-    /**
-     * The display title of the tab
-     */
     val title: String
 
-    /**
-     * The icon to display for the tab.
-     * If null, the tab will be displayed without an icon.
-     */
+    /** Optional icon; tabs without an icon render as text-only. */
     val icon: (@Composable () -> Painter)? get() = null
 
-    /**
-     * The content to display when the tab is selected.
-     * Implement this composable function within [ContentContext] receiver scope to access
-     * the PreviewLabState via [ContentContext.state].
-     */
+    /** Renders tab content. Use the [ContentContext] receiver to access [PreviewLabState]. */
     @Composable
     fun ContentContext.Content()
 
-    /**
-     * Context providing access to [PreviewLabState] for tab content.
-     *
-     * @property state The current [PreviewLabState], providing access to fields, events, and other preview state
-     */
+    /** Receiver passed to [Content]; exposes the live [PreviewLabState] and the tab list. */
     class ContentContext(val state: PreviewLabState, val inspectorTabs: List<InspectorTab>)
 
-    /**
-     * Built-in Fields tab that displays all interactive fields.
-     *
-     * @see InspectorTab
-     */
+    /** Built-in tab listing interactive fields. */
     data object Fields : InspectorTab {
         override val title: String = "Fields"
         override val icon: @Composable () -> Painter = { painterResource(PreviewLabUiRes.drawable.icon_edit) }
@@ -111,11 +68,7 @@ interface InspectorTab {
         }
     }
 
-    /**
-     * Built-in Events tab that displays all logged events.
-     *
-     * @see InspectorTab
-     */
+    /** Built-in tab listing events logged via [PreviewLabScope.onEvent]. */
     data object Events : InspectorTab {
         override val title: String = "Events"
         override val icon: @Composable () -> Painter = { painterResource(PreviewLabUiRes.drawable.icon_history) }
@@ -130,11 +83,7 @@ interface InspectorTab {
         }
     }
 
-    /**
-     * Built-in KDoc tab that displays preview function documentation.
-     *
-     * @see InspectorTab
-     */
+    /** Built-in tab showing the preview function's KDoc, or `(No KDoc)` if none. */
     data object KDoc : InspectorTab {
         override val title: String = "KDoc"
 
@@ -189,9 +138,6 @@ interface InspectorTab {
     }
 
     companion object {
-        /**
-         * Default built-in tabs: Fields, Events, and KDoc
-         */
         val defaults: List<InspectorTab> = listOf(Fields, Events, KDoc)
     }
 }
