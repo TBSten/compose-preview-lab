@@ -1,16 +1,17 @@
 # Logic: Hint Generation
 
-`@Preview` ごとに、 cross-module discovery で使う **hint stub 関数** を synthesize する FIR logic。
-2026-05 時点では marker interface 生成と **1 つの logic に統合** されており、 単一の
+The FIR logic that synthesizes, for every `@Preview`, the **hint stub function** used by cross-module discovery.
+As of 2026-05 this is **fused with marker interface generation into a single logic**, and a single
 `PreviewHintFirGenerator` (= [`fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt))
-が hint と marker の両 API surface (callable / class) を担当する (詳細は [marker-generation.md](./marker-generation.md))。
+handles both API surfaces — callables (hint) and classes (marker). See [marker-generation.md](./marker-generation.md)
+for the marker side.
 
-このドキュメントは **hint stub の callable 側 API** にフォーカスする。 marker class 側 API は
-[marker-generation.md](./marker-generation.md) に分けて記述している。 統合形を維持する理由は同 doc 参照。
+This document focuses on the **callable-side API for the hint stubs**. The marker class-side API is documented
+separately in [marker-generation.md](./marker-generation.md), which also explains why we keep the merged form.
 
 ---
 
-## 入出力 (Input / Generated)
+## Input / Generated
 
 ### Input
 
@@ -19,8 +20,8 @@ package com.example.app
 @Preview fun MyButtonPreview() { ... }
 ```
 
-`@ComposePreviewLabOption(collectScopes = [...])` が付いている場合は scope の数だけ、 付いていない場合は
-`["default"]` で 1 個の hint が出る。
+If `@ComposePreviewLabOption(collectScopes = [...])` is present, one hint is emitted per scope; otherwise a
+single hint is emitted with `["default"]`.
 
 ### Generated (semantically equivalent Kotlin)
 
@@ -35,102 +36,110 @@ public fun previewHint_default(value: PreviewHintMarker_com_example_app_MyButton
     error("Stub! Filled by IR.")
 ```
 
-scope `"design"` も付いている場合は `previewHint_design` の overload が追加される (同じ marker 型を受ける)。
+When the scope `"design"` is also attached, an overload `previewHint_design` is added (taking the same marker type).
 
-**body は FIR では emit しない** — `error("Stub!")` 相当の placeholder のままで FIR phase を抜け、
-IR phase の [`FillPreviewHintIrBody`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/FillPreviewHintIrBody.kt) が
-`return CollectedPreview(...)` を埋める。
+**The body is not emitted at FIR phase** — it remains an `error("Stub!")`-style placeholder through FIR, and
+the IR-phase [`FillPreviewHintIrBody`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/FillPreviewHintIrBody.kt)
+later fills in `return CollectedPreview(...)`.
 
 ---
 
-## 関連クラスと役割
+## Related classes and their roles
 
-| 構成要素 | 配置 | 役割 |
+| Component | Location | Role |
 |---|---|---|
-| `PreviewHintFirGenerator` | `fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt` | `FirDeclarationGenerationExtension` 実装。 hint / marker 双方の API surface を持つ |
-| `HintEntriesProvider` + `HintEntry` | `feature/previewCollection/HintEntriesProvider.kt` | session-scoped lazy で `@Preview` を walk して `List<HintEntry>` を作る。 hint と marker の両 generator が共有 |
-| `parameterTypeFqns()` (`FirNamedFunctionSymbol` extension) | `feature/previewCollection/ParameterTypeFqns.kt` | hint canonical key の素材となる parameter 型 FQN list を取り出す (FIR 側; IR 側にも別実装あり) |
-| `isIgnoredByComposePreviewLabOption` / `resolveCollectScopes` (private) | `HintEntriesProvider` 内 | `@ComposePreviewLabOption(ignore=true, collectScopes=[...])` の annotation argument 読み取り |
-| `DeprecationHidden.kt::markAsDeprecatedHidden` | `fir/hintGeneration/DeprecationHidden.kt` | hint 関数に `@Deprecated(level=HIDDEN)` を付与し、 deprecation cache を invalidate |
-| `AttachInternalApi.kt::markAsInternalSyntheticHint` | `fir/AttachInternalApi.kt` | `@InternalComposePreviewLabApi` + `@SyntheticPreviewHint` を付与 (hint / marker 双方から利用するため feature/fir/ 直下) |
-| `PreviewKeys.PreviewLabHint` | `feature/previewCollection/PreviewKeys.kt` | hint stub の `GeneratedDeclarationKey`。 IR の `FillPreviewHintIrBody` が origin チェックに使う |
-| `COLLECTED_PREVIEW_CLASS_ID` | `feature/previewCollection/CollectedPreviewClassId.kt` | hint 関数の戻り値型 `me.tbsten.compose.preview.lab.CollectedPreview` の ClassId |
+| `PreviewHintFirGenerator` | `fir/hintAndMarkerGeneration/PreviewHintFirGenerator.kt` | `FirDeclarationGenerationExtension` implementation. Owns both the hint and marker API surfaces |
+| `HintEntriesProvider` + `HintEntry` | `feature/previewCollection/HintEntriesProvider.kt` | A session-scoped lazy that walks `@Preview` functions and produces `List<HintEntry>`. Shared by the hint and marker generators |
+| `parameterTypeFqns()` (extension on `FirNamedFunctionSymbol`) | `feature/previewCollection/ParameterTypeFqns.kt` | Extracts the list of parameter-type FQNs that feed the hint canonical key (FIR side; the IR side has its own implementation) |
+| `isIgnoredByComposePreviewLabOption` / `resolveCollectScopes` (private) | inside `HintEntriesProvider` | Reads the annotation arguments of `@ComposePreviewLabOption(ignore=true, collectScopes=[...])` |
+| `DeprecationHidden.kt::markAsDeprecatedHidden` | `fir/hintGeneration/DeprecationHidden.kt` | Attaches `@Deprecated(level=HIDDEN)` to the hint function and invalidates the deprecation cache |
+| `AttachInternalApi.kt::markAsInternalSyntheticHint` | `fir/AttachInternalApi.kt` | Attaches `@InternalComposePreviewLabApi` + `@SyntheticPreviewHint` (lives directly under feature/fir/ because it is used by both hint and marker) |
+| `PreviewKeys.PreviewLabHint` | `feature/previewCollection/PreviewKeys.kt` | The `GeneratedDeclarationKey` for hint stubs. The IR side's `FillPreviewHintIrBody` uses it for origin checks |
+| `COLLECTED_PREVIEW_CLASS_ID` | `feature/previewCollection/CollectedPreviewClassId.kt` | The ClassId of the hint function's return type `me.tbsten.compose.preview.lab.CollectedPreview` |
 
 ---
 
-## 設計判断
+## Design rationale
 
-### なぜ「**1 marker × N hint overload**」の形にするか
+### Why "**1 marker × N hint overloads**"
 
-`@ComposePreviewLabOption(collectScopes = ["design", "screenshot"])` のような multi-scope preview に対して:
+For a multi-scope preview such as `@ComposePreviewLabOption(collectScopes = ["design", "screenshot"])`:
 
-- marker は **1 個** (`PreviewHintMarker_<sanitized_fqn>_<hash>`) — KLIB IdSignature は `(name, paramTypes)` から
-  derive されるため、 同じ `@Preview` から複数 marker を出すと冗長
-- hint 関数は **scope ごとに overload** (`previewHint_design`, `previewHint_screenshot`) — 同じ marker 型を受ける
+- The marker is **one** (`PreviewHintMarker_<sanitized_fqn>_<hash>`) — because the KLIB IdSignature is derived from
+  `(name, paramTypes)`, emitting multiple markers from the same `@Preview` would be redundant.
+- The hint functions are **overloaded per scope** (`previewHint_design`, `previewHint_screenshot`) — each takes
+  the same marker type.
 
-これにより consumer 側 (IR `DiscoverHints`) は `referenceFunctions(CallableId(HINT_PACKAGE, "previewHint_design"))` の
-**1 lookup** で design scope の hint を全件取得できる (scope 違い hint は名前が違うため lookup の時点で除外)。
+With this layout the consumer side (IR `DiscoverHints`) can retrieve every hint for `design` scope in a **single
+lookup** via `referenceFunctions(CallableId(HINT_PACKAGE, "previewHint_design"))` (hints for other scopes have a
+different name and are excluded at lookup time).
 
-詳細は [hint-naming.md](./hint-naming.md) を参照。
+See [hint-naming.md](./hint-naming.md) for details.
 
-### なぜ `HintEntriesProvider` を別 `FirExtensionSessionComponent` として切り出すか
+### Why `HintEntriesProvider` is factored out as its own `FirExtensionSessionComponent`
 
-`PreviewHintFirGenerator` 自身も `getTopLevelClassIds()` (marker) と `getTopLevelCallableIds()` (hint) の
-2 callback を持つので、 `@Preview` symbol walk を 2 回実行することはない。 ただし将来 hint と marker を
-2 つの logic に再分離する場合に備え、 walk 結果を session-scoped lazy cache として持つことで
-**SSoT を保ったまま 2 generator に share** できる構造にしてある。 `HintEntriesProvider` は
-[`PreviewLabFirExtensionRegistrar`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/PreviewLabFirExtensionRegistrar.kt) で
-`FirExtensionSessionComponent` として登録され、 `session.hintEntriesProvider.hintEntries` でアクセスする。
+`PreviewHintFirGenerator` itself has two callbacks, `getTopLevelClassIds()` (markers) and
+`getTopLevelCallableIds()` (hints), so walking the `@Preview` symbols twice does not happen in the current
+unified form. Even so, in case we ever re-split hint and marker into two logics, we cache the walk result as
+a session-scoped lazy so the two generators can **share it without losing the SSoT property**. `HintEntriesProvider`
+is registered as a `FirExtensionSessionComponent` by
+[`PreviewLabFirExtensionRegistrar`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/PreviewLabFirExtensionRegistrar.kt)
+and accessed as `session.hintEntriesProvider.hintEntries`.
 
-### なぜ predicate 登録は `PreviewHintFirGenerator` 側で行うか
+### Why predicate registration stays on the `PreviewHintFirGenerator` side
 
-`FirDeclarationGenerationExtension.registerPredicates` は predicate registry の正規の入口で、
-`FirExtensionSessionComponent` (= `HintEntriesProvider`) は predicate を登録できない。 walk 自体は provider 内で
-やるが、 walk 対象の `@Preview` annotation FQN 登録は generator 側に残す。 これは Kotlin compiler API の制約。
+`FirDeclarationGenerationExtension.registerPredicates` is the canonical entrypoint for the predicate registry,
+and `FirExtensionSessionComponent` (= `HintEntriesProvider`) cannot register predicates. The walk itself happens
+inside the provider, but registering the `@Preview` annotation FQN that drives the walk has to stay on the
+generator side — a Kotlin compiler API constraint.
 
-### なぜ lazy walk か
+### Why a lazy walk
 
-`predicateBasedProvider.getSymbolsByPredicate(...)` を `HintEntriesProvider` の init で eager 評価すると、
-Kotlin 2.3.21 で frontend resolution cycle が起きる。 `by lazy { computeHintEntries() }` で、
-generator の `getTopLevelClassIds` / `getTopLevelCallableIds` callback (= predicate provider の safe entry point)
-が初回 touch するまで evaluation を延期する。
+Eagerly evaluating `predicateBasedProvider.getSymbolsByPredicate(...)` from the `HintEntriesProvider` constructor
+provokes a frontend resolution cycle on Kotlin 2.3.21. Using `by lazy { computeHintEntries() }` defers evaluation
+until the first time the generator's `getTopLevelClassIds` / `getTopLevelCallableIds` callback (= the predicate
+provider's safe entry point) touches it.
 
-### `@Deprecated(level=HIDDEN)` を付ける理由
+### Why we attach `@Deprecated(level=HIDDEN)`
 
-hint / marker は plugin internal な合成宣言で、 user が source level で参照することは想定していない。
-`level = HIDDEN` にすると IDE 補完 / `import` 候補から消え、 namespace squatting で誤って参照する経路が
-塞がる。 `replaceDeprecationsProvider` も呼ぶ理由は `DeprecationHidden.kt::markAsDeprecatedHidden` の KDoc 参照。
+Hints and markers are plugin-internal synthetic declarations; users are not expected to reference them at the
+source level. Setting `level = HIDDEN` removes them from IDE completion and `import` candidates, which closes
+off the namespace-squatting path that would otherwise let them be referenced by mistake. The reason we also
+call `replaceDeprecationsProvider` is documented in the KDoc of
+`DeprecationHidden.kt::markAsDeprecatedHidden`.
 
-### `@SyntheticPreviewHint` も付ける理由
+### Why we also attach `@SyntheticPreviewHint`
 
-`@Deprecated(HIDDEN)` は source-level reachability を遮断するだけで、 binary level の filter ではない。
-discovery 側 ([`DiscoverHints`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/DiscoverHints.kt)) が
-classpath 上の `previewHint_<scope>` callable を walk する際、 **plugin が emit したもの** だけを採用するための
-positive proof として `@SyntheticPreviewHint` を見る。 user が手書きで `previewHint_default` を作っても
-この annotation がないため discovery で弾かれる (= namespace squatting 対策)。
-
----
-
-## ignore = true の扱い
-
-`@ComposePreviewLabOption(ignore = true)` が付いた `@Preview` は **hint emission 自体を skip** する。
-`HintEntriesProvider.computeHintEntries` 内で `filterNot { it.isIgnoredByComposePreviewLabOption() }` する。
-
-ignore された preview は:
-
-- hint も marker も emit されない
-- cross-module discovery (`referenceFunctions(previewHint_<scope>)`) で発見されない
-- IR 側 [`BuildPreviewByHashMap`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/BuildPreviewByHashMap.kt) の hash map にも入らない (consumer 側で同期 filter)
-
-これにより、 ignore された preview の hash が真の preview の hash と truncated-SHA-256 衝突して
-false-positive `HintHashCollisionError` を生むリスクも除去される。
+`@Deprecated(HIDDEN)` only closes off source-level reachability; it is not a binary-level filter.
+On the discovery side ([`DiscoverHints`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/DiscoverHints.kt)),
+when walking `previewHint_<scope>` callables on the classpath we need a positive proof that the callable was
+**emitted by the plugin**, and `@SyntheticPreviewHint` provides exactly that. If a user manually writes a
+`previewHint_default`, it will lack this annotation and discovery will reject it (= namespace-squatting countermeasure).
 
 ---
 
-## 関連ドキュメント
+## Handling of `ignore = true`
 
-- [marker-generation.md](./marker-generation.md) — marker interface 側 API の logic 詳細 + hint/marker 統合形の維持判断
-- [hint-naming.md](./hint-naming.md) — 命名規則 SSoT (3 関連ファイルの参照関係)
-- [collect-previews-replacement.md](./collect-previews-replacement.md) — IR 側 hint body 埋め込みと cross-module discovery
-- [scope-validation.md](./scope-validation.md) — collectScopes の値検証
-- [error-flow.md](./error-flow.md) — `HintHashCollisionError` など Error の役割分担
+A `@Preview` annotated with `@ComposePreviewLabOption(ignore = true)` **skips hint emission entirely**.
+Inside `HintEntriesProvider.computeHintEntries` we apply `filterNot { it.isIgnoredByComposePreviewLabOption() }`.
+
+For an ignored preview:
+
+- Neither a hint nor a marker is emitted.
+- Cross-module discovery (`referenceFunctions(previewHint_<scope>)`) cannot find it.
+- It is also absent from the hash map built by IR-side
+  [`BuildPreviewByHashMap`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/BuildPreviewByHashMap.kt)
+  (the consumer side mirrors the filter).
+
+This also eliminates the risk that an ignored preview's hash collides under truncated-SHA-256 with a real
+preview's hash and falsely raises `HintHashCollisionError`.
+
+---
+
+## Related documents
+
+- [marker-generation.md](./marker-generation.md) — Logic-level details of the marker interface API plus the rationale for keeping hint/marker fused.
+- [hint-naming.md](./hint-naming.md) — Naming SSoT (the cross-reference relationships among the three files).
+- [collect-previews-replacement.md](./collect-previews-replacement.md) — IR-side hint body filling and cross-module discovery.
+- [scope-validation.md](./scope-validation.md) — Validation of `collectScopes` values.
+- [error-flow.md](./error-flow.md) — Role separation for errors such as `HintHashCollisionError`.
