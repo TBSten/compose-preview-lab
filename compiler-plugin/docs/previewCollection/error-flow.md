@@ -1,5 +1,7 @@
 # Error Flow
 
+> [日本語版](./error-flow.ja.md)
+
 The errors emitted by the `previewCollection` feature split along **three axes and four groups**.
 This document covers "which violation is detected along which axis" and "why we maintain FIR diagnostics
 and IR structured errors as two parallel mechanisms".
