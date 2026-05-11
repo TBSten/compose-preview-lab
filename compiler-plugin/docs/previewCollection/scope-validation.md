@@ -1,5 +1,7 @@
 # Logic: Scope Validation
 
+> [日本語版](./scope-validation.ja.md)
+
 The logic that **validates the string arguments** of `@ComposePreviewLabOption(collectScopes = [...])` annotations
 and `collect[All]ModulePreviews(scope = ...)` call sites **at FIR analysis phase**. Introduced in PR #187.
 
