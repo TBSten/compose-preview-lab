@@ -16,6 +16,7 @@ class ComposePreviewLabGradlePlugin : Plugin<Project> {
         if (!supportsCompilerPluginOrder()) {
             validatePluginOrder()
         }
+        warnOnUnknownComposePreviewLabProperties(project = this)
     }
 
     /**

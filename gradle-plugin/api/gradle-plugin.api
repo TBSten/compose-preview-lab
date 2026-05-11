@@ -1,5 +1,5 @@
 public abstract class me/tbsten/compose/preview/lab/CollectPreviewsConfig {
-	public fun <init> (Lorg/gradle/api/model/ObjectFactory;)V
+	public fun <init> (Lorg/gradle/api/model/ObjectFactory;Lorg/gradle/api/Project;)V
 	public final fun getEnabled ()Z
 	public final fun setEnabled (Z)V
 }

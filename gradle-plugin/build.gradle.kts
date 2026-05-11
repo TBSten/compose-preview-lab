@@ -62,6 +62,12 @@ dependencies {
     api(projects.annotation)
     compileOnly(gradleApi())
     implementation(libs.kotlinGradlePlugin)
+
+    testImplementation(libs.bundles.kotest)
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }
 
 gradlePlugin {
