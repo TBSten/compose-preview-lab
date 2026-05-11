@@ -35,6 +35,75 @@ IR phase
 
 ---
 
+## How it works
+
+Each logic runs at a specific compiler phase **in a specific module role**. The same compiler plugin code is loaded
+into every module that depends on it, but the **module role** (= a module that *contains* `@Preview` functions vs.
+a module that *calls* `collect[All]ModulePreviews()`) determines which logic actually emits output. The two roles
+overlap when a single module both defines `@Preview` and calls `collectModulePreviews()` for itself.
+
+Roles used below:
+
+- **Preview-defining module** (= upstream / library module): a module that declares `@Preview` functions. Hints
+  and markers are *generated* here so dependent modules can later discover them.
+- **Preview-collecting module** (= downstream / app module): a module that calls `collectModulePreviews()` or
+  `collectAllModulePreviews()`. Hints from this module and its dependencies are *discovered* and *materialized*
+  into `CollectedPreview` instances here.
+
+### Phase 1 — FIR (frontend) phase
+
+Runs in **both** the preview-defining module and the preview-collecting module. The plugin cannot know at this
+point which role the module plays, so all FIR extensions are installed everywhere and become no-ops on modules
+that have nothing to contribute.
+
+1. **scopeValidation** — `CollectScopeAnnotationChecker` + `CollectScopeCallChecker` validate the string literals
+   on `@ComposePreviewLabOption(collectScopes = [...])` and `collect[All]ModulePreviews(scope = ...)`. Reports
+   IDE red-squigglies via FIR diagnostics. **Fires in either role** depending on which construct is present
+   (annotation is typical for the preview-defining module, the call is typical for the collecting module).
+   Details: [scope-validation.md](./scope-validation.md).
+2. **hintAndMarkerGeneration (FIR side)** — `PreviewHintFirGenerator` walks every `@Preview` in the current
+   module, synthesizes one marker interface plus per-scope `previewHint_<scope>(...)` function declarations,
+   and registers them. **Fires only in the preview-defining module** (modules with no `@Preview` produce
+   nothing). Details: [hint-generation.md](./hint-generation.md) / [marker-generation.md](./marker-generation.md).
+3. **transformPrivatePreviewToInternal** — A separate feature (see
+   [`../transformPrivatePreviewToInternal/README.md`](../transformPrivatePreviewToInternal/README.md)) but
+   sequenced before IR. Promotes `@Preview private fun` to `internal` so that the IR phase can legally emit
+   references to them from synthesized hint bodies. **Fires only in the preview-defining module**.
+
+### Phase 2 — IR (backend) phase
+
+Also runs in both roles, but the heavy IR rewrites are split cleanly.
+
+4. **hintAndMarkerGeneration (IR side)** — `FillPreviewHintIrBody` fills in the bodies of the hint-stub functions
+   that the FIR phase declared, threading the actual `@Preview` callable reference + `CollectedPreview` builder
+   into each one. **Fires only in the preview-defining module** (only modules with `@Preview` produce stub
+   bodies to fill). Details: [hint-generation.md](./hint-generation.md).
+5. **collectPreviewsReplacement** — In the **preview-collecting module**:
+    - `DiscoverHints` scans this module and all dependency modules for the marker interface prefix and gathers
+      the matching `previewHint_<scope>` functions.
+    - `ReplaceCollectPreviewsFunBody` replaces the sentinel body of each `collect[All]ModulePreviews()` call
+      with `PreviewExport(lazy { lazyPreviewSequence({factory}, ...) })`.
+    - The sub-logic `buildPreviewSequence/` constructs the actual IR for the lazy sequence, calling each
+      discovered hint function and collecting the resulting `CollectedPreview`s, with `BuildPreviewByHashMap`
+      providing hash-based deduplication.
+
+   Details: [collect-previews-replacement.md](./collect-previews-replacement.md).
+
+### Cross-module summary
+
+| Logic | FIR / IR | Preview-defining module | Preview-collecting module |
+| --- | --- | --- | --- |
+| `scopeValidation` | FIR | yes (annotation literals) | yes (call-site literals) |
+| `hintAndMarkerGeneration` (FIR) | FIR | yes | no |
+| `transformPrivatePreviewToInternal` | FIR | yes | no |
+| `hintAndMarkerGeneration` (IR) | IR | yes | no |
+| `collectPreviewsReplacement` (incl. `buildPreviewSequence`) | IR | no | yes |
+
+A single module that both *defines* `@Preview` and *calls* `collectModulePreviews()` runs every row above —
+the FIR/IR phases simply each see both roles in the same module.
+
+---
+
 ## List of constituent logics
 
 ### FIR side

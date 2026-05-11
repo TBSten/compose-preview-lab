@@ -35,6 +35,72 @@ IR phase
 
 ---
 
+## 処理の流れ
+
+各 logic は **特定の module 役割** において **特定の compiler phase** で動作する。 同一の compiler plugin
+コードが依存先全 module に load されるが、 「Preview を定義する module」 と 「`collect[All]ModulePreviews()`
+を呼ぶ module」 の **役割** によって実際に出力を出す logic が決まる。 1 つの module が `@Preview` を持ちつつ
+自身で `collectModulePreviews()` を呼ぶ場合は両役割を兼ねる。
+
+以下で使う役割定義:
+
+- **Preview があるモジュール** (= upstream / library module): `@Preview` 関数を宣言する module。 hint と marker
+  は **ここで生成** されるため、 後段の依存先 module が discovery 可能になる。
+- **Collect したいモジュール** (= downstream / app module): `collectModulePreviews()` または
+  `collectAllModulePreviews()` を呼ぶ module。 自身および依存先 module の hint をここで **発見** し、
+  `CollectedPreview` インスタンスへ **具体化** する。
+
+### Phase 1 — FIR (frontend) phase
+
+**両方の役割** で実行される。 この時点では plugin は module の役割を知り得ないため、 FIR extension は全 module で
+install され、 該当しない module では no-op となる。
+
+1. **scopeValidation** — `CollectScopeAnnotationChecker` + `CollectScopeCallChecker` が
+   `@ComposePreviewLabOption(collectScopes = [...])` と `collect[All]ModulePreviews(scope = ...)` の文字列
+   literal を検証する。 違反は FIR diagnostic 経由で IDE 上 red-squiggly として通知。 **annotation は Preview
+   があるモジュール、 call は Collect したいモジュール側でそれぞれ発火**。 詳細: [scope-validation.md](./scope-validation.md)
+2. **hintAndMarkerGeneration (FIR 側)** — `PreviewHintFirGenerator` が現 module 内の全 `@Preview` を走査し、
+   marker interface 1 つ + scope ごとの `previewHint_<scope>(...)` stub 関数 declaration を合成して register する。
+   **Preview があるモジュールでのみ発火** (`@Preview` のない module では何も生成しない)。 詳細:
+   [hint-generation.md](./hint-generation.md) / [marker-generation.md](./marker-generation.md)
+3. **transformPrivatePreviewToInternal** — 別 feature だが (詳細:
+   [`../transformPrivatePreviewToInternal/README.ja.md`](../transformPrivatePreviewToInternal/README.ja.md))、
+   IR phase より前に sequencing される。 `@Preview private fun` を `internal` に昇格し、 IR phase で合成 hint body
+   から参照できるようにする。 **Preview があるモジュールでのみ発火**。
+
+### Phase 2 — IR (backend) phase
+
+こちらも両役割で動作するが、 重い IR 書き換えは綺麗に役割分離される。
+
+4. **hintAndMarkerGeneration (IR 側)** — `FillPreviewHintIrBody` が、 FIR phase で declaration のみ作成された
+   hint stub 関数の body を埋める。 各 stub の中で実際の `@Preview` callable reference と `CollectedPreview`
+   builder を呼ぶ IR を構築する。 **Preview があるモジュールでのみ発火** (stub body を埋めるべき module は
+   `@Preview` を持つ module のみ)。 詳細: [hint-generation.md](./hint-generation.md)
+5. **collectPreviewsReplacement** — **Collect したいモジュール側で**:
+    - `DiscoverHints` が現 module + 全依存先 module から marker interface prefix を持つ class を走査し、
+      対応する `previewHint_<scope>` 関数を収集する
+    - `ReplaceCollectPreviewsFunBody` が `collect[All]ModulePreviews()` 呼び出しの sentinel body を
+      `PreviewExport(lazy { lazyPreviewSequence({factory}, ...) })` で置換する
+    - sub-logic `buildPreviewSequence/` が実際の lazy sequence IR を構築し、 発見された各 hint 関数を呼んで
+      `CollectedPreview` を収集する。 hash-based 重複排除は `BuildPreviewByHashMap` が担当
+
+   詳細: [collect-previews-replacement.md](./collect-previews-replacement.md)
+
+### Module 役割サマリ
+
+| Logic | FIR / IR | Preview があるモジュール | Collect したいモジュール |
+| --- | --- | --- | --- |
+| `scopeValidation` | FIR | 発火 (annotation literal) | 発火 (call-site literal) |
+| `hintAndMarkerGeneration` (FIR) | FIR | 発火 | no-op |
+| `transformPrivatePreviewToInternal` | FIR | 発火 | no-op |
+| `hintAndMarkerGeneration` (IR) | IR | 発火 | no-op |
+| `collectPreviewsReplacement` (incl. `buildPreviewSequence`) | IR | no-op | 発火 |
+
+`@Preview` を定義しつつ自身で `collectModulePreviews()` を呼ぶ module では上記全行が動く (FIR / IR 各 phase が
+同一 module 内で両役割を見るだけ)。
+
+---
+
 ## 構成 logic 一覧
 
 ### FIR 側
