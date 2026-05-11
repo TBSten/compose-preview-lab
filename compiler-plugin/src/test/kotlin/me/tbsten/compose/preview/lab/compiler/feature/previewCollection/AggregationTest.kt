@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.compiler.feature
+package me.tbsten.compose.preview.lab.compiler.feature.previewCollection
 
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile

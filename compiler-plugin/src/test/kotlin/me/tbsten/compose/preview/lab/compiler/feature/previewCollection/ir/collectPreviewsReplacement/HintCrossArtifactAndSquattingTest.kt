@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.compiler.feature
+package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement
 
 import com.tschuchort.compiletesting.SourceFile
 import io.kotest.core.spec.style.FunSpec

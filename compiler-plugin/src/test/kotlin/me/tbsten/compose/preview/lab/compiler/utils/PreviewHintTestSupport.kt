@@ -1,4 +1,4 @@
-package me.tbsten.compose.preview.lab.compiler.feature
+package me.tbsten.compose.preview.lab.compiler.utils
 
 import java.io.File
 
