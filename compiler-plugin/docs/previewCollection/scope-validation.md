@@ -1,142 +1,148 @@
 # Logic: Scope Validation
 
-`@ComposePreviewLabOption(collectScopes = [...])` annotation argument と
-`collect[All]ModulePreviews(scope = ...)` call argument の **文字列引数を FIR analysis phase で検証** する logic。
-PR #187 由来。
+The logic that **validates the string arguments** of `@ComposePreviewLabOption(collectScopes = [...])` annotations
+and `collect[All]ModulePreviews(scope = ...)` call sites **at FIR analysis phase**. Introduced in PR #187.
 
-scope は最終的に `previewHint_<scope>` 関数名に embed されるため、 Kotlin identifier として valid な文字
-(= regex `[A-Za-z0-9_]+`) でなければならない。 これに反する値は **IDE 上で red-squiggly** + コンパイル時 ERROR で
-即座に弾く。
+Because the scope ultimately gets embedded into a function name (`previewHint_<scope>`), it has to be made up
+of characters that are valid in a Kotlin identifier (i.e. regex `[A-Za-z0-9_]+`). Anything violating that is
+rejected immediately with a **red-squiggly in the IDE** plus a compile-time ERROR.
 
-## なぜ FIR / IR の両側で検証するか (二重防衛)
+## Why we validate on both the FIR and IR sides (two-level defense)
 
-このドキュメントで深掘りする中心トピック。 詳細は [error-flow.md](./error-flow.md) の「軸 3: 二重防衛」を参照。
+That is the central topic of this document. For full details see "Axis 3: two-level defense" in
+[error-flow.md](./error-flow.md).
 
-### FIR side (本 logic)
+### FIR side (this logic)
 
-- **目的**: IDE 上の即時フィードバック (red-squiggly)
-- **検出範囲**: 文字列リテラル / `[A-Za-z0-9_]+` regex 違反 / 非リテラル式 (連結 / 関数呼び出し)
-- **検出**できない: `const val` 経由で渡された値 (FIR の literal value inspection が `val` と `const val` を区別できない場面)
+- **Goal**: Instant IDE feedback (red-squiggly).
+- **Detects**: String literals / `[A-Za-z0-9_]+` regex violations / non-literal expressions (concatenation / function calls).
+- **Does not detect**: Values passed via `const val` (FIR's literal-value inspection cannot distinguish `val`
+  from `const val` in every case).
 
 ### IR side ([`ReplaceCollectPreviewsFunBody`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/ReplaceCollectPreviewsFunBody.kt))
 
-- **目的**: FIR を取りこぼした const-folded 違反の最終 backstop
-- **検出範囲**: const-folded 後の `IrConst<String>` を直接見て regex / literal 性を再検証
-- 詳細 Error class: `NonLiteralScopeIrError`, `InvalidScopeIrError` ([error-flow.md](./error-flow.md))
+- **Goal**: The last-line backstop for const-folded violations that the FIR side cannot catch.
+- **Detects**: Inspects the const-folded `IrConst<String>` directly and re-validates regex / literal-ness.
+- Relevant error classes: `NonLiteralScopeIrError`, `InvalidScopeIrError` ([error-flow.md](./error-flow.md)).
 
 ```kotlin
-private const val BAD_SCOPE = "has space"     // FIR は BAD_SCOPE の const-fold まで追えない
-collectModulePreviews(scope = BAD_SCOPE)      // FIR Checker は通過。 IR Checker で InvalidScopeIrError 発火
+private const val BAD_SCOPE = "has space"     // FIR cannot follow BAD_SCOPE's const-fold
+collectModulePreviews(scope = BAD_SCOPE)      // The FIR Checker lets this through. The IR checker fires InvalidScopeIrError.
 ```
 
 ---
 
-## 入出力 (Input / Reported diagnostic)
+## Input / Reported diagnostic
 
-### Input 例 1: 不正な scope 値 (annotation 側)
+### Input example 1: invalid scope value (annotation side)
 
 ```kotlin
 @ComposePreviewLabOption(collectScopes = ["good", "has-hyphen", "with space"])
 @Preview fun bar() {}
 ```
 
-→ `INVALID_COLLECT_SCOPE_VALUE("has-hyphen")` と `INVALID_COLLECT_SCOPE_VALUE("with space")` を **要素ごとに**
-報告 (IDE が該当 string literal を underline)。 `"good"` は素通り。
+→ Reports `INVALID_COLLECT_SCOPE_VALUE("has-hyphen")` and `INVALID_COLLECT_SCOPE_VALUE("with space")` **per element**
+(the IDE underlines the offending string literals). `"good"` passes through silently.
 
-### Input 例 2: 不正な scope 値 (call 側)
+### Input example 2: invalid scope value (call side)
 
 ```kotlin
 val a by collectModulePreviews(scope = "has-hyphen")
 ```
 
-→ `INVALID_COLLECT_SCOPE_VALUE("has-hyphen")` を報告。
+→ Reports `INVALID_COLLECT_SCOPE_VALUE("has-hyphen")`.
 
-### Input 例 3: 非リテラル scope
+### Input example 3: non-literal scope
 
 ```kotlin
 val b by collectModulePreviews(scope = "ok" + "?")
 ```
 
-→ `NON_LITERAL_COLLECT_SCOPE("collectModulePreviews")` を報告。
+→ Reports `NON_LITERAL_COLLECT_SCOPE("collectModulePreviews")`.
 
-### Input 例 4: `const val` reference (FIR は素通り、 IR でチェック)
+### Input example 4: `const val` reference (passes FIR; checked at IR)
 
 ```kotlin
 private const val BAD = "has space"
 val c by collectModulePreviews(scope = BAD)
 ```
 
-→ FIR は何も報告しない (`const val` reference を `IrConst<String>` 化後でないと literal value を取れない)。
-IR side ([`ReplaceCollectPreviewsFunBody`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/ReplaceCollectPreviewsFunBody.kt))
-で `InvalidScopeIrError("collectModulePreviews", "has space")` が発火。
+→ FIR reports nothing (we cannot read the literal value of a `const val` reference until it has been folded into
+an `IrConst<String>`). The IR side
+([`ReplaceCollectPreviewsFunBody`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/ReplaceCollectPreviewsFunBody.kt))
+fires `InvalidScopeIrError("collectModulePreviews", "has space")`.
 
 ---
 
-## 関連クラスと役割
+## Related classes and their roles
 
-| 構成要素 | 配置 | 役割 |
+| Component | Location | Role |
 |---|---|---|
-| `PreviewLabFirCheckersExtension` | `fir/scopeValidation/PreviewLabFirCheckersExtension.kt` | `FirAdditionalCheckersExtension` 実装。 2 checker を `CHECKERS` phase に登録 |
-| `CheckCollectScopeAnnotation` | `fir/scopeValidation/CheckCollectScopeAnnotation.kt` | `FirDeclarationChecker<FirNamedFunction>` 実装。 `@ComposePreviewLabOption(collectScopes=[...])` の各要素を validate |
-| `CheckCollectScopeCall` | `fir/scopeValidation/CheckCollectScopeCall.kt` | `FirExpressionChecker<FirFunctionCall>` 実装。 `collect[All]ModulePreviews(scope = ...)` を validate |
-| `CollectScopeErrors` | `fir/scopeValidation/CollectScopeErrors.kt` | `KtDiagnosticsContainer` 実装。 `INVALID_COLLECT_SCOPE_VALUE` と `NON_LITERAL_COLLECT_SCOPE` の 2 factory + Renderer |
-| `SCOPE_VALIDATION_REGEX` | `fir/scopeValidation/ScopeValidationRegex.kt` | `Regex("[A-Za-z0-9_]+")` の SSoT。 FIR Checker と IR const-fold seam ([`ReplaceCollectPreviewsFunBody`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/ReplaceCollectPreviewsFunBody.kt)) の両側が import する |
+| `PreviewLabFirCheckersExtension` | `fir/scopeValidation/PreviewLabFirCheckersExtension.kt` | `FirAdditionalCheckersExtension` implementation. Registers the two checkers in the `CHECKERS` phase |
+| `CheckCollectScopeAnnotation` | `fir/scopeValidation/CheckCollectScopeAnnotation.kt` | `FirDeclarationChecker<FirNamedFunction>` implementation. Validates each element of `@ComposePreviewLabOption(collectScopes=[...])` |
+| `CheckCollectScopeCall` | `fir/scopeValidation/CheckCollectScopeCall.kt` | `FirExpressionChecker<FirFunctionCall>` implementation. Validates `collect[All]ModulePreviews(scope = ...)` |
+| `CollectScopeErrors` | `fir/scopeValidation/CollectScopeErrors.kt` | `KtDiagnosticsContainer` implementation. The two factories `INVALID_COLLECT_SCOPE_VALUE` and `NON_LITERAL_COLLECT_SCOPE` plus the Renderer |
+| `SCOPE_VALIDATION_REGEX` | `fir/scopeValidation/ScopeValidationRegex.kt` | SSoT for `Regex("[A-Za-z0-9_]+")`. Imported by both the FIR Checker and the IR const-fold seam ([`ReplaceCollectPreviewsFunBody`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/ir/collectPreviewsReplacement/ReplaceCollectPreviewsFunBody.kt)) |
 
 ---
 
-## 設計判断
+## Design rationale
 
-### なぜ `KtDiagnosticFactory*` を使うか (構造化 `Error` interface ではなく)
+### Why use `KtDiagnosticFactory*` (rather than the structured `Error` interface)
 
-[`.claude/rules/compiler-plugin-error.md`](../../../.claude/rules/compiler-plugin-error.md) の通り、 FIR 側 diagnostic は
-**Kotlin 標準仕組み** (`KtDiagnosticsContainer` + `BaseDiagnosticRendererFactory`) に乗せる。 構造化 `Error` interface
-への移行対象外。 理由:
+Per [`.claude/rules/compiler-plugin-error.md`](../../../.claude/rules/compiler-plugin-error.md), FIR-side
+diagnostics ride on the **standard Kotlin machinery** (`KtDiagnosticsContainer` + `BaseDiagnosticRendererFactory`)
+and are intentionally excluded from the migration to the structured `Error` interface. Reasons:
 
-- IDE highlighter / source positioning strategy / diagnostic id ベースの suppress (`@Suppress("INVALID_COLLECT_SCOPE_VALUE")`)
-  は Kotlin 標準仕組みに紐づく
-- renderer chain と factory 定義が密結合 (`KtDiagnosticFactory1` の generic 引数が message template の placeholder と対応)
-- `Error` interface に migration すると IDE 経由のフィードバックを失う
+- IDE highlighter / source positioning strategy / diagnostic-id-based suppression
+  (`@Suppress("INVALID_COLLECT_SCOPE_VALUE")`) is tied to Kotlin's standard machinery.
+- The renderer chain and factory definitions are tightly coupled (the generic parameters of
+  `KtDiagnosticFactory1` correspond to the message template placeholders).
+- Migrating to the `Error` interface would forfeit IDE-mediated feedback.
 
-詳細は [error-flow.md](./error-flow.md) の「軸 1: phase」参照。
+For details see "Axis 1: phase" in [error-flow.md](./error-flow.md).
 
-### なぜ `KtDiagnosticFactory1(...)` を直接構築するか (`by error1<...>()` delegate ではなく)
+### Why we construct `KtDiagnosticFactory1(...)` directly (instead of using the `by error1<...>()` delegate)
 
-Kotlin 2.3.21 で `error1` の declaration は `context(...)` parameters を含むため、 delegate path は
-`-Xcontext-parameters` enabled でないと使えない。 直接 constructor で必要引数を渡せば同じ結果が得られるので
-context parameters への依存を避けている (詳細は [`CollectScopeErrors.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/scopeValidation/CollectScopeErrors.kt) の KDoc 参照)。
+In Kotlin 2.3.21 the declaration of `error1` is parameterized by `context(...)` parameters, so the delegate
+path is unavailable unless `-Xcontext-parameters` is enabled. Passing the required arguments to the constructor
+directly gives the same result, which lets us avoid the context-parameters dependency (see the KDoc of
+[`CollectScopeErrors.kt`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/feature/previewCollection/fir/scopeValidation/CollectScopeErrors.kt) for more).
 
-### なぜ extension 登録は compat gate するか
+### Why we compat-gate the extension registration
 
-[`PreviewLabFirExtensionRegistrar`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/PreviewLabFirExtensionRegistrar.kt) は
-`compat.supportsFirCheckers()` (= Kotlin 2.3.20+) のときだけ `PreviewLabFirCheckersExtension` を登録する。
-理由: `PreviewLabFirCheckersExtension.simpleFunctionCheckers` は
-`Set<FirDeclarationChecker<FirNamedFunction>>` 型で、 `FirNamedFunction` は Kotlin 2.3.20+ で
-`FirSimpleFunction` を置き換えた API。 古い Kotlin だと `NoClassDefFoundError` で plugin loading 全体が落ちる。
+[`PreviewLabFirExtensionRegistrar`](../../src/main/kotlin/me/tbsten/compose/preview/lab/compiler/PreviewLabFirExtensionRegistrar.kt)
+only registers `PreviewLabFirCheckersExtension` when `compat.supportsFirCheckers()` (= Kotlin 2.3.20+).
+The reason: `PreviewLabFirCheckersExtension.simpleFunctionCheckers` is typed
+`Set<FirDeclarationChecker<FirNamedFunction>>`, and `FirNamedFunction` is the API that replaced
+`FirSimpleFunction` in Kotlin 2.3.20+. On older Kotlin versions, plugin loading as a whole would fail with
+`NoClassDefFoundError`.
 
-callable reference (`::PreviewLabFirCheckersExtension`) は **lazy 評価** なので、 `if` 分岐で実際に呼ばれない限り
-JVM が class loading をしない。 これにより gate が effective に機能する。
+The callable reference (`::PreviewLabFirCheckersExtension`) is **lazily evaluated**, so the JVM does not load
+the class unless the `if` branch actually executes it. That is what makes the gate effective.
 
-### `const val` の扱い (FIR では検出しない理由を実例付きで)
+### Handling of `const val` (why FIR does not detect it, with a worked example)
 
 ```kotlin
-private const val OK = "design"     // FIR で resolve できれば const-fold できるが…
-collectModulePreviews(scope = OK)   // …call site の FIR phase では FirPropertyAccessExpression のまま
+private const val OK = "design"     // FIR could const-fold if it resolved the symbol, but…
+collectModulePreviews(scope = OK)   // …at the call site's FIR phase this is still a FirPropertyAccessExpression.
 ```
 
-FIR analysis phase は **literal expression structure** を見るが、 `OK` という symbol が `const val` か
-ただの `val` かを **constant folding なしには判別できない** (FIR Checker は IR phase より前)。
-FIR 側で `const val` を検出して値を取りに行こうとすると、 `const val` ではないただの `val` も
-誤検出 → false negative or false positive のリスクが上がる。 そのため:
+The FIR analysis phase inspects **literal expression structure**, but cannot **distinguish a `const val` from
+a plain `val` without constant folding** (the FIR Checker runs ahead of the IR phase). If we tried to detect
+`const val`s and pull their values on the FIR side, we would also catch ordinary `val`s by mistake — false
+negatives or false positives become much more likely. So:
 
-- FIR Checker は **明らかな非リテラル** (連結 / 関数呼び出し / `FirStringConcatenationCall`) のみ拒否
-- `FirPropertyAccessExpression` は素通り (= `const val` reference の可能性があるため)
-- 素通り分の最終 backstop は IR 側 `IrConst<String>` チェック
+- The FIR Checker only rejects **clearly non-literal** expressions (concatenation / function call /
+  `FirStringConcatenationCall`).
+- `FirPropertyAccessExpression` passes through (it might be a `const val` reference).
+- The final backstop for what slips through is the IR-side `IrConst<String>` check.
 
 ---
 
-## 関連ドキュメント
+## Related documents
 
-- [error-flow.md](./error-flow.md) — FIR diagnostic vs IR 構造化 Error の役割分担 (本 logic は両側の発火元)
-- [hint-naming.md](./hint-naming.md) — scope が `previewHint_<scope>` に embed される設計
-- [hint-generation.md](./hint-generation.md) — 検証後の scope が hint 関数生成にどう使われるか
-- [collect-previews-replacement.md](./collect-previews-replacement.md) — IR 側 backstop check の流れ
+- [error-flow.md](./error-flow.md) — Role separation between FIR diagnostics and IR structured errors (this logic is the originator of both sides).
+- [hint-naming.md](./hint-naming.md) — The design that embeds the scope into `previewHint_<scope>`.
+- [hint-generation.md](./hint-generation.md) — How the validated scope is then used to generate hint functions.
+- [collect-previews-replacement.md](./collect-previews-replacement.md) — The IR-side backstop check flow.
