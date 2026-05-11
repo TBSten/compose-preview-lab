@@ -143,7 +143,7 @@ public interface CompatContext {
      * Returns whether the runtime Kotlin compiler exposes a stable
      * `FirDeclarationGenerationExtension.getTopLevelClassIds` /
      * `getTopLevelCallableIds` API — i.e. whether the per-`@Preview` hint generator
-     * (`PreviewHintFirGenerator`) can be registered without crashing the FIR session.
+     * (`PreviewHintFirGenerator`, now under `feature/previewCollection/fir/hintAndMarkerGeneration/`) can be registered without crashing the FIR session.
      *
      * The API stabilized in Kotlin 2.3.20, so this returns `true` from `compat-k2320`
      * onwards (covers 2.3.20+) and `false` on the earlier 2.1.x / 2.2.x / 2.3.0–2.3.19
@@ -181,7 +181,7 @@ public interface CompatContext {
      * Callers that gate on this should be **platform-aware**: on JVM / Android the
      * `supportsFirHintGeneration()` check is sufficient; only on KLIB-based targets
      * should they additionally consult this method. See the IR-pass call sites
-     * (`PreviewLabIrBodyFiller`, `HintDiscovery`, `PreviewLabIrGenerationExtension`)
+     * (`ReplaceCollectPreviewsFunBody`, `DiscoverHints`, `PreviewLabIrGenerationExtension`)
      * for the platform branching.
      *
      * Implementations:
@@ -205,7 +205,7 @@ public interface CompatContext {
      * even for tests / production code that have no need for the checkers.
      *
      * The checker logic itself is functionally optional: validation also happens at IR-pass
-     * time (`PreviewLabIrBodyFiller`'s `reportNonLiteralScopeError` / `reportInvalidScopeError`),
+     * time (`ReplaceCollectPreviewsFunBody` の `NonLiteralScopeIrError` / `InvalidScopeIrError` 報告),
      * which catches the same constraint violations on Kotlin versions where the FIR checker is
      * skipped. Skipping the checker registration on pre-2.3.20 therefore degrades only the
      * IDE-side red-squiggly experience (errors still fire at compile time).

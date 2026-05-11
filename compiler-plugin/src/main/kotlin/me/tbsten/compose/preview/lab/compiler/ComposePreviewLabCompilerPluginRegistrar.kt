@@ -1,8 +1,6 @@
 package me.tbsten.compose.preview.lab.compiler
 
 import me.tbsten.compose.preview.lab.compiler.compat.registerExtensionCompat
-import me.tbsten.compose.preview.lab.compiler.fir.PreviewLabFirExtensionRegistrar
-import me.tbsten.compose.preview.lab.compiler.ir.PreviewLabIrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
