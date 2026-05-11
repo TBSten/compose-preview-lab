@@ -62,20 +62,14 @@ import me.tbsten.compose.preview.lab.ui.generated.resources.icon_close
 import org.jetbrains.compose.resources.painterResource
 
 /**
- * A PreviewLabField for inspecting and controlling a [NavHostController].
+ * A PreviewLabField for inspecting and controlling a [NavHostController]: shows back stack
+ * history, exposes pop / navigate controls, and accepts parameterised routes via
+ * [PolymorphicField].
  *
- * This field provides:
- * - BackStack history display with animations
- * - Navigation controls (pop back, navigate to routes)
- * - Route selection with editable parameters via [PolymorphicField]
- *
- * @param label The label for this field
- * @param navController The NavHostController to inspect and control
- * @param routes List of route fields for navigation. Use [FixedField] for routes without
- *   parameters, and [combined] for routes with parameters.
+ * @param routes List of route fields. Use [FixedField] for routes without parameters, and
+ *   [combined] for routes with parameters.
  *
  * @see me.tbsten.compose.preview.lab.sample.extension.navigation.NavControllerFieldExample
- * For a complete usage example, see the integration test sample.
  */
 @ExperimentalComposePreviewLabApi
 class NavControllerField(
