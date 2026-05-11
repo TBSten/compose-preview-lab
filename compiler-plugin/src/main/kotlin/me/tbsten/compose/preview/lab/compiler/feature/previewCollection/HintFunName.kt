@@ -9,14 +9,14 @@ import org.jetbrains.kotlin.name.Name
 // can filter purely by `IrPluginContext.referenceFunctions(CallableId(HINT_PACKAGE, name))`
 // — no per-hint inspection is needed.
 //
-// - Generation side (FIR `GeneratePreviewHintFir`) emits one
+// - Generation side (FIR [PreviewHintFirGenerator]) emits one
 //   `previewHint_<scope>(value: PreviewHintMarker_<sanitized_fqn>_<hash>?): CollectedPreview`
 //   overload per scope.
 // - Discovery side (IR `DiscoverHints`) looks up
 //   `CallableId(HINT_PACKAGE, Name.identifier("previewHint_<scope>"))` for the requested
 //   scope.
 //
-// Both sides go through the helpers in this file so the name format cannot drift.
+// Both sides go through [hintFunctionCallableId] so the name format cannot drift.
 
 /**
  * Prefix of every per-declaration hint function. Full name is `previewHint_<scope>`,
@@ -36,17 +36,3 @@ internal const val PreviewHintFunctionPrefix: String = "previewHint_"
  */
 internal fun hintFunctionCallableId(scope: String): CallableId =
     CallableId(HINT_PACKAGE, Name.identifier(PreviewHintFunctionPrefix + scope))
-
-/**
- * Whether a candidate top-level callable name matches the synthesized hint function
- * pattern (i.e. starts with `previewHint_`).
- *
- * **Sample**:
- * - `isHintFunctionName(Name.identifier("previewHint_default"))` → `true`
- * - `isHintFunctionName(Name.identifier("renderPreview"))` → `false`
- *
- * The check is structural only — it does not validate that the suffix is a legal scope
- * identifier. Pair with `SCOPE_VALIDATION_REGEX` when a strict match is required (e.g.
- * discovery-side filtering of arbitrary classpath callables).
- */
-internal fun isHintFunctionName(name: Name): Boolean = name.asString().startsWith(PreviewHintFunctionPrefix)
