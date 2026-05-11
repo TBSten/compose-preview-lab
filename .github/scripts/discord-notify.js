@@ -224,24 +224,6 @@ async function getWebhookChannelId(webhook) {
     }
 }
 
-// 既に投稿済みの webhook メッセージを PATCH で書き換える。 thread 作成に失敗した場合に
-// 1 通目の「詳細は thread を参照」 を消して整合性を取る用途。
-async function editMessage(webhook, messageId, content, core) {
-    const url = new URL(webhook);
-    url.pathname = url.pathname.replace(/\/$/, '') + `/messages/${messageId}`;
-    const body = truncateContent(content);
-    const res = await fetch(url.toString(), {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: body, allowed_mentions: { parse: [] } }),
-    });
-    if (!res.ok) {
-        const text = await res.text().catch(() => '');
-        throw new Error(`Discord PATCH failed: HTTP ${res.status} ${text}`);
-    }
-    core.info(`Edited message ${messageId} (${body.length} chars)`);
-}
-
 module.exports = async function notifyDiscord({ core, env = process.env }) {
     const webhook = env.DISCORD_WEBHOOK_URL;
     if (!webhook) {
@@ -270,27 +252,19 @@ module.exports = async function notifyDiscord({ core, env = process.env }) {
 
     const wantsThread = detailMessages.length > 0;
 
-    // 1 通目のルーティングと文言を、 thread が確保できる経路かどうかで出し分ける。
-    // - DISCORD_THREAD_ID 指定あり: summary も詳細も同じ thread に投稿。 案内文不要
-    //   (summary 自体が thread 内にあるので "詳細は thread を参照" は意味をなさない)。
-    // - 指定なし & 詳細あり: 1 通目に `thread_name` を付けて新規 thread 作成を狙う。
-    //   1 通目はチャンネル本体に残るため、 「詳細は thread を参照」 の案内文を付ける。
-    // - 指定なし & 詳細なし: チャンネルに summary だけ。 案内文なし。
-    // - 上の thread_name 投稿が HTTP エラーになった場合: 案内文を外した summary を
-    //   channel に再送し、 詳細もチャンネル連投にフォールバック。
+    // 1 通目のルーティング。 summary はそのまま実行概要として送り出す:
+    // - forum/media channel + thread_name → 1 通目が新規 thread の OP として残り、 件数を含む
+    //   thread タイトルで一覧表示される
+    // - DISCORD_THREAD_ID 指定あり → その既存 thread の中に投稿される
+    // - text channel など (thread_name が無視されるケース) → channel 本体に投稿され、
+    //   詳細も channel に連投される (forum channel への移行を推奨)
     let resolvedThreadId = presetThreadId;
-    const summaryWithNote = `${summary}\n詳細は thread を参照してください。`;
-
-    let summaryToPost;
     let summaryOpts;
     if (presetThreadId) {
-        summaryToPost = summary;
         summaryOpts = { threadId: presetThreadId, wait: false };
     } else if (wantsThread) {
-        summaryToPost = summaryWithNote;
         summaryOpts = { threadName, wait: true };
     } else {
-        summaryToPost = summary;
         summaryOpts = { wait: false };
     }
 
@@ -303,38 +277,27 @@ module.exports = async function notifyDiscord({ core, env = process.env }) {
         : null;
 
     try {
-        const firstResponse = await postMessage(webhook, summaryToPost, summaryOpts, core);
+        const firstResponse = await postMessage(webhook, summary, summaryOpts, core);
         if (!resolvedThreadId && summaryOpts.threadName && firstResponse && firstResponse.channel_id) {
             if (!webhookChannelId || firstResponse.channel_id !== webhookChannelId) {
                 // forum/media channel で thread_name 指定 → 新規 thread が作られた。
                 resolvedThreadId = firstResponse.channel_id;
             } else {
                 // text channel で thread_name が無視され、 channel に直接投稿されたケース。
-                // 1 通目を edit して案内文を消し、 詳細は channel 連投にフォールバックする。
+                // summary には案内文を含めていないため edit は不要、 詳細は channel 連投で出す。
                 core.warning(
                     `thread_name 付き投稿は受理されたが thread は作成されなかった ` +
                     `(レスポンス channel_id=${firstResponse.channel_id} が webhook の channel と一致)。 ` +
-                    `1 通目を edit して案内文を外し、 channel 連投にフォールバックします。`,
+                    `詳細は channel 連投にフォールバックします (forum channel への切り替えを推奨)。`,
                 );
-                if (firstResponse.id) {
-                    try {
-                        await editMessage(webhook, firstResponse.id, summary, core);
-                    } catch (e) {
-                        core.warning(
-                            `1 通目の edit に失敗 (${e.message})。 ` +
-                            `案内文が残ったまま channel に詳細を流します。`,
-                        );
-                    }
-                }
                 resolvedThreadId = null;
             }
         }
     } catch (err) {
         if (summaryOpts.threadName) {
-            // 通常のテキストチャンネル等で thread_name が HTTP エラーになるケース
-            // (現在の Discord 挙動では稀。 念のため残す)。
+            // thread_name 付き投稿が HTTP エラーになる稀なケース。 channel 連投にフォールバック。
             core.warning(
-                `1 通目が thread_name 付きで失敗 (${err.message})。 案内文を外して channel 連投にフォールバックします。`,
+                `1 通目が thread_name 付きで失敗 (${err.message})。 channel 連投にフォールバックします。`,
             );
             await postMessage(webhook, summary, { wait: false }, core);
             resolvedThreadId = null;
