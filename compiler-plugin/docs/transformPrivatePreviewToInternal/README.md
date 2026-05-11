@@ -1,5 +1,7 @@
 # Feature: transformPrivatePreviewToInternal
 
+> [日本語版](./README.ja.md)
+
 A single-logic feature that **promotes the visibility** of `@Preview private fun` declarations **to `internal`**.
 
 Because there is only one logic, the detailed topics are not split into separate .md files; everything lives in
