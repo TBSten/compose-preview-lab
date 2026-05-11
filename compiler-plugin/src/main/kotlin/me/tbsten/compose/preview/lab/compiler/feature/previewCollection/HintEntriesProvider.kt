@@ -215,22 +215,6 @@ internal class HintEntriesProvider(session: FirSession) : FirExtensionSessionCom
         }
         return false
     }
-
-    companion object {
-        /**
-         * Index of `ignore` in the `@ComposePreviewLabOption(displayName, ignore, id,
-         * collectScopes)` parameter list. Positional fallback when the named lookup is
-         * empty.
-         */
-        private const val IgnoreParameterIndex: Int = 1
-
-        /**
-         * Index of `collectScopes` in the
-         * `@ComposePreviewLabOption(displayName, ignore, id, collectScopes)` parameter
-         * list.
-         */
-        private const val CollectScopesParameterIndex: Int = 3
-    }
 }
 
 /** Session accessor — pattern adapted from [PreviewLabFirBuiltIns]. */

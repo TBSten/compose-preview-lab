@@ -2,6 +2,7 @@ package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.sco
 
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.COLLECT_SCOPE_NAME
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.COMPOSE_PREVIEW_LAB_OPTION_CLASS_ID
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.CollectScopesParameterIndex
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
@@ -111,15 +112,5 @@ internal class CheckCollectScopeAnnotation : FirDeclarationChecker<FirNamedFunct
             val value = literal.value as? String ?: return@mapNotNull null
             literal.source to value
         }
-    }
-
-    companion object {
-        /**
-         * Index of `collectScopes` in the
-         * `@ComposePreviewLabOption(displayName, ignore, id, collectScopes)` parameter
-         * list — fallback when [findCollectScopesArgument] cannot use the resolved
-         * argument mapping (e.g. mapping is empty and arguments arrive positionally).
-         */
-        private const val CollectScopesParameterIndex: Int = 3
     }
 }

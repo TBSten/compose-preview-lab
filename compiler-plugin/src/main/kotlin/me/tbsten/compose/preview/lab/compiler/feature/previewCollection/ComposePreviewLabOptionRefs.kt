@@ -36,3 +36,19 @@ internal val IGNORE_NAME: Name = Name.identifier("ignore")
 
 /** `@ComposePreviewLabOption(collectScopes = ...)` argument name. */
 internal val COLLECT_SCOPE_NAME: Name = Name.identifier("collectScopes")
+
+/**
+ * Positional index of `ignore` in the
+ * `@ComposePreviewLabOption(displayName, ignore, id, collectScopes)` parameter list.
+ * Fallback when the resolved name → expression mapping is empty (observed for
+ * inherit-classpath kctfork builds and some predicate re-entry paths).
+ */
+internal const val IgnoreParameterIndex: Int = 1
+
+/**
+ * Positional index of `collectScopes` in the
+ * `@ComposePreviewLabOption(displayName, ignore, id, collectScopes)` parameter list.
+ * Fallback when the resolved name → expression mapping is empty (observed for
+ * inherit-classpath kctfork builds and some predicate re-entry paths).
+ */
+internal const val CollectScopesParameterIndex: Int = 3
