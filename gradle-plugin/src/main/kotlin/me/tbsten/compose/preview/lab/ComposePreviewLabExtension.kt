@@ -12,10 +12,7 @@ import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.setValue
 
 /**
- * Configuration extension for Compose Preview Lab Gradle plugin
- *
- * Provides configuration options for customizing the code generation and preview collection
- * behavior of Compose Preview Lab. Applied in build.gradle.kts using the `composePreviewLab` block.
+ * `composePreviewLab { ... }` DSL block. Applied in build.gradle.kts:
  *
  * ```kotlin
  * composePreviewLab {
@@ -29,12 +26,8 @@ import org.gradle.kotlin.dsl.setValue
  */
 abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFactory, project: Project) {
     /**
-     * Package name for generated preview lists
-     *
-     * Specifies the package where PreviewList and PreviewAllList objects will be generated.
-     * Defaults to a camelCase version of the project name.
-     *
-     * Example: For project "my-app", defaults to "myApp"
+     * Package where PreviewList / PreviewAllList objects are generated. Defaults to a
+     * camelCase version of the project name (e.g. "my-app" → "myApp").
      */
     var generatePackage: String by objects.property<String>()
         .convention(
@@ -45,38 +38,25 @@ abstract class ComposePreviewLabExtension @Inject constructor(objects: ObjectFac
         )
 
     /**
-     * Root path of the project for file path resolution
-     *
-     * Used to resolve relative file paths in generated previews.
-     * Defaults to the root project directory.
+     * Used to resolve relative file paths in generated previews. Defaults to the root
+     * project directory.
      */
     var projectRootPath: String by objects.property<String>()
         .convention(project.rootProject.projectDir.absolutePath)
 
     /**
-     * Controls generation of FeaturedFileList from .composepreviewlab/featured/ directory
-     *
-     * When true, scans the .composepreviewlab/featured/ directory and generates
-     * a FeaturedFileList map grouping file paths by directory name.
-     * When false (default), no FeaturedFileList is generated.
+     * When true, scans the `.composepreviewlab/featured/` directory and generates a
+     * FeaturedFileList map grouping file paths by directory name. Defaults to false.
      */
     var generateFeaturedFiles: Boolean by objects.property<Boolean>()
         .convention(false)
 
     /**
-     * Per-module configuration for the per-declaration preview hint pipeline.
-     *
-     * The defaults match the behavior of every existing build, so adding this DSL block
-     * is opt-in. The most common knob is `enabled = false`, which **prevents this module
-     * from emitting any preview hints** (no marker interface, no `previewHint_<scope>(...)`
-     * overload), so its previews cannot leak into downstream `collectAllModulePreviews()`
-     * consumers. As a deliberate policy gate, **`collectModulePreviews()` /
-     * `collectAllModulePreviews()` call sites inside the same disabled module are
-     * rejected at compile time**: a disabled module is declaring "I export no preview
-     * surface", so a local collect call almost always indicates a configuration mistake
-     * the build should surface up front. Use this knob for sample / test-fixture modules
-     * whose previews must never leak into a downstream consumer or whose hint emission
-     * cost is not justified. See [CollectPreviewsConfig] for the full set of options.
+     * Per-module configuration for the per-declaration preview hint pipeline. See
+     * [CollectPreviewsConfig] for the full set of options; the most common use is
+     * `enabled = false` to keep sample / test-fixture module previews out of downstream
+     * consumers' `collectAllModulePreviews()` while making local collect call-sites a
+     * compile-time error.
      */
     val collectPreviews: CollectPreviewsConfig = objects.newInstance(CollectPreviewsConfig::class.java)
 
@@ -101,41 +81,30 @@ abstract class CollectPreviewsConfig @Inject constructor(objects: ObjectFactory)
     /**
      * Whether this module participates in per-declaration preview hint emission.
      *
-     * - `true` (default) — `@Preview` functions in this module emit a marker interface and
-     *   a `previewHint_<scope>(...)` overload, so they can be discovered cross-module by
+     * - `true` (default) — `@Preview` functions emit a marker interface and a
+     *   `previewHint_<scope>(...)` overload, so they can be discovered cross-module by
      *   `collectAllModulePreviews()` consumers.
-     * - `false` — the compiler plugin emits no marker / hint pair for this module **and**
-     *   any `collectModulePreviews()` / `collectAllModulePreviews()` call site in the same
-     *   module becomes a compile-time error. Use this for sample / test-fixture modules
-     *   whose previews should never leak into a downstream consumer.
+     * - `false` — no marker / hint pair is emitted, **and** any
+     *   `collect[All]ModulePreviews()` call site in the same module becomes a compile-time
+     *   error. Use for sample / test-fixture modules whose previews must never leak
+     *   downstream.
      *
-     * **Caveat — Binary Compatibility Validator interaction**: flipping this from `true`
-     * (or default) to `false` deletes every `PreviewHintMarker_*` class and
-     * `previewHint_*` overload from the generated bytecode. The Compose Preview Lab
-     * compiler plugin stamps every synthesized hint with
-     * `@InternalComposePreviewLabApi`, so any project that lists that marker in
-     * `apiValidation { nonPublicMarkers }` (the recommended baseline configuration —
-     * see this project's own root `build.gradle.kts`) already filters the hints out of
-     * its `*.api` baselines. Toggling `enabled` is then ABI-neutral and `apiCheck`
-     * stays green without further action.
-     *
-     * If your `apiValidation` block does **not** include
-     * `me.tbsten.compose.preview.lab.InternalComposePreviewLabApi` in `nonPublicMarkers`,
-     * either add it (recommended), or re-dump the baseline once after toggling
-     * (`./gradlew apiDump`) so the new baseline records the absence of hints.
+     * **Caveat — Binary Compatibility Validator**: flipping `true` → `false` removes every
+     * synthesized hint from generated bytecode. Hints carry `@InternalComposePreviewLabApi`,
+     * so projects that list that marker in `apiValidation { nonPublicMarkers }` (recommended;
+     * see this project's root `build.gradle.kts`) are ABI-neutral when toggling. Otherwise
+     * add the marker or re-dump baselines once via `./gradlew apiDump`.
      */
     var enabled: Boolean by objects.property<Boolean>()
         .convention(true)
 
     /**
-     * Module-level default scope for `@Preview` hints emitted from this module.
-     *
-     * The compiler plugin substitutes any `@ComposePreviewLabOption(collectScopes = [...])` /
-     * `collect[All]ModulePreviews(scope = ...)` value of `"default"` (the
-     * `ComposePreviewLabOption.DefaultCollectScope` sentinel) with this string before
-     * embedding it into the synthetic `previewHint_<scope>` function name. The typical
-     * use is to pin a library module's previews to a library-specific bucket so they do
-     * not leak into a consumer app's `collectAllModulePreviews()` call:
+     * Module-level default scope for `@Preview` hints emitted from this module. The compiler
+     * plugin substitutes any `@ComposePreviewLabOption(collectScopes = [...])` /
+     * `collect[All]ModulePreviews(scope = ...)` value of
+     * `ComposePreviewLabOption.DefaultCollectScope` with this string before embedding it
+     * into the synthetic `previewHint_<scope>` function name. Typical use — pin a library's
+     * previews to a library-specific bucket so they do not leak into a consumer app:
      *
      * ```kotlin
      * // uiLib/build.gradle.kts
@@ -144,27 +113,15 @@ abstract class CollectPreviewsConfig @Inject constructor(objects: ObjectFactory)
      *         defaultCollectScope = "acme_ui"
      *     }
      * }
-     *
-     * // uiLib/src/commonMain/kotlin/Button.kt
-     * @Preview                      // no @ComposePreviewLabOption needed
-     * @Composable
-     * fun ButtonPreview() { Button() }
-     * // ↑ emitted under previewHint_acme_ui because of the DSL above.
      * ```
      *
-     * Defaults to `"default"` so existing builds keep producing `previewHint_default`
-     * without any DSL change.
+     * Defaults to `"default"`. The value must match `[A-Za-z0-9_]+` because it is embedded
+     * into a Kotlin identifier; invalid values are rejected by the compiler plugin's
+     * command-line processor.
      *
-     * The value must match `[A-Za-z0-9_]+` because it is embedded into a Kotlin identifier;
-     * an invalid value is rejected by the compiler plugin's command-line processor with a
-     * clear error before any source file is compiled.
-     *
-     * **Experimental**: this knob is part of the still-stabilizing collectScopes design and
-     * may change shape (or move under a different DSL block) before stable release. Opt in
-     * with `@OptIn(ExperimentalComposePreviewLabApi::class)` at the consuming Kotlin source
-     * site; the Gradle DSL itself does not enforce the opt-in (Gradle scripts have no
-     * Kotlin opt-in propagation), but the annotation surfaces a warning in the IDE for
-     * direct programmatic access.
+     * **Experimental** — part of the stabilizing `collectScopes` design. See
+     * `annotation/docs/collect-scopes.md` for the full design rationale and the opt-in
+     * propagation semantics across Gradle DSL → annotation → call-site.
      */
     @ExperimentalComposePreviewLabApi
     var defaultCollectScope: String by objects.property<String>()
