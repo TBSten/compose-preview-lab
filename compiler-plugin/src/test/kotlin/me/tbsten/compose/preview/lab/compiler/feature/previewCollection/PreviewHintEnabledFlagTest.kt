@@ -10,8 +10,8 @@ import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import me.tbsten.compose.preview.lab.compiler.CompilerPluginTestBase
-import me.tbsten.compose.preview.lab.compiler.feature.previewHintFacadeFiles
-import me.tbsten.compose.preview.lab.compiler.feature.previewHintMarkerFiles
+import me.tbsten.compose.preview.lab.compiler.utils.previewHintFacadeFiles
+import me.tbsten.compose.preview.lab.compiler.utils.previewHintMarkerFiles
 import me.tbsten.compose.preview.lab.compiler.isAtLeast
 import me.tbsten.compose.preview.lab.compiler.loadCollectedPreviews
 

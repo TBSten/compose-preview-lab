@@ -5,7 +5,7 @@ import com.tschuchort.compiletesting.SourceFile
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import me.tbsten.compose.preview.lab.compiler.CompilerPluginTestBase
-import me.tbsten.compose.preview.lab.compiler.feature.previewHintMarkerNames
+import me.tbsten.compose.preview.lab.compiler.utils.previewHintMarkerNames
 import me.tbsten.compose.preview.lab.compiler.isAtLeast
 import java.io.File
 
