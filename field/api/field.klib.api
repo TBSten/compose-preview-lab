@@ -244,7 +244,7 @@ abstract class <#A: kotlin/Any?> me.tbsten.compose.preview.lab/MutablePreviewLab
 }
 
 abstract class <#A: kotlin/Number> me.tbsten.compose.preview.lab.field/NumberField : me.tbsten.compose.preview.lab/MutablePreviewLabField<#A> { // me.tbsten.compose.preview.lab.field/NumberField|null[0]
-    constructor <init>(kotlin/String, #A, kotlin/Function1<kotlin/String, #A>, kotlin/Function1<#A, kotlin/String> = ..., me.tbsten.compose.preview.lab.field/NumberField.InputType = ..., kotlin/Function1<#A, kotlin/String>) // me.tbsten.compose.preview.lab.field/NumberField.<init>|<init>(kotlin.String;1:0;kotlin.Function1<kotlin.String,1:0>;kotlin.Function1<1:0,kotlin.String>;me.tbsten.compose.preview.lab.field.NumberField.InputType;kotlin.Function1<1:0,kotlin.String>){}[0]
+    constructor <init>(kotlin/String, #A, kotlin/Function1<kotlin/String, #A>, kotlin/Function1<#A, kotlin/String> = ..., me.tbsten.compose.preview.lab.field/NumberField.InputType = ..., kotlin/Function1<#A, kotlin/String>, kotlin/Function1<kotlin/Float, #A> = ...) // me.tbsten.compose.preview.lab.field/NumberField.<init>|<init>(kotlin.String;1:0;kotlin.Function1<kotlin.String,1:0>;kotlin.Function1<1:0,kotlin.String>;me.tbsten.compose.preview.lab.field.NumberField.InputType;kotlin.Function1<1:0,kotlin.String>;kotlin.Function1<kotlin.Float,1:0>){}[0]
 
     open fun Content(androidx.compose.runtime/Composer?, kotlin/Int) // me.tbsten.compose.preview.lab.field/NumberField.Content|Content(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
     open fun valueCode(): kotlin/String // me.tbsten.compose.preview.lab.field/NumberField.valueCode|valueCode(){}[0]

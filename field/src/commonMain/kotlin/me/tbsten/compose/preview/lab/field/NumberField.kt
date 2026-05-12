@@ -1,11 +1,19 @@
 package me.tbsten.compose.preview.lab.field
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import kotlin.jvm.JvmName
+import kotlin.math.roundToInt
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.component.TextFieldContent
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 
 internal fun floatValueCode(value: Float): String = when {
     value.isNaN() -> "Float.NaN"
@@ -83,6 +91,13 @@ abstract class NumberField<Num : Number>(
     private val toString: (Num) -> String = { it.toString() },
     private val inputType: InputType = InputType.TextField(),
     private val valueCode: (Num) -> String,
+    private val fromFloat: (Float) -> Num = { f ->
+        // Best-effort default: try parsing the float literal directly, fall back to a
+        // rounded-integer string for `Num` types that cannot accept decimals.
+        runCatching { fromString(f.toString()) }
+            .recoverCatching { fromString(f.roundToInt().toString()) }
+            .getOrThrow()
+    },
 ) : MutablePreviewLabField<Num>(
     label = label,
     initialValue = initialValue,
@@ -90,22 +105,29 @@ abstract class NumberField<Num : Number>(
     override fun valueCode(): String = valueCode.invoke(value)
 
     @Composable
-    override fun Content() {
-        when (inputType) {
-            is InputType.TextField -> TextFieldContent(
-                toString = {
-                    toString(it)
-                },
-                toValue = {
-                    runCatching {
-                        fromString(it)
-                    }
-                },
-                prefix = inputType.prefix,
-                suffix = inputType.suffix,
-            )
-            else -> error(
-                "InputType.Slider is not yet implemented. Use InputType.TextField instead.",
+    override fun Content() = when (inputType) {
+        is InputType.TextField -> TextFieldContent(
+            toString = { toString(it) },
+            toValue = { runCatching { fromString(it) } },
+            prefix = inputType.prefix,
+            suffix = inputType.suffix,
+        )
+        is InputType.Slider -> SliderContent(inputType)
+    }
+
+    @Composable
+    private fun SliderContent(slider: InputType.Slider) {
+        val coerced = value.toFloat().coerceIn(slider.min.toFloat(), slider.max.toFloat())
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            PreviewLabText("${toString(value)} (${slider.min}..${slider.max})")
+            Slider(
+                value = coerced,
+                onValueChange = { value = fromFloat(it) },
+                valueRange = slider.min.toFloat()..slider.max.toFloat(),
+                steps = (slider.max - slider.min - 1).coerceAtLeast(0),
             )
         }
     }
@@ -124,18 +146,15 @@ abstract class NumberField<Num : Number>(
             InputType
 
         /**
-         * Slider input for selecting values within a range.
+         * Slider input for selecting values within an integer range.
          *
-         * Not yet implemented. Using this variant will fail at runtime ([Content] throws `IllegalStateException`).
-         * Use [InputType.TextField] for now; this variant will be re-enabled once a working Slider UI is in place.
+         * Renders a Material 3 [androidx.compose.material3.Slider] with discrete steps between [min] and [max].
+         * When the underlying numeric type is non-integral (e.g. [Double], [Float]), the slider still
+         * advances in integer increments — pass [InputType.TextField] for arbitrary decimal precision.
          *
-         * @param min The minimum value
-         * @param max The maximum value
+         * @param min The minimum value (inclusive)
+         * @param max The maximum value (inclusive); must be greater than [min]
          */
-        @Deprecated(
-            message = "InputType.Slider is not yet implemented and will crash at runtime. Use InputType.TextField instead.",
-            level = DeprecationLevel.ERROR,
-        )
         data class Slider(val min: Int, val max: Int) : InputType
     }
 }

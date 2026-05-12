@@ -14,6 +14,7 @@ kotlin {
         commonMain.dependencies {
             api(projects.core)
             api(projects.ui)
+            implementation(libs.composeMaterial3)
         }
         jvmTest.dependencies {
             implementation(libs.kotestFrameworkEngine)

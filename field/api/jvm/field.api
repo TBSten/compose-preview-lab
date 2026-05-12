@@ -498,8 +498,8 @@ public final class me/tbsten/compose/preview/lab/field/NullableFieldKt {
 
 public abstract class me/tbsten/compose/preview/lab/field/NumberField : me/tbsten/compose/preview/lab/MutablePreviewLabField {
 	public static final field $stable I
-	public fun <init> (Ljava/lang/String;Ljava/lang/Number;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/field/NumberField$InputType;Lkotlin/jvm/functions/Function1;)V
-	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Number;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/field/NumberField$InputType;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Number;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/field/NumberField$InputType;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Number;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lme/tbsten/compose/preview/lab/field/NumberField$InputType;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun Content (Landroidx/compose/runtime/Composer;I)V
 	public fun valueCode ()Ljava/lang/String;
 }
