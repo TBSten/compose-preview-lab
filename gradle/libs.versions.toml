@@ -10,10 +10,11 @@ jsTarget = "es2015"
 
 # Kotlin / Compose
 kotlin = "2.3.21"
-compose = "1.11.0-rc01"
-# Compose Multiplatform releases material3 on a separate cadence; keep its version in sync with the release notes.
-# https://github.com/JetBrains/compose-multiplatform/releases/tag/v1.11.0-rc01
-composeMaterial3 = "1.11.0-alpha07"
+compose = "1.11.0-alpha04"
+# Compose Multiplatform releases material3 on a separate cadence; pinned here so the
+# next compose bump does not silently move material3.
+# https://github.com/JetBrains/compose-multiplatform/releases
+composeMaterial3 = "1.11.0-alpha04"
 
 # Kotlin compiler plugin: shadow JAR bundles compat modules to support multiple Kotlin versions.
 shadow = "8.3.6"
