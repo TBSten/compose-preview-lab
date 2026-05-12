@@ -14,7 +14,9 @@ plugins {
 // Gradle 9 系で embedded Kotlin が更新されれば消える想定だが (task-033 と連動)、それまでの短期 mitigation として
 // `kotlin-dsl` plugin を `org.jetbrains.kotlin.jvm` + `java-gradle-plugin` に分解する。
 // 本ファイルは precompiled `.gradle.kts` を含まないため `kotlin-dsl` 固有機能には依存していない。
-// `gradleApi()` 経由で Gradle Kotlin DSL API は引き続き利用可能。
+// Gradle Kotlin DSL の拡張 (`getByType<>()` / `register<>()` 等) は `gradleApi()` ではなく
+// `gradleKotlinDsl()` が提供するため、下の dependencies ブロックで `compileOnly(gradleKotlinDsl())`
+// として明示的に追加している。 `gradleKotlinDsl()` を外すと src/ 配下の Kotlin DSL 拡張が解決できなくなる。
 
 kotlin {
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
