@@ -26,7 +26,7 @@ Compose Preview Lab を活用することで以下のようなことが可能に
   - [x] [@Preview を収集してアプリ内のコンポーネントを UI カタログとして出力する。](./tutorials/preview-ui-catalog)
   - [x] [UI 実装の Pull Request に PreviewLab による UI カタログを追加してレビュー体験を向上させる。](./tutorials/improve-ui-review-by-ui-catalog)
 - Compose ライブラリ作者向け
-  - [ ] アプリのデザインシステム や Compose の UI ライブラリ のドキュメンテーションツールに 動的な Playground を埋め込む。 (Coming soon)
+  - [x] [アプリのデザインシステム や Compose の UI ライブラリ のドキュメンテーションツールに 動的な Playground を埋め込む。](./tutorials/embedded-playground-for-design-system-or-library-doc)
 
 ## Next Actions
 

@@ -13,12 +13,12 @@ import DocCardList from '@theme/DocCardList';
 
 - [Preview を収集して UI カタログを構築する](./preview-ui-catalog)
 - [UI カタログで Review 体験を向上する](./improve-ui-review-by-ui-catalog)
-- Compose Preview Lab を使った debug menu の構築 (Coming soon)
+- [Compose Preview Lab を使った debug menu の構築](./build-debug-menu)
 
 ## デザインシステム・ライブラリ作成者向け
 
 デザインシステム・ライブラリ作成者である場合は 一般的なアプリ開発者向け セクションの内容に加えて、以下のドキュメントも役に立つでしょう。
 
-- ライブラリドキュメントに PreviewLab を埋め込む (Coming soon)
+- [ライブラリドキュメントに PreviewLab を埋め込む](./embedded-playground-for-design-system-or-library-doc)
 
 <DocCardList />

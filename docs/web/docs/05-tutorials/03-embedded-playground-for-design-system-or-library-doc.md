@@ -1,7 +1,6 @@
 ---
 title: "[TODO] ライブラリドキュメントに PreviewLab を埋め込む"
 sidebar_position: 3
-draft: true
 ---
 
 import EmbeddedPreviewLab from '@site/src/components/EmbeddedPreviewLab';
