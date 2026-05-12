@@ -30,9 +30,6 @@ internal actual fun rememberSaveScreenshot(): suspend (imageBitmap: ImageBitmap,
                 // Coroutine cancellation must propagate cooperatively.
                 throw e
             } catch (e: Exception) {
-                // Surface the failure to the user via Toast so the screenshot button
-                // does not silently appear to do nothing. Keep the println as a
-                // developer-facing fallback (visible in the browser console).
                 println("Failed to save screenshot: ${e.message}")
                 val detail = e.message ?: e::class.simpleName ?: UnknownErrorMessage
                 toastHostState.show(
