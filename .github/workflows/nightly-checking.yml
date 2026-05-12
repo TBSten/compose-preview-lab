@@ -63,7 +63,10 @@ jobs:
         if: matrix.gradle_version
         shell: bash
         run: |
+          # 3 つの独立 Gradle プロジェクト (root / docs / integrationTest) の wrapper バージョンを揃える
           sed -i "s|gradle-.*-bin.zip|gradle-${{ matrix.gradle_version }}-bin.zip|" gradle/wrapper/gradle-wrapper.properties
+          sed -i "s|gradle-.*-bin.zip|gradle-${{ matrix.gradle_version }}-bin.zip|" docs/gradle/wrapper/gradle-wrapper.properties
+          sed -i "s|gradle-.*-bin.zip|gradle-${{ matrix.gradle_version }}-bin.zip|" integrationTest/gradle/wrapper/gradle-wrapper.properties
 
       - name: Run Library PBT
         shell: bash
