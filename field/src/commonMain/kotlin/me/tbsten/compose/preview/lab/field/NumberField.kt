@@ -91,8 +91,7 @@ abstract class NumberField<Num : Number>(
 
     @Composable
     override fun Content() {
-        @Suppress("DEPRECATION_ERROR")
-        return when (inputType) {
+        when (inputType) {
             is InputType.TextField -> TextFieldContent(
                 toString = {
                     toString(it)
@@ -105,7 +104,7 @@ abstract class NumberField<Num : Number>(
                 prefix = inputType.prefix,
                 suffix = inputType.suffix,
             )
-            is InputType.Slider -> error(
+            else -> error(
                 "InputType.Slider is not yet implemented. Use InputType.TextField instead.",
             )
         }
@@ -128,7 +127,7 @@ abstract class NumberField<Num : Number>(
          * Slider input for selecting values within a range.
          *
          * Not yet implemented. Using this variant will fail at runtime ([Content] throws `IllegalStateException`).
-         * Use [TextField] for now; this variant will be re-enabled once a working Slider UI is in place.
+         * Use [InputType.TextField] for now; this variant will be re-enabled once a working Slider UI is in place.
          *
          * @param min The minimum value
          * @param max The maximum value
