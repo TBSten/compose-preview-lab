@@ -17,9 +17,5 @@ private external fun consoleWarn(message: String)
 
 @InternalComposePreviewLabApi
 public actual fun warnDuplicatePreview(message: String) {
-    // The shared [WarnPrefix] is prepended in Kotlin (rather than baked into the
-    // `@JsFun` body) so the prefix stays the single source of truth in `commonMain`
-    // and so the Kotlin-level concatenation goes through normal string handling
-    // rather than the JS-side parameter marshalling.
     consoleWarn("$WarnPrefix$message")
 }
