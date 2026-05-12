@@ -60,37 +60,33 @@ internal fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, onOffsetReset: (
     }
 }
 
-private const val MinZoomScale = 0.10f
-private const val MaxZoomScale = 10.00f
+internal const val MinZoomScale = 0.10f
+internal const val MaxZoomScale = 10.00f
 
 /**
- * Calculates the next zoom-in scale from the current zoom ratio
+ * Calculates the next zoom-in scale from the current zoom ratio.
  *
- * Applies appropriate increment amounts based on the ratio, supporting gradual
- * adjustments from fine-tuning to large adjustments. Below 1.0x increases by 0.1x,
- * between 1.0-2.0x increases by 0.25x, above 2.0x increases by 1.0x.
- *
- * @return Next zoom-in scale
+ * Below 1.0x increases by 0.1x, 1.0-2.0x by 0.25x, 2.0x or above by 1.0x.
+ * Inputs outside the valid range (including negatives, 0, NaN, or extremely large values)
+ * are coerced into `[MinZoomScale, MaxZoomScale]` as a safe fallback.
  */
-private fun Float.nextZoomInScale(): Float = when (this) {
-    in Float.MIN_VALUE..<1.0f -> this + 0.10f
+internal fun Float.nextZoomInScale(): Float = when (this) {
+    in Float.NEGATIVE_INFINITY..<1.0f -> this + 0.10f
     in 1.0f..<2.0f -> this + 0.25f
-    in 1.0f..<Float.MAX_VALUE -> this + 1.00f
-    else -> TODO("Zoom value is out of range: $this")
+    in 2.0f..<Float.POSITIVE_INFINITY -> this + 1.00f
+    else -> coerceIn(MinZoomScale, MaxZoomScale)
 }
 
 /**
- * Calculates the next zoom-out scale from the current zoom ratio
+ * Calculates the next zoom-out scale from the current zoom ratio.
  *
- * Applies appropriate decrement amounts based on the ratio, supporting gradual
- * adjustments from fine-tuning to large adjustments. Below 1.0x decreases by 0.1x,
- * between 1.0-2.0x decreases by 0.25x, above 2.0x decreases by 1.0x.
- *
- * @return Next zoom-out scale
+ * Below 1.0x decreases by 0.1x, 1.0-2.0x by 0.25x, 2.0x or above by 1.0x.
+ * Inputs outside the valid range (including negatives, 0, NaN, or extremely large values)
+ * are coerced into `[MinZoomScale, MaxZoomScale]` as a safe fallback.
  */
-private fun Float.nextZoomOutScale(): Float = when (this) {
-    in Float.MIN_VALUE..<1.0f -> this - 0.10f
+internal fun Float.nextZoomOutScale(): Float = when (this) {
+    in Float.NEGATIVE_INFINITY..<1.0f -> this - 0.10f
     in 1.0f..<2.0f -> this - 0.25f
-    in 1.0f..<Float.MAX_VALUE -> this - 1.00f
-    else -> TODO("Zoom value is out of range: $this")
+    in 2.0f..<Float.POSITIVE_INFINITY -> this - 1.00f
+    else -> coerceIn(MinZoomScale, MaxZoomScale)
 }
