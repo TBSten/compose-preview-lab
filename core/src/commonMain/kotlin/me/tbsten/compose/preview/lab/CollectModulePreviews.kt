@@ -285,7 +285,7 @@ public fun distinctPreviewsById(previews: List<CollectedPreview>): List<Collecte
     // see it during dev iteration.
     for ((id, count) in dupCounts) {
         warnDuplicatePreview(
-            "[ComposePreviewLab] WARNING: $count `CollectedPreview` entries share " +
+            "$count `CollectedPreview` entries share " +
                 "id=\"$id\". Likely cause: a `@Preview` with the same fully-qualified name " +
                 "is declared in two or more dependency artifacts on the classpath, so their " +
                 "marker / hint classes collide and only one survives — the other preview's " +
@@ -332,7 +332,7 @@ public fun distinctPreviewsByIdSequence(previews: Sequence<CollectedPreview>): S
     }
     for ((id, count) in dupCounts) {
         warnDuplicatePreview(
-            "[ComposePreviewLab] WARNING: $count `CollectedPreview` entries share " +
+            "$count `CollectedPreview` entries share " +
                 "id=\"$id\". Likely cause: a `@Preview` with the same fully-qualified name " +
                 "is declared in two or more dependency artifacts on the classpath, so their " +
                 "marker / hint classes collide and only one survives — the other preview's " +
