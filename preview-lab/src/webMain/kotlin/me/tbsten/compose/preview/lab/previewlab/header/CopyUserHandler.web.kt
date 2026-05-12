@@ -15,7 +15,7 @@ import me.tbsten.compose.preview.lab.previewlab.LocalToastHostState
 import org.w3c.dom.url.URL
 
 @Composable
-internal actual fun copyUserHandler(params: Map<String, String>): CopyUserHandler {
+internal fun copyUserHandler(params: Map<String, String>): CopyUserHandler {
     // TODO migrate LocalClipboard
     val clipboardManager = LocalClipboardManager.current
     val toastHostState = LocalToastHostState.current
@@ -39,13 +39,13 @@ internal actual fun copyUserHandler(params: Map<String, String>): CopyUserHandle
     )
 }
 
-internal actual class CopyUserHandler(
+internal class CopyUserHandler(
     private val clipboardManager: ClipboardManager,
     private val toastHostState: ToastHostState,
     private val currentPreview: PreviewLabPreview?,
-    actual val link: String,
+    val link: String,
 ) {
-    actual operator fun invoke() {
+    operator fun invoke() {
         clipboardManager.setText(
             buildAnnotatedString {
                 withLink(LinkAnnotation.Url(link)) {
