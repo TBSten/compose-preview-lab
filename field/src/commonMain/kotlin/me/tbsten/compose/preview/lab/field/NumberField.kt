@@ -90,20 +90,25 @@ abstract class NumberField<Num : Number>(
     override fun valueCode(): String = valueCode.invoke(value)
 
     @Composable
-    override fun Content() = when (inputType) {
-        is InputType.TextField -> TextFieldContent(
-            toString = {
-                toString(it)
-            },
-            toValue = {
-                runCatching {
-                    fromString(it)
-                }
-            },
-            prefix = inputType.prefix,
-            suffix = inputType.suffix,
-        )
-        is InputType.Slider -> TODO("InputType.Slider")
+    override fun Content() {
+        @Suppress("DEPRECATION_ERROR")
+        return when (inputType) {
+            is InputType.TextField -> TextFieldContent(
+                toString = {
+                    toString(it)
+                },
+                toValue = {
+                    runCatching {
+                        fromString(it)
+                    }
+                },
+                prefix = inputType.prefix,
+                suffix = inputType.suffix,
+            )
+            is InputType.Slider -> error(
+                "InputType.Slider is not yet implemented. Use InputType.TextField instead.",
+            )
+        }
     }
 
     /**
@@ -122,9 +127,16 @@ abstract class NumberField<Num : Number>(
         /**
          * Slider input for selecting values within a range.
          *
+         * Not yet implemented. Using this variant will fail at runtime ([Content] throws `IllegalStateException`).
+         * Use [TextField] for now; this variant will be re-enabled once a working Slider UI is in place.
+         *
          * @param min The minimum value
          * @param max The maximum value
          */
+        @Deprecated(
+            message = "InputType.Slider is not yet implemented and will crash at runtime. Use InputType.TextField instead.",
+            level = DeprecationLevel.ERROR,
+        )
         data class Slider(val min: Int, val max: Int) : InputType
     }
 }
