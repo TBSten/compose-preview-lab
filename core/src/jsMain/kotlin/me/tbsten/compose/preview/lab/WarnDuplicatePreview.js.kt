@@ -4,5 +4,5 @@ import kotlin.js.console
 
 @InternalComposePreviewLabApi
 public actual fun warnDuplicatePreview(message: String) {
-    console.warn(message)
+    console.warn("$WarnPrefix$message")
 }

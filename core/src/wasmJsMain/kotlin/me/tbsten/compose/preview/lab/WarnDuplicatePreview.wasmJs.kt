@@ -17,5 +17,5 @@ private external fun consoleWarn(message: String)
 
 @InternalComposePreviewLabApi
 public actual fun warnDuplicatePreview(message: String) {
-    consoleWarn(message)
+    consoleWarn("$WarnPrefix$message")
 }
