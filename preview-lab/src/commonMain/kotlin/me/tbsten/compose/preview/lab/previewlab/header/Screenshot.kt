@@ -14,18 +14,22 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
+import me.tbsten.compose.preview.lab.previewlab.LocalToastHostState
 import me.tbsten.compose.preview.lab.previewlab.screenshot.LocalCaptureScreenshot
 import me.tbsten.compose.preview.lab.previewlab.screenshot.rememberSaveScreenshot
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabIcon
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.toast.ToastType
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_screenshot_frame
 import org.jetbrains.compose.resources.painterResource
 
 private const val DefaultScreenshotFileName = "preview-lab-screenshot"
+private const val UnknownErrorMessage = "unknown error"
 
 @Composable
 internal fun Screenshot(modifier: Modifier = Modifier) {
@@ -33,6 +37,7 @@ internal fun Screenshot(modifier: Modifier = Modifier) {
     val saveScreenshot = rememberSaveScreenshot()
     val scope = rememberCoroutineScope()
     val displayName = LocalPreviewLabPreview.current?.displayName
+    val toastHostState = LocalToastHostState.current
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -42,10 +47,18 @@ internal fun Screenshot(modifier: Modifier = Modifier) {
             .clip(RoundedCornerShape(8.dp))
             .clickable {
                 scope.launch {
-                    val imageBitmap = captureScreenshot?.invoke()
-                    if (imageBitmap != null) {
-                        val fileName = displayName ?: DefaultScreenshotFileName
+                    val imageBitmap = captureScreenshot?.invoke() ?: return@launch
+                    val fileName = displayName ?: DefaultScreenshotFileName
+                    try {
                         saveScreenshot(imageBitmap, fileName)
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        val detail = e.message ?: e::class.simpleName ?: UnknownErrorMessage
+                        toastHostState.show(
+                            message = "Failed to save screenshot: $detail",
+                            type = ToastType.Error,
+                        )
                     }
                 }
             }

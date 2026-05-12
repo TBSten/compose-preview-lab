@@ -5,38 +5,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.ImageBitmap
 import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.download
-import kotlinx.coroutines.CancellationException
-import me.tbsten.compose.preview.lab.previewlab.LocalToastHostState
-import me.tbsten.compose.preview.lab.ui.components.toast.ToastType
-
-private const val UnknownErrorMessage = "unknown error"
 
 @Composable
-internal actual fun rememberSaveScreenshot(): suspend (imageBitmap: ImageBitmap, fileName: String) -> Unit {
-    // This Composable is only invoked from `Screenshot`, which is rendered inside
-    // `PreviewLab` where `LocalToastHostState` is always provided. We rely on that
-    // contract rather than wrapping `.current` (try/catch and runCatching around a
-    // @Composable invocation are disallowed by the Compose compiler).
-    val toastHostState = LocalToastHostState.current
-    return remember(toastHostState) {
-        { imageBitmap, fileName ->
-            try {
-                val bytes = imageBitmap.encodeToPngByteArray()
-                FileKit.download(
-                    bytes = bytes,
-                    fileName = "$fileName.png",
-                )
-            } catch (e: CancellationException) {
-                // Coroutine cancellation must propagate cooperatively.
-                throw e
-            } catch (e: Exception) {
-                println("Failed to save screenshot: ${e.message}")
-                val detail = e.message ?: e::class.simpleName ?: UnknownErrorMessage
-                toastHostState.show(
-                    message = "Failed to save screenshot: $detail",
-                    type = ToastType.Error,
-                )
-            }
-        }
+internal actual fun rememberSaveScreenshot(): suspend (imageBitmap: ImageBitmap, fileName: String) -> Unit = remember {
+    { imageBitmap, fileName ->
+        val bytes = imageBitmap.encodeToPngByteArray()
+        FileKit.download(
+            bytes = bytes,
+            fileName = "$fileName.png",
+        )
     }
 }
