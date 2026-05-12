@@ -1,9 +1,10 @@
 # Gradle 9 / AGP 9 migration notes
 
 Tracks the state of the upcoming `Gradle 8.14.x + AGP 8.9.x` → `Gradle 9.x + AGP 9.x` jump
-for compose-preview-lab. This document is the developer-facing companion to ticket
-[`task-033`](../../.local/ticket/task-033-agp-gradle-major-version-lag.md) (local only) and
-ticket [`task-030`](../../.local/ticket/) (wrapper alignment).
+for compose-preview-lab. This document is the developer-facing companion to the local
+tickets `task-033` (AGP/Gradle major version lag — this audit) and `task-030`
+(`gradle-wrapper.properties` alignment). Those tickets live under `.local/ticket/`,
+which is gitignored, so they are only visible in a working clone.
 
 The actual deprecation log dumps used to compile this note live under
 `.local/tmp/task-033-*.log` (gitignored) and are regenerated with:
