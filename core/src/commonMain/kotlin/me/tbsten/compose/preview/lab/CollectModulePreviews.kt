@@ -230,11 +230,13 @@ public fun collectAllModulePreviews(scope: String): ReadOnlyProperty<Any?, Seque
  * silently lost. The runtime can detect this only by observing duplicate
  * `CollectedPreview.id` values reaching this aggregator, which is rare because the
  * same FQN collapse already eliminated one of them upstream. We surface those
- * duplicates via [warnDuplicatePreview], which routes per platform: JVM / Android /
- * iOS keep the existing stdout behavior so build / test logs continue to surface the
- * warning, while JS / Wasm JS write via `console.warn` so the warning lights up in
- * browser DevTools (yellow highlighting) and survives headless test runners that
- * filter `console.log`.
+ * duplicates via [warnDuplicatePreview], which routes per platform to each target's
+ * dedicated warning surface: JVM writes to `System.err`, Android uses `Log.w`, iOS
+ * uses `NSLog`, and JS / Wasm JS use `console.warn` (yellow-highlighted in browser
+ * DevTools and surfaced separately from `console.log` by headless test runners that
+ * filter by severity). Every actual prepends the shared `WarnPrefix`
+ * (`"[ComposePreviewLab WARN] "`) so log-collector filters configured against that
+ * literal match every platform's emission.
  *
  * The compiler plugin also attempts a best-effort compile-time warning when its symbol
  * scan returns duplicate hints (in `HintDiscovery.discoverHints`, which lives in the
@@ -276,9 +278,9 @@ public fun distinctPreviewsById(previews: List<CollectedPreview>): List<Collecte
             dupCounts[preview.id] = if (existing == null) 2 else existing + 1
         }
     }
-    // [warnDuplicatePreview] routes per platform — stdout on JVM / Android / iOS,
-    // `console.warn` on JS / Wasm JS — so the warning is visible in the medium where
-    // users most often look for runtime signals on each target. The warning fires
+    // [warnDuplicatePreview] routes per platform to each target's warning surface
+    // (`System.err` on JVM, `Log.w` on Android, `NSLog` on iOS, `console.warn` on
+    // JS / Wasm JS), all prepended with the shared `WarnPrefix`. The warning fires
     // once per app launch even if the duplicated preview is never displayed, so users
     // see it during dev iteration.
     for ((id, count) in dupCounts) {
@@ -303,16 +305,16 @@ public fun distinctPreviewsById(previews: List<CollectedPreview>): List<Collecte
  * Sequence-shaped variant of [distinctPreviewsById] used by the compiler plugin's
  * `collectAllModulePreviews()` IR rewrite. Walks [previews] once, yields each first
  * occurrence by [CollectedPreview.id] in encounter order, and on the final
- * `next() == null` step prints one stdout warning per id that collided two-or-more
- * times.
+ * `next() == null` step emits one [warnDuplicatePreview] line per id that collided
+ * two-or-more times.
  *
  * The behavior matches [distinctPreviewsById] except the fold is lazy: an early-exit
  * consumer (`previews.firstOrNull { ... }`, `previews.take(2)`) only iterates the
  * prefix it needs, and dup detection runs only over that prefix. A consumer that
  * drains the sequence via `previews.toList()` sees the full warning set, identical
  * to the pre-laziness behavior — and uses the per-platform [warnDuplicatePreview]
- * routing so JS / Wasm JS surface the warning via `console.warn` rather than
- * `console.log`.
+ * routing (`System.err` on JVM, `Log.w` on Android, `NSLog` on iOS, `console.warn`
+ * on JS / Wasm JS) with the shared `WarnPrefix` prepended.
  *
  * Internal API — meant only as a callsite for the compiler plugin.
  */
