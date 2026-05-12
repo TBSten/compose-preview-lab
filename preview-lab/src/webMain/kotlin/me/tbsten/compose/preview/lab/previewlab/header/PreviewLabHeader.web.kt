@@ -348,12 +348,3 @@ private fun FullContent(state: PreviewLabState, close: () -> Unit) {
         }
     }
 }
-
-@Composable
-internal expect fun copyUserHandler(params: Map<String, String>): CopyUserHandler
-
-internal expect class CopyUserHandler {
-    val link: String
-
-    operator fun invoke()
-}
