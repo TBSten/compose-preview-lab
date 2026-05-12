@@ -5,42 +5,21 @@ import io.kotest.matchers.floats.plusOrMinus
 import io.kotest.matchers.shouldBe
 
 /**
- * `nextZoomInScale` / `nextZoomOutScale` の range fallback を検証する。
+ * `nextZoomInScale` / `nextZoomOutScale` の sanitize / clamp 仕様を検証する。
  *
  * 旧実装は `in Float.MIN_VALUE..<1.0f` で 0 / 負数 / `Float.MAX_VALUE` を取りこぼし
  * `TODO("Zoom value is out of range: ...")` でクラッシュしていた。
+ * 現実装は不正入力 (NaN, +/-Infinity, 負数, 範囲外) を `[MinZoomScale, MaxZoomScale]` に
+ * sanitize し、結果も同 range に clamp するため、 negative や non-finite が出力に漏れない。
+ *
+ * これは `ContentSection` の grid 描画 (`while (gridX <= size.width) { gridX += gridSize }`)
+ * を非正な `gridSize` で無限ループさせないために重要。
  */
 class ZoomTest :
     StringSpec({
         val tolerance = 0.0001f
 
-        "nextZoomInScale: 0f は TODO にならず 0.1x 加算される" {
-            0f.nextZoomInScale() shouldBe (0.10f plusOrMinus tolerance)
-        }
-
-        "nextZoomOutScale: 0f は TODO にならず 0.1x 減算される" {
-            0f.nextZoomOutScale() shouldBe (-0.10f plusOrMinus tolerance)
-        }
-
-        "nextZoomInScale: 負数も TODO にならず 0.1x 加算される" {
-            (-1f).nextZoomInScale() shouldBe (-0.90f plusOrMinus tolerance)
-        }
-
-        "nextZoomOutScale: 負数も TODO にならず 0.1x 減算される" {
-            (-1f).nextZoomOutScale() shouldBe (-1.10f plusOrMinus tolerance)
-        }
-
-        "nextZoomInScale: Float.MAX_VALUE は TODO にならず有限値を返す" {
-            // Float.MAX_VALUE は range `2.0f..<POSITIVE_INFINITY` 内なので第 3 枝に入る。
-            // 精度限界で 1.0f 加算は吸収され `Float.MAX_VALUE` のままだが TODO は投げない。
-            val result = Float.MAX_VALUE.nextZoomInScale()
-            result.isFinite() shouldBe true
-        }
-
-        "nextZoomOutScale: Float.MAX_VALUE は TODO にならず有限値を返す" {
-            val result = Float.MAX_VALUE.nextZoomOutScale()
-            result.isFinite() shouldBe true
-        }
+        // --- 通常レンジ ---
 
         "nextZoomInScale: 通常レンジ 1.0x は 1.25x" {
             1.0f.nextZoomInScale() shouldBe (1.25f plusOrMinus tolerance)
@@ -50,15 +29,83 @@ class ZoomTest :
             2.0f.nextZoomOutScale() shouldBe (1.0f plusOrMinus tolerance)
         }
 
-        "nextZoomInScale: NaN は TODO にならず fallback に落ちる" {
-            // NaN は どの range 比較でも false なので else 枝 (coerceIn) に落ちる。
-            // Float.coerceIn は NaN を返すため、 例外を投げないことのみ保証する。
-            val result = Float.NaN.nextZoomInScale()
-            result.isNaN() shouldBe true
+        // --- 範囲外入力 (safe fallback: 結果は finite かつ [MinZoomScale, MaxZoomScale]) ---
+
+        "nextZoomInScale: 0f は sanitize 後 MinZoomScale + 0.1 = 0.20f" {
+            val result = 0f.nextZoomInScale()
+            result.isFinite() shouldBe true
+            (result in MinZoomScale..MaxZoomScale) shouldBe true
+            result shouldBe ((MinZoomScale + 0.10f) plusOrMinus tolerance)
         }
 
-        "nextZoomInScale: POSITIVE_INFINITY も TODO にならず fallback で MaxZoomScale に丸まる" {
-            // 全 range が exclusive(POSITIVE_INFINITY) なので else 枝に落ちる
-            Float.POSITIVE_INFINITY.nextZoomInScale() shouldBe MaxZoomScale
+        "nextZoomOutScale: 0f は sanitize 後 MinZoomScale にクランプ" {
+            val result = 0f.nextZoomOutScale()
+            result.isFinite() shouldBe true
+            (result in MinZoomScale..MaxZoomScale) shouldBe true
+            result shouldBe MinZoomScale
+        }
+
+        "nextZoomInScale: 負数 (-1f) は sanitize されて結果が範囲内" {
+            val result = (-1f).nextZoomInScale()
+            result.isFinite() shouldBe true
+            (result in MinZoomScale..MaxZoomScale) shouldBe true
+        }
+
+        "nextZoomOutScale: 負数 (-1f) は sanitize されて結果が範囲内" {
+            val result = (-1f).nextZoomOutScale()
+            result.isFinite() shouldBe true
+            (result in MinZoomScale..MaxZoomScale) shouldBe true
+            result shouldBe MinZoomScale
+        }
+
+        "nextZoomInScale: Float.MAX_VALUE は sanitize されて結果が範囲内" {
+            val result = Float.MAX_VALUE.nextZoomInScale()
+            result.isFinite() shouldBe true
+            (result in MinZoomScale..MaxZoomScale) shouldBe true
+            result shouldBe MaxZoomScale
+        }
+
+        "nextZoomOutScale: Float.MAX_VALUE は sanitize されて結果が範囲内" {
+            val result = Float.MAX_VALUE.nextZoomOutScale()
+            result.isFinite() shouldBe true
+            (result in MinZoomScale..MaxZoomScale) shouldBe true
+        }
+
+        // --- 非有限入力 (NaN / +Infinity / -Infinity も safe fallback) ---
+
+        "nextZoomInScale: NaN は sanitize されて結果が範囲内" {
+            val result = Float.NaN.nextZoomInScale()
+            result.isFinite() shouldBe true
+            (result in MinZoomScale..MaxZoomScale) shouldBe true
+        }
+
+        "nextZoomOutScale: NaN は sanitize されて結果が範囲内" {
+            val result = Float.NaN.nextZoomOutScale()
+            result.isFinite() shouldBe true
+            (result in MinZoomScale..MaxZoomScale) shouldBe true
+        }
+
+        "nextZoomInScale: POSITIVE_INFINITY は sanitize されて結果が範囲内" {
+            val result = Float.POSITIVE_INFINITY.nextZoomInScale()
+            result.isFinite() shouldBe true
+            (result in MinZoomScale..MaxZoomScale) shouldBe true
+        }
+
+        "nextZoomOutScale: POSITIVE_INFINITY は sanitize されて結果が範囲内" {
+            val result = Float.POSITIVE_INFINITY.nextZoomOutScale()
+            result.isFinite() shouldBe true
+            (result in MinZoomScale..MaxZoomScale) shouldBe true
+        }
+
+        "nextZoomInScale: NEGATIVE_INFINITY は sanitize されて結果が範囲内" {
+            val result = Float.NEGATIVE_INFINITY.nextZoomInScale()
+            result.isFinite() shouldBe true
+            (result in MinZoomScale..MaxZoomScale) shouldBe true
+        }
+
+        "nextZoomOutScale: NEGATIVE_INFINITY は sanitize されて結果が範囲内" {
+            val result = Float.NEGATIVE_INFINITY.nextZoomOutScale()
+            result.isFinite() shouldBe true
+            (result in MinZoomScale..MaxZoomScale) shouldBe true
         }
     })

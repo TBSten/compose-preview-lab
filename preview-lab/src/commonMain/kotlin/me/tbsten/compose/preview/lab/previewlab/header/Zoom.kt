@@ -67,26 +67,49 @@ internal const val MaxZoomScale = 10.00f
  * Calculates the next zoom-in scale from the current zoom ratio.
  *
  * Below 1.0x increases by 0.1x, 1.0-2.0x by 0.25x, 2.0x or above by 1.0x.
- * Inputs outside the valid range (including negatives, 0, NaN, or extremely large values)
- * are coerced into `[MinZoomScale, MaxZoomScale]` as a safe fallback.
+ * Inputs outside the valid range (NaN, +/-Infinity, negatives, or `> MaxZoomScale`)
+ * are sanitized first, and the result is always clamped into `[MinZoomScale, MaxZoomScale]`.
+ *
+ * Non-finite or negative scales must never leak out: a negative `contentScale` would make the
+ * grid drawing loop in `ContentSection` (`while (gridX <= size.width) { gridX += gridSize }`)
+ * loop forever because `gridSize` becomes non-positive.
  */
-internal fun Float.nextZoomInScale(): Float = when (this) {
-    in Float.NEGATIVE_INFINITY..<1.0f -> this + 0.10f
-    in 1.0f..<2.0f -> this + 0.25f
-    in 2.0f..<Float.POSITIVE_INFINITY -> this + 1.00f
-    else -> coerceIn(MinZoomScale, MaxZoomScale)
+internal fun Float.nextZoomInScale(): Float {
+    val sanitized = this.sanitizeForZoom()
+    val next = when (sanitized) {
+        in MinZoomScale..<1.0f -> sanitized + 0.10f
+        in 1.0f..<2.0f -> sanitized + 0.25f
+        else -> sanitized + 1.00f
+    }
+    return next.coerceIn(MinZoomScale, MaxZoomScale)
 }
 
 /**
  * Calculates the next zoom-out scale from the current zoom ratio.
  *
  * Below 1.0x decreases by 0.1x, 1.0-2.0x by 0.25x, 2.0x or above by 1.0x.
- * Inputs outside the valid range (including negatives, 0, NaN, or extremely large values)
- * are coerced into `[MinZoomScale, MaxZoomScale]` as a safe fallback.
+ * Inputs outside the valid range (NaN, +/-Infinity, negatives, or `> MaxZoomScale`)
+ * are sanitized first, and the result is always clamped into `[MinZoomScale, MaxZoomScale]`.
+ *
+ * Non-finite or negative scales must never leak out: a negative `contentScale` would make the
+ * grid drawing loop in `ContentSection` (`while (gridX <= size.width) { gridX += gridSize }`)
+ * loop forever because `gridSize` becomes non-positive.
  */
-internal fun Float.nextZoomOutScale(): Float = when (this) {
-    in Float.NEGATIVE_INFINITY..<1.0f -> this - 0.10f
-    in 1.0f..<2.0f -> this - 0.25f
-    in 2.0f..<Float.POSITIVE_INFINITY -> this - 1.00f
-    else -> coerceIn(MinZoomScale, MaxZoomScale)
+internal fun Float.nextZoomOutScale(): Float {
+    val sanitized = this.sanitizeForZoom()
+    val next = when (sanitized) {
+        in MinZoomScale..<1.0f -> sanitized - 0.10f
+        in 1.0f..<2.0f -> sanitized - 0.25f
+        else -> sanitized - 1.00f
+    }
+    return next.coerceIn(MinZoomScale, MaxZoomScale)
 }
+
+/**
+ * Sanitizes a raw zoom scale input by replacing non-finite values (NaN, +/-Infinity) and
+ * values outside `[MinZoomScale, MaxZoomScale]` with the nearest valid bound.
+ *
+ * This guarantees the result is finite and in `[MinZoomScale, MaxZoomScale]` so that downstream
+ * arithmetic (`+ 0.1f`, `* contentScale`, etc.) cannot produce negative or non-finite scales.
+ */
+private fun Float.sanitizeForZoom(): Float = if (isFinite()) coerceIn(MinZoomScale, MaxZoomScale) else MinZoomScale
