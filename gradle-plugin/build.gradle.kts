@@ -4,12 +4,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     alias(libs.plugins.conventionFormat)
     alias(libs.plugins.conventionPublish)
-    `kotlin-dsl`
+    alias(libs.plugins.kotlinJvm)
+    `java-gradle-plugin`
 }
 
-// kotlin-dsl が提供する embedded Kotlin を使うため、
-// conventionJvm (libs の kotlinJvm を明示的に適用する) は付与しない。
-// conventionJvm が提供していた toolchain / opt-ins 設定を手動で行う。
 kotlin {
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
     compilerOptions {
@@ -21,11 +19,6 @@ kotlin {
     }
 }
 
-// kotlin-dsl は language/api version を 1.8 に固定するが、
-// Kotlin 2.3+ では 1.8 が廃止されているため明示的に 2.1 以上に上書きする。
-// kotlin.compilerOptions では kotlin-dsl の afterEvaluate 設定を
-// 上書きできないため、task 単位で設定する。
-// https://kotl.in/gradle/kotlin-dsl-version-compatibility
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
         apiVersion.set(KotlinVersion.KOTLIN_2_1)
@@ -61,6 +54,7 @@ kotlin.sourceSets.named("main") {
 dependencies {
     api(projects.annotation)
     compileOnly(gradleApi())
+    compileOnly(gradleKotlinDsl())
     implementation(libs.kotlinGradlePlugin)
 }
 

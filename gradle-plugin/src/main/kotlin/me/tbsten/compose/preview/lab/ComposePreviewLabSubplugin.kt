@@ -7,6 +7,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilerPluginSupportPlugin
 import org.jetbrains.kotlin.gradle.plugin.SubpluginArtifact
 import org.jetbrains.kotlin.gradle.plugin.SubpluginOption
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 class ComposePreviewLabSubplugin : KotlinCompilerPluginSupportPlugin {
 
@@ -27,8 +28,10 @@ class ComposePreviewLabSubplugin : KotlinCompilerPluginSupportPlugin {
         val project = kotlinCompilation.target.project
 
         if (project.supportsCompilerPluginOrder()) {
-            kotlinCompilation.compileTaskProvider.configure {
-                compilerOptions.freeCompilerArgs.add(
+            // `kotlin-dsl` plugin を外したため receiver の型が KotlinCompilationTask<*> へ
+            // 推論されない場合に備え、明示的にパラメータ型を指定する。
+            kotlinCompilation.compileTaskProvider.configure { task: KotlinCompilationTask<*> ->
+                task.compilerOptions.freeCompilerArgs.add(
                     "-Xcompiler-plugin-order=$PreviewLabCompilerPluginId>$ComposeCompilerPluginId",
                 )
             }
