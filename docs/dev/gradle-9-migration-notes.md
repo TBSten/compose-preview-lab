@@ -36,7 +36,7 @@ All three Gradle 9 blocker deprecations during `./gradlew assemble --warning-mod
 emitted by AGP-decorated DSL classes, not by anything this repo writes:
 
 | # | Reported during         | Decorated property                        | Owning AGP class                                                    |
-| - | ----------------------- | ----------------------------------------- | ------------------------------------------------------------------- |
+| --- | ----------------------- | ----------------------------------------- | ------------------------------------------------------------------- |
 | 1 | `Configure project :annotation` | `isCrunchPngs: Boolean`           | `com.android.build.gradle.internal.dsl.BuildType$AgpDecorated`      |
 | 2 | `Configure project :annotation` | `isUseProguard: Boolean`          | `com.android.build.gradle.internal.dsl.BuildType`                   |
 | 3 | `Configure project :dev`        | `isWearAppUnbundled: Boolean`     | `com.android.build.api.variant.impl.ApplicationVariantImpl`         |
@@ -99,6 +99,7 @@ Tracked separately, not blocking Gradle 9 migration:
 
 ## Re-running the audit
 
-The two diagnostic commands above are the canonical entry points. Output lives in
+The three `--warning-mode all` invocations shown at the top of this document
+(`help`, `assemble`, `apiCheck`) are the canonical entry points. Output lives in
 `.local/tmp/` and is gitignored — re-run, inspect, then update this document if the
 in-repo / upstream split changes.
