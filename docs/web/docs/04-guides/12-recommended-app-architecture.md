@@ -1,6 +1,7 @@
 ---
 title: "[TODO] Recommended App Architecture"
 sidebar_position: 12
+draft: true
 ---
 
 :::warning
