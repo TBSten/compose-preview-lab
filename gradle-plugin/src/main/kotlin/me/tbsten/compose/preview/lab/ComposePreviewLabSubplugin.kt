@@ -28,7 +28,7 @@ class ComposePreviewLabSubplugin : KotlinCompilerPluginSupportPlugin {
         val project = kotlinCompilation.target.project
 
         if (project.supportsCompilerPluginOrder()) {
-            // task-034: `kotlin-dsl` plugin を外したため receiver の型が KotlinCompilationTask<*> へ
+            // `kotlin-dsl` plugin を外したため receiver の型が KotlinCompilationTask<*> へ
             // 推論されない場合に備え、明示的にパラメータ型を指定する。
             kotlinCompilation.compileTaskProvider.configure { task: KotlinCompilationTask<*> ->
                 task.compilerOptions.freeCompilerArgs.add(
