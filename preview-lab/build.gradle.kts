@@ -27,10 +27,22 @@ kotlin {
             implementation(libs.filekitDialogs)
         }
         jvmTest.dependencies {
+            implementation(libs.kotestFrameworkEngine)
+            implementation(libs.kotestAssertionsCore)
+            implementation(libs.kotestRunnerJunit5)
             implementation(libs.kotestProperty)
             implementation(libs.kotlinxCoroutinesTest)
         }
     }
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    // Forward kotest-related system properties to the test JVM
+    // See: https://kotest.io/docs/framework/tags.html#gradle
+    System.getProperties()
+        .filter { it.key.toString().startsWith("kotest.") }
+        .forEach { (key, value) -> systemProperty(key.toString(), value) }
 }
 
 compose.resources {
