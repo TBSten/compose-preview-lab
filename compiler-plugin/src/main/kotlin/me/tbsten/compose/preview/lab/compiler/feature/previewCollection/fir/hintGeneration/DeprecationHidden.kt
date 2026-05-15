@@ -1,6 +1,6 @@
 package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.hintGeneration
 
-import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
+import me.tbsten.compose.preview.lab.compiler.compat.compatContext
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirClassLikeDeclaration
@@ -100,9 +100,9 @@ internal fun createDeprecatedHiddenAnnotation(session: FirSession): FirAnnotatio
  * resolution. [CompatContext.getDeprecationsProviderCompat] absorbs the 2.4.0-Beta2
  * receiver narrowing.
  */
-internal fun FirClassLikeDeclaration.markAsDeprecatedHidden(session: FirSession, compat: CompatContext) {
+internal fun FirClassLikeDeclaration.markAsDeprecatedHidden(session: FirSession) {
     replaceAnnotations(annotations + listOf(createDeprecatedHiddenAnnotation(session)))
-    compat.getDeprecationsProviderCompat(this, session)?.let(::replaceDeprecationsProvider)
+    session.compatContext.getDeprecationsProviderCompat(this, session)?.let(::replaceDeprecationsProvider)
 }
 
 /**
@@ -125,7 +125,7 @@ internal fun FirClassLikeDeclaration.markAsDeprecatedHidden(session: FirSession,
  * public fun previewHint(value: PreviewHintMarker_<...>?): CollectedPreview
  * ```
  */
-internal fun FirCallableDeclaration.markAsDeprecatedHidden(session: FirSession, compat: CompatContext) {
+internal fun FirCallableDeclaration.markAsDeprecatedHidden(session: FirSession) {
     replaceAnnotations(annotations + listOf(createDeprecatedHiddenAnnotation(session)))
-    compat.getDeprecationsProviderCompat(this, session)?.let(::replaceDeprecationsProvider)
+    session.compatContext.getDeprecationsProviderCompat(this, session)?.let(::replaceDeprecationsProvider)
 }

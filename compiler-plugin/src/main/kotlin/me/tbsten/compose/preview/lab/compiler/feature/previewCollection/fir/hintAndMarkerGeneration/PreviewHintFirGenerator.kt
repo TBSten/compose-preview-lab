@@ -4,7 +4,6 @@
 
 package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.hintAndMarkerGeneration
 
-import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.HintEntry
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewAnnotationPredicates
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewKeys
@@ -120,8 +119,7 @@ import org.jetbrains.kotlin.name.Name
  * [ContributionHintFirGenerator](https://github.com/ZacSweers/metro/blob/main/compiler/src/main/kotlin/dev/zacsweers/metro/compiler/fir/generators/ContributionHintFirGenerator.kt),
  * combined with the fixed-name discovery approach of the legacy module-aggregation hint.
  */
-internal class PreviewHintFirGenerator(session: FirSession, private val compat: CompatContext,) :
-    FirDeclarationGenerationExtension(session) {
+internal class PreviewHintFirGenerator(session: FirSession) : FirDeclarationGenerationExtension(session) {
 
     /**
      * Session-shared per-`@Preview` metadata, populated lazily by
@@ -222,14 +220,14 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
         val klass = createTopLevelClass(classId, PreviewKeys.PreviewLabHintMarkerInterface, ClassKind.INTERFACE) {
             modality = Modality.ABSTRACT
         }
-        klass.markAsDeprecatedHidden(session, compat)
-        klass.markAsInternalSyntheticHint(session, compat)
+        klass.markAsDeprecatedHidden(session)
+        klass.markAsInternalSyntheticHint(session)
         return klass.symbol
     }
 
     override fun generateConstructors(context: MemberGenerationContext): List<FirConstructorSymbol> = emptyList()
 
-    override fun getCallableNamesForClass(classSymbol: FirClassSymbol<*>, context: MemberGenerationContext,): Set<Name> =
+    override fun getCallableNamesForClass(classSymbol: FirClassSymbol<*>, context: MemberGenerationContext): Set<Name> =
         emptySet()
 
     /**
@@ -298,8 +296,8 @@ internal class PreviewHintFirGenerator(session: FirSession, private val compat: 
                     type = markerSymbol.constructType(isMarkedNullable = true),
                 )
             }.also {
-                it.markAsDeprecatedHidden(session, compat)
-                it.markAsInternalSyntheticHint(session, compat)
+                it.markAsDeprecatedHidden(session)
+                it.markAsInternalSyntheticHint(session)
             }.symbol
         }
     }

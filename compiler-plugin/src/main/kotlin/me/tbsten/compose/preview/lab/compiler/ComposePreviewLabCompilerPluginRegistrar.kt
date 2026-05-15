@@ -1,5 +1,6 @@
 package me.tbsten.compose.preview.lab.compiler
 
+import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
 import me.tbsten.compose.preview.lab.compiler.compat.registerExtensionCompat
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
@@ -29,6 +30,7 @@ class ComposePreviewLabCompilerPluginRegistrar : CompilerPluginRegistrar() {
      * different JVM call-site signatures. The reflective wrapper abstracts that away.
      */
     override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
+        val compatContext = CompatContext.load()
         val config = PluginConfig.from(configuration)
         val messageCollector = configuration.get(CommonConfigurationKeys.MESSAGE_COLLECTOR_KEY)
             ?: MessageCollector.NONE
@@ -36,11 +38,11 @@ class ComposePreviewLabCompilerPluginRegistrar : CompilerPluginRegistrar() {
         // changed between Kotlin 2.3 and 2.4, so resolve `registerExtension(...)` reflectively.
         registerExtensionCompat(
             FirExtensionRegistrarAdapter.Companion,
-            PreviewLabFirExtensionRegistrar(config),
+            PreviewLabFirExtensionRegistrar(config, compatContext),
         )
         registerExtensionCompat(
             IrGenerationExtension.Companion,
-            PreviewLabIrGenerationExtension(config, messageCollector),
+            PreviewLabIrGenerationExtension(config, messageCollector, compatContext),
         )
     }
 }

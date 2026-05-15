@@ -43,7 +43,7 @@ class PreviewLabFirStatusTransformerExtension(session: FirSession) : FirStatusTr
      * a Compose `@Preview` annotation.
      */
     override fun needTransformStatus(declaration: FirDeclaration): Boolean {
-        if (!declaration.isFirFunction()) return false
+        if (!declaration.isFirFunction(session)) return false
         if (declaration !is FirMemberDeclaration) return false
         if (declaration.visibility != Visibilities.Private) return false
         return previewAnnotations.any { classId -> declaration.hasPreviewAnnotation(classId) }
