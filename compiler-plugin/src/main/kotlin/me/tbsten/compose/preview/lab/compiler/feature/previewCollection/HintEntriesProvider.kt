@@ -1,9 +1,8 @@
 package me.tbsten.compose.preview.lab.compiler.feature.previewCollection
 
-import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.scopeValidation.SCOPE_VALIDATION_REGEX
-
 import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.compiler.compat.getBooleanArgumentCompat
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir.scopeValidation.SCOPE_VALIDATION_REGEX
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
 import org.jetbrains.kotlin.fir.declarations.toAnnotationClassIdSafe

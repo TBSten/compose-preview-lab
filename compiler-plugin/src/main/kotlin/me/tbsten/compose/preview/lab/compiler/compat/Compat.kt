@@ -9,30 +9,31 @@ import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.name.Name
 
 /**
- * Access point for the version-specific Kotlin compiler API.
+ * Returns whether the FIR declaration is a function. See [CompatContext.isFirFunction].
  *
- * The actual differences live in compat modules that implement [CompatContext]
- * (`compiler-plugin/compat-k230`, `compiler-plugin/compat-k240_beta2`, ...).
- * At runtime, ServiceLoader picks the one that matches the current Kotlin compiler.
- *
- * The extension-function shapes here intentionally mirror the ones that used to live
- * in the per-version sourceSets (`kotlin-2.3/`, ...) so call sites do not need to change.
+ * Resolves the version-specific [CompatContext] via [FirSession.compatContext], so callers
+ * only need the FIR session in scope.
  */
-private val compatContext: CompatContext by lazy { CompatContext.load() }
-
-/** Returns whether the FIR declaration is a function. See [CompatContext.isFirFunction]. */
-internal fun FirDeclaration.isFirFunction(): Boolean = compatContext.isFirFunction(this)
+internal fun FirDeclaration.isFirFunction(session: FirSession): Boolean = session.compatContext.isFirFunction(this)
 
 /**
  * Builds an annotation from the given constructor symbol and adds it to the function.
  * See [CompatContext.addConstructorCallAnnotation].
+ *
+ * IR-side: no FIR session in scope, so the [compatContext] is passed explicitly (= bucket
+ * relay continues on the IR side, by design — see the registrar for the entry-point load).
  */
-internal fun IrSimpleFunction.addConstructorCallAnnotation(type: IrType, constructorSymbol: IrConstructorSymbol) =
-    compatContext.addConstructorCallAnnotation(this, type, constructorSymbol)
+internal fun IrSimpleFunction.addConstructorCallAnnotation(
+    compatContext: CompatContext,
+    type: IrType,
+    constructorSymbol: IrConstructorSymbol,
+) = compatContext.addConstructorCallAnnotation(this, type, constructorSymbol)
 
 /**
  * Returns the resolved `Boolean` argument named [name] from this annotation, or `null` when
  * the argument is absent or unresolvable. See [CompatContext.getBooleanArgumentCompat].
+ *
+ * Resolves [CompatContext] via [FirSession.compatContext] from the supplied [session].
  */
 internal fun FirAnnotation.getBooleanArgumentCompat(name: Name, session: FirSession): Boolean? =
-    compatContext.getBooleanArgumentCompat(this, name, session)
+    session.compatContext.getBooleanArgumentCompat(this, name, session)

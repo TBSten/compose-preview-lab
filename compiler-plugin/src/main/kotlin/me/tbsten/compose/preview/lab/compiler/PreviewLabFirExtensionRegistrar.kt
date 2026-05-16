@@ -1,6 +1,7 @@
 package me.tbsten.compose.preview.lab.compiler
 
 import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
+import me.tbsten.compose.preview.lab.compiler.compat.CompatContextSessionComponent
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.HintEntriesProvider
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewLabFirBuiltIns
 import me.tbsten.compose.preview.lab.compiler.feature.transformPrivatePreviewToInternal.fir.visibilityPromotion.PreviewLabFirStatusTransformerExtension
@@ -41,10 +42,15 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
  *   that no `previewHint_<scope>(...)` overload or `PreviewHintMarker_*` interface ends
  *   up in the module's classpath.
  */
-class PreviewLabFirExtensionRegistrar(private val config: PluginConfig) : FirExtensionRegistrar() {
+class PreviewLabFirExtensionRegistrar(private val config: PluginConfig, private val compatContext: CompatContext,) :
+    FirExtensionRegistrar() {
 
     override fun ExtensionRegistrarContext.configurePlugin() {
-        val compat = CompatContext.load()
+        // Register the CompatContext session component first so every later component /
+        // extension can resolve `session.compatContext` instead of receiving the value
+        // through their constructor (= no FIR-side bucket relay). The IR side keeps
+        // explicit constructor injection because it has no FIR session in scope.
+        +({ session: FirSession -> CompatContextSessionComponent(session, compatContext) })
         +({ session: FirSession -> PreviewLabFirBuiltIns(session, config) })
         // Session-scoped lazy cache of `@Preview` → hint/marker metadata. Registered as
         // its own `FirExtensionSessionComponent` so both the (future) hint generator and
@@ -69,11 +75,11 @@ class PreviewLabFirExtensionRegistrar(private val config: PluginConfig) : FirExt
         // emitted inside `ReplaceCollectPreviewsFunBody`) remains active on every Kotlin
         // version as a second-line check, so violations still surface at compile time
         // without the FIR highlighter.
-        if (compat.supportsFirCheckers()) {
+        if (compatContext.supportsFirCheckers()) {
             +::PreviewLabFirCheckersExtension
         }
-        if (compat.supportsFirHintGeneration() && config.collectPreviewsEnabled) {
-            +({ session: FirSession -> PreviewHintFirGenerator(session, compat) })
+        if (compatContext.supportsFirHintGeneration() && config.collectPreviewsEnabled) {
+            +::PreviewHintFirGenerator
         }
     }
 }

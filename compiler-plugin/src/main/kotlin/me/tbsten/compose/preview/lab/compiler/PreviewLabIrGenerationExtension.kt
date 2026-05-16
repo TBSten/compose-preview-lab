@@ -13,9 +13,9 @@ import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.CMP_PREV
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.COMPOSE_PREVIEW_LAB_OPTION_FQN
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.PreviewFunctionInfo
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.BuildPreviewByHashMap
-import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.buildPreviewSequence.extractSourceText
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.FillPreviewHintIrBody
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.ReplaceCollectPreviewsFunBody
+import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ir.collectPreviewsReplacement.buildPreviewSequence.extractSourceText
 import me.tbsten.compose.preview.lab.compiler.utils.ir.compilerMessageLocation
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -42,11 +42,11 @@ import org.jetbrains.kotlin.ir.util.kotlinFqName
 class PreviewLabIrGenerationExtension(
     private val config: PluginConfig,
     private val messageCollector: MessageCollector = MessageCollector.NONE,
+    private val compatContext: CompatContext,
 ) : IrGenerationExtension {
 
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
         val previews = collectPreviews(moduleFragment)
-        val compatContext = CompatContext.load()
         val bodyFiller =
             ReplaceCollectPreviewsFunBody(pluginContext, config, moduleFragment, previews, compatContext, messageCollector)
         compatContext.transformModuleFragment(moduleFragment, bodyFiller)

@@ -1,6 +1,6 @@
 package me.tbsten.compose.preview.lab.compiler.feature.previewCollection.fir
 
-import me.tbsten.compose.preview.lab.compiler.compat.CompatContext
+import me.tbsten.compose.preview.lab.compiler.compat.compatContext
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.INTERNAL_COMPOSE_PREVIEW_LAB_API_CLASS_ID
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.SYNTHETIC_PREVIEW_HINT_CLASS_ID
 import me.tbsten.compose.preview.lab.compiler.utils.fir.buildSimpleAnnotation
@@ -35,14 +35,14 @@ import org.jetbrains.kotlin.fir.declarations.FirClassLikeDeclaration
  *   `me.tbsten.compose.preview.lab.hints` package, so a downstream
  *   `collectAllModulePreviews()` cannot be poisoned by namespace squatting.
  */
-internal fun FirClassLikeDeclaration.markAsInternalSyntheticHint(session: FirSession, compat: CompatContext) {
+internal fun FirClassLikeDeclaration.markAsInternalSyntheticHint(session: FirSession) {
     replaceAnnotations(
         annotations + listOf(
             INTERNAL_COMPOSE_PREVIEW_LAB_API_CLASS_ID.buildSimpleAnnotation(session),
             SYNTHETIC_PREVIEW_HINT_CLASS_ID.buildSimpleAnnotation(session),
         ),
     )
-    compat.getDeprecationsProviderCompat(this, session)?.let(::replaceDeprecationsProvider)
+    session.compatContext.getDeprecationsProviderCompat(this, session)?.let(::replaceDeprecationsProvider)
 }
 
 /**
@@ -53,12 +53,12 @@ internal fun FirClassLikeDeclaration.markAsInternalSyntheticHint(session: FirSes
  * Targets: the per-`@Preview` `previewHint_<scope>(...)` overloads emitted by
  * `PreviewHintFirGenerator`.
  */
-internal fun FirCallableDeclaration.markAsInternalSyntheticHint(session: FirSession, compat: CompatContext) {
+internal fun FirCallableDeclaration.markAsInternalSyntheticHint(session: FirSession) {
     replaceAnnotations(
         annotations + listOf(
             INTERNAL_COMPOSE_PREVIEW_LAB_API_CLASS_ID.buildSimpleAnnotation(session),
             SYNTHETIC_PREVIEW_HINT_CLASS_ID.buildSimpleAnnotation(session),
         ),
     )
-    compat.getDeprecationsProviderCompat(this, session)?.let(::replaceDeprecationsProvider)
+    session.compatContext.getDeprecationsProviderCompat(this, session)?.let(::replaceDeprecationsProvider)
 }

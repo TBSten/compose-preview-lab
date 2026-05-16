@@ -173,6 +173,7 @@ internal class BuildCollectedPreviewIr(private val pluginContext: IrPluginContex
         val composableClass = pluginContext.referenceClass(composableClassId) ?: return
         val ctor = composableClass.constructors.firstOrNull() ?: return
         func.addConstructorCallAnnotation(
+            compatContext = compatContext,
             type = compatContext.getDefaultType(composableClass),
             constructorSymbol = ctor,
         )
