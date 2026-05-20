@@ -4,21 +4,14 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     alias(libs.plugins.conventionFormat)
     alias(libs.plugins.conventionPublish)
-    alias(libs.plugins.kotlinJvm)
+    alias(libs.plugins.conventionJvm)
     `java-gradle-plugin`
 }
 
-kotlin {
-    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-    compilerOptions {
-        optIn.addAll(
-            "me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi",
-            "me.tbsten.compose.preview.lab.InternalComposePreviewLabApi",
-            "me.tbsten.compose.preview.lab.UiComposePreviewLabApi",
-        )
-    }
-}
-
+// プロジェクト全体で使う Kotlin 機能の互換 floor を 2.1 に固定する。
+// gradle-plugin はユーザの Gradle (embedded Kotlin が古い可能性あり) 上で動作するため、
+// 新しめの Kotlin 言語機能を取り込まないよう apiVersion/languageVersion を明示的に固定する。
+// convention-jvm は language/api version を設定しないので、ここで個別に設定する。
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
         apiVersion.set(KotlinVersion.KOTLIN_2_1)
