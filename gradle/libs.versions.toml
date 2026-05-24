@@ -42,6 +42,10 @@ filekit = "0.12.0"
 # Test
 kotest = "6.0.5"
 kctfork = "0.12.1"
+jsoup = "1.18.3"
+
+# Dokka Plugin
+kotlinxHtml = "0.11.0"
 
 # IntelliJ Plugin
 intellijPlatform = "2.6.0"
@@ -109,6 +113,14 @@ kotlinCompilerEmbeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embe
 ktlintGradlePlugin = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlintGradle" }
 vanniktechMavenPublishGradlePlugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "vanniktechMavenPublish" }
 dokkaGradlePlugin = { module = "org.jetbrains.dokka:org.jetbrains.dokka.gradle.plugin", version.ref = "dokka" }
+dokkaCore = { module = "org.jetbrains.dokka:dokka-core", version.ref = "dokka" }
+dokkaBase = { module = "org.jetbrains.dokka:dokka-base", version.ref = "dokka" }
+dokkaTestApi = { module = "org.jetbrains.dokka:dokka-test-api", version.ref = "dokka" }
+dokkaBaseTestUtils = { module = "org.jetbrains.dokka:dokka-base-test-utils", version.ref = "dokka" }
+dokkaAnalysisKotlinSymbols = { module = "org.jetbrains.dokka:analysis-kotlin-symbols", version.ref = "dokka" }
+kotlinxHtml = { module = "org.jetbrains.kotlinx:kotlinx-html-jvm", version.ref = "kotlinxHtml" }
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+junitJupiter = { module = "org.junit.jupiter:junit-jupiter", version = "5.10.2" }
 androidGradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 composeGradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose" }
 hotReloadGradlePlugin = { module = "org.jetbrains.compose.hot-reload:org.jetbrains.compose.hot-reload.gradle.plugin", version.ref = "hotReload" }
