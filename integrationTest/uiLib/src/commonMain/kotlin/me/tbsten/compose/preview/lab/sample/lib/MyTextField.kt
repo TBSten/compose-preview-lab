@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
  * @param onValueChange Called with the new value on every edit.
  * @param modifier Optional modifier applied to the underlying [TextField].
  *
- * @previewLab MyTextFieldPreview 1280x980
+ * @previewLab MyTextFieldPreview 1280x680
  */
 @Composable
 fun MyTextField(value: String, onValueChange: (String) -> Unit, modifier: Modifier = Modifier) {

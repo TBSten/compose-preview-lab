@@ -19,7 +19,7 @@ import me.tbsten.compose.preview.lab.gallery.navigateOr
  * @param onClick Invoked when the user taps the button.
  * @param modifier Optional modifier applied to the underlying [Button].
  *
- * @previewLab MyButtonPreview
+ * @previewLab MyButtonPreview 1280x680
  */
 @Composable
 fun MyButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
