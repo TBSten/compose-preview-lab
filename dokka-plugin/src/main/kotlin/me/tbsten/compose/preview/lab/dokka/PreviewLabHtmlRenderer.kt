@@ -42,9 +42,13 @@ public open class PreviewLabHtmlRenderer(context: DokkaContext) : HtmlRenderer(c
         val baseUrl = System.getProperty(PreviewLabBaseUrlProperty, PreviewLabDefaultBaseUrl)
         val src = "$baseUrl/?iframe&previewId=$previewId"
 
+        // The default size targets the full PreviewLab UI (header + sidebar + preview area
+        // + inspectors panel). A too-small height squeezes the canvas Compose wasm allocates,
+        // making content look blurry on high-DPI screens. Consumers can override via CSS on
+        // the `iframe.preview-lab-embedded` / `.preview-lab-embedded-container` selectors.
         div(classes = "preview-lab-embedded-container") {
             iframe(classes = "preview-lab-embedded") {
-                style = "display: block; width: 100%; height: 480px; border: 0; margin: 16px auto;"
+                style = "display: block; width: 100%; height: 720px; border: 0; margin: 16px auto;"
                 this.src = src
                 attributes["loading"] = "lazy"
                 attributes["allow"] = "clipboard-read; clipboard-write"
