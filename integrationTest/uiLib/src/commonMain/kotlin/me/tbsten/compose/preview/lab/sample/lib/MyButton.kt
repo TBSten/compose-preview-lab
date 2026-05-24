@@ -12,6 +12,15 @@ import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.gallery.LocalPreviewLabGalleryNavigator
 import me.tbsten.compose.preview.lab.gallery.navigateOr
 
+/**
+ * A small wrapper around Material 3 [Button] that drives a label and tap handler.
+ *
+ * @param text Button label.
+ * @param onClick Invoked when the user taps the button.
+ * @param modifier Optional modifier applied to the underlying [Button].
+ *
+ * @previewLab MyButtonPreview
+ */
 @Composable
 fun MyButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Button(onClick = onClick, modifier = modifier) {
