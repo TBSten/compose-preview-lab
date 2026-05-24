@@ -6,6 +6,17 @@ plugins {
     id("me.tbsten.compose.preview.lab")
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.dokka)
+}
+
+dependencies {
+    // Compose Preview Lab dokka plugin: embeds @previewLab <previewId> tags as <iframe>s
+    // pointing at the hosted Compose Preview Lab gallery.
+    // Resolved via the composite build (`includeBuild("../")`) — no mavenLocal needed
+    // when running from this repo. External projects should depend on the published
+    // coordinate `me.tbsten.compose.preview.lab:dokka-plugin:<version>` and add
+    // `mavenLocal()` (or Maven Central once published).
+    dokkaPlugin("me.tbsten.compose.preview.lab:dokka-plugin:${libs.versions.composePreviewLab.get()}")
 }
 
 kotlin {

@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.hotReload).apply(false)
     id("me.tbsten.compose.preview.lab").apply(false)
     alias(libs.plugins.binaryCompatibilityValidator)
+    alias(libs.plugins.dokka).apply(false)
 }
 
 apiValidation {

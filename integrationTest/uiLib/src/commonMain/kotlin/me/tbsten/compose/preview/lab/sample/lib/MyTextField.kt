@@ -13,6 +13,16 @@ import me.tbsten.compose.preview.lab.event.ChangeEvent
 import me.tbsten.compose.preview.lab.field.StringField
 import androidx.compose.ui.tooling.preview.Preview
 
+/**
+ * A thin wrapper around Material 3 [TextField] with the stateful preview demo
+ * available in the gallery.
+ *
+ * @param value Current text.
+ * @param onValueChange Called with the new value on every edit.
+ * @param modifier Optional modifier applied to the underlying [TextField].
+ *
+ * @previewLab MyTextFieldPreview 1280x680
+ */
 @Composable
 fun MyTextField(value: String, onValueChange: (String) -> Unit, modifier: Modifier = Modifier) {
     TextField(
