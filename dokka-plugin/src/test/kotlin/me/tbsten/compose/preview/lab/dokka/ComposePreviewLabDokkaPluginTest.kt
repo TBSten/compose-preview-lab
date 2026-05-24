@@ -80,8 +80,12 @@ class ComposePreviewLabDokkaPluginTest : BaseAbstractTest() {
         }
     }
 
+    // NOTE: `BaseAbstractTest` runs Dokka in-process so System property
+    // is visible to the renderer. In real Gradle builds the Dokka worker is
+    // a forked JVM (ProcessIsolation) and the property does NOT reach the
+    // renderer. See the KNOWN LIMITATION comment in PreviewLabHtmlRenderer.kt.
     @Test
-    fun `previewLab base URL can be overridden via system property`() {
+    fun `previewLab base URL can be overridden via system property (in-process only)`() {
         val writerPlugin = TestOutputWriterPlugin()
         val source = """
             |/src/main/kotlin/test/Test.kt

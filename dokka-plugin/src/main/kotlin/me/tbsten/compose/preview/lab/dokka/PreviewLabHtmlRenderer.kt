@@ -19,6 +19,15 @@ import org.jetbrains.dokka.plugability.DokkaContext
 internal const val PreviewLabBaseUrlProperty: String = "previewLab.dokka.baseUrl"
 internal const val PreviewLabDefaultBaseUrl: String = "compose-preview-lab-gallery"
 
+// Known limitation: Dokka v2 runs the generator in a forked worker
+// (ProcessIsolation), so `-DpreviewLab.dokka.baseUrl=...` set on the Gradle
+// invocation or via `systemProp.` in `gradle.properties` does NOT reach this
+// renderer. A reliable override path is the next milestone — exposing a
+// typed `DokkaPluginParametersBaseSpec` (ConfigurableBlock) consumers set
+// in the `dokka { pluginsConfiguration { ... } }` DSL. Until then the
+// property is honoured only in in-process callers (e.g. the unit tests),
+// and real-build callers get the default base URL.
+
 public open class PreviewLabHtmlRenderer(context: DokkaContext) : HtmlRenderer(context) {
     override fun FlowContent.buildCodeBlock(code: ContentCodeBlock, pageContext: ContentPage) {
         if (code.language == PreviewLabIframeCode) {
