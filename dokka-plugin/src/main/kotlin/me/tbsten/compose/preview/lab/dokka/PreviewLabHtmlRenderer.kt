@@ -68,14 +68,16 @@ public open class PreviewLabHtmlRenderer(context: DokkaContext) : HtmlRenderer(c
         // typical doc-site column width without making the canvas Compose wasm allocates
         // look blurry on high-DPI screens). When the tag explicitly specifies `WxH`, switch
         // to aspect-ratio so the iframe scales with the column while preserving the ratio.
+        // `calc(100% - 32px)` leaves 16px on each side once `margin: 16px` is applied,
+        // so the iframe is fully inset within its container without horizontal overflow.
         val sizeStyle = when (val ar = payload.aspectRatio) {
-            null -> "width: 100%; height: 720px;"
-            else -> "width: 100%; aspect-ratio: ${ar.first} / ${ar.second}; height: auto;"
+            null -> "width: calc(100% - 32px); height: 720px;"
+            else -> "width: calc(100% - 32px); aspect-ratio: ${ar.first} / ${ar.second}; height: auto;"
         }
 
         div(classes = "preview-lab-embedded-container") {
             iframe(classes = "preview-lab-embedded") {
-                style = "display: block; $sizeStyle border: 0; margin: 16px auto;"
+                style = "display: block; $sizeStyle border: 2px solid #d0d7de; margin: 16px;"
                 this.src = src
                 attributes["loading"] = "lazy"
                 attributes["allow"] = "clipboard-read; clipboard-write"
