@@ -280,8 +280,6 @@ import me.tbsten.compose.preview.lab.ui.components.toast.rememberToastHostState
  * @see PreviewLabState State management and persistence
  * @see PreviewLabScope Scope providing field and event functions
  * @see ScreenSize Device screen size definitions and presets
- *
- * @previewLab samplePreviewId
  */
 @Composable
 fun PreviewLab(

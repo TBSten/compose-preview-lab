@@ -1,5 +1,6 @@
 package me.tbsten.compose.preview.lab.dokka
 
+import java.net.URLEncoder
 import java.util.Locale
 import kotlinx.html.FlowContent
 import kotlinx.html.code
@@ -29,13 +30,20 @@ internal data class PreviewLabTagPayload(val previewId: String, val aspectRatio:
             val tokens = raw.trim().split(Regex("""\s+"""))
             val previewId = tokens.firstOrNull()?.takeIf { it.isNotEmpty() } ?: return null
             val aspectRatio = tokens.drop(1)
-                .firstNotNullOfOrNull { token ->
-                    PreviewLabSizeRegex.matchEntire(token)?.let {
-                        val (w, h) = it.destructured
-                        w.toInt() to h.toInt()
-                    }
-                }
+                .firstNotNullOfOrNull { token -> parseAspectRatio(token) }
             return PreviewLabTagPayload(previewId, aspectRatio)
+        }
+
+        // Returns null for anything that isn't a strictly positive `<w>x<h>` token.
+        // Uses `toIntOrNull` so values that exceed `Int.MAX_VALUE` (e.g. 999999999999x1)
+        // safely fall back to the default sizing instead of throwing `NumberFormatException`
+        // and breaking Dokka generation.
+        private fun parseAspectRatio(token: String): Pair<Int, Int>? {
+            val match = PreviewLabSizeRegex.matchEntire(token) ?: return null
+            val (wRaw, hRaw) = match.destructured
+            val w = wRaw.toIntOrNull()?.takeIf { it > 0 } ?: return null
+            val h = hRaw.toIntOrNull()?.takeIf { it > 0 } ?: return null
+            return w to h
         }
     }
 }
@@ -61,8 +69,9 @@ public open class PreviewLabHtmlRenderer(context: DokkaContext) : HtmlRenderer(c
     private fun FlowContent.renderPreviewLabIframe(code: ContentCodeBlock) {
         val rawPayload = (code.children.singleOrNull() as? ContentText)?.text.orEmpty()
         val payload = PreviewLabTagPayload.parse(rawPayload) ?: return
-        val baseUrl = System.getProperty(PreviewLabBaseUrlProperty, PreviewLabDefaultBaseUrl)
-        val src = "$baseUrl/?iframe&previewId=${payload.previewId}"
+        val baseUrl = resolveBaseUrl()
+        val encodedPreviewId = URLEncoder.encode(payload.previewId, Charsets.UTF_8)
+        val src = "$baseUrl/?iframe&previewId=$encodedPreviewId"
 
         // Default sizing keeps a fixed 720px height (enough for the full PreviewLab UI on a
         // typical doc-site column width without making the canvas Compose wasm allocates
@@ -83,6 +92,16 @@ public open class PreviewLabHtmlRenderer(context: DokkaContext) : HtmlRenderer(c
                 attributes["allow"] = "clipboard-read; clipboard-write"
             }
         }
+    }
+
+    // Normalises the configured base URL so it composes cleanly with `"/?iframe&..."`.
+    // - blank / unset → default
+    // - trims surrounding whitespace
+    // - strips trailing `/` so we never emit `//?...`
+    private fun resolveBaseUrl(): String {
+        val raw = System.getProperty(PreviewLabBaseUrlProperty)?.trim().orEmpty()
+        val normalised = raw.ifEmpty { PreviewLabDefaultBaseUrl }
+        return normalised.trimEnd('/')
     }
 
     // Mirrors the default HtmlRenderer fallback for non-iframe code blocks; we cannot call

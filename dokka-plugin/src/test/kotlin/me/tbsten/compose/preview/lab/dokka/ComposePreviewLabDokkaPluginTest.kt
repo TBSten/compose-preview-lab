@@ -208,6 +208,163 @@ class ComposePreviewLabDokkaPluginTest : BaseAbstractTest() {
     }
 
     @Test
+    fun `previewLab tag rejects non-positive WxH and falls back to default sizing`() {
+        val writerPlugin = TestOutputWriterPlugin()
+        val source = """
+            |/src/main/kotlin/test/Test.kt
+            |package example
+            |
+            |/**
+            | * @previewLab ZeroSized 0x0
+            | */
+            |fun zeroSized(): String = "x"
+        """.trimIndent()
+
+        testInline(
+            source,
+            configuration,
+            pluginOverrides = listOf(writerPlugin, ComposePreviewLabDokkaPlugin()),
+        ) {
+            renderingStage = { _, _ ->
+                val html = writerPlugin.writer.contents.getValue("root/example/zero-sized.html")
+                val iframe = Jsoup.parse(html).select("iframe.preview-lab-embedded").first()!!
+                iframe.attr("style") shouldContain "height: 720px"
+                iframe.attr("style") shouldNotContain "aspect-ratio"
+            }
+        }
+    }
+
+    @Test
+    fun `previewLab tag falls back to default when WxH overflows Int range`() {
+        val writerPlugin = TestOutputWriterPlugin()
+        val source = """
+            |/src/main/kotlin/test/Test.kt
+            |package example
+            |
+            |/**
+            | * @previewLab Huge 999999999999x1
+            | */
+            |fun huge(): String = "x"
+        """.trimIndent()
+
+        testInline(
+            source,
+            configuration,
+            pluginOverrides = listOf(writerPlugin, ComposePreviewLabDokkaPlugin()),
+        ) {
+            renderingStage = { _, _ ->
+                val html = writerPlugin.writer.contents.getValue("root/example/huge.html")
+                val iframe = Jsoup.parse(html).select("iframe.preview-lab-embedded").first()!!
+                iframe.attr("style") shouldContain "height: 720px"
+                iframe.attr("style") shouldNotContain "aspect-ratio"
+            }
+        }
+    }
+
+    @Test
+    fun `previewId is URL-encoded when constructing the iframe src`() {
+        val writerPlugin = TestOutputWriterPlugin()
+        // `=` survives Dokka's KDoc parser (it is not a tag separator) but has URL-reserved
+        // meaning in the query string. URLEncoder turns it into `%3D`. Pre-fix this would
+        // have leaked verbatim as `previewId=a=b`, breaking query-string parsing on the
+        // gallery side.
+        val source = """
+            |/src/main/kotlin/test/Test.kt
+            |package example
+            |
+            |/**
+            | * @previewLab a=b
+            | */
+            |fun encoded(): String = "x"
+        """.trimIndent()
+
+        testInline(
+            source,
+            configuration,
+            pluginOverrides = listOf(writerPlugin, ComposePreviewLabDokkaPlugin()),
+        ) {
+            renderingStage = { _, _ ->
+                val html = writerPlugin.writer.contents.getValue("root/example/encoded.html")
+                val src = Jsoup.parse(html).select("iframe.preview-lab-embedded").first()!!.attr("src")
+                src shouldEndWith "previewId=a%3Db"
+                src shouldNotContain "previewId=a=b"
+            }
+        }
+    }
+
+    @Test
+    fun `trailing slash and surrounding whitespace in baseUrl are normalised`() {
+        val writerPlugin = TestOutputWriterPlugin()
+        val source = """
+            |/src/main/kotlin/test/Test.kt
+            |package example
+            |
+            |/**
+            | * @previewLab Foo
+            | */
+            |fun normalised(): String = "x"
+        """.trimIndent()
+
+        val previousValue = System.getProperty(PreviewLabBaseUrlProperty)
+        System.setProperty(PreviewLabBaseUrlProperty, "  https://example.com/lab/  ")
+        try {
+            testInline(
+                source,
+                configuration,
+                pluginOverrides = listOf(writerPlugin, ComposePreviewLabDokkaPlugin()),
+            ) {
+                renderingStage = { _, _ ->
+                    val html = writerPlugin.writer.contents.getValue("root/example/normalised.html")
+                    val src = Jsoup.parse(html).select("iframe.preview-lab-embedded").first()!!.attr("src")
+                    src shouldBe "https://example.com/lab/?iframe&previewId=Foo"
+                }
+            }
+        } finally {
+            if (previousValue == null) {
+                System.clearProperty(PreviewLabBaseUrlProperty)
+            } else {
+                System.setProperty(PreviewLabBaseUrlProperty, previousValue)
+            }
+        }
+    }
+
+    @Test
+    fun `blank baseUrl property falls back to the default value`() {
+        val writerPlugin = TestOutputWriterPlugin()
+        val source = """
+            |/src/main/kotlin/test/Test.kt
+            |package example
+            |
+            |/**
+            | * @previewLab Foo
+            | */
+            |fun blank(): String = "x"
+        """.trimIndent()
+
+        val previousValue = System.getProperty(PreviewLabBaseUrlProperty)
+        System.setProperty(PreviewLabBaseUrlProperty, "   ")
+        try {
+            testInline(
+                source,
+                configuration,
+                pluginOverrides = listOf(writerPlugin, ComposePreviewLabDokkaPlugin()),
+            ) {
+                renderingStage = { _, _ ->
+                    val html = writerPlugin.writer.contents.getValue("root/example/blank.html")
+                    val src = Jsoup.parse(html).select("iframe.preview-lab-embedded").first()!!.attr("src")
+                    src shouldBe "$PreviewLabDefaultBaseUrl/?iframe&previewId=Foo"
+                }
+            }
+        } finally {
+            if (previousValue == null) {
+                System.clearProperty(PreviewLabBaseUrlProperty)
+            } else {
+                System.setProperty(PreviewLabBaseUrlProperty, previousValue)
+            }
+        }
+    }
+
+    @Test
     fun `regular kotlin code blocks are still rendered as sample-container`() {
         val writerPlugin = TestOutputWriterPlugin()
         val source = """
