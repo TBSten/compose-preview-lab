@@ -13,7 +13,7 @@ public final class app/ComposableSingletons$PreviewsKt {
 	public static final field INSTANCE Lapp/ComposableSingletons$PreviewsKt;
 	public fun <init> ()V
 	public final fun getLambda$-1334418623$app ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-755644074$app ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-501254667$app ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class app/FeaturedFileList : java/util/Map, kotlin/jvm/internal/markers/KMappedMarker {
