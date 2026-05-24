@@ -7,6 +7,9 @@ class CollectPreviewsTest {
 
     @Test
     fun collectModulePreviewsContainsThisModulePreviews() {
-        assertTrue(appPreviews.toList().size == appModulePreviews.toList().size + 2)
+        // uiLib currently exposes 3 @Preview functions (MyButtonPreview, MyTextFieldPreview,
+        // UserCardAutoFieldEventPreview). Adding / removing a preview in uiLib requires
+        // updating this number alongside.
+        assertTrue(appPreviews.toList().size == appModulePreviews.toList().size + 3)
     }
 }
