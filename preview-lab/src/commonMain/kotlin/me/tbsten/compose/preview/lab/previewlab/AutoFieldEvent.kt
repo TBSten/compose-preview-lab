@@ -52,10 +52,13 @@ public const val AutoDefaultLabel: String = "auto"
  * - [Double] → [DoubleField]
  * - [Boolean] → [BooleanField]
  *
- * For any other type, call [autoField] throws at runtime with a message pointing at the
+ * For any other type, [autoField] throws at runtime with a message pointing at the
  * existing `field { ... }` / `fieldValue { ... }` / `fieldState { ... }` APIs. The
- * compiler plugin does NOT rewrite unsupported types at compile time — this is intentional
- * so that runtime support for new types can be added without re-releasing the plugin.
+ * compiler plugin still rewrites the call to inject the surrounding parameter name as
+ * [label]; what it does **not** do is substitute a type-specific field builder for the
+ * `autoField()` call itself. The type-based dispatch lives entirely in the runtime
+ * `when (T::class)` below, so support for a new type can be added by editing this file
+ * without re-releasing the compiler plugin.
  *
  * # Compiler plugin label injection
  *
@@ -65,9 +68,13 @@ public const val AutoDefaultLabel: String = "auto"
  * plugin only fills in [AutoDefaultLabel] (the declared default), never an explicit
  * argument.
  *
- * When the plugin is **not** applied, [label] falls back to [AutoDefaultLabel] so the
- * field still renders (all fields named `"auto"` collapse into one inspector entry, which
- * is the expected degraded behavior — a clear hint that the plugin is missing).
+ * When the plugin is **not** applied, [label] falls back to [AutoDefaultLabel] for every
+ * call site. The fields still render — each `autoField()` call still pushes a separate
+ * entry into [PreviewLabState.fields] — but every entry shows the same `"auto"` label in
+ * the inspector pane, which makes them visually indistinguishable. Additionally, URL
+ * parameter restoration (which keys by label) collapses: only the first `"auto"` field's
+ * value survives a reload, the rest fall back to their initial values. The repeated
+ * `"auto"` label in the inspector is the intended hint that the plugin is missing.
  *
  * @param label Label shown in the inspector pane. The compiler plugin injects the
  * surrounding parameter name when possible.
