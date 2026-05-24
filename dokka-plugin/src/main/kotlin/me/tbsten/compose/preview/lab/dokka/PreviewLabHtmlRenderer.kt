@@ -19,6 +19,27 @@ import org.jetbrains.dokka.plugability.DokkaContext
 internal const val PreviewLabBaseUrlProperty: String = "previewLab.dokka.baseUrl"
 internal const val PreviewLabDefaultBaseUrl: String = "compose-preview-lab-gallery"
 
+// `<width>x<height>` (integers, lowercase `x`). Used as the iframe's CSS
+// `aspect-ratio` so the embedded preview keeps its shape across screen widths.
+internal val PreviewLabSizeRegex: Regex = Regex("""^(\d+)x(\d+)$""")
+
+internal data class PreviewLabTagPayload(val previewId: String, val aspectRatio: Pair<Int, Int>?) {
+    companion object {
+        fun parse(raw: String): PreviewLabTagPayload? {
+            val tokens = raw.trim().split(Regex("""\s+"""))
+            val previewId = tokens.firstOrNull()?.takeIf { it.isNotEmpty() } ?: return null
+            val aspectRatio = tokens.drop(1)
+                .firstNotNullOfOrNull { token ->
+                    PreviewLabSizeRegex.matchEntire(token)?.let {
+                        val (w, h) = it.destructured
+                        w.toInt() to h.toInt()
+                    }
+                }
+            return PreviewLabTagPayload(previewId, aspectRatio)
+        }
+    }
+}
+
 // Known limitation: Dokka v2 runs the generator in a forked worker
 // (ProcessIsolation), so `-DpreviewLab.dokka.baseUrl=...` set on the Gradle
 // invocation or via `systemProp.` in `gradle.properties` does NOT reach this
@@ -38,17 +59,23 @@ public open class PreviewLabHtmlRenderer(context: DokkaContext) : HtmlRenderer(c
     }
 
     private fun FlowContent.renderPreviewLabIframe(code: ContentCodeBlock) {
-        val previewId = (code.children.singleOrNull() as? ContentText)?.text.orEmpty()
+        val rawPayload = (code.children.singleOrNull() as? ContentText)?.text.orEmpty()
+        val payload = PreviewLabTagPayload.parse(rawPayload) ?: return
         val baseUrl = System.getProperty(PreviewLabBaseUrlProperty, PreviewLabDefaultBaseUrl)
-        val src = "$baseUrl/?iframe&previewId=$previewId"
+        val src = "$baseUrl/?iframe&previewId=${payload.previewId}"
 
-        // The default size targets the full PreviewLab UI (header + sidebar + preview area
-        // + inspectors panel). A too-small height squeezes the canvas Compose wasm allocates,
-        // making content look blurry on high-DPI screens. Consumers can override via CSS on
-        // the `iframe.preview-lab-embedded` / `.preview-lab-embedded-container` selectors.
+        // Default sizing keeps a fixed 720px height (enough for the full PreviewLab UI on a
+        // typical doc-site column width without making the canvas Compose wasm allocates
+        // look blurry on high-DPI screens). When the tag explicitly specifies `WxH`, switch
+        // to aspect-ratio so the iframe scales with the column while preserving the ratio.
+        val sizeStyle = when (val ar = payload.aspectRatio) {
+            null -> "width: 100%; height: 720px;"
+            else -> "width: 100%; aspect-ratio: ${ar.first} / ${ar.second}; height: auto;"
+        }
+
         div(classes = "preview-lab-embedded-container") {
             iframe(classes = "preview-lab-embedded") {
-                style = "display: block; width: 100%; height: 720px; border: 0; margin: 16px auto;"
+                style = "display: block; $sizeStyle border: 0; margin: 16px auto;"
                 this.src = src
                 attributes["loading"] = "lazy"
                 attributes["allow"] = "clipboard-read; clipboard-write"

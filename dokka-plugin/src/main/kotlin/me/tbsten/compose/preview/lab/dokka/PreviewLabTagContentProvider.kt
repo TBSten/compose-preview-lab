@@ -17,11 +17,13 @@ internal object PreviewLabTagContentProvider : CustomTagContentProvider {
         sourceSet: DokkaConfiguration.DokkaSourceSet,
         customTag: CustomTagWrapper,
     ) {
-        val previewId = customTag.extractPreviewId() ?: return
-        codeBlock(language = PreviewLabIframeCode) { text(previewId) }
+        val payload = customTag.extractPayload() ?: return
+        codeBlock(language = PreviewLabIframeCode) { text(payload) }
     }
 
-    private fun CustomTagWrapper.extractPreviewId(): String? {
+    // Returns the entire trimmed tag body. The renderer is responsible for splitting it into
+    // `previewId` and optional size token (`WxH`).
+    private fun CustomTagWrapper.extractPayload(): String? {
         val firstParagraph = root.children.firstOrNull() as? P ?: return null
         val firstText = firstParagraph.children.firstOrNull() as? Text ?: return null
         return firstText.body.trim().takeIf { it.isNotEmpty() }

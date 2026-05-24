@@ -4,6 +4,7 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldEndWith
+import io.kotest.matchers.string.shouldNotContain
 import org.jetbrains.dokka.base.testApi.testRunner.BaseAbstractTest
 import org.jsoup.Jsoup
 import org.junit.jupiter.api.Test
@@ -116,6 +117,92 @@ class ComposePreviewLabDokkaPluginTest : BaseAbstractTest() {
                 System.clearProperty(PreviewLabBaseUrlProperty)
             } else {
                 System.setProperty(PreviewLabBaseUrlProperty, previousValue)
+            }
+        }
+    }
+
+    @Test
+    fun `previewLab tag without size keeps the default fixed-height style`() {
+        val writerPlugin = TestOutputWriterPlugin()
+        val source = """
+            |/src/main/kotlin/test/Test.kt
+            |package example
+            |
+            |/**
+            | * @previewLab DefaultSized
+            | */
+            |fun defaultSized(): String = "x"
+        """.trimIndent()
+
+        testInline(
+            source,
+            configuration,
+            pluginOverrides = listOf(writerPlugin, ComposePreviewLabDokkaPlugin()),
+        ) {
+            renderingStage = { _, _ ->
+                val html = writerPlugin.writer.contents.getValue("root/example/default-sized.html")
+                val style = Jsoup.parse(html).select("iframe.preview-lab-embedded").first()!!.attr("style")
+                style shouldContain "height: 720px"
+                style shouldNotContain "aspect-ratio"
+            }
+        }
+    }
+
+    @Test
+    fun `previewLab tag with WxH suffix emits aspect-ratio instead of fixed height`() {
+        val writerPlugin = TestOutputWriterPlugin()
+        val source = """
+            |/src/main/kotlin/test/Test.kt
+            |package example
+            |
+            |/**
+            | * @previewLab Custom 1280x980
+            | */
+            |fun custom(): String = "x"
+        """.trimIndent()
+
+        testInline(
+            source,
+            configuration,
+            pluginOverrides = listOf(writerPlugin, ComposePreviewLabDokkaPlugin()),
+        ) {
+            renderingStage = { _, _ ->
+                val html = writerPlugin.writer.contents.getValue("root/example/custom.html")
+                val iframe = Jsoup.parse(html).select("iframe.preview-lab-embedded").first()!!
+                val style = iframe.attr("style")
+                style shouldContain "aspect-ratio: 1280 / 980"
+                style shouldContain "height: auto"
+                style shouldNotContain "720px"
+
+                // previewId itself must not include the size token.
+                iframe.attr("src") shouldEndWith "previewId=Custom"
+            }
+        }
+    }
+
+    @Test
+    fun `previewLab tag with malformed size token falls back to default sizing`() {
+        val writerPlugin = TestOutputWriterPlugin()
+        val source = """
+            |/src/main/kotlin/test/Test.kt
+            |package example
+            |
+            |/**
+            | * @previewLab Foo not-a-size
+            | */
+            |fun malformed(): String = "x"
+        """.trimIndent()
+
+        testInline(
+            source,
+            configuration,
+            pluginOverrides = listOf(writerPlugin, ComposePreviewLabDokkaPlugin()),
+        ) {
+            renderingStage = { _, _ ->
+                val html = writerPlugin.writer.contents.getValue("root/example/malformed.html")
+                val iframe = Jsoup.parse(html).select("iframe.preview-lab-embedded").first()!!
+                iframe.attr("style") shouldContain "height: 720px"
+                iframe.attr("src") shouldEndWith "previewId=Foo"
             }
         }
     }
