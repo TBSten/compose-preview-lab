@@ -1,14 +1,18 @@
 package me.tbsten.compose.preview.lab.previewlab
 
 import androidx.compose.runtime.Composable
+import kotlin.reflect.typeOf
 import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
+import me.tbsten.compose.preview.lab.PreviewLabField
 import me.tbsten.compose.preview.lab.field.BooleanField
 import me.tbsten.compose.preview.lab.field.ByteField
 import me.tbsten.compose.preview.lab.field.DoubleField
+import me.tbsten.compose.preview.lab.field.EnumField
 import me.tbsten.compose.preview.lab.field.FloatField
 import me.tbsten.compose.preview.lab.field.IntField
 import me.tbsten.compose.preview.lab.field.LongField
 import me.tbsten.compose.preview.lab.field.StringField
+import me.tbsten.compose.preview.lab.field.nullable
 
 /**
  * Default label used by [autoField] / [autoEvent] when the compiler plugin cannot
@@ -22,7 +26,7 @@ import me.tbsten.compose.preview.lab.field.StringField
 public const val AutoDefaultLabel: String = "auto"
 
 /**
- * Generates a default [me.tbsten.compose.preview.lab.PreviewLabField] for primitive types
+ * Generates a default [PreviewLabField] for primitive types (and their nullable variants)
  * so callers do not have to spell out `fieldValue { StringField("name", "") }` for every
  * parameter.
  *
@@ -38,6 +42,11 @@ public const val AutoDefaultLabel: String = "auto"
  *         name = autoField(),
  *         age = autoField(),
  *         isPremium = autoField(),
+ *         // `String?` → `StringField("nickname", "").nullable(initialValue = null)`
+ *         nickname = autoField(),
+ *         // enum class → `EnumField("plan", initialValue = Plan.entries.first())`
+ *         // (rewritten to [autoEnumField] by the compiler plugin)
+ *         plan = autoField(),
  *     )
  * }
  * ```
@@ -51,14 +60,17 @@ public const val AutoDefaultLabel: String = "auto"
  * - [Float] → [FloatField]
  * - [Double] → [DoubleField]
  * - [Boolean] → [BooleanField]
+ * - Any of the above as a nullable type (`String?`, `Int?`, …) → the same field wrapped with
+ *   [nullable], starting at `null`
+ * - `enum class` (optionally nullable) → [EnumField], **when the compiler plugin is applied**:
+ *   the plugin rewrites `autoField<E>()` to [autoEnumField] / [autoNullableEnumField] because the
+ *   enum entries can only be enumerated with an `E : Enum<E>` bound.
  *
  * For any other type, [autoField] throws at runtime with a message pointing at the
- * existing `field { ... }` / `fieldValue { ... }` / `fieldState { ... }` APIs. The
- * compiler plugin still rewrites the call to inject the surrounding parameter name as
- * [label]; what it does **not** do is substitute a type-specific field builder for the
- * `autoField()` call itself. The type-based dispatch lives entirely in the runtime
- * `when (T::class)` below, so support for a new type can be added by editing this file
- * without re-releasing the compiler plugin.
+ * existing `field { ... }` / `fieldValue { ... }` / `fieldState { ... }` APIs, and the compiler
+ * plugin reports a warning at the call site. The type-based dispatch lives entirely in the
+ * runtime `when (T::class)` below, so support for a new primitive type can be added by
+ * editing this file without re-releasing the compiler plugin.
  *
  * # Compiler plugin label injection
  *
@@ -80,28 +92,99 @@ public const val AutoDefaultLabel: String = "auto"
  * surrounding parameter name when possible.
  *
  * @see autoEvent
+ * @see autoEnumField
  */
 @ExperimentalComposePreviewLabApi
 @Composable
 public inline fun <reified T> PreviewLabScope.autoField(label: String = AutoDefaultLabel): T {
+    val nullable = typeOf<T>().isMarkedNullable
     @Suppress("UNCHECKED_CAST")
-    return when (T::class) {
-        String::class -> fieldValue { StringField(label, "") } as T
-        Int::class -> fieldValue { IntField(label, 0) } as T
-        Long::class -> fieldValue { LongField(label, 0L) } as T
-        Byte::class -> fieldValue { ByteField(label, 0) } as T
-        Float::class -> fieldValue { FloatField(label, 0f) } as T
-        Double::class -> fieldValue { DoubleField(label, 0.0) } as T
-        Boolean::class -> fieldValue { BooleanField(label, false) } as T
-        else -> error(
-            "autoField<${T::class.simpleName}>() is not supported. " +
-                "Use field { ... } / fieldValue { ... } / fieldState { ... } " +
-                "with an explicit Field type, or open an issue at " +
-                "https://github.com/TBSten/compose-preview-lab/issues/69 " +
-                "to request a default Field for ${T::class.simpleName}.",
-        )
-    }
+    return fieldValue<Any?> {
+        when (T::class) {
+            String::class -> StringField(label, "").orNullable(nullable)
+            Int::class -> IntField(label, 0).orNullable(nullable)
+            Long::class -> LongField(label, 0L).orNullable(nullable)
+            Byte::class -> ByteField(label, 0).orNullable(nullable)
+            Float::class -> FloatField(label, 0f).orNullable(nullable)
+            Double::class -> DoubleField(label, 0.0).orNullable(nullable)
+            Boolean::class -> BooleanField(label, false).orNullable(nullable)
+            else -> error(
+                "autoField<${T::class.simpleName}>() is not supported. " +
+                    "Use field { ... } / fieldValue { ... } / fieldState { ... } " +
+                    "with an explicit Field type (autoEnumField() for enum classes without " +
+                    "the compiler plugin), or open an issue at " +
+                    "https://github.com/TBSten/compose-preview-lab/issues/69 " +
+                    "to request a default Field for ${T::class.simpleName}.",
+            )
+        }
+    } as T
 }
+
+/**
+ * Wraps the receiver with [nullable] (starting at `null`) when [nullable] is `true`.
+ *
+ * Shared by every [autoField] branch so that `autoField<String?>()` produces a
+ * `StringField("…", "").nullable(initialValue = null)` while `autoField<String>()` keeps the
+ * plain `StringField`.
+ */
+@ExperimentalComposePreviewLabApi
+@PublishedApi
+internal fun <Value : Any> PreviewLabField<Value>.orNullable(nullable: Boolean): PreviewLabField<out Value?> =
+    if (nullable) nullable(initialValue = null) else this
+
+/**
+ * [autoField] for `enum class` values: generates an [EnumField] whose initial value is the first
+ * entry of [E].
+ *
+ * # Usage
+ *
+ * ```kt
+ * enum class Plan { Free, Pro }
+ *
+ * @Preview
+ * @Composable
+ * private fun PlanBadgePreview() = PreviewLab {
+ *     PlanBadge(
+ *         // Equivalent to `fieldValue { EnumField("plan", initialValue = Plan.Free) }`.
+ *         plan = autoEnumField(),
+ *     )
+ * }
+ * ```
+ *
+ * With the compiler plugin applied, writing `plan = autoField()` is enough: the plugin rewrites
+ * `autoField<E>()` to `autoEnumField<E>(label = "plan")` whenever `E` is an enum class (and to
+ * [autoNullableEnumField] for `E?`). This function exists as a separate entry point because an
+ * unbounded `autoField<T>()` cannot enumerate the entries of `T` at runtime on every platform.
+ *
+ * @param label Label shown in the inspector pane. The compiler plugin injects the surrounding
+ * parameter name when possible.
+ *
+ * @see autoField
+ * @see autoNullableEnumField
+ */
+@ExperimentalComposePreviewLabApi
+@Composable
+public inline fun <reified E : Enum<E>> PreviewLabScope.autoEnumField(label: String = AutoDefaultLabel): E =
+    fieldValue { EnumField(label, initialValue = enumValues<E>().first()) }
+
+/**
+ * Nullable variant of [autoEnumField]: an [EnumField] wrapped with [nullable], starting at `null`.
+ *
+ * ```kt
+ * PlanBadge(
+ *     // Equivalent to `fieldValue { EnumField("plan", initialValue = Plan.Free).nullable(initialValue = null) }`.
+ *     plan = autoNullableEnumField(),
+ * )
+ * ```
+ *
+ * The compiler plugin rewrites `autoField<E?>()` to this function for enum classes.
+ *
+ * @see autoEnumField
+ */
+@ExperimentalComposePreviewLabApi
+@Composable
+public inline fun <reified E : Enum<E>> PreviewLabScope.autoNullableEnumField(label: String = AutoDefaultLabel): E? =
+    fieldValue { EnumField(label, initialValue = enumValues<E>().first()).nullable(initialValue = null) }
 
 /**
  * Generates a `() -> Unit` callback that records an event via

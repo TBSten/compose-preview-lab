@@ -3,7 +3,9 @@
 package me.tbsten.compose.preview.lab.compiler.utils.ir
 
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageLocation
+import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
+import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.util.file
@@ -56,3 +58,27 @@ internal fun IrDeclaration.compilerMessageLocation(): CompilerMessageLocation? {
  */
 internal fun IrSimpleFunction.compilerMessageLocation(): CompilerMessageLocation? =
     (this as IrDeclaration).compilerMessageLocation()
+
+/**
+ * Resolves the source location of an arbitrary [IrElement] (typically an expression, which has no
+ * `file` of its own) inside [file].
+ *
+ * **Sample call → returned location**:
+ * ```kotlin
+ * // Source: src/main/kotlin/com/example/UserCardPreview.kt
+ * //   20 |     UserCard(user = autoField())
+ * //
+ * // autoFieldCall.compilerMessageLocation(file)
+ * //   → CompilerMessageLocation(path="src/main/kotlin/com/example/UserCardPreview.kt", line=20, column=21, lineContent=null)
+ * ```
+ *
+ * Returns `null` when the element has no source offset (`UNDEFINED_OFFSET`), e.g. for IR the plugin
+ * synthesised itself.
+ */
+internal fun IrElement.compilerMessageLocation(file: IrFile): CompilerMessageLocation? {
+    val entry = file.fileEntry
+    val offset = startOffset.takeIf { it >= 0 } ?: return null
+    val line = entry.getLineNumber(offset) + 1
+    val column = entry.getColumnNumber(offset) + 1
+    return CompilerMessageLocation.create(entry.name, line, column, null)
+}

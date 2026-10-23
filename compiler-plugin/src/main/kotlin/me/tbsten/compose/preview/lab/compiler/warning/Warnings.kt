@@ -125,3 +125,43 @@ class CrossArtifactHintDuplicateWarning(private val count: Int, private val mark
     }
     override val replies: List<String> = listOf(Replies.InvestigateDuplicateArtifacts)
 }
+
+// -----------------------------------------------------------------------------
+// IR WARNING — autoField<T>() with a type the runtime has no default Field for
+// -----------------------------------------------------------------------------
+
+/**
+ * `[ComposePreviewLab/IR,INVALID_USAGE] autoField<com.example.User>() has no default Field
+ * and will throw at runtime`. Fires from `InjectAutoLabelIrTransformer` (IR pass) when the
+ * type argument of an `autoField<T>()` call is a concrete class that is neither one of the
+ * primitives the runtime `when (T::class)` dispatch supports (`String` / `Int` / `Long` /
+ * `Byte` / `Float` / `Double` / `Boolean`, nullable or not) nor an enum class (which the pass
+ * rewrites to `autoEnumField<T>()`).
+ *
+ * Compilation continues: the call is left untouched and the runtime `autoField` throws with the
+ * same guidance when the preview is composed. Type parameters (`autoField<T>()` inside a generic
+ * helper) are not reported because nothing can be decided at compile time.
+ *
+ * **Sample rendered output**:
+ * ```
+ * [ComposePreviewLab/IR,INVALID_USAGE] autoField<com.example.User>() has no default Field and will throw at runtime
+ *
+ *     autoField() only knows how to build a Field for String / Int / Long / Byte / Float /
+ *     Double / Boolean (nullable or not) and enum classes. ...
+ *
+ *   Context:
+ *     type: com.example.User
+ * ```
+ */
+class UnsupportedAutoFieldTypeWarning(private val typeFqn: String) : ComposePreviewLabCompilerPluginWarning {
+    override val categories: List<Category> = listOf(Category.IR, Category.INVALID_USAGE)
+    override val message: String = "autoField<$typeFqn>() has no default Field and will throw at runtime"
+    override val description: String =
+        "autoField() only knows how to build a Field for String / Int / Long / Byte / Float / Double / Boolean " +
+            "(nullable or not) and enum classes. The call compiles, but composing the preview throws " +
+            "`IllegalStateException` because the runtime dispatch has no branch for this type."
+    override val context: List<String> = contextOf {
+        "type"(typeFqn)
+    }
+    override val replies: List<String> = listOf(Replies.UseExplicitFieldInsteadOfAutoField)
+}

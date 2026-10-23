@@ -37,9 +37,9 @@ public final class me/tbsten/compose/preview/lab/sample/lib/ComposableSingletons
 public final class me/tbsten/compose/preview/lab/sample/lib/ComposableSingletons$UserCardKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/sample/lib/ComposableSingletons$UserCardKt;
 	public fun <init> ()V
-	public final fun getLambda$-1729459593$uiLib_release ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$-1880616957$uiLib_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-947308608$uiLib_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1675859601$uiLib_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$608411226$uiLib_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/sample/lib/MyButtonKt {
@@ -50,11 +50,19 @@ public final class me/tbsten/compose/preview/lab/sample/lib/MyTextFieldKt {
 	public static final fun MyTextField (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class me/tbsten/compose/preview/lab/sample/lib/Plan : java/lang/Enum {
+	public static final field Free Lme/tbsten/compose/preview/lab/sample/lib/Plan;
+	public static final field Pro Lme/tbsten/compose/preview/lab/sample/lib/Plan;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lme/tbsten/compose/preview/lab/sample/lib/Plan;
+	public static fun values ()[Lme/tbsten/compose/preview/lab/sample/lib/Plan;
+}
+
 public final class me/tbsten/compose/preview/lab/sample/lib/PreviewLabKt {
 	public static final fun CustomizedPreviewLab (Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class me/tbsten/compose/preview/lab/sample/lib/UserCardKt {
-	public static final fun UserCard (Ljava/lang/String;IZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun UserCard (Ljava/lang/String;Ljava/lang/String;IZLme/tbsten/compose/preview/lab/sample/lib/Plan;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 

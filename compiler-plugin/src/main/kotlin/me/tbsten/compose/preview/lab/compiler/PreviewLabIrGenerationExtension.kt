@@ -54,7 +54,7 @@ class PreviewLabIrGenerationExtension(
         // traversal cost.
         compatContext.transformModuleFragment(
             moduleFragment,
-            InjectAutoLabelIrTransformer(pluginContext, compatContext),
+            InjectAutoLabelIrTransformer(pluginContext, compatContext, messageCollector),
         )
 
         val previews = collectPreviews(moduleFragment)

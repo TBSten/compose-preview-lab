@@ -14,6 +14,7 @@ import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.previewlab.autoEvent
 import me.tbsten.compose.preview.lab.previewlab.autoField
+import me.tbsten.compose.preview.lab.sample.lib.Plan
 import me.tbsten.compose.preview.lab.sample.lib.UserCard
 
 /**
@@ -36,8 +37,10 @@ class AutoFieldEventLabelInjectionTest :
                     PreviewLab(state = state) {
                         UserCard(
                             name = autoField(),
+                            nickname = autoField(),
                             age = autoField(),
                             isPremium = autoField(),
+                            plan = autoField(),
                             onClick = autoEvent(),
                             onLongClick = autoEvent(),
                         )
@@ -52,10 +55,16 @@ class AutoFieldEventLabelInjectionTest :
                 // `PreviewLab` registers its own `ScreenSize` field at the top of the list,
                 // so we drop the built-in entries before asserting on the labels generated
                 // by the `autoField()` plugin transform.
-                val userFieldLabels = state.fields
-                    .map { it.label }
-                    .filter { it != "ScreenSize" }
-                userFieldLabels shouldContainExactly listOf("name", "age", "isPremium")
+                val userFields = state.fields.filter { it.label != "ScreenSize" }
+                userFields.map { it.label } shouldContainExactly listOf("name", "nickname", "age", "isPremium", "plan")
+
+                // `String?` starts at null (nullable wrapper), the enum starts at its first entry
+                // (the `autoField<Plan>()` → `autoEnumField<Plan>()` rewrite went through the real
+                // runtime + Compose compiler pipeline).
+                assertSoftly {
+                    userFields.first { it.label == "nickname" }.value shouldBe null
+                    userFields.first { it.label == "plan" }.value shouldBe Plan.Free
+                }
 
                 // The event lambdas are not invoked by the gallery render, so no events
                 // are recorded yet — verifying this catches a regression where `autoEvent`

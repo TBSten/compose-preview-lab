@@ -20,17 +20,23 @@ import me.tbsten.compose.preview.lab.previewlab.PreviewLab
 import me.tbsten.compose.preview.lab.previewlab.autoEvent
 import me.tbsten.compose.preview.lab.previewlab.autoField
 
+/** Subscription plan shown on [UserCard]; exercises the enum branch of `autoField()`. */
+enum class Plan { Free, Pro }
+
 /**
  * A small showcase component used by the autoField / autoEvent integration preview.
  *
- * Has a mix of String / Int / Boolean primitives plus two `() -> Unit` callbacks so the
- * preview can exercise every shape the compiler plugin should rewrite.
+ * Has a mix of String / Int / Boolean primitives, a nullable String, an enum, plus two
+ * `() -> Unit` callbacks so the preview can exercise every shape the compiler plugin should
+ * rewrite.
  */
 @Composable
 fun UserCard(
     name: String,
+    nickname: String?,
     age: Int,
     isPremium: Boolean,
+    plan: Plan,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -44,8 +50,14 @@ fun UserCard(
                 text = if (isPremium) "★ $name" else name,
                 style = MaterialTheme.typography.titleMedium,
             )
+            if (nickname != null) {
+                Text(
+                    text = "aka $nickname",
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
             Text(
-                text = "age $age",
+                text = "age $age · ${plan.name} plan",
                 style = MaterialTheme.typography.bodyMedium,
             )
             Row(
@@ -64,8 +76,9 @@ fun UserCard(
  *
  * Every parameter of [UserCard] is wired through one of the auto-helpers — the compiler
  * plugin injects the parameter name as the field/event label, so the inspector pane
- * automatically renders one field per primitive parameter labelled "name", "age",
- * "isPremium" and event toasts labelled "onClick", "onLongClick".
+ * automatically renders one field per parameter labelled "name", "nickname" (nullable
+ * `StringField`), "age", "isPremium", "plan" (`EnumField` via the `autoEnumField` rewrite)
+ * and event toasts labelled "onClick", "onLongClick".
  */
 @ComposePreviewLabOption(
     id = "UserCardAutoFieldEventPreview",
@@ -76,8 +89,10 @@ fun UserCard(
 private fun UserCardAutoFieldEventPreview() = PreviewLab {
     UserCard(
         name = autoField(),
+        nickname = autoField(),
         age = autoField(),
         isPremium = autoField(),
+        plan = autoField(),
         onClick = autoEvent(),
         onLongClick = autoEvent(),
     )
