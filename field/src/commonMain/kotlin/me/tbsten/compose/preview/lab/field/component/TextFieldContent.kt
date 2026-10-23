@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
-import me.tbsten.compose.preview.lab.ui.components.textfield.PreviewLabOutlinedTextField
+import me.tbsten.compose.preview.lab.ui.components.textfield.PreviewLabTextField
 
 /**
  * Helper for UI of Fields that can be input with TextField.
@@ -66,7 +66,7 @@ fun <Value> TextFieldContent(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         modifier = modifier,
     ) {
-        PreviewLabOutlinedTextField(
+        PreviewLabTextField(
             value = textFieldText,
             onValueChange = {
                 textFieldText = it

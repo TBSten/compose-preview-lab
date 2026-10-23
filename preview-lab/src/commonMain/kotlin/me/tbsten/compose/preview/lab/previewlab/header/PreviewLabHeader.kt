@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabHorizontalDivider
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabVerticalDivider
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabHorizontalSeparator
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabVerticalSeparator
 
 @Composable
 internal fun PreviewLabHeader(
@@ -46,7 +46,7 @@ internal fun PreviewLabHeader(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier
-                    .background(PreviewLabTheme.colors.background)
+                    .background(PreviewLabTheme.colors.panel)
                     .fillMaxWidth()
                     .horizontalScroll(rememberScrollState())
                     .padding(8.dp)
@@ -59,21 +59,21 @@ internal fun PreviewLabHeader(
                     onOffsetReset = onOffsetReset,
                 )
 
-                PreviewLabVerticalDivider()
+                PreviewLabVerticalSeparator()
 
                 GridSize(
                     gridSize = state.gridSize,
                     onGridSizeChange = onGridSizeChange,
                 )
 
-                PreviewLabVerticalDivider()
+                PreviewLabVerticalSeparator()
 
                 InspectorPanelVisible(
                     isInspectorPanelVisible = isInspectorPanelVisible,
                     onToggle = onIsInspectorPanelVisibleToggle,
                 )
 
-                PreviewLabVerticalDivider()
+                PreviewLabVerticalSeparator()
 
                 Screenshot(
                     modifier = Modifier.align(Alignment.CenterVertically),
@@ -82,7 +82,7 @@ internal fun PreviewLabHeader(
                 PlatformHeaders(state = state)
             }
 
-            PreviewLabHorizontalDivider(
+            PreviewLabHorizontalSeparator(
                 Modifier
                     .zIndex(2f),
             )

@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabTooltipSide
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_refresh
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_zoom_in
@@ -32,6 +33,7 @@ internal fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, onOffsetReset: (
             PreviewLabIconButton(
                 painter = painterResource(PreviewLabUiRes.drawable.icon_zoom_in),
                 contentDescription = "Zoom In",
+                tooltipSide = PreviewLabTooltipSide.Bottom,
                 enabled = scale < MaxZoomScale,
                 onClick = {
                     onScaleChange(scale.nextZoomInScale())
@@ -41,6 +43,7 @@ internal fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, onOffsetReset: (
             PreviewLabIconButton(
                 painter = painterResource(PreviewLabUiRes.drawable.icon_zoom_out),
                 contentDescription = "Zoom Out",
+                tooltipSide = PreviewLabTooltipSide.Bottom,
                 enabled = MinZoomScale < scale,
                 onClick = {
                     onScaleChange(scale.nextZoomOutScale())
@@ -51,6 +54,7 @@ internal fun Zoom(scale: Float, onScaleChange: (Float) -> Unit, onOffsetReset: (
             PreviewLabIconButton(
                 painter = painterResource(PreviewLabUiRes.drawable.icon_refresh),
                 contentDescription = "Zoom Reset",
+                tooltipSide = PreviewLabTooltipSide.Bottom,
                 onClick = {
                     onScaleChange(1.00f)
                     onOffsetReset()

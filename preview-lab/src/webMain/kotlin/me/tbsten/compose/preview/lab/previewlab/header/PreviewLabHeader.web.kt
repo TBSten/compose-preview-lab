@@ -42,14 +42,14 @@ import me.tbsten.compose.preview.lab.previewlab.PreviewLabState
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonDefaults
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonStyle
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabCheckbox
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabIcon
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabModal
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabSelectButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabSurface
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
-import me.tbsten.compose.preview.lab.ui.components.textfield.PreviewLabOutlinedTextField
+import me.tbsten.compose.preview.lab.ui.components.textfield.PreviewLabTextField
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_arrow_drop_down
 import org.jetbrains.compose.resources.painterResource
@@ -136,13 +136,13 @@ internal actual fun RowScope.PlatformHeaders(state: PreviewLabState) {
     ) {
         PreviewLabButton(
             text = "Copy",
-            variant = PreviewLabButtonVariant.PrimaryOutlined,
+            style = PreviewLabButtonStyle.Outlined,
             onClick = { copyUrl() },
             shape = PreviewLabButtonDefaults.ButtonShape.copy(topEnd = CornerSize(0), bottomEnd = CornerSize(0)),
         )
 
         PreviewLabButton(
-            variant = PreviewLabButtonVariant.PrimaryOutlined,
+            style = PreviewLabButtonStyle.Outlined,
             onClick = { isDetailDialogOpen = !isDetailDialogOpen },
             shape = PreviewLabButtonDefaults.ButtonShape.copy(topStart = CornerSize(0), bottomStart = CornerSize(0)),
             contentPadding = PaddingValues(
@@ -164,8 +164,8 @@ internal actual fun RowScope.PlatformHeaders(state: PreviewLabState) {
         ) {
             SelectionContainer {
                 PreviewLabSurface(
-                    color = PreviewLabTheme.colors.background,
-                    contentColor = PreviewLabTheme.colors.onBackground,
+                    color = PreviewLabTheme.colors.panel,
+                    contentColor = PreviewLabTheme.colors.onPanel,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Column(
@@ -225,10 +225,11 @@ private fun OnlyIdContent(close: () -> Unit) {
 
         Column(Modifier.fillMaxWidth()) {
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                PreviewLabOutlinedTextField(
+                PreviewLabTextField(
                     value = copy.link,
                     onValueChange = { },
                     enabled = true,
+                    readOnly = true,
                     maxLines = 3,
                     modifier = Modifier.weight(1f),
                 )
@@ -300,10 +301,11 @@ private fun WithDetailsContent(state: PreviewLabState, close: () -> Unit) {
 
         Column(Modifier.fillMaxWidth()) {
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                PreviewLabOutlinedTextField(
+                PreviewLabTextField(
                     value = copy.link,
                     onValueChange = { },
                     enabled = true,
+                    readOnly = true,
                     maxLines = 3,
                     modifier = Modifier.weight(1f),
                 )
@@ -331,10 +333,11 @@ private fun FullContent(state: PreviewLabState, close: () -> Unit) {
 
     Column(Modifier.fillMaxWidth()) {
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
-            PreviewLabOutlinedTextField(
+            PreviewLabTextField(
                 value = copy.link,
                 onValueChange = { },
                 enabled = true,
+                readOnly = true,
                 maxLines = 3,
                 modifier = Modifier.weight(1f),
             )

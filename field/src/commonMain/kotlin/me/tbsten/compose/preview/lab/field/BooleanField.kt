@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.dp
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
-import me.tbsten.compose.preview.lab.ui.Gray50
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.animation.animated
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabSurface
@@ -71,7 +70,7 @@ private fun BooleanSwitch(boolean: Boolean, onChange: (Boolean) -> Unit) {
                 val isSelected = boolean == it
 
                 PreviewLabSurface(
-                    color = (if (isSelected) Gray50 else Color.Transparent).animated(),
+                    color = (if (isSelected) PreviewLabTheme.colors.panel else Color.Transparent).animated(),
                     shape = RoundedCornerShape(percent = 50),
                     onClick = { onChange(it) },
                 ) {

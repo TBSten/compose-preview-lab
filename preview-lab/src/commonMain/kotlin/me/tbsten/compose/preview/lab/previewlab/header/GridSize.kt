@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabCheckbox
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
-import me.tbsten.compose.preview.lab.ui.components.textfield.PreviewLabOutlinedTextField
+import me.tbsten.compose.preview.lab.ui.components.textfield.PreviewLabTextField
 
 @Composable
 internal fun GridSize(gridSize: Dp?, onGridSizeChange: (Dp?) -> Unit) {
@@ -50,7 +50,7 @@ internal fun GridSize(gridSize: Dp?, onGridSizeChange: (Dp?) -> Unit) {
                 enter = fadeIn() + expandHorizontally(),
                 exit = fadeOut() + shrinkHorizontally(),
             ) {
-                PreviewLabOutlinedTextField(
+                PreviewLabTextField(
                     value = textFieldValue,
                     onValueChange = {
                         textFieldValue = it

@@ -52,9 +52,9 @@ import me.tbsten.compose.preview.lab.PreviewLabField
 import me.tbsten.compose.preview.lab.field.PolymorphicField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonStyle
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabCheckbox
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButton
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButtonVariant
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabSurface
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
@@ -408,7 +408,7 @@ private fun BackStackItem(
             ) {
                 PreviewLabIconButton(
                     onClick = onPopBack,
-                    variant = PreviewLabIconButtonVariant.Ghost,
+                    style = PreviewLabButtonStyle.Ghost,
                     modifier = Modifier.size(24.dp),
                 ) {
                     androidx.compose.foundation.Image(

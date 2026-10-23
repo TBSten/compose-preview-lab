@@ -40,7 +40,7 @@ import me.tbsten.compose.preview.lab.MutablePreviewLabField
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.adaptive
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabButton
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonStyle
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabDivider
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabModal
@@ -71,8 +71,8 @@ internal fun <Value> CollectionFieldEditModal(
     ) {
         SelectionContainer {
             PreviewLabSurface(
-                color = PreviewLabTheme.colors.background,
-                contentColor = PreviewLabTheme.colors.onBackground,
+                color = PreviewLabTheme.colors.panel,
+                contentColor = PreviewLabTheme.colors.onPanel,
                 modifier = modifier.fillMaxWidth(),
             ) {
                 Column(
@@ -266,7 +266,7 @@ private fun <Value> SelectedFieldView(
             } else {
                 FlowRow {
                     PreviewLabButton(
-                        variant = PreviewLabButtonVariant.Destructive,
+                        style = PreviewLabButtonStyle.Destructive,
                         onClick = onDelete,
                     ) {
                         PreviewLabText("Delete ${field.valueCode().takeEllipsis(10)}")

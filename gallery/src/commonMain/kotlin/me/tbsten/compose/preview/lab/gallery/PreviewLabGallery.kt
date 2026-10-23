@@ -35,7 +35,7 @@ import me.tbsten.compose.preview.lab.previewlab.openfilehandler.OpenFileHandler
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.adaptive
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabDivider
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabHorizontalDivider
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabHorizontalSeparator
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
@@ -104,7 +104,7 @@ fun PreviewLabGallery(
                 adaptive(
                     small = {},
                     medium = {
-                        Row(Modifier.width(200.dp)) {
+                        Row(Modifier.width(200.dp).background(PreviewLabTheme.colors.panel)) {
                             Sidebar(
                                 groupedPreviews = groupedPreviews,
                                 state = state,
@@ -151,9 +151,9 @@ private fun Sidebar(groupedPreviews: Map<String, List<PreviewLabPreview>>, state
                 query = state.query,
                 onQueryChange = state::onQueryChange,
                 modifier = Modifier
-                    .background(PreviewLabTheme.colors.background),
+                    .background(PreviewLabTheme.colors.panel),
             )
-            PreviewLabHorizontalDivider()
+            PreviewLabHorizontalSeparator()
         }
 
         groupedPreviews.entries.forEachIndexed { index, (groupName, previews) ->
@@ -175,7 +175,7 @@ private fun Sidebar(groupedPreviews: Map<String, List<PreviewLabPreview>>, state
                         style = PreviewLabTheme.typography.label2,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier
-                            .background(PreviewLabTheme.colors.background)
+                            .background(PreviewLabTheme.colors.panel)
                             .padding(4.dp)
                             .fillMaxWidth(),
                     )
@@ -199,7 +199,7 @@ private fun Sidebar(groupedPreviews: Map<String, List<PreviewLabPreview>>, state
             }
 
             if (index != groupedPreviews.entries.size - 1) {
-                item { PreviewLabHorizontalDivider() }
+                item { PreviewLabHorizontalSeparator() }
             }
         }
     }
