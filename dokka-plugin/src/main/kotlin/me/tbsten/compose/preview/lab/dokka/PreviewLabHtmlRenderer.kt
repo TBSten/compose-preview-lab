@@ -10,15 +10,15 @@ import kotlinx.html.pre
 import kotlinx.html.span
 import kotlinx.html.style
 import org.jetbrains.dokka.base.renderers.html.HtmlRenderer
+import org.jetbrains.dokka.base.renderers.html.templateCommand
+import org.jetbrains.dokka.base.templating.PathToRootSubstitutionCommand
 import org.jetbrains.dokka.pages.ContentCodeBlock
 import org.jetbrains.dokka.pages.ContentPage
 import org.jetbrains.dokka.pages.ContentStyle
 import org.jetbrains.dokka.pages.ContentText
 import org.jetbrains.dokka.pages.TextStyle
 import org.jetbrains.dokka.plugability.DokkaContext
-
-internal const val PreviewLabBaseUrlProperty: String = "previewLab.dokka.baseUrl"
-internal const val PreviewLabDefaultBaseUrl: String = "compose-preview-lab-gallery"
+import org.jetbrains.dokka.plugability.configuration
 
 // `<width>x<height>` (integers, lowercase `x`). Used as the iframe's CSS
 // `aspect-ratio` so the embedded preview keeps its shape across screen widths.
@@ -48,60 +48,123 @@ internal data class PreviewLabTagPayload(val previewId: String, val aspectRatio:
     }
 }
 
-// Known limitation: Dokka v2 runs the generator in a forked worker
-// (ProcessIsolation), so `-DpreviewLab.dokka.baseUrl=...` set on the Gradle
-// invocation or via `systemProp.` in `gradle.properties` does NOT reach this
-// renderer. A reliable override path is the next milestone — exposing a
-// typed `DokkaPluginParametersBaseSpec` (ConfigurableBlock) consumers set
-// in the `dokka { pluginsConfiguration { ... } }` DSL. Until then the
-// property is honoured only in in-process callers (e.g. the unit tests),
-// and real-build callers get the default base URL.
+/**
+ * Normalises [ComposePreviewLabDokkaConfiguration.baseUrl] so it composes cleanly with `"?iframe&..."`.
+ *
+ * - blank → [ComposePreviewLabDokkaConfiguration.DefaultBaseUrl]
+ * - surrounding whitespace and a leading `./` are dropped
+ * - trailing `/` is stripped so we never emit `//?...`
+ */
+internal data class PreviewLabBaseUrl(val value: String, val isAbsolute: Boolean) {
+    /** `<value>/<query>` – or just `/<query>` for a bare `/` (site root). */
+    fun join(query: String): String = if (value.isEmpty()) "/$query" else "$value/$query"
 
+    companion object {
+        private val schemeRegex = Regex("""^[A-Za-z][A-Za-z0-9+.\-]*:""")
+
+        fun parse(raw: String): PreviewLabBaseUrl {
+            val trimmed = raw.trim().ifEmpty { ComposePreviewLabDokkaConfiguration.DefaultBaseUrl }
+            val isAbsolute = trimmed.startsWith("/") || schemeRegex.containsMatchIn(trimmed)
+            return PreviewLabBaseUrl(
+                value = trimmed.removePrefix("./").trimEnd('/'),
+                isAbsolute = isAbsolute,
+            )
+        }
+    }
+}
+
+/** Placeholder that Dokka replaces with the page's path to the site root (`../../`, …). */
+private const val PathToRootPattern: String = "###"
+
+/**
+ * [HtmlRenderer] that turns the virtual `@previewLab/iframe` code block produced by
+ * [PreviewLabTagContentProvider] into an `<iframe>` pointing at the hosted Compose Preview Lab gallery.
+ *
+ * ```kotlin
+ * /** @previewLab MyButtonPreview 1280x680 */
+ * fun MyButton() {}
+ * ```
+ *
+ * renders (with the default configuration, on a page two directories below the site root) as
+ *
+ * ```html
+ * <div class="preview-lab-embedded-container" style="padding: 16px;">
+ *   <iframe class="preview-lab-embedded"
+ *           src="../../compose-preview-lab-gallery/?iframe&previewId=MyButtonPreview"
+ *           loading="lazy" allow="clipboard-read; clipboard-write"
+ *           style="display: block; width: 100%; box-sizing: border-box; aspect-ratio: 1280 / 680; height: auto; border: 2px solid #d0d7de; border-radius: 0; background-color: transparent;">
+ *   </iframe>
+ * </div>
+ * ```
+ *
+ * Base URL and iframe style come from [ComposePreviewLabDokkaConfiguration] (Dokka `pluginsConfiguration`).
+ */
 public open class PreviewLabHtmlRenderer(context: DokkaContext) : HtmlRenderer(context) {
+    private val pluginConfiguration: ComposePreviewLabDokkaConfiguration =
+        configuration<ComposePreviewLabDokkaPlugin, ComposePreviewLabDokkaConfiguration>(context)
+            ?: ComposePreviewLabDokkaConfiguration()
+
     override fun FlowContent.buildCodeBlock(code: ContentCodeBlock, pageContext: ContentPage) {
         if (code.language == PreviewLabIframeCode) {
-            renderPreviewLabIframe(code)
+            renderPreviewLabIframe(code, pageContext)
         } else {
             renderDefaultSampleContainer(code, pageContext)
         }
     }
 
-    private fun FlowContent.renderPreviewLabIframe(code: ContentCodeBlock) {
+    private fun FlowContent.renderPreviewLabIframe(code: ContentCodeBlock, pageContext: ContentPage) {
         val rawPayload = (code.children.singleOrNull() as? ContentText)?.text.orEmpty()
         val payload = PreviewLabTagPayload.parse(rawPayload) ?: return
-        val baseUrl = resolveBaseUrl()
-        val encodedPreviewId = URLEncoder.encode(payload.previewId, Charsets.UTF_8)
-        val src = "$baseUrl/?iframe&previewId=$encodedPreviewId"
-
-        // Default sizing keeps a fixed 720px height (enough for the full PreviewLab UI on a
-        // typical doc-site column width without making the canvas Compose wasm allocates
-        // look blurry on high-DPI screens). When the tag explicitly specifies `WxH`, switch
-        // to aspect-ratio so the iframe scales with the column while preserving the ratio.
-        // `calc(100% - 32px)` leaves 16px on each side once `margin: 16px` is applied,
-        // so the iframe is fully inset within its container without horizontal overflow.
-        val sizeStyle = when (val ar = payload.aspectRatio) {
-            null -> "width: calc(100% - 32px); height: 720px;"
-            else -> "width: calc(100% - 32px); aspect-ratio: ${ar.first} / ${ar.second}; height: auto;"
-        }
+        val baseUrl = PreviewLabBaseUrl.parse(pluginConfiguration.baseUrl)
+        val query = "?iframe&previewId=" + URLEncoder.encode(payload.previewId, Charsets.UTF_8)
+        val iframeStyle = pluginConfiguration.iframe
 
         div(classes = "preview-lab-embedded-container") {
-            iframe(classes = "preview-lab-embedded") {
-                style = "display: block; $sizeStyle border: 2px solid #d0d7de; margin: 16px;"
-                this.src = src
-                attributes["loading"] = "lazy"
-                attributes["allow"] = "clipboard-read; clipboard-write"
+            style = "padding: ${iframeStyle.margin};"
+            if (baseUrl.isAbsolute) {
+                previewLabIframe(src = baseUrl.join(query), payload = payload, iframeStyle = iframeStyle)
+            } else {
+                // A relative base URL is resolved against the root of the generated site rather than the
+                // page's own directory, so a single `compose-preview-lab-gallery/` next to `index.html`
+                // serves every page. `###` is substituted with the page's path-to-root right away in
+                // single-module builds, and by the aggregating build when this module is rendered as a
+                // partial of a multi-module site.
+                templateCommand(
+                    PathToRootSubstitutionCommand(
+                        pattern = PathToRootPattern,
+                        default = locationProvider.pathToRoot(pageContext),
+                    ),
+                ) {
+                    previewLabIframe(
+                        src = PathToRootPattern + baseUrl.join(query),
+                        payload = payload,
+                        iframeStyle = iframeStyle,
+                    )
+                }
             }
         }
     }
 
-    // Normalises the configured base URL so it composes cleanly with `"/?iframe&..."`.
-    // - blank / unset → default
-    // - trims surrounding whitespace
-    // - strips trailing `/` so we never emit `//?...`
-    private fun resolveBaseUrl(): String {
-        val raw = System.getProperty(PreviewLabBaseUrlProperty)?.trim().orEmpty()
-        val normalised = raw.ifEmpty { PreviewLabDefaultBaseUrl }
-        return normalised.trimEnd('/')
+    private fun FlowContent.previewLabIframe(
+        src: String,
+        payload: PreviewLabTagPayload,
+        iframeStyle: ComposePreviewLabDokkaConfiguration.IframeStyle,
+    ) {
+        // Without `WxH` the iframe gets a fixed height (enough for the full PreviewLab UI on a typical
+        // doc-site column without making the canvas Compose wasm allocates look blurry on high-DPI
+        // screens). With `WxH` it scales with the column while preserving the requested ratio.
+        val sizeStyle = when (val ar = payload.aspectRatio) {
+            null -> "height: ${iframeStyle.defaultHeight};"
+            else -> "aspect-ratio: ${ar.first} / ${ar.second}; height: auto;"
+        }
+        iframe(classes = "preview-lab-embedded") {
+            style = "display: block; width: 100%; box-sizing: border-box; $sizeStyle " +
+                "border: ${iframeStyle.border}; border-radius: ${iframeStyle.borderRadius}; " +
+                "background-color: ${iframeStyle.backgroundColor};"
+            this.src = src
+            attributes["loading"] = "lazy"
+            attributes["allow"] = "clipboard-read; clipboard-write"
+        }
     }
 
     // Mirrors the default HtmlRenderer fallback for non-iframe code blocks; we cannot call

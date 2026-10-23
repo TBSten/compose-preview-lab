@@ -1,3 +1,53 @@
+public final class me/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaConfiguration : org/jetbrains/dokka/plugability/ConfigurableBlock {
+	public static final field Companion Lme/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaConfiguration$Companion;
+	public static final field DefaultBaseUrl Ljava/lang/String;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaConfiguration$IframeStyle;)V
+	public synthetic fun <init> (Ljava/lang/String;Lme/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaConfiguration$IframeStyle;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lme/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaConfiguration$IframeStyle;
+	public final fun copy (Ljava/lang/String;Lme/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaConfiguration$IframeStyle;)Lme/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaConfiguration;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaConfiguration;Ljava/lang/String;Lme/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaConfiguration$IframeStyle;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaConfiguration;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBaseUrl ()Ljava/lang/String;
+	public final fun getIframe ()Lme/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaConfiguration$IframeStyle;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaConfiguration$Companion {
+}
+
+public final class me/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaConfiguration$IframeStyle {
+	public static final field Companion Lme/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaConfiguration$IframeStyle$Companion;
+	public static final field DefaultBackgroundColor Ljava/lang/String;
+	public static final field DefaultBorder Ljava/lang/String;
+	public static final field DefaultBorderRadius Ljava/lang/String;
+	public static final field DefaultHeight Ljava/lang/String;
+	public static final field DefaultMargin Ljava/lang/String;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lme/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaConfiguration$IframeStyle;
+	public static synthetic fun copy$default (Lme/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaConfiguration$IframeStyle;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lme/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaConfiguration$IframeStyle;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBackgroundColor ()Ljava/lang/String;
+	public final fun getBorder ()Ljava/lang/String;
+	public final fun getBorderRadius ()Ljava/lang/String;
+	public final fun getDefaultHeight ()Ljava/lang/String;
+	public final fun getMargin ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaConfiguration$IframeStyle$Companion {
+}
+
 public final class me/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaPlugin : org/jetbrains/dokka/plugability/DokkaPlugin {
 	public fun <init> ()V
 	public final fun getPreviewLabRenderer ()Lorg/jetbrains/dokka/plugability/Extension;
