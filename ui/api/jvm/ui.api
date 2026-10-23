@@ -145,6 +145,18 @@ public final class me/tbsten/compose/preview/lab/ui/components/card/ComposableSi
 	public final fun getLambda$222652367$ui ()Lkotlin/jvm/functions/Function3;
 }
 
+public final class me/tbsten/compose/preview/lab/ui/components/progressindicators/ComposableSingletons$CircularProgressIndicatorKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/progressindicators/ComposableSingletons$CircularProgressIndicatorKt;
+	public fun <init> ()V
+	public final fun getLambda$1374080984$ui ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class me/tbsten/compose/preview/lab/ui/components/progressindicators/ComposableSingletons$LinearProgressIndicatorKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/ui/components/progressindicators/ComposableSingletons$LinearProgressIndicatorKt;
+	public fun <init> ()V
+	public final fun getLambda$442473752$ui ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class me/tbsten/compose/preview/lab/ui/generated/resources/ActualResourceCollectorsKt {
 	public static final fun getAllDrawableResources (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes;)Ljava/util/Map;
 	public static final fun getAllFontResources (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes;)Ljava/util/Map;
@@ -162,6 +174,7 @@ public final class me/tbsten/compose/preview/lab/ui/generated/resources/Drawable
 	public static final fun getIcon_dashboard (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
 	public static final fun getIcon_delete (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
 	public static final fun getIcon_edit (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_error (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
 	public static final fun getIcon_history (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
 	public static final fun getIcon_more_vert (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
 	public static final fun getIcon_refresh (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
@@ -169,6 +182,8 @@ public final class me/tbsten/compose/preview/lab/ui/generated/resources/Drawable
 	public static final fun getIcon_right_panel_close (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
 	public static final fun getIcon_right_panel_open (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
 	public static final fun getIcon_screenshot_frame (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_sync (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
+	public static final fun getIcon_task_alt (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
 	public static final fun getIcon_tune (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
 	public static final fun getIcon_zoom_in (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;
 	public static final fun getIcon_zoom_out (Lme/tbsten/compose/preview/lab/ui/generated/resources/PreviewLabUiRes$drawable;)Lorg/jetbrains/compose/resources/DrawableResource;

@@ -7,7 +7,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import kotlin.time.ExperimentalTime
 import kotlinx.serialization.json.Json
+import me.tbsten.compose.preview.lab.ExperimentalComposePreviewLabApi
 import me.tbsten.compose.preview.lab.MutablePreviewLabField
+import me.tbsten.compose.preview.lab.PreviewLabAction
+import me.tbsten.compose.preview.lab.PreviewLabAction0
+import me.tbsten.compose.preview.lab.PreviewLabAction1
+import me.tbsten.compose.preview.lab.PreviewLabAction2
+import me.tbsten.compose.preview.lab.PreviewLabAction3
 import me.tbsten.compose.preview.lab.PreviewLabEvent
 import me.tbsten.compose.preview.lab.PreviewLabField
 
@@ -127,6 +133,92 @@ class PreviewLabScope(val state: PreviewLabState) {
             }
         }
         return field.value
+    }
+
+    /**
+     * Registers an action without arguments. It appears in the Actions inspector tab, where it can
+     * be run; the returned [PreviewLabAction0] exposes its run history (`ResultsView()`).
+     *
+     * ```kt
+     * PreviewLab {
+     *   action(label = "onRefresh", action = viewModel::onRefresh)
+     * }
+     * ```
+     *
+     * @param label Label shown in the Actions tab.
+     * @param key Changing the key re-creates (and re-registers) the action.
+     */
+    @ExperimentalComposePreviewLabApi
+    @Composable
+    fun <R> action(label: String, key: Any? = null, action: suspend () -> R): PreviewLabAction0<R> =
+        registerAction(key) { PreviewLabAction0(label = label, action = action) }
+
+    /**
+     * Registers an action with one argument, edited through the field built by [argFields].
+     *
+     * ```kt
+     * action(
+     *   label = "onItemClick",
+     *   argFields = { StringField("itemId", "item-id-1") },
+     *   action = viewModel::onItemClick,
+     * )
+     * ```
+     */
+    @ExperimentalComposePreviewLabApi
+    @Composable
+    fun <A1, R> action(
+        label: String,
+        key: Any? = null,
+        argFields: PreviewLabAction.ArgFieldsScope.() -> PreviewLabField<A1>,
+        action: suspend (A1) -> R,
+    ): PreviewLabAction1<A1, R> =
+        registerAction(key) { PreviewLabAction1(label = label, argFields = argFields, action = action) }
+
+    /**
+     * Registers an action with two arguments; combine the fields with `+` inside [argFields].
+     *
+     * ```kt
+     * action(
+     *   label = "GetItemListUseCase.invoke",
+     *   argFields = { BooleanField("desc", false) + BooleanField("willError", false) },
+     *   action = getItemUseCase::invoke,
+     * )
+     * ```
+     */
+    @ExperimentalComposePreviewLabApi
+    @Composable
+    fun <A1, A2, R> action(
+        label: String,
+        key: Any? = null,
+        argFields: PreviewLabAction.ArgFieldsScope.() -> Pair<PreviewLabField<A1>, PreviewLabField<A2>>,
+        action: suspend (A1, A2) -> R,
+    ): PreviewLabAction2<A1, A2, R> =
+        registerAction(key) { PreviewLabAction2(label = label, argFields = argFields, action = action) }
+
+    /** Registers an action with three arguments; combine the fields with `+` inside [argFields]. */
+    @ExperimentalComposePreviewLabApi
+    @Composable
+    fun <A1, A2, A3, R> action(
+        label: String,
+        key: Any? = null,
+        argFields: PreviewLabAction.ArgFieldsScope.() -> Triple<PreviewLabField<A1>, PreviewLabField<A2>, PreviewLabField<A3>>,
+        action: suspend (A1, A2, A3) -> R,
+    ): PreviewLabAction3<A1, A2, A3, R> =
+        registerAction(key) { PreviewLabAction3(label = label, argFields = argFields, action = action) }
+
+    // TODO Action<A1, A2, A3, ..., R>
+
+    @ExperimentalComposePreviewLabApi
+    @Composable
+    private fun <A : PreviewLabAction<*>> registerAction(key: Any?, create: () -> A): A {
+        val action = remember(key) { create() }
+        DisposableEffect(action) {
+            state.actions.add(action)
+            onDispose {
+                state.actions.remove(action)
+            }
+        }
+        return action
     }
 
     /**

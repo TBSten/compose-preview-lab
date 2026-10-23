@@ -155,6 +155,25 @@ interface InspectorTab {
         }
     }
 
+    /**
+     * Built-in Actions tab that lists the actions registered with `PreviewLabScope.action(...)`,
+     * lets the user edit their argument fields and run them.
+     *
+     * @see InspectorTab
+     */
+    @ExperimentalComposePreviewLabApi
+    data object Actions : InspectorTab {
+        override val title: String = "Actions"
+        override val icon: @Composable () -> Painter = { painterResource(PreviewLabUiRes.drawable.icon_history) }
+
+        @Composable
+        override fun ContentContext.Content() {
+            ActionListSection(
+                actions = state.actions,
+            )
+        }
+    }
+
     @ExperimentalComposePreviewLabApi
     data object Code : InspectorTab {
         override val title: String = "Code"
@@ -192,6 +211,6 @@ interface InspectorTab {
         /**
          * Default built-in tabs: Fields, Events, and KDoc
          */
-        val defaults: List<InspectorTab> = listOf(Fields, Events, KDoc)
+        val defaults: List<InspectorTab> = listOf(Fields, Events, Actions, KDoc)
     }
 }
