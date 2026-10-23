@@ -8,6 +8,7 @@ import me.tbsten.compose.preview.lab.compiler.compat.getAnnotationCompat
 import me.tbsten.compose.preview.lab.compiler.compat.hasAnnotationCompat
 import me.tbsten.compose.preview.lab.compiler.error.HintHashCollisionError
 import me.tbsten.compose.preview.lab.compiler.error.report
+import me.tbsten.compose.preview.lab.compiler.feature.autoFieldEvent.ir.InjectAutoLabelIrTransformer
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.ANDROID_PREVIEW_ANNOTATION_FQN
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.CMP_PREVIEW_ANNOTATION_FQN
 import me.tbsten.compose.preview.lab.compiler.feature.previewCollection.COMPOSE_PREVIEW_LAB_OPTION_FQN
@@ -46,6 +47,16 @@ class PreviewLabIrGenerationExtension(
 ) : IrGenerationExtension {
 
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
+        // Rewrite unlabelled `autoField()` / `autoEvent()` call sites first so the rest of
+        // the pipeline (including downstream Compose lowering) sees the parameter-name
+        // labels. The transform only touches IR nodes whose callee FQN matches the runtime
+        // sentinels, so modules that do not use `autoField` / `autoEvent` pay only the
+        // traversal cost.
+        compatContext.transformModuleFragment(
+            moduleFragment,
+            InjectAutoLabelIrTransformer(pluginContext, compatContext),
+        )
+
         val previews = collectPreviews(moduleFragment)
         val bodyFiller =
             ReplaceCollectPreviewsFunBody(pluginContext, config, moduleFragment, previews, compatContext, messageCollector)
