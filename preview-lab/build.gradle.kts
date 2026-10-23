@@ -18,6 +18,13 @@ kotlin {
             it.get().dependsOn(otherWeb)
         }
 
+        val otherDesktop by creating {
+            dependsOn(commonMain.get())
+        }
+        listOf(androidMain, iosMain, webMain).forEach {
+            it.get().dependsOn(otherDesktop)
+        }
+
         commonMain.dependencies {
             api(projects.core)
             api(projects.ui)

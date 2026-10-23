@@ -192,6 +192,19 @@ interface InspectorTab {
         /**
          * Default built-in tabs: Fields, Events, and KDoc
          */
-        val defaults: List<InspectorTab> = listOf(Fields, Events, KDoc)
+        val defaults: List<InspectorTab> by lazy { DefaultInspectorTabs }
     }
 }
+
+/**
+ * Platform-specific default tabs. Every platform starts from [SharedDefaultInspectorTabs]; JVM
+ * additionally appends [LayoutAndSemanticsTab], which needs `ComposeWindow.semanticsOwners`.
+ */
+internal expect val DefaultInspectorTabs: List<InspectorTab>
+
+/** Built-in tabs available on every platform: Fields, Events and KDoc. */
+internal val SharedDefaultInspectorTabs: List<InspectorTab> = listOf(
+    InspectorTab.Fields,
+    InspectorTab.Events,
+    InspectorTab.KDoc,
+)
