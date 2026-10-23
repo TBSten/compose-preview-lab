@@ -4,6 +4,12 @@ public final class me/tbsten/compose/preview/lab/hints/ComposableSingletons$Prev
 	public final fun getLambda$-632424613$uiLib ()Lkotlin/jvm/functions/Function2;
 }
 
+public final class me/tbsten/compose/preview/lab/hints/ComposableSingletons$PreviewHint_qrfdunzbKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/hints/ComposableSingletons$PreviewHint_qrfdunzbKt;
+	public fun <init> ()V
+	public final fun getLambda$-1077137913$uiLib ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class me/tbsten/compose/preview/lab/hints/ComposableSingletons$PreviewHint_umm6awb4Kt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/hints/ComposableSingletons$PreviewHint_umm6awb4Kt;
 	public fun <init> ()V
@@ -28,6 +34,14 @@ public final class me/tbsten/compose/preview/lab/sample/lib/ComposableSingletons
 	public final fun getLambda$-1183720737$uiLib ()Lkotlin/jvm/functions/Function3;
 }
 
+public final class me/tbsten/compose/preview/lab/sample/lib/ComposableSingletons$UserCardKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/sample/lib/ComposableSingletons$UserCardKt;
+	public fun <init> ()V
+	public final fun getLambda$-1729459593$uiLib ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1880616957$uiLib ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-947308608$uiLib ()Lkotlin/jvm/functions/Function3;
+}
+
 public final class me/tbsten/compose/preview/lab/sample/lib/MyButtonKt {
 	public static final fun MyButton (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
@@ -38,5 +52,9 @@ public final class me/tbsten/compose/preview/lab/sample/lib/MyTextFieldKt {
 
 public final class me/tbsten/compose/preview/lab/sample/lib/PreviewLabKt {
 	public static final fun CustomizedPreviewLab (Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class me/tbsten/compose/preview/lab/sample/lib/UserCardKt {
+	public static final fun UserCard (Ljava/lang/String;IZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
