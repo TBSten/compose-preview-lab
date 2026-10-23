@@ -65,6 +65,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.uiLib)
+            implementation(projects.debugmenu)
 
             implementation(libs.composeRuntime)
             implementation(libs.composeFoundation)
@@ -79,6 +80,8 @@ kotlin {
             implementation("me.tbsten.compose.preview.lab:extension-navigation:${libs.versions.composePreviewLab.get()}")
             implementation(libs.androidxNavigation)
             implementation(libs.kotlinxSerializationCore)
+
+            implementation("me.tbsten.compose.preview.lab:extension-debugger:${libs.versions.composePreviewLab.get()}")
         }
 
         commonTest.dependencies {

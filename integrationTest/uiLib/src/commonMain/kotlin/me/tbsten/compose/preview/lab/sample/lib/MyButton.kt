@@ -11,10 +11,17 @@ import me.tbsten.compose.preview.lab.ComposePreviewLabOption
 import me.tbsten.compose.preview.lab.field.StringField
 import me.tbsten.compose.preview.lab.gallery.LocalPreviewLabGalleryNavigator
 import me.tbsten.compose.preview.lab.gallery.navigateOr
+import me.tbsten.compose.preview.lab.sample.debugmenu.AppDebugMenu
 
 @Composable
 fun MyButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Button(onClick = onClick, modifier = modifier) {
+    Button(
+        onClick = {
+            AppDebugMenu.logger.debug("MyButton.onClick")
+            onClick()
+        },
+        modifier = modifier,
+    ) {
         Text(text = text)
     }
 }

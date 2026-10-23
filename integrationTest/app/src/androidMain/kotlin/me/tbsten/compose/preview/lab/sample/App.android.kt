@@ -10,8 +10,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import app.FeaturedFileList
 import app.appPreviews
+import me.tbsten.compose.preview.lab.extension.debugger.ui.Dialog
 import me.tbsten.compose.preview.lab.gallery.PreviewLabGallery
 import me.tbsten.compose.preview.lab.gallery.PreviewLabGalleryState
+import me.tbsten.compose.preview.lab.sample.debugmenu.AppDebugMenu
 
 class AppActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +30,9 @@ class AppActivity : ComponentActivity() {
                     .systemBarsPadding()
                     .displayCutoutPadding(),
             )
+
+            // デバッグメニューダイアログ (シェイクで表示)
+            AppDebugMenu.Dialog()
         }
     }
 }
