@@ -1,664 +1,397 @@
+/*
+ * Copyright (c) 2026 Composable Horizons — MIT License (see ui/THIRD_PARTY_NOTICES.md).
+ * Adapted for Compose Preview Lab: PreviewLab* prefix, compose-unstyled 2.6.0, PreviewLabTheme facade colours.
+ */
 package me.tbsten.compose.preview.lab.ui.components
 
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Indication
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.isSpecified
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.composables.compose.ripple.rememberRippleIndication
+import com.composeunstyled.LocalContentColor
+import com.composeunstyled.LocalTextStyle
+import com.composeunstyled.ProvideContentColor
+import com.composeunstyled.ProvideTextStyle
+import com.composeunstyled.UnstyledButton
+import com.composeunstyled.buildModifier
+import kotlin.jvm.JvmInline
 import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
-import me.tbsten.compose.preview.lab.ui.LocalContentColor
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.foundation.ButtonElevation
+import me.tbsten.compose.preview.lab.ui.inverseRippleColor
 
+/** Visual style variants for [PreviewLabButton] and [PreviewLabIconButton]. */
+@UiComposePreviewLabApi
+@JvmInline
+value class PreviewLabButtonStyle internal constructor(@Suppress("unused") private val value: Int) {
+    @UiComposePreviewLabApi
+    companion object {
+        /** Use for the primary action on a screen. */
+        val Primary = PreviewLabButtonStyle(0)
+
+        /** Use for secondary actions. */
+        val Secondary = PreviewLabButtonStyle(1)
+
+        /** Use for lower-emphasis actions with an outline. */
+        val Outlined = PreviewLabButtonStyle(2)
+
+        /** Use for destructive actions. */
+        val Destructive = PreviewLabButtonStyle(3)
+
+        /** Use for low-emphasis actions without a container. */
+        val Ghost = PreviewLabButtonStyle(4)
+
+        /** Style for clickable text links. */
+        val Link = PreviewLabButtonStyle(5)
+
+        /**
+         * The default button style.
+         *
+         * PreviewLab deviation from Composables UI (whose default is Secondary): PreviewLab's `text =` buttons are
+         * primary actions.
+         */
+        val Default = Primary
+    }
+}
+
+/** Size variants for [PreviewLabButton] and [PreviewLabIconButton]. */
+@UiComposePreviewLabApi
+@JvmInline
+value class PreviewLabButtonSize internal constructor(@Suppress("unused") private val value: Int) {
+    @UiComposePreviewLabApi
+    companion object {
+        /** Small button size (32dp). */
+        val Small = PreviewLabButtonSize(0)
+
+        /** Regular button size (36dp). */
+        val Regular = PreviewLabButtonSize(1)
+
+        /** Large button size (40dp). */
+        val Large = PreviewLabButtonSize(2)
+
+        /** The default button size. */
+        val Default = Regular
+    }
+}
+
+/** Default values used by [PreviewLabButton] and [PreviewLabIconButton]. */
+@UiComposePreviewLabApi
+object PreviewLabButtonDefaults {
+    /**
+     * Composables UI pointer button shape.
+     * Must stay a [RoundedCornerShape] (PreviewLabHeader.web.kt copies its corners for the split button).
+     */
+    val ButtonShape: RoundedCornerShape = RoundedCornerShape(10.dp)
+
+    /**
+     * Regular-size padding.
+     * Must stay a [PaddingValues] (PreviewLabHeader.web.kt reads `calculateTopPadding()`).
+     */
+    val contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+
+    /** Height of a [PreviewLabButtonSize.Regular] button. */
+    val MinHeight: Dp = 36.dp
+
+    /** Border width of a [PreviewLabButtonStyle.Outlined] button. */
+    val OutlineHeight: Dp = 1.dp
+
+    /** Button height (and square icon-button dimension) for [size]. */
+    fun heightFor(size: PreviewLabButtonSize): Dp = when (size) {
+        PreviewLabButtonSize.Small -> 32.dp
+        PreviewLabButtonSize.Large -> 40.dp
+        else -> MinHeight
+    }
+
+    /** Content padding for [size] and [style]; [PreviewLabButtonStyle.Link] buttons have no padding. */
+    fun contentPaddingFor(size: PreviewLabButtonSize, style: PreviewLabButtonStyle): PaddingValues =
+        if (style == PreviewLabButtonStyle.Link) {
+            PaddingValues(0.dp)
+        } else {
+            PaddingValues(
+                horizontal = when (size) {
+                    PreviewLabButtonSize.Small -> 12.dp
+                    PreviewLabButtonSize.Large -> 20.dp
+                    else -> 16.dp
+                },
+                vertical = 8.dp,
+            )
+        }
+
+    /** Container shape for [style]: a small radius for [PreviewLabButtonStyle.Link], [ButtonShape] otherwise. */
+    fun shapeFor(style: PreviewLabButtonStyle): Shape =
+        if (style == PreviewLabButtonStyle.Link) RoundedCornerShape(6.dp) else ButtonShape
+}
+
+/**
+ * A component that can be clicked.
+ *
+ * @param onClick Called when the button is activated.
+ * @param modifier Modifier applied to the button.
+ * @param enabled Whether the button can be interacted with.
+ * @param selected PreviewLab addition: paints Secondary/Outlined/Ghost buttons with the `selectedControl` colours.
+ *   Ignored for Primary/Destructive/Link.
+ * @param style Visual style used by the button.
+ * @param shape Shape used for the button container, border, and focus ring.
+ * @param buttonSize Size used for button height and padding.
+ * @param contentPadding Padding applied inside the button bounds, around the button content.
+ * @param borderWidth Width of the button border when the selected style draws one.
+ * @param interactionSource Interaction source used for focus, press, hover, and indication state.
+ * @param indication Indication drawn on press/hover; `null` draws none.
+ * @param contentColor Colour provided to the content through `LocalContentColor`.
+ * @param content The content to display within the button.
+ */
 @Composable
 @UiComposePreviewLabApi
 fun PreviewLabButton(
-    modifier: Modifier = Modifier,
-    text: String? = null,
-    isEnabled: Boolean = true,
-    isSelected: Boolean = false,
-    isLoading: Boolean = false,
-    variant: PreviewLabButtonVariant = PreviewLabButtonVariant.Primary,
-    shape: Shape? = null,
-    onClick: () -> Unit = {},
-    contentPadding: PaddingValues = PreviewLabButtonDefaults.contentPadding,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: (@Composable () -> Unit)? = null,
-) {
-    val style = previewLabButtonStyleFor(variant, isSelected = isSelected)
-    ButtonComponent(
-        text = text,
-        modifier = modifier,
-        enabled = isEnabled,
-        loading = isLoading,
-        style = style,
-        shape = shape ?: style.shape,
-        onClick = onClick,
-        contentPadding = contentPadding,
-        interactionSource = interactionSource,
-        content = content,
-    )
-}
-
-@Composable
-private fun ButtonComponent(
-    text: String? = null,
-    modifier: Modifier,
-    enabled: Boolean = true,
-    loading: Boolean = false,
-    style: PreviewLabButtonStyle,
-    shape: Shape = style.shape,
     onClick: () -> Unit,
-    contentPadding: PaddingValues = PreviewLabButtonDefaults.contentPadding,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: (@Composable () -> Unit)? = null,
-) {
-    val containerColor = style.colors.containerColor(enabled).value
-    val contentColor = style.colors.contentColor(enabled).value
-    val borderColor = style.colors.borderColor(enabled).value
-    val borderStroke =
-        if (borderColor != null) {
-            BorderStroke(
-                PreviewLabButtonDefaults.OutlineHeight,
-                borderColor,
-            )
-        } else {
-            null
-        }
-
-    val shadowElevation = style.elevation?.shadowElevation(enabled, interactionSource)?.value ?: 0.dp
-
-//    in case of full width button
-//    val buttonModifier = modifier.fillMaxWidth()
-
-    PreviewLabSurface(
-        onClick = onClick,
-        modifier =
-        modifier
-            .semantics { role = Role.Button },
-        enabled = enabled,
-        shape = shape,
-        color = containerColor,
-        contentColor = contentColor,
-        border = borderStroke,
-        shadowElevation = shadowElevation,
-        interactionSource = interactionSource,
-    ) {
-        DefaultButtonContent(
-            text = text,
-            loading = loading,
-            contentColor = contentColor,
-            content = content,
-            modifier = Modifier.padding(contentPadding),
-        )
-    }
-}
-
-@Composable
-private fun DefaultButtonContent(
     modifier: Modifier = Modifier,
-    text: String? = null,
-    loading: Boolean,
-    contentColor: Color,
-    content: (@Composable () -> Unit)? = null,
+    enabled: Boolean = true,
+    selected: Boolean = false,
+    style: PreviewLabButtonStyle = PreviewLabButtonStyle.Default,
+    shape: Shape = PreviewLabButtonDefaults.shapeFor(style),
+    buttonSize: PreviewLabButtonSize = PreviewLabButtonSize.Default,
+    contentPadding: PaddingValues = PreviewLabButtonDefaults.contentPaddingFor(buttonSize, style),
+    borderWidth: Dp = PreviewLabButtonDefaults.OutlineHeight,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    indication: Indication? = buttonIndicationFor(style),
+    contentColor: Color = buttonContentColorFor(style, selected),
+    content: @Composable RowScope.() -> Unit,
 ) {
-    if (text?.isEmpty() == false) {
+    val hovered by interactionSource.collectIsHoveredAsState()
+    BaseButton(
+        onClick = onClick,
+        modifier = if (style == PreviewLabButtonStyle.Link) {
+            modifier
+        } else {
+            modifier.heightIn(min = PreviewLabButtonDefaults.heightFor(buttonSize))
+        },
+        enabled = enabled,
+        style = style,
+        backgroundColor = buttonBackgroundColorFor(style, selected),
+        contentColor = contentColor,
+        shape = shape,
+        contentPadding = contentPadding,
+        borderColor = buttonBorderColorFor(style),
+        borderWidth = borderWidth,
+        interactionSource = interactionSource,
+        indication = indication,
+    ) {
         Row(
-            modifier,
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-//            if (!loading) {
-//                CircularProgressIndicator(
-//                    color = contentColor,
-//                    modifier = Modifier.size(20.dp),
-//                    strokeWidth = 2.dp
-//                )
-//            }
-
-            PreviewLabText(
-                text = AnnotatedString(text = text),
-                textAlign = TextAlign.Center,
-                style = PreviewLabTheme.typography.button,
-                overflow = TextOverflow.Clip,
-                color = contentColor,
-            )
-        }
-    } else if (content != null) {
-        Row(
-            modifier = modifier,
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-        ) {
-            content()
+            ProvideTextStyle(LocalTextStyle.current.merge(buttonLabelTextStyleFor(style, hovered))) {
+                content()
+            }
         }
     }
 }
 
-@UiComposePreviewLabApi
-enum class PreviewLabButtonVariant {
-    Primary,
-    PrimaryOutlined,
-    PrimaryElevated,
-    PrimaryGhost,
-    Secondary,
-    SecondaryOutlined,
-    SecondaryElevated,
-    SecondaryGhost,
-    Destructive,
-    DestructiveOutlined,
-    DestructiveElevated,
-    DestructiveGhost,
-    Ghost,
-}
-
+/**
+ * PreviewLab convenience over [PreviewLabButton] that renders [text] as the button label.
+ *
+ * @param text Label shown inside the button.
+ * @param onClick Called when the button is activated.
+ * @param modifier Modifier applied to the button.
+ * @param enabled Whether the button can be interacted with.
+ * @param selected See [PreviewLabButton].
+ * @param style Visual style used by the button.
+ * @param buttonSize Size used for button height and padding.
+ * @param shape Shape used for the button container, border, and focus ring.
+ * @param contentPadding Padding applied inside the button bounds, around the label.
+ */
 @Composable
 @UiComposePreviewLabApi
-fun previewLabButtonStyleFor(variant: PreviewLabButtonVariant, isSelected: Boolean): PreviewLabButtonStyle = when (variant) {
-    PreviewLabButtonVariant.Primary -> PreviewLabButtonDefaults.primaryFilled(isSelected = isSelected)
-    PreviewLabButtonVariant.PrimaryOutlined -> PreviewLabButtonDefaults.primaryOutlined(isSelected = isSelected)
-    PreviewLabButtonVariant.PrimaryElevated -> PreviewLabButtonDefaults.primaryElevated(isSelected = isSelected)
-    PreviewLabButtonVariant.PrimaryGhost -> PreviewLabButtonDefaults.primaryGhost(isSelected = isSelected)
-    PreviewLabButtonVariant.Secondary -> PreviewLabButtonDefaults.secondaryFilled(isSelected = isSelected)
-    PreviewLabButtonVariant.SecondaryOutlined -> PreviewLabButtonDefaults.secondaryOutlined(isSelected = isSelected)
-    PreviewLabButtonVariant.SecondaryElevated -> PreviewLabButtonDefaults.secondaryElevated(isSelected = isSelected)
-    PreviewLabButtonVariant.SecondaryGhost -> PreviewLabButtonDefaults.secondaryGhost(isSelected = isSelected)
-    PreviewLabButtonVariant.Destructive -> PreviewLabButtonDefaults.destructiveFilled(isSelected = isSelected)
-    PreviewLabButtonVariant.DestructiveOutlined -> PreviewLabButtonDefaults.destructiveOutlined(isSelected = isSelected)
-    PreviewLabButtonVariant.DestructiveElevated -> PreviewLabButtonDefaults.destructiveElevated(isSelected = isSelected)
-    PreviewLabButtonVariant.DestructiveGhost -> PreviewLabButtonDefaults.destructiveGhost(isSelected = isSelected)
-    PreviewLabButtonVariant.Ghost -> PreviewLabButtonDefaults.ghost(isSelected = isSelected)
-}
-
-@UiComposePreviewLabApi
-object PreviewLabButtonDefaults {
-    @UiComposePreviewLabApi
-    val MinHeight = 44.dp
-
-    @UiComposePreviewLabApi
-    val OutlineHeight = 1.dp
-    val ButtonHorizontalPadding = 16.dp
-    val ButtonVerticalPadding = 8.dp
-    val ButtonShape = RoundedCornerShape(12)
-
-    val contentPadding =
-        PaddingValues(
-            start = ButtonHorizontalPadding,
-            top = ButtonVerticalPadding,
-            end = ButtonHorizontalPadding,
-            bottom = ButtonVerticalPadding,
-        )
-
-    val filledShape = ButtonShape
-    val elevatedShape = ButtonShape
-    val outlinedShape = ButtonShape
-
-    @Composable
-    fun buttonElevation() = ButtonElevation(
-        defaultElevation = 2.dp,
-        pressedElevation = 2.dp,
-        focusedElevation = 2.dp,
-        hoveredElevation = 2.dp,
-        disabledElevation = 0.dp,
-    )
-
-    @Composable
-    fun primaryFilled(isSelected: Boolean) = PreviewLabButtonStyle(
-        colors =
-        PreviewLabButtonColors(
-            containerColor = PreviewLabTheme.colors.primary,
-            contentColor = PreviewLabTheme.colors.onPrimary,
-            disabledContainerColor = PreviewLabTheme.colors.disabled,
-            disabledContentColor = PreviewLabTheme.colors.onDisabled,
-            borderColor = if (isSelected) PreviewLabTheme.colors.primary else Color.Transparent,
-        ),
-        shape = filledShape,
-        elevation = null,
-        contentPadding = contentPadding,
-    )
-
-    @Composable
-    fun primaryElevated(isSelected: Boolean) = PreviewLabButtonStyle(
-        colors =
-        PreviewLabButtonColors(
-            containerColor = PreviewLabTheme.colors.primary,
-            contentColor = PreviewLabTheme.colors.onPrimary,
-            disabledContainerColor = PreviewLabTheme.colors.disabled,
-            disabledContentColor = PreviewLabTheme.colors.onDisabled,
-            borderColor = if (isSelected) PreviewLabTheme.colors.primary else Color.Transparent,
-        ),
-        shape = elevatedShape,
-        elevation = buttonElevation(),
-        contentPadding = contentPadding,
-    )
-
-    @Composable
-    fun primaryOutlined(isSelected: Boolean) = PreviewLabButtonStyle(
-        colors =
-        PreviewLabButtonColors(
-            containerColor = if (isSelected) PreviewLabTheme.colors.primary else PreviewLabTheme.colors.transparent,
-            contentColor = PreviewLabTheme.colors.primary,
-            borderColor = PreviewLabTheme.colors.primary,
-            disabledContainerColor = PreviewLabTheme.colors.transparent,
-            disabledContentColor = PreviewLabTheme.colors.onDisabled,
-            disabledBorderColor = PreviewLabTheme.colors.disabled,
-        ),
-        shape = outlinedShape,
-        elevation = null,
-        contentPadding = contentPadding,
-    )
-
-    @Composable
-    fun primaryGhost(isSelected: Boolean) = PreviewLabButtonStyle(
-        colors =
-        PreviewLabButtonColors(
-            containerColor = if (isSelected) {
-                PreviewLabTheme.colors.primary
-                    .copy(alpha = 0.25f)
-            } else {
-                PreviewLabTheme.colors.transparent
-            },
-            contentColor = PreviewLabTheme.colors.primary,
-            borderColor = PreviewLabTheme.colors.transparent,
-            disabledContainerColor = PreviewLabTheme.colors.transparent,
-            disabledContentColor = PreviewLabTheme.colors.onDisabled,
-            disabledBorderColor = PreviewLabTheme.colors.transparent,
-        ),
-        shape = filledShape,
-        elevation = null,
-        contentPadding = contentPadding,
-    )
-
-    @Composable
-    fun secondaryFilled(isSelected: Boolean) = PreviewLabButtonStyle(
-        colors =
-        PreviewLabButtonColors(
-            containerColor = PreviewLabTheme.colors.secondary,
-            contentColor = PreviewLabTheme.colors.onSecondary,
-            disabledContainerColor = PreviewLabTheme.colors.disabled,
-            disabledContentColor = PreviewLabTheme.colors.onDisabled,
-            borderColor = if (isSelected) PreviewLabTheme.colors.primary else Color.Transparent,
-        ),
-        shape = filledShape,
-        elevation = null,
-        contentPadding = contentPadding,
-    )
-
-    @Composable
-    fun secondaryElevated(isSelected: Boolean) = PreviewLabButtonStyle(
-        colors =
-        PreviewLabButtonColors(
-            containerColor = PreviewLabTheme.colors.secondary,
-            contentColor = PreviewLabTheme.colors.onSecondary,
-            disabledContainerColor = PreviewLabTheme.colors.disabled,
-            disabledContentColor = PreviewLabTheme.colors.onDisabled,
-            borderColor = if (isSelected) PreviewLabTheme.colors.primary else Color.Transparent,
-        ),
-        shape = elevatedShape,
-        elevation = buttonElevation(),
-        contentPadding = contentPadding,
-    )
-
-    @Composable
-    fun secondaryOutlined(isSelected: Boolean) = PreviewLabButtonStyle(
-        colors =
-        PreviewLabButtonColors(
-            containerColor = if (isSelected) PreviewLabTheme.colors.primary else PreviewLabTheme.colors.transparent,
-            contentColor = PreviewLabTheme.colors.secondary,
-            borderColor = PreviewLabTheme.colors.secondary,
-            disabledContainerColor = PreviewLabTheme.colors.transparent,
-            disabledContentColor = PreviewLabTheme.colors.onDisabled,
-            disabledBorderColor = PreviewLabTheme.colors.disabled,
-        ),
-        shape = outlinedShape,
-        elevation = null,
-        contentPadding = contentPadding,
-    )
-
-    @Composable
-    fun secondaryGhost(isSelected: Boolean) = PreviewLabButtonStyle(
-        colors =
-        PreviewLabButtonColors(
-            containerColor = if (isSelected) {
-                PreviewLabTheme.colors.secondary
-                    .copy(alpha = 0.25f)
-            } else {
-                PreviewLabTheme.colors.transparent
-            },
-            contentColor = PreviewLabTheme.colors.secondary,
-            borderColor = PreviewLabTheme.colors.transparent,
-            disabledContainerColor = PreviewLabTheme.colors.transparent,
-            disabledContentColor = PreviewLabTheme.colors.onDisabled,
-            disabledBorderColor = PreviewLabTheme.colors.transparent,
-        ),
-        shape = filledShape,
-        elevation = null,
-        contentPadding = contentPadding,
-    )
-
-    @Composable
-    fun destructiveFilled(isSelected: Boolean) = PreviewLabButtonStyle(
-        colors =
-        PreviewLabButtonColors(
-            containerColor = PreviewLabTheme.colors.error,
-            contentColor = PreviewLabTheme.colors.onError,
-            disabledContainerColor = PreviewLabTheme.colors.disabled,
-            disabledContentColor = PreviewLabTheme.colors.onDisabled,
-            borderColor = if (isSelected) PreviewLabTheme.colors.error.copy(alpha = 0.5f) else Color.Transparent,
-        ),
-        shape = filledShape,
-        elevation = null,
-        contentPadding = contentPadding,
-    )
-
-    @Composable
-    fun destructiveElevated(isSelected: Boolean) = PreviewLabButtonStyle(
-        colors =
-        PreviewLabButtonColors(
-            containerColor = PreviewLabTheme.colors.error,
-            contentColor = PreviewLabTheme.colors.onError,
-            disabledContainerColor = PreviewLabTheme.colors.disabled,
-            disabledContentColor = PreviewLabTheme.colors.onDisabled,
-            borderColor = if (isSelected) PreviewLabTheme.colors.error else Color.Transparent,
-        ),
-        shape = elevatedShape,
-        elevation = buttonElevation(),
-        contentPadding = contentPadding,
-    )
-
-    @Composable
-    fun destructiveOutlined(isSelected: Boolean) = PreviewLabButtonStyle(
-        colors =
-        PreviewLabButtonColors(
-            containerColor = if (isSelected) PreviewLabTheme.colors.error else PreviewLabTheme.colors.transparent,
-            contentColor = PreviewLabTheme.colors.error,
-            borderColor = PreviewLabTheme.colors.error,
-            disabledContainerColor = PreviewLabTheme.colors.transparent,
-            disabledContentColor = PreviewLabTheme.colors.onDisabled,
-            disabledBorderColor = PreviewLabTheme.colors.disabled,
-        ),
-        shape = outlinedShape,
-        elevation = null,
-        contentPadding = contentPadding,
-    )
-
-    @Composable
-    fun destructiveGhost(isSelected: Boolean) = PreviewLabButtonStyle(
-        colors =
-        PreviewLabButtonColors(
-            containerColor = if (isSelected) {
-                PreviewLabTheme.colors.error
-                    .copy(alpha = 0.25f)
-            } else {
-                PreviewLabTheme.colors.transparent
-            },
-            contentColor = PreviewLabTheme.colors.error,
-            borderColor = PreviewLabTheme.colors.transparent,
-            disabledContainerColor = PreviewLabTheme.colors.transparent,
-            disabledContentColor = PreviewLabTheme.colors.onDisabled,
-            disabledBorderColor = PreviewLabTheme.colors.transparent,
-        ),
-        shape = filledShape,
-        elevation = null,
-        contentPadding = contentPadding,
-    )
-
-    @Composable
-    fun ghost(isSelected: Boolean) = PreviewLabButtonStyle(
-        colors =
-        PreviewLabButtonColors(
-            containerColor = if (isSelected) {
-                PreviewLabTheme.colors.black
-                    .copy(alpha = 0.5f)
-            } else {
-                PreviewLabTheme.colors.transparent
-            },
-            contentColor = LocalContentColor.current,
-            borderColor = PreviewLabTheme.colors.transparent,
-            disabledContainerColor = PreviewLabTheme.colors.transparent,
-            disabledContentColor = PreviewLabTheme.colors.onDisabled,
-            disabledBorderColor = PreviewLabTheme.colors.transparent,
-        ),
-        shape = filledShape,
-        elevation = null,
-        contentPadding = contentPadding,
-    )
-}
-
-@Immutable
-@UiComposePreviewLabApi
-data class PreviewLabButtonColors(
-    val containerColor: Color,
-    val contentColor: Color,
-    val borderColor: Color? = null,
-    val disabledContainerColor: Color,
-    val disabledContentColor: Color,
-    val disabledBorderColor: Color? = null,
+fun PreviewLabButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    selected: Boolean = false,
+    style: PreviewLabButtonStyle = PreviewLabButtonStyle.Default,
+    buttonSize: PreviewLabButtonSize = PreviewLabButtonSize.Default,
+    shape: Shape = PreviewLabButtonDefaults.shapeFor(style),
+    contentPadding: PaddingValues = PreviewLabButtonDefaults.contentPaddingFor(buttonSize, style),
+) = PreviewLabButton(
+    onClick = onClick,
+    modifier = modifier,
+    enabled = enabled,
+    selected = selected,
+    style = style,
+    shape = shape,
+    buttonSize = buttonSize,
+    contentPadding = contentPadding,
 ) {
-    @Composable
-    fun containerColor(enabled: Boolean) =
-        rememberUpdatedState(newValue = if (enabled) containerColor else disabledContainerColor)
-
-    @Composable
-    fun contentColor(enabled: Boolean) = rememberUpdatedState(newValue = if (enabled) contentColor else disabledContentColor)
-
-    @Composable
-    fun borderColor(enabled: Boolean) = rememberUpdatedState(newValue = if (enabled) borderColor else disabledBorderColor)
+    PreviewLabText(text)
 }
 
-@Immutable
+/**
+ * Variant of [PreviewLabButton] meant for square targets, such as icons.
+ *
+ * @param onClick Called when the button is activated.
+ * @param modifier Modifier applied to the button.
+ * @param enabled Whether the button can be interacted with.
+ * @param style Visual style used by the button.
+ * @param shape Shape used for the button container, border, and focus ring.
+ * @param buttonSize Size used for the square button dimension.
+ * @param borderWidth Width of the button border when the selected style draws one.
+ * @param interactionSource Interaction source used for focus, press, hover, and indication state.
+ * @param indication Indication drawn on press/hover; `null` draws none.
+ * @param contentColor Colour provided to the content through `LocalContentColor`.
+ * @param content Composable content displayed inside the button.
+ */
+@Composable
 @UiComposePreviewLabApi
-data class PreviewLabButtonStyle(
-    val colors: PreviewLabButtonColors,
-    val shape: Shape,
-    val elevation: ButtonElevation? = null,
-    val contentPadding: PaddingValues,
+fun PreviewLabIconButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    style: PreviewLabButtonStyle = PreviewLabButtonStyle.Default,
+    shape: Shape = PreviewLabButtonDefaults.ButtonShape,
+    buttonSize: PreviewLabButtonSize = PreviewLabButtonSize.Default,
+    borderWidth: Dp = PreviewLabButtonDefaults.OutlineHeight,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    indication: Indication? = buttonIndicationFor(style),
+    contentColor: Color = buttonContentColorFor(style, selected = false),
+    content: @Composable () -> Unit,
+) = BaseButton(
+    onClick = onClick,
+    // callers' earlier `.size(20.dp)` still wins (modifier order)
+    modifier = modifier.size(PreviewLabButtonDefaults.heightFor(buttonSize)),
+    enabled = enabled,
+    style = style,
+    backgroundColor = buttonBackgroundColorFor(style, selected = false),
+    contentColor = contentColor,
+    shape = shape,
+    contentPadding = PaddingValues(0.dp),
+    borderColor = buttonBorderColorFor(style),
+    borderWidth = borderWidth,
+    interactionSource = interactionSource,
+    indication = indication,
+    content = content,
 )
 
 @Composable
-@Preview
-private fun ButtonPreview() {
-    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        PrimaryButtonPreview()
-        SecondaryButtonPreview()
-        DestructiveButtonPreview()
+private fun BaseButton(
+    onClick: () -> Unit,
+    modifier: Modifier,
+    enabled: Boolean,
+    style: PreviewLabButtonStyle,
+    backgroundColor: Color,
+    contentColor: Color,
+    shape: Shape,
+    contentPadding: PaddingValues,
+    borderColor: Color,
+    borderWidth: Dp,
+    interactionSource: MutableInteractionSource,
+    indication: Indication?,
+    content: @Composable () -> Unit,
+) {
+    val alpha = if (enabled) 1f else DisabledAlpha
+    UnstyledButton(
+        onClick = onClick,
+        enabled = enabled,
+        contentPadding = contentPadding,
+        modifier = modifier
+            .bouncyPress(interactionSource = interactionSource, enabled = enabled)
+            .previewLabFocusRing(interactionSource = interactionSource, shape = shape)
+            .graphicsLayer { this.alpha = alpha }
+            .then(
+                buildModifier {
+                    if (style != PreviewLabButtonStyle.Link) {
+                        add(Modifier.clip(shape))
+                        add(Modifier.background(backgroundColor, shape))
+                        if (borderColor.isSpecified && borderColor != Color.Transparent && borderWidth > 0.dp) {
+                            add(Modifier.border(borderWidth, borderColor, shape))
+                        }
+                    }
+                },
+            ),
+        interactionSource = interactionSource,
+        indication = indication,
+    ) {
+        ProvideContentColor(contentColor) { content() }
+    }
+}
+
+/** Composables UI `disabledAlpha`. */
+private const val DisabledAlpha = 0.33f
+
+/** Styles that honour `selected` (PreviewLab addition, e.g. gallery NodeView rows). */
+private val SelectableStyles = setOf(
+    PreviewLabButtonStyle.Secondary,
+    PreviewLabButtonStyle.Outlined,
+    PreviewLabButtonStyle.Ghost,
+)
+
+@Composable
+private fun buttonBackgroundColorFor(style: PreviewLabButtonStyle, selected: Boolean): Color {
+    val c = PreviewLabTheme.colors
+    if (selected && style in SelectableStyles) return c.selectedControl
+    return when (style) {
+        PreviewLabButtonStyle.Primary -> c.primary
+        PreviewLabButtonStyle.Secondary -> c.secondary
+        PreviewLabButtonStyle.Outlined -> c.panel
+        PreviewLabButtonStyle.Destructive -> c.error
+        else -> Color.Transparent
     }
 }
 
 @Composable
-@Preview
-private fun PrimaryButtonPreview() {
-    PreviewLabTheme {
-        Column(
-            modifier =
-            Modifier
-                .background(PreviewLabTheme.colors.background)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            PreviewLabText(text = "Primary Buttons", style = PreviewLabTheme.typography.h2)
-
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                PreviewLabButton(text = "PrimaryFilled", variant = PreviewLabButtonVariant.Primary, onClick = {})
-
-                PreviewLabButton(
-                    text = "Disabled",
-                    variant = PreviewLabButtonVariant.Primary,
-                    isEnabled = false,
-                )
-            }
-
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                PreviewLabButton(text = "PrimaryOutlined", variant = PreviewLabButtonVariant.PrimaryOutlined, onClick = {})
-
-                PreviewLabButton(
-                    text = "Disabled",
-                    variant = PreviewLabButtonVariant.PrimaryOutlined,
-                    isEnabled = false,
-                )
-            }
-
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                PreviewLabButton(text = "PrimaryElevated", variant = PreviewLabButtonVariant.PrimaryElevated, onClick = {})
-
-                PreviewLabButton(
-                    text = "Disabled",
-                    variant = PreviewLabButtonVariant.PrimaryElevated,
-                    isEnabled = false,
-                )
-            }
-
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                PreviewLabButton(text = "PrimaryGhost", variant = PreviewLabButtonVariant.PrimaryGhost, onClick = {})
-
-                PreviewLabButton(
-                    text = "Disabled",
-                    variant = PreviewLabButtonVariant.PrimaryGhost,
-                    isEnabled = false,
-                )
-            }
-        }
+private fun buttonContentColorFor(style: PreviewLabButtonStyle, selected: Boolean): Color {
+    val c = PreviewLabTheme.colors
+    if (selected && style in SelectableStyles) return c.onSelectedControl
+    return when (style) {
+        PreviewLabButtonStyle.Primary -> c.onPrimary
+        PreviewLabButtonStyle.Secondary -> c.onSecondary
+        PreviewLabButtonStyle.Destructive -> c.onError
+        PreviewLabButtonStyle.Outlined -> c.onPanel
+        PreviewLabButtonStyle.Link -> c.primary
+        else -> LocalContentColor.current
     }
 }
 
 @Composable
-@Preview
-private fun SecondaryButtonPreview() {
-    PreviewLabTheme {
-        Column(
-            modifier =
-            Modifier
-                .background(PreviewLabTheme.colors.background)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            PreviewLabText(text = "Secondary Buttons", style = PreviewLabTheme.typography.h2)
+private fun buttonBorderColorFor(style: PreviewLabButtonStyle): Color =
+    if (style == PreviewLabButtonStyle.Outlined) PreviewLabTheme.colors.outline else Color.Unspecified
 
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                PreviewLabButton(text = "SecondaryFilled", variant = PreviewLabButtonVariant.Secondary, onClick = {})
-
-                PreviewLabButton(
-                    text = "Disabled",
-                    variant = PreviewLabButtonVariant.Secondary,
-                    isEnabled = false,
-                )
-            }
-
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                PreviewLabButton(text = "SecondaryOutlined", variant = PreviewLabButtonVariant.SecondaryOutlined, onClick = {})
-
-                PreviewLabButton(
-                    text = "Disabled",
-                    variant = PreviewLabButtonVariant.SecondaryOutlined,
-                    isEnabled = false,
-                )
-            }
-
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                PreviewLabButton(text = "SecondaryElevated", variant = PreviewLabButtonVariant.SecondaryElevated, onClick = {})
-
-                PreviewLabButton(
-                    text = "Disabled",
-                    variant = PreviewLabButtonVariant.SecondaryElevated,
-                    isEnabled = false,
-                )
-            }
-
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                PreviewLabButton(text = "SecondaryGhost", variant = PreviewLabButtonVariant.SecondaryGhost, onClick = {})
-
-                PreviewLabButton(
-                    text = "Disabled",
-                    variant = PreviewLabButtonVariant.SecondaryGhost,
-                    isEnabled = false,
-                )
-            }
-        }
-    }
+@Composable
+private fun buttonIndicationFor(style: PreviewLabButtonStyle): Indication? = when (style) {
+    PreviewLabButtonStyle.Primary, PreviewLabButtonStyle.Destructive ->
+        rememberRippleIndication(PreviewLabTheme.colors.inverseRippleColor)
+    PreviewLabButtonStyle.Link -> null
+    else -> LocalIndication.current // theme default ripple
 }
 
 @Composable
-@Preview
-private fun DestructiveButtonPreview() {
-    PreviewLabTheme {
-        Column(
-            modifier =
-            Modifier
-                .background(PreviewLabTheme.colors.background)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            PreviewLabText(text = "Destructive Buttons", style = PreviewLabTheme.typography.h2)
-
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                PreviewLabButton(text = "DestructiveFilled", variant = PreviewLabButtonVariant.Destructive, onClick = {})
-
-                PreviewLabButton(
-                    text = "Disabled",
-                    variant = PreviewLabButtonVariant.Destructive,
-                    isEnabled = false,
-                )
-            }
-
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                PreviewLabButton(
-                    text = "DestructiveOutlined",
-                    variant = PreviewLabButtonVariant.DestructiveOutlined,
-                    onClick = {
-                    },
-                )
-
-                PreviewLabButton(
-                    text = "Disabled",
-                    variant = PreviewLabButtonVariant.DestructiveOutlined,
-                    isEnabled = false,
-                )
-            }
-
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                PreviewLabButton(
-                    text = "DestructiveElevated",
-                    variant = PreviewLabButtonVariant.DestructiveElevated,
-                    onClick = {
-                    },
-                )
-
-                PreviewLabButton(
-                    text = "Disabled",
-                    variant = PreviewLabButtonVariant.DestructiveElevated,
-                    isEnabled = false,
-                )
-            }
-
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                PreviewLabButton(text = "DestructiveGhost", variant = PreviewLabButtonVariant.DestructiveGhost, onClick = {})
-
-                PreviewLabButton(
-                    text = "Disabled",
-                    variant = PreviewLabButtonVariant.DestructiveGhost,
-                    isEnabled = false,
-                )
-            }
-        }
+private fun buttonLabelTextStyleFor(style: PreviewLabButtonStyle, hovered: Boolean): TextStyle {
+    val base = PreviewLabTheme.typography.button // Medium 14/20
+    return if (style == PreviewLabButtonStyle.Link && hovered) {
+        base.copy(textDecoration = TextDecoration.Underline)
+    } else {
+        base
     }
 }

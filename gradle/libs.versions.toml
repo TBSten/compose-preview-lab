@@ -10,7 +10,9 @@ jsTarget = "es2015"
 
 # Kotlin / Compose
 kotlin = "2.3.21"
-compose = "1.11.0-alpha01"
+compose = "1.11.0"
+# Compose Multiplatform Material3 is versioned separately; 1.11.0-alpha07 is the latest built against CMP 1.11
+composeMaterial3 = "1.11.0-alpha07"
 
 # Kotlin compiler plugin: shadow JAR bundles compat modules to support multiple Kotlin versions.
 shadow = "8.3.6"
@@ -49,7 +51,11 @@ jewelIdeLafBridge = "0.27.0"
 
 # Dev (Hot Reload)
 hotReload = "1.1.0-alpha03"
-lumoUi = "1.2.5"
+
+# Composables (Compose Unstyled) - ui module foundation
+# NOTE: composeunstyled >= 2.7.0 is built with Kotlin 2.4.0; 2.6.0 is the latest version compatible with Kotlin 2.3.x
+composeUnstyled = "2.6.0"
+composablesRippleIndication = "1.1.0"
 
 # ================================
 # Extension Dependencies
@@ -79,8 +85,14 @@ composeUiToolingPreview = { module = "org.jetbrains.compose.ui:ui-tooling-previe
 composeUiTest = { module = "org.jetbrains.compose.ui:ui-test", version.ref = "compose" }
 composeUiTestJunit4 = { module = "org.jetbrains.compose.ui:ui-test-junit4", version.ref = "compose" }
 composeComponentsResources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose" }
-composeMaterial3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "compose" }
+composeMaterial3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "composeMaterial3" }
 composeMaterialRipple = { module = "org.jetbrains.compose.material:material-ripple", version.ref = "compose" }
+
+# Composables (Compose Unstyled)
+composeUnstyled = { module = "com.composables:composeunstyled", version.ref = "composeUnstyled" }
+composeUnstyledTheming = { module = "com.composables:composeunstyled-theming", version.ref = "composeUnstyled" }
+composeUnstyledBuildModifier = { module = "com.composables:composeunstyled-build-modifier", version.ref = "composeUnstyled" }
+composablesRippleIndication = { module = "com.composables:ripple-indication", version.ref = "composablesRippleIndication" }
 
 # KotlinX Serialization
 kotlinxSerializationCore = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerialization" }
@@ -185,4 +197,3 @@ shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 
 # Dev / IntegrationTest
 hotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "hotReload" }
-lumoUi = { id = "com.nomanr.plugin.lumo", version.ref = "lumoUi" }

@@ -74,7 +74,7 @@ Compose Preview Lab は、Compose の `@Preview` をインタラクティブな 
 - **field**: `StringField`, `IntField`, `BooleanField`, `SelectableField` などの Field 実装
 - **preview-lab**: `PreviewLab` Composable（`fieldValue`, `fieldState`, `onEvent` を提供）
 - **gallery**: `PreviewLabGallery` で Preview 一覧を表示
-- **ui**: 内部 UI コンポーネント
+- **ui**: 内部 UI コンポーネント（Composables UI を compose-unstyled 2.6.0 上に移植）
 - **compiler-plugin**: Kotlin Compiler Plugin で `@Preview` を収集・IR 注入
 - **gradle-plugin**: Gradle プラグイン設定、FeaturedFileList 生成
 - **extension/**: kotlinx-datetime, navigation などの拡張

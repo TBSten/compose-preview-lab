@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabButton
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonStyle
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabDivider
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabIcon
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButton
@@ -100,7 +100,7 @@ internal fun ModifierBuilder(
 
         Column {
             PreviewLabButton(
-                variant = PreviewLabButtonVariant.Ghost,
+                style = PreviewLabButtonStyle.Ghost,
                 onClick = state.addMenu::toggle,
                 modifier = Modifier.fillMaxWidth(),
             ) {
@@ -170,7 +170,7 @@ private fun AddModifierMenu(state: ModifierBuilderState, selectableModifierField
                         PreviewLabButton(
                             text = "Create",
                             onClick = ::onCreate,
-                            isEnabled = factory.canCreate,
+                            enabled = factory.canCreate,
                         )
                     },
                 )

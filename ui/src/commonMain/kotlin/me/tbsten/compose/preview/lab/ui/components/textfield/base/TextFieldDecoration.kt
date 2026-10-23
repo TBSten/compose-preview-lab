@@ -1,322 +1,173 @@
 package me.tbsten.compose.preview.lab.ui.components.textfield.base
 
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
-import androidx.compose.foundation.interaction.InteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.IntrinsicMeasurable
 import androidx.compose.ui.layout.LayoutIdParentData
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
-import me.tbsten.compose.preview.lab.ui.LocalContentColor
+import com.composeunstyled.LocalTextStyle
+import com.composeunstyled.ProvideContentColor
+import com.composeunstyled.ProvideTextStyle
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.foundation.ProvideContentColorTextStyle
 
+/**
+ * Decorates [innerTextField] with the optional slots and lays them out with [TextFieldLayout]: [label] above the
+ * [container], [supportingText] below it, icons, prefix/suffix, placeholder and text inside it.
+ *
+ * Colour / text style per slot (placeholder, prefix and suffix share the field's [textStyle], so the text
+ * never changes size while typing):
+ * - input text, prefix, suffix: [contentColor] / [textStyle]
+ * - placeholder: [placeholderColor] / [textStyle] without its colour
+ * - label: [placeholderColor] / `typography.label1`
+ * - supporting text: [placeholderColor], or [errorColor] while [isError] / `typography.body3`
+ * - leading / trailing icon: [contentColor]
+ */
 @Composable
-@UiComposePreviewLabApi
-fun CommonDecorationBox(
+internal fun CommonDecorationBox(
     value: String,
     innerTextField: @Composable () -> Unit,
     visualTransformation: VisualTransformation,
+    textStyle: TextStyle,
     label: @Composable (() -> Unit)?,
-    placeholder: @Composable (() -> Unit)? = null,
-    leadingIcon: @Composable (() -> Unit)? = null,
-    trailingIcon: @Composable (() -> Unit)? = null,
-    prefix: @Composable (() -> Unit)? = null,
-    suffix: @Composable (() -> Unit)? = null,
-    supportingText: @Composable (() -> Unit)? = null,
-    enabled: Boolean = true,
-    isError: Boolean = false,
-    interactionSource: InteractionSource,
-    colors: PreviewLabTextFieldColors,
+    placeholder: @Composable (() -> Unit)?,
+    leadingIcon: @Composable (() -> Unit)?,
+    trailingIcon: @Composable (() -> Unit)?,
+    prefix: @Composable (() -> Unit)?,
+    suffix: @Composable (() -> Unit)?,
+    supportingText: @Composable (() -> Unit)?,
+    isError: Boolean,
+    contentColor: Color,
+    placeholderColor: Color,
+    errorColor: Color,
     contentPadding: PaddingValues,
-    labelPadding: PaddingValues,
-    supportingTextPadding: PaddingValues,
-    leadingIconPadding: PaddingValues,
-    trailingIconPadding: PaddingValues,
+    minHeight: Dp,
     container: @Composable () -> Unit,
 ) {
     val transformedText =
         remember(value, visualTransformation) {
             visualTransformation.filter(AnnotatedString(value))
         }.text.text
+    val typography = PreviewLabTheme.typography
 
-    val isFocused = interactionSource.collectIsFocusedAsState().value
-    val inputState =
-        when {
-            isFocused -> InputPhase.Focused
-            transformedText.isEmpty() -> InputPhase.UnfocusedEmpty
-            else -> InputPhase.UnfocusedNotEmpty
-        }
+    val decoratedTextField: @Composable () -> Unit = {
+        Decoration(contentColor = contentColor, textStyle = textStyle, content = innerTextField)
+    }
 
-    TextFieldTransitionScope.Transition(
-        inputState = inputState,
-        showLabel = label != null,
-    ) { placeholderAlphaProgress ->
-
-        val labelColor = colors.labelColor(enabled = enabled, isError = isError, interactionSource = interactionSource).value
-        val decoratedLabel: @Composable (() -> Unit)? =
-            label?.let {
-                @Composable {
-                    Decoration(labelColor, PreviewLabTheme.typography.label1, it)
-                }
-            }
-
-        val placeholderColor = colors.placeholderColor(enabled, isError, interactionSource).value
-        val decoratedPlaceholder: @Composable ((Modifier) -> Unit)? =
-            if (placeholder != null && transformedText.isEmpty() && placeholderAlphaProgress > 0f) {
-                @Composable { modifier ->
-                    Box(modifier.alpha(placeholderAlphaProgress)) {
-                        Decoration(
-                            contentColor = placeholderColor,
-                            typography = PreviewLabTheme.typography.input,
-                            content = placeholder,
-                        )
-                    }
-                }
-            } else {
-                null
-            }
-
-        val prefixColor = colors.prefixColor(enabled, isError, interactionSource).value
-        val decoratedPrefix: @Composable (() -> Unit)? =
-            if (prefix != null) {
-                @Composable {
-                    Decoration(
-                        contentColor = prefixColor,
-                        typography = PreviewLabTheme.typography.input,
-                        content = prefix,
-                    )
-                }
-            } else {
-                null
-            }
-
-        val suffixColor = colors.suffixColor(enabled, isError, interactionSource).value
-        val decoratedSuffix: @Composable (() -> Unit)? =
-            if (suffix != null) {
-                @Composable {
-                    Decoration(
-                        contentColor = suffixColor,
-                        typography = PreviewLabTheme.typography.input,
-                        content = suffix,
-                    )
-                }
-            } else {
-                null
-            }
-
-        val leadingIconColor = colors.leadingIconColor(enabled, isError, interactionSource).value
-        val decoratedLeading: @Composable (() -> Unit)? =
-            leadingIcon?.let {
-                @Composable {
-                    Decoration(contentColor = leadingIconColor, content = it)
-                }
-            }
-
-        val trailingIconColor = colors.trailingIconColor(enabled, isError, interactionSource).value
-        val decoratedTrailing: @Composable (() -> Unit)? =
-            trailingIcon?.let {
-                @Composable {
-                    Decoration(contentColor = trailingIconColor, content = it)
-                }
-            }
-
-        val supportingTextColor = colors.supportingTextColor(enabled, isError, interactionSource).value
-        val decoratedSupporting: @Composable (() -> Unit)? =
-            supportingText?.let {
-                @Composable {
-                    Decoration(contentColor = supportingTextColor, typography = PreviewLabTheme.typography.body2, content = it)
-                }
-            }
-
-        val containerWithId: @Composable () -> Unit = {
-            Box(
-                Modifier.layoutId(ContainerId),
-                propagateMinConstraints = true,
-            ) {
-                container()
+    val decoratedLabel: @Composable (() -> Unit)? =
+        label?.let {
+            @Composable {
+                Decoration(contentColor = placeholderColor, textStyle = typography.label1, content = it)
             }
         }
 
-        TextFieldLayout(
-            modifier = Modifier,
-            textField = innerTextField,
-            placeholder = decoratedPlaceholder,
-            label = decoratedLabel,
-            leading = decoratedLeading,
-            trailing = decoratedTrailing,
-            prefix = decoratedPrefix,
-            suffix = decoratedSuffix,
-            container = containerWithId,
-            supporting = decoratedSupporting,
-            paddingValues = contentPadding,
-            labelPaddingValues = labelPadding,
-            supportingPaddingValues = supportingTextPadding,
-            leadingIconPaddingValues = leadingIconPadding,
-            trailingIconPaddingValues = trailingIconPadding,
-        )
-    }
-}
-
-@Composable
-internal fun Decoration(contentColor: Color, typography: TextStyle? = null, content: @Composable () -> Unit) {
-    val contentWithColor: @Composable () -> Unit = @Composable {
-        CompositionLocalProvider(
-            LocalContentColor provides contentColor,
-            content = content,
-        )
-    }
-
-    if (typography != null) {
-        ProvideContentColorTextStyle(contentColor, typography, content)
-    } else {
-        contentWithColor()
-    }
-}
-
-private object TextFieldTransitionScope {
-    @Composable
-    fun Transition(
-        inputState: InputPhase,
-        showLabel: Boolean,
-        content: @Composable (
-            placeholderOpacity: Float,
-        ) -> Unit,
-    ) {
-        val transition = updateTransition(inputState, label = "TextFieldInputState")
-
-        val placeholderOpacity by transition.animateFloat(
-            label = "PlaceholderOpacity",
-            transitionSpec = {
-                if (InputPhase.Focused isTransitioningTo InputPhase.UnfocusedEmpty) {
-                    tween(
-                        durationMillis = PlaceholderAnimationDelayOrDuration,
-                        easing = LinearEasing,
+    val decoratedPlaceholder: @Composable ((Modifier) -> Unit)? =
+        if (placeholder != null && transformedText.isEmpty()) {
+            @Composable { modifier ->
+                Box(modifier) {
+                    Decoration(
+                        contentColor = placeholderColor,
+                        textStyle = textStyle.copy(color = Color.Unspecified),
+                        content = placeholder,
                     )
-                } else if (InputPhase.UnfocusedEmpty isTransitioningTo InputPhase.Focused ||
-                    InputPhase.UnfocusedNotEmpty isTransitioningTo InputPhase.UnfocusedEmpty
-                ) {
-                    tween(
-                        durationMillis = PlaceholderAnimationDuration,
-                        delayMillis = PlaceholderAnimationDelayOrDuration,
-                        easing = LinearEasing,
-                    )
-                } else {
-                    spring()
                 }
-            },
+            }
+        } else {
+            null
+        }
+
+    val decoratedPrefix: @Composable (() -> Unit)? =
+        prefix?.let {
+            @Composable {
+                Decoration(contentColor = contentColor, textStyle = textStyle, content = it)
+            }
+        }
+
+    val decoratedSuffix: @Composable (() -> Unit)? =
+        suffix?.let {
+            @Composable {
+                Decoration(contentColor = contentColor, textStyle = textStyle, content = it)
+            }
+        }
+
+    val decoratedLeading: @Composable (() -> Unit)? =
+        leadingIcon?.let {
+            @Composable {
+                Decoration(contentColor = contentColor, content = it)
+            }
+        }
+
+    val decoratedTrailing: @Composable (() -> Unit)? =
+        trailingIcon?.let {
+            @Composable {
+                Decoration(contentColor = contentColor, content = it)
+            }
+        }
+
+    val decoratedSupporting: @Composable (() -> Unit)? =
+        supportingText?.let {
+            @Composable {
+                Decoration(
+                    contentColor = if (isError) errorColor else placeholderColor,
+                    textStyle = typography.body3,
+                    content = it,
+                )
+            }
+        }
+
+    val containerWithId: @Composable () -> Unit = {
+        Box(
+            Modifier.layoutId(ContainerId),
+            propagateMinConstraints = true,
         ) {
-            when (it) {
-                InputPhase.Focused -> 1f
-                InputPhase.UnfocusedEmpty -> if (showLabel) 0f else 1f
-                InputPhase.UnfocusedNotEmpty -> 0f
-            }
+            container()
         }
-
-        content(
-            placeholderOpacity,
-        )
     }
+
+    TextFieldLayout(
+        modifier = Modifier,
+        textField = decoratedTextField,
+        placeholder = decoratedPlaceholder,
+        label = decoratedLabel,
+        leading = decoratedLeading,
+        trailing = decoratedTrailing,
+        prefix = decoratedPrefix,
+        suffix = decoratedSuffix,
+        container = containerWithId,
+        supporting = decoratedSupporting,
+        paddingValues = contentPadding,
+        labelPaddingValues = LabelPadding,
+        supportingPaddingValues = SupportingTextPadding,
+        leadingIconPaddingValues = LeadingIconPadding,
+        trailingIconPaddingValues = TrailingIconPadding,
+        minContainerHeight = minHeight,
+    )
 }
 
+/**
+ * Provides [contentColor] (and, when given, [textStyle] merged over the current `LocalTextStyle`) to [content].
+ * Replaces the deleted `ProvideContentColorTextStyle`; the merge keeps inherited attributes such as the font family.
+ */
 @Composable
-internal fun animateTextFieldBorderAsState(
-    enabled: Boolean,
-    isError: Boolean,
-    interactionSource: InteractionSource,
-    colors: PreviewLabTextFieldColors,
-    borderThickness: Dp,
-): State<BorderStroke> {
-    val indicatorColor = colors.containerOutlineColor(enabled, isError, interactionSource)
-
-    return rememberUpdatedState(
-        BorderStroke(borderThickness, SolidColor(indicatorColor.value)),
-    )
-}
-
-internal fun Modifier.containerOutline(
-    enabled: Boolean,
-    isError: Boolean,
-    interactionSource: InteractionSource,
-    colors: PreviewLabTextFieldColors,
-    borderThickness: Dp,
-    shape: Shape,
-) = composed(
-    inspectorInfo =
-    debugInspectorInfo {
-        name = "indicatorLine"
-        properties["enabled"] = enabled
-        properties["isError"] = isError
-        properties["interactionSource"] = interactionSource
-        properties["colors"] = colors
-        properties["borderThickness"] = borderThickness
-    },
-) {
-    val indicatorColor = colors.containerOutlineColor(enabled, isError, interactionSource)
-
-    val stroke =
-        rememberUpdatedState(
-            BorderStroke(borderThickness, SolidColor(indicatorColor.value)),
-        )
-    this.then(Modifier.border(stroke.value, shape = shape))
-}
-
-internal fun Modifier.containerUnderline(
-    enabled: Boolean,
-    isError: Boolean,
-    interactionSource: InteractionSource,
-    colors: PreviewLabTextFieldColors,
-    borderThickness: Dp,
-) = composed {
-    val indicatorColor = colors.containerOutlineColor(enabled, isError, interactionSource)
-
-    this.then(
-        Modifier.drawBehind {
-            val strokeWidthPx = borderThickness.toPx()
-            drawLine(
-                color = indicatorColor.value,
-                start = androidx.compose.ui.geometry.Offset(0f, size.height - strokeWidthPx / 2),
-                end = androidx.compose.ui.geometry.Offset(size.width, size.height - strokeWidthPx / 2),
-                strokeWidth = strokeWidthPx,
-            )
-        },
-    )
-}
-
-private enum class InputPhase {
-    Focused,
-    UnfocusedEmpty,
-    UnfocusedNotEmpty,
+internal fun Decoration(contentColor: Color, textStyle: TextStyle? = null, content: @Composable () -> Unit) {
+    ProvideContentColor(contentColor) {
+        if (textStyle != null) {
+            ProvideTextStyle(LocalTextStyle.current.merge(textStyle)) { content() }
+        } else {
+            content()
+        }
+    }
 }
 
 internal fun widthOrZero(placeable: Placeable?) = placeable?.width ?: 0
@@ -337,22 +188,18 @@ internal const val SupportingId = "Supporting"
 internal const val ContainerId = "Container"
 internal val ZeroConstraints = Constraints(0, 0, 0, 0)
 
-private const val PlaceholderAnimationDuration = 83
-private const val PlaceholderAnimationDelayOrDuration = 67
+/** Label sits above the container. */
+internal val LabelPadding = PaddingValues(bottom = 6.dp)
 
-internal val TextFieldMinWidth = 180.dp
-internal val TextFieldMinHeight = 32.dp
+/** Supporting text sits below the container, aligned with the 12dp content inset. */
+internal val SupportingTextPadding = PaddingValues(start = 12.dp, top = 4.dp, end = 12.dp)
 
-internal val TextFieldHorizontalPadding = 16.dp
-internal val TextFieldVerticalPadding = 10.dp
-internal val HorizontalIconPadding = 12.dp
-internal val LabelBottomPadding = 6.dp
-internal val SupportingTopPadding = 4.dp
+/** Icons keep the 12dp container inset and an 8dp gap to the text (Composables UI `spacedBy(8.dp)`). */
+internal val LeadingIconPadding = PaddingValues(start = 12.dp, end = 8.dp)
+internal val TrailingIconPadding = PaddingValues(start = 8.dp, end = 12.dp)
+
 internal val PrefixSuffixTextPadding = 2.dp
 internal val MinTextLineHeight = 24.dp
 internal val MinSupportingTextLineHeight = 16.dp
-
-internal val UnfocusedOutlineThickness = 2.dp
-internal val FocusedOutlineThickness = 2.dp
 
 internal val IconDefaultSizeModifier = Modifier.defaultMinSize(24.dp, 24.dp)

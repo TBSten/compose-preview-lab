@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.collectLatest
 import me.tbsten.compose.preview.lab.LocalPreviewLabPreview
@@ -33,11 +34,11 @@ import me.tbsten.compose.preview.lab.previewlab.openfilehandler.OpenFileHandler
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.adaptive
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabButton
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonDefaults
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonStyle
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabDivider
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabIcon
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButton
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButtonVariant
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabModal
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabTabPager
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
@@ -79,7 +80,8 @@ internal fun InspectorsPane(
                     allTabs.forEachIndexed { index, tab ->
                         tab.icon?.let { icon ->
                             PreviewLabIconButton(
-                                variant = PreviewLabIconButtonVariant.PrimaryElevated,
+                                style = PreviewLabButtonStyle.Primary,
+                                modifier = Modifier.shadow(4.dp, PreviewLabButtonDefaults.ButtonShape),
                                 painter = icon(),
                                 contentDescription = tab.title,
                                 onClick = { state.selectedTabIndex = index },
@@ -93,7 +95,7 @@ internal fun InspectorsPane(
                         ) {
                             Box(
                                 Modifier
-                                    .background(PreviewLabTheme.colors.background, shape = RoundedCornerShape(8.dp))
+                                    .background(PreviewLabTheme.colors.panel, shape = RoundedCornerShape(8.dp))
                                     .heightIn(min = 200.dp),
                             ) {
                                 with(tab) {
@@ -113,7 +115,7 @@ internal fun InspectorsPane(
                     if (filePath != null && openHandler != null) {
                         val configuredValue = openHandler.configure()
                         PreviewLabIconButton(
-                            variant = PreviewLabIconButtonVariant.PrimaryOutlined,
+                            style = PreviewLabButtonStyle.Outlined,
                             painter = painterResource(PreviewLabUiRes.drawable.icon_code),
                             contentDescription = "Show source code",
                             onClick = {
@@ -139,7 +141,7 @@ internal fun InspectorsPane(
                 PreviewLabDivider()
                 Column(
                     modifier = Modifier
-                        .background(PreviewLabTheme.colors.background)
+                        .background(PreviewLabTheme.colors.panel)
                         .width(250.dp)
                         .fillMaxHeight(),
                 ) {
@@ -178,7 +180,7 @@ internal fun InspectorsPane(
 
                         val configuredValue = openHandler.configure()
                         PreviewLabButton(
-                            variant = PreviewLabButtonVariant.PrimaryOutlined,
+                            style = PreviewLabButtonStyle.Outlined,
                             onClick = {
                                 @Suppress("UNCHECKED_CAST")
                                 (openHandler as OpenFileHandler<in Any?>).openFile(

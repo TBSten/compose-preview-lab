@@ -25,7 +25,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabButton
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonVariant
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonStyle
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabListItem
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabMenu
@@ -80,7 +80,7 @@ private fun GroupView(group: PreviewTreeNode.Group, children: @Composable () -> 
         fun <T> toggleAnimationSpec() = tween<T>(durationMillis = 220)
 
         PreviewLabButton(
-            variant = PreviewLabButtonVariant.PrimaryGhost,
+            style = PreviewLabButtonStyle.Ghost,
             onClick = { isOpen = !isOpen },
             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
             modifier = modifier.fillMaxWidth(),
@@ -133,10 +133,10 @@ private fun PreviewView(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         PreviewLabButton(
-            variant = PreviewLabButtonVariant.PrimaryGhost,
+            style = PreviewLabButtonStyle.Ghost,
             onClick = onSelect,
             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
-            isSelected = isSelected,
+            selected = isSelected,
             modifier = modifier.weight(1f),
         ) {
             Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()) {

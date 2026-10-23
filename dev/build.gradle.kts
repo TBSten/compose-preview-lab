@@ -136,7 +136,8 @@ tasks.withType<Test> {
     useJUnitPlatform()
     // Forward kotest-related system properties to the test JVM
     // See: https://kotest.io/docs/framework/tags.html#gradle
+    // previewlab.* is forwarded too (previewlab.screenshot.dir enables the jvmTest screenshot harness)
     System.getProperties()
-        .filter { it.key.toString().startsWith("kotest.") }
+        .filter { it.key.toString().startsWith("kotest.") || it.key.toString().startsWith("previewlab.") }
         .forEach { (key, value) -> systemProperty(key.toString(), value) }
 }

@@ -1,40 +1,29 @@
 package me.tbsten.compose.preview.lab.ui.components
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
-import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabChipDefaults.ChipIconHorizontalPadding
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabChipDefaults.ChipIconSize
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabChipDefaults.ChipRectShape
-import me.tbsten.compose.preview.lab.ui.foundation.ButtonElevation
-import androidx.compose.ui.tooling.preview.Preview
 
+/**
+ * A compact selectable chip: a small [PreviewLabButton] drawn [PreviewLabButtonStyle.Primary] when [selected] and
+ * [PreviewLabButtonStyle.Outlined] otherwise.
+ *
+ * @param modifier Modifier applied to the chip.
+ * @param enabled Whether the chip can be interacted with.
+ * @param selected Whether the chip is selected.
+ * @param onClick Called when the chip is activated.
+ * @param contentPadding Padding applied inside the chip bounds, around the chip content.
+ * @param shape Shape used for the chip container, border, and focus ring.
+ * @param interactionSource Interaction source used for focus, press, hover, and indication state.
+ * @param leadingIcon Optional content placed before [label].
+ * @param trailingIcon Optional content placed after [label].
+ * @param label The chip label.
+ */
 @Composable
 @UiComposePreviewLabApi
 fun PreviewLabChip(
@@ -42,488 +31,27 @@ fun PreviewLabChip(
     enabled: Boolean = true,
     selected: Boolean = false,
     onClick: () -> Unit = {},
-    contentPadding: PaddingValues = PreviewLabChipDefaults.contentPadding,
-    shape: Shape = ChipRectShape,
+    contentPadding: PaddingValues = ChipContentPadding,
+    shape: Shape = PreviewLabButtonDefaults.ButtonShape,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     label: @Composable (() -> Unit),
 ) {
-    PreviewLabChipComponent(
+    PreviewLabButton(
+        onClick = onClick,
         modifier = modifier,
         enabled = enabled,
-        selected = selected,
-        style = PreviewLabChipDefaults.primaryFilled(shape),
-        onClick = onClick,
+        style = if (selected) PreviewLabButtonStyle.Primary else PreviewLabButtonStyle.Outlined,
+        shape = shape,
+        buttonSize = PreviewLabButtonSize.Small,
         contentPadding = contentPadding,
-        interactionSource = interactionSource,
-        leadingIcon = leadingIcon,
-        trailingIcon = trailingIcon,
-        label = label,
-    )
-}
-
-@Composable
-@UiComposePreviewLabApi
-fun PreviewLabElevatedChip(
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    selected: Boolean = false,
-    onClick: () -> Unit = {},
-    contentPadding: PaddingValues = PreviewLabChipDefaults.contentPadding,
-    shape: Shape = ChipRectShape,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    leadingIcon: @Composable (() -> Unit)? = null,
-    trailingIcon: @Composable (() -> Unit)? = null,
-    label: @Composable (() -> Unit),
-) {
-    PreviewLabChipComponent(
-        modifier = modifier,
-        enabled = enabled,
-        selected = selected,
-        style = PreviewLabChipDefaults.primaryElevated(shape),
-        onClick = onClick,
-        contentPadding = contentPadding,
-        interactionSource = interactionSource,
-        leadingIcon = leadingIcon,
-        trailingIcon = trailingIcon,
-        label = label,
-    )
-}
-
-@Composable
-@UiComposePreviewLabApi
-fun PreviewLabOutlinedChip(
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    selected: Boolean = false,
-    onClick: () -> Unit = {},
-    contentPadding: PaddingValues = PreviewLabChipDefaults.contentPadding,
-    shape: Shape = ChipRectShape,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    leadingIcon: @Composable (() -> Unit)? = null,
-    trailingIcon: @Composable (() -> Unit)? = null,
-    label: @Composable (() -> Unit),
-) {
-    PreviewLabChipComponent(
-        modifier = modifier,
-        enabled = enabled,
-        selected = selected,
-        style = PreviewLabChipDefaults.primaryOutlined(shape),
-        onClick = onClick,
-        contentPadding = contentPadding,
-        interactionSource = interactionSource,
-        leadingIcon = leadingIcon,
-        trailingIcon = trailingIcon,
-        label = label,
-    )
-}
-
-@Composable
-@UiComposePreviewLabApi
-fun PreviewLabChipComponent(
-    modifier: Modifier,
-    enabled: Boolean = true,
-    selected: Boolean = false,
-    style: PreviewLabChipStyle,
-    onClick: () -> Unit,
-    contentPadding: PaddingValues = PreviewLabChipDefaults.contentPadding,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    leadingIcon: @Composable (() -> Unit)? = null,
-    trailingIcon: @Composable (() -> Unit)? = null,
-    label: @Composable () -> Unit,
-) {
-    val containerColor = style.colors.containerColor(enabled, selected).value
-    val contentColor = style.colors.contentColor(enabled, selected).value
-    val borderColor = style.colors.borderColor(enabled, selected).value
-    val borderStroke =
-        if (borderColor != null) {
-            BorderStroke(
-                PreviewLabChipDefaults.ChipOutlineHeight,
-                borderColor,
-            )
-        } else {
-            null
-        }
-
-    val shadowElevation = style.elevation?.shadowElevation(enabled, interactionSource)?.value ?: 0.dp
-
-    PreviewLabSurface(
-        onClick = onClick,
-        modifier = modifier.semantics { role = Role.Button },
-        enabled = enabled,
-        shape = style.shape,
-        color = containerColor,
-        contentColor = contentColor,
-        border = borderStroke,
-        shadowElevation = shadowElevation,
         interactionSource = interactionSource,
     ) {
-        PreviewLabDefaultChipComponent(
-            modifier = Modifier.padding(contentPadding),
-            leadingIcon = leadingIcon,
-            trailingIcon = trailingIcon,
-            label = label,
-        )
+        leadingIcon?.invoke()
+        label()
+        trailingIcon?.invoke()
     }
 }
 
-@Composable
-@UiComposePreviewLabApi
-fun PreviewLabDefaultChipComponent(
-    modifier: Modifier = Modifier,
-    leadingIcon: @Composable (() -> Unit)? = null,
-    trailingIcon: @Composable (() -> Unit)? = null,
-    label: @Composable (() -> Unit),
-) {
-    Row(
-        modifier,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        leadingIcon?.let { icon ->
-            Box(
-                modifier =
-                Modifier
-                    .padding(end = ChipIconHorizontalPadding)
-                    .requiredSize(ChipIconSize),
-            ) {
-                icon.invoke()
-            }
-        }
-
-        label.invoke()
-
-        trailingIcon?.let { icon ->
-            Box(
-                modifier =
-                Modifier
-                    .padding(start = ChipIconHorizontalPadding)
-                    .requiredSize(ChipIconSize),
-            ) {
-                icon.invoke()
-            }
-        }
-    }
-}
-
-@UiComposePreviewLabApi
-object PreviewLabChipDefaults {
-    private val ChipPaddingHorizontal = 6.dp
-    private val ChipPaddingVertical = 6.dp
-    val ChipRectShape = RoundedCornerShape(12)
-    val ChipOutlineHeight = 1.dp
-    val ChipIconHorizontalPadding = 6.dp
-    val ChipIconSize = 16.dp
-
-    val contentPadding =
-        PaddingValues(
-            start = ChipPaddingHorizontal,
-            end = ChipPaddingHorizontal,
-            top = ChipPaddingVertical,
-            bottom = ChipPaddingVertical,
-        )
-
-    @Composable
-    fun chipElevation() = ButtonElevation(
-        defaultElevation = 4.dp,
-        pressedElevation = 4.dp,
-        focusedElevation = 4.dp,
-        hoveredElevation = 4.dp,
-        disabledElevation = 0.dp,
-    )
-
-    @Composable
-    fun primaryFilled(shape: Shape) = PreviewLabChipStyle(
-        colors =
-        PreviewLabChipColors(
-            containerColor = PreviewLabTheme.colors.surface,
-            contentColor = PreviewLabTheme.colors.onSurface,
-            selectedContainerColor = PreviewLabTheme.colors.primary,
-            selectedContentColor = PreviewLabTheme.colors.onPrimary,
-            disabledContainerColor = PreviewLabTheme.colors.disabled,
-            disabledContentColor = PreviewLabTheme.colors.onDisabled,
-        ),
-        shape = shape,
-        elevation = null,
-        contentPadding = contentPadding,
-    )
-
-    @Composable
-    fun primaryElevated(shape: Shape) = PreviewLabChipStyle(
-        colors =
-        PreviewLabChipColors(
-            containerColor = PreviewLabTheme.colors.surface,
-            contentColor = PreviewLabTheme.colors.onSurface,
-            selectedContainerColor = PreviewLabTheme.colors.primary,
-            selectedContentColor = PreviewLabTheme.colors.onPrimary,
-            disabledContainerColor = PreviewLabTheme.colors.disabled,
-            disabledContentColor = PreviewLabTheme.colors.onDisabled,
-        ),
-        shape = shape,
-        elevation = chipElevation(),
-        contentPadding = contentPadding,
-    )
-
-    @Composable
-    fun primaryOutlined(shape: Shape) = PreviewLabChipStyle(
-        colors =
-        PreviewLabChipColors(
-            containerColor = PreviewLabTheme.colors.transparent,
-            contentColor = PreviewLabTheme.colors.primary,
-            outlineColor = PreviewLabTheme.colors.primary,
-            selectedContainerColor = PreviewLabTheme.colors.primary,
-            selectedOutlineColor = PreviewLabTheme.colors.primary,
-            selectedContentColor = PreviewLabTheme.colors.onPrimary,
-            disabledContainerColor = PreviewLabTheme.colors.transparent,
-            disabledContentColor = PreviewLabTheme.colors.onDisabled,
-            disabledOutlineColor = PreviewLabTheme.colors.disabled,
-        ),
-        shape = shape,
-        elevation = null,
-        contentPadding = contentPadding,
-    )
-}
-
-@Immutable
-@UiComposePreviewLabApi
-data class PreviewLabChipColors(
-    val containerColor: Color,
-    val contentColor: Color,
-    val outlineColor: Color? = null,
-    val selectedContainerColor: Color,
-    val selectedOutlineColor: Color? = null,
-    val selectedContentColor: Color,
-    val disabledContainerColor: Color,
-    val disabledContentColor: Color,
-    val disabledOutlineColor: Color? = null,
-) {
-    @Composable
-    internal fun containerColor(enabled: Boolean, selected: Boolean) = rememberUpdatedState(
-        newValue =
-        when {
-            !enabled -> disabledContainerColor
-            selected -> selectedContainerColor
-            else -> containerColor
-        },
-    )
-
-    @Composable
-    internal fun contentColor(enabled: Boolean, selected: Boolean) = rememberUpdatedState(
-        newValue =
-        when {
-            !enabled -> disabledContentColor
-            selected -> selectedContentColor
-            else -> contentColor
-        },
-    )
-
-    @Composable
-    fun borderColor(enabled: Boolean, selected: Boolean) = rememberUpdatedState(
-        newValue =
-        when {
-            !enabled -> disabledOutlineColor
-            selected -> selectedOutlineColor
-            else -> outlineColor
-        },
-    )
-}
-
-@Immutable
-@UiComposePreviewLabApi
-data class PreviewLabChipStyle(
-    val colors: PreviewLabChipColors,
-    val shape: Shape,
-    val elevation: ButtonElevation? = null,
-    val contentPadding: PaddingValues,
-)
-
-@Composable
-@Preview
-private fun PrimaryChipPreview() {
-    PreviewLabTheme {
-        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                PreviewLabChip {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        DummyIconForChipPreview()
-                        BasicText("Chip", style = PreviewLabTheme.typography.label3)
-                    }
-                }
-
-                PreviewLabChip(enabled = false) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        DummyIconForChipPreview()
-                        BasicText("Chip", style = PreviewLabTheme.typography.label3)
-                    }
-                }
-
-                PreviewLabChip {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        DummyIconForChipPreview()
-                        BasicText("Chip", style = PreviewLabTheme.typography.label3)
-                    }
-                }
-
-                PreviewLabChip(enabled = false) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        DummyIconForChipPreview()
-                        BasicText("Chip", style = PreviewLabTheme.typography.label3)
-                    }
-                }
-            }
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                PreviewLabElevatedChip {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        DummyIconForChipPreview()
-                        BasicText("Chip", style = PreviewLabTheme.typography.label3)
-                    }
-                }
-
-                PreviewLabElevatedChip(enabled = false) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        DummyIconForChipPreview()
-                        BasicText("Chip", style = PreviewLabTheme.typography.label3)
-                    }
-                }
-
-                PreviewLabElevatedChip {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        DummyIconForChipPreview()
-                        BasicText("Chip", style = PreviewLabTheme.typography.label3)
-                    }
-                }
-                PreviewLabElevatedChip(enabled = false) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        DummyIconForChipPreview()
-                        BasicText("Chip", style = PreviewLabTheme.typography.label3)
-                    }
-                }
-            }
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                PreviewLabOutlinedChip {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        DummyIconForChipPreview()
-                        BasicText("Chip", style = PreviewLabTheme.typography.label3)
-                    }
-                }
-
-                PreviewLabOutlinedChip(enabled = false) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        DummyIconForChipPreview()
-                        BasicText("Chip", style = PreviewLabTheme.typography.label3)
-                    }
-                }
-
-                PreviewLabOutlinedChip {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        DummyIconForChipPreview()
-                        BasicText("Chip", style = PreviewLabTheme.typography.label3)
-                    }
-                }
-
-                PreviewLabOutlinedChip(enabled = false) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        DummyIconForChipPreview()
-                        BasicText("Chip", style = PreviewLabTheme.typography.label3)
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-@Preview
-private fun DummyIconForChipPreview() {
-    Canvas(modifier = Modifier.size(16.dp)) {
-        val center = size / 2f
-        val radius = size.minDimension * 0.4f
-        val strokeWidth = 4f
-        val cap = StrokeCap.Round
-
-        drawLine(
-            color = Color.Black,
-            start = Offset(center.width - radius, center.height),
-            end = Offset(center.width + radius, center.height),
-            strokeWidth = strokeWidth,
-            cap = cap,
-        )
-
-        drawLine(
-            color = Color.Black,
-            start = Offset(center.width, center.height - radius),
-            end = Offset(center.width, center.height + radius),
-            strokeWidth = strokeWidth,
-            cap = cap,
-        )
-
-        val diagonalRadius = radius * 0.75f
-        drawLine(
-            color = Color.Black,
-            start =
-            Offset(
-                center.width - diagonalRadius,
-                center.height - diagonalRadius,
-            ),
-            end =
-            Offset(
-                center.width + diagonalRadius,
-                center.height + diagonalRadius,
-            ),
-            strokeWidth = strokeWidth,
-            cap = cap,
-        )
-
-        drawLine(
-            color = Color.Black,
-            start =
-            Offset(
-                center.width - diagonalRadius,
-                center.height + diagonalRadius,
-            ),
-            end =
-            Offset(
-                center.width + diagonalRadius,
-                center.height - diagonalRadius,
-            ),
-            strokeWidth = strokeWidth,
-            cap = cap,
-        )
-    }
-}
+private val ChipContentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp)

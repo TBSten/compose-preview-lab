@@ -1295,7 +1295,7 @@ public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingle
 public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$ModifierBuilderKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$ModifierBuilderKt;
 	public fun <init> ()V
-	public final fun getLambda$-1710429627$field_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2130655915$field_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$OffsetModifierBuilderValueKt {

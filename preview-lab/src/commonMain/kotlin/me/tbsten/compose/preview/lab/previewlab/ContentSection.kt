@@ -1,6 +1,7 @@
 package me.tbsten.compose.preview.lab.previewlab
 
 import androidx.annotation.VisibleForTesting
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.draggable2D
 import androidx.compose.foundation.layout.Box
@@ -102,6 +103,7 @@ internal fun ContentSection(
                 modifier = Modifier
                     .border(8.dp, PreviewLabTheme.colors.outline.copy(alpha = 0.25f))
                     .padding(8.dp)
+                    .background(PreviewLabTheme.colors.panel)
                     .drawWithContent {
                         graphicsLayer.record {
                             this@drawWithContent.drawContent()

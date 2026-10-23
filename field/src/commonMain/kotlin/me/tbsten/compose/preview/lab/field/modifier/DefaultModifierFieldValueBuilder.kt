@@ -85,8 +85,8 @@ internal fun DefaultModifierFieldValueBuilder(
                 }
 
                 PreviewLabSurface(
-                    color = PreviewLabTheme.colors.background,
-                    contentColor = PreviewLabTheme.colors.onBackground,
+                    color = PreviewLabTheme.colors.panel,
+                    contentColor = PreviewLabTheme.colors.onPanel,
                     modifier = Modifier.focusable().focusRequester(focusRequester),
                 ) {
                     menuContent(DefaultModifierFieldValueBuilderMenuScope())

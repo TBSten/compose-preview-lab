@@ -1,6 +1,5 @@
 package me.tbsten.compose.preview.lab.field
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.serialization.KSerializer
@@ -24,7 +22,8 @@ import me.tbsten.compose.preview.lab.field.SelectableField.Type
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.CHIPS
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.DROPDOWN
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.RADIO
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabRadioButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabRadio
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabRadioGroup
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabSelectButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabChip
@@ -187,23 +186,21 @@ open class SelectableField<Value>(
 
     @Composable
     private fun RadioContent() {
-        Column(
+        PreviewLabRadioGroup(
+            value = value,
+            onValueChange = { value = it },
             modifier = Modifier.fillMaxWidth(),
         ) {
-            choices.forEach { choice ->
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier
-                        .clickable { value = choice }
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp, horizontal = 4.dp),
-                ) {
-                    PreviewLabRadioButton(
-                        selected = value == choice,
-                        onClick = null,
-                    )
-                    PreviewLabText(choiceLabel(choice))
+            Column {
+                choices.forEach { choice ->
+                    PreviewLabRadio(
+                        value = choice,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 2.dp, vertical = 4.dp),
+                    ) {
+                        PreviewLabText(choiceLabel(choice))
+                    }
                 }
             }
         }

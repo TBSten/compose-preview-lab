@@ -1,15 +1,13 @@
 package me.tbsten.compose.preview.lab.ui.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.selection.toggleable
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -18,17 +16,25 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.composeunstyled.ProvideContentColor
 import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
-import me.tbsten.compose.preview.lab.ui.LocalContentColor
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.contentColorFor
-import me.tbsten.compose.preview.lab.ui.foundation.ripple
 
+/**
+ * A plain painted container: background [color] in [shape], optional [border] and shadow, and the content colour
+ * provided to its children.
+ *
+ * @param color Background colour (default `colors.surface`, the control grey; panels pass `colors.panel`).
+ * @param contentColor Content colour for children. Defaults to the palette pair of [color]; a non-palette colour
+ * (Transparent, alpha tints, animated colours) inherits the surrounding content colour.
+ */
 @Composable
 @NonRestartableComposable
 @UiComposePreviewLabApi
@@ -41,12 +47,9 @@ fun PreviewLabSurface(
     border: BorderStroke? = null,
     content: @Composable () -> Unit,
 ) {
-    CompositionLocalProvider(
-        LocalContentColor provides contentColor,
-    ) {
+    ProvideContentColor(contentColor) {
         Box(
-            modifier =
-            modifier
+            modifier = modifier
                 .surface(
                     shape = shape,
                     backgroundColor = color,
@@ -64,6 +67,12 @@ fun PreviewLabSurface(
     }
 }
 
+/**
+ * A clickable [PreviewLabSurface]: theme ripple, keyboard focus ring in [shape], 33 % alpha when disabled.
+ *
+ * @param color Background colour (default `colors.background`).
+ * @param contentColor Content colour for children; same default rule as the plain overload.
+ */
 @Composable
 @NonRestartableComposable
 @UiComposePreviewLabApi
@@ -79,12 +88,12 @@ fun PreviewLabSurface(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable () -> Unit,
 ) {
-    CompositionLocalProvider(
-        LocalContentColor provides contentColor,
-    ) {
+    val alpha = if (enabled) 1f else DisabledAlpha
+    ProvideContentColor(contentColor) {
         Box(
-            modifier =
-            modifier
+            modifier = modifier
+                .previewLabFocusRing(interactionSource = interactionSource, shape = shape)
+                .graphicsLayer { this.alpha = alpha }
                 .surface(
                     shape = shape,
                     backgroundColor = color,
@@ -93,93 +102,9 @@ fun PreviewLabSurface(
                 )
                 .clickable(
                     interactionSource = interactionSource,
-                    indication = ripple(color = contentColor),
+                    indication = LocalIndication.current,
                     enabled = enabled,
                     onClick = onClick,
-                ),
-            propagateMinConstraints = true,
-        ) {
-            content()
-        }
-    }
-}
-
-@Composable
-@NonRestartableComposable
-@UiComposePreviewLabApi
-fun PreviewLabSurface(
-    selected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    shape: Shape = RectangleShape,
-    color: Color = PreviewLabTheme.colors.background,
-    contentColor: Color = contentColorFor(color),
-    shadowElevation: Dp = 0.dp,
-    border: BorderStroke? = null,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: @Composable () -> Unit,
-) {
-    CompositionLocalProvider(
-        LocalContentColor provides contentColor,
-    ) {
-        Box(
-            modifier =
-            modifier
-                .surface(
-                    shape = shape,
-                    backgroundColor = color,
-                    border = border,
-                    shadowElevation = shadowElevation,
-                )
-                .selectable(
-                    selected = selected,
-                    interactionSource = interactionSource,
-                    indication = ripple(),
-                    enabled = enabled,
-                    onClick = onClick,
-                ),
-            propagateMinConstraints = true,
-        ) {
-            content()
-        }
-    }
-}
-
-@Composable
-@NonRestartableComposable
-@UiComposePreviewLabApi
-fun PreviewLabSurface(
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    shape: Shape = RectangleShape,
-    color: Color = PreviewLabTheme.colors.background,
-    contentColor: Color = contentColorFor(color),
-    shadowElevation: Dp = 0.dp,
-    border: BorderStroke? = null,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: @Composable () -> Unit,
-) {
-    CompositionLocalProvider(
-        LocalContentColor provides contentColor,
-    ) {
-        Box(
-            modifier =
-            modifier
-                .surface(
-                    shape = shape,
-                    backgroundColor = color,
-                    border = border,
-                    shadowElevation = shadowElevation,
-                )
-                .toggleable(
-                    value = checked,
-                    interactionSource = interactionSource,
-                    indication = ripple(),
-                    enabled = enabled,
-                    onValueChange = onCheckedChange,
                 ),
             propagateMinConstraints = true,
         ) {
@@ -200,3 +125,6 @@ private fun Modifier.surface(shape: Shape, backgroundColor: Color, border: Borde
     .then(if (border != null) Modifier.border(border, shape) else Modifier)
     .background(color = backgroundColor, shape = shape)
     .clip(shape)
+
+/** Composables UI `disabledAlpha`. */
+private const val DisabledAlpha = 0.33f

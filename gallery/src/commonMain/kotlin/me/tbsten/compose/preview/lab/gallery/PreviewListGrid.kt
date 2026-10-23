@@ -39,7 +39,7 @@ import me.tbsten.compose.preview.lab.LocalIsInPreviewLabGalleryCardBody
 import me.tbsten.compose.preview.lab.PreviewLabPreview
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 import me.tbsten.compose.preview.lab.ui.adaptive
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabHorizontalDivider
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabHorizontalSeparator
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.components.card.PreviewLabCardDefaults
 import me.tbsten.compose.preview.lab.ui.components.card.PreviewLabOutlinedCard
@@ -142,7 +142,7 @@ fun PreviewListGridCard(preview: PreviewLabPreview, onClick: () -> Unit) = Previ
         )
     }
 
-    PreviewLabHorizontalDivider(color = PreviewLabTheme.colors.outline)
+    PreviewLabHorizontalSeparator(color = PreviewLabTheme.colors.outline)
 
     val bodyContentPadding = adaptive(small = 4.dp, medium = 8.dp)
     PreviewLabGalleryCardBody(

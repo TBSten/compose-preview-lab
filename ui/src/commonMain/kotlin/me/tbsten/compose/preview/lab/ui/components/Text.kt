@@ -1,17 +1,11 @@
 package me.tbsten.compose.preview.lab.ui.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.InlineTextContent
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
@@ -22,26 +16,47 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.dp
+import com.composeunstyled.LocalContentColor
+import com.composeunstyled.LocalTextStyle
 import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
-import me.tbsten.compose.preview.lab.ui.LocalContentColor
-import me.tbsten.compose.preview.lab.ui.LocalTextStyle
-import me.tbsten.compose.preview.lab.ui.LocalTypography
-import androidx.compose.ui.tooling.preview.Preview
 
+/**
+ * Themed text built on [BasicText].
+ *
+ * Colour precedence follows Composables UI `Text`: an explicit [color] wins, then `style.color`, then the
+ * surrounding `LocalContentColor`. [textAlign] defaults to [TextAlign.Unspecified] so `style.textAlign` is honoured.
+ *
+ * @param text Text to display.
+ * @param modifier Modifier applied to the text.
+ * @param color Colour of the text. [Color.Unspecified] falls back to `style.color`, then `LocalContentColor`.
+ * @param fontSize Font size; [TextUnit.Unspecified] keeps the value from [style].
+ * @param fontStyle Font style; `null` keeps the value from [style].
+ * @param fontWeight Font weight; `null` keeps the value from [style].
+ * @param fontFamily Font family; `null` keeps the value from [style].
+ * @param letterSpacing Letter spacing; [TextUnit.Unspecified] keeps the value from [style].
+ * @param textDecoration Text decoration; `null` keeps the value from [style].
+ * @param textAlign Text alignment; [TextAlign.Unspecified] keeps the value from [style].
+ * @param lineHeight Line height; [TextUnit.Unspecified] keeps the value from [style].
+ * @param overflow How visual overflow is handled.
+ * @param softWrap Whether the text should break at soft line breaks.
+ * @param maxLines Maximum number of lines.
+ * @param minLines Minimum number of lines.
+ * @param onTextLayout Callback invoked when a new text layout is calculated.
+ * @param style Base text style, defaults to `LocalTextStyle`.
+ */
 @Composable
 @UiComposePreviewLabApi
 fun PreviewLabText(
     text: String,
     modifier: Modifier = Modifier,
-    color: Color = LocalContentColor.current,
+    color: Color = Color.Unspecified,
     fontSize: TextUnit = TextUnit.Unspecified,
     fontStyle: FontStyle? = null,
     fontWeight: FontWeight? = null,
     fontFamily: FontFamily? = null,
     letterSpacing: TextUnit = TextUnit.Unspecified,
     textDecoration: TextDecoration? = null,
-    textAlign: TextAlign = TextAlign.Start,
+    textAlign: TextAlign = TextAlign.Unspecified,
     lineHeight: TextUnit = TextUnit.Unspecified,
     overflow: TextOverflow = TextOverflow.Clip,
     softWrap: Boolean = true,
@@ -71,19 +86,44 @@ fun PreviewLabText(
     )
 }
 
+/**
+ * Themed [AnnotatedString] text built on [BasicText]; supports [inlineContent].
+ *
+ * Colour precedence follows Composables UI `Text`: an explicit [color] wins, then `style.color`, then the
+ * surrounding `LocalContentColor`. [textAlign] defaults to [TextAlign.Unspecified] so `style.textAlign` is honoured.
+ *
+ * @param text Text to display.
+ * @param modifier Modifier applied to the text.
+ * @param color Colour of the text. [Color.Unspecified] falls back to `style.color`, then `LocalContentColor`.
+ * @param fontSize Font size; [TextUnit.Unspecified] keeps the value from [style].
+ * @param fontStyle Font style; `null` keeps the value from [style].
+ * @param fontWeight Font weight; `null` keeps the value from [style].
+ * @param fontFamily Font family; `null` keeps the value from [style].
+ * @param letterSpacing Letter spacing; [TextUnit.Unspecified] keeps the value from [style].
+ * @param textDecoration Text decoration; `null` keeps the value from [style].
+ * @param textAlign Text alignment; [TextAlign.Unspecified] keeps the value from [style].
+ * @param lineHeight Line height; [TextUnit.Unspecified] keeps the value from [style].
+ * @param overflow How visual overflow is handled.
+ * @param softWrap Whether the text should break at soft line breaks.
+ * @param maxLines Maximum number of lines.
+ * @param minLines Minimum number of lines.
+ * @param inlineContent Map of inline composables keyed by the placeholder ids used in [text].
+ * @param onTextLayout Callback invoked when a new text layout is calculated.
+ * @param style Base text style, defaults to `LocalTextStyle`.
+ */
 @Composable
 @UiComposePreviewLabApi
 fun PreviewLabText(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
-    color: Color = LocalContentColor.current,
+    color: Color = Color.Unspecified,
     fontSize: TextUnit = TextUnit.Unspecified,
     fontStyle: FontStyle? = null,
     fontWeight: FontWeight? = null,
     fontFamily: FontFamily? = null,
     letterSpacing: TextUnit = TextUnit.Unspecified,
     textDecoration: TextDecoration? = null,
-    textAlign: TextAlign = TextAlign.Start,
+    textAlign: TextAlign = TextAlign.Unspecified,
     lineHeight: TextUnit = TextUnit.Unspecified,
     overflow: TextOverflow = TextOverflow.Clip,
     softWrap: Boolean = true,
@@ -93,10 +133,12 @@ fun PreviewLabText(
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current,
 ) {
+    // Explicit colour → style colour → content colour (Composables UI `Text` precedence).
+    val resolvedColor = color.takeOrElse { style.color.takeOrElse { LocalContentColor.current } }
     val mergedStyle =
         style.merge(
             TextStyle(
-                color = color,
+                color = resolvedColor,
                 fontSize = fontSize,
                 fontWeight = fontWeight,
                 textAlign = textAlign,
@@ -108,121 +150,14 @@ fun PreviewLabText(
             ),
         )
     BasicText(
-        text,
-        modifier,
-        mergedStyle,
-        onTextLayout,
-        overflow,
-        softWrap,
-        maxLines,
-        minLines,
-        inlineContent,
-    )
-}
-
-@Composable
-@UiComposePreviewLabApi
-fun PreviewLabSelectableText(
-    text: AnnotatedString,
-    modifier: Modifier = Modifier,
-    color: Color = LocalContentColor.current,
-    fontSize: TextUnit = TextUnit.Unspecified,
-    fontStyle: FontStyle? = null,
-    fontWeight: FontWeight? = null,
-    fontFamily: FontFamily? = null,
-    letterSpacing: TextUnit = TextUnit.Unspecified,
-    textDecoration: TextDecoration? = null,
-    textAlign: TextAlign = TextAlign.Start,
-    lineHeight: TextUnit = TextUnit.Unspecified,
-    overflow: TextOverflow = TextOverflow.Clip,
-    softWrap: Boolean = true,
-    maxLines: Int = Int.MAX_VALUE,
-    minLines: Int = 1,
-    inlineContent: Map<String, InlineTextContent> = mapOf(),
-    onTextLayout: (TextLayoutResult) -> Unit = {},
-    style: TextStyle = LocalTextStyle.current,
-) = SelectionContainer {
-    PreviewLabText(
         text = text,
         modifier = modifier,
-        color = color,
-        fontSize = fontSize,
-        fontStyle = fontStyle,
-        fontWeight = fontWeight,
-        fontFamily = fontFamily,
-        letterSpacing = letterSpacing,
-        textDecoration = textDecoration,
-        textAlign = textAlign,
-        lineHeight = lineHeight,
+        style = mergedStyle,
+        onTextLayout = onTextLayout,
         overflow = overflow,
         softWrap = softWrap,
         maxLines = maxLines,
         minLines = minLines,
         inlineContent = inlineContent,
-        onTextLayout = onTextLayout,
-        style = style,
     )
-}
-
-@Preview
-@Composable
-private fun TypographySample() {
-    val typography = LocalTypography.current
-
-    Column(
-        modifier =
-        Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        PreviewLabText(
-            text = "H1 Heading",
-            style = typography.h1,
-        )
-        PreviewLabText(
-            text = "H2 Heading",
-            style = typography.h2,
-        )
-        PreviewLabText(
-            text = "H3 Heading",
-            style = typography.h3,
-        )
-        PreviewLabText(
-            text = "H4 Heading",
-            style = typography.h4,
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        PreviewLabText(
-            text = "This is body1 text.",
-            style = typography.body1,
-        )
-        PreviewLabText(
-            text = "This is body2 text.",
-            style = typography.body2,
-        )
-        PreviewLabText(
-            text = "Body3 text for fine print.",
-            style = typography.body3,
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        PreviewLabText(
-            text = "Label1: Form Label",
-            style = typography.label1,
-        )
-        PreviewLabText(
-            text = "Label2: Secondary Info",
-            style = typography.label2,
-        )
-        PreviewLabText(
-            text = "Label3: Tiny Details",
-            style = typography.label3,
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-    }
 }

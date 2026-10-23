@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import me.tbsten.compose.preview.lab.ImmutablePreviewLabField
 import me.tbsten.compose.preview.lab.field.SelectableField.Type
 import me.tbsten.compose.preview.lab.field.SelectableField.Type.DROPDOWN
-import me.tbsten.compose.preview.lab.ui.LocalTextStyle
+import com.composeunstyled.LocalTextStyle
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabSelectButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.util.thenIf

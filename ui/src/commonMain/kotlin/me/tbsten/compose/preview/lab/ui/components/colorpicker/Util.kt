@@ -1,9 +1,12 @@
 package me.tbsten.compose.preview.lab.ui.components.colorpicker
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Color
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
+import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 
 internal fun Color.toHueDegree(): Float {
     @Suppress("ktlint:standard:property-naming", "LocalVariableName")
@@ -79,4 +82,7 @@ internal fun hueDegreeToColor(hueDegrees: Float): Color {
     return Color(r, g, b)
 }
 
-internal fun colorPickerThumbColor() = Color.White
+/** Colour of the picker thumbs (HSV ring, hue/alpha handles): the theme's `thumb` token. */
+@Composable
+@ReadOnlyComposable
+internal fun colorPickerThumbColor(): Color = PreviewLabTheme.colors.thumb
