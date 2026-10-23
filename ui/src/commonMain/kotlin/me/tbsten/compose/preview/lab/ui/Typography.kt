@@ -1,24 +1,12 @@
 package me.tbsten.compose.preview.lab.ui
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.runtime.structuralEqualityPolicy
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
-import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 @UiComposePreviewLabApi
@@ -112,12 +100,12 @@ private val defaultTypography =
             lineHeight = 12.sp,
             letterSpacing = 0.5.sp,
         ),
+        // Composables UI button labels are Medium without tracking (no letterSpacing).
         button =
         TextStyle(
-            fontWeight = FontWeight.W500,
+            fontWeight = FontWeight.Medium,
             fontSize = 14.sp,
             lineHeight = 20.sp,
-            letterSpacing = 1.sp,
         ),
         input =
         TextStyle(
@@ -151,77 +139,3 @@ fun provideTypography(): Typography {
 
 @UiComposePreviewLabApi
 val LocalTypography = staticCompositionLocalOf { defaultTypography }
-
-@UiComposePreviewLabApi
-val LocalTextStyle = compositionLocalOf(structuralEqualityPolicy()) { TextStyle.Default }
-
-@Composable
-@Preview
-private fun DefaultTypographyPreview() {
-    val typography = defaultTypography
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        BasicText(
-            text = "H1 Heading",
-            style = typography.h1,
-        )
-        BasicText(
-            text = "H2 Heading",
-            style = typography.h2,
-        )
-        BasicText(
-            text = "H3 Heading",
-            style = typography.h3,
-        )
-        BasicText(
-            text = "H4 Heading",
-            style = typography.h4,
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        BasicText(
-            text = "This is body1 text.",
-            style = typography.body1,
-        )
-        BasicText(
-            text = "This is body2 text.",
-            style = typography.body2,
-        )
-        BasicText(
-            text = "Body3 text for fine print.",
-            style = typography.body3,
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        BasicText(
-            text = "Label1: Form Label",
-            style = typography.label1,
-        )
-        BasicText(
-            text = "Label2: Secondary Info",
-            style = typography.label2,
-        )
-        BasicText(
-            text = "Label3: Tiny Details",
-            style = typography.label3,
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        BasicText(
-            text = "BUTTON TEXT",
-            style = typography.button,
-        )
-        BasicText(
-            text = "Input text field",
-            style = typography.input,
-        )
-    }
-}

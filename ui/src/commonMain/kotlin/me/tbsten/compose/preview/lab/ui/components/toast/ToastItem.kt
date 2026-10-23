@@ -5,11 +5,10 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -20,21 +19,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabIcon
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButton
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonSize
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabButtonStyle
+import me.tbsten.compose.preview.lab.ui.components.PreviewLabIconButton
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabSurface
 import me.tbsten.compose.preview.lab.ui.components.PreviewLabText
 import me.tbsten.compose.preview.lab.ui.generated.resources.PreviewLabUiRes
 import me.tbsten.compose.preview.lab.ui.generated.resources.icon_close
 import org.jetbrains.compose.resources.painterResource
 
+/**
+ * A single toast rendered by [ToastHost]: message, optional ghost action button and optional close button on a
+ * [PreviewLabSurface] styled by [ToastDefaults]. Auto-dismisses after [ToastData.duration].
+ */
 @Composable
-@UiComposePreviewLabApi
-fun ToastItem(toast: ToastData, onDismiss: () -> Unit, modifier: Modifier = Modifier,) {
+internal fun ToastItem(toast: ToastData, onDismiss: () -> Unit, modifier: Modifier = Modifier) {
     var isVisible by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
 
@@ -56,16 +59,26 @@ fun ToastItem(toast: ToastData, onDismiss: () -> Unit, modifier: Modifier = Modi
     ) {
         val containerColor = ToastDefaults.containerColor(toast.type)
         val contentColor = ToastDefaults.contentColor(toast.type)
+        val hasTrailingControls = toast.action != null || toast.showCloseButton
 
         PreviewLabSurface(
             shape = ToastDefaults.shape,
             color = containerColor,
             contentColor = contentColor,
             shadowElevation = ToastDefaults.shadowElevation,
+            border = ToastDefaults.border(toast.type),
         ) {
             Row(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier
+                    .heightIn(min = ToastDefaults.MinHeight)
+                    .padding(
+                        start = 16.dp,
+                        top = 8.dp,
+                        // buttons carry their own inner padding, so the trailing edge tightens up
+                        end = if (hasTrailingControls) 8.dp else 16.dp,
+                        bottom = 8.dp,
+                    ),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 PreviewLabText(
@@ -75,29 +88,30 @@ fun ToastItem(toast: ToastData, onDismiss: () -> Unit, modifier: Modifier = Modi
                 )
 
                 toast.action?.let { action ->
-                    PreviewLabText(
-                        text = action.label,
-                        color = contentColor,
-                        modifier = Modifier
-                            .clickable(role = Role.Button) { action.onClick() }
-                            .padding(horizontal = 8.dp, vertical = 4.dp),
-                    )
+                    PreviewLabButton(
+                        onClick = action.onClick,
+                        style = PreviewLabButtonStyle.Ghost,
+                        buttonSize = PreviewLabButtonSize.Small,
+                        contentColor = contentColor,
+                    ) {
+                        PreviewLabText(text = action.label)
+                    }
                 }
 
                 if (toast.showCloseButton) {
-                    PreviewLabIcon(
+                    PreviewLabIconButton(
                         painter = painterResource(PreviewLabUiRes.drawable.icon_close),
                         contentDescription = "Close",
+                        onClick = {
+                            coroutineScope.launch {
+                                isVisible = false
+                                delay(ToastDefaults.AnimationDurationMillis)
+                                onDismiss()
+                            }
+                        },
+                        style = PreviewLabButtonStyle.Ghost,
                         tint = contentColor,
-                        modifier = Modifier
-                            .size(20.dp)
-                            .clickable(role = Role.Button) {
-                                coroutineScope.launch {
-                                    isVisible = false
-                                    delay(ToastDefaults.AnimationDurationMillis)
-                                    onDismiss()
-                                }
-                            },
+                        tooltip = null,
                     )
                 }
             }

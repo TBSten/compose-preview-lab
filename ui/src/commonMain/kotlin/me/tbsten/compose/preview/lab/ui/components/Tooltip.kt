@@ -1,437 +1,280 @@
+/*
+ * Copyright (c) 2026 Composable Horizons — MIT License (see ui/THIRD_PARTY_NOTICES.md).
+ * Adapted for Compose Preview Lab: PreviewLab* prefix, compose-unstyled 2.6.0, PreviewLabTheme facade colours.
+ * PreviewLab addition: the thin `PreviewLabTooltipBox(tooltip, tooltipSide)` used by the resource icon buttons.
+ */
 package me.tbsten.compose.preview.lab.ui.components
 
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.Transition
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.rememberTransition
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.BasicTooltipBox
-import androidx.compose.foundation.BasicTooltipDefaults
-import androidx.compose.foundation.BasicTooltipState
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.MutatePriority
-import androidx.compose.foundation.MutatorMutex
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
-import androidx.compose.ui.draw.CacheDrawScope
-import androidx.compose.ui.draw.DrawResult
-import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.LayoutCoordinates
-import androidx.compose.ui.layout.boundsInWindow
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.debugInspectorInfo
-import androidx.compose.ui.unit.Density
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntRect
-import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.isSpecified
-import androidx.compose.ui.window.PopupPositionProvider
-import kotlinx.coroutines.CancellableContinuation
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withTimeout
+import androidx.compose.ui.zIndex
+import com.composeunstyled.AnchorAlignment
+import com.composeunstyled.AnchorSide
+import com.composeunstyled.LocalTextStyle
+import com.composeunstyled.ProvideContentColor
+import com.composeunstyled.ProvideTextStyle
+import com.composeunstyled.TooltipPanel as UnstyledTooltipPanel
+import com.composeunstyled.TooltipScope as UnstyledTooltipScope
+import com.composeunstyled.UnstyledTooltip
+import kotlin.jvm.JvmInline
 import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-import me.tbsten.compose.preview.lab.ui.components.PreviewLabTooltipDefaults.SpacingBetweenTooltipAndAnchor
-import androidx.compose.ui.tooling.preview.Preview
 
-@OptIn(ExperimentalFoundationApi::class)
+private const val TooltipEnterDurationMillis = 300
+private const val TooltipExitDurationMillis = 250
+
+/** Receiver of the [PreviewLabTooltip] `panel` slot; call [PreviewLabTooltipPanel] on it. */
+@UiComposePreviewLabApi
+class PreviewLabTooltipScope internal constructor(
+    internal val unstyledScope: UnstyledTooltipScope,
+    internal val side: PreviewLabTooltipSide,
+    internal val alignment: PreviewLabTooltipAlignment,
+)
+
+/** Side options for tooltip placement relative to its anchor. */
+@UiComposePreviewLabApi
+@JvmInline
+value class PreviewLabTooltipSide internal constructor(@Suppress("unused") private val value: Int) {
+    internal val anchorSide: AnchorSide
+        get() = when (this) {
+            Bottom -> AnchorSide.Bottom
+            Start -> AnchorSide.Start
+            End -> AnchorSide.End
+            else -> AnchorSide.Top
+        }
+
+    @UiComposePreviewLabApi
+    companion object {
+        /** Places the tooltip above its anchor. */
+        val Top = PreviewLabTooltipSide(0)
+
+        /** Places the tooltip below its anchor. */
+        val Bottom = PreviewLabTooltipSide(1)
+
+        /** Places the tooltip before its anchor in the layout direction. */
+        val Start = PreviewLabTooltipSide(2)
+
+        /** Places the tooltip after its anchor in the layout direction. */
+        val End = PreviewLabTooltipSide(3)
+    }
+}
+
+/** Alignment options for tooltip placement along the anchor edge. */
+@UiComposePreviewLabApi
+@JvmInline
+value class PreviewLabTooltipAlignment internal constructor(@Suppress("unused") private val value: Int) {
+    internal val anchorAlignment: AnchorAlignment
+        get() = when (this) {
+            Start -> AnchorAlignment.Start
+            End -> AnchorAlignment.End
+            else -> AnchorAlignment.Center
+        }
+
+    @UiComposePreviewLabApi
+    companion object {
+        /** Aligns the tooltip to the start edge of the anchor. */
+        val Start = PreviewLabTooltipAlignment(0)
+
+        /** Centers the tooltip against the anchor. */
+        val Center = PreviewLabTooltipAlignment(1)
+
+        /** Aligns the tooltip to the end edge of the anchor. */
+        val End = PreviewLabTooltipAlignment(2)
+    }
+}
+
+/**
+ * An anchored tooltip with configurable placement and timing.
+ *
+ * The panel renders through a compose-unstyled `Portal`, so a `TooltipHost` ancestor is required: `PreviewLabTheme`
+ * installs one at the outermost theme, `PreviewLabModal` and `PreviewLabMenu` install their own around their
+ * Dialog / Popup content. Placement is clamped into the host bounds and never flips, so anchors close to the top
+ * of the window should pass [PreviewLabTooltipSide.Bottom].
+ *
+ * @param enabled Whether the tooltip can be shown.
+ * @param side Side of the anchor where the tooltip should appear.
+ * @param alignment Alignment of the tooltip along the chosen side.
+ * @param sideOffset Distance between the tooltip and its anchor.
+ * @param alignmentOffset Offset applied along the anchor edge.
+ * @param longPressShowDurationMillis Duration to keep the tooltip visible after a long press.
+ * @param hoverDelayMillis Delay before showing the tooltip on hover.
+ * @param panel Composable tooltip panel content.
+ * @param anchor Composable anchor that triggers the tooltip.
+ */
 @Composable
 @UiComposePreviewLabApi
-fun PreviewLabTooltipBox(
-    modifier: Modifier = Modifier,
-    positionProvider: PopupPositionProvider = rememberPreviewLabTooltipPositionProvider(),
-    tooltip: @Composable PreviewLabTooltipScope.() -> Unit,
-    state: PreviewLabTooltipState = rememberPreviewLabTooltipState(),
-    focusable: Boolean = true,
-    enableUserInput: Boolean = true,
-    content: @Composable () -> Unit,
+fun PreviewLabTooltip(
+    enabled: Boolean = true,
+    side: PreviewLabTooltipSide = PreviewLabTooltipSide.Top,
+    alignment: PreviewLabTooltipAlignment = PreviewLabTooltipAlignment.Center,
+    sideOffset: Dp = 8.dp,
+    alignmentOffset: Dp = 0.dp,
+    longPressShowDurationMillis: Long = 1500L,
+    hoverDelayMillis: Long = 0L,
+    panel: @Composable PreviewLabTooltipScope.() -> Unit,
+    anchor: @Composable () -> Unit,
 ) {
-    val transition = rememberTransition(state.transition, label = "tooltip transition")
-    val anchorBounds: MutableState<LayoutCoordinates?> = remember { mutableStateOf(null) }
-    val scope = remember { DefaultPreviewLabTooltipScope { anchorBounds.value } }
-
-    val wrappedContent: @Composable () -> Unit = {
-        Box(modifier = Modifier.onGloballyPositioned { anchorBounds.value = it }) {
-            content()
-        }
-    }
-
-    BasicTooltipBox(
-        positionProvider = positionProvider,
-        tooltip = {
-            Box(Modifier.animatePreviewLabTooltip(transition)) {
-                scope.tooltip()
-            }
+    UnstyledTooltip(
+        enabled = enabled,
+        panel = {
+            PreviewLabTooltipScope(
+                unstyledScope = this,
+                side = side,
+                alignment = alignment,
+            ).panel()
         },
-        focusable = focusable,
-        enableUserInput = enableUserInput,
-        state = state,
-        modifier = modifier,
-        content = wrappedContent,
+        side = side.anchorSide,
+        alignment = alignment.anchorAlignment,
+        sideOffset = sideOffset,
+        alignmentOffset = alignmentOffset,
+        longPressShowDurationMillis = longPressShowDurationMillis,
+        hoverDelayMillis = hoverDelayMillis,
+        anchor = anchor,
     )
 }
 
+/**
+ * A styled tooltip surface drawn near the anchor.
+ *
+ * @param modifier Modifier applied to the component.
+ * @param shape Shape used for the tooltip panel.
+ * @param backgroundColor Background color used for the tooltip panel.
+ * @param contentColor Color used for tooltip content.
+ * @param outlineColor Color of the 1dp border around the tooltip panel.
+ * @param contentPadding Padding applied inside the tooltip panel.
+ * @param enter Transition used when the tooltip appears.
+ * @param exit Transition used when the tooltip disappears.
+ * @param content Composable content displayed by the component.
+ */
+@Composable
+@UiComposePreviewLabApi
+fun PreviewLabTooltipScope.PreviewLabTooltipPanel(
+    modifier: Modifier = Modifier,
+    shape: Shape = RoundedCornerShape(6.dp),
+    backgroundColor: Color = PreviewLabTheme.colors.panel,
+    contentColor: Color = PreviewLabTheme.colors.onPanel,
+    outlineColor: Color = PreviewLabTheme.colors.outline,
+    contentPadding: PaddingValues = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
+    enter: EnterTransition? = null,
+    exit: ExitTransition? = null,
+    content: @Composable () -> Unit,
+) {
+    val transformOrigin = tooltipTransformOrigin(side, alignment)
+
+    with(unstyledScope) {
+        UnstyledTooltipPanel(
+            modifier = modifier.zIndex(15f),
+            enter = enter ?: tooltipEnterTransition(transformOrigin),
+            exit = exit ?: tooltipExitTransition(transformOrigin),
+        ) {
+            Box(
+                modifier = Modifier
+                    .border(1.dp, outlineColor, shape)
+                    .clip(shape)
+                    .background(backgroundColor, shape)
+                    .padding(contentPadding),
+            ) {
+                ProvideContentColor(contentColor) {
+                    ProvideTextStyle(LocalTextStyle.current.merge(TooltipTextStyle)) { content() }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * PreviewLab convenience: shows [tooltip] in a [PreviewLabTooltipPanel] when [content] is hovered, long-pressed or
+ * keyboard-focused. Used by the resource [PreviewLabIconButton] overloads.
+ *
+ * @param tooltip Text shown inside the tooltip panel.
+ * @param modifier Modifier applied to the box wrapping [content] (the tooltip anchor).
+ * @param enabled Whether the tooltip can be shown.
+ * @param tooltipSide Side of the anchor the tooltip is placed on. Header sites pass [PreviewLabTooltipSide.Bottom]
+ *   because placement clamps into the window instead of flipping.
+ * @param content The anchor content.
+ */
 @Composable
 @UiComposePreviewLabApi
 fun PreviewLabTooltipBox(
     tooltip: String,
     modifier: Modifier = Modifier,
-    positionProvider: PopupPositionProvider = rememberPreviewLabTooltipPositionProvider(),
-    state: PreviewLabTooltipState = rememberPreviewLabTooltipState(),
-    focusable: Boolean = true,
-    enableUserInput: Boolean = true,
-    content: @Composable () -> Unit,
-) = PreviewLabTooltipBox(
-    tooltip = { Tooltip { PreviewLabText(tooltip, style = PreviewLabTheme.typography.label3) } },
-    modifier = modifier,
-    positionProvider = positionProvider,
-    state = state,
-    focusable = focusable,
-    enableUserInput = enableUserInput,
-    content = content,
-)
-
-@Composable
-@UiComposePreviewLabApi
-fun PreviewLabTooltipScope.Tooltip(
-    modifier: Modifier = Modifier,
-    caretSize: DpSize = PreviewLabTooltipDefaults.CaretSize,
-    maxWidth: Dp = PreviewLabTooltipDefaults.MaxWidth,
-    shape: Shape = PreviewLabTooltipDefaults.Shape,
-    containerColor: Color = PreviewLabTheme.colors.surface,
-    shadowElevation: Dp = PreviewLabTooltipDefaults.ShadowElevation,
+    enabled: Boolean = true,
+    tooltipSide: PreviewLabTooltipSide = PreviewLabTooltipSide.Top,
     content: @Composable () -> Unit,
 ) {
-    val drawCaretModifier =
-        if (caretSize.isSpecified) {
-            val density = LocalDensity.current
-            val windowContainerWidthInPx = windowContainerWidthInPx()
-            Modifier
-                .drawCaret { anchorLayoutCoordinates ->
-                    drawCaretWithPath(
-                        density,
-                        windowContainerWidthInPx,
-                        containerColor,
-                        caretSize,
-                        anchorLayoutCoordinates,
-                    )
-                }
-                .then(modifier)
-        } else {
-            modifier
-        }
-
-    PreviewLabSurface(
-        modifier = drawCaretModifier,
-        shape = shape,
-        color = containerColor,
-        shadowElevation = shadowElevation,
-    ) {
-        Box(
-            modifier =
-            Modifier
-                .sizeIn(
-                    minWidth = PreviewLabTooltipDefaults.MinWidth,
-                    maxWidth = maxWidth,
-                    minHeight = PreviewLabTooltipDefaults.MinHeight,
-                )
-                .padding(PreviewLabTooltipDefaults.ContentPadding),
-        ) {
-            content()
-        }
-    }
-}
-
-@UiComposePreviewLabApi
-sealed interface PreviewLabTooltipScope {
-    fun Modifier.drawCaret(draw: CacheDrawScope.(LayoutCoordinates?) -> DrawResult): Modifier
-}
-
-@UiComposePreviewLabApi
-class DefaultPreviewLabTooltipScope(val getAnchorBounds: () -> LayoutCoordinates?) : PreviewLabTooltipScope {
-    override fun Modifier.drawCaret(draw: CacheDrawScope.(LayoutCoordinates?) -> DrawResult): Modifier =
-        this.drawWithCache { draw(getAnchorBounds()) }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@UiComposePreviewLabApi
-interface PreviewLabTooltipState : BasicTooltipState {
-    val transition: MutableTransitionState<Boolean>
-}
-
-@Stable
-private class PreviewLabTooltipStateImpl(
-    initialIsVisible: Boolean,
-    override val isPersistent: Boolean,
-    private val mutatorMutex: MutatorMutex,
-) : PreviewLabTooltipState {
-    override val transition: MutableTransitionState<Boolean> = MutableTransitionState(initialIsVisible)
-    private var job: CancellableContinuation<Unit>? = null
-
-    override val isVisible: Boolean
-        get() = transition.currentState || transition.targetState
-
-    @OptIn(ExperimentalFoundationApi::class)
-    override suspend fun show(mutatePriority: MutatePriority) {
-        val cancellableShow: suspend () -> Unit = {
-            suspendCancellableCoroutine { continuation ->
-                transition.targetState = true
-                job = continuation
+    PreviewLabTooltip(
+        enabled = enabled,
+        side = tooltipSide,
+        panel = {
+            PreviewLabTooltipPanel {
+                PreviewLabText(tooltip, style = PreviewLabTheme.typography.body3)
             }
-        }
-
-        mutatorMutex.mutate(mutatePriority) {
-            try {
-                if (isPersistent) {
-                    cancellableShow()
-                } else {
-                    withTimeout(BasicTooltipDefaults.TooltipDuration) { cancellableShow() }
-                }
-            } finally {
-                if (mutatePriority != MutatePriority.PreventUserInput) {
-                    dismiss()
-                }
-            }
-        }
-    }
-
-    override fun dismiss() {
-        transition.targetState = false
-    }
-
-    override fun onDispose() {
-        job?.cancel()
-    }
-}
-
-@UiComposePreviewLabApi
-object PreviewLabTooltipDefaults {
-    val CaretSize = DpSize(12.dp, 6.dp)
-    val MaxWidth = 300.dp
-    val ShadowElevation = 4.dp
-    val SpacingBetweenTooltipAndAnchor = 4.dp
-    val MinHeight = 24.dp
-    val MinWidth = 40.dp
-    val PlainTooltipVerticalPadding = 4.dp
-    val PlainTooltipHorizontalPadding = 8.dp
-    val ContentPadding = PaddingValues(PlainTooltipHorizontalPadding, PlainTooltipVerticalPadding)
-    val Shape = RoundedCornerShape(4.dp)
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-@UiComposePreviewLabApi
-fun rememberPreviewLabTooltipState(
-    initialIsVisible: Boolean = false,
-    isPersistent: Boolean = false,
-    mutatorMutex: MutatorMutex = BasicTooltipDefaults.GlobalMutatorMutex,
-): PreviewLabTooltipState = remember(isPersistent, mutatorMutex) {
-    PreviewLabTooltipStateImpl(
-        initialIsVisible = initialIsVisible,
-        isPersistent = isPersistent,
-        mutatorMutex = mutatorMutex,
+        },
+        anchor = { Box(modifier) { content() } },
     )
 }
 
-@Composable
-@UiComposePreviewLabApi
-fun rememberPreviewLabTooltipPositionProvider(
-    spacingBetweenTooltipAndAnchor: Dp = PreviewLabTooltipDefaults.SpacingBetweenTooltipAndAnchor,
-): PopupPositionProvider {
-    val tooltipAnchorSpacing =
-        with(LocalDensity.current) {
-            spacingBetweenTooltipAndAnchor.roundToPx()
-        }
-    return remember(tooltipAnchorSpacing) {
-        object : PopupPositionProvider {
-            override fun calculatePosition(
-                anchorBounds: IntRect,
-                windowSize: IntSize,
-                layoutDirection: LayoutDirection,
-                popupContentSize: IntSize,
-            ): IntOffset {
-                var x = anchorBounds.left + (anchorBounds.width - popupContentSize.width) / 2
-                if (x < 0) {
-                    x = anchorBounds.left
-                } else if (x + popupContentSize.width > windowSize.width) {
-                    x = anchorBounds.right - popupContentSize.width
-                }
+private val TooltipTextStyle = TextStyle()
 
-                var y = anchorBounds.top - popupContentSize.height - tooltipAnchorSpacing
-                if (y < 0) y = anchorBounds.bottom + tooltipAnchorSpacing
-                return IntOffset(x, y)
-            }
-        }
-    }
-}
+private fun tooltipEnterTransition(transformOrigin: TransformOrigin): EnterTransition = scaleIn(
+    animationSpec = tween(
+        durationMillis = TooltipEnterDurationMillis,
+        easing = LinearOutSlowInEasing,
+    ),
+    initialScale = 0.96f,
+    transformOrigin = transformOrigin,
+) + fadeIn(tween(durationMillis = TooltipEnterDurationMillis))
 
-@UiComposePreviewLabApi
-fun Modifier.animatePreviewLabTooltip(transition: Transition<Boolean>): Modifier = composed(
-    inspectorInfo =
-    debugInspectorInfo {
-        name = "animatePreviewLabTooltip"
-        properties["transition"] = transition
-    },
-) {
-    val inOutScaleAnimationSpec = tween<Float>(durationMillis = 100, easing = FastOutLinearInEasing)
-    val inOutAlphaAnimationSpec = tween<Float>(durationMillis = 50, easing = FastOutSlowInEasing)
+private fun tooltipExitTransition(transformOrigin: TransformOrigin): ExitTransition = scaleOut(
+    animationSpec = tween(durationMillis = TooltipExitDurationMillis),
+    targetScale = 0.96f,
+    transformOrigin = transformOrigin,
+) + fadeOut(tween(durationMillis = TooltipExitDurationMillis))
 
-    val scale by transition.animateFloat(
-        transitionSpec = { inOutScaleAnimationSpec },
-        label = "tooltip transition: scaling",
-    ) {
-        if (it) 1f else 0.8f
+private fun tooltipTransformOrigin(side: PreviewLabTooltipSide, alignment: PreviewLabTooltipAlignment): TransformOrigin =
+    when (side) {
+        PreviewLabTooltipSide.Top -> TransformOrigin(
+            pivotFractionX = alignment.transformOriginFraction,
+            pivotFractionY = 1f,
+        )
+        PreviewLabTooltipSide.Bottom -> TransformOrigin(
+            pivotFractionX = alignment.transformOriginFraction,
+            pivotFractionY = 0f,
+        )
+        PreviewLabTooltipSide.Start -> TransformOrigin(
+            pivotFractionX = 1f,
+            pivotFractionY = alignment.transformOriginFraction,
+        )
+        else -> TransformOrigin(
+            pivotFractionX = 0f,
+            pivotFractionY = alignment.transformOriginFraction,
+        )
     }
 
-    val alpha by transition.animateFloat(
-        transitionSpec = { inOutAlphaAnimationSpec },
-        label = "tooltip transition: alpha",
-    ) {
-        if (it) 1f else 0f
+private val PreviewLabTooltipAlignment.transformOriginFraction: Float
+    get() = when (this) {
+        PreviewLabTooltipAlignment.Start -> 0f
+        PreviewLabTooltipAlignment.Center -> 0.5f
+        else -> 1f
     }
-
-    this.graphicsLayer(scaleX = scale, scaleY = scale, alpha = alpha)
-}
-
-private fun CacheDrawScope.drawCaretWithPath(
-    density: Density,
-    windowContainerWidthInPx: Int,
-    containerColor: Color,
-    caretSize: DpSize,
-    anchorLayoutCoordinates: LayoutCoordinates?,
-): DrawResult {
-    val path = Path()
-
-    if (anchorLayoutCoordinates != null) {
-        val caretHeightPx: Int
-        val caretWidthPx: Int
-        val screenWidthPx: Int
-        val tooltipAnchorSpacing: Int
-        with(density) {
-            caretHeightPx = caretSize.height.roundToPx()
-            caretWidthPx = caretSize.width.roundToPx()
-            screenWidthPx = windowContainerWidthInPx
-            tooltipAnchorSpacing = SpacingBetweenTooltipAndAnchor.roundToPx()
-        }
-        val anchorBounds = anchorLayoutCoordinates.boundsInWindow()
-        val anchorLeft = anchorBounds.left
-        val anchorRight = anchorBounds.right
-        val anchorTop = anchorBounds.top
-        val anchorMid = (anchorRight + anchorLeft) / 2
-        val anchorWidth = anchorRight - anchorLeft
-        val tooltipWidth = this.size.width
-        val tooltipHeight = this.size.height
-        val isCaretTop = anchorTop - tooltipHeight - tooltipAnchorSpacing < 0
-        val caretY =
-            if (isCaretTop) {
-                0f
-            } else {
-                tooltipHeight
-            }
-
-        // Default the caret to be in the middle
-        // caret might need to be offset depending on where
-        // the tooltip is placed relative to the anchor
-        var position: Offset =
-            if (anchorLeft - tooltipWidth / 2 + anchorWidth / 2 <= 0) {
-                Offset(anchorMid, caretY)
-            } else if (anchorRight + tooltipWidth / 2 - anchorWidth / 2 >= screenWidthPx) {
-                val anchorMidFromRightScreenEdge = screenWidthPx - anchorMid
-                val caretX = tooltipWidth - anchorMidFromRightScreenEdge
-                Offset(caretX, caretY)
-            } else {
-                Offset(tooltipWidth / 2, caretY)
-            }
-        if (anchorMid - tooltipWidth / 2 < 0) {
-            // The tooltip needs to be start aligned if it would collide with the left side of
-            // screen.
-            position = Offset(anchorMid - anchorLeft, caretY)
-        } else if (anchorMid + tooltipWidth / 2 > screenWidthPx) {
-            // The tooltip needs to be end aligned if it would collide with the right side of the
-            // screen.
-            position = Offset(anchorMid - (anchorRight - tooltipWidth), caretY)
-        }
-
-        if (isCaretTop) {
-            path.apply {
-                moveTo(x = position.x, y = position.y)
-                lineTo(x = position.x + caretWidthPx / 2, y = position.y)
-                lineTo(x = position.x, y = position.y - caretHeightPx)
-                lineTo(x = position.x - caretWidthPx / 2, y = position.y)
-                close()
-            }
-        } else {
-            path.apply {
-                moveTo(x = position.x, y = position.y)
-                lineTo(x = position.x + caretWidthPx / 2, y = position.y)
-                lineTo(x = position.x, y = position.y + caretHeightPx.toFloat())
-                lineTo(x = position.x - caretWidthPx / 2, y = position.y)
-                close()
-            }
-        }
-    }
-
-    return onDrawWithContent {
-        if (anchorLayoutCoordinates != null) {
-            drawContent()
-            drawPath(path = path, color = containerColor)
-        }
-    }
-}
-
-// Won't be needing this once containerSize API in LocalWindowInfo is upstreamed.
-@Composable
-internal expect fun windowContainerWidthInPx(): Int
-
-@Preview
-@Composable
-private fun PlainTooltipWithCaret() {
-    val tooltipState = rememberPreviewLabTooltipState(isPersistent = true)
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        PreviewLabTooltipBox(
-            tooltip = {
-                Tooltip {
-                    BasicText(
-                        text = "This is a tooltip",
-                    )
-                }
-            },
-            state = tooltipState,
-        ) {
-            Box(
-                modifier =
-                Modifier
-                    .size(40.dp)
-                    .background(Color.Blue),
-            )
-        }
-    }
-}

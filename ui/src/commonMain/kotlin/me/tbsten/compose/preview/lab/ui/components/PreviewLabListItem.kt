@@ -1,17 +1,37 @@
+/*
+ * Copyright (c) 2026 Composable Horizons — MIT License (see ui/THIRD_PARTY_NOTICES.md).
+ * Adapted for Compose Preview Lab: PreviewLab* prefix, compose-unstyled 2.6.0, PreviewLabTheme facade colours.
+ * The look of a Composables UI `DropdownMenuItem`, rebuilt directly on `UnstyledButton` (PreviewLab lists and
+ * menus are plain Popups, not an `UnstyledDropdownMenu`).
+ */
 package me.tbsten.compose.preview.lab.ui.components
 
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.composeunstyled.ProvideContentColor
+import com.composeunstyled.UnstyledButton
 import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
-
-private const val SelectedBorderWidth = 12
+import me.tbsten.compose.preview.lab.ui.util.thenIf
 
 /**
  * Common list item with title display
@@ -40,7 +60,7 @@ fun PreviewLabListItem(
     isEnabled = isEnabled,
     content = {
         Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()) {
-            PreviewLabText(title, style = PreviewLabTheme.typography.body3)
+            PreviewLabText(title, style = PreviewLabTheme.typography.body2)
         }
     },
 )
@@ -75,7 +95,7 @@ fun PreviewLabListItem(
     content = {
         leadingContent?.invoke()
         Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()) {
-            PreviewLabText(title, style = PreviewLabTheme.typography.body3)
+            PreviewLabText(title, style = PreviewLabTheme.typography.body2)
         }
     },
 )
@@ -83,8 +103,10 @@ fun PreviewLabListItem(
 /**
  * Common list item with custom content
  *
- * The base list item component that other variants use internally.
- * Provides consistent styling and selection behavior with fully customizable content.
+ * The base list item component that other variants use internally. Looks like a Composables UI menu item:
+ * 12dp corners, 36dp minimum height, 12/6dp padding, `secondary` background while hovered / focused / pressed,
+ * `selectedControl` background when [isSelected], 33 % alpha when disabled. The content is laid out in a
+ * start-aligned, full-width row so titles stay left-aligned.
  *
  * @param isSelected Whether the item is currently selected
  * @param onSelect Callback invoked when the item is selected (null for non-selectable)
@@ -101,17 +123,49 @@ fun PreviewLabListItem(
     isEnabled: Boolean = true,
     content: @Composable () -> Unit,
 ) {
-    PreviewLabButton(
-        variant = PreviewLabButtonVariant.PrimaryGhost,
-        shape = RectangleShape,
+    val colors = PreviewLabTheme.colors
+    val interactionSource = remember { MutableInteractionSource() }
+    val hovered by interactionSource.collectIsHoveredAsState()
+    val focused by interactionSource.collectIsFocusedAsState()
+    val pressed by interactionSource.collectIsPressedAsState()
+    val active = isEnabled && (hovered || focused || pressed)
+    val itemShape = RoundedCornerShape(ListItemCornerRadius)
+    val background = when {
+        isSelected -> colors.selectedControl // selected row (SelectButton current choice, NodeView)
+        active -> colors.secondary // Composables DropdownMenuItem hover / focus / press fill
+        else -> Color.Transparent
+    }
+    UnstyledButton(
         onClick = onSelect ?: {},
-        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
-        isSelected = isSelected,
-        isEnabled = isEnabled,
-        modifier = modifier.fillMaxWidth(),
+        enabled = isEnabled,
+        contentPadding = ListItemContentPadding,
+        interactionSource = interactionSource,
+        indication = LocalIndication.current,
+        contentAlignment = Alignment.CenterStart,
+        modifier = modifier
+            .fillMaxWidth()
+            .previewLabFocusRing(interactionSource = interactionSource, shape = itemShape)
+            .clip(itemShape)
+            .background(background, itemShape)
+            .thenIf(!isEnabled) { alpha(ListItemDisabledAlpha) }
+            .heightIn(min = ListItemMinHeight),
     ) {
-        Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()) {
-            content()
+        ProvideContentColor(if (isSelected) colors.onSelectedControl else colors.onPanel) {
+            // Keep the start-aligned, full-width row — menu item titles must not be centred.
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                content()
+            }
         }
     }
 }
+
+private val ListItemCornerRadius = 12.dp
+private val ListItemMinHeight = 36.dp
+private val ListItemContentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+
+/** Composables UI `disabledAlpha` token value (see Theme.kt `properties[alphas]`). */
+private const val ListItemDisabledAlpha = 0.33f

@@ -1,9 +1,13 @@
+/*
+ * Copyright (c) 2026 Composable Horizons — MIT License (see ui/THIRD_PARTY_NOTICES.md).
+ * Adapted for Compose Preview Lab: PreviewLab* prefix, compose-unstyled 2.6.0, PreviewLabTheme facade colours.
+ */
 package me.tbsten.compose.preview.lab.ui.components.textfield
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
@@ -12,38 +16,94 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.composeunstyled.FocusRingVisibility
+import kotlin.jvm.JvmInline
 import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
+import me.tbsten.compose.preview.lab.ui.components.previewLabFocusRing
 import me.tbsten.compose.preview.lab.ui.components.textfield.base.CommonDecorationBox
-import me.tbsten.compose.preview.lab.ui.components.textfield.base.FocusedOutlineThickness
-import me.tbsten.compose.preview.lab.ui.components.textfield.base.HorizontalIconPadding
-import me.tbsten.compose.preview.lab.ui.components.textfield.base.LabelBottomPadding
-import me.tbsten.compose.preview.lab.ui.components.textfield.base.SupportingTopPadding
-import me.tbsten.compose.preview.lab.ui.components.textfield.base.PreviewLabTextFieldColors
-import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldHorizontalPadding
-import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldMinHeight
-import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldMinWidth
-import me.tbsten.compose.preview.lab.ui.components.textfield.base.TextFieldVerticalPadding
-import me.tbsten.compose.preview.lab.ui.components.textfield.base.UnfocusedOutlineThickness
-import me.tbsten.compose.preview.lab.ui.components.textfield.base.containerOutline
+import me.tbsten.compose.preview.lab.ui.util.thenIf
 
+/** Visual style variants for [PreviewLabTextField]. */
+@UiComposePreviewLabApi
+@JvmInline
+value class PreviewLabTextFieldStyle internal constructor(@Suppress("unused") private val value: Int) {
+    @UiComposePreviewLabApi
+    companion object {
+        /** Filled container (`colors.field`) without a border — the Composables UI default. */
+        val Filled = PreviewLabTextFieldStyle(0)
+
+        /** Transparent container with a 1dp `colors.outline` border. */
+        val Outlined = PreviewLabTextFieldStyle(1)
+
+        /** Transparent container without a border; only the focus ring shows the bounds. */
+        val Ghost = PreviewLabTextFieldStyle(2)
+
+        /** Uses the default text field style. */
+        val Default = Filled
+    }
+}
+
+/**
+ * A styled text input field (Composables UI `TextField` look on a `BasicTextField`).
+ *
+ * The container ([style], [shape], [backgroundColor], [borderColor]) is drawn behind the input row only; [label]
+ * (`typography.label1`) sits above it and [supportingText] (`typography.body3`) below it. [placeholder], [prefix]
+ * and [suffix] are rendered in [textStyle] so the field never changes text size while typing. Focus shows a 2dp
+ * ring in `colors.ring`; [isError] turns the border, ring, cursor and supporting text [errorColor]. A disabled
+ * field is drawn at 33 % alpha.
+ *
+ * @param value Text shown in the field.
+ * @param onValueChange Called with the new text on every edit.
+ * @param modifier Modifier applied to the whole field (label and supporting text included).
+ * @param enabled Whether the field can be interacted with.
+ * @param readOnly Whether the field can receive focus without allowing edits.
+ * @param isError Whether the field shows its error state.
+ * @param style Visual style of the container.
+ * @param textStyle Text style of the input (also used by placeholder, prefix and suffix).
+ * @param keyboardOptions Keyboard configuration for the field.
+ * @param keyboardActions Actions triggered by the keyboard's IME action.
+ * @param singleLine Whether the field is a single horizontally scrolling line.
+ * @param maxLines Maximum number of visible lines.
+ * @param minLines Minimum number of visible lines.
+ * @param visualTransformation Transformation applied to the displayed text.
+ * @param onTextLayout Called with the latest text layout result.
+ * @param interactionSource Interaction source used for the focus ring.
+ * @param placeholder Content shown while [value] is empty.
+ * @param prefix Content shown before the text, inside the container.
+ * @param suffix Content shown after the text, inside the container.
+ * @param label Content shown above the container.
+ * @param leadingIcon Content shown at the start of the container.
+ * @param trailingIcon Content shown at the end of the container.
+ * @param supportingText Content shown below the container.
+ * @param shape Shape of the container and the focus ring.
+ * @param backgroundColor Container colour; defaults from [style].
+ * @param contentColor Colour of the text, prefix, suffix and icons.
+ * @param placeholderColor Colour of the placeholder, label and supporting text.
+ * @param borderColor Border colour; defaults from [style]. Unspecified or transparent draws no border.
+ * @param errorColor Colour used for the border, ring, cursor and supporting text while [isError].
+ * @param contentPadding Padding around the input row (prefix, text, suffix).
+ * @param minHeight Minimum height of the container (the input row).
+ * @param cursorBrush Brush used to draw the cursor.
+ */
 @Composable
 @UiComposePreviewLabApi
 fun PreviewLabTextField(
@@ -52,6 +112,8 @@ fun PreviewLabTextField(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     readOnly: Boolean = false,
+    isError: Boolean = false,
+    style: PreviewLabTextFieldStyle = PreviewLabTextFieldStyle.Default,
     textStyle: TextStyle = PreviewLabTheme.typography.input,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -68,299 +130,142 @@ fun PreviewLabTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     supportingText: @Composable (() -> Unit)? = null,
-    isError: Boolean = false,
     shape: Shape = PreviewLabTextFieldDefaults.Shape,
-    colors: PreviewLabTextFieldColors = PreviewLabTextFieldDefaults.colors(),
-    cursorBrush: Brush = SolidColor(colors.cursorColor(isError).value),
+    backgroundColor: Color = PreviewLabTextFieldDefaults.backgroundColorFor(style),
+    contentColor: Color = PreviewLabTheme.colors.onField,
+    placeholderColor: Color = PreviewLabTheme.colors.muted,
+    borderColor: Color = PreviewLabTextFieldDefaults.borderColorFor(style),
+    errorColor: Color = PreviewLabTheme.colors.error,
+    contentPadding: PaddingValues = PreviewLabTextFieldDefaults.contentPadding,
+    minHeight: Dp = PreviewLabTextFieldDefaults.MinHeight,
+    cursorBrush: Brush = SolidColor(if (isError) errorColor else contentColor),
 ) {
-    val textColor =
-        textStyle.color.takeOrElse {
-            colors.textColor(enabled, isError, interactionSource).value
-        }
-    val mergedTextStyle = textStyle.merge(TextStyle(color = textColor))
+    val mergedTextStyle = textStyle.merge(TextStyle(color = textStyle.color.takeOrElse { contentColor }))
 
-    CompositionLocalProvider(LocalTextSelectionColors provides colors.selectionColors) {
-        BasicTextField(
-            modifier =
-            modifier
-                .defaultMinSize(
-                    minWidth = PreviewLabTextFieldDefaults.MinWidth,
-                    minHeight = PreviewLabTextFieldDefaults.MinHeight,
-                )
-                .fillMaxWidth(),
-            value = value,
-            onValueChange = onValueChange,
-            enabled = enabled,
-            readOnly = readOnly,
-            textStyle = mergedTextStyle,
-            keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions,
-            singleLine = singleLine,
-            maxLines = maxLines,
-            minLines = minLines,
-            visualTransformation = visualTransformation,
-            onTextLayout = onTextLayout,
-            interactionSource = interactionSource,
-            cursorBrush = cursorBrush,
-            decorationBox = @Composable { innerTextField ->
-                PreviewLabTextFieldDefaults.DecorationBox(
-                    value = value,
-                    innerTextField = innerTextField,
-                    visualTransformation = visualTransformation,
-                    label = label,
-                    placeholder = placeholder,
-                    leadingIcon = leadingIcon,
-                    trailingIcon = trailingIcon,
-                    prefix = prefix,
-                    suffix = suffix,
-                    supportingText = supportingText,
-                    enabled = enabled,
-                    isError = isError,
-                    interactionSource = interactionSource,
-                    colors = colors,
-                    shape = shape,
-                )
-            },
-        )
-    }
+    BasicTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier
+            .defaultMinSize(minWidth = PreviewLabTextFieldDefaults.MinWidth)
+            .fillMaxWidth()
+            .thenIf(!enabled) { graphicsLayer { alpha = DisabledAlpha } },
+        enabled = enabled,
+        readOnly = readOnly,
+        textStyle = mergedTextStyle,
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
+        singleLine = singleLine,
+        maxLines = maxLines,
+        minLines = minLines,
+        visualTransformation = visualTransformation,
+        onTextLayout = onTextLayout,
+        interactionSource = interactionSource,
+        cursorBrush = cursorBrush,
+        decorationBox = { innerTextField ->
+            CommonDecorationBox(
+                value = value,
+                innerTextField = innerTextField,
+                visualTransformation = visualTransformation,
+                textStyle = textStyle,
+                label = label,
+                placeholder = placeholder,
+                leadingIcon = leadingIcon,
+                trailingIcon = trailingIcon,
+                prefix = prefix,
+                suffix = suffix,
+                supportingText = supportingText,
+                isError = isError,
+                contentColor = contentColor,
+                placeholderColor = placeholderColor,
+                errorColor = errorColor,
+                contentPadding = contentPadding,
+                minHeight = minHeight,
+                container = {
+                    TextFieldContainer(
+                        isError = isError,
+                        interactionSource = interactionSource,
+                        shape = shape,
+                        backgroundColor = backgroundColor,
+                        borderColor = borderColor,
+                        errorColor = errorColor,
+                    )
+                },
+            )
+        },
+    )
 }
 
+/**
+ * Container drawn behind the input row (label and supporting text sit outside it): a 2dp focus ring in
+ * `colors.ring` (or [errorColor]) offset 2dp outside the [shape], the clipped [backgroundColor] and an optional 1dp
+ * border — [errorColor] while [isError], otherwise [borderColor] when it is specified and not transparent.
+ */
 @Composable
-@UiComposePreviewLabApi
-fun PreviewLabTextField(
-    value: TextFieldValue,
-    onValueChange: (TextFieldValue) -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    readOnly: Boolean = false,
-    textStyle: TextStyle = PreviewLabTheme.typography.input,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    keyboardActions: KeyboardActions = KeyboardActions.Default,
-    singleLine: Boolean = false,
-    maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
-    minLines: Int = 1,
-    visualTransformation: VisualTransformation = VisualTransformation.None,
-    onTextLayout: (TextLayoutResult) -> Unit = {},
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    placeholder: @Composable (() -> Unit)? = null,
-    prefix: @Composable (() -> Unit)? = null,
-    suffix: @Composable (() -> Unit)? = null,
-    label: @Composable (() -> Unit)? = null,
-    leadingIcon: @Composable (() -> Unit)? = null,
-    trailingIcon: @Composable (() -> Unit)? = null,
-    supportingText: @Composable (() -> Unit)? = null,
-    isError: Boolean = false,
-    shape: Shape = PreviewLabTextFieldDefaults.Shape,
-    colors: PreviewLabTextFieldColors = PreviewLabTextFieldDefaults.colors(),
-    cursorBrush: Brush = SolidColor(colors.cursorColor(isError).value),
+internal fun TextFieldContainer(
+    isError: Boolean,
+    interactionSource: InteractionSource,
+    shape: Shape,
+    backgroundColor: Color,
+    borderColor: Color,
+    errorColor: Color,
 ) {
-    val textColor =
-        textStyle.color.takeOrElse {
-            colors.textColor(enabled, isError, interactionSource).value
-        }
-    val mergedTextStyle = textStyle.merge(TextStyle(color = textColor))
-
-    CompositionLocalProvider(LocalTextSelectionColors provides colors.selectionColors) {
-        BasicTextField(
-            modifier =
-            modifier
-                .defaultMinSize(
-                    minHeight = PreviewLabTextFieldDefaults.MinHeight,
-                )
-                .fillMaxWidth(),
-            value = value,
-            onValueChange = onValueChange,
-            enabled = enabled,
-            readOnly = readOnly,
-            textStyle = mergedTextStyle,
-            keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions,
-            singleLine = singleLine,
-            maxLines = maxLines,
-            minLines = minLines,
-            visualTransformation = visualTransformation,
-            onTextLayout = onTextLayout,
-            interactionSource = interactionSource,
-            cursorBrush = cursorBrush,
-            decorationBox = @Composable { innerTextField ->
-                PreviewLabTextFieldDefaults.DecorationBox(
-                    value = value.text,
-                    innerTextField = innerTextField,
-                    visualTransformation = visualTransformation,
-                    label = label,
-                    placeholder = placeholder,
-                    leadingIcon = leadingIcon,
-                    trailingIcon = trailingIcon,
-                    prefix = prefix,
-                    suffix = suffix,
-                    supportingText = supportingText,
-                    enabled = enabled,
-                    isError = isError,
-                    interactionSource = interactionSource,
-                    colors = PreviewLabTextFieldDefaults.colors(),
-                    shape = shape,
-                )
-            },
-        )
+    val ringColor = if (isError) errorColor else PreviewLabTheme.colors.ring
+    val resolvedBorderColor = when {
+        isError -> errorColor
+        borderColor.isSpecified && borderColor != Color.Transparent -> borderColor
+        else -> Color.Unspecified
     }
+    Box(
+        Modifier
+            .previewLabFocusRing(
+                interactionSource = interactionSource,
+                width = PreviewLabTextFieldDefaults.FocusRingWidth,
+                color = ringColor,
+                shape = shape,
+                offset = 2.dp,
+                visibility = FocusRingVisibility.Focused,
+            )
+            .clip(shape)
+            .background(backgroundColor, shape)
+            .thenIf(resolvedBorderColor.isSpecified) { border(1.dp, resolvedBorderColor, shape) },
+    )
 }
 
+/** Defaults shared by [PreviewLabTextField] and `PreviewLabTransformableTextField` (Composables UI pointer values). */
 @Immutable
 @UiComposePreviewLabApi
 object PreviewLabTextFieldDefaults {
-    val MinWidth = TextFieldMinWidth
-    val MinHeight = TextFieldMinHeight
-    val Shape: Shape = RoundedCornerShape(8.dp)
+    /** Container shape; also the theme's `fieldShape` token. */
+    val Shape: Shape = RoundedCornerShape(12.dp)
 
-    private fun contentPadding(
-        start: Dp = TextFieldHorizontalPadding,
-        end: Dp = TextFieldHorizontalPadding,
-        top: Dp = TextFieldVerticalPadding,
-        bottom: Dp = TextFieldVerticalPadding,
-    ): PaddingValues = PaddingValues(start, top, end, bottom)
+    /** Minimum height of the container (the input row); label and supporting text add to it. */
+    val MinHeight: Dp = 40.dp
 
-    private fun labelPadding(
-        start: Dp = 0.dp,
-        top: Dp = 0.dp,
-        end: Dp = 0.dp,
-        bottom: Dp = LabelBottomPadding,
-    ): PaddingValues = PaddingValues(start, top, end, bottom)
+    /** Minimum width of the field when the parent imposes none. */
+    val MinWidth: Dp = 180.dp
 
-    private fun supportingTextPadding(
-        start: Dp = 0.dp,
-        top: Dp = SupportingTopPadding,
-        end: Dp = TextFieldHorizontalPadding,
-        bottom: Dp = 0.dp,
-    ): PaddingValues = PaddingValues(start, top, end, bottom)
+    /** Padding around the input row (prefix, text, suffix). */
+    val contentPadding: PaddingValues = PaddingValues(horizontal = 12.dp)
 
+    /** Width of the focus ring drawn 2dp outside the container. */
+    val FocusRingWidth: Dp = 2.dp
+
+    /** Container colour for [style]: `colors.field` when [PreviewLabTextFieldStyle.Filled], transparent otherwise. */
     @Composable
-    private fun leadingIconPadding(
-        start: Dp = HorizontalIconPadding,
-        top: Dp = 0.dp,
-        end: Dp = 0.dp,
-        bottom: Dp = 0.dp,
-    ): PaddingValues = PaddingValues(start, top, end, bottom)
-
-    @Composable
-    private fun trailingIconPadding(
-        start: Dp = 0.dp,
-        top: Dp = 0.dp,
-        end: Dp = HorizontalIconPadding,
-        bottom: Dp = 0.dp,
-    ): PaddingValues = PaddingValues(start, top, end, bottom)
-
-    @Composable
-    fun containerBorderThickness(interactionSource: InteractionSource): Dp {
-        val focused by interactionSource.collectIsFocusedAsState()
-
-        return if (focused) FocusedOutlineThickness else UnfocusedOutlineThickness
+    @ReadOnlyComposable
+    fun backgroundColorFor(style: PreviewLabTextFieldStyle): Color = when (style) {
+        PreviewLabTextFieldStyle.Filled -> PreviewLabTheme.colors.field
+        else -> Color.Transparent
     }
 
+    /** Border colour for [style]: `colors.outline` when [PreviewLabTextFieldStyle.Outlined], unspecified otherwise. */
     @Composable
-    fun DecorationBox(
-        value: String,
-        innerTextField: @Composable () -> Unit,
-        enabled: Boolean,
-        visualTransformation: VisualTransformation,
-        interactionSource: InteractionSource,
-        isError: Boolean = false,
-        label: @Composable (() -> Unit)? = null,
-        placeholder: @Composable (() -> Unit)? = null,
-        leadingIcon: @Composable (() -> Unit)? = null,
-        trailingIcon: @Composable (() -> Unit)? = null,
-        prefix: @Composable (() -> Unit)? = null,
-        suffix: @Composable (() -> Unit)? = null,
-        supportingText: @Composable (() -> Unit)? = null,
-        shape: Shape = Shape,
-        colors: PreviewLabTextFieldColors = colors(),
-        container: @Composable () -> Unit = {
-            ContainerBox(enabled, isError, interactionSource, colors, shape)
-        },
-    ) {
-        CommonDecorationBox(
-            value = value,
-            innerTextField = innerTextField,
-            visualTransformation = visualTransformation,
-            placeholder = placeholder,
-            label = label,
-            leadingIcon = leadingIcon,
-            trailingIcon = trailingIcon,
-            prefix = prefix,
-            suffix = suffix,
-            supportingText = supportingText,
-            enabled = enabled,
-            isError = isError,
-            interactionSource = interactionSource,
-            colors = colors,
-            contentPadding = contentPadding(),
-            labelPadding = labelPadding(),
-            supportingTextPadding = supportingTextPadding(),
-            leadingIconPadding = leadingIconPadding(),
-            trailingIconPadding = trailingIconPadding(),
-            container = container,
-        )
+    @ReadOnlyComposable
+    fun borderColorFor(style: PreviewLabTextFieldStyle): Color = when (style) {
+        PreviewLabTextFieldStyle.Outlined -> PreviewLabTheme.colors.outline
+        else -> Color.Unspecified
     }
-
-    @Composable
-    fun ContainerBox(
-        enabled: Boolean,
-        isError: Boolean,
-        interactionSource: InteractionSource,
-        colors: PreviewLabTextFieldColors,
-        shape: Shape = Shape,
-        borderThickness: Dp = containerBorderThickness(interactionSource),
-    ) {
-        Box(
-            Modifier
-                .background(colors.containerColor(enabled, isError, interactionSource).value, shape)
-                .containerOutline(enabled, isError, interactionSource, colors, borderThickness, shape),
-        )
-    }
-
-    @Composable
-    fun colors(): PreviewLabTextFieldColors = PreviewLabTextFieldColors(
-        focusedTextColor = PreviewLabTheme.colors.text,
-        unfocusedTextColor = PreviewLabTheme.colors.text,
-        disabledTextColor = PreviewLabTheme.colors.onDisabled,
-        errorTextColor = PreviewLabTheme.colors.text,
-        focusedContainerColor = PreviewLabTheme.colors.surface,
-        unfocusedContainerColor = PreviewLabTheme.colors.surface,
-        disabledContainerColor = PreviewLabTheme.colors.disabled,
-        errorContainerColor = PreviewLabTheme.colors.surface,
-        cursorColor = PreviewLabTheme.colors.primary,
-        errorCursorColor = PreviewLabTheme.colors.error,
-        textSelectionColors = LocalTextSelectionColors.current,
-        focusedOutlineColor = PreviewLabTheme.colors.transparent,
-        unfocusedOutlineColor = PreviewLabTheme.colors.transparent,
-        disabledOutlineColor = PreviewLabTheme.colors.transparent,
-        errorOutlineColor = PreviewLabTheme.colors.error,
-        focusedLeadingIconColor = PreviewLabTheme.colors.primary,
-        unfocusedLeadingIconColor = PreviewLabTheme.colors.primary,
-        disabledLeadingIconColor = PreviewLabTheme.colors.onDisabled,
-        errorLeadingIconColor = PreviewLabTheme.colors.primary,
-        focusedTrailingIconColor = PreviewLabTheme.colors.primary,
-        unfocusedTrailingIconColor = PreviewLabTheme.colors.primary,
-        disabledTrailingIconColor = PreviewLabTheme.colors.onDisabled,
-        errorTrailingIconColor = PreviewLabTheme.colors.primary,
-        focusedLabelColor = PreviewLabTheme.colors.primary,
-        unfocusedLabelColor = PreviewLabTheme.colors.primary,
-        disabledLabelColor = PreviewLabTheme.colors.textDisabled,
-        errorLabelColor = PreviewLabTheme.colors.error,
-        focusedPlaceholderColor = PreviewLabTheme.colors.textSecondary,
-        unfocusedPlaceholderColor = PreviewLabTheme.colors.textSecondary,
-        disabledPlaceholderColor = PreviewLabTheme.colors.textDisabled,
-        errorPlaceholderColor = PreviewLabTheme.colors.textSecondary,
-        focusedSupportingTextColor = PreviewLabTheme.colors.primary,
-        unfocusedSupportingTextColor = PreviewLabTheme.colors.primary,
-        disabledSupportingTextColor = PreviewLabTheme.colors.textDisabled,
-        errorSupportingTextColor = PreviewLabTheme.colors.error,
-        focusedPrefixColor = PreviewLabTheme.colors.primary,
-        unfocusedPrefixColor = PreviewLabTheme.colors.primary,
-        disabledPrefixColor = PreviewLabTheme.colors.onDisabled,
-        errorPrefixColor = PreviewLabTheme.colors.primary,
-        focusedSuffixColor = PreviewLabTheme.colors.primary,
-        unfocusedSuffixColor = PreviewLabTheme.colors.primary,
-        disabledSuffixColor = PreviewLabTheme.colors.onDisabled,
-        errorSuffixColor = PreviewLabTheme.colors.primary,
-    )
 }
+
+/** Alpha of a disabled field (the theme's `disabledAlpha` token value). */
+private const val DisabledAlpha = 0.33f

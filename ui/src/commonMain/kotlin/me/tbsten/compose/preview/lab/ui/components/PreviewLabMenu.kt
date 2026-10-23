@@ -8,8 +8,10 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -40,11 +42,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
+import com.composeunstyled.FocusVisibilityProvider
+import com.composeunstyled.TooltipHost
 import kotlin.math.max
 import kotlin.math.min
 import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 import me.tbsten.compose.preview.lab.ui.PreviewLabTheme
 
+/**
+ * Popup menu anchored to its parent (material3 `DropdownMenu` positioning), drawn like a Composables UI
+ * `DropdownMenuPanel`: panel colour, 16dp corners, 1dp outline, soft shadow, 6dp inner padding, 160..320dp wide.
+ * Items are usually [PreviewLabListItem]s.
+ *
+ * The Popup is `focusable` (text fields inside the menu need it). The compose-unstyled `TooltipHost` /
+ * `FocusVisibilityProvider` wrap the whole Popup content — outside the clipped panel — so tooltips of menu items
+ * render inside this Popup instead of the main window behind it.
+ *
+ * @param expanded Whether the menu is shown (open / close is animated).
+ * @param onDismissRequest Called when the user taps outside the menu or presses Esc / Back.
+ * @param content Menu items.
+ */
 @Composable
 @UiComposePreviewLabApi
 fun PreviewLabMenu(expanded: Boolean, onDismissRequest: () -> Unit, content: @Composable PreviewLabMenuScope.() -> Unit) {
@@ -60,26 +77,42 @@ fun PreviewLabMenu(expanded: Boolean, onDismissRequest: () -> Unit, content: @Co
                     transformOriginState.value = calculateTransformOrigin(parentBounds, menuBounds)
                 }
             }
+        val colors = PreviewLabTheme.colors
 
         Popup(
             properties = PopupProperties(focusable = true),
             onDismissRequest = onDismissRequest,
             popupPositionProvider = popupPositionProvider,
         ) {
-            DropdownMenuContent(
-                expandedState = expandedState,
-                transformOriginState = transformOriginState,
-                scrollState = rememberScrollState(),
-                shape = RoundedCornerShape(12.dp),
-                containerColor = PreviewLabTheme.colors.background,
-                content = content,
-            )
+            // Hosts wrap the WHOLE popup content (tooltip and focus-ring hosts), not the clipped panel.
+            TooltipHost {
+                FocusVisibilityProvider {
+                    DropdownMenuContent(
+                        expandedState = expandedState,
+                        transformOriginState = transformOriginState,
+                        scrollState = rememberScrollState(),
+                        shape = RoundedCornerShape(MenuCornerRadius), // menuShape
+                        containerColor = colors.panel,
+                        contentColor = colors.onPanel,
+                        shadowElevation = MenuShadowElevation,
+                        border = BorderStroke(1.dp, colors.outline),
+                        content = content,
+                    )
+                }
+            }
         }
     }
 }
 
 @UiComposePreviewLabApi
 class PreviewLabMenuScope(columnScope: ColumnScope) : ColumnScope by columnScope
+
+// Composables UI DropdownMenuPanel values
+private val MenuCornerRadius = 16.dp
+private val MenuShadowElevation = 6.dp
+private val MenuMinWidth = 160.dp
+private val MenuMaxWidth = 320.dp
+private val MenuContentPadding = 6.dp
 
 // copy from androidx.compose.material3.DropdownMenu
 
@@ -95,6 +128,7 @@ private fun DropdownMenuContent(
     scrollState: ScrollState,
     shape: Shape,
     containerColor: Color,
+    contentColor: Color,
     modifier: Modifier = Modifier,
     shadowElevation: Dp = 4.dp,
     border: BorderStroke? = null,
@@ -147,14 +181,16 @@ private fun DropdownMenuContent(
         },
         shape = shape,
         color = containerColor,
+        contentColor = contentColor,
         shadowElevation = shadowElevation,
         border = border,
     ) {
         Column(
             modifier =
             modifier
-                .padding(vertical = 8.dp)
-                .width(200.dp)
+                .width(IntrinsicSize.Max)
+                .widthIn(min = MenuMinWidth, max = MenuMaxWidth)
+                .padding(MenuContentPadding)
                 .verticalScroll(scrollState),
         ) {
             val menuScope = PreviewLabMenuScope(this)
@@ -206,8 +242,7 @@ internal val MenuVerticalMargin = 48.dp
  * for each direction individually.
  */
 @Stable
-@UiComposePreviewLabApi
-object MenuPosition {
+internal object MenuPosition {
     /**
      * An interface to calculate the vertical position of a menu with respect to its anchor and
      * window. The returned y-coordinate is relative to the window.

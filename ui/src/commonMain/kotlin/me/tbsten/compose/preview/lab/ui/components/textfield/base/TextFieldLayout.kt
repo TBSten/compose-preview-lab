@@ -22,6 +22,7 @@ import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.coerceAtLeast
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.offset
@@ -29,11 +30,14 @@ import androidx.compose.ui.util.fastFirst
 import androidx.compose.ui.util.fastFirstOrNull
 import kotlin.math.max
 import kotlin.math.roundToInt
-import me.tbsten.compose.preview.lab.UiComposePreviewLabApi
 
+/**
+ * Slot layout kept from the previous (Material-derived) implementation: label above the container, supporting
+ * text below it; leading/trailing icons, prefix, suffix, placeholder and text inside it. The container is at least
+ * [minContainerHeight] tall and the input row is centred vertically inside it (Composables UI field look).
+ */
 @Composable
-@UiComposePreviewLabApi
-fun TextFieldLayout(
+internal fun TextFieldLayout(
     modifier: Modifier,
     textField: @Composable () -> Unit,
     label: @Composable (() -> Unit)?,
@@ -49,10 +53,11 @@ fun TextFieldLayout(
     supportingPaddingValues: PaddingValues,
     leadingIconPaddingValues: PaddingValues,
     trailingIconPaddingValues: PaddingValues,
+    minContainerHeight: Dp,
 ) {
     val measurePolicy =
-        remember(paddingValues) {
-            TextFieldMeasurePolicy(paddingValues)
+        remember(paddingValues, minContainerHeight) {
+            TextFieldMeasurePolicy(paddingValues, minContainerHeight)
         }
     val layoutDirection = LocalLayoutDirection.current
 
@@ -177,10 +182,12 @@ fun TextFieldLayout(
     )
 }
 
-private class TextFieldMeasurePolicy(private val paddingValues: PaddingValues) : MeasurePolicy {
+private class TextFieldMeasurePolicy(private val paddingValues: PaddingValues, private val minContainerHeight: Dp,) :
+    MeasurePolicy {
     override fun MeasureScope.measure(measurables: List<Measurable>, constraints: Constraints): MeasureResult {
         val topPaddingValue = paddingValues.calculateTopPadding().roundToPx()
         val bottomPaddingValue = paddingValues.calculateBottomPadding().roundToPx()
+        val minContainerHeightPx = minContainerHeight.roundToPx()
 
         var occupiedSpaceHorizontally = 0
         var occupiedSpaceVertically = 0
@@ -275,12 +282,24 @@ private class TextFieldMeasurePolicy(private val paddingValues: PaddingValues) :
                 suffixHeight = heightOrZero(suffixPlaceable),
                 placeholderHeight = heightOrZero(placeholderPlaceable),
                 supportingHeight = supportingHeight,
+                minContainerHeight = minContainerHeightPx,
                 constraints = constraints,
                 density = density,
                 paddingValues = paddingValues,
             )
 
         val containerHeight = totalHeight - supportingHeight - labelHeight
+        val inputFieldHeight =
+            maxOf(
+                textFieldPlaceable.height,
+                heightOrZero(placeholderPlaceable),
+                heightOrZero(prefixPlaceable),
+                heightOrZero(suffixPlaceable),
+            )
+        // Centre the input row inside the container (Composables UI centres the text in its 40dp field row).
+        val textPosition =
+            labelHeight + topPaddingValue +
+                ((containerHeight - topPaddingValue - bottomPaddingValue - inputFieldHeight) / 2).coerceAtLeast(0)
 
         val containerPlaceable =
             measurables.fastFirst { it.layoutId == ContainerId }.measure(
@@ -305,7 +324,7 @@ private class TextFieldMeasurePolicy(private val paddingValues: PaddingValues) :
                 suffixPlaceable = suffixPlaceable,
                 containerPlaceable = containerPlaceable,
                 supportingPlaceable = supportingPlaceable,
-                textPosition = topPaddingValue + heightOrZero(labelPlaceable),
+                textPosition = textPosition,
             )
         }
     }
@@ -438,6 +457,7 @@ private class TextFieldMeasurePolicy(private val paddingValues: PaddingValues) :
             suffixHeight = suffixHeight,
             placeholderHeight = placeholderHeight,
             supportingHeight = supportingHeight,
+            minContainerHeight = minContainerHeight.roundToPx(),
             constraints = ZeroConstraints,
             density = density,
             paddingValues = paddingValues,
@@ -483,6 +503,7 @@ private fun calculateHeight(
     suffixHeight: Int,
     placeholderHeight: Int,
     supportingHeight: Int,
+    minContainerHeight: Int,
     constraints: Constraints,
     density: Float,
     paddingValues: PaddingValues,
@@ -497,16 +518,16 @@ private fun calculateHeight(
             suffixHeight,
         )
 
-    val layoutHeight = verticalPadding + labelHeight + inputFieldHeight + supportingHeight
-
-    return max(
-        constraints.minHeight,
+    // The container (input row) is at least minContainerHeight tall and tall enough for its icons.
+    val containerHeight =
         maxOf(
+            (verticalPadding + inputFieldHeight).roundToInt(),
+            minContainerHeight,
             leadingHeight,
             trailingHeight,
-            layoutHeight.roundToInt(),
-        ),
-    )
+        )
+
+    return max(constraints.minHeight, labelHeight + containerHeight + supportingHeight)
 }
 
 private fun Placeable.PlacementScope.placePlaceables(
