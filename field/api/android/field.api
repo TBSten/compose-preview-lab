@@ -34,6 +34,10 @@ public abstract class me/tbsten/compose/preview/lab/MutablePreviewLabField : and
 	public fun valueCode ()Ljava/lang/String;
 }
 
+public final class me/tbsten/compose/preview/lab/PreviewLabAction$ComposeDefaultImpls {
+	public static final fun ResultsView$default (Lkotlin/jvm/functions/Function2;Lme/tbsten/compose/preview/lab/PreviewLabAction;Landroidx/compose/runtime/Composer;II)V
+}
+
 public abstract interface class me/tbsten/compose/preview/lab/PreviewLabField {
 	public abstract fun Content (Landroidx/compose/runtime/Composer;I)V
 	public fun View (Ljava/util/List;Landroidx/compose/runtime/Composer;I)V
@@ -91,6 +95,19 @@ public final class me/tbsten/compose/preview/lab/PreviewLabField$ViewMenuItem$Re
 
 public final class me/tbsten/compose/preview/lab/PreviewLabFieldKt {
 	public static final fun defaultValueCode (Ljava/lang/String;)Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/action/ComposableSingletons$DefaultResultsViewKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/action/ComposableSingletons$DefaultResultsViewKt;
+	public fun <init> ()V
+	public final fun getLambda$-1083010823$field_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1082022011$field_release ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class me/tbsten/compose/preview/lab/action/component/ComposableSingletons$DetailDialogContentKt {
+	public static final field INSTANCE Lme/tbsten/compose/preview/lab/action/component/ComposableSingletons$DetailDialogContentKt;
+	public fun <init> ()V
+	public final fun getLambda$-1469728924$field_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public class me/tbsten/compose/preview/lab/field/BooleanField : me/tbsten/compose/preview/lab/MutablePreviewLabField {
@@ -1295,7 +1312,7 @@ public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingle
 public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$ModifierBuilderKt {
 	public static final field INSTANCE Lme/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$ModifierBuilderKt;
 	public fun <init> ()V
-	public final fun getLambda$-1710429627$field_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-364675420$field_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class me/tbsten/compose/preview/lab/field/modifier/ComposableSingletons$OffsetModifierBuilderValueKt {
