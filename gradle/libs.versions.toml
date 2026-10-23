@@ -12,6 +12,9 @@ jsTarget = "es2015"
 kotlin = "2.3.21"
 compose = "1.11.0-alpha01"
 
+# KSP (only used by the opt-in `ksp-plugin` that backs @AutoGenerateField)
+ksp = "2.3.12"
+
 # Kotlin compiler plugin: shadow JAR bundles compat modules to support multiple Kotlin versions.
 shadow = "8.3.6"
 
@@ -103,6 +106,9 @@ androidxActivityCompose = { module = "androidx.activity:activity-compose", versi
 androidxUitestTestManifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "androidxUiTest" }
 androidxUitestJunit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidxUiTest" }
 
+# KSP
+kspApi = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
+
 # Build Logic
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlinCompilerEmbeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
@@ -157,6 +163,7 @@ kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose" }
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 # Android
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -31,4 +31,8 @@ apiValidation {
     // (e.g. PreviewLabAutoProvider_<hash>Kt). Exclude this internal package from
     // apiCheck to avoid spurious failures across different build environments.
     ignoredPackages.add("me.tbsten.compose.preview.lab.exports")
+
+    // Compile-only fixture for the @AutoGenerateField KSP processor; its generated factories are
+    // not an API surface worth baselining.
+    ignoredProjects.add("autoGenerateFieldTest")
 }
