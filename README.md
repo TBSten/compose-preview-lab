@@ -182,6 +182,47 @@ private fun MyButtonPreview() = PreviewLab {
 | `fieldValue { ***Field(defaultValue) }` Allows you to manually change values in the Preview. <br> This allows you to say goodbye to the problem of PreviewParameterProvider displaying a large number of Previews and increasing the cognitive load. | When an event occurs in Preview (common examples: Button#onClick, HomeScreen#onIntent), call `onEvent()` to visualize the occurrence of the event. |
 | TODO image                                                                                                                                                                                                                                           | TODO image                                                                                                                                         |
 
+## Embed PreviewLab in KDoc (Dokka plugin)
+
+With the `dokka-plugin`, a single `@previewLab <previewId>` KDoc tag embeds the live PreviewLab preview into the API
+page that [Dokka](https://kotl.in/dokka) generates — ideal for UI library / design system references.
+
+```kt
+/**
+ * A primary button.
+ *
+ * @param onClick Invoked when the user taps the button.
+ * // ⭐️ previewId (+ optional WxH aspect ratio) of the preview to embed
+ * @previewLab MyButtonPreview 1280x680
+ */
+@Composable
+fun MyButton(onClick: () -> Unit) { /* ... */ }
+```
+
+```kts
+plugins {
+    id("org.jetbrains.dokka") version "2.1.0"
+    id("me.tbsten.compose.preview.lab") version "<compose-preview-lab-version>"
+}
+
+dependencies {
+    // ⭐️ Add the Dokka plugin
+    dokkaPlugin("me.tbsten.compose.preview.lab:dokka-plugin:<compose-preview-lab-version>")
+}
+
+dokka {
+    pluginsConfiguration {
+        // ⭐️ Where your gallery (EmbeddedPreviewOrGallery) is hosted
+        composePreviewLab {
+            baseUrl = "https://example.com/compose-preview-lab-gallery"
+        }
+    }
+}
+```
+
+See the [Dokka Plugin guide](https://tbsten.github.io/compose-preview-lab/docs/guides/dokka-plugin) for the tag syntax,
+how to pick `previewId`, and the iframe style options.
+
 ## Differences from [Storytale](https://github.com/Kotlin/Storytale)
 
 A solution similar to Compose Preview Lab is [Storytale](https://github.com/Kotlin/Storytale) from

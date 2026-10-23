@@ -173,6 +173,46 @@ private fun MyButtonPreview() = PreviewLab {
 | `fieldValue { ***Field(defaultValue) }` Previewで値を手動で変更できるようにします。<br> これにより、PreviewParameterProviderが大量のPreviewを表示して認知負荷が増加する問題とお別れできます。 | Previewでイベントが発生したとき（よくある例：Button#onClick、HomeScreen#onIntent）、`onEvent()`を呼び出してイベントの発生を可視化します。 |
 | TODO image                                                                                                                               | TODO image                                                                                     |
 
+## KDoc に PreviewLab を埋め込む (Dokka plugin)
+
+`dokka-plugin` を使うと、KDoc に `@previewLab <previewId>` と書くだけで [Dokka](https://kotl.in/dokka) が生成する API ページに動く PreviewLab を埋め込めます。
+UI ライブラリやデザインシステムの API リファレンスに最適です。
+
+```kt
+/**
+ * プライマリボタン。
+ *
+ * @param onClick タップ時に呼ばれる
+ * // ⭐️ 埋め込みたい Preview の previewId (+ 任意のアスペクト比 WxH)
+ * @previewLab MyButtonPreview 1280x680
+ */
+@Composable
+fun MyButton(onClick: () -> Unit) { /* ... */ }
+```
+
+```kts
+plugins {
+    id("org.jetbrains.dokka") version "2.1.0"
+    id("me.tbsten.compose.preview.lab") version "<compose-preview-lab-version>"
+}
+
+dependencies {
+    // ⭐️ Dokka plugin を追加
+    dokkaPlugin("me.tbsten.compose.preview.lab:dokka-plugin:<compose-preview-lab-version>")
+}
+
+dokka {
+    pluginsConfiguration {
+        // ⭐️ Gallery (EmbeddedPreviewOrGallery) をホストしている URL
+        composePreviewLab {
+            baseUrl = "https://example.com/compose-preview-lab-gallery"
+        }
+    }
+}
+```
+
+タグの書式、`previewId` の決め方、iframe のスタイル設定は [Dokka Plugin ガイド](https://tbsten.github.io/compose-preview-lab/docs/guides/dokka-plugin) を参照してください。
+
 ## [Storytale](https://github.com/Kotlin/Storytale)との違い
 
 Compose Preview Labと類似したソリューションとして、Jetbrainsによる[Storytale](https://github.com/Kotlin/Storytale)があります。
