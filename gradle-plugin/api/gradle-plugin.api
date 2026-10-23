@@ -33,3 +33,26 @@ public final class me/tbsten/compose/preview/lab/ComposePreviewLabSubplugin : or
 	public fun isApplicable (Lorg/jetbrains/kotlin/gradle/plugin/KotlinCompilation;)Z
 }
 
+public abstract class me/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaIframeStyle {
+	public fun <init> ()V
+	public abstract fun getBackgroundColor ()Lorg/gradle/api/provider/Property;
+	public abstract fun getBorder ()Lorg/gradle/api/provider/Property;
+	public abstract fun getBorderRadius ()Lorg/gradle/api/provider/Property;
+	public abstract fun getDefaultHeight ()Lorg/gradle/api/provider/Property;
+	public abstract fun getMargin ()Lorg/gradle/api/provider/Property;
+}
+
+public abstract class me/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaPluginParameters : org/jetbrains/dokka/gradle/engine/plugins/DokkaPluginParametersBaseSpec {
+	public static final field Companion Lme/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaPluginParameters$Companion;
+	public static final field Name Ljava/lang/String;
+	public static final field PluginFqn Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public abstract fun getBaseUrl ()Lorg/gradle/api/provider/Property;
+	public abstract fun getIframe ()Lme/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaIframeStyle;
+	public final fun iframe (Lorg/gradle/api/Action;)V
+	public fun jsonEncode ()Ljava/lang/String;
+}
+
+public final class me/tbsten/compose/preview/lab/dokka/ComposePreviewLabDokkaPluginParameters$Companion {
+}
+

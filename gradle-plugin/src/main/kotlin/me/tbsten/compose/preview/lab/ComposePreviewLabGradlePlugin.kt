@@ -1,5 +1,6 @@
 package me.tbsten.compose.preview.lab
 
+import me.tbsten.compose.preview.lab.dokka.ComposePreviewLabDokkaIntegration
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -15,6 +16,32 @@ class ComposePreviewLabGradlePlugin : Plugin<Project> {
         configureFeaturedFiles(extension = extension)
         if (!supportsCompilerPluginOrder()) {
             validatePluginOrder()
+        }
+        registerDokkaPluginParameters()
+    }
+
+    /**
+     * Dokka Gradle plugin (v2) が同じプロジェクトに適用されたら `dokka.pluginsConfiguration` に
+     * `composePreviewLab { }` エントリを登録し、 Compose Preview Lab Dokka plugin
+     * (`me.tbsten.compose.preview.lab:dokka-plugin`) を型安全に設定できるようにする。
+     *
+     * Dokka のクラスは Dokka plugin 適用後にしか触らない (別クラスに隔離 + `withPlugin`) ので、
+     * Dokka を使わないプロジェクトではクラスロードすら発生しない。 Dokka plugin が別のクラスローダ
+     * (別の buildscript classpath) にしか存在しない場合は `NoClassDefFoundError` になるため、
+     * その場合は警告だけ出して処理を続行する。
+     */
+    private fun Project.registerDokkaPluginParameters() {
+        pluginManager.withPlugin(ComposePreviewLabDokkaIntegration.DokkaGradlePluginId) {
+            try {
+                ComposePreviewLabDokkaIntegration.register(this)
+            } catch (e: LinkageError) {
+                logger.warn(
+                    "Compose Preview Lab: could not register `dokka.pluginsConfiguration.composePreviewLab` in $path " +
+                        "because the Dokka Gradle plugin classes are not visible from the Compose Preview Lab Gradle plugin " +
+                        "(${e.javaClass.simpleName}: ${e.message}). Apply both plugins in the same `plugins {}` block, " +
+                        "or add `org.jetbrains.dokka` to the buildscript classpath where `me.tbsten.compose.preview.lab` is declared.",
+                )
+            }
         }
     }
 

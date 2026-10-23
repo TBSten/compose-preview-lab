@@ -61,6 +61,7 @@ include(":compiler-plugin:compat-k2320")
 include(":compiler-plugin:compat-k2321")
 include(":compiler-plugin:compat-k240_beta2")
 include(":gradle-plugin")
+include(":dokka-plugin")
 include(":dokkaDocs")
 
 include(":extension:kotlinx-datetime", projectName = "extension-kotlinx-datetime")
