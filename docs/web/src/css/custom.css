@@ -50,7 +50,7 @@
   /* Homepage Design Variables for Light Mode */
   --hero-gradient: linear-gradient(180deg, #f3e8ff 0%, #faf5ff 100%); /* Stronger purple gradient */
   --neon-accent: #9333ea; /* Vibrant purple accent */
-  
+
   /* Glassmorphism adjustment for light mode */
   --glass-bg: rgba(147, 51, 234, 0.03); /* Subtle purple tint */
   --glass-border: rgba(147, 51, 234, 0.08);
@@ -81,4 +81,8 @@ article h2 {
   --ifm-footer-link-color: #1c1e21;
   --ifm-footer-link-hover-color: var(--ifm-color-primary);
   --ifm-footer-title-color: #1c1e21;
+}
+
+video {
+  max-width: 100%;
 }

@@ -70,6 +70,7 @@ internal fun Project.configureKmp(
 
         compilerOptions {
             optIn.addAll(COMMON_OPT_INS)
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
 
         sourceSets.commonTest.dependencies {
