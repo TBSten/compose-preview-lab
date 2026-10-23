@@ -49,6 +49,9 @@ dependencies {
     compileOnly(gradleApi())
     compileOnly(gradleKotlinDsl())
     implementation(libs.kotlinGradlePlugin)
+    // Optional integration: registers `dokka.pluginsConfiguration.composePreviewLab { }` when the Dokka
+    // Gradle plugin (v2) is applied alongside. compileOnly so projects without Dokka pull nothing extra.
+    compileOnly(libs.dokkaGradlePlugin)
 }
 
 gradlePlugin {
