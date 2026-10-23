@@ -166,6 +166,23 @@ interface ComposePreviewLabCompilerPluginError {
               }
             """.trimIndent()
 
+        val UseExplicitFieldInsteadOfAutoField: String =
+            """
+            Replace `autoField()` with an explicit Field for this parameter, e.g.
+
+              user = fieldValue {
+                  CombinedField(
+                      label = "user",
+                      fields = listOf(StringField("name", ""), IntField("age", 0)),
+                      combine = { User(it[0] as String, it[1] as Int) },
+                      split = { listOf(it.name, it.age) },
+                  )
+              }
+
+            or any other `PreviewLabField` implementation. Default Fields for data classes are
+            tracked at https://github.com/TBSten/compose-preview-lab/issues/69.
+            """.trimIndent()
+
         /**
          * Reply for `InvalidScopeIrError` — IR-side mirror of the FIR
          * `INVALID_COLLECT_SCOPE_VALUE` diagnostic. Wording matches
